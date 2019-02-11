@@ -4,6 +4,9 @@
 /build/
 /dist/
 
+# documentation
+/Documentation/_build/
+
 # 'git format-patch' folder
 /outgoing/
 
