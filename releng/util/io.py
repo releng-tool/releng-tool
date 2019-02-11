@@ -190,7 +190,7 @@ def pathCopy(src, dst, quiet=False, critical=True):
                 ensureDirectoryExists(parent_dir)
             copy2(src, dst)
         else:
-            copy_tree(src, dst, update=True)
+            copy_tree(src, dst)
         success = True
     except (DistutilsFileError, IOError) as e:
         if not quiet:
