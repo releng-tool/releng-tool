@@ -1,3 +1,9 @@
+# building
+/*.egg-info/
+/.eggs/
+/build/
+/dist/
+
 # 'git format-patch' folder
 /outgoing/
 
