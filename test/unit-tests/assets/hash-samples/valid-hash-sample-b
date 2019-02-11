@@ -1,0 +1,13 @@
+# single hash line example: <HASH-TYPE> <HASH> <FILE>
+type1 hash1 file1
+
+# hashes can be separated by other whitespace characters (e.x. tabs) instead
+type2	hash2	file2
+
+# more whitespace fun
+  type3		hash3   file3
+
+type4 hash4 file4 # comments can happen inline
+
+ # comments can have leading whitespaces
+type5 hash5 file5

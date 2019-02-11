@@ -1,0 +1,4 @@
+#!	interpreter   
+                 ^--- whitespaces should exist here (do not trim this file)
+
+Examples of an interpreter with leading and trailing whitespaces.

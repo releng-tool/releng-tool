@@ -1,0 +1,2 @@
+# flag asset as binary for consistent hash verification across platforms
+sample-asset binary
