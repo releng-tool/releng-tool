@@ -35,7 +35,7 @@ setup(
         "enum34; python_version == '2.7'"
     ],
     license='BSD-2-Clause',
-    long_description=read('README'),
+    long_description=read('README.rst'),
     name='releng-tool',
     packages=find_packages(exclude=["test*"]),
     platforms='any',
