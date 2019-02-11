@@ -1,6 +1,14 @@
 releng-tool
 ===========
 
+.. image:: https://img.shields.io/pypi/v/releng-tool.svg
+    :target: https://pypi.python.org/pypi/releng-tool
+    :alt: pip Version
+
+.. image:: https://travis-ci.com/releng-tool/releng-tool.svg?branch=master
+    :target: https://travis-ci.com/releng-tool/releng-tool
+    :alt: Build Status
+
 releng-tool aims to provide a method to prepare a structured environment to
 assist in the release engineering of a project.
 
