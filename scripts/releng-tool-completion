@@ -1,0 +1,131 @@
+#!/usr/bin/env sh
+# Copyright 2018 releng-tool
+
+__releng_tool_has_action()
+{
+    local opts=(
+        '-build'
+        '-clean'
+        '-configure'
+        '-extract'
+        '-fetch'
+        '-install'
+        '-patch'
+        '-rebuild'
+        '-reconfigure'
+        '-reinstall'
+        'clean'
+        'extract'
+        'fetch'
+        'licenses'
+        'mrproper'
+        'patch'
+    )
+
+    local o w
+    for w in "$@"; do
+        for o in "${opts[@]}"; do
+            [[ $w == *$o ]] && return
+        done
+    done
+
+    return 1
+}
+
+__releng_tool_is_reserved()
+{
+    local opts=(
+        'clean'
+        'extract'
+        'fetch'
+        'licenses'
+        'mrproper'
+        'patch'
+    )
+
+    local o
+    for o in "${opts[@]}"; do
+        [[ $1 == *$o ]] && return
+    done
+
+    return 1
+}
+
+_releng_tool_module()
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    case $prev in
+    '--cache-dir' | '--dl-dir' | '--out-dir' | '--root-dir')
+        local IFS=$'\n'
+        compopt -o filenames
+        COMPREPLY=($(compgen -A directory -- $cur))
+        return 0
+        ;;
+    '-j' | '--jobs' | '-h' | '--help' | '--version')
+        return 0
+        ;;
+    esac
+    case $cur in
+    -*)
+        opts=(
+            '--cache-dir'
+            '--debug'
+            '--development'
+            '--dl-dir'
+            '--help'
+            '--jobs'
+            '--local-sources'
+            '--nocolorout'
+            '--out-dir'
+            '--root-dir'
+            '--verbose'
+            '--version'
+        )
+        ;;
+    *-*)
+        local pkg
+        pkg=${cur%-*}
+
+        if __releng_tool_is_reserved $pkg; then
+            return 0
+        fi
+
+        opts=(
+            '${pkg}-build'
+            '${pkg}-clean'
+            '${pkg}-configure'
+            '${pkg}-extract'
+            '${pkg}-fetch'
+            '${pkg}-install'
+            '${pkg}-patch'
+            '${pkg}-rebuild'
+            '${pkg}-reconfigure'
+            '${pkg}-reinstall'
+        )
+        ;;
+    *)
+        if __releng_tool_has_action ${COMP_WORDS[*]}; then
+            return 0
+        fi
+
+        opts=(
+            'clean'
+            'extract'
+            'fetch'
+            'licenses'
+            'mrproper'
+            'patch'
+        )
+        ;;
+    esac
+
+    if [ -n "$opts" ]; then
+        COMPREPLY=($(compgen -W "${opts[*]}" -- $cur))
+    fi
+
+    return 0
+}
+complete -F _releng_tool_module releng
