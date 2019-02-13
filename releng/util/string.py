@@ -26,6 +26,18 @@ def expand(obj, kv=None):
     dropped. If a set may result in a smaller set if expanded values result in
     duplicate entries.
 
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        import os
+        ...
+
+        os.environ['MY_ENV'] = 'my-environment-variable'
+        value = releng_expand('$MY_ENV')
+        print(value)
+        # will output: my-environment-variable
+
     Args:
         obj: the object
         kv (optional): key-values pairs to use

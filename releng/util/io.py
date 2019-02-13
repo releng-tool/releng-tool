@@ -167,9 +167,26 @@ def interpretStemExtension(basename):
 
 def pathCopy(src, dst, quiet=False, critical=True):
     """
-    copy the file or directory src into the file or directory dst
+    copy a file or directory into a target file or directory
 
-    Runs the command described by ``args`` until completion.
+    This call will attempt to copy a provided file or directory, defined by
+    ``src`` into a destination file or directory defined by ``dst``. If ``src``
+    is a file, then the ``dst`` file is considered to be a file as well;
+    likewise if ``src`` is a directory, ``dst`` is considered a target
+    directory. If a target directory or target file's directory does not exist,
+    it will be automatically created. In the event that a file or directory
+    could not be copied, an error message will be output to standard error
+    (unless ``quiet`` is set to ``True``). If ``critical`` is set to ``True``
+    and the specified file/directory could not be copied for any reason, this
+    call will issue a system exit (``SystemExit``).
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        releng_copy('my-file', 'my-file2-)
+        # (or)
+        releng_copy('my-directory/', 'my-directory2/')
 
     Args:
         src: the source directory or file
@@ -180,6 +197,9 @@ def pathCopy(src, dst, quiet=False, critical=True):
     Returns:
         ``True`` if the copy has completed with no error; ``False`` if the copy
         has failed
+
+    Raises:
+        SystemExit: if the copy operation fails with ``critical=True``
     """
     success = False
 
@@ -205,7 +225,17 @@ def pathExists(path, *args):
     """
     return whether or not the path exists
 
-    Returns ``True`` if the path exists; ``False`` otherwise.
+    Allows a caller to verify the existence of a file on the file system. This
+    cal will return ``True`` if the path exists; ``False`` otherwise.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        if releng_exists('my-file'):
+            print('the file exists')
+        else:
+            print('the file does not exist')
 
     Args:
         path: the path
@@ -218,10 +248,21 @@ def pathExists(path, *args):
 
 def pathRemove(path):
     """
-    quietly remove the provided path
+    remove the provided path
 
-    Attempts to remove the provided path if it exists. If the provided path does
-    not exist, this method does nothing.
+    Attempts to remove the provided path if it exists. The path value can either
+    be a directory or a specific file. If the provided path does not exist, this
+    method has no effect. In the event that a file or directory could not be
+    removed due to an error other than unable to be found, an error message will
+    be output to standard error.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        releng_remove('my-file')
+        # (or)
+        releng_remove('my-directory/')
 
     Args:
         path: the path to remove
@@ -278,21 +319,67 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
     """
     execute the provided command/arguments
 
-    Runs the command described by ``args`` until completion.
+    Runs the command described by ``args`` until completion. A caller can adjust
+    the working directory of the executed command by explicitly setting the
+    directory in ``cwd``. The execution request will return ``True`` on a
+    successful execution; ``False`` if an issue has been detected (e.g. bad
+    options or called process returns a non-zero value). In the event that the
+    execution fails, an error message will be output to standard error unless
+    ``quiet`` is set to ``True``.
+
+    The environment variables used on execution can be manipulated in two ways.
+    First, the environment can be explicitly controlled by applying a new
+    environment content using the ``env`` dictionary. Key of the dictionary will
+    be used as environment variable names, whereas the respective values will be
+    the respective environment variable's value. If ``env`` is not provided, the
+    existing environment of the executing context will be used. Second, a caller
+    can instead update the existing environment by using the ``env_update``
+    option. Like ``env``, the key-value pairs match to respective environment
+    key-value pairs. The difference with this option is that the call will use
+    the original environment values and update select values which match in the
+    updated environment request. When ``env`` and ``env_update`` are both
+    provided, ``env_update`` will be updated the options based off of ``env``
+    instead of the original environment of the caller.
+
+    If ``critical`` is set to ``True`` and the execution fails for any reason,
+    this call will issue a system exit (``SystemExit``). By default, the
+    critical flag is enabled (i.e. ``critical=True``).
+
+    In special cases, an executing process may not provide carriage returns/new
+    lines to simple output processing. This can lead the output of a process to
+    be undesirably buffered. To workaround this issue, the execution call can
+    instead poll for output results by using the ``poll`` option with a value
+    of ``True``. By default, polling is disabled with a value of ``False``.
+
+    A caller may wish to capture the provided output from a process for
+    examination. If a list is provided in the call argument ``capture``, the
+    list will be populated with the output provided from an invoked process.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        releng_execute(['echo', '$TEST'], env={'TEST': 'this is a test'))
 
     Args:
         args: the list of arguments to execute
         cwd (optional): working directory to use
         env (optional): environment variables to use for the process
         env_update (optional): environment variables to append for the process
-        quiet (optional): whether or not to suppress output
+        quiet (optional): whether or not to suppress output (defaults to
+            ``False``)
         critical (optional): whether or not to stop execution on failure
-        poll (optional): force polling stdin/stdout for output data
+            (defaults to ``True``)
+        poll (optional): force polling stdin/stdout for output data (defaults to
+            ``False``)
         capture (optional): list to capture output into
 
     Returns:
         ``True`` if the execution has completed with no error; ``False`` if the
         execution has failed
+
+    Raises:
+        SystemExit: if the execution operation fails with ``critical=True``
     """
 
     # append provided environment updates (if any) to the provided or existing

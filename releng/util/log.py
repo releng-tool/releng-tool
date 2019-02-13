@@ -17,6 +17,10 @@ def log(msg, *args):
 
     Logs a (normal) message to standard out with a trailing new line.
 
+    .. code-block:: python
+
+        log('this is a message')
+
     Args:
         msg: the message
         *args: an arbitrary set of positional and keyword arguments used when
@@ -31,6 +35,10 @@ def debug(msg, *args):
     Logs a debug message to standard out with a trailing new line. By default,
     debug messages will not be output to standard out unless the instance is
     configured with debugging enabled.
+
+    .. code-block:: python
+
+        debug('this is a debug message')
 
     Args:
         msg: the message
@@ -48,6 +56,10 @@ def err(msg, *args):
     Logs an error message to standard error with a trailing new line and (if
     enabled) a red colorization.
 
+    .. code-block:: python
+
+        err('this is an error message')
+
     Args:
         msg: the message
         *args: an arbitrary set of positional and keyword arguments used when
@@ -62,6 +74,10 @@ def note(msg, *args):
     Logs a notification message to standard out with a trailing new line and (if
     enabled) an inverted colorization.
 
+    .. code-block:: python
+
+        note('this is a note message')
+
     Args:
         msg: the message
         *args: an arbitrary set of positional and keyword arguments used when
@@ -75,6 +91,10 @@ def success(msg, *args):
 
     Logs a success message to standard error with a trailing new line and (if
     enabled) a green colorization.
+
+    .. code-block:: python
+
+        success('this is a success message')
 
     Args:
         msg: the message
@@ -91,6 +111,10 @@ def verbose(msg, *args):
     enabled) an inverted colorization. By default, verbose messages will not be
     output to standard out unless the instance is configured with verbosity.
 
+    .. code-block:: python
+
+        verbose('this is a verbose message')
+
     Args:
         msg: the message
         *args: an arbitrary set of positional and keyword arguments used when
@@ -106,6 +130,10 @@ def warn(msg, *args):
 
     Logs a warning message to standard error with a trailing new line and (if
     enabled) a purple colorization.
+
+    .. code-block:: python
+
+        warn('this is a warning message')
 
     Args:
         msg: the message
