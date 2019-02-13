@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 # A flag (or option) can be driven by the existence of a file (i.e. a file
 # flag). When an instance operates with file flags, two modes are approached in
@@ -11,6 +11,7 @@
 # intent would be to configure the one (or multiple) file flag state and have
 # the running instance shutdown.
 
+from .io import touch
 from .log import *
 from enum import Enum
 import os
@@ -72,11 +73,9 @@ def processFileFlag(flag, file):
         # modified times. For the case where may experience issues creating the
         # file flag themselves (permission errors, etc.), fallback on just the
         # existence of the file flag to still be considered as configured.
-        try:
-            with open(file, 'a'):
-                os.utime(file, None)
+        if touch(file):
             rv = FileFlag.CONFIGURED
-        except:
+        else:
             if os.path.isfile(file):
                 rv = FileFlag.CONFIGURED
             else:
