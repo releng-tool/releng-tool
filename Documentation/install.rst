@@ -5,7 +5,7 @@ The recommended method of installation is using pip_:
 
 .. code-block:: shell
 
-   pip install releng
+   pip install releng-tool
 
 To verify the package has been installed the following command can be used:
 
@@ -34,7 +34,7 @@ arch
 
    $ sudo pacman -Sy
    $ sudo pacman -S python-pip
-   $ sudo pip install releng
+   $ sudo pip install releng-tool
    $ python -m releng --version
    releng-tool <version>
 
@@ -45,7 +45,7 @@ centos
 
    $ sudo yum install epel-release
    $ sudo yum install python-pip
-   $ sudo pip install releng
+   $ sudo pip install releng-tool
    $ python -m releng --version
    releng-tool <version>
 
@@ -55,7 +55,7 @@ fedora
 .. code-block:: shell
 
    $ sudo dnf install python-pip
-   $ sudo pip install releng
+   $ sudo pip install releng-tool
    $ python -m releng --version
    releng-tool <version>
 
@@ -64,7 +64,7 @@ opensuse
 
 .. code-block:: shell
 
-   $ pip install releng
+   $ pip install releng-tool
    $ python -m releng --version
    releng-tool <version>
 
@@ -75,7 +75,7 @@ ubuntu
 
    $ sudo apt-get update
    $ sudo apt-get install python-pip
-   $ sudo pip install releng
+   $ sudo pip install releng-tool
    $ python -m releng --version
    releng-tool <version>
 
@@ -87,7 +87,7 @@ From a terminal, invoke the following commands:
 .. code-block:: shell
 
    $ sudo easy_install pip
-   $ sudo pip install releng
+   $ sudo pip install releng-tool
    $ python -m releng --version
    releng-tool <version>
 
@@ -107,7 +107,7 @@ Open a Windows command prompt and invoke the following:
 
 .. code-block:: shell
 
-   > python -m pip install releng
+   > python -m pip install releng-tool
    > python -m releng --version
    releng-tool <version>
 
