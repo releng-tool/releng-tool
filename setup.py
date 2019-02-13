@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from setuptools import find_packages
 from setuptools import setup
@@ -41,6 +41,6 @@ setup(
     platforms='any',
     test_suite='test',
     url='https://github.com/releng-tool/releng-tool',
-    version='0.1.0.dev0',
+    version='0.1.0.dev1',
     zip_safe=False,
 )
