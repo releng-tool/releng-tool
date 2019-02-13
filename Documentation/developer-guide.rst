@@ -869,6 +869,10 @@ The following outlines common configuration options available for packages:
 |                          | explicitly define the version control system type |
 |                          | without the need for a prefix/postfix entry.      |
 |                          |                                                   |
+|                          | For more information on each type's formatting,   |
+|                          | consult                                           |
+|                          | :ref:`site definitions <site_definitions>`.       |
+|                          |                                                   |
 |                          | Using a specific type will create a dependency    |
 |                          | for a project that the respective host tool is    |
 |                          | installed on the host system. For example, if a   |
@@ -1151,6 +1155,136 @@ packages:
 .. |CONF_PREFIX| replace:: ``PREFIX``
 .. |CONF_REVISION| replace:: ``REVISION``
 .. |CONF_VCS_TYPE| replace:: ``VCS_TYPE``
+
+.. _site_definitions:
+
+site definitions
+~~~~~~~~~~~~~~~~
+
+The following outlines the details for defining supported site definitions. If
+attempting to use an extension-provided site type, please consult the
+documentation provided by said extension.
+
+.. note::
+
+   All site values can be defined with a prefix value (e.g. ``git+`` for Git
+   sources) or postfix value; however, this is optional if a package wishes to
+   use the |CONF_VCS_TYPE|_ option.
+
+bazaar site
+^^^^^^^^^^^
+
+To define a Bazaar_-based location, the site value must be prefixed with a
+``bzr+`` value. A site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'bzr+ssh://example.com/project/trunk'
+   # (or)
+   LIBFOO_SITE = 'bzr+lp:<project>'
+
+The value after the prefix is a path which will be provided to a ``bzr export``
+call [#bzrexport]_. Content from a Bazaar repository will be fetched and
+archived into a file during fetch stage. Once an cached archive is made, the
+fetch stage will be skipped unless the archive is manually removed.
+
+cvs site
+^^^^^^^^
+
+To define a CVS_-based location, the site value must be prefixed with a ``cvs+``
+value. A site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'cvs+:pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule'
+
+The value after the prefix is a space-separated pair, where the first part
+represents the CVSROOT [#cvsroot]_ to use and the second part specifies the CVS
+module [#cvsmodule]_  to use. Content from a CVS repository will be fetched and
+archived into a file during fetch stage. Once an cached archive is made, the
+fetch stage will be skipped unless the archive is manually removed.
+
+git site
+^^^^^^^^
+
+To define a Git_-based location, the site value must be prefixed with a ``git+``
+value or postfixed with the ``.git`` value. A site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'https://example.com/libfoo.git'
+   # (or)
+   LIBFOO_SITE = 'git+git@example.com:base/libfoo.git'
+
+The site value (less prefix, if used) is used as a Git remote [#gitremote]_ for
+a locally managed cache source. Git sources will be cached inside the ``cache``
+directory on first-run. Future runs to fetch a project's source will use the
+cached Git file system. If a desired revision exists, content will be acquired
+from the cache location. If a desired revision does not exist, the origin remote
+will be fetched for the new revision (if it exists).
+
+mercurial site
+^^^^^^^^^^^^^^
+
+To define a Mercurial_-based location, the site value must be prefixed with a
+``hg+`` value. A site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'hg+https://example.com/project'
+
+The value after the prefix is used as the ``SOURCE`` in an ``hg clone`` call
+[#hgclone]_. Mercurial sources will be cached inside the ``cache`` directory on
+first-run. Future runs to fetch a project's source will use the cached Mercurial
+repository. If a desired revision exists, content will be acquired from the
+cache location. If a desired revision does not exist, the origin remote will be
+pulled for the new revision (if it exists).
+
+scp site
+^^^^^^^^
+
+To define an SCP-based location, the site value must be prefixed with a ``scp+``
+value. A site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'scp+TODO'
+
+The value after the prefix is a path which will be provided to a ``scp`` call's
+[#scpcommand]_ source host value. The SCP site only supports copying a file from
+a remote host. The fetched file will be stored inside the ``dl`` directory. Once
+fetch, the fetch stage will be skipped unless the file is manually removed.
+
+svn site
+^^^^^^^^
+
+To define a Subversion_-based location, the site value must be prefixed with a
+``svn+`` value. A site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'svn+https://svn.example.com/repos/libfoo/c/branches/libfoo-1.2'
+
+The value after the prefix is a path which will be provided to a
+``svn checkout`` call [#svncheckout]_. Content from a Subversion repository will
+be fetched and archived into a file during fetch stage. Once an cached archive
+is made, the fetch stage will be skipped unless the archive is manually removed.
+
+url site (default)
+^^^^^^^^^^^^^^^^^^
+
+All packages that do not define a helper prefix/postfix value (as seen in other
+site definitions) or do not explicitly set a |CONF_VCS_TYPE|_ value (other than
+``url``), will be considered a URL site. A URL site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'https://example.com/my-file'
+
+The site value provided will be directly used in a URL request. URL values
+supported are defined by the Python's ``urlopen`` implementation [#urlopen]_,
+which includes (but not limited to) ``http(s)://``, ``ftp://``, ``file://`` and
+more.
 
 .. _hash_files:
 
@@ -1872,6 +2006,24 @@ extensions are not officially supported by releng-tool. For issues related to
 specific extension use, it is recommended to consult the documentation provided
 by the providers of said extensions.
 
+.. footnotes
+
+.. [#bzrexport] http://doc.bazaar.canonical.com/bzr.2.7/en/user-reference/export-help.html
+.. [#cvsmodule] https://www.gnu.org/software/trans-coord/manual/cvs/html_node/checkout.html#checkout
+.. [#cvsroot] https://www.gnu.org/software/trans-coord/manual/cvs/html_node/Specifying-a-repository.html
+.. [#gitremote] https://git-scm.com/docs/git-remote
+.. [#hgclone] https://www.selenic.com/mercurial/hg.1.html#clone
+.. [#scpcommand] https://linux.die.net/man/1/scp
+.. [#svncheckout] http://svnbook.red-bean.com/en/1.7/svn.ref.svn.c.checkout.html
+.. [#urlopen] https://docs.python.org/3.7/library/urllib.request.html#urllib.request.urlopen
+
+.. references
+
+.. _Bazaar: https://bazaar.canonical.com
 .. _CMake: https://cmake.org/
+.. _CVS: http://cvs.nongnu.org/
 .. _GNU Build System: https://www.gnu.org/software/automake/manual/html_node/index.html
+.. _Git: https://git-scm.com/
+.. _Mercurial: https://www.mercurial-scm.org/
 .. _Python: https://www.python.org/
+.. _Subversion: https://subversion.apache.org/
