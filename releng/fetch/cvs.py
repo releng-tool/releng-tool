@@ -42,7 +42,7 @@ def fetch(opts):
     sys.stdout.flush()
 
     try:
-        cvsroot, module = site.rsplit(':', 1)
+        cvsroot, module = site.rsplit(' ', 1)
     except ValueError:
         err('improper cvs site defined')
         log("""\
