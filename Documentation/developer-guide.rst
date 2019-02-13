@@ -865,7 +865,7 @@ The following outlines common configuration options available for packages:
 |                          |    LIBFOO_SITE = '|SVNSITE_EXAMPLE|'              |
 |                          |    LIBFOO_SITE = '|URLSITE_EXAMPLE|'              |
 |                          |                                                   |
-|                          | A developer can also use ``VCS_TYPE`` to          |
+|                          | A developer can also use |CONF_VCS_TYPE|_ to      |
 |                          | explicitly define the version control system type |
 |                          | without the need for a prefix/postfix entry.      |
 |                          |                                                   |
@@ -880,7 +880,7 @@ The following outlines common configuration options available for packages:
 |                          | content). If applicable, loaded extensions may    |
 |                          | provide support for custom site protocols.        |
 |                          |                                                   |
-|                          | See also ``VCS_TYPE``.                            |
+|                          | See also |CONF_VCS_TYPE|_.                        |
 +--------------------------+---------------------------------------------------+
 | .. _CONF_TYPE:           |                                                   |
 |                          |                                                   |
@@ -1108,6 +1108,8 @@ packages:
 |                          |    LIBFOO_STRIP_COUNT = 1                         |
 |                          |                                                   |
 +--------------------------+---------------------------------------------------+
+| .. _CONF_VCS_TYPE:       |                                                   |
+|                          |                                                   |
 | ``VCS_TYPE``             | Explicitly sets the version control system type   |
 |                          | to use when acquiring sources. releng-tool        |
 |                          | attempts to automatically determine the VCS type  |
@@ -1148,6 +1150,7 @@ packages:
 .. |CONF_INTERNAL| replace:: ``INTERNAL``
 .. |CONF_PREFIX| replace:: ``PREFIX``
 .. |CONF_REVISION| replace:: ``REVISION``
+.. |CONF_VCS_TYPE| replace:: ``VCS_TYPE``
 
 .. _hash_files:
 
