@@ -1805,6 +1805,10 @@ listed below:
 |                          |     :members: pathRemove                          |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
+| ``releng_touch``         | .. automodule:: releng.util.io                    |
+|                          |     :members: touch                               |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
 | ``success``              | .. automodule:: releng.util.log                   |
 |                          |     :members: success                             |
 |                          |     :noindex:                                     |
