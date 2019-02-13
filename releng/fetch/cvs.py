@@ -61,10 +61,10 @@ module to checkout. For example:
         return None
 
     log('caching sources')
-    def cvs_exclude(file):
-        if file.endswith('CVS'):
-            return True
-        return False
+    def cvs_filter(info):
+        if info.name.endswith('CVS'):
+            return None
+        return info
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
     if not ensureDirectoryExists(cache_dir):
@@ -72,6 +72,6 @@ module to checkout. For example:
 
     cvs_module_dir = os.path.join(work_dir, cache_stem)
     with tarfile.open(cache_file, 'w:gz') as tar:
-        tar.add(cvs_module_dir, arcname=cache_stem, exclude=cvs_exclude)
+        tar.add(cvs_module_dir, arcname=cache_stem, filter=cvs_filter)
 
     return cache_file
