@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from .. import __version__ as releng_version
 from ..defs import *
@@ -17,6 +17,7 @@ from ..util.io import execute
 from ..util.io import pathCopy
 from ..util.io import pathExists
 from ..util.io import pathRemove
+from ..util.io import touch
 from ..util.log import *
 from ..util.platform import exit as releng_exit
 from ..util.string import expand
@@ -647,6 +648,7 @@ list exists with the name of packages to be part of the releng process:
         script_env['releng_exit'] = releng_exit
         script_env['releng_expand'] = expand
         script_env['releng_remove'] = pathRemove
+        script_env['releng_touch'] = touch
         script_env['success'] = success
         script_env['verbose'] = verbose
         script_env['warn'] = warn
