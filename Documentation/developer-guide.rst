@@ -943,9 +943,9 @@ The following outlines common configuration options available for packages:
 .. |CONF_TYPE| replace:: ``TYPE``
 .. |CONF_VERSION| replace:: ``VERSION``
 .. |CVSSITE_EXAMPLE| replace:: cvs+pserver:anonymous@cvs.example.com:/var/lib/cvsroot/mymodule
-.. |GITSITE_EXAMPLE| replace:: https://example.com/libfoo.git
-.. |SVNSITE_EXAMPLE| replace:: svn+https://svn.example.com/repos/libfoo/c/branches/libfoo-1.2
-.. |URLSITE_EXAMPLE| replace:: https://www.example.com/files/libfoo.tar.gz
+.. |GITSITE_EXAMPLE| replace:: \https://example.com/libfoo.git
+.. |SVNSITE_EXAMPLE| replace:: svn+\https://svn.example.com/repos/libfoo/c/branches/libfoo-1.2
+.. |URLSITE_EXAMPLE| replace:: \https://www.example.com/files/libfoo.tar.gz
 
 advanced package configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
