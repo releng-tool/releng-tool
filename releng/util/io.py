@@ -246,7 +246,7 @@ def pathExists(path, *args):
     """
     return os.path.exists(os.path.join(path, *args))
 
-def pathRemove(path):
+def pathRemove(path, quiet=False):
     """
     remove the provided path
 
@@ -254,7 +254,7 @@ def pathRemove(path):
     be a directory or a specific file. If the provided path does not exist, this
     method has no effect. In the event that a file or directory could not be
     removed due to an error other than unable to be found, an error message will
-    be output to standard error.
+    be output to standard error (unless ``quiet`` is set to ``True``).
 
     An example when using in the context of script helpers is as follows:
 
@@ -266,6 +266,7 @@ def pathRemove(path):
 
     Args:
         path: the path to remove
+        quiet (optional): whether or not to suppress output
 
     Returns:
         ``True`` if the path was removed or does not exist; ``False`` if the
@@ -278,8 +279,9 @@ def pathRemove(path):
             os.remove(path)
     except OSError as e:
         if e.errno != errno.ENOENT:
-            err('unable to remove path: ' + path)
-            err('    {}'.format(e))
+            if not quiet:
+                err('unable to remove path: ' + path)
+                err('    {}'.format(e))
             return False
 
     return True
