@@ -21,7 +21,7 @@ releng-tool can be used to process a defined set of projects which identifiers
 where resources can be fetched, how packages can be extracted and methods to
 patch, configure, build and install each individual package for a target root.
 
-.. image:: Documentation/_static/overview.png
+.. image:: https://releng.io/assets/overview.png
 
 For detailed documentation on the releng-tool project, please consult the
 `releng-tool documentation`_.
