@@ -708,6 +708,24 @@ environment variables will be made available:
 .. |CONF_PKG_BUILD_DIR| replace:: ``PKG_BUILD_DIR``
 .. |CONF_PKG_BUILD_ODIR| replace:: ``PKG_BUILD_OUTPUT_DIR``
 
+Package-defined environment variables are also available in the rare chance
+that package content needs to be mangled (e.g. including a dependent module
+which does not properly support a sysroot staged environment). The following
+package-defined environment variables are available for use (where ``<PKG>``
+translates to a releng-tool's determined package key):
+
++----------------------------+-------------------------------------------------+
+| ``<PKG>_BUILD_DIR``        | The directory for a defined package's           |
+|                            | buildable content.                              |
++----------------------------+-------------------------------------------------+
+| ``<PKG>_BUILD_OUTPUT_DIR`` | The directory for where a defined package's     |
+|                            | build output will be stored.                    |
++----------------------------+-------------------------------------------------+
+| ``<PKG>_NAME``             | The name of the package.                        |
++----------------------------+-------------------------------------------------+
+| ``<PKG>_VERSION``          | The version of a defined package.               |
++----------------------------+-------------------------------------------------+
+
 Note that is it not recommended to define environment variables for the
 releng-tool process to use outside the project definition except for special
 cases (such as authentication tokens, etc.). Attempting to configure, for
