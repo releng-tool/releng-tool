@@ -22,6 +22,7 @@ where resources can be fetched, how packages can be extracted and methods to
 patch, configure, build and install each individual package for a target root.
 
 .. image:: https://releng.io/assets/overview.png
+   :align: center
 
 For detailed documentation on the releng-tool project, please consult the
 `releng-tool documentation`_.
