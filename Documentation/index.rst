@@ -12,6 +12,7 @@ releng-tool also provides helper package types, such as autotools, for projects
 using common build capabilities.
 
 .. image:: _static/overview.png
+   :align: center
 
 While this tool can assist in the configuration and building of a project, the
 framework does not attempt to provide a perfect sandbox for the process. Users
