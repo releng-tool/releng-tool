@@ -41,6 +41,6 @@ setup(
     platforms='any',
     test_suite='test',
     url='https://github.com/releng-tool/releng-tool',
-    version='0.1.0.dev3',
+    version='0.1.0.dev4',
     zip_safe=False,
 )
