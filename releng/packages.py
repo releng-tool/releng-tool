@@ -565,6 +565,12 @@ class RelengPackageManager:
         pkg.python_install_opts = pkg_python_install_opts
         pkg.python_interpreter = pkg_python_interpreter
         pkg.python_opts = pkg_python_opts
+        # (additional environment helpers)
+        for env in (os.environ, env):
+            env[pkgKey(name, 'BUILD_DIR')] = pkg_build_dir
+            env[pkgKey(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
+            env[pkgKey(name, 'NAME')] = name
+        os.environ[pkgKey(name, RPK_VERSION)] = pkg_version
 
         return pkg, env, deps
 
