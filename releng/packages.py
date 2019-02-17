@@ -5,6 +5,7 @@
 from .defs import *
 from .util.env import extendScriptEnv
 from .util.io import interpretStemExtension
+from .util.io import run_script
 from .util.log import *
 from .util.sort import TopologicalSorter
 from .util.string import expand
@@ -13,7 +14,6 @@ from .util.string import interpretString
 from .util.string import interpretStrings
 from .util.string import interpretZeroToOneStrings
 from enum import Enum
-from runpy import run_path
 import os
 
 try:
@@ -175,11 +175,8 @@ class RelengPackageManager:
             log(' (script) {}'.format(script))
             return BAD_RV
 
-        try:
-            env = run_path(script, init_globals=self.script_env)
-        except Exception as ex:
-            err('unable to load package: {}'.format(name))
-            log(' {}'.format(ex))
+        env = run_script(script, self.script_env, subject='package')
+        if not env:
             return BAD_RV
 
         self._active_package = name

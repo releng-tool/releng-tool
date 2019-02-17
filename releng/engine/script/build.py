@@ -3,7 +3,7 @@
 # Copyright 2018 releng-tool
 
 from ...util.log import *
-from runpy import run_path
+from ...util.io import run_script
 import os
 
 #: filename of the script to execute the building operation (if any)
@@ -25,20 +25,15 @@ def build(opts):
 
     assert opts
     def_dir = opts.def_dir
-    script_env = opts.env
+    env = opts.env
 
     build_script_filename = '{}-{}'.format(opts.name, BUILD_SCRIPT)
     build_script = os.path.join(def_dir, build_script_filename)
     if not os.path.isfile(build_script):
         return True
 
-    try:
-        run_path(build_script, init_globals=script_env)
-
-        verbose('build script executed: ' + build_script)
-    except Exception as e:
-        err('error running build script: ' + build_script)
-        err('    {}'.format(e))
+    if not run_script(build_script, env, subject='build'):
         return False
 
+    verbose('install script executed: ' + build_script)
     return True

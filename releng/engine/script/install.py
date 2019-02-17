@@ -3,7 +3,7 @@
 # Copyright 2018 releng-tool
 
 from ...util.log import *
-from runpy import run_path
+from ...util.io import run_script
 import os
 
 #: filename of the script to execute the installation operation (if any)
@@ -32,13 +32,8 @@ def install(opts):
     if not os.path.isfile(install_script):
         return True
 
-    try:
-        run_path(install_script, init_globals=env)
-
-        verbose('install script executed: ' + install_script)
-    except Exception as e:
-        err('error running install script: ' + install_script)
-        err('    {}'.format(e))
+    if not run_script(install_script, env, subject='install'):
         return False
 
+    verbose('install script executed: ' + install_script)
     return True

@@ -6,6 +6,7 @@ from .log import *
 from contextlib import contextmanager
 from distutils.dir_util import DistutilsFileError
 from distutils.dir_util import copy_tree
+from runpy import run_path
 from shutil import copy2
 from shutil import rmtree
 import errno
@@ -13,6 +14,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import traceback
 
 #: list of (lower-cased) extension with "multiple parts"
 #: (see ``interpretStemExtension``)
@@ -346,6 +348,40 @@ def touch(file):
         return True
     except:
         return False
+
+def run_script(script, globals, subject=None):
+    """
+    execute the provided script and provide the resulting globals module
+
+    With the provided ``script`` file, execute the code and return the resulting
+    global module based on the execution results. This invoke is just a wrapper
+    call for ``run_path`` but with improved formatting for user feedback when
+    invoked in various stages of a releng-tool run. The provided ``globals``
+    will be passed into the ``run_path`` call.
+
+    When an issue occurs invoking the provided script, an error messaged is
+    output to standard error. This includes an error message (tailored, if
+    provided, by a ``subject`` value), the captured exception message and a
+    stack trace. This call will return ``None`` when an error is detected.
+
+    Args:
+        script: the script
+        globals: dictionary to pre-populate script's globals
+        subject (optional): subject value to enhance a final error message
+
+    Returns:
+        resulting globals module; ``None`` if an execution error occurs
+    """
+    try:
+        result = run_path(script, init_globals=globals)
+    except Exception as e:
+        err(traceback.format_exc())
+        err('error running {}{}script: {}'.format(
+            subject, subject and ' ', script))
+        err('    {}'.format(e))
+        return None
+
+    return result
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=False,
         critical=True, poll=False, capture=None):

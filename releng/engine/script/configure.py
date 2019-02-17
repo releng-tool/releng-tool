@@ -3,7 +3,7 @@
 # Copyright 2018 releng-tool
 
 from ...util.log import *
-from runpy import run_path
+from ...util.io import run_script
 import os
 
 #: filename of the script to execute the configuration operation (if any)
@@ -32,13 +32,8 @@ def configure(opts):
     if not os.path.isfile(configure_script):
         return True
 
-    try:
-        run_path(configure_script, init_globals=env)
-
-        verbose('configure script executed: ' + configure_script)
-    except Exception as e:
-        err('error running configure script: ' + configure_script)
-        err('    {}'.format(e))
+    if not run_script(configure_script, env, subject='configure'):
         return False
 
+    verbose('install script executed: ' + configure_script)
     return True

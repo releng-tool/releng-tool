@@ -17,6 +17,7 @@ from ..util.io import execute
 from ..util.io import pathCopy
 from ..util.io import pathExists
 from ..util.io import pathRemove
+from ..util.io import run_script
 from ..util.io import touch
 from ..util.log import *
 from ..util.platform import exit as releng_exit
@@ -33,7 +34,6 @@ from .patch import stage as patchStage
 from collections import OrderedDict
 from datetime import datetime
 from enum import Enum
-from runpy import run_path
 from shutil import copyfile
 from shutil import copyfileobj
 import os
@@ -86,33 +86,27 @@ in the working directory or the provided root directory:
     {}""".format(self.opts.conf_point))
             return False
 
-        try:
-            settings = run_path(self.opts.conf_point, init_globals=gbls)
-
-            script_env = gbls.copy()
-            extendScriptEnv(script_env, settings)
-            self.pkgman.script_env = script_env
-        except Exception as e:
-            err('error loading configuration file: ' + self.opts.conf_point)
-            err('    {}'.format(e))
+        settings = run_script(self.opts.conf_point, gbls,
+            subject='configuration')
+        if not settings:
             return False
+
+        script_env = gbls.copy()
+        extendScriptEnv(script_env, settings)
+        self.pkgman.script_env = script_env
         verbose('configuration file loaded')
 
         # configuration overrides file for builders
         if os.path.isfile(self.opts.conf_point_overrides):
             warn('detected configuration overrides file')
 
-            try:
-                overrides = run_path(self.opts.conf_point_overrides,
-                    init_globals=gbls)
-
-                extendScriptEnv(script_env, overrides)
-                extendScriptEnv(settings, overrides)
-            except Exception as e:
-                err('error loading configuration overrides file: ' +
-                    self.opts.conf_point)
-                err('    {}'.format(e))
+            overrides = run_script(self.opts.conf_point, gbls,
+                subject='configuration overrides')
+            if not overrides:
                 return False
+
+            extendScriptEnv(script_env, overrides)
+            extendScriptEnv(settings, overrides)
             verbose('configuration overrides file loaded')
 
         # handle cleaning requests
@@ -599,15 +593,14 @@ list exists with the name of packages to be part of the releng process:
             post-processing script exists; ``False`` if an error has occurred
             when processing the post-processing script
         """
-        if os.path.isfile(self.opts.post_point):
+        script = self.opts.post_point
+        if os.path.isfile(script):
             verbose('performing post-processing...')
-            try:
-                run_path(self.opts.post_point, init_globals=env)
-                verbose('post-processing completed')
-            except Exception as e:
-                err('error loading post-processing: ' + self.opts.post_point)
-                err('    {}'.format(e))
+
+            if not run_script(script, env, subject='post-processing'):
                 return False
+
+            verbose('post-processing completed')
 
         return True
 
