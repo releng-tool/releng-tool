@@ -638,7 +638,7 @@ list exists with the name of packages to be part of the releng process:
             elif action == PkgAction.REINSTALL:
                 env['RELENG_REINSTALL'] = '1'
 
-        # utility methods
+        # utility methods (if adjusting, see also `releng.__init__`)
         script_env['debug'] = debug
         script_env['err'] = err
         script_env['log'] = log
