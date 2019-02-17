@@ -368,7 +368,7 @@ file ``post.py`` has the following contents:
 The target directory will be output to standard out at the end of the build. A
 developer may wish to define their own Python script to decide on how to package
 the contents found in ``TARGET_DIR`` (see also `script helpers`_ for helper
-variables/methods).
+variables/functions).
 
 releng.py
 ---------
@@ -1394,7 +1394,7 @@ respective script (mentioned above) will be invoked. Package scripts are
 optional; thus, if a script is not provided for a stage, the stage will be
 skipped.
 
-See also `script helpers`_ for helper methods/variables available for use.
+See also `script helpers`_ for helper functions/variables available for use.
 
 autotools package
 ~~~~~~~~~~~~~~~~~
@@ -1920,8 +1920,8 @@ types are almost treated the same except for the following:
 script helpers
 ~~~~~~~~~~~~~~
 
-releng-tool provides a series of helper methods which can be used in
-script-based packages, post-processing and more. Helper methods provided are
+releng-tool provides a series of helper functions which can be used in
+script-based packages, post-processing and more. Helper functions provided are
 listed below:
 
 +--------------------------+---------------------------------------------------+
