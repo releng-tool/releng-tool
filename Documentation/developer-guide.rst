@@ -698,6 +698,13 @@ environment variables will be made available:
 +--------------------------+---------------------------------------------------+
 | ``PREFIX``               | The sysroot prefix for the package.               |
 +--------------------------+---------------------------------------------------+
+| ``RELENG_REBUILD``       | Flag set if performing a re-build request.        |
++--------------------------+---------------------------------------------------+
+| ``RELENG_RECONFIGURE``   | Flag set if performing a re-configuration         |
+|                          | request.                                          |
++--------------------------+---------------------------------------------------+
+| ``RELENG_REINSTALL``     | Flag set if performing a re-install request.      |
++--------------------------+---------------------------------------------------+
 | ``STAGING_DIR``          | The staging area directory.                       |
 +--------------------------+---------------------------------------------------+
 | ``TARGET_DIR``           | The target area directory.                        |
