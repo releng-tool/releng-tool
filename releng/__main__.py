@@ -63,7 +63,14 @@ def main():
         if sys.platform != 'win32' and os.geteuid() == 0:
             warn('running as root; this may be unsafe')
 
+        # prepare engine options
         opts = RelengEngineOptions(args)
+
+        # register the project's root directory as a system path; permits a
+        # project to import locally created modules in their build/etc. scripts
+        sys.path.append(opts.root_dir)
+
+        # create and start the engine
         engine = RelengEngine(opts)
         if engine.run():
             retval = 0
