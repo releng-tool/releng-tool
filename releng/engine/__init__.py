@@ -122,7 +122,7 @@ in the working directory or the provided root directory:
             return state
 
         # prepare shared stage environment
-        self._prepareSharedEnvironment(script_env)
+        self._prepareSharedEnvironment(script_env, self.opts.pkg_action)
 
         # determine package name(s) extraction
         #
@@ -604,7 +604,7 @@ list exists with the name of packages to be part of the releng process:
 
         return True
 
-    def _prepareSharedEnvironment(self, script_env):
+    def _prepareSharedEnvironment(self, script_env, action):
         """
         prepare the script environment with common project values
 
@@ -614,6 +614,7 @@ list exists with the name of packages to be part of the releng process:
 
         Args:
             script_env: environment dictionary to prepare
+            action: the package-specific invoked
         """
 
         # global variables
@@ -629,6 +630,13 @@ list exists with the name of packages to be part of the releng process:
             env['OUTPUT_DIR'] = self.opts.out_dir
             env['STAGING_DIR'] = self.opts.staging_dir
             env['TARGET_DIR'] = self.opts.target_dir
+
+            if action == PkgAction.REBUILD:
+                env['RELENG_REBUILD'] = '1'
+            elif action == PkgAction.RECONFIGURE:
+                env['RELENG_RECONFIGURE'] = '1'
+            elif action == PkgAction.REINSTALL:
+                env['RELENG_REINSTALL'] = '1'
 
         # utility methods
         script_env['debug'] = debug
