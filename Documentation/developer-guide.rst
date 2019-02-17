@@ -1984,6 +1984,22 @@ listed below:
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
 
+Scripts directly invoked by releng-tool will automatically have these helpers
+registered in the script's globals module (i.e. no import is necessary). If a
+project defines custom Python modules in their project and wishes to take
+advantage of these helper functions, the following import can be used to, for
+example, import a specific function:
+
+.. code-block:: python
+
+    from releng import releng_execute
+
+Or, if desired, all helper methods can be imported at once:
+
+.. code-block:: python
+
+    from releng import *
+
 vcs ignore
 ~~~~~~~~~~
 
