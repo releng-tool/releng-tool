@@ -650,6 +650,7 @@ list exists with the name of packages to be part of the releng process:
         script_env['releng_exists'] = pathExists
         script_env['releng_exit'] = releng_exit
         script_env['releng_expand'] = expand
+        script_env['releng_join'] = os.path.join
         script_env['releng_move'] = pathMove
         script_env['releng_remove'] = pathRemove
         script_env['releng_touch'] = touch
