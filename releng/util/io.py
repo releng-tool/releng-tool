@@ -216,8 +216,8 @@ def pathCopy(src, dst, quiet=False, critical=True):
 
     try:
         if os.path.isfile(src):
-            if not os.path.isdir(dst):
-                parent_dir = os.path.dirname(dst)
+            parent_dir = os.path.dirname(os.path.abspath(dst))
+            if not os.path.isdir(parent_dir):
                 ensureDirectoryExists(parent_dir)
             copy2(src, dst)
         else:
