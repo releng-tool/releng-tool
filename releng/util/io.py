@@ -8,6 +8,7 @@ from distutils.dir_util import DistutilsFileError
 from distutils.dir_util import copy_tree
 from runpy import run_path
 from shutil import copy2
+from shutil import move
 from shutil import rmtree
 import errno
 import os
@@ -260,6 +261,90 @@ def pathExists(path, *args):
         ``True`` if the path exists; ``False`` otherwise
     """
     return os.path.exists(os.path.join(path, *args))
+
+def pathMove(src, dst, quiet=False, critical=True):
+    """
+    move a file or directory into a target file or directory
+
+    This call will attempt to move a provided file or directory's contents,
+    defined by ``src`` into a destination file or directory defined by ``dst``.
+    If ``src`` is a file, then ``dst`` is considered to be a file; likewise if
+    ``src`` is a directory, ``dst`` is considered a target directory. If a
+    target directory or target file's directory does not exist, it will be
+    automatically created.
+
+    In the event that a file or directory could not be moved, an error message
+    will be output to standard error (unless ``quiet`` is set to ``True``). If
+    ``critical`` is set to ``True`` and the specified file/directory could not
+    be moved for any reason, this call will issue a system exit
+    (``SystemExit``).
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        # (input)
+        # my-directory/another-file
+        # my-file
+        releng_move('my-file', 'my-file2')
+        releng_move('my-directory/', 'my-directory2/')
+        # (output)
+        # my-directory2/another-file
+        # my-file2
+
+    Args:
+        src: the source directory or file
+        dst: the destination directory or file\* (\*if ``src`` is a file)
+        quiet (optional): whether or not to suppress output
+        critical (optional): whether or not to stop execution on failure
+
+    Returns:
+        ``True`` if the move has completed with no error; ``False`` if the move
+        has failed
+
+    Raises:
+        SystemExit: if the copy operation fails with ``critical=True``
+    """
+    success = True
+    errmsg = None
+
+    if src == dst:
+        return True
+
+    if os.path.isfile(src):
+        parent_dir = os.path.dirname(os.path.abspath(dst))
+        if not os.path.isdir(parent_dir):
+            success = ensureDirectoryExists(parent_dir, quiet=quiet)
+    elif not os.path.isdir(dst):
+        success = ensureDirectoryExists(dst, quiet=quiet)
+    else:
+        src_dir = os.path.realpath(src)
+        dst_dir = os.path.realpath(dst)
+        if dst_dir.startswith(src_dir):
+            if not quiet:
+                err('unable to move source contents to target location')
+                err('    attempt to move directory into a child subdirectory')
+            if critical:
+                sys.exit(-1)
+            return False
+
+    if success:
+        try:
+            if os.path.isfile(src):
+                move(src, dst)
+            else:
+                for name in os.listdir(src):
+                    move(os.path.join(src, name), dst)
+                os.rmdir(src)
+        except Exception as e:
+            success = False
+            if not quiet:
+                err('unable to move source contents to target location')
+                err('    {}'.format(e))
+
+    if not success and critical:
+        sys.exit(-1)
+    return success
 
 def pathRemove(path, quiet=False):
     """
