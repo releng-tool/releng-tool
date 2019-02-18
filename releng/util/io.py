@@ -39,16 +39,19 @@ class FailedToPrepareWorkingDirectoryError(Exception):
     """
     pass
 
-def ensureDirectoryExists(dir):
+def ensureDirectoryExists(dir, quiet=False):
     """
     ensure the provided directory exists
 
     Attempts to create the provided directory. If the directory already exists,
     this method has no effect. If the directory does not exist and could not be
-    created, this method will return ``False``.
+    created, this method will return ``False``. Also, if an error has been
+    detected, an error message will be output to standard error (unless
+    ``quiet`` is set to ``True``).
 
     Args:
         dir: the directory
+        quiet (optional): whether or not to suppress output
 
     Returns:
         ``True`` if the directory exists; ``False`` if the directory could not
@@ -58,8 +61,9 @@ def ensureDirectoryExists(dir):
         os.makedirs(dir)
     except OSError as e:
         if e.errno != errno.EEXIST:
-            err('unable to create directory: ' + dir)
-            err('    {}'.format(e))
+            if not quiet:
+                err('unable to create directory: ' + dir)
+                err('    {}'.format(e))
             return False
     return True
 
@@ -218,7 +222,7 @@ def pathCopy(src, dst, quiet=False, critical=True):
         if os.path.isfile(src):
             parent_dir = os.path.dirname(os.path.abspath(dst))
             if not os.path.isdir(parent_dir):
-                ensureDirectoryExists(parent_dir)
+                ensureDirectoryExists(parent_dir, quiet=quiet)
             copy2(src, dst)
         else:
             copy_tree(src, dst)
