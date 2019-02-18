@@ -6,6 +6,7 @@ from releng.util.io import execute
 from releng.util.io import interpretStemExtension as ise
 from releng.util.io import pathCopy
 from releng.util.io import pathExists
+from releng.util.io import pathMove
 from releng.util.io import prependShebangInterpreter as psi
 from test import RelengTestUtil
 import os
@@ -116,6 +117,101 @@ class TestUtilIo(unittest.TestCase):
         provided = None
         expected = (None, None)
         self.assertEquals(ise(provided), expected)
+
+    def test_utilio_move(self):
+        with RelengTestUtil.prepareWorkdir() as work_dir:
+            def _(*args):
+                return os.path.join(work_dir, *args)
+
+            # setup
+            directories = [
+                _('dir1'),
+                _('dir2', 'dir3'),
+                _('dir4', 'dir5', 'dir6'),
+            ]
+            for dir in directories:
+                os.makedirs(dir)
+
+            files = [
+                _('file1'),
+                _('dir2', 'file2'),
+                _('dir2', 'dir3', 'file3'),
+                _('dir4', 'file4'),
+                _('dir4', 'dir5', 'file5'),
+                _('dir4', 'dir5', 'dir6', 'file6'),
+            ]
+            for file in files:
+                with open(file, 'a') as f:
+                    f.write(file)
+
+            # (simple file move)
+            src = _('file1')
+            dst = _('file7')
+            moved = pathMove(src, dst, critical=False)
+            self.assertTrue(moved)
+            self.assertFalse(os.path.isfile(src))
+            self.assertTrue(os.path.isfile(dst))
+
+            # (another file move)
+            src = _('dir4', 'dir5', 'dir6', 'file6')
+            dst = _('dir9', 'dir10', 'file8')
+            moved = pathMove(src, dst, critical=False)
+            self.assertTrue(moved)
+            self.assertFalse(os.path.isfile(src))
+            self.assertTrue(os.path.isfile(dst))
+
+            # (overwriting file move)
+            src = _('dir2', 'file2')
+            dst = _('file7')
+            moved = pathMove(src, dst, critical=False)
+            self.assertTrue(moved)
+            self.assertFalse(os.path.isfile(src))
+            self.assertTrue(os.path.isfile(dst))
+
+            # (bad file move attempt)
+            src = _('file7')
+            dst_part = _('dir4', 'file4')
+            dst = _(dst_part, 'bad')
+            moved = pathMove(src, dst, quiet=True, critical=False)
+            self.assertFalse(moved)
+            self.assertTrue(os.path.isfile(src))
+            self.assertTrue(os.path.isfile(dst_part))
+
+            # (bad directory move self container)
+            src = _('dir2')
+            dst = _('dir2', 'dir3')
+            moved = pathMove(src, dst, quiet=True, critical=False)
+            self.assertFalse(moved)
+            self.assertTrue(os.path.isdir(src))
+            self.assertTrue(os.path.isdir(dst))
+
+            # (simple directory move)
+            src = _('dir2', 'dir3')
+            dst = _('dir4')
+            moved = pathMove(src, dst, critical=False)
+            self.assertTrue(moved)
+            self.assertFalse(os.path.isdir(src))
+            self.assertFalse(os.path.isdir(_(dst, 'dir3')))
+            self.assertTrue(os.path.isfile(_(dst, 'file3')))
+
+            # (another directory move)
+            src = _('dir4')
+            dst = _('dir9', 'dir10')
+            moved = pathMove(src, dst, critical=False)
+            self.assertTrue(moved)
+            self.assertFalse(os.path.isdir(src))
+            self.assertTrue(os.path.isdir(dst))
+            self.assertTrue(os.path.isfile(_(dst, 'file3')))
+            self.assertTrue(os.path.isfile(_(dst, 'file4')))
+            self.assertTrue(os.path.isdir(_(dst, 'dir5')))
+
+            # (bad directory move into file)
+            src = _('dir9')
+            dst = _('file7')
+            moved = pathMove(src, dst, quiet=True, critical=False)
+            self.assertFalse(moved)
+            self.assertTrue(os.path.isdir(src))
+            self.assertTrue(os.path.isfile(dst))
 
     def test_utilio_shebang_interpreter(self):
         si_dir = os.path.join(self.assets_dir, 'shebang-interpreter')
