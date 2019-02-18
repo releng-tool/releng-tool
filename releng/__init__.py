@@ -25,6 +25,7 @@ from .util.io import execute as releng_execute
 from .util.io import interimWorkingDirectory as releng_wd
 from .util.io import pathCopy as releng_copy
 from .util.io import pathExists as releng_exists
+from .util.io import pathMove as releng_move
 from .util.io import pathRemove as releng_remove
 from .util.io import touch as releng_touch
 from .util.log import debug as debug

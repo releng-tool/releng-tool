@@ -17,6 +17,7 @@ from ..util.io import execute
 from ..util.io import interimWorkingDirectory
 from ..util.io import pathCopy
 from ..util.io import pathExists
+from ..util.io import pathMove
 from ..util.io import pathRemove
 from ..util.io import run_script
 from ..util.io import touch
@@ -649,6 +650,7 @@ list exists with the name of packages to be part of the releng process:
         script_env['releng_exists'] = pathExists
         script_env['releng_exit'] = releng_exit
         script_env['releng_expand'] = expand
+        script_env['releng_move'] = pathMove
         script_env['releng_remove'] = pathRemove
         script_env['releng_touch'] = touch
         script_env['releng_wd'] = interimWorkingDirectory
