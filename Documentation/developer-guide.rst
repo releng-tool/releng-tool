@@ -1927,59 +1927,59 @@ listed below:
 +--------------------------+---------------------------------------------------+
 | method                   | documentation                                     |
 +==========================+===================================================+
-| ``debug``                | .. automodule:: releng.util.log                   |
+| ``debug``                | .. automodule:: releng                            |
 |                          |     :members: debug                               |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``err``                  | .. automodule:: releng.util.log                   |
+| ``err``                  | .. automodule:: releng                            |
 |                          |     :members: err                                 |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``log``                  | .. automodule:: releng.util.log                   |
+| ``log``                  | .. automodule:: releng                            |
 |                          |     :members: log                                 |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``note``                 | .. automodule:: releng.util.log                   |
+| ``note``                 | .. automodule:: releng                            |
 |                          |     :members: note                                |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``releng_copy``          | .. automodule:: releng.util.io                    |
-|                          |     :members: pathCopy                            |
+| ``releng_copy``          | .. automodule:: releng                            |
+|                          |     :members: releng_copy                         |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``releng_execute``       | .. automodule:: releng.util.io                    |
-|                          |     :members: execute                             |
+| ``releng_execute``       | .. automodule:: releng                            |
+|                          |     :members: releng_execute                      |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``releng_exists``        | .. automodule:: releng.util.io                    |
-|                          |     :members: pathExists                          |
+| ``releng_exists``        | .. automodule:: releng                            |
+|                          |     :members: releng_exists                       |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``releng_exit``          | .. automodule:: releng.util.platform              |
-|                          |     :members: exit                                |
+| ``releng_exit``          | .. automodule:: releng                            |
+|                          |     :members: releng_exit                         |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``releng_expand``        | .. automodule:: releng.util.string                |
-|                          |     :members: expand                              |
+| ``releng_expand``        | .. automodule:: releng                            |
+|                          |     :members: releng_expand                       |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``releng_remove``        | .. automodule:: releng.util.io                    |
-|                          |     :members: pathRemove                          |
+| ``releng_remove``        | .. automodule:: releng                            |
+|                          |     :members: releng_remove                       |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``releng_touch``         | .. automodule:: releng.util.io                    |
-|                          |     :members: touch                               |
+| ``releng_touch``         | .. automodule:: releng                            |
+|                          |     :members: releng_touch                        |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``success``              | .. automodule:: releng.util.log                   |
+| ``success``              | .. automodule:: releng                            |
 |                          |     :members: success                             |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``verbose``              | .. automodule:: releng.util.log                   |
+| ``verbose``              | .. automodule:: releng                            |
 |                          |     :members: verbose                             |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
-| ``warn``                 | .. automodule:: releng.util.log                   |
+| ``warn``                 | .. automodule:: releng                            |
 |                          |     :members: warn                                |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
