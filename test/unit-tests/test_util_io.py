@@ -8,6 +8,7 @@ from releng.util.io import pathCopy
 from releng.util.io import pathExists
 from releng.util.io import pathMove
 from releng.util.io import prependShebangInterpreter as psi
+from releng.util.io import touch
 from test import RelengTestUtil
 import os
 import unittest
@@ -241,3 +242,16 @@ class TestUtilIo(unittest.TestCase):
         self.assertEquals(psi(si05), [b'interpreter'] + E(si05))
         # real example of an interpreter
         self.assertEquals(psi(si06), [b'/usr/bin/env', b'python'] + E(si06))
+
+    def test_utilio_touch(self):
+        with RelengTestUtil.prepareWorkdir() as work_dir:
+            test_file = os.path.join(work_dir, 'test-file')
+
+            created = touch(test_file)
+            self.assertTrue(created)
+
+            exists = os.path.isfile(test_file)
+            self.assertTrue(exists)
+
+            updated = touch(test_file)
+            self.assertTrue(updated)
