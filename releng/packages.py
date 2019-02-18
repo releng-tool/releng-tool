@@ -224,7 +224,7 @@ class RelengPackageManager:
 
             # archive extraction strip count
             pkg_strip_count = self._fetch(
-                RPK_STRIP_COUNT, PkgKeyType.INT_POSITIVE,
+                RPK_STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE,
                 default=DEFAULT_STRIP_COUNT)
 
             # build subdirectory
@@ -634,6 +634,10 @@ class RelengPackageManager:
                     value = expand(value, expandExtra)
                 if value is None:
                     raise InvalidPackageKeyValue('string(s)')
+            elif type == PkgKeyType.INT_NONNEGATIVE:
+                value = self._active_env[pkg_key]
+                if not isinstance(value, int) or value < 0:
+                    raise InvalidPackageKeyValue('non-negative int')
             elif type == PkgKeyType.INT_POSITIVE:
                 value = self._active_env[pkg_key]
                 if not isinstance(value, int) or value <= 0:
@@ -804,6 +808,7 @@ class PkgKeyType(Enum):
         DICT_STR_STR_OR_STRS: dictionary of string pairs or strings value
         STR: single string value
         STRS: one or more strings value
+        INT_NONNEGATIVE: non-negative integer value
         INT_POSITIVE: positive integer value
     """
     UNKNOWN = 0
@@ -813,7 +818,8 @@ class PkgKeyType(Enum):
     DICT_STR_STR_OR_STRS = 4
     STR = 5
     STRS = 6
-    INT_POSITIVE = 7
+    INT_NONNEGATIVE = 7
+    INT_POSITIVE = 8
 
 class InvalidPackageKeyValue(Exception):
     """
