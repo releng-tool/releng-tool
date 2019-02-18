@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from releng.util.io import execute
 from releng.util.io import interpretStemExtension as ise
@@ -12,9 +12,6 @@ import os
 import unittest
 
 ASSETS_DIR = 'assets'
-IO_COPYCHECK01_DIR = 'copy-check-01'
-IO_COPYCHECK02_DIR = 'copy-check-02'
-IO_SHEBANGINTERPRETER_DIR = 'shebang-interpreter'
 
 class TestUtilIo(unittest.TestCase):
     @classmethod
@@ -28,8 +25,8 @@ class TestUtilIo(unittest.TestCase):
         self.assertExists = assertExists
 
     def test_utilio_copy(self):
-        check_dir_01 = os.path.join(self.assets_dir, IO_COPYCHECK01_DIR)
-        check_dir_02 = os.path.join(self.assets_dir, IO_COPYCHECK02_DIR)
+        check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
+        check_dir_02 = os.path.join(self.assets_dir, 'copy-check-02')
 
         with RelengTestUtil.prepareWorkdir() as work_dir:
             # (directories)
@@ -121,7 +118,7 @@ class TestUtilIo(unittest.TestCase):
         self.assertEquals(ise(provided), expected)
 
     def test_utilio_shebang_interpreter(self):
-        si_dir = os.path.join(self.assets_dir, IO_SHEBANGINTERPRETER_DIR)
+        si_dir = os.path.join(self.assets_dir, 'shebang-interpreter')
         si01 = [os.path.join(si_dir, 'interpreter')]
         si02 = [os.path.join(si_dir, 'interpreter-arg')]
         si03 = [os.path.join(si_dir, 'interpreter-args-multiple')]
