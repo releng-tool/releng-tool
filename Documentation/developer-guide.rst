@@ -1963,12 +1963,27 @@ listed below:
 |                          |     :members: releng_expand                       |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
+| ``releng_join``          | .. automodule:: releng                            |
+|                          |     :noindex:                                     |
+|                          |                                                   |
+|                          |     .. method:: releng_join(path, *paths)         |
+|                          |                                                   |
+|                          |        An alias for |os.path.join|_.              |
++--------------------------+---------------------------------------------------+
+| ``releng_move``          | .. automodule:: releng                            |
+|                          |     :members: releng_move                         |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
 | ``releng_remove``        | .. automodule:: releng                            |
 |                          |     :members: releng_remove                       |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
 | ``releng_touch``         | .. automodule:: releng                            |
 |                          |     :members: releng_touch                        |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_wd``            | .. automodule:: releng                            |
+|                          |     :members: releng_wd                           |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
 | ``success``              | .. automodule:: releng                            |
@@ -1983,6 +1998,9 @@ listed below:
 |                          |     :members: warn                                |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
+
+.. |os.path.join| replace:: ``os.path.join``
+.. _os.path.join: https://docs.python.org/library/os.path.html#os.path.join
 
 Scripts directly invoked by releng-tool will automatically have these helpers
 registered in the script's globals module (i.e. no import is necessary). If a
