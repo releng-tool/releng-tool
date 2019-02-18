@@ -522,6 +522,8 @@ list exists with the name of packages to be part of the releng process:
             pathRemove(self.opts.license_dir)
             verbose('removing staging directory')
             pathRemove(self.opts.staging_dir)
+            verbose('removing symbols directory')
+            pathRemove(self.opts.symbols_dir)
             verbose('removing target directory')
             pathRemove(self.opts.target_dir)
 
@@ -631,6 +633,7 @@ list exists with the name of packages to be part of the releng process:
             env['NJOBSCONF'] = str(self.opts.jobsconf)
             env['OUTPUT_DIR'] = self.opts.out_dir
             env['STAGING_DIR'] = self.opts.staging_dir
+            env['SYMBOLS_DIR'] = self.opts.symbols_dir
             env['TARGET_DIR'] = self.opts.target_dir
 
             if action == PkgAction.REBUILD:

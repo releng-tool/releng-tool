@@ -195,6 +195,7 @@ class RelengConfigureOptions(RelengPackageOptions):
         jobsconf: number of jobs to allow at a given time (0: auto)
         prefix: prefix for system root (if applicable)
         staging_dir: directory container for staged content
+        symbols_dir: directory container for symbols content
         target_dir: directory container for target content
     """
     def __init__(self):
@@ -207,6 +208,7 @@ class RelengConfigureOptions(RelengPackageOptions):
         self.jobsconf = 0
         self.prefix = None
         self.staging_dir = None
+        self.symbols_dir = None
         self.target_dir = None
 
 class RelengBuildOptions(RelengPackageOptions):
@@ -224,6 +226,7 @@ class RelengBuildOptions(RelengPackageOptions):
         jobsconf: number of jobs to allow at a given time (0: auto)
         prefix: prefix for system root (if applicable)
         staging_dir: directory container for staged content
+        symbols_dir: directory container for symbols content
         target_dir: directory container for target content
     """
     def __init__(self):
@@ -235,6 +238,7 @@ class RelengBuildOptions(RelengPackageOptions):
         self.jobsconf = 0
         self.prefix = None
         self.staging_dir = None
+        self.symbols_dir = None
         self.target_dir = None
 
 class RelengExtractOptions(RelengPackageOptions):
@@ -297,6 +301,7 @@ class RelengInstallOptions(RelengPackageOptions):
         install_type: installation type
         prefix: prefix for system root (if applicable)
         staging_dir: directory container for staged content
+        symbols_dir: directory container for symbols content
         target_dir: directory container for target content
     """
     def __init__(self):
@@ -310,6 +315,7 @@ class RelengInstallOptions(RelengPackageOptions):
         self.images_dir = None
         self.prefix = None
         self.staging_dir = None
+        self.symbols_dir = None
         self.target_dir = None
 
 # ##############################################################################

@@ -17,6 +17,7 @@ DEFAULT_LICENSE_DIR  = 'licenses'  #: default licenses container directory
 DEFAULT_OUTPUT_DIR   = 'output'    #: default output container directory
 DEFAULT_PKG_DIR      = 'package'   #: default package container directory
 DEFAULT_STAGING_DIR  = 'staging'   #: default staging container directory
+DEFAULT_SYMBOLS_DIR  = 'symbols'   #: default symbols container directory
 DEFAULT_TARGET_DIR   = 'target'    #: default target container directory
 
 # default directory/file paths
@@ -70,6 +71,7 @@ class RelengEngineOptions:
         root_dir: directory container for all (configuration, output, etc.)
         sites_override: dictionary to override site values
         staging_dir: directory container for staged content
+        symbols_dir: directory container for symbols content
         sysroot_prefix: system root prefix
         target_action: the specific package to work on (if any)
         target_dir: directory container for target content
@@ -107,6 +109,7 @@ class RelengEngineOptions:
         self.root_dir = None
         self.sites_override = None
         self.staging_dir = None
+        self.symbols_dir = None
         self.sysroot_prefix = DEFAULT_SYSROOT_PREFIX
         self.target_action = None
         self.target_dir = None
@@ -199,6 +202,8 @@ class RelengEngineOptions:
             self.license_dir = join(self.out_dir, DEFAULT_LICENSE_DIR)
         if not self.staging_dir:
             self.staging_dir = join(self.out_dir, DEFAULT_STAGING_DIR)
+        if not self.symbols_dir:
+            self.symbols_dir = join(self.out_dir, DEFAULT_SYMBOLS_DIR)
         if not self.target_dir:
             self.target_dir = join(self.out_dir, DEFAULT_TARGET_DIR)
         # files

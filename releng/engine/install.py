@@ -65,6 +65,7 @@ def stage(engine, pkg, script_env):
     install_opts.name = pkg.name
     install_opts.prefix = pkg.prefix
     install_opts.staging_dir = engine.opts.staging_dir
+    install_opts.symbols_dir = engine.opts.symbols_dir
     install_opts.target_dir = engine.opts.target_dir
     install_opts.version = pkg.version
 
