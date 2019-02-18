@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from .log import *
 from contextlib import contextmanager
@@ -106,6 +106,15 @@ def interimWorkingDirectory(dir):
     created, an ``FailedToPrepareWorkingDirectoryError`` exception will be
     thrown.
 
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        with releng_wd('my-directory/'):
+            # invoked in 'my-directory'
+
+        # invoked in original working directory
+
     Args:
         dir: the target working directory
 
@@ -186,7 +195,7 @@ def pathCopy(src, dst, quiet=False, critical=True):
 
     .. code-block:: python
 
-        releng_copy('my-file', 'my-file2-)
+        releng_copy('my-file', 'my-file2')
         # (or)
         releng_copy('my-directory/', 'my-directory2/')
 
