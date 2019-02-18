@@ -14,6 +14,7 @@ from ..util.file_flags import processFileFlag
 from ..util.io import FailedToPrepareWorkingDirectoryError
 from ..util.io import ensureDirectoryExists
 from ..util.io import execute
+from ..util.io import interimWorkingDirectory
 from ..util.io import pathCopy
 from ..util.io import pathExists
 from ..util.io import pathRemove
@@ -650,6 +651,7 @@ list exists with the name of packages to be part of the releng process:
         script_env['releng_expand'] = expand
         script_env['releng_remove'] = pathRemove
         script_env['releng_touch'] = touch
+        script_env['releng_wd'] = interimWorkingDirectory
         script_env['success'] = success
         script_env['verbose'] = verbose
         script_env['warn'] = warn

@@ -22,6 +22,7 @@ __version__='0.1.0.dev4'
 #        RelengEngine._prepareSharedEnvironment
 
 from .util.io import execute as releng_execute
+from .util.io import interimWorkingDirectory as releng_wd
 from .util.io import pathCopy as releng_copy
 from .util.io import pathExists as releng_exists
 from .util.io import pathRemove as releng_remove
