@@ -113,7 +113,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
 
     .. code-block:: python
 
-        releng_execute(['echo', '$TEST'], env={'TEST': 'this is a test'))
+        releng_execute(['echo', '$TEST'], env={'TEST': 'this is a test'})
 
     Args:
         args: the list of arguments to execute
