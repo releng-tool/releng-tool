@@ -73,7 +73,6 @@ class TestUtilIo(unittest.TestCase):
             self.assertIsNone(cc3, cc3)
 
             # copy individual files (overwrite)
-            sub_dir = os.path.join(work_dir, 'sub', 'dir', 'xyz')
             result = pathCopy(copied_file_b, target_ow, critical=False)
             self.assertTrue(result)
             cc4 = RelengTestUtil.compare(copied_file_b, target_ow)
