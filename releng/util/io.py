@@ -522,6 +522,73 @@ def pathRemove(path, quiet=False):
 
     return True
 
+def prepare_arguments(args):
+    """
+    prepares arguments from a dictionary
+
+    With a provided dictionary of arguments in key-value pairs and builds them
+    into an argument list. For example, if a dictionary contains a key ``foo``
+    with a value ``bar``, the returns arguments will be a list with the values
+    ``['foo', 'bar']``. If a key contains a value of ``None``, the key will be
+    ignored and will not be part of the final argument list.
+
+    Args:
+        args: the arguments to process
+
+    Returns:
+        list of arguments
+    """
+    final = []
+
+    if args:
+        for key, val in args.items():
+            if val is None:
+                continue
+
+            final.append(key)
+            if val:
+                final.append(val)
+
+    return final
+
+def prepare_definitions(defs, prefix=None):
+    """
+    prepares definitions from a dictionary
+
+    With a provided dictionary of definitions in key-value pairs and builds them
+    into an definition list. For example, if a dictionary contains a key ``foo``
+    with a value ``bar``, the returns definitions will be a list with the values
+    ``['foo=bar']``. If a key contains a value of ``None``, the key will be
+    ignored and will not be part of the final definition list. If a ``prefix``
+    value is provided, each definition entry will be prefixed with the provided
+    value.
+
+    Args:
+        defs: the arguments to process
+        prefix (optional): prefix value to prefix each definition
+
+    Returns:
+        list of arguments
+    """
+    final = []
+
+    if defs:
+        for key, val in defs.items():
+            if val is None:
+                continue
+
+            if prefix:
+                key = prefix + key
+            else:
+                key = key
+
+            if val:
+                final.append('{}={}'.format(key, val))
+            else:
+                final.append(key)
+
+    return final
+
 def prependShebangInterpreter(args):
     """
     prepend interpreter program (if any) to argument list
