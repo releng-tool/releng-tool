@@ -323,22 +323,36 @@ def pathCopy(src, dst, quiet=False, critical=True):
 
     This call will attempt to copy a provided file or directory, defined by
     ``src`` into a destination file or directory defined by ``dst``. If ``src``
-    is a file, then the ``dst`` file is considered to be a file as well;
-    likewise if ``src`` is a directory, ``dst`` is considered a target
-    directory. If a target directory or target file's directory does not exist,
-    it will be automatically created. In the event that a file or directory
-    could not be copied, an error message will be output to standard error
-    (unless ``quiet`` is set to ``True``). If ``critical`` is set to ``True``
-    and the specified file/directory could not be copied for any reason, this
-    call will issue a system exit (``SystemExit``).
+    is a file, then ``dst`` is considered to be a file or directory; if ``src``
+    is a directory, ``dst`` is considered a target directory. If a target
+    directory or target file's directory does not exist, it will be
+    automatically created. In the event that a file or directory could not be
+    copied, an error message will be output to standard error (unless ``quiet``
+    is set to ``True``). If ``critical`` is set to ``True`` and the specified
+    file/directory could not be copied for any reason, this call will issue a
+    system exit (``SystemExit``).
 
     An example when using in the context of script helpers is as follows:
 
     .. code-block:: python
 
+        # (stage)
+        # my-file
         releng_copy('my-file', 'my-file2')
-        # (or)
+        # (stage)
+        # my-file
+        # my-file2
+        releng_copy('my-file', 'my-directory/')
+        # (stage)
+        # my-directory/my-file
+        # my-file
+        # my-file2
         releng_copy('my-directory/', 'my-directory2/')
+        # (stage)
+        # my-directory/my-file
+        # my-directory2/my-file
+        # my-file
+        # my-file2
 
     Args:
         src: the source directory or file
@@ -357,8 +371,8 @@ def pathCopy(src, dst, quiet=False, critical=True):
 
     try:
         if os.path.isfile(src):
-            parent_dir = os.path.dirname(os.path.abspath(dst))
-            if not os.path.isdir(parent_dir):
+            parent_dir = os.path.dirname(dst)
+            if parent_dir and not os.path.isdir(parent_dir):
                 ensureDirectoryExists(parent_dir, quiet=quiet)
             copy2(src, dst)
         else:
