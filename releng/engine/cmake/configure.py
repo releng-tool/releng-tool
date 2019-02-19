@@ -30,19 +30,20 @@ def configure(opts):
 
     prefix = opts.prefix
     if opts._install_type == PackageInstallType.HOST:
-        include_loc = join(opts.host_dir, prefix, 'include')
-        library_loc = join(opts.host_dir, prefix, 'lib')
-        prefix_loc = join(opts.host_dir, prefix)
+        include_loc = join(opts.host_dir + prefix, 'include')
+        library_loc = join(opts.host_dir + prefix, 'lib')
+        prefix_loc = join(opts.host_dir + prefix)
     else:
-        include_loc = ('"' +
-            join(opts.staging_dir, prefix, 'include') + ';' +
-            join(opts.target_dir, prefix, 'include') + '"')
-        library_loc = ('"' +
-            join(opts.staging_dir, prefix, 'lib') + ';' +
-            join(opts.target_dir, prefix, 'lib') + '"')
-        prefix_loc = ('"' +
-            join(opts.staging_dir, prefix) + ';' +
-            join(opts.target_dir, prefix) + '"')
+        include_loc = (
+            join(opts.staging_dir + prefix, 'include') + ';' +
+            join(opts.target_dir + prefix, 'include'))
+        library_loc = (
+            join(opts.staging_dir + prefix, 'lib') + ';' +
+            join(opts.target_dir + prefix, 'lib'))
+        prefix_loc = (
+            join(opts.staging_dir + prefix) + ';' +
+            join(opts.target_dir + prefix))
+
     # default definitions
     cmakeDefs = {
         'CMAKE_BUILD_TYPE': 'RelWithDebInfo',
