@@ -4,6 +4,7 @@
 
 from ...defs import PackageInstallType
 from ...tool.make import *
+from ...util.io import prepare_arguments
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -34,24 +35,20 @@ def install(opts):
         autotoolsOpts.update(EXP(opts._autotools_install_opts))
 
     # argument building
-    makeArgs = [
+    autotoolsArgs = [
     ]
 
     # If the provided package has not provided any installation options,
     # indicate that the install target will be run.
     if not opts._autotools_install_opts:
-        makeArgs.append('install')
+        autotoolsArgs.append('install')
 
-    for key, val in autotoolsOpts.items():
-        if val:
-            makeArgs.append('{}={}'.format(key, val))
-        else:
-            makeArgs.append(key)
+    autotoolsArgs.extend(prepare_arguments(autotoolsOpts))
 
     # install to each destination
     env = EXP(opts._autotools_install_env)
     for dest_dir in opts.dest_dirs:
-        if not MAKE.execute(['DESTDIR=' + dest_dir] + makeArgs, env=env):
+        if not MAKE.execute(['DESTDIR=' + dest_dir] + autotoolsArgs, env=env):
             err('failed to install autotools project: {}', opts.name)
             return False
 

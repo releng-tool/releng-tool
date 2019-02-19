@@ -3,6 +3,7 @@
 # Copyright 2018 releng-tool
 
 from ...tool.cmake import *
+from ...util.io import prepare_arguments
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -41,12 +42,7 @@ def install(opts):
         '--build',
         opts.build_output_dir,
     ]
-
-    for key, val in cmakeOpts.items():
-        if val:
-            cmakeArgs.append('{}={}'.format(key, val))
-        else:
-            cmakeArgs.append(key)
+    cmakeArgs.extend(prepare_arguments(cmakeOpts))
 
     # install to each destination
     env = EXP(opts._cmake_install_env)

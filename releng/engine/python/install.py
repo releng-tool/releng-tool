@@ -3,6 +3,7 @@
 # Copyright 2018 releng-tool
 
 from ...tool.python import *
+from ...util.io import prepare_arguments
 from ...util.log import *
 from ...util.string import expand as EXP
 import sys
@@ -56,12 +57,7 @@ def install(opts):
         # avoid building pyc files
         '--no-compile',
     ]
-
-    for key, val in pythonOpts.items():
-        if val:
-            pythonArgs.append('{}={}'.format(key, val))
-        else:
-            pythonArgs.append(key)
+    pythonArgs.extend(prepare_arguments(pythonOpts))
 
     # install to target destination(s)
     #

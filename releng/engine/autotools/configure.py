@@ -4,6 +4,7 @@
 
 from ...tool.autoreconf import *
 from ...util.io import execute
+from ...util.io import prepare_arguments
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -46,12 +47,7 @@ def configure(opts):
     # argument building
     autotoolsArgs = [
     ]
-
-    for key, val in autotoolsOpts.items():
-        if val:
-            autotoolsArgs.append('{}={}'.format(key, val))
-        else:
-            autotoolsArgs.append(key)
+    autotoolsArgs.extend(prepare_arguments(autotoolsOpts))
 
     if not execute(['./configure'] + autotoolsArgs,
             env_update=EXP(opts._autotools_conf_env), critical=False):

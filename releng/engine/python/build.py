@@ -3,6 +3,7 @@
 # Copyright 2018 releng-tool
 
 from ...tool.python import *
+from ...util.io import prepare_arguments
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -38,15 +39,6 @@ def build(opts):
     if opts._python_opts:
         pythonOpts.update(EXP(opts._python_opts))
 
-    # argument building
-    pythonArgs = [
-        'setup.py',
-        # ignore user's pydistutils.cfg
-        '--no-user-cfg',
-        # invoke the build operation
-        'build',
-    ]
-
     # default environment
     pythonPath1 = pythonTool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
     pythonPath2 = pythonTool.path(sysroot=opts.target_dir, prefix=opts.prefix)
@@ -58,11 +50,15 @@ def build(opts):
     if opts._python_env:
         env.update(EXP(opts._python_env))
 
-    for key, val in pythonOpts.items():
-        if val:
-            pythonArgs.append('{}={}'.format(key, val))
-        else:
-            pythonArgs.append(key)
+    # argument building
+    pythonArgs = [
+        'setup.py',
+        # ignore user's pydistutils.cfg
+        '--no-user-cfg',
+        # invoke the build operation
+        'build',
+    ]
+    pythonArgs.extend(prepare_arguments(pythonOpts))
 
     if not pythonTool.execute(pythonArgs, env=env):
         err('failed to build python project: {}', opts.name)

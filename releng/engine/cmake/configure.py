@@ -4,6 +4,8 @@
 
 from ...defs import PackageInstallType
 from ...tool.cmake import *
+from ...util.io import prepare_arguments
+from ...util.io import prepare_definitions
 from ...util.log import *
 from ...util.string import expand as EXP
 from os.path import join
@@ -41,15 +43,18 @@ def configure(opts):
         prefix_loc = ('"' +
             join(opts.staging_dir, prefix) + ';' +
             join(opts.target_dir, prefix) + '"')
+    # default definitions
+    cmakeDefs = {
+        'CMAKE_BUILD_TYPE': 'RelWithDebInfo',
+        'CMAKE_INCLUDE_PATH': include_loc,
+        'CMAKE_INSTALL_PREFIX': prefix,
+        'CMAKE_LIBRARY_PATH': library_loc,
+        'CMAKE_PREFIX_PATH': prefix_loc,
+    }
+
 
     # default options
     cmakeOpts = {
-        # build RelWithDebInfo (when using single configuration projects
-        '-DCMAKE_BUILD_TYPE': 'RelWithDebInfo',
-        '-DCMAKE_INCLUDE_PATH': include_loc,
-        '-DCMAKE_INSTALL_PREFIX': prefix,
-        '-DCMAKE_LIBRARY_PATH': library_loc,
-        '-DCMAKE_PREFIX_PATH': prefix_loc,
     }
 
     # apply package-specific options
@@ -60,12 +65,8 @@ def configure(opts):
     cmakeArgs = [
         '--no-warn-unused-cli', # suppress common options if not used in project
     ]
-
-    for key, val in cmakeOpts.items():
-        if val:
-            cmakeArgs.append('{}={}'.format(key, val))
-        else:
-            cmakeArgs.append(key)
+    cmakeArgs.extend(prepare_definitions(cmakeDefs, '-D'))
+    cmakeArgs.extend(prepare_arguments(cmakeOpts))
 
     # output directory
     cmakeArgs.append(opts.build_output_dir)

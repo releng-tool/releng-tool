@@ -3,6 +3,7 @@
 # Copyright 2018 releng-tool
 
 from ...tool.make import *
+from ...util.io import prepare_arguments
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -33,20 +34,15 @@ def build(opts):
         autotoolsOpts.update(EXP(opts._autotools_opts))
 
     # argument building
-    makeArgs = [
+    autotoolsArgs = [
     ]
-
-    for key, val in autotoolsOpts.items():
-        if val:
-            makeArgs.append('{}={}'.format(key, val))
-        else:
-            makeArgs.append(key)
+    autotoolsArgs.extend(prepare_arguments(autotoolsOpts))
 
     if opts.jobs > 1:
-        makeArgs.append('--jobs')
-        makeArgs.append(str(opts.jobs))
+        autotoolsArgs.append('--jobs')
+        autotoolsArgs.append(str(opts.jobs))
 
-    if not MAKE.execute(makeArgs, env=EXP(opts._autotools_env)):
+    if not MAKE.execute(autotoolsArgs, env=EXP(opts._autotools_env)):
         err('failed to build autotools project: {}', opts.name)
         return False
 
