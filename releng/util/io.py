@@ -68,6 +68,141 @@ def ensureDirectoryExists(dir, quiet=False):
             return False
     return True
 
+def execute(args, cwd=None, env=None, env_update=None, quiet=False,
+        critical=True, poll=False, capture=None):
+    """
+    execute the provided command/arguments
+
+    Runs the command described by ``args`` until completion. A caller can adjust
+    the working directory of the executed command by explicitly setting the
+    directory in ``cwd``. The execution request will return ``True`` on a
+    successful execution; ``False`` if an issue has been detected (e.g. bad
+    options or called process returns a non-zero value). In the event that the
+    execution fails, an error message will be output to standard error unless
+    ``quiet`` is set to ``True``.
+
+    The environment variables used on execution can be manipulated in two ways.
+    First, the environment can be explicitly controlled by applying a new
+    environment content using the ``env`` dictionary. Key of the dictionary will
+    be used as environment variable names, whereas the respective values will be
+    the respective environment variable's value. If ``env`` is not provided, the
+    existing environment of the executing context will be used. Second, a caller
+    can instead update the existing environment by using the ``env_update``
+    option. Like ``env``, the key-value pairs match to respective environment
+    key-value pairs. The difference with this option is that the call will use
+    the original environment values and update select values which match in the
+    updated environment request. When ``env`` and ``env_update`` are both
+    provided, ``env_update`` will be updated the options based off of ``env``
+    instead of the original environment of the caller.
+
+    If ``critical`` is set to ``True`` and the execution fails for any reason,
+    this call will issue a system exit (``SystemExit``). By default, the
+    critical flag is enabled (i.e. ``critical=True``).
+
+    In special cases, an executing process may not provide carriage returns/new
+    lines to simple output processing. This can lead the output of a process to
+    be undesirably buffered. To workaround this issue, the execution call can
+    instead poll for output results by using the ``poll`` option with a value
+    of ``True``. By default, polling is disabled with a value of ``False``.
+
+    A caller may wish to capture the provided output from a process for
+    examination. If a list is provided in the call argument ``capture``, the
+    list will be populated with the output provided from an invoked process.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        releng_execute(['echo', '$TEST'], env={'TEST': 'this is a test'))
+
+    Args:
+        args: the list of arguments to execute
+        cwd (optional): working directory to use
+        env (optional): environment variables to use for the process
+        env_update (optional): environment variables to append for the process
+        quiet (optional): whether or not to suppress output (defaults to
+            ``False``)
+        critical (optional): whether or not to stop execution on failure
+            (defaults to ``True``)
+        poll (optional): force polling stdin/stdout for output data (defaults to
+            ``False``)
+        capture (optional): list to capture output into
+
+    Returns:
+        ``True`` if the execution has completed with no error; ``False`` if the
+        execution has failed
+
+    Raises:
+        SystemExit: if the execution operation fails with ``critical=True``
+    """
+
+    # append provided environment updates (if any) to the provided or existing
+    # environment dictionary
+    final_env = None
+    if env:
+        final_env = dict(env)
+    if env_update:
+        final_env = os.environ.copy()
+        final_env.update(env_update)
+
+    success = False
+    if args:
+        # attempt to always invoke using a script's interpreter (if any) to
+        # help deal with long-path calls
+        if sys.platform != 'win32':
+            args = prependShebangInterpreter(args)
+
+        verbose('invoking: ' + str(args).replace('{','{{').replace('}','}}'))
+        try:
+            proc = subprocess.Popen(args, bufsize=1,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                cwd=cwd, env=final_env)
+
+            # check if this execution should poll (for carriage returns and new
+            # lines)
+            #
+            # Note if quiet mode is enabled, do not attempt to poll since none
+            # of the output will be printed anyways.
+            if poll and not quiet:
+                debug('invoked with polling option')
+                line = bytearray()
+                while True:
+                    c = proc.stdout.read(1)
+                    if not c and proc.poll() != None:
+                        break
+                    line += c
+                    if c == b'\r' or c == b'\n':
+                        decoded_line = line.decode('utf_8')
+                        if c == b'\n' and capture is not None:
+                            capture.append(decoded_line)
+                        elif not capture is not None:
+                            sys.stdout.write(decoded_line)
+                            sys.stdout.flush()
+                        del line[:]
+            else:
+                for line in iter(proc.stdout.readline, b''):
+                    if capture is not None or not quiet:
+                        decoded_line = line.decode('utf_8').rstrip()
+                        if capture is not None:
+                            capture.append(decoded_line)
+                        elif not quiet:
+                            print(decoded_line)
+                            sys.stdout.flush()
+            proc.communicate()
+
+            success = (proc.returncode == 0)
+        except OSError as e:
+            if not quiet:
+                err('unable to execute command: ' +
+                    str(args).replace('{','{{').replace('}','}}'))
+                err('    {}'.format(e))
+
+    if not success:
+        debug('failed cmd: ' + str(args).replace('{','{{').replace('}','}}'))
+        if critical:
+            sys.exit(-1)
+    return success
+
 @contextmanager
 def generateTempDir(dir=None):
     """
@@ -480,138 +615,3 @@ def run_script(script, globals, subject=None):
         return None
 
     return result
-
-def execute(args, cwd=None, env=None, env_update=None, quiet=False,
-        critical=True, poll=False, capture=None):
-    """
-    execute the provided command/arguments
-
-    Runs the command described by ``args`` until completion. A caller can adjust
-    the working directory of the executed command by explicitly setting the
-    directory in ``cwd``. The execution request will return ``True`` on a
-    successful execution; ``False`` if an issue has been detected (e.g. bad
-    options or called process returns a non-zero value). In the event that the
-    execution fails, an error message will be output to standard error unless
-    ``quiet`` is set to ``True``.
-
-    The environment variables used on execution can be manipulated in two ways.
-    First, the environment can be explicitly controlled by applying a new
-    environment content using the ``env`` dictionary. Key of the dictionary will
-    be used as environment variable names, whereas the respective values will be
-    the respective environment variable's value. If ``env`` is not provided, the
-    existing environment of the executing context will be used. Second, a caller
-    can instead update the existing environment by using the ``env_update``
-    option. Like ``env``, the key-value pairs match to respective environment
-    key-value pairs. The difference with this option is that the call will use
-    the original environment values and update select values which match in the
-    updated environment request. When ``env`` and ``env_update`` are both
-    provided, ``env_update`` will be updated the options based off of ``env``
-    instead of the original environment of the caller.
-
-    If ``critical`` is set to ``True`` and the execution fails for any reason,
-    this call will issue a system exit (``SystemExit``). By default, the
-    critical flag is enabled (i.e. ``critical=True``).
-
-    In special cases, an executing process may not provide carriage returns/new
-    lines to simple output processing. This can lead the output of a process to
-    be undesirably buffered. To workaround this issue, the execution call can
-    instead poll for output results by using the ``poll`` option with a value
-    of ``True``. By default, polling is disabled with a value of ``False``.
-
-    A caller may wish to capture the provided output from a process for
-    examination. If a list is provided in the call argument ``capture``, the
-    list will be populated with the output provided from an invoked process.
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        releng_execute(['echo', '$TEST'], env={'TEST': 'this is a test'))
-
-    Args:
-        args: the list of arguments to execute
-        cwd (optional): working directory to use
-        env (optional): environment variables to use for the process
-        env_update (optional): environment variables to append for the process
-        quiet (optional): whether or not to suppress output (defaults to
-            ``False``)
-        critical (optional): whether or not to stop execution on failure
-            (defaults to ``True``)
-        poll (optional): force polling stdin/stdout for output data (defaults to
-            ``False``)
-        capture (optional): list to capture output into
-
-    Returns:
-        ``True`` if the execution has completed with no error; ``False`` if the
-        execution has failed
-
-    Raises:
-        SystemExit: if the execution operation fails with ``critical=True``
-    """
-
-    # append provided environment updates (if any) to the provided or existing
-    # environment dictionary
-    final_env = None
-    if env:
-        final_env = dict(env)
-    if env_update:
-        final_env = os.environ.copy()
-        final_env.update(env_update)
-
-    success = False
-    if args:
-        # attempt to always invoke using a script's interpreter (if any) to
-        # help deal with long-path calls
-        if sys.platform != 'win32':
-            args = prependShebangInterpreter(args)
-
-        verbose('invoking: ' + str(args).replace('{','{{').replace('}','}}'))
-        try:
-            proc = subprocess.Popen(args, bufsize=1,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                cwd=cwd, env=final_env)
-
-            # check if this execution should poll (for carriage returns and new
-            # lines)
-            #
-            # Note if quiet mode is enabled, do not attempt to poll since none
-            # of the output will be printed anyways.
-            if poll and not quiet:
-                debug('invoked with polling option')
-                line = bytearray()
-                while True:
-                    c = proc.stdout.read(1)
-                    if not c and proc.poll() != None:
-                        break
-                    line += c
-                    if c == b'\r' or c == b'\n':
-                        decoded_line = line.decode('utf_8')
-                        if c == b'\n' and capture is not None:
-                            capture.append(decoded_line)
-                        elif not capture is not None:
-                            sys.stdout.write(decoded_line)
-                            sys.stdout.flush()
-                        del line[:]
-            else:
-                for line in iter(proc.stdout.readline, b''):
-                    if capture is not None or not quiet:
-                        decoded_line = line.decode('utf_8').rstrip()
-                        if capture is not None:
-                            capture.append(decoded_line)
-                        elif not quiet:
-                            print(decoded_line)
-                            sys.stdout.flush()
-            proc.communicate()
-
-            success = (proc.returncode == 0)
-        except OSError as e:
-            if not quiet:
-                err('unable to execute command: ' +
-                    str(args).replace('{','{{').replace('}','}}'))
-                err('    {}'.format(e))
-
-    if not success:
-        debug('failed cmd: ' + str(args).replace('{','{{').replace('}','}}'))
-        if critical:
-            sys.exit(-1)
-    return success
