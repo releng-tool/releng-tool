@@ -47,7 +47,8 @@ def install(opts):
     # install to each destination
     env = EXP(opts._cmake_install_env)
     for dest_dir in opts.dest_dirs:
-        if not CMAKE.execute(['DESTDIR=' + dest_dir] + cmakeArgs, env=env):
+        if not CMAKE.execute(cmakeArgs, env=env,
+                env_update={'DESTDIR': dest_dir}):
             err('failed to install cmake project: {}', opts.name)
             return False
 
