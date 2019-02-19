@@ -1560,6 +1560,17 @@ can override this option by explicitly adjusting the configuration option
 The following configuration options are available for a CMake package:
 
 +----------------------------+-------------------------------------------------+
+| ``CMAKE_CONF_DEFS``        | Provides a means to pass definitions into the   |
+|                            | configuration process. This option can is       |
+|                            | defined as a dictionary of string pairs. This   |
+|                            | field is optional.                              |
+|                            |                                                 |
+|                            | .. code-block:: python                          |
+|                            |                                                 |
+|                            |    LIBFOO_CMAKE_CONF_DEFS = {                   |
+|                            |        'CMAKE_BUILD_TYPE': 'RelWithDebInfo',    |
+|                            |    }                                            |
++----------------------------+-------------------------------------------------+
 | ``CMAKE_CONF_ENV``         | Provides a means to pass environment variables  |
 |                            | into the configuration process. This option is  |
 |                            | defined as a dictionary with key-value pairs    |
