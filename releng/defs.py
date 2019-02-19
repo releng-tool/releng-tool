@@ -46,6 +46,7 @@ RPK_AUTOTOOLS_INSTALL_ENV = 'AUTOTOOLS_INSTALL_ENV' #: autotools install env.
 RPK_AUTOTOOLS_INSTALL_OPTS = 'AUTOTOOLS_INSTALL_OPTS' #: autotools install opts
 RPK_AUTOTOOLS_OPTS = 'AUTOTOOLS_OPTS' #: autotools options
 # (other - cmake)
+RPK_CMAKE_CONF_DEFS = 'CMAKE_CONF_DEFS' #: cmake configuration definitions
 RPK_CMAKE_CONF_ENV = 'CMAKE_CONF_ENV' #: cmake configuration environment values
 RPK_CMAKE_CONF_OPTS = 'CMAKE_CONF_OPTS' #: cmake configuration options
 RPK_CMAKE_ENV = 'CMAKE_ENV' #: cmake environment values

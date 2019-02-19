@@ -52,6 +52,9 @@ def configure(opts):
         'CMAKE_PREFIX_PATH': prefix_loc,
     }
 
+    # apply package-specific options
+    if opts._cmake_conf_defs:
+        cmakeDefs.update(EXP(opts._cmake_conf_defs))
 
     # default options
     cmakeOpts = {

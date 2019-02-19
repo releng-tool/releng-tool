@@ -388,6 +388,10 @@ class RelengPackageManager:
 
             # ##################################################################
 
+            # cmake configuration definitions
+            pkg_cmake_conf_defs = self._fetch(
+                RPK_CMAKE_CONF_DEFS, PkgKeyType.DICT_STR_STR)
+
             # cmake configuration environment options
             pkg_cmake_conf_env = self._fetch(
                 RPK_CMAKE_CONF_ENV, PkgKeyType.DICT_STR_STR)
@@ -550,6 +554,7 @@ class RelengPackageManager:
         pkg.autotools_install_opts = pkg_autotools_install_opts
         pkg.autotools_opts = pkg_autotools_opts
         # (other - cmake)
+        pkg.cmake_conf_defs = pkg_cmake_conf_defs
         pkg.cmake_conf_env = pkg_cmake_conf_env
         pkg.cmake_conf_opts = pkg_cmake_conf_opts
         pkg.cmake_env = pkg_cmake_env
