@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2019 releng-tool
 
+from collections import OrderedDict
 from releng.util.io import execute
 from releng.util.io import interpretStemExtension as ise
 from releng.util.io import pathCopy
 from releng.util.io import pathExists
 from releng.util.io import pathMove
+from releng.util.io import prepare_arguments
+from releng.util.io import prepare_definitions
 from releng.util.io import prependShebangInterpreter as psi
 from releng.util.io import touch
 from test import RelengTestUtil
@@ -213,6 +216,51 @@ class TestUtilIo(unittest.TestCase):
             self.assertFalse(moved)
             self.assertTrue(os.path.isdir(src))
             self.assertTrue(os.path.isfile(dst))
+
+    def test_utilio_prepare_helpers(self):
+        prepared = prepare_arguments(None)
+        expected = []
+        self.assertEquals(prepared, expected)
+
+        prepared = prepare_arguments({})
+        expected = []
+        self.assertEquals(prepared, expected)
+
+        args = OrderedDict()
+        args['foo'] = 'bar'
+        args['xyz'] = ''
+        prepared = prepare_arguments(args)
+        expected = ['foo', 'bar', 'xyz']
+        self.assertEquals(prepared, expected)
+
+        args = OrderedDict()
+        args['foo'] = 'bar'
+        args['test'] = None
+        prepared = prepare_arguments(args)
+        expected = ['foo', 'bar']
+        self.assertEquals(prepared, expected)
+
+        prepared = prepare_definitions(None)
+        expected = []
+        self.assertEquals(prepared, expected)
+
+        prepared = prepare_definitions({})
+        expected = []
+        self.assertEquals(prepared, expected)
+
+        args = OrderedDict()
+        args['foo'] = 'bar'
+        args['xyz'] = ''
+        prepared = prepare_definitions(args)
+        expected = ['foo=bar', 'xyz']
+        self.assertEquals(prepared, expected)
+
+        args = OrderedDict()
+        args['foo'] = 'bar'
+        args['test'] = None
+        prepared = prepare_definitions(args)
+        expected = ['foo=bar']
+        self.assertEquals(prepared, expected)
 
     def test_utilio_shebang_interpreter(self):
         si_dir = os.path.join(self.assets_dir, 'shebang-interpreter')
