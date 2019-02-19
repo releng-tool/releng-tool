@@ -142,7 +142,8 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
     if env:
         final_env = dict(env)
     if env_update:
-        final_env = os.environ.copy()
+        if not final_env:
+            final_env = os.environ.copy()
         final_env.update(env_update)
 
     success = False
