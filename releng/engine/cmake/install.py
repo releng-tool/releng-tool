@@ -44,11 +44,16 @@ def install(opts):
     ]
     cmakeArgs.extend(prepare_arguments(cmakeOpts))
 
-    # install to each destination
+    # prepare environment for installation request; an environment dictionary is
+    # always needed to apply a custom DESTDIR during each install request
     env = EXP(opts._cmake_install_env)
+    if not env:
+        env = {}
+
+    # install to each destination
     for dest_dir in opts.dest_dirs:
-        if not CMAKE.execute(cmakeArgs, env=env,
-                env_update={'DESTDIR': dest_dir}):
+        env['DESTDIR'] = dest_dir
+        if not CMAKE.execute(cmakeArgs, env=env):
             err('failed to install cmake project: {}', opts.name)
             return False
 
