@@ -522,6 +522,15 @@ class RelengPackageManager:
             pkg_revision = pkg_devmode_revision
         elif not pkg_revision:
             pkg_revision = pkg_version
+
+        # Select sources (like CMake-based projects) may wish to be using
+        # out-of-source tree builds. For supported project types, adjust the
+        # build output directory to a sub-folder of the originally assumed
+        # output folder.
+        if pkg_type == PackageType.CMAKE:
+            pkg_build_output_dir = os.path.join(
+                pkg_build_output_dir, 'releng-output')
+
         # (commons)
         pkg = RelengPackage(name, pkg_version)
         pkg.build_dir = pkg_build_dir
