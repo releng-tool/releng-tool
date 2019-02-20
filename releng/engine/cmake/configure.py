@@ -4,6 +4,7 @@
 
 from ...defs import PackageInstallType
 from ...tool.cmake import *
+from ...util.io import interimWorkingDirectory
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
 from ...util.log import *
@@ -73,10 +74,13 @@ def configure(opts):
     cmakeArgs.extend(prepare_arguments(cmakeOpts))
 
     # output directory
-    cmakeArgs.append(opts.build_output_dir)
+    cmakeArgs.append(opts.build_dir)
 
-    if not CMAKE.execute(cmakeArgs, env=EXP(opts._cmake_conf_env)):
-        err('failed to prepare cmake project: {}', opts.name)
-        return False
+    # cmake prepares build scripts out-of-source; move into the build output
+    # directory and generate scripts from the build directory
+    with interimWorkingDirectory(opts.build_output_dir):
+        if not CMAKE.execute(cmakeArgs, env=EXP(opts._cmake_conf_env)):
+            err('failed to prepare cmake project: {}', opts.name)
+            return False
 
     return True
