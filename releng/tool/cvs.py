@@ -13,9 +13,15 @@ CVS_SANITIZE_ENV_KEYS = [
     'CVSREAD',
     'CVSUMASK',
     'CVSWRAPPERS',
-    'CVS_RSH',
     'CVS_SERVER',
 ]
 
+#: dictionary of environment entries append to the environment dictionary
+CVS_EXTEND_ENV = {
+    # assume ssh authentication if configured with an :ext: cvsroot
+    'CVS_RSH': 'ssh',
+}
+
 #: cvs host tool helper
-CVS = RelengTool(CVS_COMMAND, env_sanitize=CVS_SANITIZE_ENV_KEYS) 
+CVS = RelengTool(CVS_COMMAND,
+    env_sanitize=CVS_SANITIZE_ENV_KEYS, env_include=CVS_EXTEND_ENV)
