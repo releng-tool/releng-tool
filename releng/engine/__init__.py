@@ -34,6 +34,7 @@ from .extract import stage as extractStage
 from .fetch import stage as fetchStage
 from .install import stage as installStage
 from .patch import stage as patchStage
+from .post import stage as postStage
 from collections import OrderedDict
 from datetime import datetime
 from enum import Enum
@@ -286,6 +287,16 @@ in the working directory or the provided root directory:
                             return False
                         if processFileFlag(True, flag) != FileFlag.CONFIGURED:
                             return False
+                    # (note: re-install requests will re-invoke package-specific
+                    # post-processing)
+
+                    # package-specific post-processing
+                    flag = pkg.__ff_post
+                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
+                        if not postStage(self, pkg, pkg_env):
+                            return False
+                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                            return False
                     if pa in (PkgAction.INSTALL, PkgAction.REINSTALL):
                         if pkg.name == target:
                             break
@@ -342,6 +353,7 @@ has failed. Ensure the following path is accessible for this user:
         pkg.__ff_install = os.path.join(outdir, prefix + 'install')
         pkg.__ff_license = os.path.join(outdir, prefix + 'license')
         pkg.__ff_patch = os.path.join(outdir, prefix + 'patch')
+        pkg.__ff_post = os.path.join(outdir, prefix + 'post')
 
         # user invoking a package-specific override
         #
@@ -352,12 +364,15 @@ has failed. Ensure the following path is accessible for this user:
             if self.opts.pkg_action == PkgAction.REBUILD:
                 pathRemove(pkg.__ff_build)
                 pathRemove(pkg.__ff_install)
+                pathRemove(pkg.__ff_post)
             elif self.opts.pkg_action == PkgAction.RECONFIGURE:
                 pathRemove(pkg.__ff_configure)
                 pathRemove(pkg.__ff_build)
                 pathRemove(pkg.__ff_install)
+                pathRemove(pkg.__ff_post)
             elif self.opts.pkg_action == PkgAction.REINSTALL:
                 pathRemove(pkg.__ff_install)
+                pathRemove(pkg.__ff_post)
 
         return True
 
