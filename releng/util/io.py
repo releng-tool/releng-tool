@@ -425,8 +425,8 @@ def pathMove(src, dst, quiet=False, critical=True):
 
     This call will attempt to move a provided file or directory's contents,
     defined by ``src`` into a destination file or directory defined by ``dst``.
-    If ``src`` is a file, then ``dst`` is considered to be a file; likewise if
-    ``src`` is a directory, ``dst`` is considered a target directory. If a
+    If ``src`` is a file, then ``dst`` is considered to be a file or directory;
+    if ``src`` is a directory, ``dst`` is considered a target directory. If a
     target directory or target file's directory does not exist, it will be
     automatically created.
 
@@ -443,11 +443,14 @@ def pathMove(src, dst, quiet=False, critical=True):
         # (input)
         # my-directory/another-file
         # my-file
-        releng_move('my-file', 'my-file2')
+        # my-file2
+        releng_move('my-file', 'my-file3')
         releng_move('my-directory/', 'my-directory2/')
+        releng_move('my-file2', 'my-directory2/')
         # (output)
         # my-directory2/another-file
-        # my-file2
+        # my-directory2/my-file2
+        # my-file3
 
     Args:
         src: the source directory or file
@@ -469,8 +472,8 @@ def pathMove(src, dst, quiet=False, critical=True):
         return True
 
     if os.path.isfile(src):
-        parent_dir = os.path.dirname(os.path.abspath(dst))
-        if not os.path.isdir(parent_dir):
+        parent_dir = os.path.dirname(dst)
+        if parent_dir and not os.path.isdir(parent_dir):
             success = ensureDirectoryExists(parent_dir, quiet=quiet)
     elif not os.path.isdir(dst):
         success = ensureDirectoryExists(dst, quiet=quiet)
