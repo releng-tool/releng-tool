@@ -22,5 +22,14 @@ GIT_SANITIZE_ENV_KEYS = [
     'GIT_FLUSH',
 ]
 
+#: dictionary of environment entries append to the environment dictionary
+GIT_EXTEND_ENV = {
+    # prevent the terminal prompt from being shown
+    'GIT_TERMINAL_PROMPT': '0',
+}
+
 #: git host tool helper
-GIT = RelengTool(GIT_COMMAND, env_sanitize=GIT_SANITIZE_ENV_KEYS)
+GIT = RelengTool(GIT_COMMAND,
+    env_sanitize=GIT_SANITIZE_ENV_KEYS, env_include=GIT_EXTEND_ENV)
+
+
