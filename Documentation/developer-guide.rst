@@ -1991,6 +1991,10 @@ listed below:
 |                          |     :members: releng_remove                       |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
+| ``releng_tmpdir``        | .. automodule:: releng                            |
+|                          |     :members: releng_tmpdir                       |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
 | ``releng_touch``         | .. automodule:: releng                            |
 |                          |     :members: releng_touch                        |
 |                          |     :noindex:                                     |
