@@ -215,8 +215,15 @@ def generateTempDir(dir=None):
     directory does not exist, it will created. If the directory could not be
     created, an ``FailedToPrepareBaseDirectoryError`` exception will be thrown.
 
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        with releng_tmpdir() as dir:
+            print(dir)
+
     Args:
-        dir (optional): the directory to create the temporary directory
+        dir (optional): the directory to create the temporary directory in
 
     Raises:
         FailedToPrepareBaseDirectoryError: the base directory does not exist and
