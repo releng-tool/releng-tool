@@ -192,6 +192,13 @@ in the working directory or the provided root directory:
 
             # process each package (configuring, building, etc.)
             if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
+
+                # ensure the symbols directory exists, as a package may wish to
+                # populate it anytime between a configuration stage to a
+                # post-package stage
+                if not ensureDirectoryExists(self.opts.symbols_dir):
+                    return False
+
                 target = self.opts.target_action
                 for pkg in pkgs:
                     verbose('processing package: {}'.format(pkg.name))
