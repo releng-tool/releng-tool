@@ -40,6 +40,8 @@ class RelengEngineOptions:
     Args:
         args (optional): handle user-provided configuration options (argparse)
             and apply them to respective attributes
+        unknown_args (optional): handle unknown arguments provided by the user
+            which can be forwarded to the releng-tool project's configuration
 
     Attributes:
         build_dir: directory container for all builds
@@ -76,10 +78,11 @@ class RelengEngineOptions:
         target_action: the specific package to work on (if any)
         target_dir: directory container for target content
         tools_override: dictionary to override tool commands
+        unknown_args: command line arguments forwarded to configuration script
         url_mirror: mirror base site for url fetches
         verbose: whether or not verbose messages are shown
     """
-    def __init__(self, args=None):
+    def __init__(self, args=None, unknown_args=None):
         self.build_dir = None
         self.cache_dir = None
         self.cache_ext_transform = None
@@ -114,6 +117,7 @@ class RelengEngineOptions:
         self.target_action = None
         self.target_dir = None
         self.tools_override = None
+        self.unknown_args = unknown_args
         self.url_mirror = None
         self.verbose = False
 

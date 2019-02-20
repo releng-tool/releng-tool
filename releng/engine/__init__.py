@@ -78,6 +78,7 @@ class RelengEngine:
         self.start_time = datetime.now().replace(microsecond=0)
         verbose("loading user's configuration...")
         gbls={
+            'releng_args': self.opts.unknown_args,
             'releng_version': releng_version,
         }
 

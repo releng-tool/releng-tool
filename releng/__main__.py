@@ -52,7 +52,7 @@ def main():
         releng_log_configuration(args.debug, args.nocolorout, args.verbose)
 
         if unknown_args:
-            warn('unknown arguments: {}', ' '.join(unknown_args))
+            debug('unknown arguments: {}', ' '.join(unknown_args))
 
         # toggle on ansi colors by default for commands
         if not args.nocolorout:
@@ -64,7 +64,7 @@ def main():
             warn('running as root; this may be unsafe')
 
         # prepare engine options
-        opts = RelengEngineOptions(args)
+        opts = RelengEngineOptions(args=args, unknown_args=unknown_args)
 
         # register the project's root directory as a system path; permits a
         # project to import locally created modules in their build/etc. scripts
