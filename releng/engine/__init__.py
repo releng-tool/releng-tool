@@ -81,6 +81,10 @@ class RelengEngine:
             'releng_version': releng_version,
         }
 
+        # prepare script environment to make helpers available to configuration
+        # script(s)
+        self._prepareScriptEnvironment(gbls, self.opts.pkg_action)
+
         if not os.path.isfile(self.opts.conf_point):
             err('missing configuration file')
             log("""\
@@ -124,9 +128,6 @@ in the working directory or the provided root directory:
         if state is not None:
             debug('file-flag processing has triggered closure')
             return state
-
-        # prepare shared stage environment
-        self._prepareSharedEnvironment(script_env, self.opts.pkg_action)
 
         # determine package name(s) extraction
         #
@@ -189,6 +190,11 @@ in the working directory or the provided root directory:
             # prepend project's host directory to path
             host_bin = os.path.join(self.opts.host_dir, 'bin')
             os.environ['PATH'] = host_bin + os.pathsep + os.environ['PATH']
+
+            # re-apply script environment to ensure previous script environment
+            # changes have not manipulated the environment (from standard
+            # helpers).
+            self._prepareScriptEnvironment(script_env, self.opts.pkg_action)
 
             # process each package (configuring, building, etc.)
             if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
@@ -636,7 +642,7 @@ list exists with the name of packages to be part of the releng process:
 
         return True
 
-    def _prepareSharedEnvironment(self, script_env, action):
+    def _prepareScriptEnvironment(self, script_env, action):
         """
         prepare the script environment with common project values
 
