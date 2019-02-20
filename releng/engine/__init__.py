@@ -624,6 +624,11 @@ list exists with the name of packages to be part of the releng process:
         if os.path.isfile(script):
             verbose('performing post-processing...')
 
+            # ensure images directory exists (as the post-processing script will
+            # most likely populate it)
+            if not ensureDirectoryExists(self.opts.images_dir):
+                return False
+
             if not run_script(script, env, subject='post-processing'):
                 return False
 
