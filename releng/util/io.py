@@ -176,7 +176,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
                         decoded_line = line.decode('utf_8')
                         if c == b'\n' and capture is not None:
                             capture.append(decoded_line)
-                        elif not capture is not None:
+                        if not capture is not None:
                             sys.stdout.write(decoded_line)
                             sys.stdout.flush()
                         del line[:]
@@ -186,7 +186,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
                         decoded_line = line.decode('utf_8').rstrip()
                         if capture is not None:
                             capture.append(decoded_line)
-                        elif not quiet:
+                        if not quiet:
                             print(decoded_line)
                             sys.stdout.flush()
             proc.communicate()
