@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2019 releng-tool
 
-__version__='0.1.0.dev5'
+__version__='0.1.0.dev6'
 
 # Below should contain a series of helper implementations to assist releng-tool
 # developer's wanting to explicitly import script helpers into scripts not
