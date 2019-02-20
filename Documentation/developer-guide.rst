@@ -705,6 +705,8 @@ environment variables will be made available:
 +--------------------------+---------------------------------------------------+
 | ``RELENG_REINSTALL``     | Flag set if performing a re-install request.      |
 +--------------------------+---------------------------------------------------+
+| ``ROOT_DIR``             | The root directory.                               |
++--------------------------+---------------------------------------------------+
 | ``STAGING_DIR``          | The staging area directory.                       |
 +--------------------------+---------------------------------------------------+
 | ``SYMBOLS_DIR``          | The symbols area directory.                       |
