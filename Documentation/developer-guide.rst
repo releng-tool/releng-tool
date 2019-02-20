@@ -1183,6 +1183,27 @@ packages:
 .. |CONF_REVISION| replace:: ``REVISION``
 .. |CONF_VCS_TYPE| replace:: ``VCS_TYPE``
 
+package post-processing
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Every package, no matter which package |CONF_TYPE|_ is defined, can create a
+post-processing script to invoke after a package has completed an installation
+stage. The existence of a ``<package>-post`` inside a package directory will
+trigger the post-processing stage for the package. An example post-processing
+script (``libfoo-post``) can be as follows:
+
+.. code-block:: python
+
+   #!/usr/bin/env python
+   # -*- coding: utf-8 -*-
+
+   print('perform post-processing work')
+
+A post-processing script for a package is optional; thus, if a script is not
+provided, no post-processing will be performed for the package.
+
+See also `script helpers`_ for helper functions/variables available for use.
+
 .. _site_definitions:
 
 site definitions
@@ -1381,6 +1402,7 @@ A script package has the ability to define three Python stage scripts:
 - ``<package>-configure`` - script to invoke during the configuration stage
 - ``<package>-build`` - script to invoke during the build stage
 - ``<package>-install`` - script to invoke during the installation stage
+- ``<package>-post`` - script to invoke after the installation stage
 
 An example build script (``libfoo-build``) can be as follows:
 
