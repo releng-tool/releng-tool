@@ -163,6 +163,14 @@ class TestUtilIo(unittest.TestCase):
             self.assertFalse(os.path.isfile(src))
             self.assertTrue(os.path.isfile(dst))
 
+            # (another file move)
+            src = _('dir9', 'dir10', 'file8')
+            dst = _('dir9', 'dir11', '')
+            moved = pathMove(src, dst, critical=False)
+            self.assertTrue(moved)
+            self.assertFalse(os.path.isfile(src))
+            self.assertTrue(os.path.isfile(_('dir9', 'dir11', 'file8')))
+
             # (overwriting file move)
             src = _('dir2', 'file2')
             dst = _('file7')
