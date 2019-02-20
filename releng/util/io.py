@@ -668,6 +668,10 @@ def touch(file):
         not be created/updated
     """
     try:
+        parent_dir = os.path.dirname(file)
+        if parent_dir and not os.path.isdir(parent_dir):
+            ensureDirectoryExists(parent_dir)
+
         with open(file, 'a'):
             os.utime(file, None)
         return True
