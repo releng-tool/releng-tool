@@ -1,0 +1,11 @@
+<PKG>_INSTALL_DEFS
+^^^^^^^^^^^^^^^^^^
+Provides a means to pass definitions into the installation process. This option
+can is defined as a dictionary of string pairs. This field is optional.
+
+.. code-block:: python
+
+   LIBFOO_INSTALL_DEFS = {
+       # adds "--option=value" to the command
+       '--option': 'value',
+   }

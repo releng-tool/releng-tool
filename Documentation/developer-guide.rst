@@ -1441,123 +1441,48 @@ When an autotools package performs a configuration stage, the package may invoke
 build stage is reached, ``make`` will be invoked followed by ``make install``
 during the installation stage.
 
-The following configuration options are available for an autotools package:
+The following sections outline configuration options are available for an
+autotools package.
 
-+----------------------------+-------------------------------------------------+
-| ``AUTOTOOLS_AUTORECONF``   | Specifies whether or not the package needs to   |
-|                            | perform an autotools re-configuration. This is  |
-|                            | to assist in the rebuilding of GNU Build System |
-|                            | files which may be broken or a patch has        |
-|                            | introduced new build script changes that need   |
-|                            | to be applied. This field is optional. By       |
-|                            | default, ``autoreconf`` is not invoked.         |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_AUTORECONF = True           |
-+----------------------------+-------------------------------------------------+
-| ``AUTOTOOLS_CONF_ENV``     | Provides a means to pass environment variables  |
-|                            | into the configuration process. This option is  |
-|                            | defined as a dictionary with key-value pairs    |
-|                            | where the key is the environment name and the   |
-|                            | value is the environment variable's value. This |
-|                            | field is optional.                              |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_CONF_ENV = {                |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``AUTOTOOLS_CONF_OPTS``    | Provides a means to pass command line options   |
-|                            | into the configuration process. This option can |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | configuration event. This field is optional.    |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_CONF_OPTS = {               |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_CONF_OPTS = [               |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
-| ``AUTOTOOLS_ENV``          | Provides a means to pass environment variables  |
-|                            | into the build process. This option is defined  |
-|                            | as a dictionary with key-value pairs where the  |
-|                            | key is the environment name and the value is    |
-|                            | the environment variable's value. This field is |
-|                            | optional.                                       |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_ENV = {                     |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``AUTOTOOLS_INSTALL_ENV``  | Provides a means to pass environment variables  |
-|                            | into the installation process. This option is   |
-|                            | defined as a dictionary with key-value pairs    |
-|                            | where the key is the environment name and the   |
-|                            | value is the environment variable's value. This |
-|                            | field is optional.                              |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_INSTALL_ENV = {             |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``AUTOTOOLS_INSTALL_OPTS`` | Provides a means to pass command line options   |
-|                            | into the installation process. This option can  |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | installation event. This field is optional.     |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_INSTALL_OPTS = {            |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_INSTALL_OPTS = [            |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
-| ``AUTOTOOLS_OPTS``         | Provides a means to pass command line options   |
-|                            | into the build process. This option can         |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | build event. This field is optional.            |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_OPTS = {                    |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_AUTOTOOLS_OPTS = [                    |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
+<PKG>_AUTOTOOLS_AUTORECONF
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Specifies whether or not the package needs to perform an autotools
+re-configuration. This is to assist in the rebuilding of GNU Build System files
+which may be broken or a patch has introduced new build script changes that need
+to be applied. This field is optional. By default, ``autoreconf`` is not
+invoked.
+
+.. code-block:: python
+
+   LIBFOO_AUTOTOOLS_AUTORECONF = True
+
+.. _autotools_build_defs:
+.. include:: include/pkg-build-defs
+
+.. _autotools_build_env:
+.. include:: include/pkg-build-env
+
+.. _autotools_build_opts:
+.. include:: include/pkg-build-opts
+
+.. _autotools_conf_defs:
+.. include:: include/pkg-conf-defs
+
+.. _autotools_conf_env:
+.. include:: include/pkg-conf-env
+
+.. _autotools_conf_opts:
+.. include:: include/pkg-conf-opts
+
+.. _autotools_install_defs:
+.. include:: include/pkg-install-defs
+
+.. _autotools_install_env:
+.. include:: include/pkg-install-env
+
+.. _autotools_install_opts:
+.. include:: include/pkg-install-opts
 
 cmake package
 ~~~~~~~~~~~~~
@@ -1577,6 +1502,10 @@ can override this option by explicitly adjusting the configuration option
 
 .. code-block:: python
 
+   LIBFOO_CMAKE_DEFS = {
+      'CMAKE_BUILD_TYPE': 'Debug',
+   }
+
    LIBFOO_CMAKE_OPTS = {
       '--config': 'Debug',
    }
@@ -1585,122 +1514,35 @@ can override this option by explicitly adjusting the configuration option
       '--config': 'Debug',
    }
 
-The following configuration options are available for a CMake package:
+The following sections outline configuration options are available for a CMake
+package.
 
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_CONF_DEFS``        | Provides a means to pass definitions into the   |
-|                            | configuration process. This option can is       |
-|                            | defined as a dictionary of string pairs. This   |
-|                            | field is optional.                              |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_CONF_DEFS = {                   |
-|                            |        'CMAKE_BUILD_TYPE': 'RelWithDebInfo',    |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_CONF_ENV``         | Provides a means to pass environment variables  |
-|                            | into the configuration process. This option is  |
-|                            | defined as a dictionary with key-value pairs    |
-|                            | where the key is the environment name and the   |
-|                            | value is the environment variable's value. This |
-|                            | field is optional.                              |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_CONF_ENV = {                    |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_CONF_OPTS``        | Provides a means to pass command line options   |
-|                            | into the configuration process. This option can |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | configuration event. This field is optional.    |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_CONF_OPTS = {                   |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_CONF_OPTS = [                   |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_ENV``              | Provides a means to pass environment variables  |
-|                            | into the build process. This option is defined  |
-|                            | as a dictionary with key-value pairs where the  |
-|                            | key is the environment name and the value is    |
-|                            | the environment variable's value. This field is |
-|                            | optional.                                       |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_ENV = {                         |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_INSTALL_ENV``      | Provides a means to pass environment variables  |
-|                            | into the installation process. This option is   |
-|                            | defined as a dictionary with key-value pairs    |
-|                            | where the key is the environment name and the   |
-|                            | value is the environment variable's value. This |
-|                            | field is optional.                              |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_INSTALL_ENV = {                 |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_INSTALL_OPTS``     | Provides a means to pass command line options   |
-|                            | into the installation process. This option can  |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | installation event. This field is optional.     |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_INSTALL_OPTS = {                |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_INSTALL_OPTS = [                |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
-| ``CMAKE_OPTS``             | Provides a means to pass command line options   |
-|                            | into the build process. This option can         |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | build event. This field is optional.            |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_OPTS = {                        |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_CMAKE_OPTS = [                        |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
+.. _cmake_build_defs:
+.. include:: include/pkg-build-defs
+
+.. _cmake_build_env:
+.. include:: include/pkg-build-env
+
+.. _cmake_build_opts:
+.. include:: include/pkg-build-opts
+
+.. _cmake_conf_defs:
+.. include:: include/pkg-conf-defs
+
+.. _cmake_conf_env:
+.. include:: include/pkg-conf-env
+
+.. _cmake_conf_opts:
+.. include:: include/pkg-conf-opts
+
+.. _cmake_install_defs:
+.. include:: include/pkg-install-defs
+
+.. _cmake_install_env:
+.. include:: include/pkg-install-env
+
+.. _cmake_install_opts:
+.. include:: include/pkg-install-opts
 
 python package
 ~~~~~~~~~~~~~~
@@ -1718,88 +1560,39 @@ use by configuring the ``PYTHON_INTERPRETER`` option in a package:
 
    LIBFOO_PYTHON_INTERPRETER = '/opt/my-custom-python-build/python'
 
-The following configuration options are available for a Python package:
+The following sections outline configuration options are available for a Python
+package.
 
+.. _python_build_defs:
+.. include:: include/pkg-build-defs
 
-+----------------------------+-------------------------------------------------+
-| ``PYTHON_ENV``             | Provides a means to pass environment variables  |
-|                            | into the build process. This option is defined  |
-|                            | as a dictionary with key-value pairs where the  |
-|                            | key is the environment name and the value is    |
-|                            | the environment variable's value. This field is |
-|                            | optional.                                       |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_PYTHON_ENV = {                        |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``PYTHON_INSTALL_ENV``     | Provides a means to pass environment variables  |
-|                            | into the installation process. This option is   |
-|                            | defined as a dictionary with key-value pairs    |
-|                            | where the key is the environment name and the   |
-|                            | value is the environment variable's value. This |
-|                            | field is optional.                              |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_PYTHON_INSTALL_ENV = {                |
-|                            |        'OPTION': 'VALUE',                       |
-|                            |    }                                            |
-+----------------------------+-------------------------------------------------+
-| ``PYTHON_INSTALL_OPTS``    | Provides a means to pass command line options   |
-|                            | into the installation process. This option can  |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | installation event. This field is optional.     |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_PYTHON_INSTALL_OPTS = {               |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_PYTHON_INSTALL_OPTS = [               |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
-| ``PYTHON_INTERPRETER``     | Defines an specific Python interpreter when     |
-|                            | processing the build and installation stages    |
-|                            | for a package. If not specified, the system's   |
-|                            | Python interpreter will be used. This field is  |
-|                            | optional.                                       |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_PYTHON_INTERPRETER = '<path>'         |
-+----------------------------+-------------------------------------------------+
-| ``PYTHON_OPTS``            | Provides a means to pass command line options   |
-|                            | into the build process. This option can         |
-|                            | be defined as a dictionary of string pairs or a |
-|                            | list with strings -- either way defined will    |
-|                            | generate argument values to include in the      |
-|                            | build event. This field is optional.            |
-|                            |                                                 |
-|                            | .. code-block:: python                          |
-|                            |                                                 |
-|                            |    LIBFOO_PYTHON_OPTS = {                       |
-|                            |        # adds "--option value" to the command   |
-|                            |        '--option': 'value',                     |
-|                            |    }                                            |
-|                            |                                                 |
-|                            |    # (or)                                       |
-|                            |                                                 |
-|                            |    LIBFOO_PYTHON_OPTS = [                       |
-|                            |        # adds "--some-option" to the command    |
-|                            |        '--some-option',                         |
-|                            |    ]                                            |
-+----------------------------+-------------------------------------------------+
+.. _python_build_env:
+.. include:: include/pkg-build-env
+
+.. _python_build_opts:
+.. include:: include/pkg-build-opts
+
+.. _python_install_defs:
+.. include:: include/pkg-install-defs
+
+.. _python_install_env:
+.. include:: include/pkg-install-env
+
+.. _python_install_opts:
+.. include:: include/pkg-install-opts
+
+.. _python_interpreter:
+
+<PKG>_PYTHON_INTERPRETER
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Defines an specific Python interpreter when processing the build and
+installation stages for a package. If not specified, the system's Python
+interpreter will be used. This field is optional.
+
+.. code-block:: python
+
+   LIBFOO_PYTHON_INTERPRETER = '<path>'
 
 other
 -----
