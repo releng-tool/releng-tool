@@ -692,6 +692,10 @@ environment variables will be made available:
 +--------------------------+---------------------------------------------------+
 | ``PKG_NAME``             | The name of the package.                          |
 +--------------------------+---------------------------------------------------+
+| ``PKG_REVISION``         | The site revision of the package.                 |
+|                          |                                                   |
+|                          | See also |CONF_REVISION|_.                        |
++--------------------------+---------------------------------------------------+
 | ``PKG_SITE``             | The site of the package (see also |CONF_SITE|_).  |
 +--------------------------+---------------------------------------------------+
 | ``PKG_VERSION``          | The version of the package.                       |
