@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ...tool.cmake import *
 from ...util.io import prepare_arguments
+from ...util.io import prepare_definitions
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -25,15 +26,19 @@ def build(opts):
         err('unable to build package; cmake is not installed')
         return False
 
-    # default options
+    # definitions
+    cmakeDefs = {
+    }
+    if opts.build_defs:
+        cmakeDefs.update(EXP(opts.build_defs))
+
+    # options
     cmakeOpts = {
         # build RelWithDebInfo (when using multi-configuration projects)
         '--config': 'RelWithDebInfo',
     }
-
-    # apply package-specific options
-    if opts._cmake_opts:
-        cmakeOpts.update(EXP(opts._cmake_opts))
+    if opts.build_opts:
+        cmakeOpts.update(EXP(opts.build_opts))
 
     # argument building
     cmakeArgs = [
@@ -41,6 +46,7 @@ def build(opts):
         '--build',
         opts.build_output_dir,
     ]
+    cmakeArgs.extend(prepare_definitions(cmakeDefs, '-D'))
     cmakeArgs.extend(prepare_arguments(cmakeOpts))
 
     # enable specific number of parallel jobs is set
@@ -51,7 +57,7 @@ def build(opts):
         if opts.jobsconf > 0:
             cmakeArgs.append(str(opts.jobs))
 
-    if not CMAKE.execute(cmakeArgs, env=EXP(opts._cmake_env)):
+    if not CMAKE.execute(cmakeArgs, env=EXP(opts.build_env)):
         err('failed to build cmake project: {}', opts.name)
         return False
 

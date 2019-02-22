@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ...tool.cmake import *
 from ...util.io import prepare_arguments
+from ...util.io import prepare_definitions
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -25,6 +26,12 @@ def install(opts):
         err('unable to install package; cmake is not installed')
         return False
 
+    # default definitions
+    cmakeDefs = {
+    }
+    if opts.install_defs:
+        cmakeDefs.update(EXP(opts.install_defs))
+
     # default options
     cmakeOpts = {
         # build RelWithDebInfo (when using multi-configuration projects)
@@ -32,21 +39,20 @@ def install(opts):
         # default install using the install target
         '--target': 'install',
     }
-
-    # apply package-specific options
-    if opts._cmake_install_opts:
-        cmakeOpts.update(EXP(opts._cmake_install_opts))
+    if opts.install_opts:
+        cmakeOpts.update(EXP(opts.install_opts))
 
     # argument building
     cmakeArgs = [
         '--build',
         opts.build_output_dir,
     ]
+    cmakeArgs.extend(prepare_definitions(cmakeDefs, '-D'))
     cmakeArgs.extend(prepare_arguments(cmakeOpts))
 
     # prepare environment for installation request; an environment dictionary is
     # always needed to apply a custom DESTDIR during each install request
-    env = EXP(opts._cmake_install_env)
+    env = EXP(opts.install_env)
     if not env:
         env = {}
 

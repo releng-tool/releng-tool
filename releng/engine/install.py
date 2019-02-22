@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ..api import RelengInstallOptions
 from ..defs import *
@@ -61,6 +61,9 @@ def stage(engine, pkg, script_env):
     install_opts.ext = pkg.ext_modifiers
     install_opts.host_dir = engine.opts.host_dir
     install_opts.images_dir = engine.opts.images_dir
+    install_opts.install_defs = pkg.install_defs
+    install_opts.install_env = pkg.install_env
+    install_opts.install_opts = pkg.install_opts
     install_opts.install_type = packageInstallTypeToApiType(pkg.install_type)
     install_opts.name = pkg.name
     install_opts.prefix = pkg.prefix

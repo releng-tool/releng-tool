@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ...tool.autoreconf import *
 from ...util.io import execute
 from ...util.io import prepare_arguments
+from ...util.io import prepare_definitions
 from ...util.log import *
 from ...util.string import expand as EXP
 
@@ -34,23 +35,28 @@ def configure(opts):
                 opts.name)
             return False
 
-    # default options
-    autotoolsOpts = {
+    # definitions
+    autotoolsDefs = {
         '--prefix': opts.prefix,
         '--exec-prefix': opts.prefix,
     }
+    if opts.conf_defs:
+        autotoolsDefs.update(EXP(opts.conf_defs))
 
-    # apply package-specific options
-    if opts._autotools_conf_opts:
-        autotoolsOpts.update(EXP(opts._autotools_conf_opts))
+    # default options
+    autotoolsOpts = {
+    }
+    if opts.conf_opts:
+        autotoolsOpts.update(EXP(opts.conf_opts))
 
     # argument building
     autotoolsArgs = [
     ]
+    autotoolsArgs.extend(prepare_definitions(autotoolsDefs))
     autotoolsArgs.extend(prepare_arguments(autotoolsOpts))
 
     if not execute(['./configure'] + autotoolsArgs,
-            env_update=EXP(opts._autotools_conf_env), critical=False):
+            env_update=EXP(opts.conf_env), critical=False):
         err('failed to prepare autotools project (configure): {}', opts.name)
         return False
 

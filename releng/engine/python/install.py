@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ...tool.python import *
 from ...util.io import prepare_arguments
+from ...util.io import prepare_definitions
 from ...util.log import *
 from ...util.string import expand as EXP
 import sys
@@ -32,20 +33,24 @@ def install(opts):
         err('unable to install package; python is not installed')
         return False
 
-    # default options
-    pythonOpts = {
+    # definitions
+    pythonDefs = {
         '--prefix': opts.prefix,
     }
-
-    # apply package-specific options
-    if opts._python_install_opts:
-        pythonOpts.update(EXP(opts._python_install_opts))
+    if opts.install_defs:
+        pythonDefs.update(EXP(opts.install_defs))
 
     # always remove the prefix value if:
     #  - *nix: setup.py may ignore provided `--root` value with an "/" prefix
     #  - win32: does not use the prefix value
-    if pythonOpts['--prefix'] == '/' or sys.platform == 'win32':
-        del pythonOpts['--prefix']
+    if pythonDefs['--prefix'] == '/' or sys.platform == 'win32':
+        del pythonDefs['--prefix']
+
+    # default options
+    pythonOpts = {
+    }
+    if opts.install_opts:
+        pythonOpts.update(EXP(opts.install_opts))
 
     # argument building
     pythonArgs = [
@@ -57,13 +62,14 @@ def install(opts):
         # avoid building pyc files
         '--no-compile',
     ]
+    pythonArgs.extend(prepare_definitions(pythonDefs))
     pythonArgs.extend(prepare_arguments(pythonOpts))
 
     # install to target destination(s)
     #
     # If the package already defines a root path, use it over any other
     # configured destination directories.
-    env = EXP(opts._python_install_env)
+    env = EXP(opts.install_env)
     if '--root' in pythonOpts:
         if not pythonTool.execute(pythonArgs, env=env):
             err('failed to install python project: {}', opts.name)

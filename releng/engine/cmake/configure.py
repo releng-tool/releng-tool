@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ...defs import PackageInstallType
 from ...tool.cmake import *
@@ -45,26 +45,24 @@ def configure(opts):
             join(opts.staging_dir + prefix) + ';' +
             join(opts.target_dir + prefix))
 
-    # default definitions
+    # definitions
     cmakeDefs = {
+        # configure as RelWithDebInfo (when using multi-configuration projects)
         'CMAKE_BUILD_TYPE': 'RelWithDebInfo',
+        # common paths for releng-tool sysroots
         'CMAKE_INCLUDE_PATH': include_loc,
         'CMAKE_INSTALL_PREFIX': prefix,
         'CMAKE_LIBRARY_PATH': library_loc,
         'CMAKE_PREFIX_PATH': prefix_loc,
     }
+    if opts.conf_defs:
+        cmakeDefs.update(EXP(opts.conf_defs))
 
-    # apply package-specific options
-    if opts._cmake_conf_defs:
-        cmakeDefs.update(EXP(opts._cmake_conf_defs))
-
-    # default options
+    # options
     cmakeOpts = {
     }
-
-    # apply package-specific options
-    if opts._cmake_conf_opts:
-        cmakeOpts.update(EXP(opts._cmake_conf_opts))
+    if opts.conf_opts:
+        cmakeOpts.update(EXP(opts.conf_opts))
 
     # argument building
     cmakeArgs = [
@@ -79,7 +77,7 @@ def configure(opts):
     # cmake prepares build scripts out-of-source; move into the build output
     # directory and generate scripts from the build directory
     with interimWorkingDirectory(opts.build_output_dir):
-        if not CMAKE.execute(cmakeArgs, env=EXP(opts._cmake_conf_env)):
+        if not CMAKE.execute(cmakeArgs, env=EXP(opts.conf_env)):
             err('failed to prepare cmake project: {}', opts.name)
             return False
 

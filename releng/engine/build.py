@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ..api import RelengBuildOptions
 from ..defs import *
@@ -39,7 +39,10 @@ def stage(engine, pkg, script_env):
 
     build_opts = RelengBuildOptions()
     replicatePackageAttribs(build_opts, pkg)
+    build_opts.build_defs = pkg.build_defs
     build_opts.build_dir = build_dir
+    build_opts.build_env = pkg.build_env
+    build_opts.build_opts = pkg.build_opts
     build_opts.build_output_dir = pkg.build_output_dir
     build_opts.def_dir = pkg.def_dir
     build_opts.env = script_env

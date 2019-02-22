@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from enum import Enum
 
@@ -37,28 +37,20 @@ RPK_STRIP_COUNT = 'STRIP_COUNT' #: strip count for archive extract
 RPK_TYPE = 'TYPE' #: type of project the package is
 RPK_VCS_TYPE = 'VCS_TYPE' #: type of project the package's fetch source is
 RPK_VERSION = 'VERSION' #: the version of the package
-# (other - autotools)
+# (package type - common)
+RPK_CONF_DEFS = 'CONF_DEFS' #: package-type configuration definitions
+RPK_CONF_ENV = 'CONF_ENV' #: package-type configuration environment values
+RPK_CONF_OPTS = 'CONF_OPTS' #: package-type configuration options
+RPK_BUILD_DEFS = 'BUILD_DEFS' #: package-type build definitions
+RPK_BUILD_ENV = 'BUILD_ENV' #: package-type build environment values
+RPK_BUILD_OPTS = 'BUILD_OPTS' #: package-type build options
+RPK_INSTALL_DEFS = 'INSTALL_DEFS' #: package-type install definitions
+RPK_INSTALL_ENV = 'INSTALL_ENV' #: package-type install environment values
+RPK_INSTALL_OPTS = 'INSTALL_OPTS' #: package-type install options
+# (package type - autotools)
 RPK_AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF' #: autotools /w autoreconf
-RPK_AUTOTOOLS_CONF_ENV = 'AUTOTOOLS_CONF_ENV' #: autotools conf env. values
-RPK_AUTOTOOLS_CONF_OPTS = 'AUTOTOOLS_CONF_OPTS' #: autotools conf. options
-RPK_AUTOTOOLS_ENV = 'AUTOTOOLS_ENV' #: autotools environment values
-RPK_AUTOTOOLS_INSTALL_ENV = 'AUTOTOOLS_INSTALL_ENV' #: autotools install env.
-RPK_AUTOTOOLS_INSTALL_OPTS = 'AUTOTOOLS_INSTALL_OPTS' #: autotools install opts
-RPK_AUTOTOOLS_OPTS = 'AUTOTOOLS_OPTS' #: autotools options
-# (other - cmake)
-RPK_CMAKE_CONF_DEFS = 'CMAKE_CONF_DEFS' #: cmake configuration definitions
-RPK_CMAKE_CONF_ENV = 'CMAKE_CONF_ENV' #: cmake configuration environment values
-RPK_CMAKE_CONF_OPTS = 'CMAKE_CONF_OPTS' #: cmake configuration options
-RPK_CMAKE_ENV = 'CMAKE_ENV' #: cmake environment values
-RPK_CMAKE_INSTALL_ENV = 'CMAKE_INSTALL_ENV' #: cmake install environment values
-RPK_CMAKE_INSTALL_OPTS = 'CMAKE_INSTALL_OPTS' #: cmake install options
-RPK_CMAKE_OPTS = 'CMAKE_OPTS' #: cmake options
-# (other - python)
-RPK_PYTHON_ENV = 'PYTHON_ENV' #: python environment values
-RPK_PYTHON_INSTALL_ENV = 'PYTHON_INSTALL_ENV' #: python install env. values
-RPK_PYTHON_INSTALL_OPTS = 'PYTHON_INSTALL_OPTS' #: python install options
+# (package type - python)
 RPK_PYTHON_INTERPRETER = 'PYTHON_INTERPRETER' #: python interpreter
-RPK_PYTHON_OPTS = 'PYTHON_OPTS' #: python options
 
 class GlobalAction(Enum):
     """

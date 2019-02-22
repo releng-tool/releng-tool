@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from .defs import *
 from .util.env import extendScriptEnv
@@ -355,84 +355,49 @@ class RelengPackageManager:
 
             # ##################################################################
 
-            pkg_autotools_autoreconf = self._fetch(RPK_AUTOTOOLS_AUTORECONF,
-                PkgKeyType.BOOL, allowExpand=True, expandExtra=expandExtra)
+            # package-type build definitions
+            pkg_build_defs = self._fetch(
+                RPK_BUILD_ENV, PkgKeyType.DICT_STR_STR)
+
+            # package-type build environment options
+            pkg_build_env = self._fetch(
+                RPK_BUILD_ENV, PkgKeyType.DICT_STR_STR)
+
+            # package-type build options
+            pkg_build_opts = self._fetch(
+                RPK_BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+
+            # package-type configuration definitions
+            pkg_conf_defs = self._fetch(
+                RPK_CONF_DEFS, PkgKeyType.DICT_STR_STR)
+
+            # package-type configuration environment options
+            pkg_conf_env = self._fetch(
+                RPK_CONF_ENV, PkgKeyType.DICT_STR_STR)
+
+            # package-type configuration options
+            pkg_conf_opts = self._fetch(
+                RPK_CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+
+            # package-type installation definitions
+            pkg_install_defs = self._fetch(
+                RPK_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
+
+            # package-type installation environment options
+            pkg_install_env = self._fetch(
+                RPK_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
+
+            # package-type installation options
+            pkg_install_opts = self._fetch(
+                RPK_INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+
+            # ##################################################################
 
             # autotools autoreconf flag
             pkg_autotools_autoreconf = self._fetch(
                 RPK_AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL)
 
-            # autotools configuration environment options
-            pkg_autotools_conf_env = self._fetch(
-                RPK_AUTOTOOLS_CONF_ENV, PkgKeyType.DICT_STR_STR)
-
-            # autotools configuration options
-            pkg_autotools_conf_opts = self._fetch(
-                RPK_AUTOTOOLS_CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-
-            # autotools (build) environment options
-            pkg_autotools_env = self._fetch(
-                RPK_AUTOTOOLS_ENV, PkgKeyType.DICT_STR_STR)
-
-            # autotools (build) options
-            pkg_autotools_opts = self._fetch(
-                RPK_AUTOTOOLS_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-
-            # autotools installation environment options
-            pkg_autotools_install_env = self._fetch(
-                RPK_AUTOTOOLS_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
-
-            # autotools installation options
-            pkg_autotools_install_opts = self._fetch(
-                RPK_AUTOTOOLS_INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-
             # ##################################################################
-
-            # cmake configuration definitions
-            pkg_cmake_conf_defs = self._fetch(
-                RPK_CMAKE_CONF_DEFS, PkgKeyType.DICT_STR_STR)
-
-            # cmake configuration environment options
-            pkg_cmake_conf_env = self._fetch(
-                RPK_CMAKE_CONF_ENV, PkgKeyType.DICT_STR_STR)
-
-            # cmake configuration options
-            pkg_cmake_conf_opts = self._fetch(
-                RPK_CMAKE_CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-
-            # cmake environment options
-            pkg_cmake_env = self._fetch(
-                RPK_CMAKE_ENV, PkgKeyType.DICT_STR_STR)
-
-            # cmake options
-            pkg_cmake_opts = self._fetch(
-                RPK_CMAKE_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-
-            # cmake installation environment options
-            pkg_cmake_install_env = self._fetch(
-                RPK_CMAKE_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
-
-            # cmake installation options
-            pkg_cmake_install_opts = self._fetch(
-                RPK_CMAKE_INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-
-            # ##################################################################
-
-            # python environment options
-            pkg_python_env = self._fetch(
-                RPK_PYTHON_ENV, PkgKeyType.DICT_STR_STR)
-
-            # python options
-            pkg_python_opts = self._fetch(
-                RPK_PYTHON_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-
-            # python installation environment options
-            pkg_python_install_env = self._fetch(
-                RPK_PYTHON_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
-
-            # python installation options
-            pkg_python_install_opts = self._fetch(
-                RPK_PYTHON_INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
 
             # python interpreter
             pkg_python_interpreter = self._fetch(
@@ -554,33 +519,26 @@ class RelengPackageManager:
         pkg.strip_count = pkg_strip_count
         pkg.type = pkg_type
         pkg.vcs_type = pkg_vcs_type
-        # (other - autotools)
+        # (package type - common)
+        pkg.build_defs = pkg_build_defs
+        pkg.build_env = pkg_build_env
+        pkg.build_opts = pkg_build_opts
+        pkg.conf_defs = pkg_conf_defs
+        pkg.conf_env = pkg_conf_env
+        pkg.conf_opts = pkg_conf_opts
+        pkg.install_defs = pkg_install_defs
+        pkg.install_env = pkg_install_env
+        pkg.install_opts = pkg_install_opts
+        # (package type - autotools)
         pkg.autotools_autoreconf = pkg_autotools_autoreconf is True
-        pkg.autotools_conf_env = pkg_autotools_conf_env
-        pkg.autotools_conf_opts = pkg_autotools_conf_opts
-        pkg.autotools_env = pkg_autotools_env
-        pkg.autotools_install_env = pkg_autotools_install_env
-        pkg.autotools_install_opts = pkg_autotools_install_opts
-        pkg.autotools_opts = pkg_autotools_opts
-        # (other - cmake)
-        pkg.cmake_conf_defs = pkg_cmake_conf_defs
-        pkg.cmake_conf_env = pkg_cmake_conf_env
-        pkg.cmake_conf_opts = pkg_cmake_conf_opts
-        pkg.cmake_env = pkg_cmake_env
-        pkg.cmake_install_env = pkg_cmake_install_env
-        pkg.cmake_install_opts = pkg_cmake_install_opts
-        pkg.cmake_opts = pkg_cmake_opts
-        # (other - python)
-        pkg.python_env = pkg_python_env
-        pkg.python_install_env = pkg_python_install_env
-        pkg.python_install_opts = pkg_python_install_opts
+        # (package type - python)
         pkg.python_interpreter = pkg_python_interpreter
-        pkg.python_opts = pkg_python_opts
         # (additional environment helpers)
         for env in (os.environ, env):
             env[pkgKey(name, 'BUILD_DIR')] = pkg_build_dir
             env[pkgKey(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
             env[pkgKey(name, 'NAME')] = name
+            env[pkgKey(name, 'REVISION')] = pkg_revision
         os.environ[pkgKey(name, RPK_VERSION)] = pkg_version
 
         return pkg, env, deps
@@ -696,26 +654,20 @@ class RelengPackage:
         type: package type (script-based, cmake, etc.)
         vcs_type: vcs type of the package (git, file, etc.)
         version: package version
-        (other - autotools)
-        autotools_autoreconf: autotools | flag to invoke autoreconf
-        autotools_conf_env: autotools | configuration environment overrides
-        autotools_conf_opts: autotools | configuration option overrides
-        autotools_env: autotools | build environment overrides
-        autotools_install_env: autotools | installation environment overrides
-        autotools_install_opts: autotools | installation option overrides
-        autotools_opts: autotools | build option overrides
-        (other - cmake)
-        cmake_conf_env: cmake | configuration environment overrides
-        cmake_conf_opts: cmake | configuration option overrides
-        cmake_env: cmake | environment overrides
-        cmake_install_env: cmake | installation environment overrides
-        cmake_install_opts: cmake | installation option overrides
-        cmake_opts: cmake | option overrides
+        (package type - common)
+        build_defs: package-type build definitions
+        build_env: package-type build environment overrides
+        build_opts: package-type build option overrides
+        conf_defs: package-type configuration definitions
+        conf_env: package-type configuration environment overrides
+        conf_opts: package-type configuration option overrides
+        install_defs: package-type installation definitions
+        install_env: package-type installation environment overrides
+        install_opts: package-type installation option overrides
+        (package type - autotools)
+        autotools_autoreconf: flag to invoke autoreconf
         (other - python)
-        python_env: python | environment overrides
-        python_install_env: python | installation environment overrides
-        python_install_opts: python | installation option overrides
-        python_opts: python | option overrides
+        python_interpreter: python interpreter to invoke stages with
     """
     def __init__(self, name, version):
         self.name = name
@@ -744,26 +696,20 @@ class RelengPackage:
         self.strip_count = None
         self.type = None
         self.vcs_type = None
-        # (other - autotools)
+        # (package type - common)
+        self.build_defs = None
+        self.build_env = None
+        self.build_opts = None
+        self.conf_defs = None
+        self.conf_env = None
+        self.conf_opts = None
+        self.install_defs = None
+        self.install_env = None
+        self.install_opts = None
+        # (package type - autotools)
         self.autotools_autoreconf = None
-        self.autotools_conf_env = None
-        self.autotools_conf_opts = None
-        self.autotools_env = None
-        self.autotools_install_env = None
-        self.autotools_install_opts = None
-        self.autotools_opts = None
-        # (other - cmake)
-        self.cmake_conf_env = None
-        self.cmake_conf_opts = None
-        self.cmake_env = None
-        self.cmake_install_env = None
-        self.cmake_install_opts = None
-        self.cmake_opts = None
         # (other - python)
-        self.python_env = None
-        self.python_install_env = None
-        self.python_install_opts = None
-        self.python_opts = None
+        self.python_interpreter = None
 
     def __str__(self):
         return (
