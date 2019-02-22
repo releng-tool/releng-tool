@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2019 releng-tool
 
+from ..util.io import interimWorkingDirectory
 from ..util.io import run_script
 from ..util.log import *
 import os
@@ -36,8 +37,14 @@ def stage(engine, pkg, script_env):
     if not os.path.isfile(post_script):
         return True
 
-    if not run_script(post_script, script_env, subject='post-processing'):
-        return False
+    if pkg.build_subdir:
+        build_dir = pkg.build_subdir
+    else:
+        build_dir = pkg.build_dir
+
+    with interimWorkingDirectory(build_dir):
+        if not run_script(post_script, script_env, subject='post-processing'):
+            return False
 
     verbose('post-processing script executed: ' + post_script)
     return True
