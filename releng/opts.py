@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from .defs import GlobalAction
 from .defs import PkgAction
@@ -40,8 +40,8 @@ class RelengEngineOptions:
     Args:
         args (optional): handle user-provided configuration options (argparse)
             and apply them to respective attributes
-        unknown_args (optional): handle unknown arguments provided by the user
-            which can be forwarded to the releng-tool project's configuration
+        forward_args (optional): handle arguments provided by the user which can
+            be forwarded to the releng-tool project's configuration
 
     Attributes:
         build_dir: directory container for all builds
@@ -57,6 +57,7 @@ class RelengEngineOptions:
         extern_pkg_dirs: external package directories (if any)
         ff_devmode: the file flag path for development mode detection
         ff_local_srcs: the file flag path for local sources mode detection
+        forward_args: command line arguments forwarded to configuration script
         gbl_action: the specific global-action to perform (if any)
         host_dir: directory container for host tools
         images_dir: directory container for (final) images
@@ -78,11 +79,10 @@ class RelengEngineOptions:
         target_action: the specific package to work on (if any)
         target_dir: directory container for target content
         tools_override: dictionary to override tool commands
-        unknown_args: command line arguments forwarded to configuration script
         url_mirror: mirror base site for url fetches
         verbose: whether or not verbose messages are shown
     """
-    def __init__(self, args=None, unknown_args=None):
+    def __init__(self, args=None, forward_args=None):
         self.build_dir = None
         self.cache_dir = None
         self.cache_ext_transform = None
@@ -96,6 +96,7 @@ class RelengEngineOptions:
         self.extern_pkg_dirs = []
         self.ff_devmode = None
         self.ff_local_srcs = None
+        self.forward_args = forward_args
         self.gbl_action = GlobalAction.UNKNOWN
         self.host_dir = None
         self.images_dir = None
@@ -117,7 +118,6 @@ class RelengEngineOptions:
         self.target_action = None
         self.target_dir = None
         self.tools_override = None
-        self.unknown_args = unknown_args
         self.url_mirror = None
         self.verbose = False
 

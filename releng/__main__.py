@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from . import __version__ as releng_version
 from .engine import RelengEngine
@@ -40,7 +40,14 @@ def main():
         parser.add_argument('--version', action='version',
             version='%(prog)s ' + releng_version)
 
-        args, unknown_args = parser.parse_known_args()
+        known_args = sys.argv[1:]
+        forward_args = None
+        idx = known_args.index('--') if '--' in known_args else None
+        if idx:
+            forward_args = known_args[idx + 1:]
+            known_args = known_args[:idx]
+
+        args, unknown_args = parser.parse_known_args(known_args)
         if args.help:
             print(usage())
             sys.exit(0)
@@ -52,7 +59,10 @@ def main():
         releng_log_configuration(args.debug, args.nocolorout, args.verbose)
 
         if unknown_args:
-            debug('unknown arguments: {}', ' '.join(unknown_args))
+            warn('unknown arguments: {}', ' '.join(unknown_args))
+
+        if forward_args:
+            debug('forwarded arguments: {}', ' '.join(forward_args))
 
         # toggle on ansi colors by default for commands
         if not args.nocolorout:
@@ -64,7 +74,7 @@ def main():
             warn('running as root; this may be unsafe')
 
         # prepare engine options
-        opts = RelengEngineOptions(args=args, unknown_args=unknown_args)
+        opts = RelengEngineOptions(args=args, forward_args=forward_args)
 
         # register the project's root directory as a system path; permits a
         # project to import locally created modules in their build/etc. scripts
