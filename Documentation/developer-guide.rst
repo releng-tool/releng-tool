@@ -663,12 +663,16 @@ environment variables will be made available:
 | .. _CONF_PKG_BUILD_DIR:  |                                                   |
 |                          |                                                   |
 | ``PKG_BUILD_DIR``        | The directory for a specific package's buildable  |
-|                          | content (see also |CONF_PKG_BUILD_ODIR|_).        |
+|                          | content.                                          |
+|                          |                                                   |
+|                          | See also |CONF_PKG_BUILD_ODIR|_.                  |
 +--------------------------+---------------------------------------------------+
 | .. _CONF_PKG_BUILD_ODIR: |                                                   |
 |                          |                                                   |
 | ``PKG_BUILD_OUTPUT_DIR`` | The directory for where a package's build output  |
-|                          | will be stored (see also |CONF_PKG_BUILD_DIR|_).  |
+|                          | will be stored.                                   |
+|                          |                                                   |
+|                          | See also |CONF_PKG_BUILD_DIR|_.                   |
 +--------------------------+---------------------------------------------------+
 | ``PKG_CACHE_FILE``       | The location of the cache file for a package. If  |
 |                          | package defines a fetch of an archive from a      |
@@ -696,9 +700,13 @@ environment variables will be made available:
 |                          |                                                   |
 |                          | See also |CONF_REVISION|_.                        |
 +--------------------------+---------------------------------------------------+
-| ``PKG_SITE``             | The site of the package (see also |CONF_SITE|_).  |
+| ``PKG_SITE``             | The site of the package.                          |
+|                          |                                                   |
+|                          | See also |CONF_SITE|_.                            |
 +--------------------------+---------------------------------------------------+
 | ``PKG_VERSION``          | The version of the package.                       |
+|                          |                                                   |
+|                          | See also |CONF_VERSION|_.                         |
 +--------------------------+---------------------------------------------------+
 | ``PREFIX``               | The sysroot prefix for the package.               |
 +--------------------------+---------------------------------------------------+
