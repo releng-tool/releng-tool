@@ -423,6 +423,7 @@ has failed. Ensure the following path is accessible for this user:
             env['PKG_DEFDIR'] = pkg.def_dir
             env['PKG_NAME'] = pkg.name
             env['PKG_SITE'] = pkg.site if pkg.site else ''
+            env['PKG_REVISION'] = pkg.revision
             env['PKG_VERSION'] = pkg.version
             env['PREFIX'] = pkg.prefix
 
