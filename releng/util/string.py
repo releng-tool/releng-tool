@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from collections import Sequence
 import os
@@ -227,7 +227,7 @@ def interpretZeroToOneStrings(obj):
                 if not isinstance(child, basestring):
                     rv = None
                     break
-                rv[child] = None
+                rv[child] = ''
 
     return rv
 
