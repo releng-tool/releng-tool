@@ -20,6 +20,11 @@ defining their projects will have ownership on what compilers/toolchains are
 used and the interaction between the staging/target area and the host system.
 
 .. toctree::
+   :hidden:
+
+   self
+
+.. toctree::
    :maxdepth: 2
 
    requirements
