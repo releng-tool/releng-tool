@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ..api import RelengExtractOptions
 from ..defs import *
@@ -49,7 +49,7 @@ def stage(engine, pkg):
     extract_opts.revision = pkg.revision
     extract_opts.strip_count = pkg.strip_count
     extract_opts.version = pkg.version
-    extract_opts._tools_override = engine.opts.tools_override
+    extract_opts._extract_override = engine.opts.extract_override
 
     if os.path.exists(pkg.build_dir):
         warn('build directory exists before extraction; removing')

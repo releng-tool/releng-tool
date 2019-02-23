@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from ..tool.tar import *
 from ..util.io import interpretStemExtension
@@ -51,10 +51,10 @@ def extract(opts):
         # if the user defines a tool override for this extension type, use
         # whatever the user wants to use (passing the file and directory to
         # extract to)
-        if opts._tools_override and cache_ext in opts._tools_override:
+        if opts._extract_override and cache_ext in opts._extract_override:
             is_extractable = True
 
-            tool_cmd = opts._tools_override[cache_ext].format(
+            tool_cmd = opts._extract_override[cache_ext].format(
                 file=cache_file, dir=work_dir)
 
             if not execute(tool_cmd.split(), cwd=work_dir, critical=False):

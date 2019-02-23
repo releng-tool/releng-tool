@@ -813,7 +813,7 @@ following key entry and re-try again.
             if otz is None:
                 notifyInvalidValue(CONF_KEY_OVERRIDE_TOOLS, 'dict(str,str)')
                 return False
-            self.opts.tools_override = otz
+            self.opts.extract_override = otz
 
         if CONF_KEY_SYSROOT_PREFIX in settings:
             sysroot_prefix = interpretString(settings[CONF_KEY_SYSROOT_PREFIX])

@@ -55,6 +55,7 @@ class RelengEngineOptions:
         devmode: whether or not development mode is enabled
         dl_dir: directory container for download (archives)
         extern_pkg_dirs: external package directories (if any)
+        extract_override: dictionary to override extraction commands
         ff_devmode: the file flag path for development mode detection
         ff_local_srcs: the file flag path for local sources mode detection
         forward_args: command line arguments forwarded to configuration script
@@ -78,7 +79,6 @@ class RelengEngineOptions:
         sysroot_prefix: system root prefix
         target_action: the specific package to work on (if any)
         target_dir: directory container for target content
-        tools_override: dictionary to override tool commands
         url_mirror: mirror base site for url fetches
         verbose: whether or not verbose messages are shown
     """
@@ -94,6 +94,7 @@ class RelengEngineOptions:
         self.devmode = None
         self.dl_dir = None
         self.extern_pkg_dirs = []
+        self.extract_override = None
         self.ff_devmode = None
         self.ff_local_srcs = None
         self.forward_args = forward_args
@@ -117,7 +118,6 @@ class RelengEngineOptions:
         self.sysroot_prefix = DEFAULT_SYSROOT_PREFIX
         self.target_action = None
         self.target_dir = None
-        self.tools_override = None
         self.url_mirror = None
         self.verbose = False
 
