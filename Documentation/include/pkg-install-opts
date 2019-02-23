@@ -1,5 +1,5 @@
-<PKG>_INSTALL_OPTS
-^^^^^^^^^^^^^^^^^^
+LIBFOO_INSTALL_OPTS
+^^^^^^^^^^^^^^^^^^^
 
 Provides a means to pass command line options into the installation process.
 This option can be defined as a dictionary of string pairs or a list with

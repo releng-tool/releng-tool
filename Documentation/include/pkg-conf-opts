@@ -1,5 +1,5 @@
-<PKG>_CONF_OPTS
-^^^^^^^^^^^^^^^
+LIBFOO_CONF_OPTS
+^^^^^^^^^^^^^^^^
 
 Provides a means to pass command line options into the configuration process.
 This option can be defined as a dictionary of string pairs or a list with

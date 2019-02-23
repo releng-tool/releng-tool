@@ -1,5 +1,5 @@
-<PKG>_BUILD_OPTS
-^^^^^^^^^^^^^^^^
+LIBFOO_BUILD_OPTS
+^^^^^^^^^^^^^^^^^
 
 Provides a means to pass command line options into the build process. This
 option can be defined as a dictionary of string pairs or a list with strings --

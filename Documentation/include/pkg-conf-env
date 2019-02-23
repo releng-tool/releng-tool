@@ -1,5 +1,5 @@
-<PKG>_CONF_ENV
-^^^^^^^^^^^^^^
+LIBFOO_CONF_ENV
+^^^^^^^^^^^^^^^
 
 Provides a means to pass environment variables into the configuration process.
 This option is defined as a dictionary with key-value pairs where the key is

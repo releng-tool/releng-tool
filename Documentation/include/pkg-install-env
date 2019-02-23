@@ -1,5 +1,5 @@
-<PKG>_INSTALL_ENV
-^^^^^^^^^^^^^^^^^
+LIBFOO_INSTALL_ENV
+^^^^^^^^^^^^^^^^^^
 
 Provides a means to pass environment variables into the installation process.
 This option is defined as a dictionary with key-value pairs where the key is

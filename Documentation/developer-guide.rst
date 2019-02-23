@@ -477,7 +477,7 @@ follows:
 |                          |                                                   |
 |                          |    sysroot_prefix = '/usr'                        |
 |                          |                                                   |
-|                          | See also |CONF_PREFIX|_.                          |
+|                          | See also |LIBFOO_PREFIX|_.                        |
 +--------------------------+---------------------------------------------------+
 | ``url_mirror``           | Specifies a mirror base site to be used for URL   |
 |                          | fetch requests. If this option is set, any URL    |
@@ -698,15 +698,15 @@ environment variables will be made available:
 +--------------------------+---------------------------------------------------+
 | ``PKG_REVISION``         | The site revision of the package.                 |
 |                          |                                                   |
-|                          | See also |CONF_REVISION|_.                        |
+|                          | See also |LIBFOO_REVISION|_.                      |
 +--------------------------+---------------------------------------------------+
 | ``PKG_SITE``             | The site of the package.                          |
 |                          |                                                   |
-|                          | See also |CONF_SITE|_.                            |
+|                          | See also |LIBFOO_SITE|_.                          |
 +--------------------------+---------------------------------------------------+
 | ``PKG_VERSION``          | The version of the package.                       |
 |                          |                                                   |
-|                          | See also |CONF_VERSION|_.                         |
+|                          | See also |LIBFOO_VERSION|_.                       |
 +--------------------------+---------------------------------------------------+
 | ``PREFIX``               | The sysroot prefix for the package.               |
 +--------------------------+---------------------------------------------------+
@@ -783,7 +783,7 @@ underscores. For example, ``package-a`` will have a prefix ``PACKAGE_A_``. For a
 package to take advantage of a configuration option, the package definition will
 add a variable entry with the package's prefix followed by the
 supported option name. Considering the same package with the name ``package-a``
-(and prefix ``PACKAGE_A_``), to use the |CONF_VERSION|_ configuration option,
+(and prefix ``PACKAGE_A_``), to use the |LIBFOO_VERSION|_ configuration option,
 the following can be defined (``PACKAGE_A_VERSION``):
 
 .. code-block:: python
@@ -798,409 +798,372 @@ More details on available configuration options are as follows.
 common package configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following outlines common configuration options available for packages:
+The following outlines common configuration options available for packages.
 
-+--------------------------+---------------------------------------------------+
-| ``DEPENDENCIES``         | List of package dependencies a given project has. |
-|                          | If a project depends on another package, the      |
-|                          | package name should be listed in this option.     |
-|                          | This ensures releng-tool will process packages in |
-|                          | the proper order. The following shows an example  |
-|                          | package ``libc`` being dependent on ``liba`` and  |
-|                          | ``libb`` being processed first:                   |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBC_DEPENDENCIES = ['liba', 'libb']           |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| ``INSTALL_TYPE``         | Defines the installation type of this package. A  |
-|                          | package may be designed to be built and installed |
-|                          | for just the target area, the stage area, both or |
-|                          | maybe in the host directory. The following        |
-|                          | options are available for the installation type:  |
-|                          |                                                   |
-|                          | - ``host`` - the host directory                   |
-|                          | - ``images`` - the images directory               |
-|                          | - ``staging`` - the staging area                  |
-|                          | - ``staging_and_target`` - both the staging an    |
-|                          |   target area                                     |
-|                          | - ``target`` - the target area                    |
-|                          |                                                   |
-|                          | The default installation type is ``target``.      |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_INSTALL_TYPE = 'target'                 |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_LICENSE:        |                                                   |
-|                          |                                                   |
-| ``LICENSE``              | A string or list of strings outlining the         |
-|                          | license information for a package. Outlining the  |
-|                          | license of a package is always recommended (but   |
-|                          | not required).                                    |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_LICENSE = ['GPLv2', 'MIT']              |
-|                          |                                                   |
-|                          | or                                                |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_LICENSE = 'Proprietary'                 |
-|                          |                                                   |
-|                          |                                                   |
-|                          | See also |CONF_LICENSE_FILES|_.                   |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_LICENSE_FILES:  |                                                   |
-|                          |                                                   |
-| ``LICENSE_FILES``        | A string or list of strings identifying the       |
-|                          | license files found inside the package sources    |
-|                          | which match up to the defined ``LICENSE`` entries |
-|                          | (respectively). Listing the license(s) of a       |
-|                          | package is always recommended (but not required). |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_LICENSE_FILES = [                       |
-|                          |        'LICENSE.GPLv2',                           |
-|                          |        'LICENSE.MIT',                             |
-|                          |    ]                                              |
-|                          |                                                   |
-|                          | or                                                |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_LICENSE_FILES = 'LICENSE'               |
-|                          |                                                   |
-|                          | See also |CONF_LICENSE|_.                         |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_SITE:           |                                                   |
-|                          |                                                   |
-| ``SITE``                 | The site where package sources/assets can be      |
-|                          | found. The site can be a URL of an archive, or    |
-|                          | describe a source control URL such as Git or SVN. |
-|                          | The following outline a series of supported site  |
-|                          | definitions:                                      |
-|                          |                                                   |
-|                          | ========= ===                                     |
-|                          | type      prefix/postfix                          |
-|                          | ========= ===                                     |
-|                          | Bazaar    ``bzr+``                                |
-|                          | CVS       ``cvs+``                                |
-|                          | Git       ``git+`` or ``.git``                    |
-|                          | Mercurial ``hg+``                                 |
-|                          | SCP       ``scp+``                                |
-|                          | SVN       ``svn+``                                |
-|                          | URL       `(wildcard)`                            |
-|                          | ========= ===                                     |
-|                          |                                                   |
-|                          | Examples include:                                 |
-|                          |                                                   |
-|                          | .. parsed-literal::                               |
-|                          |                                                   |
-|                          |    LIBFOO_SITE = '|GITSITE_EXAMPLE|'              |
-|                          |    LIBFOO_SITE = '|CVSSITE_EXAMPLE|'              |
-|                          |    LIBFOO_SITE = '|SVNSITE_EXAMPLE|'              |
-|                          |    LIBFOO_SITE = '|URLSITE_EXAMPLE|'              |
-|                          |                                                   |
-|                          | A developer can also use |CONF_VCS_TYPE|_ to      |
-|                          | explicitly define the version control system type |
-|                          | without the need for a prefix/postfix entry.      |
-|                          |                                                   |
-|                          | For more information on each type's formatting,   |
-|                          | consult                                           |
-|                          | :ref:`site definitions <site_definitions>`.       |
-|                          |                                                   |
-|                          | Using a specific type will create a dependency    |
-|                          | for a project that the respective host tool is    |
-|                          | installed on the host system. For example, if a   |
-|                          | Git site is set, the host system will need to     |
-|                          | have ``git`` installed on the system.             |
-|                          |                                                   |
-|                          | If no site is defined for a package, it will be   |
-|                          | considered a virtual package (i.e. has no         |
-|                          | content). If applicable, loaded extensions may    |
-|                          | provide support for custom site protocols.        |
-|                          |                                                   |
-|                          | See also |CONF_VCS_TYPE|_.                        |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_TYPE:           |                                                   |
-|                          |                                                   |
-| ``TYPE``                 | The package type. The default package type is a   |
-|                          | (Python) script-based package; however,           |
-|                          | releng-tool also provides a series of helper      |
-|                          | package types for common frameworks. The          |
-|                          | following outline a series of supported site      |
-|                          | definitions:                                      |
-|                          |                                                   |
-|                          | ========= ===                                     |
-|                          | type      value                                   |
-|                          | ========= ===                                     |
-|                          | Autotools ``autotools``                           |
-|                          | CMake     ``cmake``                               |
-|                          | Python    ``python``                              |
-|                          | Script    ``script``                              |
-|                          | ========= ===                                     |
-|                          |                                                   |
-|                          | If no type is defined for a package, it will be   |
-|                          | considered a script-based package. If applicable, |
-|                          | loaded extensions may provide support for custom  |
-|                          | site protocols.                                   |
-|                          |                                                   |
-|                          | Using a specific type will create a dependency    |
-|                          | for a project that the respective host tool is    |
-|                          | installed on the host system. For example, if a   |
-|                          | CMake type is set, the host system will need to   |
-|                          | have ``cmake`` installed on the system.           |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_VERSION:        |                                                   |
-|                          |                                                   |
-| ``VERSION``              | The version of the package. Typically the version |
-|                          | value should be formatted in a semantic           |
-|                          | versioning style; however, it is up to the        |
-|                          | developer to decide the best version value to use |
-|                          | for a package. It is important to note that the   |
-|                          | version value is used to determine build output   |
-|                          | folder names, cache files and more.               |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_VERSION = '1.0.0'                       |
-|                          |                                                   |
-|                          | For some VCS types, the version value will be     |
-|                          | used to acquire a specific revision of sources.   |
-|                          | If for some case the desired version value cannot |
-|                          | be gracefully defined (e.g. ``libfoo-v1.0`` will  |
-|                          | produce output directories such as                |
-|                          | ``libfoo-libfoo-v1.0``), |CONF_REVISION|_ can be  |
-|                          | used.                                             |
-|                          |                                                   |
-|                          | See also |CONF_DEVMODE_REV|_ and                  |
-|                          | |CONF_REVISION|_.                                 |
-+--------------------------+---------------------------------------------------+
+LIBFOO_DEPENDENCIES
+^^^^^^^^^^^^^^^^^^^
 
-.. |CONF_LICENSE| replace:: ``LICENSE``
-.. |CONF_LICENSE_FILES| replace:: ``LICENSE_FILES``
-.. |CONF_SITE| replace:: ``SITE``
-.. |CONF_TYPE| replace:: ``TYPE``
-.. |CONF_VERSION| replace:: ``VERSION``
-.. |CVSSITE_EXAMPLE| replace:: cvs+:pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule
-.. |GITSITE_EXAMPLE| replace:: \https://example.com/libfoo.git
-.. |SVNSITE_EXAMPLE| replace:: svn+\https://svn.example.com/repos/libfoo/c/branches/libfoo-1.2
-.. |URLSITE_EXAMPLE| replace:: \https://www.example.com/files/libfoo.tar.gz
+List of package dependencies a given project has. If a project depends on
+another package, the package name should be listed in this option. This ensures
+releng-tool will process packages in the proper order. The following shows an
+example package ``libc`` being dependent on ``liba`` and ``libb`` being
+processed first:
+
+.. code-block:: python
+
+   LIBC_DEPENDENCIES = ['liba', 'libb']
+
+LIBFOO_INSTALL_TYPE
+^^^^^^^^^^^^^^^^^^^
+
+Defines the installation type of this package. A package may be designed to be
+built and installed for just the target area, the stage area, both or maybe in
+the host directory. The following options are available for the installation
+type:
+
+====================== ===
+type                   description
+====================== ===
+``host``               The host directory.
+``images``             The images directory.
+``staging``            The staging area.
+``staging_and_target`` Both the staging an target area.
+``target``             The target area.
+====================== ===
+
+The default installation type is ``target``.
+
+.. code-block:: python
+
+   LIBFOO_INSTALL_TYPE = 'target'
+
+LIBFOO_LICENSE
+^^^^^^^^^^^^^^
+.. |LIBFOO_LICENSE| replace:: ``LIBFOO_LICENSE``
+
+A string or list of strings outlining the license information for a package.
+Outlining the license of a package is always recommended (but not required).
+
+.. code-block:: python
+
+   LIBFOO_LICENSE = ['GPLv2', 'MIT']
+
+or
+
+.. code-block:: python
+
+   LIBFOO_LICENSE = 'Proprietary'
+
+See also |LIBFOO_LICENSE_FILES|_.
+
+LIBFOO_LICENSE_FILES
+^^^^^^^^^^^^^^^^^^^^
+.. |LIBFOO_LICENSE_FILES| replace:: ``LIBFOO_LICENSE_FILES``
+
+A string or list of strings identifying the license files found inside the
+package sources which match up to the defined ``LICENSE`` entries
+(respectively). Listing the license(s) of a package is always recommended (but
+not required).
+
+.. code-block:: python
+
+   LIBFOO_LICENSE_FILES = [
+       'LICENSE.GPLv2',
+       'LICENSE.MIT',
+   ]
+
+or
+
+.. code-block:: python
+
+   LIBFOO_LICENSE_FILES = 'LICENSE'
+
+See also |LIBFOO_LICENSE|_.
+
+LIBFOO_SITE
+^^^^^^^^^^^
+.. |LIBFOO_SITE| replace:: ``LIBFOO_SITE``
+
+The site where package sources/assets can be found. The site can be a URL of an
+archive, or describe a source control URL such as Git or SVN. The following
+outline a series of supported site definitions:
+
+========= ===
+type      prefix/postfix
+========= ===
+Bazaar    ``bzr+``
+CVS       ``cvs+``
+Git       ``git+`` or ``.git``
+Mercurial ``hg+``
+SCP       ``scp+``
+SVN       ``svn+``
+URL       `(wildcard)`
+========= ===
+
+Examples include:
+
+.. parsed-literal::
+
+   LIBFOO_SITE = '\https://example.com/libfoo.git'
+   LIBFOO_SITE = 'cvs+:pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule'
+   LIBFOO_SITE = 'svn+\https://svn.example.com/repos/libfoo/c/branches/libfoo-1.2'
+   LIBFOO_SITE = '\https://www.example.com/files/libfoo.tar.gz'
+
+A developer can also use |LIBFOO_VCS_TYPE|_ to explicitly define the version
+control system type without the need for a prefix/postfix entry.
+
+For more information on each type's formatting, consult
+:ref:`site definitions <site_definitions>`.
+
+Using a specific type will create a dependency for a project that the respective
+host tool is installed on the host system. For example, if a Git site is set,
+the host system will need to have ``git`` installed on the system.
+
+If no site is defined for a package, it will be considered a virtual package
+(i.e. has no content). If applicable, loaded extensions may provide support for
+custom site protocols.
+
+See also |LIBFOO_VCS_TYPE|_.
+
+LIBFOO_TYPE
+^^^^^^^^^^^
+.. |LIBFOO_TYPE| replace:: ``LIBFOO_TYPE``
+
+The package type. The default package type is a (Python) script-based package;
+however, releng-tool also provides a series of helper package types for common
+frameworks. The following outline a series of supported site definitions:
+
+========= ===
+type      value
+========= ===
+Autotools ``autotools``
+CMake     ``cmake``
+Python    ``python``
+Script    ``script``
+========= ===
+
+If no type is defined for a package, it will be considered a script-based
+package. If applicable, loaded extensions may provide support for custom site
+protocols.
+
+Using a specific type will create a dependency for a project that the respective
+host tool is installed on the host system. For example, if a CMake type is set,
+the host system will need to have ``cmake`` installed on the system.
+
+LIBFOO_VERSION
+^^^^^^^^^^^^^^
+.. |LIBFOO_VERSION| replace:: ``LIBFOO_VERSION``
+
+The version of the package. Typically the version value should be formatted in a
+semantic versioning style; however, it is up to the developer to decide the best
+version value to use for a package. It is important to note that the version
+value is used to determine build output folder names, cache files and more.
+
+.. code-block:: python
+
+   LIBFOO_VERSION = '1.0.0'
+
+For some VCS types, the version value will be used to acquire a specific
+revision of sources. If for some case the desired version value cannot be
+gracefully defined (e.g. ``libfoo-v1.0`` will produce output directories such as
+``libfoo-libfoo-v1.0``), |LIBFOO_REVISION|_ can be used.
+
+See also |LIBFOO_DEVMODE_REVISION|_ and |LIBFOO_REVISION|_.
 
 advanced package configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following outlines more advanced configuration options available for
-packages:
+packages.
 
-+--------------------------+---------------------------------------------------+
-| ``BUILD_SUBDIR``         | Sub-directory where a package's extracted sources |
-|                          | holds its buildable content. Sources for a        |
-|                          | package may be nested inside one or more          |
-|                          | directories. A package can specify the            |
-|                          | sub-directory where the configuration, build and  |
-|                          | installation processes are invoked from.          |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_BUILD_SUBDIR = 'subdir'                 |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_DEVMODE_REV:    |                                                   |
-|                          |                                                   |
-| ``DEVMODE_REVISION``     | Specifies a development revision for a package.   |
-|                          | When a project is being built in                  |
-|                          | :ref:`development mode`, the development revision |
-|                          | is used over the configured |CONF_REVISION|_      |
-|                          | value. If a development revision is not defined   |
-|                          | for a project, a package will still use the       |
-|                          | configured |CONF_REVISION|_ while in development  |
-|                          | mode.                                             |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_DEVMODE_REVISION = 'feature/alpha'      |
-|                          |                                                   |
-|                          | See also |CONF_REVISION|_ and |CONF_VERSION|_.    |
-+--------------------------+---------------------------------------------------+
-| ``EXTENSION``            | Specifies a filename extension for the package.   |
-|                          | A package may be cached inside the download       |
-|                          | directory to be used when the extraction phase is |
-|                          | invoked. releng-tool attempts to determine the    |
-|                          | most ideal extension for this cache file; however |
-|                          | some cases the detected extension may be          |
-|                          | incorrect. To deal with this situation, a         |
-|                          | developer can explicitly specify the extension    |
-|                          | value using this option.                          |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_EXTENSION = 'tgz'                       |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_EXTERNAL:       |                                                   |
-|                          |                                                   |
-| ``EXTERNAL``             | Flag value to explicitly indicate that a package  |
-|                          | is an external package. External packages will    |
-|                          | generate warnings if :ref:`hashes <hash_files>`   |
-|                          | or `licenses`_ are missing. By default, packages  |
-|                          | are considered external unless explicitly         |
-|                          | configured to be internal.                        |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_EXTERNAL = True                         |
-|                          |                                                   |
-|                          | See also `internal and external packages`_.       |
-+--------------------------+---------------------------------------------------+
-| ``EXTOPT``               | Specifies extension-specific options. Packages    |
-|                          | wishing to take advantage of extension-specific   |
-|                          | capabilities can forward options to extensions by |
-|                          | defining a dictionary of values.                  |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_EXTOPT = {                              |
-|                          |        'option-a': True,                          |
-|                          |        'option-b': 'value',                       |
-|                          |    }                                              |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| ``EXTRACT_TYPE``         | Specifies a custom extraction type for a package. |
-|                          | If a configured extension supports a custom       |
-|                          | extraction capability, the registered extraction  |
-|                          | type can be explicitly registered in this option. |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_EXTRACT_TYPE = 'ext-custom-extract'     |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| ``FIXED_JOBS``           | Explicitly configure the total number of jobs a   |
-|                          | package can use. The primary use case for this    |
-|                          | option is to help limit the total number of jobs  |
-|                          | for a package that cannot support a large or any  |
-|                          | parallel build environment.                       |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_FIXED_JOBS = 1                          |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_INTERNAL:       |                                                   |
-|                          |                                                   |
-| ``INTERNAL``             | Flag value to explicitly indicate that a package  |
-|                          | is an internal package. Internal packages will    |
-|                          | not generate warnings if                          |
-|                          | :ref:`hashes <hash_files>` or `licenses`_ are     |
-|                          | missing. When configured in                       |
-|                          | :ref:`local-sources mode`, package sources are    |
-|                          | searched for in the local directory opposed to    |
-|                          | site fetched sources. By default, packages are    |
-|                          | considered external unless explicitly configured  |
-|                          | to be internal.                                   |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_INTERNAL = True                         |
-|                          |                                                   |
-|                          | See also `internal and external packages`_.       |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_PREFIX:         |                                                   |
-|                          |                                                   |
-| ``PREFIX``               | Specifies the sysroot prefix value to use for the |
-|                          | package. An explicitly provided prefix value will |
-|                          | override the project-defined or default sysroot   |
-|                          | prefix value.                                     |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_PREFIX = '/usr'                         |
-|                          |                                                   |
-|                          | See also |CONF_SYSROOT_PREFIX|_.                  |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_REVISION:       |                                                   |
-|                          |                                                   |
-| ``REVISION``             | Specifies a revision value for a package. When a  |
-|                          | package fetches content using source management   |
-|                          | tools, the revision value is used to determine    |
-|                          | which sources should be acquired (e.g. a tag). If |
-|                          | a revision is not defined package, a package will |
-|                          | use the configured |CONF_VERSION|_.               |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_REVISION = 'libfoo-v2.1'                |
-|                          |                                                   |
-|                          | See also |CONF_DEVMODE_REV|_ and |CONF_VERSION|_. |
-+--------------------------+---------------------------------------------------+
-| ``STRIP_COUNT``          | Specifies the strip count to use when attempting  |
-|                          | to extract sources from an archive. By default,   |
-|                          | the extraction process will strip a single        |
-|                          | directory from an archive (value: 1). If a        |
-|                          | package's archive has no container directory, a   |
-|                          | strip count of zero can be set; likewise if an    |
-|                          | archive contains multiple container directories,  |
-|                          | a higher strip count can be set.                  |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_STRIP_COUNT = 1                         |
-|                          |                                                   |
-+--------------------------+---------------------------------------------------+
-| .. _CONF_VCS_TYPE:       |                                                   |
-|                          |                                                   |
-| ``VCS_TYPE``             | Explicitly sets the version control system type   |
-|                          | to use when acquiring sources. releng-tool        |
-|                          | attempts to automatically determine the VCS type  |
-|                          | of a package based off a |CONF_SITE|_ value. In   |
-|                          | some scenarios, a site value may be unable to     |
-|                          | specify a desired prefix/postfix. A developer can |
-|                          | instead explicitly set the VCS type to be used no |
-|                          | matter what the site value is configured as.      |
-|                          |                                                   |
-|                          | Supported types are as follows:                   |
-|                          |                                                   |
-|                          | - ``bzr`` (Bazaar)                                |
-|                          | - ``cvs`` (CVS)                                   |
-|                          | - ``git`` (Git)                                   |
-|                          | - ``hg``  (Mercurial)                             |
-|                          | - ``none`` (no VCS; virtual package)              |
-|                          | - ``scp`` (SCP)                                   |
-|                          | - ``svn`` (SVN)                                   |
-|                          | - ``url`` (URL)                                   |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    LIBFOO_VCS_TYPE = 'git'                        |
-|                          |                                                   |
-|                          | If a project registers a custom extension which   |
-|                          | provides a custom VCS type, the extension type    |
-|                          | can be set in this option.                        |
-|                          |                                                   |
-|                          | Using a specific type will create a dependency    |
-|                          | for a project that the respective host tool is    |
-|                          | installed on the host system. For example, if a   |
-|                          | Git VCS-type is set, the host system will need to |
-|                          | have ``git`` installed on the system.             |
-+--------------------------+---------------------------------------------------+
+LIBFOO_BUILD_SUBDIR
+^^^^^^^^^^^^^^^^^^^
 
-.. |CONF_DEVMODE_REV| replace:: ``DEVMODE_REVISION``
-.. |CONF_EXTERNAL| replace:: ``EXTERNAL``
-.. |CONF_INTERNAL| replace:: ``INTERNAL``
-.. |CONF_PREFIX| replace:: ``PREFIX``
-.. |CONF_REVISION| replace:: ``REVISION``
-.. |CONF_VCS_TYPE| replace:: ``VCS_TYPE``
+Sub-directory where a package's extracted sources holds its buildable content.
+Sources for a package may be nested inside one or more directories. A package
+can specify the sub-directory where the configuration, build and installation
+processes are invoked from.
+
+.. code-block:: python
+
+   LIBFOO_BUILD_SUBDIR = 'subdir'
+
+LIBFOO_DEVMODE_REVISION
+^^^^^^^^^^^^^^^^^^^^^^^
+.. |LIBFOO_DEVMODE_REVISION| replace:: ``LIBFOO_DEVMODE_REVISION``
+
+Specifies a development revision for a package. When a project is being built in
+:ref:`development mode`, the development revision is used over the configured
+|LIBFOO_REVISION|_ value. If a development revision is not defined for a
+project, a package will still use the configured |LIBFOO_REVISION|_ while in
+development mode.
+
+.. code-block:: python
+
+   LIBFOO_DEVMODE_REVISION = 'feature/alpha'
+
+See also |LIBFOO_REVISION|_ and |LIBFOO_VERSION|_.
+
+LIBFOO_EXTENSION
+^^^^^^^^^^^^^^^^
+
+Specifies a filename extension for the package. A package may be cached inside
+the download directory to be used when the extraction phase is invoked.
+releng-tool attempts to determine the most ideal extension for this cache file;
+however some cases the detected extension may be incorrect. To deal with this
+situation, a developer can explicitly specify the extension value using this
+option.
+
+.. code-block:: python
+
+   LIBFOO_EXTENSION = 'tgz'
+
+LIBFOO_EXTERNAL
+^^^^^^^^^^^^^^^
+.. |LIBFOO_EXTERNAL| replace:: ``LIBFOO_EXTERNAL``
+
+Flag value to explicitly indicate that a package is an external package.
+External packages will generate warnings if :ref:`hashes <hash_files>` or
+`licenses`_ are missing. By default, packages are considered external unless
+explicitly configured to be internal.
+
+.. code-block:: python
+
+   LIBFOO_EXTERNAL = True
+
+See also `internal and external packages`_.
+
+LIBFOO_EXTOPT
+^^^^^^^^^^^^^
+
+Specifies extension-specific options. Packages wishing to take advantage of
+extension-specific capabilities can forward options to extensions by defining a
+dictionary of values.
+
+.. code-block:: python
+
+   LIBFOO_EXTOPT = {
+       'option-a': True,
+       'option-b': 'value',
+   }
+
+LIBFOO_EXTRACT_TYPE
+^^^^^^^^^^^^^^^^^^^
+
+Specifies a custom extraction type for a package. If a configured extension
+supports a custom extraction capability, the registered extraction type can be
+explicitly registered in this option.
+
+.. code-block:: python
+
+   LIBFOO_EXTRACT_TYPE = 'ext-custom-extract'
+
+LIBFOO_FIXED_JOBS
+^^^^^^^^^^^^^^^^^
+
+Explicitly configure the total number of jobs a package can use. The primary use
+case for this option is to help limit the total number of jobs for a package
+that cannot support a large or any parallel build environment.
+
+.. code-block:: python
+
+   LIBFOO_FIXED_JOBS = 1
+
+LIBFOO_INTERNAL
+^^^^^^^^^^^^^^^
+.. |LIBFOO_INTERNAL| replace:: ``LIBFOO_INTERNAL``
+
+Flag value to explicitly indicate that a package is an internal package.
+Internal packages will not generate warnings if :ref:`hashes <hash_files>` or
+`licenses`_ are missing. When configured in :ref:`local-sources mode`, package
+sources are searched for in the local directory opposed to site fetched sources.
+By default, packages are considered external unless explicitly configured to be
+internal.
+
+.. code-block:: python
+
+   LIBFOO_INTERNAL = True
+
+See also `internal and external packages`_.
+
+LIBFOO_PREFIX
+^^^^^^^^^^^^^
+.. |LIBFOO_PREFIX| replace:: ``LIBFOO_PREFIX``
+
+Specifies the sysroot prefix value to use for the package. An explicitly
+provided prefix value will override the project-defined or default sysroot
+prefix value.
+
+.. code-block:: python
+
+   LIBFOO_PREFIX = '/usr'
+
+See also |CONF_SYSROOT_PREFIX|_.
+
+LIBFOO_REVISION
+^^^^^^^^^^^^^^^
+.. |LIBFOO_REVISION| replace:: ``LIBFOO_REVISION``
+
+Specifies a revision value for a package. When a package fetches content using
+source management tools, the revision value is used to determine which sources
+should be acquired (e.g. a tag). If a revision is not defined package, a package
+will use the configured |LIBFOO_VERSION|_.
+
+.. code-block:: python
+
+   LIBFOO_REVISION = 'libfoo-v2.1'
+
+See also |LIBFOO_DEVMODE_REVISION|_ and |LIBFOO_VERSION|_.
+
+LIBFOO_STRIP_COUNT
+^^^^^^^^^^^^^^^^^^
+
+Specifies the strip count to use when attempting to extract sources from an
+archive. By default, the extraction process will strip a single directory from
+an archive (value: 1). If a package's archive has no container directory, a
+strip count of zero can be set; likewise if an archive contains multiple
+container directories, a higher strip count can be set.
+
+.. code-block:: python
+
+   LIBFOO_STRIP_COUNT = 1
+
+LIBFOO_VCS_TYPE
+^^^^^^^^^^^^^^^
+.. |LIBFOO_VCS_TYPE| replace:: ``LIBFOO_VCS_TYPE``
+
+Explicitly sets the version control system type to use when acquiring sources.
+releng-tool attempts to automatically determine the VCS type of a package based
+off a |LIBFOO_SITE|_ value. In some scenarios, a site value may be unable to
+specify a desired prefix/postfix. A developer can instead explicitly set the VCS
+type to be used no matter what the site value is configured as.
+
+Supported types are as follows:
+
+- ``bzr`` (Bazaar)
+- ``cvs`` (CVS)
+- ``git`` (Git)
+- ``hg``  (Mercurial)
+- ``none`` (no VCS; virtual package)
+- ``scp`` (SCP)
+- ``svn`` (SVN)
+- ``url`` (URL)
+
+.. code-block:: python
+
+   LIBFOO_VCS_TYPE = 'git'
+
+If a project registers a custom extension which provides a custom VCS type, the
+extension type can be set in this option.
+
+Using a specific type will create a dependency for a project that the respective
+host tool is installed on the host system. For example, if a Git VCS-type is
+set, the host system will need to have ``git`` installed on the system.
 
 package post-processing
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Every package, no matter which package |CONF_TYPE|_ is defined, can create a
+Every package, no matter which package |LIBFOO_TYPE|_ is defined, can create a
 post-processing script to invoke after a package has completed an installation
 stage. The existence of a ``<package>-post`` inside a package directory will
 trigger the post-processing stage for the package. An example post-processing
@@ -1231,7 +1194,7 @@ documentation provided by said extension.
 
    All site values can be defined with a prefix value (e.g. ``git+`` for Git
    sources) or postfix value; however, this is optional if a package wishes to
-   use the |CONF_VCS_TYPE|_ option.
+   use the |LIBFOO_VCS_TYPE|_ option.
 
 bazaar site
 ^^^^^^^^^^^
@@ -1336,8 +1299,9 @@ url site (default)
 ^^^^^^^^^^^^^^^^^^
 
 All packages that do not define a helper prefix/postfix value (as seen in other
-site definitions) or do not explicitly set a |CONF_VCS_TYPE|_ value (other than
-``url``), will be considered a URL site. A URL site can be defined as follows:
+site definitions) or do not explicitly set a |LIBFOO_VCS_TYPE|_ value (other
+than ``url``), will be considered a URL site. A URL site can be defined as
+follows:
 
 .. code-block:: python
 
@@ -1404,7 +1368,7 @@ script package (default)
 
 A script-based package is the most basic package type available. By default,
 packages are considered to be script packages unless explicitly configured to be
-another package type (|CONF_TYPE|_). If a developer wishes to explicitly
+another package type (|LIBFOO_TYPE|_). If a developer wishes to explicitly
 configure a project as script-based, the following configuration can be used:
 
 .. code-block:: python
@@ -1452,8 +1416,8 @@ during the installation stage.
 The following sections outline configuration options are available for an
 autotools package.
 
-<PKG>_AUTOTOOLS_AUTORECONF
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+LIBFOO_AUTOTOOLS_AUTORECONF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Specifies whether or not the package needs to perform an autotools
 re-configuration. This is to assist in the rebuilding of GNU Build System files
@@ -1591,8 +1555,8 @@ package.
 
 .. _python_interpreter:
 
-<PKG>_PYTHON_INTERPRETER
-^^^^^^^^^^^^^^^^^^^^^^^^
+LIBFOO_PYTHON_INTERPRETER
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Defines an specific Python interpreter when processing the build and
 installation stages for a package. If not specified, the system's Python
@@ -1663,7 +1627,7 @@ information; some may only use open source software and require to populate
 license information for a final package; or a mix.
 
 When license information is populated for a project, each project's license
-information (|CONF_LICENSE_FILES|_) is will be populated into a single license
+information (|LIBFOO_LICENSE_FILES|_) is will be populated into a single license
 document. If a developer defines the |CONF_LICENSE_HEADER|_ configuration,
 the generated document will be prefixed with the header content. For example,
 ``releng.py`` can be configured to prepare a license header from a local file
@@ -1745,8 +1709,8 @@ internal and external packages
 
 Packages are either internal packages or external packages. All packages are
 considered external packages by default unless explicitly configured as internal
-through either the package option |CONF_INTERNAL|_ or using the project
-configuration |CONF_DEFAULT_INTERN|_ (see also |CONF_EXTERNAL|_). Both package
+through either the package option |LIBFOO_INTERNAL|_ or using the project
+configuration |CONF_DEFAULT_INTERN|_ (see also |LIBFOO_EXTERNAL|_). Both package
 types are almost treated the same except for the following:
 
 - An internal package will not generate output warnings if the package is
@@ -1755,7 +1719,7 @@ types are almost treated the same except for the following:
   missing :ref:`license information <license_information>`.
 - When configured for :ref:`development mode`; the patch stage will not be
   performed if the package specifies a development revision
-  (|CONF_DEVMODE_REV|_).
+  (|LIBFOO_DEVMODE_REVISION|_).
 - When configured for :ref:`local-sources mode`; the fetch, extract and patch
   stages will not be performed.
 
