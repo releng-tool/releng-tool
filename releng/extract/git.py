@@ -34,7 +34,7 @@ def extract(opts):
 
     log('checking out target revision into work tree')
     if not GIT.execute([git_dir, work_tree, '-c', 'advice.detachedHead=false',
-                'checkout', '--force', '--progress', revision],
+                'checkout', '--force', revision],
             cwd=work_dir):
         err('unable to checkout revision')
         return False
