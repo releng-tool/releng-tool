@@ -41,7 +41,7 @@ def main():
             version='%(prog)s ' + releng_version)
 
         known_args = sys.argv[1:]
-        forward_args = None
+        forward_args = []
         idx = known_args.index('--') if '--' in known_args else None
         if idx:
             forward_args = known_args[idx + 1:]
