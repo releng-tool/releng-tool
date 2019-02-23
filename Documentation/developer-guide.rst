@@ -949,6 +949,12 @@ Python    ``python``
 Script    ``script``
 ========= ===
 
+For example:
+
+.. code-block:: python
+
+   LIBFOO_TYPE = 'script'
+
 If no type is defined for a package, it will be considered a script-based
 package. If applicable, loaded extensions may provide support for custom site
 protocols.
