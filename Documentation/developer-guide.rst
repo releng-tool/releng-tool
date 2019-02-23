@@ -496,120 +496,125 @@ follows:
 
 A list of more advanced configuration options are as follows:
 
-+--------------------------+---------------------------------------------------+
-| ``cache_ext``            | A transform for cache extension interpreting.     |
-|                          | This is an advanced configuration and is not      |
-|                          | recommended for use except for special use cases  |
-|                          | outlined below.                                   |
-|                          |                                                   |
-|                          | When releng-tool fetches assets from remote       |
-|                          | sites, the site value can used to determine the   |
-|                          | resulting filename of a cached asset. For         |
-|                          | example, downloading an asset from                |
-|                          | ``https://example.org/my-file.tgz``, the locally  |
-|                          | downloaded file will result in a ``.tgz``         |
-|                          | extension; however, not all defined sites will    |
-|                          | result in a easily interpreted cache extension.   |
-|                          | While releng-tool will attempt its best to        |
-|                          | determine an appropriate extension value to use,  |
-|                          | some use cases may not be able to be handled. To  |
-|                          | deal with these cases, a developer can define a   |
-|                          | transform method to help translate a site value   |
-|                          | into a known cache extension value.               |
-|                          |                                                   |
-|                          | Consider the following example: a host is used to |
-|                          | acquire assets from a content server. The URI to  |
-|                          | download an asset uses a unique request format    |
-|                          | ``https://static.example.org/fetch/25134``.       |
-|                          | releng-tool may not be able to find the extension |
-|                          | for the fetched asset, but if a developer knows   |
-|                          | the expected archive types for these calls, a     |
-|                          | custom transform can be defined. For example:     |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    def my_translator(site):                       |
-|                          |        if 'static.example.org' in site:           |
-|                          |            return 'tgz'                           |
-|                          |        return None                                |
-|                          |                                                   |
-|                          |    cache_ext = my_translator                      |
-|                          |                                                   |
-|                          | The above transform indicates that all packages   |
-|                          | using the ``static.example.org`` site will be     |
-|                          | ``tgz`` archives.                                 |
-+--------------------------+---------------------------------------------------+
-| ``override_revisions``   | Allows a dictionary to be provided to map a       |
-|                          | package name to a new revision value. Consider    |
-|                          | the following example: a project defines          |
-|                          | ``module-a`` and ``module-b`` packages with       |
-|                          | package ``module-b`` depending on package         |
-|                          | ``module-a``. A developer may be attempting to    |
-|                          | tweak package ``module-b`` on the fly to test a   |
-|                          | new capabilities against the current stable       |
-|                          | version of ``module-a``; however, the developer   |
-|                          | does not want to explicitly change the revision   |
-|                          | inside package ``module-b``'s definition. To      |
-|                          | avoid this, an override can be used instead:      |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    override_revisions={                           |
-|                          |        'module-b': '<test-branch>',               |
-|                          |   }                                               |
-|                          |                                                   |
-|                          | The above example shows that package ``module-b`` |
-|                          | will fetch using a test branch instead of what is |
-|                          | defined in the actual package definition.         |
-|                          |                                                   |
-|                          | Note that the use of an override option should    |
-|                          | only be used in special cases (see also           |
-|                          | :ref:`configuration overrides <conf_overrides>`). |
-+--------------------------+---------------------------------------------------+
-| ``override_sites``       | A dictionary to be provided to map a package name |
-|                          | to a new site value. There may be times where a   |
-|                          | host may not have access to a specific package    |
-|                          | site. To have a host to use a mirror location     |
-|                          | without having to adjust the package definition,  |
-|                          | the site override option can be used. For         |
-|                          | example, consider a package pulls from site       |
-|                          | ``git@example.com:myproject.git``; however, the   |
-|                          | host ``example.com`` cannot be access from the    |
-|                          | host machine. If a mirror location has been setup |
-|                          | at ``git@example.org:myproject.git``, the         |
-|                          | following override can be used:                   |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    override_sites={                               |
-|                          |        '<pkg>': 'git@example.org:myproject.git',  |
-|                          |    }                                              |
-|                          |                                                   |
-|                          | Note that the use of an override option should    |
-|                          | only be used in special cases (see also           |
-|                          | :ref:`configuration overrides <conf_overrides>`). |
-+--------------------------+---------------------------------------------------+
-| ``override_tools``       | A dictionary to be provided to map an external    |
-|                          | tool name to a specific path. For example, when   |
-|                          | invoking CMake-based projects, the tool ``cmake`` |
-|                          | will be invoked; however, if a builder is running |
-|                          | on CentOS and CMake v3.x is desired, the tool     |
-|                          | ``cmake3`` needs to be invoked instead. This      |
-|                          | override can be used to tell releng-tool to use   |
-|                          | the newer version of CMake. Consider the          |
-|                          | following example:                                |
-|                          |                                                   |
-|                          | .. code-block:: python                            |
-|                          |                                                   |
-|                          |    override_tools={                               |
-|                          |        'cmake': 'cmake3',                         |
-|                          |        'scp': '/opt/my-custom-scp-build/scp',     |
-|                          |    }                                              |
-|                          |                                                   |
-|                          | Note that the use of an override option should    |
-|                          | only be used in special cases (see also           |
-|                          | :ref:`configuration overrides <conf_overrides>`). |
-+--------------------------+---------------------------------------------------+
++----------------------------+-------------------------------------------------+
+| ``cache_ext``              | A transform for cache extension interpreting.   |
+|                            | This is an advanced configuration and is not    |
+|                            | recommended for use except for special use      |
+|                            | cases outlined below.                           |
+|                            |                                                 |
+|                            | When releng-tool fetches assets from remote     |
+|                            | sites, the site value can used to determine the |
+|                            | resulting filename of a cached asset. For       |
+|                            | example, downloading an asset from              |
+|                            | ``https://example.org/my-file.tgz``, the        |
+|                            | locally downloaded file will result in a        |
+|                            | ``.tgz`` extension; however, not all defined    |
+|                            | sites will result in a easily interpreted cache |
+|                            | extension. While releng-tool will attempt its   |
+|                            | best to determine an appropriate extension      |
+|                            | value to use, some use cases may not be able to |
+|                            | be handled. To deal with these cases, a         |
+|                            | developer can define a transform method to help |
+|                            | translate a site value into a known cache       |
+|                            | extension value.                                |
+|                            |                                                 |
+|                            | Consider the following example: a host is used  |
+|                            | to acquire assets from a content server. The    |
+|                            | URI to download an asset uses a unique request  |
+|                            | format                                          |
+|                            | ``https://static.example.org/fetch/25134``.     |
+|                            | releng-tool may not be able to find the         |
+|                            | extension for the fetched asset, but if a       |
+|                            | developer knows the expected archive types for  |
+|                            | these calls, a custom transform can be defined. |
+|                            | For example:                                    |
+|                            |                                                 |
+|                            | .. code-block:: python                          |
+|                            |                                                 |
+|                            |    def my_translator(site):                     |
+|                            |        if 'static.example.org' in site:         |
+|                            |            return 'tgz'                         |
+|                            |        return None                              |
+|                            |                                                 |
+|                            |    cache_ext = my_translator                    |
+|                            |                                                 |
+|                            | The above transform indicates that all packages |
+|                            | using the ``static.example.org`` site will be   |
+|                            | ``tgz`` archives.                               |
++----------------------------+-------------------------------------------------+
+| ``override_extract_tools`` | A dictionary to be provided to map an extension |
+|                            | type to an external tool to indicate which tool |
+|                            | should be used for extraction. For example,     |
+|                            | when a ``.zip`` archive is being processed for  |
+|                            | extraction, releng-tool will internally extract |
+|                            | the archive; however, a user may wish to        |
+|                            | override this tool with their own extraction    |
+|                            | utility. Consider the following example:        |
+|                            |                                                 |
+|                            | .. code-block:: python                          |
+|                            |                                                 |
+|                            |    override_extract_tools = {                   |
+|                            |        'zip': '/opt/my-custom-unzip'            |
+|                            |    }                                            |
+|                            |                                                 |
+|                            | Note that the use of an override option should  |
+|                            | only be used in special cases (see also         |
+|                            | |CONF_OVERRIDES|).                              |
++----------------------------+-------------------------------------------------+
+| ``override_revisions``     | Allows a dictionary to be provided to map a     |
+|                            | package name to a new revision value. Consider  |
+|                            | the following example: a project defines        |
+|                            | ``module-a`` and ``module-b`` packages with     |
+|                            | package ``module-b`` depending on package       |
+|                            | ``module-a``. A developer may be attempting to  |
+|                            | tweak package ``module-b`` on the fly to test a |
+|                            | new capabilities against the current stable     |
+|                            | version of ``module-a``; however, the developer |
+|                            | does not want to explicitly change the revision |
+|                            | inside package ``module-b``'s definition. To    |
+|                            | avoid this, an override can be used instead:    |
+|                            |                                                 |
+|                            | .. code-block:: python                          |
+|                            |                                                 |
+|                            |    override_revisions={                         |
+|                            |        'module-b': '<test-branch>',             |
+|                            |   }                                             |
+|                            |                                                 |
+|                            | The above example shows that package            |
+|                            | ``module-b`` will fetch using a test branch     |
+|                            | instead of what is defined in the actual        |
+|                            | package definition.                             |
+|                            |                                                 |
+|                            | Note that the use of an override option should  |
+|                            | only be used in special cases (see also         |
+|                            | |CONF_OVERRIDES|).                              |
++----------------------------+-------------------------------------------------+
+| ``override_sites``         | A dictionary to be provided to map a package    |
+|                            | name to a new site value. There may be times    |
+|                            | where a host may not have access to a specific  |
+|                            | package site. To have a host to use a mirror    |
+|                            | location without having to adjust the package   |
+|                            | definition, the site override option can be     |
+|                            | used. For example, consider a package pulls     |
+|                            | from site ``git@example.com:myproject.git``;    |
+|                            | however, the host ``example.com`` cannot be     |
+|                            | access from the host machine. If a mirror       |
+|                            | location has been setup at                      |
+|                            | ``git@example.org:myproject.git``, the          |
+|                            | following override can be used:                 |
+|                            |                                                 |
+|                            | .. code-block:: python                          |
+|                            |                                                 |
+|                            |    override_sites={                             |
+|                            |        '<pkg>': 'git@example.org:mywork.git',   |
+|                            |    }                                            |
+|                            |                                                 |
+|                            | Note that the use of an override option should  |
+|                            | only be used in special cases (see also         |
+|                            | |CONF_OVERRIDES|).                              |
++----------------------------+-------------------------------------------------+
+
+.. |CONF_OVERRIDES| replace:: :ref:`configuration overrides <conf_overrides>`
 
 environment variables
 ---------------------
