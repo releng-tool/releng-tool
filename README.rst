@@ -44,6 +44,8 @@ This tool can be installed using pip_:
 .. code-block:: shell
 
    pip install releng-tool
+    (or)
+   python -m pip install releng-tool
 
 .. _Git: https://git-scm.com/
 .. _Python: https://www.python.org/
