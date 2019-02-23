@@ -27,3 +27,4 @@ used and the interaction between the staging/target area and the host system.
    user-guide
    developer-guide
    contributor-guide
+   annex-a
