@@ -263,8 +263,8 @@ in the working directory or the provided root directory:
                         if processFileFlag(True, flag) != FileFlag.CONFIGURED:
                             return False
 
-                    license_files[pkg.name] = []
                     if pkg.license_files:
+                        license_files[pkg.name] = []
                         for file in pkg.license_files:
                             file = os.path.join(pkg.build_dir, file)
                             license_files[pkg.name].append(file)
