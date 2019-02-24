@@ -11,6 +11,9 @@ from ...util.log import *
 from ...util.string import expand as EXP
 from os.path import join
 
+#: default lib container directory
+DEFAULT_LIB_DIR = 'lib'
+
 def configure(opts):
     """
     support configuration for cmake projects
@@ -32,15 +35,15 @@ def configure(opts):
     prefix = opts.prefix
     if opts._install_type == PackageInstallType.HOST:
         include_loc = join(opts.host_dir + prefix, 'include')
-        library_loc = join(opts.host_dir + prefix, 'lib')
+        library_loc = join(opts.host_dir + prefix, DEFAULT_LIB_DIR)
         prefix_loc = join(opts.host_dir + prefix)
     else:
         include_loc = (
             join(opts.staging_dir + prefix, 'include') + ';' +
             join(opts.target_dir + prefix, 'include'))
         library_loc = (
-            join(opts.staging_dir + prefix, 'lib') + ';' +
-            join(opts.target_dir + prefix, 'lib'))
+            join(opts.staging_dir + prefix, DEFAULT_LIB_DIR) + ';' +
+            join(opts.target_dir + prefix, DEFAULT_LIB_DIR))
         prefix_loc = (
             join(opts.staging_dir + prefix) + ';' +
             join(opts.target_dir + prefix))
@@ -54,6 +57,12 @@ def configure(opts):
         'CMAKE_INSTALL_PREFIX': prefix,
         'CMAKE_LIBRARY_PATH': library_loc,
         'CMAKE_PREFIX_PATH': prefix_loc,
+        # releng-tool's sysroot assumes a `lib` directory. CMake's
+        # GNUInstallDirs may adjust the expected lib directory based on the
+        # detected system name (as a project may not necessarily be
+        # cross-compiling), which may implicitly set the library directory to
+        # `lib64`.
+        'CMAKE_INSTALL_LIBDIR': join(prefix, DEFAULT_LIB_DIR),
     }
     if opts.conf_defs:
         cmakeDefs.update(EXP(opts.conf_defs))
