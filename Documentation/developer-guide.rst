@@ -613,8 +613,24 @@ A list of more advanced configuration options are as follows:
 |                            | only be used in special cases (see also         |
 |                            | |CONF_OVERRIDES|).                              |
 +----------------------------+-------------------------------------------------+
+| .. _CONF_QUIRKS:           |                                                 |
+|                            |                                                 |
+| ``quirks``                 | A list of configuration quirks to apply to deal |
+|                            | with rare corner case scenarios which can       |
+|                            | prevent releng-tool operating on a host system. |
+|                            |                                                 |
+|                            | .. code-block:: python                          |
+|                            |                                                 |
+|                            |    quirks = [                                   |
+|                            |        'releng.<special-quirk-id>',             |
+|                            |    ]                                            |
+|                            |                                                 |
+|                            | For a list of available quirks, please consult  |
+|                            | `quirks`_.                                      |
++----------------------------+-------------------------------------------------+
 
 .. |CONF_OVERRIDES| replace:: :ref:`configuration overrides <conf_overrides>`
+.. |CONF_QUIRKS| replace:: ``quirks``
 
 environment variables
 ---------------------
@@ -1857,6 +1873,27 @@ can be applied for Git-based repositories (via ``.gitignore``):
    /dl/
    /output/
    .releng-flag-*
+
+.. _quirks:
+
+quirks
+~~~~~~
+
+The following outlines a series of configuration |CONF_QUIRKS|_ that can be
+applied to deal with rare host environment scenarios.
+
+- ``releng.cmake.disable_parallel_option`` -- Disables the ``--parallel`` option
+  from being injected when a CMake-package is performing a build stage. This is
+  to help support host systems running variants of CMake which do not explicitly
+  provide a parallelization option.
+
+Quirks are enabled through a configuration (override) script such as follows:
+
+.. code-block:: python
+
+   quirks = [
+       '<quirk-value>',
+   ]
 
 loading extensions
 ~~~~~~~~~~~~~~~~~~

@@ -490,3 +490,10 @@ Consider the following example:
    $ export RELENG_CMAKE=cmake3
    $ releng-tool
    [cmake3 will be used for cmake projects]
+
+quirks
+^^^^^^
+
+releng-tool also provides a series of configuration quirks to deal with rare
+host environment scenarios where releng-tool may be experiencing issues. See
+:ref:`configuration quirks <quirks>` for more information.
