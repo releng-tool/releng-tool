@@ -58,6 +58,16 @@ The following outlines a series of quirks when contributing:
   changes submitted with two blank lines may be accepted, but may also be
   "cleaned up" in future changes.
 
+maintainer notes
+----------------
+
+Packages for PyPI are generated and submitted with the following commands:
+
+.. code-block:: shell
+
+    $ python setup.py bdist_wheel --universal
+    $ python -m twine upload dist/*
+
 outro
 -----
 
