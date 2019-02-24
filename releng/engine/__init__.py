@@ -815,6 +815,15 @@ following key entry and re-try again.
                 return False
             self.opts.extract_override = otz
 
+        if CONF_KEY_QUIRKS in settings:
+            quirks = interpretStrings(settings[CONF_KEY_QUIRKS])
+            if quirks is None:
+                notifyInvalidValue(CONF_KEY_QUIRKS, 'str or list(str)')
+                return False
+            self.opts.quirks = quirks
+            for quirk in quirks:
+                verbose('configuration quirk applied: ' + quirk)
+
         if CONF_KEY_SYSROOT_PREFIX in settings:
             sysroot_prefix = interpretString(settings[CONF_KEY_SYSROOT_PREFIX])
             if sysroot_prefix is None:

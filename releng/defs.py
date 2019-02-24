@@ -14,6 +14,7 @@ CONF_KEY_OVERRIDE_REV = 'override_revisions' #: revision overriding dictionary
 CONF_KEY_OVERRIDE_SITES = 'override_sites' #: site overriding dictionary
 CONF_KEY_OVERRIDE_TOOLS = 'override_extract_tools' #: extract-tool overriding
 CONF_KEY_PKGS = 'packages' #: project's package (name) list
+CONF_KEY_QUIRKS = 'quirks' #: configure quirks to apply
 CONF_KEY_SYSROOT_PREFIX = 'sysroot_prefix' #: project's default sys-root prefix
 CONF_KEY_URL_MIRROR = 'url_mirror' #: mirror base site for url fetches
 
