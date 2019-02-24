@@ -52,10 +52,11 @@ def build(opts):
     # enable specific number of parallel jobs is set
     #
     # https://cmake.org/cmake/help/v3.12/manual/cmake.1.html#build-tool-mode
-    if opts.jobsconf != 1:
-        cmakeArgs.append('--parallel')
-        if opts.jobsconf > 0:
-            cmakeArgs.append(str(opts.jobs))
+    if 'releng.cmake.disable_parallel_option' not in opts._quirks:
+        if opts.jobsconf != 1:
+            cmakeArgs.append('--parallel')
+            if opts.jobsconf > 0:
+                cmakeArgs.append(str(opts.jobs))
 
     if not CMAKE.execute(cmakeArgs, env=EXP(opts.build_env)):
         err('failed to build cmake project: {}', opts.name)

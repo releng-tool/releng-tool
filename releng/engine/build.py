@@ -54,6 +54,7 @@ def stage(engine, pkg, script_env):
     build_opts.symbols_dir = engine.opts.symbols_dir
     build_opts.target_dir = engine.opts.target_dir
     build_opts.version = pkg.version
+    build_opts._quirks = engine.opts.quirks
 
     # if package has a job-override value, use it over any global option
     if pkg.fixed_jobs:
