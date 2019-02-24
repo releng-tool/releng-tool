@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 __releng_tool_has_action()
 {
@@ -128,4 +128,4 @@ _releng_tool_module()
 
     return 0
 }
-complete -F _releng_tool_module releng
+complete -F _releng_tool_module releng-tool
