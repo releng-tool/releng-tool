@@ -509,9 +509,9 @@ A list of more advanced configuration options are as follows:
 |                            | ``https://example.org/my-file.tgz``, the        |
 |                            | locally downloaded file will result in a        |
 |                            | ``.tgz`` extension; however, not all defined    |
-|                            | sites will result in a easily interpreted cache |
-|                            | extension. While releng-tool will attempt its   |
-|                            | best to determine an appropriate extension      |
+|                            | sites will result in an easily interpreted      |
+|                            | cache extension. While releng-tool will attempt |
+|                            | its best to determine an appropriate extension  |
 |                            | value to use, some use cases may not be able to |
 |                            | be handled. To deal with these cases, a         |
 |                            | developer can define a transform method to help |
@@ -1239,7 +1239,7 @@ To define a Bazaar_-based location, the site value must be prefixed with a
 
 The value after the prefix is a path which will be provided to a ``bzr export``
 call [#bzrexport]_. Content from a Bazaar repository will be fetched and
-archived into a file during fetch stage. Once an cached archive is made, the
+archived into a file during fetch stage. Once a cached archive is made, the
 fetch stage will be skipped unless the archive is manually removed.
 
 cvs site
@@ -1255,7 +1255,7 @@ value. A site can be defined as follows:
 The value after the prefix is a space-separated pair, where the first part
 represents the CVSROOT [#cvsroot]_ to use and the second part specifies the CVS
 module [#cvsmodule]_  to use. Content from a CVS repository will be fetched and
-archived into a file during fetch stage. Once an cached archive is made, the
+archived into a file during fetch stage. Once a cached archive is made, the
 fetch stage will be skipped unless the archive is manually removed.
 
 git site
@@ -1321,7 +1321,7 @@ To define a Subversion_-based location, the site value must be prefixed with a
 
 The value after the prefix is a path which will be provided to a
 ``svn checkout`` call [#svncheckout]_. Content from a Subversion repository will
-be fetched and archived into a file during fetch stage. Once an cached archive
+be fetched and archived into a file during fetch stage. Once a cached archive
 is made, the fetch stage will be skipped unless the archive is manually removed.
 
 url site (default)
@@ -1587,7 +1587,7 @@ package.
 LIBFOO_PYTHON_INTERPRETER
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Defines an specific Python interpreter when processing the build and
+Defines a specific Python interpreter when processing the build and
 installation stages for a package. If not specified, the system's Python
 interpreter will be used. This field is optional.
 
