@@ -11,7 +11,7 @@ def read(name):
 
 setup(
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
@@ -41,6 +41,6 @@ setup(
     platforms='any',
     test_suite='test',
     url='https://github.com/releng-tool/releng-tool',
-    version='0.1.0.dev7',
+    version='0.1.0',
     zip_safe=False,
 )
