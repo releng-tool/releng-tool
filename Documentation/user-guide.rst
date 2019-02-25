@@ -311,7 +311,7 @@ privileged builds
 ~~~~~~~~~~~~~~~~~
 
 It is never recommended to invoke a build with elevated (e.g. root) privileges.
-A builder invoking in an elevated environment runs the risk of a mis-configured
+A builder invoking in an elevated environment runs the risk of a misconfigured
 releng-tool project dirtying or destroying the builder's host environment.
 
 license generation

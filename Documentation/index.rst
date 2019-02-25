@@ -7,9 +7,9 @@ the ability to perform several stages: fetching, extraction, patching,
 configuration, building and installation. What a package defines will vary for a
 given project. The simplest type of package is script-based that allows a user
 to define custom scripts on how to perform various stages of the release
-engineering process. A package is not required to handle every stage.
-releng-tool also provides helper package types, such as autotools, for projects
-using common build capabilities.
+engineering process. A package is not required to handle every stage. Helper
+package types are provided, such as autotools, for projects using common build
+capabilities.
 
 .. image:: _static/overview.png
    :align: center
