@@ -326,8 +326,8 @@ remove an existing extracted sources/partially built sources:
 
    $ releng-tool clean
 
-Or start from a completely fresh state using ``mrproper`` to remove any
-downloaded/cached resources:
+Or start from a completely fresh state using ``mrproper`` to remove any built
+images and file mode flags:
 
 .. code-block:: shell
 
