@@ -1,0 +1,59 @@
+cmake package
+~~~~~~~~~~~~~
+
+A CMake package provides support for processing a `CMake`_ supported module.
+
+During the configuration stage of a CMake package, ``cmake`` will be invoked to
+generate build files for the module. For the build stage, ``cmake --build`` will
+be invoked to generated build files. Similar approach for the installation stage
+where the build option is invoked again but with the ``install`` target invoked:
+``cmake --build --target install``. Each stage can be configured to manipulate
+environment variables and options used by the CMake executable.
+
+The default configuration built for projects is ``RelWithDebInfo``. A developer
+can override this option by explicitly adjusting the configuration option
+``--config`` to, for example, ``Debug``:
+
+.. code-block:: python
+
+   LIBFOO_CMAKE_DEFS = {
+      'CMAKE_BUILD_TYPE': 'Debug',
+   }
+
+   LIBFOO_CMAKE_OPTS = {
+      '--config': 'Debug',
+   }
+
+   LIBFOO_CMAKE_INSTALL_OPTS = {
+      '--config': 'Debug',
+   }
+
+The following sections outline configuration options are available for a CMake
+package.
+
+.. _cmake_build_defs:
+.. include:: developer-guide/packages-build-defs
+
+.. _cmake_build_env:
+.. include:: developer-guide/packages-build-env
+
+.. _cmake_build_opts:
+.. include:: developer-guide/packages-build-opts
+
+.. _cmake_conf_defs:
+.. include:: developer-guide/packages-conf-defs
+
+.. _cmake_conf_env:
+.. include:: developer-guide/packages-conf-env
+
+.. _cmake_conf_opts:
+.. include:: developer-guide/packages-conf-opts
+
+.. _cmake_install_defs:
+.. include:: developer-guide/packages-install-defs
+
+.. _cmake_install_env:
+.. include:: developer-guide/packages-install-env
+
+.. _cmake_install_opts:
+.. include:: developer-guide/packages-install-opts

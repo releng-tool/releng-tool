@@ -1,0 +1,149 @@
+environment variables
+---------------------
+
+When packages and the post-processing event are processed, the following
+environment variables will be made available:
+
++--------------------------+---------------------------------------------------+
+| ``BUILD_DIR``            | The build directory.                              |
++--------------------------+---------------------------------------------------+
+| ``CACHE_DIR``            | The cache directory.                              |
++--------------------------+---------------------------------------------------+
+| ``DL_DIR``               | The download directory.                           |
++--------------------------+---------------------------------------------------+
+| ``HOST_DIR``             | The host directory.                               |
++--------------------------+---------------------------------------------------+
+| ``IMAGES_DIR``           | The images directory.                             |
++--------------------------+---------------------------------------------------+
+| ``LICENSE_DIR``          | The licenses directory.                           |
+|                          |                                                   |
+|                          | See also `licenses`_.                             |
++--------------------------+---------------------------------------------------+
+| .. _CONF_NJOBS:          |                                                   |
+|                          |                                                   |
+| ``NJOBS``                | Number of calculated jobs to allow at a given     |
+|                          | time. Unless explicitly set by a system builder   |
+|                          | on the command line, the calculated number of     |
+|                          | jobs should be equal to the number of physical    |
+|                          | cores on the host. When building a specific       |
+|                          | package and the package overrides the number of   |
+|                          | jobs to use, the package-defined count will be    |
+|                          | used instead. This configuration will always be a |
+|                          | value of at least one (1).                        |
++--------------------------+---------------------------------------------------+
+| .. _CONF_NJOBSCONF:      |                                                   |
+|                          |                                                   |
+| ``NJOBSCONF``            | Number of jobs to allow at a given time. Unlike   |
+|                          | |CONF_NJOBS|_, ``NJOBSCONF`` provides the         |
+|                          | requested configured number of jobs to use. The   |
+|                          | value may be set to zero (0) to indicate an       |
+|                          | automatic detection of jobs to use. This can be   |
+|                          | useful for tools which have their own automatic   |
+|                          | job count implementation and do not want to rely  |
+|                          | on the value defined by |CONF_NJOBS|_. When       |
+|                          | building a specific package and the package       |
+|                          | overrides the number of jobs to use, the          |
+|                          | package-defined count will be used instead.       |
++--------------------------+---------------------------------------------------+
+| ``OUTPUT_DIR``           | The output directory.                             |
++--------------------------+---------------------------------------------------+
+| .. _CONF_PKG_BUILD_DIR:  |                                                   |
+|                          |                                                   |
+| ``PKG_BUILD_DIR``        | The directory for a specific package's buildable  |
+|                          | content.                                          |
+|                          |                                                   |
+|                          | See also |CONF_PKG_BUILD_ODIR|_.                  |
++--------------------------+---------------------------------------------------+
+| .. _CONF_PKG_BUILD_ODIR: |                                                   |
+|                          |                                                   |
+| ``PKG_BUILD_OUTPUT_DIR`` | The directory for where a package's build output  |
+|                          | will be stored.                                   |
+|                          |                                                   |
+|                          | See also |CONF_PKG_BUILD_DIR|_.                   |
++--------------------------+---------------------------------------------------+
+| ``PKG_CACHE_FILE``       | The location of the cache file for a package. If  |
+|                          | package defines a fetch of an archive from a      |
+|                          | remote source, after the fetch stage is           |
+|                          | completed, the archive can be found in this       |
+|                          | location. For example, if a package defines a     |
+|                          | site ``https://www.example.com/test.tgz``, the    |
+|                          | resulting catch file may be                       |
+|                          | ``<root>/output/dl/test-1.0.tgz``.                |
++--------------------------+---------------------------------------------------+
+| ``PKG_DEFDIR``           | The package's definition directory. For example,  |
+|                          | for a package ``test``. the definition directory  |
+|                          | would be ``<root>/package/test``.                 |
++--------------------------+---------------------------------------------------+
+| ``PKG_INTERNAL``         | Whether or not the package is considered          |
+|                          | "internal". If internal, the environment variable |
+|                          | will be set to a value of one (i.e.               |
+|                          | ``PKG_INTERNAL=1``).                              |
+|                          |                                                   |
+|                          | See also `internal and external packages`_.       |
++--------------------------+---------------------------------------------------+
+| ``PKG_NAME``             | The name of the package.                          |
++--------------------------+---------------------------------------------------+
+| ``PKG_REVISION``         | The site revision of the package.                 |
+|                          |                                                   |
+|                          | See also |LIBFOO_REVISION|_.                      |
++--------------------------+---------------------------------------------------+
+| ``PKG_SITE``             | The site of the package.                          |
+|                          |                                                   |
+|                          | See also |LIBFOO_SITE|_.                          |
++--------------------------+---------------------------------------------------+
+| ``PKG_VERSION``          | The version of the package.                       |
+|                          |                                                   |
+|                          | See also |LIBFOO_VERSION|_.                       |
++--------------------------+---------------------------------------------------+
+| ``PREFIX``               | The sysroot prefix for the package.               |
++--------------------------+---------------------------------------------------+
+| ``RELENG_DEVMODE``       | Flag set if in :ref:`development mode`.           |
++--------------------------+---------------------------------------------------+
+| ``RELENG_LOCALSRCS``     | Flag set if in :ref:`local-sources mode`.         |
++--------------------------+---------------------------------------------------+
+| ``RELENG_REBUILD``       | Flag set if performing a re-build request.        |
++--------------------------+---------------------------------------------------+
+| ``RELENG_RECONFIGURE``   | Flag set if performing a re-configuration         |
+|                          | request.                                          |
++--------------------------+---------------------------------------------------+
+| ``RELENG_REINSTALL``     | Flag set if performing a re-install request.      |
++--------------------------+---------------------------------------------------+
+| ``ROOT_DIR``             | The root directory.                               |
++--------------------------+---------------------------------------------------+
+| ``STAGING_DIR``          | The staging area directory.                       |
++--------------------------+---------------------------------------------------+
+| ``SYMBOLS_DIR``          | The symbols area directory.                       |
++--------------------------+---------------------------------------------------+
+| ``TARGET_DIR``           | The target area directory.                        |
++--------------------------+---------------------------------------------------+
+
+.. |CONF_NJOBSCONF| replace:: ``NJOBSCONF``
+.. |CONF_NJOBS| replace:: ``NJOBS``
+.. |CONF_PKG_BUILD_DIR| replace:: ``PKG_BUILD_DIR``
+.. |CONF_PKG_BUILD_ODIR| replace:: ``PKG_BUILD_OUTPUT_DIR``
+
+Package-defined environment variables are also available in the rare chance
+that package content needs to be mangled (e.g. including a dependent module
+which does not properly support a sysroot staged environment). The following
+package-defined environment variables are available for use (where ``<PKG>``
+translates to a releng-tool's determined package key):
+
++----------------------------+-------------------------------------------------+
+| ``<PKG>_BUILD_DIR``        | The directory for a defined package's           |
+|                            | buildable content.                              |
++----------------------------+-------------------------------------------------+
+| ``<PKG>_BUILD_OUTPUT_DIR`` | The directory for where a defined package's     |
+|                            | build output will be stored.                    |
++----------------------------+-------------------------------------------------+
+| ``<PKG>_NAME``             | The name of the package.                        |
++----------------------------+-------------------------------------------------+
+| ``<PKG>_REVISION``         | The revision of a defined package.              |
++----------------------------+-------------------------------------------------+
+| ``<PKG>_VERSION``          | The version of a defined package.               |
++----------------------------+-------------------------------------------------+
+
+Note that is it not recommended to define environment variables for the
+releng-tool process to use outside the project definition except for special
+cases (such as authentication tokens, etc.). Attempting to configure, for
+example, compiler flags outside the project definition circumvents configuration
+control a releng-tool project aims to maintain.

@@ -1,0 +1,329 @@
+other
+-----
+
+post-processing
+~~~~~~~~~~~~~~~
+
+.. warning::
+
+   A post-processing script (if used) will be invoked each time ``releng-tool``
+   reaches the final stage of a build.
+
+After each package has been processed, a project has the ability to perform
+post-processing. Post-processing allows a developer to cleanup the target
+directory, build an archive/package from generated results and more. If a
+project contains a ``post.py`` inside the root directory, the post-processing
+script will be invoked in the final stage of a build.
+
+A developer may start out with the following post-processing script
+``<root>/post.py``:
+
+.. code-block:: python
+
+   #!/usr/bin/env python
+   # -*- coding: utf-8 -*-
+
+   print('post processing...')
+
+The above script will output the newly inserted print message at the end of a
+build process:
+
+.. code-block:: shell
+
+   $ releng-tool
+   ...
+   generating license information...
+   post processing...
+   (success) completed (0:01:30)
+
+A developer can take advantage of `environment variables`_ and
+`script helpers`_ for additional support.
+
+It is important to note that a post-processing script will be invoked each time
+a ``releng-tool`` invoke reaches the final stage of a build. A developer should
+attempt to implement the post-processing script in a way that it can be invoked
+multiple times. For example, if a developer decides to move a file out of the
+target directory into an interim directory when building an archive, it is most
+likely that a subsequent request to build may fail since the file can no longer
+be found inside the target directory.
+
+.. _license_information:
+
+licenses
+~~~~~~~~
+
+A releng-tool project can defined multiple packages, each with the possibility
+of having multiple licenses associated with them. Each project may vary: some
+may have only proprietary sources and may not care about tracking this
+information; some may only use open source software and require to populate
+license information for a final package; or a mix.
+
+When license information is populated for a project, each project's license
+information (|LIBFOO_LICENSE_FILES|_) is will be populated into a single license
+document. If a developer defines the |CONF_LICENSE_HEADER|_ configuration,
+the generated document will be prefixed with the header content. For example,
+``releng.py`` can be configured to prepare a license header from a local file
+``assets/license-header.tpl``:
+
+.. code-block:: python
+
+   #!/usr/bin/env python
+   # -*- coding: utf-8 -*-
+
+   import os
+
+   ... (other configuration options)
+
+   root_dir = os.path.dirname(os.path.realpath(__file__))
+   license_header_file = os.path.join(root_dir, 'assets', 'license-header.tpl')
+
+   with open(license_header_file) as f:
+       license_header = ''.join(f.readlines())
+
+A side note is that licenses for a project are generated before the
+`post-processing`_ phase; hence, generated license document(s) may be included
+when attempting to generated final archives/packages.
+
+patching
+~~~~~~~~
+
+.. note::
+
+   Patches are ignored when in :ref:`development mode` for packages with a
+   development version revision or when in :ref:`local-sources mode` for
+   internal packages.
+
+The patching stage for a package provides the ability for a developer to apply
+one or more patches to extracted sources. A project may define an external
+package which fetches an archive that is not maintained by the project owners.
+The fetched source may not be able to build in a developer's releng-tool project
+due to limitations of the implementation or build scripts provided by the
+package. A developer can prepare a series of patches to apply to a package and
+submit changes upstream to correct the issue; however, the developer is then
+left to either wait for the changes to be merged in or needs to make a custom
+archive with the appropriate modifications already applied. To avoid this, a
+developer can include patches directly in the package folder to be automatically
+applied during patching stage.
+
+When a package's patch stage is reached, releng-tool will look for patches found
+inside the package folder with the extension ``.patch``. Patches found inside a
+package folder are applied in ascending order. It is recommended to prefix
+patch filenames with a numerical value for clarity. For example, the following
+package patches:
+
+.. code-block:: shell
+
+   $ cd package/liba
+   $ ls *.patch
+   0001-accept-linker-flags.patch
+   0002-correct-output-path.patch
+   0003-support-disabling-test-build.patch
+   liba
+   lib.hash
+
+With be applied in the following order:
+
+1. ``0001-accept-linker-flags.patch``
+2. ``0002-correct-output-path.patch``
+3. ``0003-support-disabling-test-build.patch``
+
+If a user configures their build environment in :ref:`development mode`, patches
+will not be applied if a package defines a development revisions. The idea is
+that a development revision is most likely the bleeding edge source of a
+package and does not need any patches. If a user configures their build
+environment in :ref:`local-sources mode` and a package is defined as internal,
+patches will not be applied to the sources. This is to prevent the patching
+system from making unexpected modifications to a developer's local source
+variants.
+
+internal and external packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Packages are either internal packages or external packages. All packages are
+considered external packages by default unless explicitly configured as internal
+through either the package option |LIBFOO_INTERNAL|_ or using the project
+configuration |CONF_DEFAULT_INTERN|_ (see also |LIBFOO_EXTERNAL|_). Both package
+types are almost treated the same except for the following:
+
+- An internal package will not generate output warnings if the package is
+  missing :ref:`hash information <hash_files>`.
+- An internal package will not generate output warnings if the package is
+  missing :ref:`license information <license_information>`.
+- When configured for :ref:`development mode`; the patch stage will not be
+  performed if the package specifies a development revision
+  (|LIBFOO_DEVMODE_REVISION|_).
+- When configured for :ref:`local-sources mode`; the fetch, extract and patch
+  stages will not be performed.
+
+script helpers
+~~~~~~~~~~~~~~
+
+releng-tool provides a series of helper functions which can be used in
+script-based packages, post-processing and more. Helper functions provided are
+listed below:
+
++--------------------------+---------------------------------------------------+
+| method                   | documentation                                     |
++==========================+===================================================+
+| ``debug``                | .. automodule:: releng                            |
+|                          |     :members: debug                               |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``err``                  | .. automodule:: releng                            |
+|                          |     :members: err                                 |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``log``                  | .. automodule:: releng                            |
+|                          |     :members: log                                 |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``note``                 | .. automodule:: releng                            |
+|                          |     :members: note                                |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_copy``          | .. automodule:: releng                            |
+|                          |     :members: releng_copy                         |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_execute``       | .. automodule:: releng                            |
+|                          |     :members: releng_execute                      |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_exists``        | .. automodule:: releng                            |
+|                          |     :members: releng_exists                       |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_exit``          | .. automodule:: releng                            |
+|                          |     :members: releng_exit                         |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_expand``        | .. automodule:: releng                            |
+|                          |     :members: releng_expand                       |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_join``          | .. automodule:: releng                            |
+|                          |     :noindex:                                     |
+|                          |                                                   |
+|                          |     .. method:: releng_join(path, *paths)         |
+|                          |                                                   |
+|                          |        An alias for |os.path.join|_.              |
++--------------------------+---------------------------------------------------+
+| ``releng_move``          | .. automodule:: releng                            |
+|                          |     :members: releng_move                         |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_remove``        | .. automodule:: releng                            |
+|                          |     :members: releng_remove                       |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_tmpdir``        | .. automodule:: releng                            |
+|                          |     :members: releng_tmpdir                       |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_touch``         | .. automodule:: releng                            |
+|                          |     :members: releng_touch                        |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``releng_wd``            | .. automodule:: releng                            |
+|                          |     :members: releng_wd                           |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``success``              | .. automodule:: releng                            |
+|                          |     :members: success                             |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``verbose``              | .. automodule:: releng                            |
+|                          |     :members: verbose                             |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+| ``warn``                 | .. automodule:: releng                            |
+|                          |     :members: warn                                |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
+
+.. |os.path.join| replace:: ``os.path.join``
+.. _os.path.join: https://docs.python.org/library/os.path.html#os.path.join
+
+Scripts directly invoked by releng-tool will automatically have these helpers
+registered in the script's globals module (i.e. no import is necessary). If a
+project defines custom Python modules in their project and wishes to take
+advantage of these helper functions, the following import can be used to, for
+example, import a specific function:
+
+.. code-block:: python
+
+    from releng import releng_execute
+
+Or, if desired, all helper methods can be imported at once:
+
+.. code-block:: python
+
+    from releng import *
+
+vcs ignore
+~~~~~~~~~~
+
+When invoking releng-tool on a project, the project's root directory will be
+populated with cached assets and other output files. A series of standard ignore
+patterns can be applied to a repository to prevent observing these generated
+files using VCS tools. The following is an example ignore configuration which
+can be applied for Git-based repositories (via ``.gitignore``):
+
+.. code-block:: text
+
+   # releng-tool
+   /cache/
+   /dl/
+   /output/
+   .releng-flag-*
+
+.. _quirks:
+
+quirks
+~~~~~~
+
+The following outlines a series of configuration |CONF_QUIRKS|_ that can be
+applied to deal with rare host environment scenarios.
+
+- ``releng.cmake.disable_parallel_option`` -- Disables the ``--parallel`` option
+  from being injected when a CMake-package is performing a build stage. This is
+  to help support host systems running variants of CMake which do not explicitly
+  provide a parallelization option.
+
+Quirks are enabled through a configuration (override) script such as follows:
+
+.. code-block:: python
+
+   quirks = [
+       '<quirk-value>',
+   ]
+
+loading extensions
+~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+   If looking for information on developing extensions for releng-tool, consult
+   the :ref:`contributor's guide -- extensions <contributor_guide_ext>`.
+
+A releng-tool project can define one or more extensions to load for externally
+implemented capabilities. For example, a project can load extensions
+``ext-a`` and ``ext-b`` with the following defined in their project's
+configuration:
+
+.. code-block:: python
+
+   extensions = [
+       'ext-a',
+       'ext-b',
+   ]
+
+During the initial stages of a release engineering process, releng-tool will
+check and load any configured extension. In the event that an extension is
+missing, is unsupported for the running releng-tool version or fails to load, a
+detailed error message will be presented to the user.
+
+While the ability to load extensions is supported, capabilities provided by
+extensions are not officially supported by releng-tool. For issues related to
+specific extension use, it is recommended to consult the documentation provided
+by the providers of said extensions.

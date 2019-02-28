@@ -1,0 +1,49 @@
+python package
+~~~~~~~~~~~~~~
+
+A Python package provides support for processing a `Python`_ supported module.
+
+Only the build and installation phases are used when processing the sources for
+a Python package (i.e. no configuration stage is invoked). The build phase will
+invoke ``setup.py build`` while the installation stage will invoke
+``setup.py install``. When a Python package is process, it will use the system's
+default Python interpreter. A developer can override what Python interpreter to
+use by configuring the ``PYTHON_INTERPRETER`` option in a package:
+
+.. code-block:: python
+
+   LIBFOO_PYTHON_INTERPRETER = '/opt/my-custom-python-build/python'
+
+The following sections outline configuration options are available for a Python
+package.
+
+.. _python_build_defs:
+.. include:: developer-guide/packages-build-defs
+
+.. _python_build_env:
+.. include:: developer-guide/packages-build-env
+
+.. _python_build_opts:
+.. include:: developer-guide/packages-build-opts
+
+.. _python_install_defs:
+.. include:: developer-guide/packages-install-defs
+
+.. _python_install_env:
+.. include:: developer-guide/packages-install-env
+
+.. _python_install_opts:
+.. include:: developer-guide/packages-install-opts
+
+.. _python_interpreter:
+
+LIBFOO_PYTHON_INTERPRETER
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Defines a specific Python interpreter when processing the build and
+installation stages for a package. If not specified, the system's Python
+interpreter will be used. This field is optional.
+
+.. code-block:: python
+
+   LIBFOO_PYTHON_INTERPRETER = '<path>'
