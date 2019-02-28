@@ -26,6 +26,9 @@ to contribute should consult this project's `CONTRIBUTING`_ document. A reminder
 that any contributions must be signed off with the
 `Developer Certificate of Origin`_.
 
+Implementation (source, comments, commits, etc.) submitted to this project
+should be provided in English.
+
 root directory
 --------------
 
