@@ -70,16 +70,19 @@ to be performed. An example of a user invoking a clean action is as follows:
 The following outlines available actions:
 
 +-----------------------+------------------------------------------------------+
-| ``clean``             | Clean (remove) the ``output/`` directory found in    |
-|                       | the root directory. This clean operation will remove |
-|                       | content such as extracted archives, built libraries  |
-|                       | and more. Downloaded assets/cache files are not      |
-|                       | removed (instead see ``mrproper``). If an output     |
-|                       | directory is provided (i.e. ``--out-dir <dir>``)     |
-|                       | during a clean event, the provided directory will be |
-|                       | removed instead of the output directory (if any)     |
-|                       | found in the root directory. If no output directory  |
-|                       | exists, this call will have no effect.               |
+| .. _ACTION_CLEAN:     |                                                      |
+|                       |                                                      |
+| ``clean``             | Clean (removes) a series of folders holding content  |
+|                       | such as extracted archives, built libraries and      |
+|                       | more. Images and downloaded assets/cache are not     |
+|                       | removed (see |ACTION_MRPROPER|_ for a more through   |
+|                       | all cleaning operation). This clean operation will   |
+|                       | remove files based off the configured output         |
+|                       | directory. If an output directory is provided (i.e.  |
+|                       | ``--out-dir <dir>``) during a clean event, select    |
+|                       | folders inside this directory will be removed        |
+|                       | instead of the output directory (if any) found in    |
+|                       | the root directory.                                  |
 +-----------------------+------------------------------------------------------+
 | ``extract``           | The release engineering process will process all     |
 |                       | packages up to the extraction phase (inclusive).     |
@@ -94,10 +97,14 @@ The following outlines available actions:
 |                       | Therefore, packages will be fetched/extracted if not |
 |                       | already done.                                        |
 +-----------------------+------------------------------------------------------+
+| .. _ACTION_MRPROPER:  |                                                      |
+|                       |                                                      |
 | ``mrproper``          | Perform a pristine clean of the releng-tool project. |
-|                       | This request not only removes the targeted output    |
-|                       | directory but also any cached assets and mode file   |
-|                       | flags (see also ``clean``).                          |
+|                       | This request removes the ``output/`` directory found |
+|                       | in the root directory as well as any mode file flags |
+|                       | which may be set. The ``cache/`` and ``dl/``         |
+|                       | directories will remain untouched. See also the      |
+|                       | |ACTION_CLEAN|_ action.                              |
 +-----------------------+------------------------------------------------------+
 | ``patch``             | The release engineering process will process all     |
 |                       | packages up to the patch phase (inclusive).          |
@@ -179,6 +186,9 @@ The following outlines available actions:
 |                       | please ensure `understanding rebuilds`_ has been     |
 |                       | read to understand this action's effect.             |
 +-----------------------+------------------------------------------------------+
+
+.. |ACTION_CLEAN| replace:: ``clean``
+.. |ACTION_MRPROPER| replace:: ``mrproper``
 
 The following outlines available options:
 
@@ -288,7 +298,7 @@ A user can prepare for an offline build by using the ``fetch`` action:
 
 Package content will be downloaded into the respective ``dl/`` and/or ``cache/``
 folders. Future builds for the project will no longer need external access until
-these folders are manually removed or ``mrproper`` is invoked.
+these folders are manually removed.
 
 parallel builds
 ~~~~~~~~~~~~~~~
@@ -361,7 +371,7 @@ use the development revision for packages where define. For example:
 
 Development mode is persisted through the use of a file flag in the root
 directory. A user can either disable development mode by performing a
-``mrproper`` or can manually remove the file flag.
+|ACTION_MRPROPER|_ or can manually remove the file flag.
 
 .. _local-sources mode:
 
@@ -406,7 +416,7 @@ packages. For example:
 
 Local-sources mode is persisted through the use of a file flag in the root
 directory. A user can either disable local sources mode by performing a
-``mrproper`` or can manually remove the file flag.
+|ACTION_MRPROPER|_ or can manually remove the file flag.
 
 .. _conf_overrides:
 
