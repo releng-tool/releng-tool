@@ -138,6 +138,22 @@ For more details for API details, consult the documentation found inside the
 
 .. |releng/api/__init__.py| replace:: ``releng/api/__init__.py``
 
+documentation
+-------------
+
+Improvements to this project's documentation (found inside ``Documentation``)
+are always welcome -- not only for adding/updating documentation for releng-tool
+features but also translations.
+
+For users interested in translations for this project, please consult the
+following repositories:
+
+   | releng-tool - Translations
+   | https://github.com/releng-tool/releng-tool-doc-translations
+
+   | releng-tool - Translations Builder
+   | https://github.com/releng-tool/releng-tool-doc-translations-builder
+
 .. _--git-dir: https://git-scm.com/docs/git#git---git-dirltpathgt
 .. _API implementation: https://github.com/releng-tool/releng-tool/blob/master/releng/api/__init__.py
 .. _CONTRIBUTING: https://github.com/releng-tool/releng-tool/blob/master/CONTRIBUTING.rst
