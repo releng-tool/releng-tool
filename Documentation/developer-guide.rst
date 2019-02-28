@@ -731,6 +731,10 @@ environment variables will be made available:
 +--------------------------+---------------------------------------------------+
 | ``PREFIX``               | The sysroot prefix for the package.               |
 +--------------------------+---------------------------------------------------+
+| ``RELENG_DEVMODE``       | Flag set if in :ref:`development mode`.           |
++--------------------------+---------------------------------------------------+
+| ``RELENG_LOCALSRCS``     | Flag set if in :ref:`local-sources mode`.         |
++--------------------------+---------------------------------------------------+
 | ``RELENG_REBUILD``       | Flag set if performing a re-build request.        |
 +--------------------------+---------------------------------------------------+
 | ``RELENG_RECONFIGURE``   | Flag set if performing a re-configuration         |
