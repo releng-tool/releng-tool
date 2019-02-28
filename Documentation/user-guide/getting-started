@@ -1,0 +1,48 @@
+getting started
+---------------
+
+Depending on the host and how releng-tool has been :doc:`installed <install>`,
+the tool can be either executed using the call ``releng-tool`` (if supported) or
+explicitly through a Python invoke ``python -m releng``. This guide will assume
+the former option is available for use. If the alias command is not available on
+the host system, the latter call can be used instead.
+
+A releng-tool project will be defined by a ``releng.py`` configuration file
+along with one or more packages found inside a ``package/`` folder. This
+location can be referred to as the "root directory". When invoking
+``releng-tool``, the tool will look into the current working directory for the
+project information to process. For example, if a project found inside
+``my-project`` with the single package ``package-a`` defined, the following
+output may be observed:
+
+.. code-block:: shell
+
+   $ cd my-project
+   $ releng-tool
+   extracting package-a...
+   patching package-a...
+   configuring package-a...
+   building package-a...
+   installing package-a...
+   generating license information...
+   (success) completed (0:01:30)
+
+On a successful execution, it is common that the release engineering process
+will have an asset (or multiple) generated into a ``images/`` location; however,
+it is up to the developer of a releng-tool project to decide where generated
+files will be stored.
+
+If a user wishes to pass the directory of a project location via command line,
+the argument ``--root-dir`` can be used:
+
+.. code-block:: shell
+
+   $ releng-tool --root-dir my-project/
+   ...
+
+For a complete list of actions and other argument options provided by the tool,
+the ``--help`` option can be used to show this information:
+
+.. code-block:: shell
+
+   $ releng-tool --help

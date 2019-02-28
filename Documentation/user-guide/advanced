@@ -1,0 +1,168 @@
+advanced builder capabilities
+-----------------------------
+
+.. _development mode:
+
+development mode
+~~~~~~~~~~~~~~~~
+
+Development mode provides a way for builder to request to process supported
+packages against a development version of sources rather than using fixed
+versions. Consider the following example: if a project has a package which
+sources are pulled from a Git repository, it is most likely the package
+definition will define the explicit tag to clone from (e.g. ``v1.0``). However,
+a package may define that the ``master`` branch of a repository is used for the
+most recent development revision. If an environment is configured for
+development mode, the releng-tool process will instead pull sources from the
+``master`` branch instead of a release tag.
+
+To enable development mode, invoking ``releng-tool`` with the ``--development``
+argument will enable the mode. Future calls to releng-tool for the project will
+use the development revision for packages where define. For example:
+
+.. code-block:: shell
+
+   $ releng-tool --development
+   (success) configured root for development mode
+   $ releng-tool
+   ~building against development sources~
+   ...
+
+Development mode is persisted through the use of a file flag in the root
+directory. A user can either disable development mode by performing a
+|ACTION_MRPROPER|_ or can manually remove the file flag.
+
+.. _local-sources mode:
+
+local-sources mode
+~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+   Clean events (such as ``releng-tool clean``) will not touch packages using
+   sources found alongside the output directory
+
+Local-sources mode provides a way for a developer to build internal-flagged
+packages using sources found alongside the root directory instead of having
+releng-tool attempt to fetch them from remote instances. This is primarily for
+developers who desire to manually manage source content outside the releng-tool
+environment. Local-sources mode only works for internally flagged packaged.
+Consider the following example: a releng-tool project has a package called
+``liba``. When releng-tool is invoked in normal configurations, the package will
+do fetching, extraction and patching to prepare the directory
+``<root>/output/build/liba-<version>``. However, if a builder has configured the
+working root for local-sources mode, sources for ``liba`` will be checked at the
+folder ``<root>/../liba`` instead. Also, when in local-sources mode, an internal
+package will skip the fetching, extraction and patching stages in order to
+prevent undesired manipulation of developer-prepared sources. Another
+consideration to note is the use of clean operators while in local-sources mode.
+Continuing with the above example, if a user invokes ``releng-tool liba-clean``,
+the operation will not remove the ``<root>/../liba`` folder. Responsibility to
+managing a clean ``liba`` package will be left with the user.
+
+To enable local-sources mode, invoking ``releng-tool`` with the
+``--local-sources`` argument will enable the mode. Future calls to releng-tool
+for the project will use local sources for packages defined as internal
+packages. For example:
+
+.. code-block:: shell
+
+   $ releng-tool --local-sources
+   (success) configured root for local-sources mode
+   $ releng-tool
+   ~building against local sources~
+   ...
+
+Local-sources mode is persisted through the use of a file flag in the root
+directory. A user can either disable local sources mode by performing a
+|ACTION_MRPROPER|_ or can manually remove the file flag.
+
+.. _conf_overrides:
+
+configuration overrides
+~~~~~~~~~~~~~~~~~~~~~~~
+
+While it is not recommended to have users manually modify a project's
+configuration, a series of override options exist to deal with unique build
+scenarios. If a builder needs to override a tool location or package site, a
+user and define either environment options or setup a configuration override
+script ``releng-overrides.py``. It is never recommended to persist a
+configuration overrides file into a project's source repository.
+
+extraction tool overrides
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``override_extract_tools`` option inside a configuration override script
+allows a dictionary to be provided to map an extension type to an external tool
+to indicate which tool should be used for extraction. For example, when a
+``.zip`` archive is being processed for extraction, releng-tool will internally
+extract the archive; however, a user may wish to override this tool with their
+own extraction utility. Consider the following example:
+
+.. code-block:: python
+
+   override_extract_tools = {
+       'zip': '/opt/my-custom-unzip',
+   }
+
+revision overrides
+^^^^^^^^^^^^^^^^^^
+
+The ``override_revisions`` option inside a configuration override script allows
+a dictionary to be provided to map a package name to a new revision value.
+Consider the following example: a project defines ``module-a`` and ``module-b``
+packages with package ``module-b`` depending on package ``module-a``. A
+developer may be attempting to tweak package ``module-b`` on the fly to test a
+new capabilities against the current stable version of ``module-a``; however,
+the developer does not want to explicitly change the revision inside package
+``module-b``'s definition. To avoid this, an override can be used instead:
+
+.. code-block:: python
+
+   override_revisions = {
+       'module-b': '<test-branch>',
+   }
+
+The above example shows that package ``module-b`` will fetch using a test branch
+instead of what is defined in the actual package definition.
+
+site overrides
+^^^^^^^^^^^^^^
+
+The ``override_sites`` option inside a configuration override script allows a
+dictionary to be provided to map a package name to a new site value. There may
+be times where a host may not have access to a specific package site. To have a
+host to use a mirror location without having to adjust the package definition,
+the site override option can be used. For example, consider a package pulls from
+site ``git@example.com:myproject.git``; however, the host ``example.com`` cannot
+be access from the host machine. If a mirror location has been setup at
+``git@example.org:myproject.git``, the following override can be used:
+
+.. code-block:: python
+
+   override_sites = {
+       '<package-name>': 'git@example.org:myproject.git',
+   }
+
+tool overrides
+^^^^^^^^^^^^^^
+
+Environment variables can be used to help override external tool invoked by the
+releng-tool process. For example, when invoking CMake-based projects, the tool
+``cmake`` will be invoked; however, if a builder is running on CentOS and CMake
+v3.x is desired, the tool ``cmake3`` needs to be invoked instead. To configure
+this, an environment variable can be set to switch which tool to invoke.
+Consider the following example:
+
+.. code-block:: shell
+
+   $ export RELENG_CMAKE=cmake3
+   $ releng-tool
+   [cmake3 will be used for cmake projects]
+
+quirks
+^^^^^^
+
+releng-tool also provides a series of configuration quirks to deal with rare
+host environment scenarios where releng-tool may be experiencing issues. See
+:ref:`configuration quirks <quirks>` for more information.

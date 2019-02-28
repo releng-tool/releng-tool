@@ -1,0 +1,54 @@
+tips
+----
+
+offline builds
+~~~~~~~~~~~~~~
+
+A user can prepare for an offline build by using the ``fetch`` action:
+
+.. code-block:: shell
+
+   $ releng-tool fetch
+
+Package content will be downloaded into the respective ``dl/`` and/or ``cache/``
+folders. Future builds for the project will no longer need external access until
+these folders are manually removed.
+
+parallel builds
+~~~~~~~~~~~~~~~
+
+A stage (such as a build stage) for a package can take advantage of multiple
+cores to perform the step. By default, releng-tool will attempt to run as many
+jobs for a stage equal to the amount of physical cores on the host system. The
+amount of jobs available for a stage can be configured using the ``--jobs``
+argument. For example, if a user wishes to override the amount of jobs attempted
+for stages to two jobs, the following can be used:
+
+.. code-block:: shell
+
+   $ releng-tool --jobs 2
+
+Note that a developer may restrict the amount of jobs allowed for a specific
+package if a package cannot support parallel processing.
+
+privileged builds
+~~~~~~~~~~~~~~~~~
+
+It is never recommended to invoke a build with elevated (e.g. root) privileges.
+A builder invoking in an elevated environment runs the risk of a misconfigured
+releng-tool project dirtying or destroying the builder's host environment.
+
+license generation
+~~~~~~~~~~~~~~~~~~
+
+At the end of a ``releng-tool`` invoke, the final stages will compile a list of
+package license information (if licenses are defined). If a user wishes to
+compile a project's list of license information without performing an entire
+build, the ``licenses`` action can be used:
+
+.. code-block:: shell
+
+   $ releng-tool licenses
+
+License information can then be found in the root directory's
+``<root>/licenses`` folder.
