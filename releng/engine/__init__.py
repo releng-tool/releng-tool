@@ -680,6 +680,11 @@ list exists with the name of packages to be part of the releng process:
             elif action == PkgAction.REINSTALL:
                 env['RELENG_REINSTALL'] = '1'
 
+            if self.opts.devmode:
+                env['RELENG_DEVMODE'] = '1'
+            if self.opts.local_srcs:
+                env['RELENG_LOCALSRCS'] = '1'
+
         # utility methods (if adjusting, see also `releng.__init__`)
         script_env['debug'] = debug
         script_env['err'] = err
