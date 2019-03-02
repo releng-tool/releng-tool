@@ -6,6 +6,8 @@ The recommended method of installation is using pip_:
 .. code-block:: shell
 
    pip install releng-tool
+    (or)
+   python -m pip install releng-tool
 
 To verify the package has been installed the following command can be used:
 
