@@ -9,6 +9,10 @@ releng-tool
     :target: https://travis-ci.com/releng-tool/releng-tool
     :alt: Build Status
 
+.. image:: https://img.shields.io/badge/docs-releng.io-000.svg
+    :target: https://docs.releng.io
+    :alt: Documentation
+
 releng-tool aims to provide a method to prepare a structured environment to
 assist in the release engineering of a project.
 
