@@ -24,9 +24,6 @@ doc_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.dirname(doc_dir)
 sys.path.insert(0, root_dir)
 
-# theme overrides
-templates_path = [os.path.join(doc_dir, '_templates/')]
-
 # output - html
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
