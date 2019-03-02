@@ -34,4 +34,3 @@ used and the interaction between the staging/target area and the host system.
    contributor-guide
    tips
    annex-a
-   releng.io <https://releng.io/>

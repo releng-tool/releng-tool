@@ -1,10 +1,10 @@
-@media screen {
+﻿@media screen {
     /* allow the use of the entire viewport width */
     .wy-nav-content {
         max-width: none;
     }
 }
- 
+
 .wy-table-responsive table td {
     /* allow table contents to wrap (corrects bullet list issues) */
     white-space: normal !important;
@@ -13,4 +13,14 @@
 .wy-table-responsive table ul {
     /* remove bottom margin for lists in tables (corrects excessive spacing) */
     margin-bottom: unset !important;
+}
+
+a.reference.external:after {
+    /* add external icon for any external link (i.e. sidebar) */
+    color: #b3b3b3;
+    content: "";
+    font-family: FontAwesome;
+    font-size: 50%;
+    margin: 0 .2em;
+    vertical-align: super;
 }
