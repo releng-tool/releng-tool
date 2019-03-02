@@ -21,6 +21,7 @@ Options which are read by releng-tool from a project's configuration script:
    override_revisions = {'<pkg>': '<revision>'}
    override_sites = {'<pkg>': '<site>'}
    packages = ['<pkg>', '<pkg>', '<pkg>']
+   quirks = ['<quirk-id>']
    sysroot_prefix = '<path>' # '/usr'
    url_mirror = '<mirror-url>'
 
