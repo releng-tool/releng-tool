@@ -1,7 +1,7 @@
 requirements
 ============
 
-releng-tool is developed in Python_ is requires either Python_ 2.7 or 3.4+ to
+releng-tool is developed in Python_ and requires either Python_ 2.7 or 3.4+ to
 run on a host system. A series of optional tools are required if certain stages
 and/or features are used. For example, projects fetching sources from Git_ will
 require the ``git`` tool installed; projects with patches will required the
