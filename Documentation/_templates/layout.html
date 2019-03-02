@@ -1,5 +1,8 @@
 {% extends "!layout.html" %}
 {% block menu %}
+    {% if version_warning is defined %}
+    <div class="version-warning">{{ version_warning }}</div>
+    {% endif %}
     {{ super() }}
 <div><hr style="margin: 10px 0;" /></div>
 <div>
