@@ -399,7 +399,7 @@ def pathExists(path, *args):
     return whether or not the path exists
 
     Allows a caller to verify the existence of a file on the file system. This
-    cal will return ``True`` if the path exists; ``False`` otherwise.
+    call will return ``True`` if the path exists; ``False`` otherwise.
 
     An example when using in the context of script helpers is as follows:
 
