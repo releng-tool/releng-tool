@@ -40,7 +40,7 @@ setup(
     packages=find_packages(exclude=["test*"]),
     platforms='any',
     test_suite='test',
-    url='https://github.com/releng-tool/releng-tool',
+    url='https://releng.io',
     version='0.2.0.dev0',
     zip_safe=False,
 )
