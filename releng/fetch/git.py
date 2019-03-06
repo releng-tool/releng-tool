@@ -59,7 +59,7 @@ def fetch(opts):
                 shutil.rmtree(cache_dir)
             except IOError:
                 err('unable to cleanup cache folder for package')
-                log(' (cache folder: {})'.format(cache_dir))
+                err(' (cache folder: {})'.format(cache_dir))
                 return None
 
     # if we have no cache for this repository, build one

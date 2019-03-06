@@ -59,7 +59,7 @@ def extract(opts):
 
             if not execute(tool_cmd.split(), cwd=work_dir, critical=False):
                 err('unable to extract with tool override')
-                log(' (command: {})'.format(tool_cmd))
+                err(' (command: {})'.format(tool_cmd))
                 return None
 
         # attempt to extract the (compressed) tar archive with the host's
@@ -104,8 +104,8 @@ def extract(opts):
                 except Exception as e:
                     err('unable to extract tar file')
                     err('    {}'.format(e))
-                    log(' (file: {})'.format(cache_file))
-                    log(' (target: {})'.format(work_dir))
+                    err(' (file: {})'.format(cache_file))
+                    err(' (target: {})'.format(work_dir))
                     return False
 
         # extract a zip-extension cache file using python's internal
@@ -137,8 +137,8 @@ def extract(opts):
             except Exception as e:
                 err('unable to extract zip file')
                 err('    {}'.format(e))
-                log(' (file: {})'.format(cache_file))
-                log(' (target: {})'.format(work_dir))
+                err(' (file: {})'.format(cache_file))
+                err(' (target: {})'.format(work_dir))
                 return False
 
     if not is_extractable:
@@ -148,8 +148,8 @@ def extract(opts):
         except IOError as e:
             err('unable to copy over cache file')
             err('    {}'.format(e))
-            log(' (file: {})'.format(cache_file))
-            log(' (target: {})'.format(work_dir))
+            err(' (file: {})'.format(cache_file))
+            err(' (target: {})'.format(work_dir))
             return False
 
     return True

@@ -47,7 +47,7 @@ def stage(engine, pkg):
             return True
 
         err('missing local sources for internal package: ' + name)
-        log("""\
+        err("""\
 The active configuration is flagged for 'local sources' mode; however, an
 internal package cannot be found in the local system. Before continuing, ensure
 you have checked out all internal packages on your local system (or, disable the
@@ -101,7 +101,7 @@ local sources option to use the default process).
                         return False
                     elif hr == HashResult.MISSING_ARCHIVE:
                         err('missing archive hash for verification')
-                        log("""\
+                        err("""\
 The hash file for this package does not have an entry for the cache file to be
 verified. Ensure the hash file defines an entry for the expected cache file:
 
@@ -181,7 +181,7 @@ verified. Ensure the hash file defines an entry for the expected cache file:
                         return False
                     elif hr == HashResult.MISSING_ARCHIVE:
                         err('missing archive hash for verification')
-                        log("""\
+                        err("""\
 The hash file for this package does not have an entry for the cache file to be
 verified. Ensure the hash file defines an entry for the expected cache file:
 

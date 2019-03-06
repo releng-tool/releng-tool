@@ -88,7 +88,7 @@ class RelengEngine:
 
         if not os.path.isfile(self.opts.conf_point):
             err('missing configuration file')
-            log("""\
+            err("""\
 The configuration file cannot be found. Ensure the configuration file exists
 in the working directory or the provided root directory:
 
@@ -316,7 +316,7 @@ in the working directory or the provided root directory:
                             break
         except FailedToPrepareWorkingDirectoryError as e:
             err("unable to prepare a package's working directory")
-            log("""\
+            err("""\
 An attempt to prepare and move into a working directory for a package process
 has failed. Ensure the following path is accessible for this user:
 
@@ -505,7 +505,7 @@ has failed. Ensure the following path is accessible for this user:
 
         if badPkgsValue:
             err('bad package list definition')
-            log("""\
+            err("""\
 The configuration file does not have a properly formed list of defined packages.
 Ensure a package list exists with the string-based names of packages to be part
 of the releng process:
@@ -515,7 +515,7 @@ of the releng process:
             self.opts.conf_point, CONF_KEY_PKGS))
         elif not pkg_names:
             err('no defined packages')
-            log("""\
+            err("""\
 The configuration file does not have any defined packages. Ensure a package
 list exists with the name of packages to be part of the releng process:
 
@@ -769,7 +769,7 @@ list exists with the name of packages to be part of the releng process:
         """
         def notifyInvalidValue(key, expected):
             err('invalid configuration value provided')
-            log("""\
+            err("""\
 The configuration file defines a key with an unexpected type. Correct the
 following key entry and re-try again.
 

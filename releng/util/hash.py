@@ -146,7 +146,7 @@ def verify(hash_file, path, exclude=None, relaxed=False, quiet=False):
     except BadFormatHashLoadError as e:
         if not quiet:
             err('hash file is not properly formatted')
-            log("""\
+            err("""\
 The hash file provided is incorrectly formatted. The hash file expects lines
 with the hash type, hash and target file provided. For example:
 
@@ -189,7 +189,7 @@ Please correct the following hash file:
             if not hashers[hash_type]:
                 if not quiet:
                     err('unsupported hash type')
-                    log("""\
+                    err("""\
 The hash file defines a hash type not supported by the releng-tool. Officially
 supported hash types are FIPS-180 algorithms (sha1, sha224, sha256, sha384 and
 sha512) as well as (but not recommended) RSA'S MD5 algorithm. Other algorithms,
@@ -214,7 +214,7 @@ library.
                     warn('missing expected file for verification: ' + asset)
                 else:
                     err('missing expected file for verification')
-                    log("""\
+                    err("""\
 A defined hash entry cannot be verified since the target file does not exist.
 Ensure the hash file correctly names an expected file.
 
@@ -233,12 +233,12 @@ Ensure the hash file correctly names an expected file.
                         warn('hash mismatch detected: ' + asset)
                     else:
                         err('hash mismatch detected')
-                        log("""\
+                        err("""\
     Hash File: {}
          File: {}
      Detected: {}""".format(hash_file, asset, digest))
                         for hash in hashes:
-                            log('     Provided: {}'.format(hash))
+                            err('     Provided: {}'.format(hash))
                 return HashResult.MISMATCH
 
     return HashResult.VERIFIED

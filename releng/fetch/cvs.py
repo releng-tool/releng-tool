@@ -45,7 +45,7 @@ def fetch(opts):
         cvsroot, module = site.rsplit(' ', 1)
     except ValueError:
         err('improper cvs site defined')
-        log("""\
+        err("""\
 The provided CVS site does not define both the CVSROOT as well as the target
 module to checkout. For example:
 

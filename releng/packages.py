@@ -167,12 +167,12 @@ class RelengPackageManager:
 
         def notifyInvalidValue(name, key, expected):
             err('package configuration has an invalid value: {}'.format(name))
-            log(' (key: {}, expects: {})'.format(pkgKey(name, key), expected))
+            err(' (key: {}, expects: {})'.format(pkgKey(name, key), expected))
 
         BAD_RV = (None, None, None)
         if not os.path.isfile(script):
             err('unknown package provided: {}'.format(name))
-            log(' (script) {}'.format(script))
+            err(' (script) {}'.format(script))
             return BAD_RV
 
         env = run_script(script, self.script_env, subject='package')
@@ -191,7 +191,7 @@ class RelengPackageManager:
         key = pkgKey(name, RPK_VERSION)
         if key not in env or not env[key]:
             err('package has no version defined: {}'.format(name))
-            log(' (missing key: {})'.format(key))
+            err(' (missing key: {})'.format(key))
             return BAD_RV
         pkg_version = interpretString(env[key])
         if pkg_version is None:
@@ -241,7 +241,7 @@ class RelengPackageManager:
                     pkg_install_type = PackageInstallType[pkg_install_type]
                 else:
                     err('unknown install type value provided: {}'.format(name))
-                    log(' (key: {})'.format(pkgKey(name, RPK_INSTALL_TYPE)))
+                    err(' (key: {})'.format(pkgKey(name, RPK_INSTALL_TYPE)))
                     return BAD_RV
 
             if not pkg_install_type:
@@ -257,7 +257,7 @@ class RelengPackageManager:
 
                 if pkg_extract_type not in self.registry.extract_types:
                     err('unknown extract-type value provided: {}'.format(name))
-                    log(' (key: {})'.format(pkgKey(name, RPK_EXTRACT_TYPE)))
+                    err(' (key: {})'.format(pkgKey(name, RPK_EXTRACT_TYPE)))
                     return BAD_RV
 
             # fixed jobs
@@ -307,7 +307,7 @@ class RelengPackageManager:
                     pkg_type = PackageType[pkg_type]
                 elif pkg_type not in self.registry.package_types:
                     err('unknown package type value provided: {}'.format(name))
-                    log(' (key: {})'.format(pkgKey(name, RPK_TYPE)))
+                    err(' (key: {})'.format(pkgKey(name, RPK_TYPE)))
                     return BAD_RV
 
             if not pkg_type:
@@ -322,7 +322,7 @@ class RelengPackageManager:
                     pkg_vcs_type = VcsType[pkg_vcs_type]
                 elif pkg_vcs_type not in self.registry.fetch_types:
                     err('unknown vcs-type value provided: {}'.format(name))
-                    log(' (key: {})'.format(pkgKey(name, RPK_VCS_TYPE)))
+                    err(' (key: {})'.format(pkgKey(name, RPK_VCS_TYPE)))
                     return BAD_RV
 
             if not pkg_vcs_type:
@@ -420,8 +420,8 @@ class RelengPackageManager:
             key1 = pkgKey(name, RPK_EXTERNAL)
             key2 = pkgKey(name, RPK_INTERNAL)
             err('package has conflicting configuration values: {}'.format(name))
-            log(' (package flagged as external and internal)')
-            log(' (keys: {}, {})'.format(key1, key2))
+            err(' (package flagged as external and internal)')
+            err(' (keys: {}, {})'.format(key1, key2))
             return BAD_RV
         elif pkg_is_internal:
             pkg_is_internal = True
@@ -469,8 +469,8 @@ class RelengPackageManager:
 
             if pkg_build_dir == opts.root_dir:
                 err('conflicting local-sources package path and root directory')
-                log(' (root: {})'.format(opts.root_dir))
-                log(' ({} path: {})'.format(name, pkg_build_dir))
+                err(' (root: {})'.format(opts.root_dir))
+                err(' ({} path: {})'.format(name, pkg_build_dir))
                 return BAD_RV
         else:
             pkg_build_dir = pkg_build_output_dir
