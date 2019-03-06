@@ -1,17 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from contextlib import contextmanager
 from releng.util.io import generateTempDir as tempDir
 from difflib import unified_diff
 from io import open
-import os
-
-"""
-base output directory for unit tests using a file system
-"""
-TEST_OUTPUT_DIR = 'output'
 
 class RelengTestUtil:
     """
@@ -75,8 +69,5 @@ class RelengTestUtil:
             the container directory
         """
 
-        base_dir = os.path.dirname(os.path.realpath(__file__))
-        output_dir = os.path.join(base_dir, TEST_OUTPUT_DIR)
-
-        with tempDir(output_dir) as work_dir:
+        with tempDir() as work_dir:
             yield work_dir
