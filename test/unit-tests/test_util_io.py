@@ -95,31 +95,31 @@ class TestUtilIo(unittest.TestCase):
     def test_utilio_ise(self):
         provided = 'my-file.txt'
         expected = ('my-file', 'txt')
-        self.assertEquals(ise(provided), expected)
+        self.assertEqual(ise(provided), expected)
 
         provided = 'my-file.tar.Z'
         expected = ('my-file', 'tar.Z')
-        self.assertEquals(ise(provided), expected)
+        self.assertEqual(ise(provided), expected)
 
         provided = 'my-file.tar.gz'
         expected = ('my-file', 'tar.gz')
-        self.assertEquals(ise(provided), expected)
+        self.assertEqual(ise(provided), expected)
 
         provided = 'my-file.tar.xz'
         expected = ('my-file', 'tar.xz')
-        self.assertEquals(ise(provided), expected)
+        self.assertEqual(ise(provided), expected)
 
         provided = 'my.file.name.dat'
         expected = ('my.file.name', 'dat')
-        self.assertEquals(ise(provided), expected)
+        self.assertEqual(ise(provided), expected)
 
         provided = 'my-file'
         expected = ('my-file', None)
-        self.assertEquals(ise(provided), expected)
+        self.assertEqual(ise(provided), expected)
 
         provided = None
         expected = (None, None)
-        self.assertEquals(ise(provided), expected)
+        self.assertEqual(ise(provided), expected)
 
     def test_utilio_move(self):
         with RelengTestUtil.prepareWorkdir() as work_dir:
@@ -227,47 +227,47 @@ class TestUtilIo(unittest.TestCase):
     def test_utilio_prepare_helpers(self):
         prepared = prepare_arguments(None)
         expected = []
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
         prepared = prepare_arguments({})
         expected = []
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
         args = OrderedDict()
         args['foo'] = 'bar'
         args['xyz'] = ''
         prepared = prepare_arguments(args)
         expected = ['foo', 'bar', 'xyz']
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
         args = OrderedDict()
         args['foo'] = 'bar'
         args['test'] = None
         prepared = prepare_arguments(args)
         expected = ['foo', 'bar']
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
         prepared = prepare_definitions(None)
         expected = []
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
         prepared = prepare_definitions({})
         expected = []
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
         args = OrderedDict()
         args['foo'] = 'bar'
         args['xyz'] = ''
         prepared = prepare_definitions(args)
         expected = ['foo=bar', 'xyz']
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
         args = OrderedDict()
         args['foo'] = 'bar'
         args['test'] = None
         prepared = prepare_definitions(args)
         expected = ['foo=bar']
-        self.assertEquals(prepared, expected)
+        self.assertEqual(prepared, expected)
 
     def test_utilio_shebang_interpreter(self):
         si_dir = os.path.join(self.assets_dir, 'shebang-interpreter')
@@ -286,17 +286,17 @@ class TestUtilIo(unittest.TestCase):
             return rv
 
         # simple interpreter
-        self.assertEquals(psi(si01), [b'interpreter'] + E(si01))
+        self.assertEqual(psi(si01), [b'interpreter'] + E(si01))
         # interpreter with a single argument
-        self.assertEquals(psi(si02), [b'interpreter', b'arg'] + E(si02))
+        self.assertEqual(psi(si02), [b'interpreter', b'arg'] + E(si02))
         # interpreter with a single argument (with whitespaces)
-        self.assertEquals(psi(si03), [b'interpreter', b'arg1 arg2'] + E(si03))
+        self.assertEqual(psi(si03), [b'interpreter', b'arg1 arg2'] + E(si03))
         # too long of an interpreter
-        self.assertEquals(psi(si04), si04)
+        self.assertEqual(psi(si04), si04)
         # interpreter with whitespaces
-        self.assertEquals(psi(si05), [b'interpreter'] + E(si05))
+        self.assertEqual(psi(si05), [b'interpreter'] + E(si05))
         # real example of an interpreter
-        self.assertEquals(psi(si06), [b'/usr/bin/env', b'python'] + E(si06))
+        self.assertEqual(psi(si06), [b'/usr/bin/env', b'python'] + E(si06))
 
     def test_utilio_touch(self):
         with RelengTestUtil.prepareWorkdir() as work_dir:
