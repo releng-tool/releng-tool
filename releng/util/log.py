@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
+
+from __future__ import print_function
+import sys
 
 #: flag to track the enablement of debug messages
 RELENG_LOG_DEBUG_FLAG = False
@@ -26,7 +29,7 @@ def log(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('', '', msg, *args)
+    __log('', '', msg, sys.stdout, *args)
 
 def debug(msg, *args):
     """
@@ -47,7 +50,7 @@ def debug(msg, *args):
     """
     global RELENG_LOG_DEBUG_FLAG
     if RELENG_LOG_DEBUG_FLAG:
-        __log('(debug) ', '\033[2m', msg, *args)
+        __log('(debug) ', '\033[2m', msg, sys.stdout, *args)
 
 def err(msg, *args):
     """
@@ -65,7 +68,7 @@ def err(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('(error) ', '\033[1;31m', msg, *args)
+    __log('(error) ', '\033[1;31m', msg, sys.stderr, *args)
 
 def note(msg, *args):
     """
@@ -83,7 +86,7 @@ def note(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('', '\033[7m', msg, *args)
+    __log('', '\033[7m', msg, sys.stdout, *args)
 
 def success(msg, *args):
     """
@@ -101,7 +104,7 @@ def success(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('(success) ', '\033[1;32m', msg, *args)
+    __log('(success) ', '\033[1;32m', msg, sys.stdout, *args)
 
 def verbose(msg, *args):
     """
@@ -122,7 +125,7 @@ def verbose(msg, *args):
     """
     global RELENG_LOG_VERBOSE_FLAG
     if RELENG_LOG_VERBOSE_FLAG:
-        __log('(verbose) ', '\033[2m', msg, *args)
+        __log('(verbose) ', '\033[2m', msg, sys.stdout, *args)
 
 def warn(msg, *args):
     """
@@ -140,9 +143,9 @@ def warn(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('(warn) ', '\033[1;35m', msg, *args)
+    __log('(warn) ', '\033[1;35m', msg, sys.stderr, *args)
 
-def __log(prefix, color, msg, *args):
+def __log(prefix, color, msg, file, *args):
     """
     utility logging method
 
@@ -152,6 +155,7 @@ def __log(prefix, color, msg, *args):
         prefix: prefix to add to the message
         color: the color to apply to the message
         msg: the message
+        file: the file to write to
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
@@ -161,7 +165,7 @@ def __log(prefix, color, msg, *args):
         post = ''
     else:
         post = '\033[0m'
-    print('{}{}{}{}'.format(color, prefix, msg.format(*args), post))
+    print('{}{}{}{}'.format(color, prefix, msg.format(*args), post), file=file)
 
 def releng_log_configuration(debug, nocolor, verbose):
     """
