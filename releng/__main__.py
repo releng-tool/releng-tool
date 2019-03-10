@@ -80,6 +80,15 @@ def main():
         # project to import locally created modules in their build/etc. scripts
         sys.path.append(opts.root_dir)
 
+        # register the project's host directory as a system path; lazily permits
+        # loading host tools built by a project over the system
+        host_bin_dir = os.path.join(opts.host_dir + opts.sysroot_prefix, 'bin')
+        sys.path.insert(0, host_bin_dir)
+        os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
+        # support loading applications not following prefix or bin container
+        sys.path.insert(0, opts.host_dir)
+        os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
+
         # create and start the engine
         engine = RelengEngine(opts)
         if engine.run():
