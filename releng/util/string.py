@@ -132,7 +132,7 @@ def interpretDictionaryStrings(obj):
             if not isinstance(key, basestring):
                 rv = None
                 break
-            elif not isinstance(value, basestring):
+            elif value is not None and not isinstance(value, basestring):
                 rv = None
                 break
 
