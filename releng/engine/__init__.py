@@ -38,7 +38,6 @@ from .post import stage as postStage
 from collections import OrderedDict
 from datetime import datetime
 from enum import Enum
-from shutil import copyfile
 from shutil import copyfileobj
 import os
 import sys
@@ -466,11 +465,9 @@ has failed. Ensure the following path is accessible for this user:
         for file in pkg.license_files:
             src = os.path.join(pkg.build_dir, file)
             dst = os.path.join(pkg_license_dir, file)
-            try:
-                copyfile(src, dst)
-            except IOError as e:
+
+            if not pathCopy(src, dst, critical=False):
                 err('unable to copy license information: ' + pkg.name)
-                err('    {}'.format(e))
                 return False
 
         return True
