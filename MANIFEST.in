@@ -1,0 +1,8 @@
+include scripts/releng-tool-completion
+include LICENSE
+include README.rst
+graft test
+
+global-exclude *.py[cod]
+global-exclude .git*
+global-exclude __pycache__
