@@ -21,9 +21,9 @@ DEFAULT_SYMBOLS_DIR  = 'symbols'   #: default symbols container directory
 DEFAULT_TARGET_DIR   = 'target'    #: default target container directory
 
 # default directory/file paths
-RELENG_CONF_NAME = 'releng.py' #: configuration script filename
-RELENG_CONF_OVERRIDES_NAME = 'releng-overrides.py' #: conf. overrides filename
-RELENG_POST_NAME = 'post.py' #: post script filename
+RELENG_CONF_NAME = 'releng' #: configuration script filename
+RELENG_CONF_OVERRIDES_NAME = 'releng-overrides' #: conf. overrides filename
+RELENG_POST_NAME = 'releng-post' #: post script filename
 FF_PREFIX = '.releng-flag-' #: prefix for all file flags
 FF_DEVMODE_NAME = 'devmode' #: postfix for development mode file flag
 FF_LOCALSRCS_NAME = 'local-sources' #: postfix for local sources mode file flag

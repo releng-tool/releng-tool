@@ -85,7 +85,17 @@ class RelengEngine:
         # script(s)
         self._prepareScriptEnvironment(gbls, self.opts.pkg_action)
 
+        conf_point = self.opts.conf_point
+
+        # TODO remove deprecated configuration load in v0.3+
+        # if post-processing is missing, attempt to load deprecated filename
         if not os.path.isfile(self.opts.conf_point):
+            conf_point = os.path.join(self.opts.root_dir, 'releng.py')
+            if os.path.isfile(conf_point):
+                warn('using deprecated configuration file releng.py -- switch '
+                     'to releng for future projects')
+
+        if not os.path.isfile(conf_point):
             err('missing configuration file')
             err("""\
 The configuration file cannot be found. Ensure the configuration file exists
@@ -94,7 +104,7 @@ in the working directory or the provided root directory:
     {}""".format(self.opts.conf_point))
             return False
 
-        settings = run_script(self.opts.conf_point, gbls,
+        settings = run_script(conf_point, gbls,
             subject='configuration')
         if not settings:
             return False
@@ -626,6 +636,15 @@ list exists with the name of packages to be part of the releng process:
             when processing the post-processing script
         """
         script = self.opts.post_point
+
+        # TODO remove deprecated configuration load in v0.3+
+        # if post-processing is missing, attempt to load deprecated filename
+        if not os.path.isfile(script):
+            script = os.path.join(self.opts.root_dir, 'post.py')
+            if os.path.isfile(script):
+                warn('using deprecated post-processing file post.py -- switch '
+                     'to releng-post for future projects')
+
         if os.path.isfile(script):
             verbose('performing post-processing...')
 
