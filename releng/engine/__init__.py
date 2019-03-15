@@ -108,7 +108,7 @@ in the working directory or the provided root directory:
         if os.path.isfile(self.opts.conf_point_overrides):
             warn('detected configuration overrides file')
 
-            overrides = run_script(self.opts.conf_point, gbls,
+            overrides = run_script(self.opts.conf_point_overrides, gbls,
                 subject='configuration overrides')
             if not overrides:
                 return False
