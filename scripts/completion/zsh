@@ -1,0 +1,27 @@
+#compdef _releng_tool releng-tool
+
+function _releng_tool {
+    local opts=(
+        'clean'
+        'extract'
+        'fetch'
+        'licenses'
+        'mrproper'
+        'patch'
+    )
+
+    _arguments -C \
+        '--cache-dir[directory for distributed version control cache]: :_files' \
+        '--debug[show debug-related messages]' \
+        '--development[enables development mode]' \
+        '--dl-dir[directory for download archives]: :_files' \
+        '--help[show help]' '-h[show help]' \
+        '--jobs[numbers of jobs to handle]' '-j[numbers of jobs to handle]' \
+        '--local-sources[enables local-sources mode]' \
+        '--nocolorout[explicitly disable colorized output]' \
+        '--out-dir[directory for output]: :_files' \
+        '--root-dir[directory to process a releng-tool project]: :_files' \
+        '--verbose[show additional messages]' \
+        "--version[show releng-tool's version]" \
+        "1: :($opts)"
+}

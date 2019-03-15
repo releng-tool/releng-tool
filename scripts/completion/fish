@@ -1,0 +1,93 @@
+#!/usr/bin/env fish
+
+function __fish__releng_tool_has_action
+    set opts \
+        -build \
+        -clean \
+        -configure \
+        -extract \
+        -fetch \
+        -install \
+        -patch \
+        -rebuild \
+        -reconfigure \
+        -reinstall \
+        clean \
+        extract \
+        fetch \
+        licenses \
+        mrproper \
+        patch
+
+    set cmd (commandline -poc)
+    set -e cmd[1]
+
+    for c in $cmd
+        for o in $opts
+            switch $c
+            case "*$o"
+                return 1
+            end
+        end
+    end
+
+    return 0
+end
+
+complete --command releng-tool --no-files
+
+complete --command releng-tool --arguments 'clean' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'clean extracted/build content from the output directory'
+complete --command releng-tool --arguments 'extract' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'process all packages up to the extraction phase'
+complete --command releng-tool --arguments 'fetch' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'ensure all packages have been fetched'
+complete --command releng-tool --arguments 'licenses' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'generate license information for a project'
+complete --command releng-tool --arguments 'mrproper' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'pristine clean of output directory and file flags'
+complete --command releng-tool --arguments 'patch' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'process all packages up to the patch phase'
+
+complete --command releng-tool --long-option='cache-dir' \
+    --require-parameter \
+    --description 'directory for distributed version control cache'
+complete --command releng-tool --long-option='debug' \
+    --no-files \
+    --description 'show debug-related messages'
+complete --command releng-tool --long-option='development' \
+    --no-files \
+    --description 'enables development mode'
+complete --command releng-tool --long-option='dl-dir' \
+    --require-parameter \
+    --description 'directory for download archives'
+complete --command releng-tool --long-option='help' --short-option=h \
+    --no-files \
+    --description 'show help'
+complete --command releng-tool --long-option='jobs' --short-option=j \
+    --no-files --require-parameter \
+    --description 'numbers of jobs to handle'
+complete --command releng-tool --long-option='local-sources' \
+    --no-files \
+    --description 'enables local-sources mode'
+complete --command releng-tool --long-option='nocolorout' \
+    --no-files \
+    --description 'explicitly disable colorized output'
+complete --command releng-tool --long-option='out-dir' \
+    --require-parameter \
+    --description 'directory for output'
+complete --command releng-tool --long-option='root-dir' \
+    --require-parameter \
+    --description 'directory to process a releng-tool project'
+complete --command releng-tool --long-option='verbose' \
+    --no-files \
+    --description 'show additional messages'
+complete --command releng-tool --long-option='version' \
+    --no-files \
+    --description "show releng-tool's version"
