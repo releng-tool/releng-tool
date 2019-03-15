@@ -69,7 +69,7 @@ which tells releng-tool to ensure that ``libx`` package is processed before
 ``liby``.
 
 With this minimal set of packages, the project's releng-tool configuration can
-now be created. At the root of the project folder, create a ``releng.py``
+now be created. At the root of the project folder, create a ``releng``
 configuration file with the following contents:
 
 .. code-block:: python

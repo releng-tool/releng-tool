@@ -21,7 +21,7 @@ releng-tool project:
 - ``output/images/`` - container for final images/archives
 - ``output/staging/`` - area to hold staged sysroot content
 - ``output/target/`` - area to hold target sysroot content
-- ``releng.py`` - project configuration
+- ``releng`` - project configuration
 
 How these directories and files are used can vary on how a developer defines a
 releng-tool project. Consider the following example:

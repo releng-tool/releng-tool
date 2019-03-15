@@ -93,7 +93,7 @@ attempt to prevent the changing of classes, methods, etc. to prevent
 compatibility issues as both releng-tool and extensions (if any) evolve. A
 developer for a releng-tool project would register an extension to load using
 the ``extensions`` configuration option inside the project configuration
-(``releng.py``):
+(``releng``):
 
 .. code-block:: python
 

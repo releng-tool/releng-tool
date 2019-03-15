@@ -1,10 +1,10 @@
-releng.py
----------
+releng configuration
+--------------------
 
-A releng-tool project defines its configuration options inside the a
-``releng.py`` file at the root of a project. The primary configuration option
-for a developer to define is ``packages``, which is used to hold a list of
-packages to be processed:
+A releng-tool project defines its configuration options inside the a ``releng``
+file at the root of a project. The primary configuration option for a developer
+to define is ``packages``, which is used to hold a list of packages to be
+processed:
 
 .. code-block:: python
 

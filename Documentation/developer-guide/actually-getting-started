@@ -9,8 +9,8 @@ package folders for a project, and venture into the root folder:
    $ mkdir -p <my-project>/package
    $ cd <my-project>/
 
-Inside the root folder, create a releng-tool configuration file ``releng.py``
-with the following skeleton content:
+Inside the root folder, create a releng-tool configuration file ``releng`` with
+the following skeleton content:
 
 .. code-block:: python
 
@@ -86,9 +86,9 @@ A detailed list of options can be found in `common package configurations`_ and
 `advanced package configurations`_.
 
 Once all packages have been prepared with desired package definitions options,
-the root configuration script (``releng.py``) should be updated to indicate
-which packages should be built. All packages can be defined in the ``packages``
-list if desired. For example, if a project has packages ``liba``, ``libb`` and
+the root configuration script (``releng``) should be updated to indicate which
+packages should be built. All packages can be defined in the ``packages`` list
+if desired. For example, if a project has packages ``liba``, ``libb`` and
 ``programc``, the following package list can be defined:
 
 .. code-block:: python
@@ -156,11 +156,11 @@ tar/zip/etc. container, pkg/rpm/etc. package or more). A developer could deal
 with such a capability outside the releng-tool process; but if a developer
 wishes to hook the end of the process, a post-processing script can be used.
 
-A developer may create a post-processing file ``post.py`` in the root directory.
-On the completion of processing each package, the post-processing script will be
-invoked. It is important to note that the post-processing script may be invoked
-multiple times if a user attempts to rebuild the project. For example, if the
-file ``post.py`` has the following contents:
+A developer may create a post-processing file ``releng-post`` in the root
+directory. On the completion of processing each package, the post-processing
+script will be invoked. It is important to note that the post-processing script
+may be invoked multiple times if a user attempts to rebuild the project. For
+example, if the file ``releng-post`` has the following contents:
 
 .. code-block:: python
 
