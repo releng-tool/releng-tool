@@ -79,6 +79,22 @@ local sources option to use the default process).
             fetch_opts.cache_file = interim_cache_file
             fetch_opts.work_dir = work_dir
 
+            # check if file caching should be ignored
+            #
+            # In special cases, a developer may configure a project to have a
+            # fetched source not to cache. For example, pulling from a branch of
+            # a VCS source will make a cache file from the branch and will
+            # remain until manually removed from a cache file. A user may wish
+            # to re-build the local cache file after cleaning their project.
+            # While the releng-tool framework separates fetching/extraction into
+            # two parts, ignoring cached assets can be partially achieved by
+            # just removing any detected cache file if a project is configured
+            # to ignore a cache file.
+            if pkg.ignore_cache and os.path.exists(pkg.cache_file):
+                verbose('removing old cache file (per configuration): ' + name)
+                if not pathRemove(pkg.cache_file):
+                    return False
+
             if os.path.exists(pkg.cache_file):
                 if perform_file_hash_check:
                     hr = verify_hashes(

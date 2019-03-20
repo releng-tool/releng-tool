@@ -233,6 +233,9 @@ class RelengPackageManager:
             # dependencies
             deps = self._fetch(RPK_DEPS, PkgKeyType.STRS, default=[])
 
+            # ignore cache
+            pkg_ignore_cache = self._fetch(RPK_IGNORE_CACHE, PkgKeyType.BOOL)
+
             # install type
             pkg_install_type = self._fetch(RPK_INSTALL_TYPE, PkgKeyType.STR)
             if pkg_install_type:
@@ -509,6 +512,7 @@ class RelengPackageManager:
         pkg.fixed_jobs = pkg_fixed_jobs
         pkg.has_devmode_option = pkg_has_devmode_option
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
+        pkg.ignore_cache = pkg_ignore_cache
         pkg.install_type = pkg_install_type
         pkg.is_internal = pkg_is_internal
         pkg.license = pkg_license
@@ -641,6 +645,7 @@ class RelengPackage:
         fixed_jobs: fixed job count for this specific package
         has_devmode_option: whether or not the package has a devmode revision
         hash_file: file containing hashes to validate this package
+        ignore_cache: whether or not cache files should be ignored
         install_type: install container for the package (target, staged, etc.)
         is_internal: whether or not this package is an project internal package
         license: license(s) of the package
@@ -686,6 +691,7 @@ class RelengPackage:
         self.hash_file = None
         self.ext_modifiers = None
         self.extract_type = None
+        self.ignore_cache = False
         self.install_type = None
         self.is_internal = None
         self.license = None
