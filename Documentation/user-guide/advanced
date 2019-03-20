@@ -86,8 +86,8 @@ While it is not recommended to have users manually modify a project's
 configuration, a series of override options exist to deal with unique build
 scenarios. If a builder needs to override a tool location or package site, a
 user and define either environment options or setup a configuration override
-script ``releng-overrides.py``. It is never recommended to persist a
-configuration overrides file into a project's source repository.
+script ``releng-overrides``. It is never recommended to persist a configuration
+overrides file into a project's source repository.
 
 extraction tool overrides
 ^^^^^^^^^^^^^^^^^^^^^^^^^
