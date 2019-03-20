@@ -87,6 +87,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_EXTOPT = {'FOO': 'BAR'}
    LIBFOO_EXTRACT_TYPE = 'ext-<extraction-extension>'
    LIBFOO_FIXED_JOBS = int # >= 1
+   LIBFOO_IGNORE_CACHE = bool
    LIBFOO_INSTALL_DEFS = {'FOO': 'BAR'}
    LIBFOO_INSTALL_ENV = {'FOO': 'BAR'}
    LIBFOO_INSTALL_OPTS = {'--option': 'value'} or ['--option', 'value']
