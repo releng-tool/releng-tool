@@ -1,4 +1,4 @@
-include scripts/releng-tool-completion
+include scripts/completion/*
 include LICENSE
 include README.rst
 graft test
