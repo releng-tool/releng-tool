@@ -234,7 +234,8 @@ class RelengPackageManager:
             deps = self._fetch(RPK_DEPS, PkgKeyType.STRS, default=[])
 
             # ignore cache
-            pkg_ignore_cache = self._fetch(RPK_IGNORE_CACHE, PkgKeyType.BOOL)
+            pkg_devmode_ignore_cache = self._fetch(
+                RPK_DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL)
 
             # install type
             pkg_install_type = self._fetch(RPK_INSTALL_TYPE, PkgKeyType.STR)
@@ -507,12 +508,12 @@ class RelengPackageManager:
         pkg.cache_dir = os.path.join(opts.cache_dir, name)
         pkg.cache_file = pkg_cache_file
         pkg.def_dir = pkg_def_dir
+        pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
         pkg.ext_modifiers = pkg_ext_modifiers
         pkg.extract_type = pkg_extract_type
         pkg.fixed_jobs = pkg_fixed_jobs
         pkg.has_devmode_option = pkg_has_devmode_option
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
-        pkg.ignore_cache = pkg_ignore_cache
         pkg.install_type = pkg_install_type
         pkg.is_internal = pkg_is_internal
         pkg.license = pkg_license
@@ -640,12 +641,12 @@ class RelengPackage:
         cache_file: cache file for the package (if applicable)
         def_dir: directory for the package definition
         deps: list of dependencies for this package
+        devmode_ignore_cache: whether or not cache files should be ignored
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
         fixed_jobs: fixed job count for this specific package
         has_devmode_option: whether or not the package has a devmode revision
         hash_file: file containing hashes to validate this package
-        ignore_cache: whether or not cache files should be ignored
         install_type: install container for the package (target, staged, etc.)
         is_internal: whether or not this package is an project internal package
         license: license(s) of the package
@@ -686,12 +687,12 @@ class RelengPackage:
         self.cache_file = None
         self.def_dir = None
         self.deps = []
+        self.devmode_ignore_cache = False
         self.fixed_jobs = None
         self.has_devmode_option = None
         self.hash_file = None
         self.ext_modifiers = None
         self.extract_type = None
-        self.ignore_cache = False
         self.install_type = None
         self.is_internal = None
         self.license = None

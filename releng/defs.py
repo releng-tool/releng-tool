@@ -21,13 +21,13 @@ CONF_KEY_URL_MIRROR = 'url_mirror' #: mirror base site for url fetches
 # releng package keys (postfixes)
 RPK_BUILD_SUBDIR = 'BUILD_SUBDIR' #: sub-directory in fetched to find root src
 RPK_DEPS = 'DEPENDENCIES' #: list of package dependencies
+RPK_DEVMODE_IGNORE_CACHE = 'DEVMODE_IGNORE_CACHE' #: whether or not ignore cache
 RPK_DEVMODE_REVISION = 'DEVMODE_REVISION' #: devmode-rev to acquire from srcs
 RPK_EXTENSION = 'EXTENSION' #: filename extension for package (if needed)
 RPK_EXTERNAL = 'EXTERNAL' #: whether or not package is considered "external"
 RPK_EXTOPT = 'EXTOPT' #: extension-defined package modifiers (if any)
 RPK_EXTRACT_TYPE = 'EXTRACT_TYPE' #: extraction type for sources
 RPK_FIXED_JOBS = 'FIXED_JOBS' #: fixed job count for the project
-RPK_IGNORE_CACHE = 'IGNORE_CACHE' #: whether or not to ignore a cache file
 RPK_INSTALL_TYPE = 'INSTALL_TYPE' #: install container target for the package
 RPK_INTERNAL = 'INTERNAL' #: whether or not package is considered "internal"
 RPK_LICENSE = 'LICENSE' #: license information for the package
