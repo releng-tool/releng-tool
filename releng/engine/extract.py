@@ -37,6 +37,10 @@ def stage(engine, pkg):
     if pkg.is_internal and engine.opts.local_srcs:
         return True
 
+    # skip packages flagged not to extract
+    if pkg.no_extraction:
+        return True
+
     note('extracting {}...'.format(pkg.name))
     sys.stdout.flush()
 

@@ -281,6 +281,9 @@ class RelengPackageManager:
             pkg_license_files = self._fetch(
                 RPK_LICENSE_FILES, PkgKeyType.STRS)
 
+            # no extraction
+            pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION, PkgKeyType.BOOL)
+
             # prefix
             pkg_prefix = self._fetch(RPK_PREFIX, PkgKeyType.STR)
 
@@ -518,6 +521,7 @@ class RelengPackageManager:
         pkg.is_internal = pkg_is_internal
         pkg.license = pkg_license
         pkg.license_files = pkg_license_files
+        pkg.no_extraction = pkg_no_extraction
         pkg.prefix = pkg_prefix
         pkg.revision = pkg_revision
         pkg.site = pkg_site
@@ -652,6 +656,7 @@ class RelengPackage:
         license: license(s) of the package
         license_files: list of files in sources holding license information
         name: name of the package
+        no_extraction: whether or not this package will extract
         nv: name-version value of the package
         prefix: system root prefix override (if applicable)
         revision: revision to use to fetch from vcs (if applicable)
@@ -697,6 +702,7 @@ class RelengPackage:
         self.is_internal = None
         self.license = None
         self.license_files = None
+        self.no_extraction = False
         self.prefix = None
         self.revision = None
         self.site = None

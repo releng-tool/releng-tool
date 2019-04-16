@@ -462,7 +462,7 @@ has failed. Ensure the following path is accessible for this user:
 
         # skip if package has no license files
         if not pkg.license_files:
-            if pkg.license and not pkg.is_internal:
+            if pkg.license and not pkg.is_internal and not pkg.no_extraction:
                 warn('package defines no license files: ' + pkg.name)
             return True
 

@@ -32,6 +32,7 @@ RPK_INSTALL_TYPE = 'INSTALL_TYPE' #: install container target for the package
 RPK_INTERNAL = 'INTERNAL' #: whether or not package is considered "internal"
 RPK_LICENSE = 'LICENSE' #: license information for the package
 RPK_LICENSE_FILES = 'LICENSE_FILES' #: source file(s) with license information
+RPK_NO_EXTRACTION = 'NO_EXTRACTION' #: whether or not package extraction is done
 RPK_PREFIX = 'PREFIX' #: system root prefix override (if needed)
 RPK_REVISION = 'REVISION' #: revision to acquire from sources (if any)
 RPK_SITE = 'SITE' #: site where to fetch package sources
