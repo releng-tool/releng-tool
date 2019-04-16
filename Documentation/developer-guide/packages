@@ -355,6 +355,35 @@ internal.
 
 See also `internal and external packages`_.
 
+LIBFOO_NO_EXTRACTION
+^^^^^^^^^^^^^^^^^^^^
+
+.. warning::
+
+   If ``LIBFOO_NO_EXTRACTION`` is configured for a package, the package cannot
+   define additional :ref:`hashes <hash_files>`, define a list of
+   ``LIBFOO_LICENSE_FILES`` to manage or expect to support various actions (such
+   as building; since no sources are available).
+
+Flag value to explicitly indicate that a package should not extract the package
+contents. This feature is primarily used when using releng-tool to fetch content
+for one or more packages (into ``DL_DIR`) to be used by another package the
+releng-tool project defines.
+
+.. code-block:: python
+
+   LIBFOO_NO_EXTRACTION = True
+
+Limitations exist when using the ``LIBFOO_NO_EXTRACTION`` option. Since
+releng-tool will not be used to extract a package's archive (if any), hash
+entries for files found inside the archive cannot be checked against. If any
+files other than the archive itself is listed, releng-tool will stop processing
+due to a hash check failure. In addition, since releng-tool does not have the
+extracted contents of an archive, it is unable to acquire a copy of the
+project's license file. Specifying ``LIBFOO_LICENSE_FILES`` for projects with
+the no-extraction flag enabled will result in a warning. By default, this option
+is disabled with a value of ``False``.
+
 LIBFOO_PREFIX
 ^^^^^^^^^^^^^
 .. |LIBFOO_PREFIX| replace:: ``LIBFOO_PREFIX``

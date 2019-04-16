@@ -93,6 +93,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_INSTALL_OPTS = {'--option': 'value'} or ['--option', 'value']
    LIBFOO_INSTALL_TYPE = '<install-type>' # host, images, staging, staging_and_target, target
    LIBFOO_INTERNAL = bool
+   LIBFOO_NO_EXTRACTION = bool
    LIBFOO_LICENSE = '<license>'  or ['<license>', '<license>']
    LIBFOO_LICENSE_FILES = '<file>' or ['<file>', '<file>']
    LIBFOO_PREFIX = '<path>' # '/usr'
