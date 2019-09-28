@@ -367,7 +367,7 @@ LIBFOO_NO_EXTRACTION
 
 Flag value to explicitly indicate that a package should not extract the package
 contents. This feature is primarily used when using releng-tool to fetch content
-for one or more packages (into ``DL_DIR`) to be used by another package the
+for one or more packages (into ``DL_DIR``) to be used by another package the
 releng-tool project defines.
 
 .. code-block:: python
