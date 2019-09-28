@@ -42,8 +42,8 @@ def main():
 
         known_args = sys.argv[1:]
         forward_args = []
-        idx = known_args.index('--') if '--' in known_args else None
-        if idx:
+        idx = known_args.index('--') if '--' in known_args else -1
+        if idx != -1:
             forward_args = known_args[idx + 1:]
             known_args = known_args[:idx]
 
