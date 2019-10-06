@@ -62,7 +62,7 @@ environment variables will be made available:
 |                          | See also |CONF_PKG_BUILD_DIR|_.                   |
 +--------------------------+---------------------------------------------------+
 | ``PKG_CACHE_FILE``       | The location of the cache file for a package. If  |
-|                          | package defines a fetch of an archive from a      |
+|                          | a package defines a fetch of an archive from a    |
 |                          | remote source, after the fetch stage is           |
 |                          | completed, the archive can be found in this       |
 |                          | location. For example, if a package defines a     |
