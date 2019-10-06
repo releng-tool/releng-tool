@@ -28,6 +28,7 @@ from ..util.string import expand
 from ..util.string import interpretDictionaryStrings
 from ..util.string import interpretString
 from ..util.string import interpretStrings
+from .bootstrap import stage as bootstrapStage
 from .build import stage as buildStage
 from .configure import stage as configureStage
 from .extract import stage as extractStage
@@ -281,6 +282,14 @@ in the working directory or the provided root directory:
                     if gaction == GlobalAction.LICENSES:
                         continue
 
+                    # bootstrapping
+                    flag = pkg.__ff_bootstrap
+                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
+                        if not bootstrapStage(self, pkg, pkg_env):
+                            return False
+                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                            return False
+
                     # configuring
                     flag = pkg.__ff_configure
                     if checkFileFlag(flag) == FileFlag.NO_EXIST:
@@ -370,6 +379,7 @@ has failed. Ensure the following path is accessible for this user:
         """
         prefix = '.stage_'
         outdir = pkg.build_output_dir
+        pkg.__ff_bootstrap = os.path.join(outdir, prefix + 'bootstrap')
         pkg.__ff_build = os.path.join(outdir, prefix + 'build')
         pkg.__ff_configure = os.path.join(outdir, prefix + 'configure')
         pkg.__ff_extract = os.path.join(outdir, prefix + 'extract')
@@ -389,6 +399,7 @@ has failed. Ensure the following path is accessible for this user:
                 pathRemove(pkg.__ff_install)
                 pathRemove(pkg.__ff_post)
             elif self.opts.pkg_action == PkgAction.RECONFIGURE:
+                pathRemove(pkg.__ff_bootstrap)
                 pathRemove(pkg.__ff_configure)
                 pathRemove(pkg.__ff_build)
                 pathRemove(pkg.__ff_install)
