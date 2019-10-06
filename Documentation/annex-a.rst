@@ -44,6 +44,7 @@ releng-tool (may vary per context):
    OUTPUT_DIR
    PKG_BUILD_DIR
    PKG_BUILD_OUTPUT_DIR
+   PKG_CACHE_DIR
    PKG_CACHE_FILE
    PKG_DEFDIR
    PKG_INTERNAL

@@ -61,6 +61,17 @@ environment variables will be made available:
 |                          |                                                   |
 |                          | See also |CONF_PKG_BUILD_DIR|_.                   |
 +--------------------------+---------------------------------------------------+
+| ``PKG_CACHE_DIR``        | The location of the cache directory for a         |
+|                          | package. If a package defines a fetch from a      |
+|                          | repository which can be locally cached, this      |
+|                          | cache directory represents the location where the |
+|                          | local cache of content will be held. For example, |
+|                          | if a provide defines a Git-based site, a local    |
+|                          | cache of the Git repository will be stored in     |
+|                          | this location. Typically, packages should not     |
+|                          | need to operate on the cache directory except for |
+|                          | advanced cases.                                   |
++--------------------------+---------------------------------------------------+
 | ``PKG_CACHE_FILE``       | The location of the cache file for a package. If  |
 |                          | a package defines a fetch of an archive from a    |
 |                          | remote source, after the fetch stage is           |
