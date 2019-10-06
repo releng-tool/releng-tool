@@ -30,7 +30,9 @@ def install(opts):
     install_script_filename = '{}-{}'.format(opts.name, INSTALL_SCRIPT)
     install_script = os.path.join(def_dir, install_script_filename)
     if not os.path.isfile(install_script):
-        return True
+        install_script += '.releng'
+        if not os.path.isfile(install_script):
+            return True
 
     if not run_script(install_script, env, subject='install'):
         return False

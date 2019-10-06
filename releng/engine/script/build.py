@@ -30,7 +30,9 @@ def build(opts):
     build_script_filename = '{}-{}'.format(opts.name, BUILD_SCRIPT)
     build_script = os.path.join(def_dir, build_script_filename)
     if not os.path.isfile(build_script):
-        return True
+        build_script += '.releng'
+        if not os.path.isfile(build_script):
+            return True
 
     if not run_script(build_script, env, subject='build'):
         return False

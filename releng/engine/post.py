@@ -35,7 +35,9 @@ def stage(engine, pkg, script_env):
     post_script_filename = '{}-{}'.format(pkg.name, POST_SCRIPT)
     post_script = os.path.join(pkg.def_dir, post_script_filename)
     if not os.path.isfile(post_script):
-        return True
+        post_script += '.releng'
+        if not os.path.isfile(post_script):
+            return True
 
     if pkg.build_subdir:
         build_dir = pkg.build_subdir

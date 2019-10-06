@@ -30,7 +30,9 @@ def configure(opts):
     configure_script_filename = '{}-{}'.format(opts.name, CONFIGURE_SCRIPT)
     configure_script = os.path.join(def_dir, configure_script_filename)
     if not os.path.isfile(configure_script):
-        return True
+        configure_script += '.releng'
+        if not os.path.isfile(configure_script):
+            return True
 
     if not run_script(configure_script, env, subject='configure'):
         return False
