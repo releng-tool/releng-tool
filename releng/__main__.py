@@ -58,6 +58,8 @@ def main():
 
         releng_log_configuration(args.debug, args.nocolorout, args.verbose)
 
+        verbose('releng-tool {}'.format(releng_version))
+
         if unknown_args:
             warn('unknown arguments: {}', ' '.join(unknown_args))
 
