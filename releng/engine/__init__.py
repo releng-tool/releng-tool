@@ -428,6 +428,7 @@ has failed. Ensure the following path is accessible for this user:
         for env in (os.environ, pkg_env):
             env['PKG_BUILD_DIR'] = build_dir
             env['PKG_BUILD_OUTPUT_DIR'] = pkg.build_output_dir
+            env['PKG_CACHE_DIR'] = pkg.cache_dir
             env['PKG_CACHE_FILE'] = pkg.cache_file
             env['PKG_DEFDIR'] = pkg.def_dir
             env['PKG_NAME'] = pkg.name
