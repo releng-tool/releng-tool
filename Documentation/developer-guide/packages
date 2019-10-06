@@ -458,12 +458,26 @@ Using a specific type will create a dependency for a project that the respective
 host tool is installed on the host system. For example, if a Git VCS-type is
 set, the host system will need to have ``git`` installed on the system.
 
-package post-processing
-~~~~~~~~~~~~~~~~~~~~~~~
+package bootstrapping and post-processing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Every package, no matter which package |LIBFOO_TYPE|_ is defined, can create a
-post-processing script to invoke after a package has completed an installation
-stage. The existence of a ``<package>-post`` inside a package directory will
+bootstrapping or post-processing script to invoke before a package starts a
+configuration stage or after a package has completed an installation stage,
+respectively.
+
+The existence of a ``<package>-bootstrap`` inside a package directory will
+trigger the bootstrapping stage for the package. An example bootstrapping script
+(``libfoo-bootstrap``) can be as follows:
+
+.. code-block:: python
+
+   #!/usr/bin/env python
+   # -*- coding: utf-8 -*-
+
+   print('perform bootstrapping work')
+
+The existence of a ``<package>-post`` inside a package directory will
 trigger the post-processing stage for the package. An example post-processing
 script (``libfoo-post``) can be as follows:
 
@@ -474,8 +488,9 @@ script (``libfoo-post``) can be as follows:
 
    print('perform post-processing work')
 
-A post-processing script for a package is optional; thus, if a script is not
-provided, no post-processing will be performed for the package.
+Bootstrapping or post-processing scripts for a package are optional; thus, if no
+scripts are provided for a package, no bootstrapping or post-processing will be
+performed for the package.
 
 See also `script helpers`_ for helper functions/variables available for use.
 
