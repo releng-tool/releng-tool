@@ -16,6 +16,10 @@ matrix:
   - python: "3.8-dev"
     env: TOXENV=py38
     dist: bionic
+  - python: "pypy"
+    env: TOXENV=pypy27
+  - python: "pypy35"
+    env: TOXENV=pypy35
   - python: "3.6"
     env: TOXENV=flake8
   - python: "3.6"
