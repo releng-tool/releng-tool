@@ -113,12 +113,22 @@ def revision_exists(git_dir, revision):
         ``True`` if the revision exists; ``False`` otherwise
     """
 
-    if GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
-            revision], quiet=True):
-        return True
+    output = []
+    if not GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
+            revision], quiet=True, capture=output):
+        if not GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
+                'origin/' + revision], quiet=True, capture=output):
+            return False
 
-    if GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
-            'origin/' + revision], quiet=True):
-        return True
+    # confirm a hash-provided revision exists
+    #
+    # A call to `rev-parse` with a full hash may succeed even through the
+    # hash does not exist in a repository (short hashes are valid though).
+    # To handle this case, check if the revision matches the returned hash
+    # valid provided. If so, perform a `cat-file` request to ensure the long
+    # hash entry is indeed a valid commit.
+    if output and output[0] == revision:
+        if not GIT.execute([git_dir, 'cat-file', '-t', revision], quiet=True):
+            return False
 
-    return False
+    return True
