@@ -33,8 +33,8 @@ the following content:
 
    LIBX_VERSION='1.0.0'
 
-Next, create a build script for the ``libx`` project ``my-project/libx/build``
-with the following content:
+Next, create a build script for the ``libx`` project
+``my-project/libx/libx-build`` with the following content:
 
 .. code-block:: python
 
@@ -55,7 +55,7 @@ in this document). Repeat the same steps for the ``liby`` package with the file
    LIBY_DEPENDENCIES=['libx']
    LIBY_VERSION='2.1.0'
 
-And ``my-project/liby/build`` containing:
+And ``my-project/liby/libx-build`` containing:
 
 .. code-block:: python
 
