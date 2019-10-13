@@ -21,6 +21,7 @@ __version__='0.3.0-dev0'
 # Note: changes introduced here should be synonymous with engine-shared helpers:
 #        RelengEngine._prepareSharedEnvironment
 
+from .util.io import ensureDirectoryExists as releng_mkdir
 from .util.io import execute as releng_execute
 from .util.io import generateTempDir as releng_tmpdir
 from .util.io import interimWorkingDirectory as releng_wd

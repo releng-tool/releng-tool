@@ -50,9 +50,19 @@ def ensureDirectoryExists(dir, quiet=False):
     detected, an error message will be output to standard error (unless
     ``quiet`` is set to ``True``).
 
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        if releng_mkdir('my-directory'):
+            print('directory was created')
+        else:
+            print('directory was not created')
+
     Args:
         dir: the directory
-        quiet (optional): whether or not to suppress output
+        quiet (optional): whether or not to suppress output (defaults to
+            ``False``)
 
     Returns:
         ``True`` if the directory exists; ``False`` if the directory could not
