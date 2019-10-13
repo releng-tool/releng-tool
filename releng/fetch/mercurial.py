@@ -44,7 +44,7 @@ def fetch(opts):
     sys.stdout.flush()
 
     # if we have no cache for this repository, build one
-    if not has_cache:
+    if not os.path.isdir(cache_dir):
         if not ensureDirectoryExists(cache_dir):
             return None
 
