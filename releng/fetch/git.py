@@ -36,7 +36,7 @@ def fetch(opts):
     git_dir = '--git-dir=' + cache_dir
 
     # check if we have the target revision; if so, full stop
-    if os.path.isdir(cache_dir):
+    if os.path.isdir(cache_dir) and not opts.ignore_cache:
         if revision_exists(git_dir, revision):
             return cache_dir
 
@@ -50,17 +50,21 @@ def fetch(opts):
     # anything is suspected wrong, start from a fresh state.
     has_cache = False
     if os.path.isdir(cache_dir):
-        log('cache directory exists for package; validating')
-        if GIT.execute([git_dir, 'fsck', '--full'], cwd=cache_dir, quiet=True):
+        if opts.ignore_cache:
             has_cache = True
         else:
-            log('cache directory has errors; will re-downloaded')
-            try:
-                shutil.rmtree(cache_dir)
-            except IOError:
-                err('unable to cleanup cache folder for package')
-                err(' (cache folder: {})'.format(cache_dir))
-                return None
+            log('cache directory exists for package; validating')
+            if GIT.execute([git_dir, 'fsck', '--full'], cwd=cache_dir,
+                    quiet=True):
+                has_cache = True
+            else:
+                log('cache directory has errors; will re-downloaded')
+                try:
+                    shutil.rmtree(cache_dir)
+                except IOError:
+                    err('unable to cleanup cache folder for package')
+                    err(' (cache folder: {})'.format(cache_dir))
+                    return None
 
     # if we have no cache for this repository, build one
     if not has_cache:

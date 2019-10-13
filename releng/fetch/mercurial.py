@@ -35,7 +35,7 @@ def fetch(opts):
     hg_dir = ['--repository', cache_dir]
 
     # check if we have the target revision; if so, full stop
-    if os.path.isdir(cache_dir):
+    if os.path.isdir(cache_dir) and not opts.ignore_cache:
         if HG.execute(hg_dir + ['--quiet', 'log', '--rev', revision],
                 cwd=cache_dir, quiet=True):
             return cache_dir
