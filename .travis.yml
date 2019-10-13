@@ -18,7 +18,7 @@ matrix:
     dist: bionic
   - python: "pypy"
     env: TOXENV=pypy27
-  - python: "pypy35"
+  - python: "pypy3.5"
     env: TOXENV=pypy35
   - python: "3.6"
     env: TOXENV=flake8
