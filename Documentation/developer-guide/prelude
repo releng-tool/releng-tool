@@ -4,7 +4,7 @@ prelude
 A releng-tool project can define multiple packages, each can be based off of
 different languages, configured to use custom toolchains and more. Every package
 has multiple stages (such as fetching, configuring, building, etc.) which can
-help contribute to target sysroot. Once all packages are processed, the target
+help contribute to a target sysroot. Once all packages are processed, the target
 sysroot can be packaged for distribution.
 
 The following outlines the (default) common directory/file locations for a
