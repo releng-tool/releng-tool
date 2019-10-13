@@ -208,6 +208,10 @@ listed below:
 |                          |                                                   |
 |                          |        An alias for |os.path.join|_.              |
 +--------------------------+---------------------------------------------------+
+| ``releng_mkdir``         | .. automodule:: releng                            |
+|                          |     :members: releng_mkdir                        |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
 | ``releng_move``          | .. automodule:: releng                            |
 |                          |     :members: releng_move                         |
 |                          |     :noindex:                                     |
