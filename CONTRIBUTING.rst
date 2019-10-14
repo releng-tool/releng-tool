@@ -55,7 +55,7 @@ The following outlines a series of quirks when contributing:
   exceed 80 characters in length. That being said, please aim for any changes
   introduced to not exceed the 80 character limit when possible.
 - PEP 8 "two blank lines" recommendations are not preferred in this project.
-  changes submitted with two blank lines may be accepted, but may also be
+  Changes submitted with two blank lines may be accepted, but may also be
   "cleaned up" in future changes.
 
 maintainer notes
