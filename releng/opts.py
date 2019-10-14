@@ -29,7 +29,7 @@ FF_DEVMODE_NAME = 'devmode' #: postfix for development mode file flag
 FF_LOCALSRCS_NAME = 'local-sources' #: postfix for local sources mode file flag
 
 # default other
-DEFAULT_SYSROOT_PREFIX = '/usr' #: default system root prefix
+DEFAULT_SYSROOT_PREFIX = os.sep + 'usr' #: default system root prefix
 
 class RelengEngineOptions:
     """
