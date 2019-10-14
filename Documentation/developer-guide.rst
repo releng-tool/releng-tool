@@ -1503,15 +1503,15 @@ can override this option by explicitly adjusting the configuration option
 
 .. code-block:: python
 
-   LIBFOO_CMAKE_DEFS = {
+   LIBFOO_CONF_DEFS = {
       'CMAKE_BUILD_TYPE': 'Debug',
    }
 
-   LIBFOO_CMAKE_OPTS = {
+   LIBFOO_BUILD_OPTS = {
       '--config': 'Debug',
    }
 
-   LIBFOO_CMAKE_INSTALL_OPTS = {
+   LIBFOO_INSTALL_OPTS = {
       '--config': 'Debug',
    }
 
