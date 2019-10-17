@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
 from . import RelengTool
 import os
@@ -48,7 +48,7 @@ class PythonTool(RelengTool):
             output = []
             version = ''
             if self.execute(['-c', "import sys; " +
-                    "print('.').join(map(str, sys.version_info[:2]))"],
+                    "print('.'.join(map(str, sys.version_info[:2])))"],
                     capture=output):
                 version = ''.join(output)
                 if sys.platform == 'win32':
