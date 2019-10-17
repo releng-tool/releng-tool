@@ -446,7 +446,7 @@ has failed. Ensure the following path is accessible for this user:
             env['PKG_SITE'] = pkg.site if pkg.site else ''
             env['PKG_REVISION'] = pkg.revision
             env['PKG_VERSION'] = pkg.version
-            env['PREFIX'] = pkg.prefix
+            env['PREFIX'] = pkg.prefix # will override existing prefix
 
             if pkg.fixed_jobs:
                 env['NJOBS'] = str(pkg.fixed_jobs)
@@ -696,6 +696,7 @@ list exists with the name of packages to be part of the releng process:
             env['NJOBS'] = str(self.opts.jobs)
             env['NJOBSCONF'] = str(self.opts.jobsconf)
             env['OUTPUT_DIR'] = self.opts.out_dir
+            env['PREFIX'] = self.opts.sysroot_prefix
             env['ROOT_DIR'] = self.opts.root_dir
             env['STAGING_DIR'] = self.opts.staging_dir
             env['SYMBOLS_DIR'] = self.opts.symbols_dir
