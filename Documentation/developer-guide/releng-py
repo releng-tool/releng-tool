@@ -99,7 +99,9 @@ follows:
 | ``sysroot_prefix``       | Define a custom sysroot prefix to provide to      |
 |                          | packages during their configuration, build and    |
 |                          | installation stages. By default, the sysroot      |
-|                          | prefix is set to ``/usr``.                        |
+|                          | prefix is set to ``/usr`` or ``\usr`` (based on   |
+|                          | the system's default character to separate        |
+|                          | pathname components).                             |
 |                          |                                                   |
 |                          | .. code-block:: python                            |
 |                          |                                                   |
