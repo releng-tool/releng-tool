@@ -165,17 +165,22 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
 
         verbose('invoking: ' + str(args).replace('{','{{').replace('}','}}'))
         try:
-            proc = subprocess.Popen(args, bufsize=1,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                cwd=cwd, env=final_env)
-
             # check if this execution should poll (for carriage returns and new
-            # lines)
-            #
-            # Note if quiet mode is enabled, do not attempt to poll since none
-            # of the output will be printed anyways.
+            # lines); note if quiet mode is enabled, do not attempt to poll
+            # since none of the output will be printed anyways.
             if poll and not quiet:
-                debug('invoked with polling option')
+                debug('will poll process for output')
+                bufsize = 0
+                universal_newlines = False
+            else:
+                bufsize = 1
+                universal_newlines = True
+
+            proc = subprocess.Popen(args, bufsize=bufsize,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                cwd=cwd, env=final_env, universal_newlines=universal_newlines)
+
+            if bufsize == 0:
                 line = bytearray()
                 while True:
                     c = proc.stdout.read(1)
@@ -191,13 +196,13 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
                             sys.stdout.flush()
                         del line[:]
             else:
-                for line in iter(proc.stdout.readline, b''):
+                for line in iter(proc.stdout.readline, ''):
                     if capture is not None or not quiet:
-                        decoded_line = line.decode('utf_8').rstrip()
+                        line = line.rstrip()
                         if capture is not None:
-                            capture.append(decoded_line)
+                            capture.append(line)
                         if not quiet:
-                            print(decoded_line)
+                            print(line)
                             sys.stdout.flush()
             proc.communicate()
 
