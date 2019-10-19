@@ -185,6 +185,10 @@ listed below:
 |                          |     :members: releng_copy                         |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
+| ``releng_env``           | .. automodule:: releng                            |
+|                          |     :members: releng_env                          |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
 | ``releng_execute``       | .. automodule:: releng                            |
 |                          |     :members: releng_execute                      |
 |                          |     :noindex:                                     |
