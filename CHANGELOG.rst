@@ -3,9 +3,10 @@ master
 
 - allow packages to configure to ignore cache while in development mode 
 - allow packages to configure for no-extraction for sources
+- fixed default interpreter detection for python packages
 - fixed fetching from mercurial sources
 - fixed fetching from newer git hashes if repository was already cached
-- introduce ``releng_mkdir`` helper script method
+- introduce ``releng_env`` and ``releng_mkdir`` helper script functions
 - introduce support for package-specific bootstrapping stage
 
 0.2 (2019-03-15)
