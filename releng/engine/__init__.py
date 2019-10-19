@@ -8,6 +8,7 @@ from ..opts import RelengEngineOptions
 from ..packages import RelengPackageManager
 from ..registry import RelengRegistry
 from ..util.env import extendScriptEnv
+from ..util.env import setEnvValue
 from ..util.file_flags import FileFlag
 from ..util.file_flags import checkFileFlag
 from ..util.file_flags import processFileFlag
@@ -720,6 +721,7 @@ list exists with the name of packages to be part of the releng process:
         script_env['log'] = log
         script_env['note'] = note
         script_env['releng_copy'] = pathCopy
+        script_env['releng_env'] = setEnvValue
         script_env['releng_execute'] = execute
         script_env['releng_exists'] = pathExists
         script_env['releng_exit'] = releng_exit

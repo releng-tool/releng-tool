@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2019 releng-tool
 
+import os
 import types
 
 def extendScriptEnv(env, extra):
@@ -46,3 +47,23 @@ def extendScriptEnv(env, extra):
 
     env.update(extraCopy)
     return env
+
+def setEnvValue(key, value):
+    """
+    helper to easily configure an environment variable
+
+    Provides a caller an simple method to configure an environment variable for
+    the current context. This call is the same as if one directly added a
+    key-value into ``os.environ``.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        releng_env('KEY', 'VALUE')
+
+    Args:
+        key: the environment key to set the value on
+        value: the environment value to set
+    """
+    os.environ[key] = value
