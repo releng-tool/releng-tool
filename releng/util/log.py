@@ -69,6 +69,7 @@ def err(msg, *args):
             generating a formatted message
     """
     __log('(error) ', '\033[1;31m', msg, sys.stderr, *args)
+    sys.stderr.flush()
 
 def note(msg, *args):
     """
@@ -144,6 +145,7 @@ def warn(msg, *args):
             generating a formatted message
     """
     __log('(warn) ', '\033[1;35m', msg, sys.stderr, *args)
+    sys.stderr.flush()
 
 def __log(prefix, color, msg, file, *args):
     """
