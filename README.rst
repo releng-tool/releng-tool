@@ -51,7 +51,14 @@ This tool can be installed using pip_:
     (or)
    python -m pip install releng-tool
 
+examples
+--------
+
+Examples of releng-tool projects can be found in
+`releng-tool’s examples repository`_.
+
 .. _Git: https://git-scm.com/
 .. _Python: https://www.python.org/
 .. _pip: https://pip.pypa.io/
 .. _releng-tool documentation: https://docs.releng.io/
+.. _releng-tool’s examples repository: https://github.com/releng-tool/releng-tool-examples
