@@ -1,5 +1,5 @@
-master
-------
+0.3 (2019-10-19)
+----------------
 
 - allow packages to configure to ignore cache while in development mode 
 - allow packages to configure for no-extraction for sources
