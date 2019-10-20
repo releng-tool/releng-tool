@@ -22,11 +22,20 @@ used and the interaction between the staging/target area and the host system.
 .. toctree::
    :hidden:
 
+   self
+
+.. toctree::
+   :maxdepth: 2
+
    requirements
    install
    user-guide
    developer-guide
    contributor-guide
    tips
-   release-notes
    annex-a
+
+.. toctree::
+   :hidden:
+
+   release-notes
