@@ -2,28 +2,29 @@ language: python
 
 matrix:
   include:
-  - python: "2.7"
-    env: TOXENV=py27
-  - python: "3.4"
-    env: TOXENV=py34
-  - python: "3.5"
-    env: TOXENV=py35
-  - python: "3.6"
-    env: TOXENV=py36
-  - python: "3.7"
-    env: TOXENV=py37
-    dist: xenial
-  - python: "3.8"
-    env: TOXENV=py38
-    dist: bionic
-  - python: "pypy"
-    env: TOXENV=pypy27
-  - python: "pypy3.5"
-    env: TOXENV=pypy35
-  - python: "3.6"
-    env: TOXENV=flake8
-  - python: "3.6"
-    env: TOXENV=pylint
+    - python: "2.7"
+      env: TOXENV=py27
+    - python: "3.4"
+      env: TOXENV=py34
+    - python: "3.5"
+      env: TOXENV=py35
+    - python: "3.6"
+      env: TOXENV=py36
+    - python: "3.7"
+      env: TOXENV=py37
+      dist: xenial
+    - python: "3.8"
+      env: TOXENV=py38
+      dist: bionic
+    - python: "pypy"
+      env: TOXENV=pypy27
+    - python: "pypy3.5"
+      env: TOXENV=pypy35
+    # other
+    - python: "3.6"
+      env: TOXENV=flake8
+    - python: "3.6"
+      env: TOXENV=pylint
 
 install:
   - pip install --upgrade tox
