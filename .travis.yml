@@ -20,6 +20,25 @@ matrix:
       env: TOXENV=pypy27
     - python: "pypy3.5"
       env: TOXENV=pypy35
+    # os checks
+    - os: osx
+      env: TOXENV=py27
+      language: minimal
+    - os: osx
+      env: TOXENV=py36
+      language: minimal
+    - os: windows
+      env: TOXENV=py27
+      language: sh
+      before_install:
+        - choco install python2
+        - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
+    - os: windows
+      env: TOXENV=py38
+      language: sh
+      before_install:
+        - choco install python3 --params "/InstallDir:C:\Python" --version=3.8.0
+        - export PATH="/c/Python:/c/Python/Scripts:$PATH"
     # other
     - python: "3.6"
       env: TOXENV=flake8
