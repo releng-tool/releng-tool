@@ -55,7 +55,7 @@ examples
 --------
 
 Examples of releng-tool projects can be found in
-`releng-tool’s examples repository`_.
+`releng-tool's examples repository`_.
 
 .. _Git: https://git-scm.com/
 .. _Python: https://www.python.org/
