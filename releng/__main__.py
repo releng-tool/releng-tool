@@ -172,6 +172,7 @@ def usage():
  --nocolorout              explicitly disable colorized output
  --quirk <value>           inject in quirk into this run
  -V, --verbose             show additional messages
+ --version                 show the version
 """
 
 if __name__ == '__main__':
