@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from .defs import GlobalAction
 from .defs import PkgAction
@@ -155,6 +155,8 @@ class RelengEngineOptions:
             self.devmode = True
         if args.local_sources:
             self.local_srcs = True
+        if args.quirk:
+            self.quirks.extend(args.quirk)
 
         if args.action:
             action_val = args.action.upper()

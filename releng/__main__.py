@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from . import __version__ as releng_version
 from .engine import RelengEngine
@@ -36,6 +36,7 @@ def main():
         parser.add_argument('--nocolorout', action='store_true')
         parser.add_argument('--out-dir')
         parser.add_argument('--root-dir')
+        parser.add_argument('--quirk', action='append')
         parser.add_argument('--verbose', '-V', action='store_true')
         parser.add_argument('--version', action='version',
             version='%(prog)s ' + releng_version)
@@ -169,6 +170,7 @@ def usage():
  --debug                   show debug-related messages
  -h, --help                show this help
  --nocolorout              explicitly disable colorized output
+ --quirk <value>           inject in quirk into this run
  -V, --verbose             show additional messages
 """
 

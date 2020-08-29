@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from .. import __version__ as releng_version
 from ..defs import *
@@ -857,7 +857,7 @@ following key entry and re-try again.
             if quirks is None:
                 notifyInvalidValue(CONF_KEY_QUIRKS, 'str or list(str)')
                 return False
-            self.opts.quirks = quirks
+            self.opts.quirks.extend(quirks)
             for quirk in quirks:
                 verbose('configuration quirk applied: ' + quirk)
 
