@@ -111,7 +111,6 @@ def revision_exists(git_dir, revision):
     Args:
         git_dir: the Git directory
         revision: the revision (branch, tag, hash) to look for
-        cache_dir: the cache
 
     Returns:
         ``True`` if the revision exists; ``False`` otherwise
