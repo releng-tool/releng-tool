@@ -1,6 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from .log import *
 from contextlib import contextmanager
@@ -9,9 +8,9 @@ from distutils.dir_util import copy_tree
 from runpy import run_path
 from shutil import copy2
 from shutil import move
-from shutil import rmtree
 import errno
 import os
+import stat
 import subprocess
 import sys
 import tempfile
@@ -252,7 +251,7 @@ def generateTempDir(dir=None):
         yield dir
     finally:
         try:
-            rmtree(dir)
+            pathRemove(dir)
         except OSError as e:
             if e.errno != errno.ENOENT:
                 warn('unable to cleanup temporary directory: ' + dir)
@@ -548,10 +547,10 @@ def pathRemove(path, quiet=False):
         path could not be removed from the system
     """
     try:
-        if os.path.isdir(path):
-            rmtree(path)
+        if os.path.isdir(path) and not os.path.islink(path):
+            _pathRemoveDir(path)
         else:
-            os.remove(path)
+            _pathRemoveFile(path)
     except OSError as e:
         if e.errno != errno.ENOENT:
             if not quiet:
@@ -560,6 +559,85 @@ def pathRemove(path, quiet=False):
             return False
 
     return True
+
+def _pathRemoveDir(dir):
+    """
+    remove the provided directory (recursive)
+
+    Attempts to remove the provided directory. In the event that a file or
+    directory could not be removed due to an error, this function will typically
+    raise an OSError exception.
+
+    In the chance that a file cannot be removed due to permission issues, this
+    function can attempt to adjust permissions to specific paths to help in the
+    removal processes (e.g. dealing with read-only files or other strict
+    permissions setup during a build process).
+
+    Args:
+        dir: the directory to remove
+
+    Raises:
+        OSError: if a path could not be removed
+    """
+
+    # ensure a caller has read/write access before hand to prepare for removal
+    # (e.g. if marked as read-only) and ensure contents can be fetched as well
+    try:
+        st = os.stat(dir)
+        if not (st.st_mode & stat.S_IRUSR) or not (st.st_mode & stat.S_IWUSR):
+            os.chmod(dir, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
+    except:
+        pass
+
+    # remove directory contents (if any)
+    entries = os.listdir(dir)
+    for entry in entries:
+        path = os.path.join(dir, entry)
+        if os.path.isdir(path) and not os.path.islink(path):
+            _pathRemoveDir(path)
+        else:
+            _pathRemoveFile(path)
+
+    # remove directory
+    os.rmdir(dir)
+
+def _pathRemoveFile(path):
+    """
+    remove the provided file
+
+    Attempts to remove the provided file. In the event that the file could not
+    be removed due to an error, this function will typically raise an OSError
+    exception.
+
+    In the chance that a file cannot be removed due to permission issues, this
+    function can attempt to adjust permissions to specific paths to help in the
+    removal processes (e.g. dealing with read-only files or other strict
+    permissions setup during a build process).
+
+    Args:
+        path: the file to remove
+
+    Raises:
+        OSError: if the file could not be removed
+    """
+
+    try:
+        os.remove(path)
+    except OSError as e:
+        if e.errno != errno.EACCES:
+            raise e
+
+        # if a file could not be removed, try adding write permissions
+        # and retry removal
+        try:
+            st = os.stat(path)
+            if (st.st_mode & stat.S_IWUSR):
+                raise e
+
+            os.chmod(path, st.st_mode | stat.S_IWUSR)
+            os.remove(path)
+        except:
+            raise e
 
 def prepare_arguments(args):
     """
