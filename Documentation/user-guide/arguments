@@ -162,6 +162,11 @@ The following outlines available options:
 | ``--root-dir <dir>``      | Directory to process a releng-tool project       |
 |                           | (defaults to the working directory).             |
 +---------------------------+--------------------------------------------------+
+| ``--quirk <quirk-id>``    | Allows specifying a runtime                      |
+|                           | :ref:`quirk <quirks>` for the releng-tool        |
+|                           | process. This option can be used multiple times  |
+|                           | to apply multiple quirks.                        |
++---------------------------+--------------------------------------------------+
 | ``-V``, ``--verbose``     | Show additional messages.                        |
 +---------------------------+--------------------------------------------------+
 | ``--version``             | Show releng-tool's version.                      |
