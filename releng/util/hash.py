@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from __future__ import absolute_import
 from .log import *
@@ -232,13 +232,15 @@ Ensure the hash file correctly names an expected file.
                     if relaxed:
                         warn('hash mismatch detected: ' + asset)
                     else:
-                        err('hash mismatch detected')
-                        err("""\
+                        provided = ''
+                        for hash in hashes:
+                            provided += '\n     Provided: {}'.format(hash)
+
+                        err("""hash mismatch detected\
+
     Hash File: {}
          File: {}
-     Detected: {}""".format(hash_file, asset, digest))
-                        for hash in hashes:
-                            err('     Provided: {}'.format(hash))
+     Detected: {}{}""".format(hash_file, asset, digest, provided))
                 return HashResult.MISMATCH
 
     return HashResult.VERIFIED
