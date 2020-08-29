@@ -25,8 +25,9 @@ matrix:
       env: TOXENV=py27
       language: minimal
     - os: osx
-      env: TOXENV=py36
+      env: TOXENV=py37
       language: minimal
+      osx_image: xcode10.2 # python 3.7.3
     - os: windows
       env: TOXENV=py27
       language: sh
