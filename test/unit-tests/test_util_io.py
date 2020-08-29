@@ -1,6 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from collections import OrderedDict
 from releng.util.io import execute
@@ -8,6 +7,7 @@ from releng.util.io import interpretStemExtension as ise
 from releng.util.io import pathCopy
 from releng.util.io import pathExists
 from releng.util.io import pathMove
+from releng.util.io import pathRemove
 from releng.util.io import prepare_arguments
 from releng.util.io import prepare_definitions
 from releng.util.io import prependShebangInterpreter as psi
@@ -268,6 +268,71 @@ class TestUtilIo(unittest.TestCase):
         prepared = prepare_definitions(args)
         expected = ['foo=bar']
         self.assertEqual(prepared, expected)
+
+    def test_utilio_remove(self):
+        with RelengTestUtil.prepareWorkdir() as work_dir:
+            def _(*args):
+                return os.path.join(work_dir, *args)
+
+            # setup
+            directories = [
+                _('dir1'),
+                _('dir2', 'dir3'),
+                _('dir4', 'dir5', 'dir6'),
+            ]
+            for dir in directories:
+                os.makedirs(dir)
+
+            files = [
+                _('file1'),
+                _('dir2', 'file2'),
+                _('dir2', 'dir3', 'file3'),
+                _('dir4', 'file4'),
+                _('dir4', 'dir5', 'file5'),
+                _('dir4', 'dir5', 'dir6', 'file6'),
+            ]
+            for file in files:
+                with open(file, 'a') as f:
+                    f.write(file)
+
+            path = _('file7')
+            removed = pathRemove(path)
+            self.assertTrue(removed)
+            self.assertFalse(os.path.isfile(path))
+
+            container = _('dir2')
+            path = _(container, 'file2')
+            removed = pathRemove(path)
+            self.assertTrue(removed)
+            self.assertFalse(os.path.isfile(path))
+            self.assertTrue(os.path.isdir(container))
+            self.assertFalse(os.path.isfile(path))
+
+            container = _('dir2')
+            path = _(container, 'dir3')
+            file = _(path, 'file3')
+            removed = pathRemove(path)
+            self.assertTrue(removed)
+            self.assertFalse(os.path.isdir(path))
+            self.assertFalse(os.path.isfile(file))
+            self.assertTrue(os.path.isdir(container))
+
+            path = _('dir4')
+            files = [
+                _(path, 'file4'),
+                _(path, 'dir5', 'file5'),
+                _(path, 'dir5', 'dir6', 'file6'),
+            ]
+            removed = pathRemove(path)
+            self.assertTrue(removed)
+            self.assertFalse(os.path.isdir(path))
+            for file in files:
+                self.assertFalse(os.path.isfile(file))
+
+            # allow noop calls to be true
+            path = _('missing')
+            removed = pathRemove(path)
+            self.assertTrue(removed)
 
     def test_utilio_shebang_interpreter(self):
         si_dir = os.path.join(self.assets_dir, 'shebang-interpreter')
