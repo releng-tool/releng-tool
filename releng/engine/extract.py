@@ -1,6 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ..api import RelengExtractOptions
 from ..defs import *
@@ -13,6 +12,7 @@ from ..util.hash import verify as verify_hashes
 from ..util.io import ensureDirectoryExists
 from ..util.io import interimWorkingDirectory
 from ..util.io import generateTempDir as tempDir
+from ..util.io import pathRemove
 from ..util.log import *
 import os
 import shutil
@@ -58,11 +58,8 @@ def stage(engine, pkg):
     if os.path.exists(pkg.build_dir):
         warn('build directory exists before extraction; removing')
 
-        try:
-            shutil.rmtree(pkg.build_dir)
-        except IOError as e:
+        if not pathRemove(pkg.build_dir):
             err('unable to cleanup build directory: ' + pkg.build_dir)
-            err('    {}'.format(e))
             return False
 
     # prepare and step into the a newly created working directory
