@@ -38,6 +38,10 @@ def fetch(opts):
     # check if we have the target revision; if so, full stop
     if os.path.isdir(cache_dir) and not opts.ignore_cache:
         if revision_exists(git_dir, revision):
+            # ensure origin is properly configured
+            if not sync_origin(git_dir, site, cache_dir):
+                return None
+
             return cache_dir
 
     note('fetching {}...'.format(name))
@@ -75,14 +79,7 @@ def fetch(opts):
             return None
 
     # ensure origin is properly configured
-    #
-    # Silently try to add origin first, to lazily handle a missing case
-    # followed by an explicit configuration check on forcing the origin value.
-    GIT.execute([git_dir, 'remote', 'add', 'origin', site],
-        cwd=cache_dir, quiet=True)
-    if not GIT.execute([git_dir, 'remote', 'set-url', 'origin', site],
-            cwd=cache_dir):
-        err('unable to ensure origin is set on repository cache')
+    if not sync_origin(git_dir, site, cache_dir):
         return None
 
     log('fetching most recent sources')
@@ -132,5 +129,33 @@ def revision_exists(git_dir, revision):
     if output and output[0] == revision:
         if not GIT.execute([git_dir, 'cat-file', '-t', revision], quiet=True):
             return False
+
+    return True
+
+def sync_origin(git_dir, site, cache_dir):
+    """
+    ensure origin is properly configured
+
+    Ensures the configured site is set as the origin of the repository. This is
+    to help handle scenarios where a package's site has changed while content
+    is already cached.
+
+    Args:
+        git_dir: the Git directory
+        site: the site
+        cache_dir: the cache
+
+    Returns:
+        ``True`` if the revision exists; ``False`` otherwise
+    """
+
+    # silently try to add origin first, to lazily handle a missing case
+    GIT.execute([git_dir, 'remote', 'add', 'origin', site],
+        cwd=cache_dir, quiet=True)
+
+    if not GIT.execute([git_dir, 'remote', 'set-url', 'origin', site],
+            cwd=cache_dir):
+        err('unable to ensure origin is set on repository cache')
+        return False
 
     return True
