@@ -505,11 +505,12 @@ def pathMove(src, dst, quiet=False, critical=True):
     if success:
         try:
             if os.path.isfile(src):
+                if os.path.isfile(dst):
+                    _pathRemoveFile(dst)
+
                 move(src, dst)
             else:
-                for name in os.listdir(src):
-                    move(os.path.join(src, name), dst)
-                os.rmdir(src)
+                _pathMove(src, dst)
         except Exception as e:
             success = False
             if not quiet:
@@ -519,6 +520,61 @@ def pathMove(src, dst, quiet=False, critical=True):
     if not success and critical:
         sys.exit(-1)
     return success
+
+def _pathMove(src, dst):
+    """
+    move the provided directory into the target directory (recursive)
+
+    Attempts to move the provided directory into the target directory. In the
+    event that a file or directory could not be moved due to an error, this
+    function will typically raise an OSError exception for `pathMove` to handle.
+
+    In the chance that a file cannot be moved due to permission issues, this
+    function can attempt to adjust permissions to specific paths to help in
+    the moving processes (e.g. dealing with read-only files or other strict
+    permissions setup during a build process).
+
+    Args:
+        src: the source directory
+        dst: the destination directory
+
+    Raises:
+        OSError: if a path could not be moved
+    """
+
+    # ensure a caller has read/write access before hand to prepare for moving
+    # (e.g. if marked as read-only) and ensure contents can be fetched as well
+    try:
+        st = os.stat(src)
+        if not (st.st_mode & stat.S_IRUSR) or not (st.st_mode & stat.S_IWUSR):
+            os.chmod(src, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
+    except:
+        pass
+
+    entries = os.listdir(src)
+    for entry in entries:
+        src_path = os.path.join(src, entry)
+        dst_path = os.path.join(dst, entry)
+
+        if os.path.isdir(src_path) and not os.path.islink(src_path):
+            if os.path.isdir(dst_path):
+                _pathMove(src_path, dst_path)
+            else:
+                if os.path.exists(dst_path):
+                    _pathRemoveFile(dst_path)
+
+                move(src_path, dst_path)
+        else:
+            if os.path.exists(dst_path):
+                if os.path.isdir(dst_path) and not os.path.islink(dst_path):
+                    _pathRemoveDir(dst_path)
+                else:
+                    _pathRemoveFile(dst_path)
+
+            move(src_path, dst_path)
+
+    # remove directory
+    os.rmdir(src)
 
 def pathRemove(path, quiet=False):
     """
