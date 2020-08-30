@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ..tool.git import *
 from ..util.log import *
@@ -40,8 +40,7 @@ def extract(opts):
         return False
 
     log('ensure target revision is up-to-date in work tree')
-    if not GIT.execute([git_dir, work_tree, 'pull', 'origin', revision],
-            cwd=work_dir):
+    if not GIT.execute([git_dir, work_tree, 'reset', revision], cwd=work_dir):
         err('unable to checkout revision')
         return False
 
