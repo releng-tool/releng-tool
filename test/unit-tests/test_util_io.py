@@ -216,13 +216,15 @@ class TestUtilIo(unittest.TestCase):
             self.assertTrue(os.path.isfile(_(dst, 'file4')))
             self.assertTrue(os.path.isdir(_(dst, 'dir5')))
 
-            # (bad directory move into file)
+            # (check directory replacing a file)
             src = _('dir9')
             dst = _('file7')
-            moved = pathMove(src, dst, quiet=True, critical=False)
-            self.assertFalse(moved)
             self.assertTrue(os.path.isdir(src))
             self.assertTrue(os.path.isfile(dst))
+            moved = pathMove(src, dst, quiet=True, critical=False)
+            self.assertTrue(moved)
+            self.assertFalse(os.path.isdir(src))
+            self.assertTrue(os.path.isdir(dst))
 
     def test_utilio_prepare_helpers(self):
         prepared = prepare_arguments(None)
