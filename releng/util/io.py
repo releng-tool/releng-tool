@@ -490,6 +490,9 @@ def pathMove(src, dst, quiet=False, critical=True):
         if parent_dir and not os.path.isdir(parent_dir):
             success = ensureDirectoryExists(parent_dir, quiet=quiet)
     elif not os.path.isdir(dst):
+        if os.path.exists(dst):
+            _pathRemoveFile(dst)
+
         success = ensureDirectoryExists(dst, quiet=quiet)
     else:
         src_dir = os.path.realpath(src)
