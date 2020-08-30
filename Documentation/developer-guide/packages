@@ -245,11 +245,10 @@ cache file when operating in development mode. In most cases, users want to take
 advantage of cached sources to prevent having to re-fetch the same content again
 between builds. However, some packages may be configured in a way where their
 request for a package's contents varies from a fresh stage. For example, when
-pulling from a branch from a non-distributed version control system, releng-tool
-will not attempt to re-fetch from a site since a cache file already exists. If a
-developer configures a package to use a revision value with dynamic content,
-they may wish to use this option to have a user always force fetching new
-content from a clean state.
+pulling from a branch, releng-tool will not attempt to re-fetch from a site
+since a cached content has already been fetched. If a developer configures a
+package to use a revision value with dynamic content, they may wish to use this
+option to have a user always force fetching new content from a clean state.
 
 .. code-block:: python
 
