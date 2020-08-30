@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ..tool.git import *
 from ..util.io import ensureDirectoryExists
+from ..util.io import pathRemove
 from ..util.log import *
 import os
-import shutil
 import sys
 
 def fetch(opts):
@@ -59,11 +59,10 @@ def fetch(opts):
                 has_cache = True
             else:
                 log('cache directory has errors; will re-downloaded')
-                try:
-                    shutil.rmtree(cache_dir)
-                except IOError:
-                    err('unable to cleanup cache folder for package')
-                    err(' (cache folder: {})'.format(cache_dir))
+
+                if not pathRemove(cache_dir):
+                    err('''unable to cleanup cache folder for package
+ (cache folder: {})'''.format(cache_dir))
                     return None
 
     # if we have no cache for this repository, build one
