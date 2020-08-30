@@ -61,4 +61,4 @@ Examples of releng-tool projects can be found in
 .. _Python: https://www.python.org/
 .. _pip: https://pip.pypa.io/
 .. _releng-tool documentation: https://docs.releng.io/
-.. _releng-tool’s examples repository: https://github.com/releng-tool/releng-tool-examples
+.. _releng-tool's examples repository: https://github.com/releng-tool/releng-tool-examples
