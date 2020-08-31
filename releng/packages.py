@@ -413,6 +413,12 @@ class RelengPackageManager:
 
             # ##################################################################
 
+            # git-refspecs
+            pkg_git_refspecs = self._fetch(
+                RPK_GIT_REFSPECS, PkgKeyType.STRS, default=[])
+
+            # ##################################################################
+
             # python interpreter
             pkg_python_interpreter = self._fetch(
                 RPK_PYTHON_INTERPRETER, PkgKeyType.STR)
@@ -522,6 +528,7 @@ class RelengPackageManager:
         pkg.ext_modifiers = pkg_ext_modifiers
         pkg.extract_type = pkg_extract_type
         pkg.fixed_jobs = pkg_fixed_jobs
+        pkg.git_refspecs = pkg_git_refspecs
         pkg.has_devmode_option = pkg_has_devmode_option
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
         pkg.install_type = pkg_install_type
@@ -656,6 +663,7 @@ class RelengPackage:
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
         fixed_jobs: fixed job count for this specific package
+        git_refspecs: additional git refspecs to fetch (if applicable)
         has_devmode_option: whether or not the package has a devmode revision
         hash_file: file containing hashes to validate this package
         install_type: install container for the package (target, staged, etc.)
@@ -728,6 +736,8 @@ class RelengPackage:
         self.install_opts = None
         # (package type - autotools)
         self.autotools_autoreconf = None
+        # (other - git)
+        self.git_refspecs = None
         # (other - python)
         self.python_interpreter = None
 

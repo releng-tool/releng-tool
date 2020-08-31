@@ -83,9 +83,16 @@ def fetch(opts):
         return None
 
     log('fetching most recent sources')
-    if not GIT.execute([git_dir, 'fetch', '--progress', 'origin',
-            '+refs/heads/*:refs/remotes/origin/*',
-            '+refs/tags/*:refs/tags/*'], cwd=cache_dir):
+    fetch_cmd = [git_dir, 'fetch', '--progress', 'origin',
+        '+refs/heads/*:refs/remotes/origin/*',
+        '+refs/tags/*:refs/tags/*']
+
+    # allow fetching addition references if configured (e.g. pull requests)
+    for ref in opts._git_refspecs:
+        fetch_cmd.append(
+            '+refs/{}/*/head:refs/remotes/origin/{}/*'.format(ref, ref))
+
+    if not GIT.execute(fetch_cmd, cwd=cache_dir):
         err('unable to fetch branches/tags from remote repository')
         return None
 

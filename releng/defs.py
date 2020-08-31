@@ -28,6 +28,7 @@ RPK_EXTERNAL = 'EXTERNAL' #: whether or not package is considered "external"
 RPK_EXTOPT = 'EXTOPT' #: extension-defined package modifiers (if any)
 RPK_EXTRACT_TYPE = 'EXTRACT_TYPE' #: extraction type for sources
 RPK_FIXED_JOBS = 'FIXED_JOBS' #: fixed job count for the project
+RPK_GIT_REFSPECS = 'GIT_REFSPECS' #: additional git refspecs to fetch (if any)
 RPK_INSTALL_TYPE = 'INSTALL_TYPE' #: install container target for the package
 RPK_INTERNAL = 'INTERNAL' #: whether or not package is considered "internal"
 RPK_LICENSE = 'LICENSE' #: license information for the package
