@@ -1,3 +1,12 @@
+master
+------
+
+- allow developers to fetch from addition git refspecs (e.g. pull requests)
+- allow setting quirks in command line
+- fixed a scenario where a git extraction stage could fetch sources
+- fixed git fetch/extraction if package is cached and site has changed
+- improved handling of output files which may set the readonly attribute
+
 0.3 (2019-10-19)
 ----------------
 
