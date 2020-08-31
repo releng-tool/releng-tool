@@ -337,6 +337,19 @@ that cannot support a large or any parallel build environment.
 
    LIBFOO_FIXED_JOBS = 1
 
+LIBFOO_GIT_REFSPECS
+^^^^^^^^^^^^^^^^^^^
+
+List of addition refspecs to fetch when using a ``git`` VCS type. By default, a
+Git fetch request will acquire all ``heads`` and ``tags`` refspecs. If a
+developer wishes use revisions from different refspecs (for example, a pull
+request), a developer can specify the additional refspecs to acquire when
+fetching.
+
+.. code-block:: python
+
+   LIBFOO_GIT_REFSPECS = ['pull']
+
 LIBFOO_INTERNAL
 ^^^^^^^^^^^^^^^
 .. |LIBFOO_INTERNAL| replace:: ``LIBFOO_INTERNAL``
