@@ -1,5 +1,5 @@
-master
-------
+0.4 (2020-09-07)
+----------------
 
 - allow developers to fetch from addition git refspecs (e.g. pull requests)
 - allow setting quirks in command line
