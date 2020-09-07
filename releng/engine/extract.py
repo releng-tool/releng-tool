@@ -54,6 +54,7 @@ def stage(engine, pkg):
     extract_opts.strip_count = pkg.strip_count
     extract_opts.version = pkg.version
     extract_opts._extract_override = engine.opts.extract_override
+    extract_opts._quirks = engine.opts.quirks
 
     if os.path.exists(pkg.build_dir):
         warn('build directory exists before extraction; removing')

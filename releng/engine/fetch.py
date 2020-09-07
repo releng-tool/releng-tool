@@ -70,6 +70,7 @@ local sources option to use the default process).
     fetch_opts.revision = pkg.revision
     fetch_opts.site = pkg.site
     fetch_opts.version = pkg.version
+    fetch_opts._quirks = engine.opts.quirks
 
     cache_filename = os.path.basename(pkg.cache_file)
     out_dir = engine.opts.out_dir
