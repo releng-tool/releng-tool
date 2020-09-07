@@ -297,6 +297,8 @@ applied to deal with rare host environment scenarios.
   from being injected when a CMake-package is performing a build stage. This is
   to help support host systems running variants of CMake which do not explicitly
   provide a parallelization option.
+- ``releng.git.no_depth`` -- Disables the ``--depth`` option from being injected
+  when a Git-site-defined package is performing a fetch stage.
 
 Quirks are enabled through a configuration (override) script such as follows:
 

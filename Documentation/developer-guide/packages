@@ -355,7 +355,7 @@ depth of ``1``, the entire history of the repository will be fetched.
 
    LIBFOO_GIT_DEPTH = 0
 
-See also |LIBFOO_GIT_REFSPECS|_.
+See also |LIBFOO_GIT_REFSPECS|_ and :ref:`configuration quirks <quirks>`.
 
 LIBFOO_GIT_REFSPECS
 ^^^^^^^^^^^^^^^^^^^
