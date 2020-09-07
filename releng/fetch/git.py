@@ -124,7 +124,10 @@ def fetch(opts):
         return None
 
     log('verifying target revision exists')
-    if (revision_exists(git_dir, revision) == GitExistsType.MISSING_HASH and
+    exists_state = revision_exists(git_dir, revision)
+    if exists_state == GitExistsType.EXISTS:
+        pass
+    elif (exists_state == GitExistsType.MISSING_HASH and
             limited_fetch and opts._git_depth is None):
         warn('failed to find hash on depth-limited fetch; fetching all...')
 
