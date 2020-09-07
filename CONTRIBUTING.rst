@@ -65,7 +65,8 @@ Packages for PyPI are generated and submitted with the following commands:
 
 .. code-block:: shell
 
-    $ python setup.py bdist_wheel --universal
+    $ python setup.py clean --all
+    $ python setup.py sdist bdist_wheel
     $ python -m twine upload dist/*
 
 outro
