@@ -1,6 +1,14 @@
 tips
 ====
 
+examples
+--------
+
+Examples of releng-tool projects can be found in the following repository:
+
+   | releng-tool - examples repository
+   | https://github.com/releng-tool/releng-tool-examples
+
 requesting help
 ---------------
 
