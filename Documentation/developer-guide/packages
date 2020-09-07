@@ -166,6 +166,9 @@ If no site is defined for a package, it will be considered a virtual package
 (i.e. has no content). If applicable, loaded extensions may provide support for
 custom site protocols.
 
+Specifying a site value of ``local`` will automatically configure a VCS-type of
+``local`` (see |LIBFOO_VCS_TYPE|_ for more information).
+
 See also |LIBFOO_VCS_TYPE|_.
 
 LIBFOO_TYPE
@@ -475,6 +478,7 @@ Supported types are as follows:
 - ``cvs`` (CVS)
 - ``git`` (Git)
 - ``hg``  (Mercurial)
+- ``local`` (no VCS; local interim-development package)
 - ``none`` (no VCS; virtual package)
 - ``scp`` (SCP)
 - ``svn`` (SVN)
@@ -490,6 +494,15 @@ extension type can be set in this option.
 Using a specific type will create a dependency for a project that the respective
 host tool is installed on the host system. For example, if a Git VCS-type is
 set, the host system will need to have ``git`` installed on the system.
+
+Note that the ``local`` type is designed to be a special/development-helper type
+only. When set, this option allows placing the contents of a module directly
+inside the definition folder (alongside the definition file). This approach is
+similar to using :ref:`local-sources mode` where it avoids the need to have the
+module content located in a site to be fetched -- specifically, for initial
+development/testing/training scenarios. It is never recommended to store the
+package's "main content" inside a releng-tool project, thus using the ``local``
+type will always generate a warning message.
 
 package bootstrapping and post-processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
