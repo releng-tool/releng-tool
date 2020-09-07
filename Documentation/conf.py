@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 import os
 import sys
@@ -10,7 +10,7 @@ master_doc = 'index'
 
 # meta
 project = 'releng-tool'
-copyright = '2019 releng-tool'
+copyright = '2020 releng-tool'
 author = 'releng-tool'
 
 # sphinx extensions
