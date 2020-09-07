@@ -6,6 +6,7 @@ master
 - fixed a scenario where a git extraction stage could fetch sources
 - fixed git fetch/extraction if package is cached and site has changed
 - improved handling of output files which may set the readonly attribute
+- support shallow git fetching
 
 0.3 (2019-10-19)
 ----------------
