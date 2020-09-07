@@ -6,8 +6,25 @@ from ..tool.git import *
 from ..util.io import ensureDirectoryExists
 from ..util.io import pathRemove
 from ..util.log import *
+from enum import Enum
 import os
 import sys
+
+class GitExistsType(Enum):
+    """
+    git exists type
+
+    Enumeration of types of existence states when verifying a configured
+    revision exists in a Git repository.
+
+    Attributes:
+        EXISTS: revision exists
+        MISSING: revision does not exist
+        MISSING_HASH: a hash-provided revision does not exist
+    """
+    EXISTS = 0
+    MISSING = 1
+    MISSING_HASH = 2
 
 def fetch(opts):
     """
@@ -37,7 +54,7 @@ def fetch(opts):
 
     # check if we have the target revision; if so, full stop
     if os.path.isdir(cache_dir) and not opts.ignore_cache:
-        if revision_exists(git_dir, revision):
+        if revision_exists(git_dir, revision) == GitExistsType.EXISTS:
             # ensure origin is properly configured
             if not sync_origin(git_dir, site, cache_dir):
                 return None
@@ -92,12 +109,35 @@ def fetch(opts):
         fetch_cmd.append(
             '+refs/{}/*/head:refs/remotes/origin/{}/*'.format(ref, ref))
 
+    # limit fetch depth
+    target_depth = 1
+    if opts._git_depth is not None:
+        target_depth = opts._git_depth
+    limited_fetch = (target_depth and 'releng.git.no_depth' not in opts._quirks)
+
+    if limited_fetch:
+        fetch_cmd.append('--depth')
+        fetch_cmd.append(str(target_depth))
+
     if not GIT.execute(fetch_cmd, cwd=cache_dir):
         err('unable to fetch branches/tags from remote repository')
         return None
 
     log('verifying target revision exists')
-    if not revision_exists(git_dir, revision):
+    if (revision_exists(git_dir, revision) == GitExistsType.MISSING_HASH and
+            limited_fetch and opts._git_depth is None):
+        warn('failed to find hash on depth-limited fetch; fetching all...')
+
+        if not GIT.execute([git_dir, 'fetch', '--progress', '--unshallow'],
+                cwd=cache_dir):
+            err('unable to unshallow fetch state')
+            return None
+
+        if revision_exists(git_dir, revision) != GitExistsType.EXISTS:
+            err('unable to find matching revision in repository: ' + name)
+            err(' (revision: {}) '.format(revision))
+            return None
+    else:
         err('unable to find matching revision in repository: ' + name)
         err(' (revision: {}) '.format(revision))
         return None
@@ -116,7 +156,7 @@ def revision_exists(git_dir, revision):
         revision: the revision (branch, tag, hash) to look for
 
     Returns:
-        ``True`` if the revision exists; ``False`` otherwise
+        a value of ``GitExistsType``
     """
 
     output = []
@@ -124,7 +164,7 @@ def revision_exists(git_dir, revision):
             revision], quiet=True, capture=output):
         if not GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
                 'origin/' + revision], quiet=True, capture=output):
-            return False
+            return GitExistsType.MISSING
 
     # confirm a hash-provided revision exists
     #
@@ -135,9 +175,9 @@ def revision_exists(git_dir, revision):
     # hash entry is indeed a valid commit.
     if output and output[0] == revision:
         if not GIT.execute([git_dir, 'cat-file', '-t', revision], quiet=True):
-            return False
+            return GitExistsType.MISSING_HASH
 
-    return True
+    return GitExistsType.EXISTS
 
 def sync_origin(git_dir, site, cache_dir):
     """
