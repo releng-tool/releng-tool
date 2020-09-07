@@ -337,8 +337,29 @@ that cannot support a large or any parallel build environment.
 
    LIBFOO_FIXED_JOBS = 1
 
+LIBFOO_GIT_DEPTH
+^^^^^^^^^^^^^^^^
+.. |--depth| replace:: ``--depth``
+
+Limit fetching for a Git-based source to the specified number of commits. The
+value provided will be used with the |--depth|_ argument. By default, the depth
+will be set to a value of ``1``. If a developer wishes use fetch all commits
+from all refspecs, a developer can specify a value of ``0``.
+
+While the default depth is a value of ``1``, an exception is made when the depth
+is not explicitly set and the |LIBFOO_REVISION|_ value defined is a hash. For
+this case, if the revision is not found with the implicitly-defined shallow
+depth of ``1``, the entire history of the repository will be fetched.
+
+.. code-block:: python
+
+   LIBFOO_GIT_DEPTH = 0
+
+See also |LIBFOO_GIT_REFSPECS|_.
+
 LIBFOO_GIT_REFSPECS
 ^^^^^^^^^^^^^^^^^^^
+.. |LIBFOO_GIT_REFSPECS| replace:: ``LIBFOO_GIT_REFSPECS``
 
 List of addition refspecs to fetch when using a ``git`` VCS type. By default, a
 Git fetch request will acquire all ``heads`` and ``tags`` refspecs. If a
@@ -512,3 +533,5 @@ See also `script helpers`_ for helper functions/variables available for use.
 .. include:: developer-guide/packages-type-autotools
 .. include:: developer-guide/packages-type-cmake
 .. include:: developer-guide/packages-type-python
+
+.. _--depth: https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---depthltdepthgt
