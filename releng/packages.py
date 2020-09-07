@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from .defs import *
 from .util.env import extendScriptEnv
@@ -362,10 +362,15 @@ class RelengPackageManager:
                     elif site_lc.startswith('svn+'):
                         pkg_site = pkg_site[4:]
                         pkg_vcs_type = VcsType.SVN
+                    elif site_lc == 'local':
+                        pkg_vcs_type = VcsType.LOCAL
                     else:
                         pkg_vcs_type = VcsType.URL
                 else:
                     pkg_vcs_type = VcsType.NONE
+
+            if pkg_vcs_type is VcsType.LOCAL:
+                warn('package using local content: {}'.format(name))
 
             # ##################################################################
 
@@ -465,7 +470,7 @@ class RelengPackageManager:
         elif pkg_vcs_type in (VcsType.GIT, VcsType.HG):
             cache_ext = None
         # non-vcs type does not have an extension
-        elif pkg_vcs_type is VcsType.NONE:
+        elif pkg_vcs_type in (VcsType.LOCAL, VcsType.NONE):
             cache_ext = None
         else:
             cache_ext = None
@@ -487,7 +492,10 @@ class RelengPackageManager:
         # finalization
         pkg_nv = '{}-{}'.format(name, pkg_version)
         pkg_build_output_dir = os.path.join(opts.build_dir, pkg_nv)
-        if opts.local_srcs and pkg_is_internal:
+        pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
+        if pkg_vcs_type is VcsType.LOCAL:
+            pkg_build_dir = pkg_def_dir
+        elif opts.local_srcs and pkg_is_internal:
             container_dir = os.path.dirname(opts.root_dir)
             pkg_build_dir = os.path.join(container_dir, name)
 
@@ -498,7 +506,6 @@ class RelengPackageManager:
                 return BAD_RV
         else:
             pkg_build_dir = pkg_build_output_dir
-        pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
         if pkg_build_subdir:
             pkg_build_subdir = os.path.join(pkg_build_dir, pkg_build_subdir)
         if cache_ext:

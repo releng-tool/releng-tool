@@ -185,8 +185,8 @@ in the working directory or the provided root directory:
                 if not self._stageInit(pkg):
                     return False
 
-                # none-vcs-type packages do not need to fetch
-                if pkg.vcs_type is VcsType.NONE:
+                # none/local-vcs-type packages do not need to fetch
+                if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                     continue
 
                 # in the event that we not not explicit fetching and the package
@@ -233,8 +233,8 @@ in the working directory or the provided root directory:
                     # extracting
                     flag = pkg.__ff_extract
                     if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        # none-vcs-type packages do not need to extract
-                        if pkg.vcs_type is VcsType.NONE:
+                        # none/local-vcs-type packages do not need to fetch
+                        if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                             pass
                         elif not extractStage(self, pkg):
                             return False
@@ -253,7 +253,10 @@ in the working directory or the provided root directory:
                     # patching
                     flag = pkg.__ff_patch
                     if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        if not patchStage(self, pkg, pkg_env):
+                        # local-vcs-type packages do not need to patch
+                        if pkg.vcs_type is VcsType.LOCAL:
+                            pass
+                        elif not patchStage(self, pkg, pkg_env):
                             return False
                         if processFileFlag(True, flag) != FileFlag.CONFIGURED:
                             return False

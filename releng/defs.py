@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from enum import Enum
 
@@ -172,6 +172,7 @@ class VcsType(Enum):
         CVS: concurrent versions system
         GIT: git
         HG: mercurial
+        LOCAL: no version control (local interim-development package)
         NONE: no version control (placeholder package)
         SCP: secure copy
         SVN: subversion
@@ -182,7 +183,8 @@ class VcsType(Enum):
     CVS = 2
     GIT = 3
     HG = 4
-    NONE = 5
-    SCP = 6
-    SVN = 7
-    URL = 8
+    LOCAL = 5
+    NONE = 6
+    SCP = 7
+    SVN = 8
+    URL = 9
