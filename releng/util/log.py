@@ -68,6 +68,7 @@ def err(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
+    sys.stdout.flush()
     __log('(error) ', '\033[1;31m', msg, sys.stderr, *args)
     sys.stderr.flush()
 
@@ -144,6 +145,7 @@ def warn(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
+    sys.stdout.flush()
     __log('(warn) ', '\033[1;35m', msg, sys.stderr, *args)
     sys.stderr.flush()
 
