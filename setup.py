@@ -1,13 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
+from distutils.command.clean import clean
+from distutils import dir_util
 from setuptools import find_packages
 from setuptools import setup
 import os
 
 def read(name):
     return open(os.path.join(os.path.dirname(__file__), name)).read()
+
+# remove extra resources not removed by the default clean operation
+class ExtendedClean(clean):
+    def run(self):
+        clean.run(self)
+
+        if not self.all:
+            return
+
+        extras = [
+            'dist',
+            'releng_tool.egg-info',
+        ]
+        for extra in extras:
+            if os.path.exists(extra):
+                dir_util.remove_tree(extra, dry_run=self.dry_run)
 
 setup(
     classifiers=[
@@ -26,6 +44,9 @@ setup(
         'Topic :: Software Development',
         'Topic :: Software Development :: Build Tools',
     ],
+    cmdclass={
+        'clean': ExtendedClean,
+    },
     description='release engineering utility tool',
     entry_points={
         'console_scripts': [
