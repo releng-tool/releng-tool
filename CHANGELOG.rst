@@ -1,5 +1,5 @@
-master
-------
+0.5 (2020-09-07)
+----------------
 
 - fixed false error when verifying cached git reference
 
