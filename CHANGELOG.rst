@@ -7,7 +7,7 @@ master
 - fixed git fetch/extraction if package is cached and site has changed
 - improved handling of output files which may set the readonly attribute
 - introduce support for local interim-development package content
-- introduce support shallow git fetching
+- introduce support for shallow git fetching
 
 0.3 (2019-10-19)
 ----------------
