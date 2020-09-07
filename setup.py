@@ -28,6 +28,8 @@ class ExtendedClean(clean):
                 dir_util.remove_tree(extra, dry_run=self.dry_run)
 
 setup(
+    author='releng-tool',
+    author_email='releng@releng.io',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
