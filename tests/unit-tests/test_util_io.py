@@ -12,7 +12,7 @@ from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prependShebangInterpreter as psi
 from releng_tool.util.io import touch
-from test import RelengTestUtil
+from tests import RelengTestUtil
 import os
 import unittest
 

@@ -3,7 +3,7 @@
 
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import processFileFlag
-from test import RelengTestUtil
+from tests import RelengTestUtil
 import os
 import unittest
 
