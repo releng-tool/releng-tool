@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 releng-tool
 
-from releng.util.env import extendScriptEnv
+from releng_tool.util.env import extendScriptEnv
 import unittest
 
 class TestUtilEnv(unittest.TestCase):

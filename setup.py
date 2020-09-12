@@ -52,7 +52,7 @@ setup(
     description='release engineering utility tool',
     entry_points={
         'console_scripts': [
-            'releng-tool = releng.__main__:main',
+            'releng-tool = releng_tool.__main__:main',
         ],
     },
     install_requires=[

@@ -31,7 +31,7 @@ class RelengRegistry(RelengRegistryInterface):
         self.package_types = {}
 
         # always load base/example extension
-        self.load('releng.ext.seed')
+        self.load('releng_tool.ext.seed')
 
     def loadAllExtensions(self, names):
         """

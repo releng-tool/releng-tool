@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 releng-tool
 
-from releng.util.hash import HashResult
-from releng.util.hash import BadFileHashLoadError
-from releng.util.hash import BadFormatHashLoadError
-from releng.util.hash import load as load_hashes
-from releng.util.hash import verify as verify_hashes
+from releng_tool.util.hash import HashResult
+from releng_tool.util.hash import BadFileHashLoadError
+from releng_tool.util.hash import BadFormatHashLoadError
+from releng_tool.util.hash import load as load_hashes
+from releng_tool.util.hash import verify as verify_hashes
 import os
 import unittest
 

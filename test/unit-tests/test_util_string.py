@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 releng-tool
 
-from releng.util.string import expand
-from releng.util.string import interpretStrings
+from releng_tool.util.string import expand
+from releng_tool.util.string import interpretStrings
 import os
 import unittest
 

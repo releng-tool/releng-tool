@@ -2,16 +2,16 @@
 # Copyright 2018-2020 releng-tool
 
 from collections import OrderedDict
-from releng.util.io import execute
-from releng.util.io import interpretStemExtension as ise
-from releng.util.io import pathCopy
-from releng.util.io import pathExists
-from releng.util.io import pathMove
-from releng.util.io import pathRemove
-from releng.util.io import prepare_arguments
-from releng.util.io import prepare_definitions
-from releng.util.io import prependShebangInterpreter as psi
-from releng.util.io import touch
+from releng_tool.util.io import execute
+from releng_tool.util.io import interpretStemExtension as ise
+from releng_tool.util.io import pathCopy
+from releng_tool.util.io import pathExists
+from releng_tool.util.io import pathMove
+from releng_tool.util.io import pathRemove
+from releng_tool.util.io import prepare_arguments
+from releng_tool.util.io import prepare_definitions
+from releng_tool.util.io import prependShebangInterpreter as psi
+from releng_tool.util.io import touch
 from test import RelengTestUtil
 import os
 import unittest

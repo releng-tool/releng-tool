@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 releng-tool
 
-from releng.util.sort import TopologicalSorter
+from releng_tool.util.sort import TopologicalSorter
 import unittest
 
 class TestObj:

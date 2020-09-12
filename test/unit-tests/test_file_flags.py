@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 releng-tool
 
-from releng.util.file_flags import FileFlag
-from releng.util.file_flags import processFileFlag
+from releng_tool.util.file_flags import FileFlag
+from releng_tool.util.file_flags import processFileFlag
 from test import RelengTestUtil
 import os
 import unittest

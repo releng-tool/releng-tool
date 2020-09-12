@@ -1,0 +1,22 @@
+TODO deprecated releng namespace
+
+The "releng" namespace is flagged as deprecated over an alternative
+"releng_tool" namespace. This is being done for the following reasons:
+
+1) The namespace "releng_tool" definition is more unique namespace for the
+   releng-tool project. This prevents possible collisions with a namespace
+   "releng" which has a much higher possibility of being used by end-developers
+   (e.g. a group/developer may have its own "releng" namespace of scripts to
+   deal with their own group/project-specific release engineering use cases;
+   which could conflict with releng-tool, if integration is desired).
+
+2) Provide flexibility for adding the `.py` extension to all project-defined
+   scripts. The original release of releng-tool defined a project-specific
+   configuration script `releng.py` which now is named `releng`. This change was
+   primarily driven for users invoking releng-tool using the module name where
+   the releng-tool entrypoint is not available (i.e. invoking `python -m releng`
+   would load the local script over the installed releng-tool module).
+
+At this time, this project still also uses the "releng" namespace for a window
+to help ease transition of existing releng-tool-attached scripts and extensions
+which may be using the "releng" namespace.

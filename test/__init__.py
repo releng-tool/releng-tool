@@ -3,7 +3,7 @@
 # Copyright 2018-2019 releng-tool
 
 from contextlib import contextmanager
-from releng.util.io import generateTempDir as tempDir
+from releng_tool.util.io import generateTempDir as tempDir
 from difflib import unified_diff
 from io import open
 
