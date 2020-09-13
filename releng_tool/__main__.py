@@ -22,7 +22,7 @@ def main():
 
     try:
         parser = argparse.ArgumentParser(
-            prog='releng', add_help=False, usage=usage())
+            prog='releng-tool', add_help=False, usage=usage())
 
         parser.add_argument('action', nargs='?')
         parser.add_argument('--cache-dir')
@@ -132,7 +132,7 @@ def usage():
     Returns:
         the usage string
     """
-    return """releng <options> [action]
+    return """releng-tool <options> [action]
 
 (actions)
  clean                     clean the output directory
