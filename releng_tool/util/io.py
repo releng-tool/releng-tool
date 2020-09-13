@@ -338,6 +338,36 @@ def interpretStemExtension(basename):
 
     return (stem, ext)
 
+def optFile(file):
+    """
+    return a file (and existence) to opt for based a given file path
+
+    Various user-defined scripts by default do not have an extension. For
+    example, a project's releng-tool script is defined by a file named `releng`;
+    however, select users may wish to define a `releng.py` script instead.
+    Consider, with the previous example, the file `releng` is the "standard"
+    file and the `releng.py` script is the "alternative" file. This utility call
+    will return the file path and the existence state of the returned file. If
+    the standard file does not exist but the alternative file does, this call
+    will return the alternative file. Priority is given to the standard file, so
+    if neither file exists, this call will return the provided/standard file
+    path.
+
+    Args:
+        file: the file to check for
+
+    Returns:
+        a 2-tuple (file, existence flag)
+    """
+
+    exists = os.path.isfile(file)
+    if not exists:
+        flex_file = file + '.py'
+        if os.path.isfile(flex_file):
+            return flex_file, True
+
+    return file, exists
+
 def pathCopy(src, dst, quiet=False, critical=True):
     """
     copy a file or directory into a target file or directory

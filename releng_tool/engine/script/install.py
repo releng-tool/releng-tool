@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ...util.log import *
+from ...util.io import optFile
 from ...util.io import run_script
 import os
 
@@ -28,10 +29,9 @@ def install(opts):
 
     install_script_filename = '{}-{}'.format(opts.name, INSTALL_SCRIPT)
     install_script = os.path.join(def_dir, install_script_filename)
-    if not os.path.isfile(install_script):
-        install_script += '.releng'
-        if not os.path.isfile(install_script):
-            return True
+    install_script, install_script_exists = optFile(install_script)
+    if not install_script_exists:
+        return True
 
     if not run_script(install_script, env, subject='install'):
         return False

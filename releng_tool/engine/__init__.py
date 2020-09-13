@@ -16,6 +16,7 @@ from ..util.io import ensureDirectoryExists
 from ..util.io import execute
 from ..util.io import generateTempDir
 from ..util.io import interimWorkingDirectory
+from ..util.io import optFile
 from ..util.io import pathCopy
 from ..util.io import pathExists
 from ..util.io import pathMove
@@ -86,27 +87,17 @@ class RelengEngine:
         # script(s)
         self._prepareScriptEnvironment(gbls, self.opts.pkg_action)
 
-        conf_point = self.opts.conf_point
-
-        # TODO remove deprecated configuration load in v0.3+
-        # if post-processing is missing, attempt to load deprecated filename
-        if not os.path.isfile(self.opts.conf_point):
-            conf_point = os.path.join(self.opts.root_dir, 'releng.py')
-            if os.path.isfile(conf_point):
-                warn('using deprecated configuration file releng.py -- switch '
-                     'to releng for future projects')
-
-        if not os.path.isfile(conf_point):
+        conf_point, conf_point_exists = optFile(self.opts.conf_point)
+        if not conf_point_exists:
             err('missing configuration file')
             err("""\
 The configuration file cannot be found. Ensure the configuration file exists
 in the working directory or the provided root directory:
 
-    {}""".format(self.opts.conf_point))
+    {}""".format(conf_point))
             return False
 
-        settings = run_script(conf_point, gbls,
-            subject='configuration')
+        settings = run_script(conf_point, gbls, subject='configuration')
         if not settings:
             return False
 
@@ -650,9 +641,9 @@ list exists with the name of packages to be part of the releng process:
             post-processing script exists; ``False`` if an error has occurred
             when processing the post-processing script
         """
-        script = self.opts.post_point
+        script, script_exists = optFile(self.opts.post_point)
 
-        if os.path.isfile(script):
+        if script_exists:
             verbose('performing post-processing...')
 
             # ensure images directory exists (as the post-processing script will

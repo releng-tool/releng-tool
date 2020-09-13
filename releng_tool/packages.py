@@ -4,6 +4,7 @@
 from .defs import *
 from .util.env import extendScriptEnv
 from .util.io import interpretStemExtension
+from .util.io import optFile
 from .util.io import run_script
 from .util.log import *
 from .util.sort import TopologicalSorter
@@ -83,9 +84,8 @@ class RelengPackageManager:
             pkg = None
             for pkg_dir in self.opts.extern_pkg_dirs:
                 pkg_script = os.path.join(pkg_dir, name, name)
-                if not os.path.isfile(pkg_script):
-                    pkg_script += '.releng'
-                if os.path.isfile(pkg_script):
+                pkg_script, pkg_script_exists = optFile(pkg_script)
+                if pkg_script_exists:
                     pkg, env, deps = self.loadPackage(name, pkg_script)
                     if pkg:
                         break
@@ -94,10 +94,7 @@ class RelengPackageManager:
             # default package directory
             if not pkg:
                 pkg_script = os.path.join(self.opts.default_pkg_dir, name, name)
-                if not os.path.isfile(pkg_script):
-                    alt_pkg_script = pkg_script + '.releng'
-                    if os.path.isfile(alt_pkg_script):
-                        pkg_script = alt_pkg_script
+                pkg_script, _ = optFile(pkg_script)
 
                 pkg, env, deps = self.loadPackage(name, pkg_script)
                 if not pkg:

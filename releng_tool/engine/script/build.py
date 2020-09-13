@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ...util.log import *
+from ...util.io import optFile
 from ...util.io import run_script
 import os
 
@@ -28,10 +29,9 @@ def build(opts):
 
     build_script_filename = '{}-{}'.format(opts.name, BUILD_SCRIPT)
     build_script = os.path.join(def_dir, build_script_filename)
-    if not os.path.isfile(build_script):
-        build_script += '.releng'
-        if not os.path.isfile(build_script):
-            return True
+    build_script, build_script_exists = optFile(build_script)
+    if not build_script_exists:
+        return True
 
     if not run_script(build_script, env, subject='build'):
         return False

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright 2019 releng-tool
+# Copyright 2019-2020 releng-tool
 
 from ..util.io import interimWorkingDirectory
+from ..util.io import optFile
 from ..util.io import run_script
 from ..util.log import *
 import os
@@ -33,10 +34,9 @@ def stage(engine, pkg, script_env):
 
     post_script_filename = '{}-{}'.format(pkg.name, POST_SCRIPT)
     post_script = os.path.join(pkg.def_dir, post_script_filename)
-    if not os.path.isfile(post_script):
-        post_script += '.releng'
-        if not os.path.isfile(post_script):
-            return True
+    post_script, post_script_exists = optFile(post_script)
+    if not post_script_exists:
+        return True
 
     if pkg.build_subdir:
         build_dir = pkg.build_subdir

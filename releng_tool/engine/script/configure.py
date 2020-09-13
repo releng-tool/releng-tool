@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ...util.log import *
+from ...util.io import optFile
 from ...util.io import run_script
 import os
 
@@ -28,10 +29,9 @@ def configure(opts):
 
     configure_script_filename = '{}-{}'.format(opts.name, CONFIGURE_SCRIPT)
     configure_script = os.path.join(def_dir, configure_script_filename)
-    if not os.path.isfile(configure_script):
-        configure_script += '.releng'
-        if not os.path.isfile(configure_script):
-            return True
+    configure_script, configure_script_exists = optFile(configure_script)
+    if not configure_script_exists:
+        return True
 
     if not run_script(configure_script, env, subject='configure'):
         return False
