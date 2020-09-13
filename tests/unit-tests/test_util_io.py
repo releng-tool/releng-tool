@@ -4,6 +4,7 @@
 from collections import OrderedDict
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpretStemExtension as ise
+from releng_tool.util.io import optFile
 from releng_tool.util.io import pathCopy
 from releng_tool.util.io import pathExists
 from releng_tool.util.io import pathMove
@@ -225,6 +226,44 @@ class TestUtilIo(unittest.TestCase):
             self.assertTrue(moved)
             self.assertFalse(os.path.isdir(src))
             self.assertTrue(os.path.isdir(dst))
+
+    def test_utilio_optfile(self):
+        with RelengTestUtil.prepareWorkdir() as work_dir:
+            def _(*args):
+                return os.path.join(work_dir, *args)
+
+            # setup
+            files = [
+                _('file1'),
+                _('file2.py'),
+                _('file3'),
+                _('file3.py'),
+            ]
+            for file in files:
+                with open(file, 'a') as f:
+                    f.write(file)
+
+            # checks
+            src = _('file1')
+            target, existence = optFile(src)
+            self.assertTrue(existence)
+            self.assertEqual(target, src)
+
+            src = _('file2')
+            opt = _('file2.py')
+            target, existence = optFile(src)
+            self.assertTrue(existence)
+            self.assertEqual(target, opt)
+
+            src = _('file3')
+            target, existence = optFile(src)
+            self.assertTrue(existence)
+            self.assertEqual(target, src)
+
+            src = _('file4')
+            target, existence = optFile(src)
+            self.assertFalse(existence)
+            self.assertEqual(target, src)
 
     def test_utilio_prepare_helpers(self):
         prepared = prepare_arguments(None)
