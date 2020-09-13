@@ -671,6 +671,13 @@ list exists with the name of packages to be part of the releng process:
             action: the package-specific invoked
         """
 
+        # always register optional flags in script environment
+        script_env['RELENG_DEVMODE'] = None
+        script_env['RELENG_LOCALSRCS'] = None
+        script_env['RELENG_REBUILD'] = None
+        script_env['RELENG_RECONFIGURE'] = None
+        script_env['RELENG_REINSTALL'] = None
+
         # global variables
         for env in (os.environ, script_env):
             env['BUILD_DIR'] = self.opts.build_dir
