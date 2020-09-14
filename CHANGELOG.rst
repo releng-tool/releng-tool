@@ -1,3 +1,14 @@
+master
+------
+
+- always register optional flags inside scripts (allowing developers to use
+  flags like ``RELENG_RECONFIGURE`` without needing to check environment
+  variables)
+- introduce ``LIBTOOL_GIT_CONFIG`` for package git-specific configurations
+- namespace moved from ``releng`` to ``releng_tool`` (``releng`` deprecated for
+  an interim)
+- post-processing script ``post.py`` has been dropped
+
 0.5 (2020-09-07)
 ----------------
 
@@ -17,7 +28,7 @@
 0.3 (2019-10-19)
 ----------------
 
-- allow packages to configure to ignore cache while in development mode 
+- allow packages to configure to ignore cache while in development mode
 - allow packages to configure for no-extraction for sources
 - fixed default interpreter detection for python packages
 - fixed fetching from mercurial sources
