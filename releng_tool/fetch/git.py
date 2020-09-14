@@ -202,7 +202,6 @@ def sync_git_configuration(git_dir, opts):
     """
 
     cache_dir = opts.cache_dir
-    config = opts._git_config
     site = opts.site
 
     # silently try to add origin first, to lazily handle a missing case
@@ -215,10 +214,11 @@ def sync_git_configuration(git_dir, opts):
         return False
 
     # apply repository-specific configurations
-    for key, val in config.items():
-        if not GIT.execute([git_dir, 'config', key, val], cwd=cache_dir):
-            err('unable to apply configuration entry "{}" with value "{}"',
-                key, val)
-            return False
+    if opts._git_config:
+        for key, val in opts._git_config.items():
+            if not GIT.execute([git_dir, 'config', key, val], cwd=cache_dir):
+                err('unable to apply configuration entry "{}" with value "{}"',
+                    key, val)
+                return False
 
     return True
