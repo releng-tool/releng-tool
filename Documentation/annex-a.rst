@@ -89,6 +89,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_EXTOPT = {'FOO': 'BAR'}
    LIBFOO_EXTRACT_TYPE = 'ext-<extraction-extension>'
    LIBFOO_FIXED_JOBS = int # >= 1
+   LIBFOO_GIT_CONFIG = {'FOO': 'BAR'}
    LIBFOO_GIT_DEPTH = int # >= 0
    LIBFOO_GIT_REFSPECS = ['<refspec>'] # e.g. pull
    LIBFOO_INSTALL_DEFS = {'FOO': 'BAR'}

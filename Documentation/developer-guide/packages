@@ -340,6 +340,21 @@ that cannot support a large or any parallel build environment.
 
    LIBFOO_FIXED_JOBS = 1
 
+LIBFOO_GIT_CONFIG
+^^^^^^^^^^^^^^^^^
+.. |git-config| replace:: ``git config``
+
+Apply additional repository-specific Git configuration settings (|git-config|_)
+after a Git repository cache has been initialized. By default, no
+repository-specific configurations are introduced (i.e. all Git calls will use
+the global configuration set).
+
+.. code-block:: python
+
+   LIBFOO_GIT_CONFIG = {
+      'core.example': 'value',
+   }
+
 LIBFOO_GIT_DEPTH
 ^^^^^^^^^^^^^^^^
 .. |--depth| replace:: ``--depth``
@@ -548,3 +563,4 @@ See also `script helpers`_ for helper functions/variables available for use.
 .. include:: developer-guide/packages-type-python
 
 .. _--depth: https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---depthltdepthgt
+.. _git-config: https://git-scm.com/docs/git-config
