@@ -43,7 +43,6 @@ def fetch(opts):
     cache_dir = opts.cache_dir
     name = opts.name
     revision = opts.revision
-    site = opts.site
 
     if not GIT.exists():
         err('unable to fetch package; git is not installed')
@@ -54,8 +53,8 @@ def fetch(opts):
     # check if we have the target revision; if so, full stop
     if os.path.isdir(cache_dir) and not opts.ignore_cache:
         if revision_exists(git_dir, revision) == GitExistsType.EXISTS:
-            # ensure origin is properly configured
-            if not sync_origin(git_dir, site, cache_dir):
+            # ensure configuration is properly synchronized
+            if not sync_git_configuration(git_dir, opts):
                 return None
 
             return cache_dir
@@ -94,8 +93,8 @@ def fetch(opts):
             err('unable to initialize bare git repository')
             return None
 
-    # ensure origin is properly configured
-    if not sync_origin(git_dir, site, cache_dir):
+    # ensure configuration is properly synchronized
+    if not sync_git_configuration(git_dir, opts):
         return None
 
     log('fetching most recent sources')
@@ -181,22 +180,30 @@ def revision_exists(git_dir, revision):
 
     return GitExistsType.EXISTS
 
-def sync_origin(git_dir, site, cache_dir):
+def sync_git_configuration(git_dir, opts):
     """
-    ensure origin is properly configured
+    ensure the git configuration is properly synchronized with this repository
 
-    Ensures the configured site is set as the origin of the repository. This is
-    to help handle scenarios where a package's site has changed while content
-    is already cached.
+    This call ensures that various Git configuration options are properly
+    synchronized with the cached Git repository. This includes:
+
+    - Ensuring the configured site is set as the origin of the repository. This
+       is to help handle scenarios where a package's site has changed while
+       content is already cached.
+    - Ensure various `git config` options are set, if specific repository
+       options need to be set (e.g. overriding `core.autocrlf`).
 
     Args:
         git_dir: the Git directory
-        site: the site
-        cache_dir: the cache
+        opts: fetch options
 
     Returns:
-        ``True`` if the revision exists; ``False`` otherwise
+        ``True`` if the configuration has been synchronized; ``False`` otherwise
     """
+
+    cache_dir = opts.cache_dir
+    config = opts._git_config
+    site = opts.site
 
     # silently try to add origin first, to lazily handle a missing case
     GIT.execute([git_dir, 'remote', 'add', 'origin', site],
@@ -206,5 +213,12 @@ def sync_origin(git_dir, site, cache_dir):
             cwd=cache_dir):
         err('unable to ensure origin is set on repository cache')
         return False
+
+    # apply repository-specific configurations
+    for key, val in config.items():
+        if not GIT.execute([git_dir, 'config', key, val], cwd=cache_dir):
+            err('unable to apply configuration entry "{}" with value "{}"',
+                key, val)
+            return False
 
     return True

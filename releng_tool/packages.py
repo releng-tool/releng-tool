@@ -414,6 +414,10 @@ class RelengPackageManager:
 
             # ##################################################################
 
+            # git configuration options for a repository
+            pkg_git_config = self._fetch(
+                RPK_GIT_CONFIG, PkgKeyType.DICT_STR_STR)
+
             # git-depth
             pkg_git_depth = self._fetch(
                 RPK_GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE)
@@ -535,6 +539,7 @@ class RelengPackageManager:
         pkg.ext_modifiers = pkg_ext_modifiers
         pkg.extract_type = pkg_extract_type
         pkg.fixed_jobs = pkg_fixed_jobs
+        pkg.git_config = pkg_git_config
         pkg.git_depth = pkg_git_depth
         pkg.git_refspecs = pkg_git_refspecs
         pkg.has_devmode_option = pkg_has_devmode_option
@@ -671,6 +676,7 @@ class RelengPackage:
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
         fixed_jobs: fixed job count for this specific package
+        git_config: git config options to apply (if applicable)
         git_depth: git fetch depth (if applicable)
         git_refspecs: additional git refspecs to fetch (if applicable)
         has_devmode_option: whether or not the package has a devmode revision
@@ -746,6 +752,7 @@ class RelengPackage:
         # (package type - autotools)
         self.autotools_autoreconf = None
         # (other - git)
+        self.git_config = None
         self.git_depth = None
         self.git_refspecs = None
         # (other - python)
