@@ -260,13 +260,13 @@ example, import a specific function:
 
 .. code-block:: python
 
-    from releng import releng_execute
+    from releng_tool import releng_execute
 
 Or, if desired, all helper methods can be imported at once:
 
 .. code-block:: python
 
-    from releng import *
+    from releng_tool import *
 
 vcs ignore
 ~~~~~~~~~~

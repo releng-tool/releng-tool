@@ -113,7 +113,7 @@ script helpers
 --------------
 
 Functions available to scripts invoked by releng-tool or importable via
-``from releng import *``:
+``from releng_tool import *``:
 
 .. code-block:: python
 

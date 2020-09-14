@@ -15,7 +15,7 @@ To verify the package has been installed the following command can be used:
 
    releng-tool --version
     (or)
-   python -m releng --version
+   python -m releng_tool --version
 
 quick-start
 -----------
@@ -112,7 +112,7 @@ Open a Windows command prompt and invoke the following:
 .. code-block:: shell
 
    > python -m pip install releng-tool
-   > python -m releng --version
+   > python -m releng_tool --version
    releng-tool <version>
 
 development
