@@ -22,7 +22,7 @@ except ImportError:
     from urlparse import urlparse
 
 #: default strip-count value for packages
-DEFAULT_STRIP_COUNT=1
+DEFAULT_STRIP_COUNT = 1
 
 class RelengPackageManager:
     """
