@@ -21,14 +21,14 @@ ASSETS_DIR = 'assets'
 
 class TestUtilIo(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         base_dir = os.path.dirname(os.path.realpath(__file__))
-        self.assets_dir = os.path.join(base_dir, ASSETS_DIR)
+        cls.assets_dir = os.path.join(base_dir, ASSETS_DIR)
 
-        def assertExists(self, path, *args):
-            self.assertTrue(path_exists(path, *args),
+        def assertExists(cls, path, *args):
+            cls.assertTrue(path_exists(path, *args),
                 'missing file: ' + os.path.join(path, *args))
-        self.assertExists = assertExists
+        cls.assertExists = assertExists
 
     def test_utilio_copy(self):
         check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')

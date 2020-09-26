@@ -14,9 +14,9 @@ SAMPLES_DIR = 'hash-samples'
 
 class TestUtilHash(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         base_dir = os.path.dirname(os.path.realpath(__file__))
-        self.samples_dir = os.path.join(base_dir, ASSETS_DIR, SAMPLES_DIR)
+        cls.samples_dir = os.path.join(base_dir, ASSETS_DIR, SAMPLES_DIR)
 
     def test_utilhash_loading(self):
         samples = self.samples_dir
