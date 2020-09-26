@@ -525,7 +525,7 @@ of the releng process:
 
     {}
         {} = ['liba', 'libb', 'libc']""".format(
-            self.opts.conf_point, CONF_KEY_PKGS))
+                self.opts.conf_point, CONF_KEY_PKGS))
         elif not pkg_names:
             err('no defined packages')
             err("""\
@@ -534,7 +534,7 @@ list exists with the name of packages to be part of the releng process:
 
     {}
         {} = ['liba', 'libb', 'libc']""".format(
-            self.opts.conf_point, CONF_KEY_PKGS))
+                self.opts.conf_point, CONF_KEY_PKGS))
 
         return pkg_names
 
