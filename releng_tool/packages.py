@@ -114,7 +114,7 @@ class RelengPackageManager:
                             'adding implicitly defined package: {}'.format(dep))
                         names_left.append(dep)
 
-                    if not pkg in final_deps:
+                    if pkg not in final_deps:
                         final_deps[pkg] = []
                     final_deps[pkg].append(dep)
                 else:

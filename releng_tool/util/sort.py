@@ -76,7 +76,7 @@ class TopologicalSorter:
             ``True``, if the sorting was successful; ``False``, if a cyclic
                 graph has been detected
         """
-        if not obj in self._state:
+        if obj not in self._state:
             self._state[obj] = ''
         if self._state[obj] == 'P':
             return True
