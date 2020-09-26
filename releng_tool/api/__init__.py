@@ -468,7 +468,7 @@ class RelengPackageExtensionInterface(RelengExtensionInterface):
         """
         return False
 
-    def configure(self, opts):
+    def configure(self, name, opts):
         """
         handle a custom configure operation
 
