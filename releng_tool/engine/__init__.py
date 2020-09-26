@@ -638,6 +638,14 @@ list exists with the name of packages to be part of the releng process:
             when processing the post-processing script
         """
         script, script_exists = opt_file(self.opts.post_point)
+        
+        # TODO remove deprecated configuration load in (at maximum) v1.0
+        if not script_exists:
+            script = os.path.join(self.opts.root_dir, 'post.py')
+            if os.path.isfile(script):
+                warn('using deprecated post-processing file post.py -- switch '
+                     'to releng-post for future projects')
+                script_exists = True
 
         if script_exists:
             verbose('performing post-processing...')
