@@ -24,7 +24,7 @@ from ..util.io import path_remove
 from ..util.io import run_script
 from ..util.io import touch
 from ..util.log import *
-from ..util.platform import exit as releng_exit
+from ..util.platform import platform_exit
 from ..util.string import expand
 from ..util.string import interpret_dictionary_strings
 from ..util.string import interpret_string
@@ -745,14 +745,14 @@ list exists with the name of packages to be part of the releng process:
         """
         opts = self.opts
         configured = False
-        err = False
+        err_flag = False
 
         state = process_file_flag(opts.devmode, opts.ff_devmode)
         if state == FileFlag.CONFIGURED:
             success('configured root for development mode')
             configured = True
         elif state == FileFlag.NOT_CONFIGURED:
-            err = True
+            err_flag = True
         opts.devmode = (state == FileFlag.EXISTS)
         if opts.devmode:
             verbose('development mode enabled')
@@ -762,12 +762,12 @@ list exists with the name of packages to be part of the releng process:
             success('configured root for local-sources mode')
             configured = True
         elif state == FileFlag.NOT_CONFIGURED:
-            err = True
+            err_flag = True
         opts.local_srcs = (state == FileFlag.EXISTS)
         if opts.local_srcs:
             verbose('local-sources mode enabled')
 
-        if err:
+        if err_flag:
             return False
         elif configured:
             return True

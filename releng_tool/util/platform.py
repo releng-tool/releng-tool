@@ -4,7 +4,7 @@
 from .log import *
 import sys
 
-def exit(msg=None, code=None):
+def platform_exit(msg=None, code=None):
     """
     exit out of the releng-tool process
 

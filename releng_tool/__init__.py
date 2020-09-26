@@ -37,6 +37,6 @@ from .util.log import note as note
 from .util.log import success as success
 from .util.log import verbose as verbose
 from .util.log import warn as warn
-from .util.platform import exit as releng_exit
+from .util.platform import platform_exit as releng_exit
 from .util.string import expand as releng_expand
 from os.path import join as releng_join

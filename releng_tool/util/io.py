@@ -39,7 +39,7 @@ class FailedToPrepareWorkingDirectoryError(Exception):
     """
     pass
 
-def ensure_dir_exists(dir, quiet=False):
+def ensure_dir_exists(dir_, quiet=False):
     """
     ensure the provided directory exists
 
@@ -59,7 +59,7 @@ def ensure_dir_exists(dir, quiet=False):
             print('directory was not created')
 
     Args:
-        dir: the directory
+        dir_: the directory
         quiet (optional): whether or not to suppress output (defaults to
             ``False``)
 
@@ -68,11 +68,11 @@ def ensure_dir_exists(dir, quiet=False):
         be created
     """
     try:
-        os.makedirs(dir)
+        os.makedirs(dir_)
     except OSError as e:
         if e.errno != errno.EEXIST:
             if not quiet:
-                err('unable to create directory: ' + dir)
+                err('unable to create directory: ' + dir_)
                 err('    {}'.format(e))
             return False
     return True
@@ -219,7 +219,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
     return success
 
 @contextmanager
-def generate_temp_dir(dir=None):
+def generate_temp_dir(dir_=None):
     """
     generate a context-supported temporary directory
 
@@ -237,28 +237,28 @@ def generate_temp_dir(dir=None):
             print(dir)
 
     Args:
-        dir (optional): the directory to create the temporary directory in
+        dir_ (optional): the directory to create the temporary directory in
 
     Raises:
         FailedToPrepareBaseDirectoryError: the base directory does not exist and
             could not be created
     """
-    if dir and not ensure_dir_exists(dir):
-        raise FailedToPrepareBaseDirectoryError(dir)
+    if dir_ and not ensure_dir_exists(dir_):
+        raise FailedToPrepareBaseDirectoryError(dir_)
 
-    dir = tempfile.mkdtemp(prefix='.releng-tmp-', dir=dir)
+    dir_ = tempfile.mkdtemp(prefix='.releng-tmp-', dir=dir_)
     try:
-        yield dir
+        yield dir_
     finally:
         try:
-            path_remove(dir)
+            path_remove(dir_)
         except OSError as e:
             if e.errno != errno.ENOENT:
-                warn('unable to cleanup temporary directory: ' + dir)
+                warn('unable to cleanup temporary directory: ' + dir_)
                 warn('    {}'.format(e))
 
 @contextmanager
-def interim_working_dir(dir):
+def interim_working_dir(dir_):
     """
     move into a context-supported working directory
 
@@ -278,7 +278,7 @@ def interim_working_dir(dir):
         # invoked in original working directory
 
     Args:
-        dir: the target working directory
+        dir_: the target working directory
 
     Raises:
         FailedToPrepareWorkingDirectoryError: the working directory does not
@@ -286,12 +286,12 @@ def interim_working_dir(dir):
     """
     owd = os.getcwd()
 
-    if not ensure_dir_exists(dir):
-        raise FailedToPrepareWorkingDirectoryError(dir)
+    if not ensure_dir_exists(dir_):
+        raise FailedToPrepareWorkingDirectoryError(dir_)
 
-    os.chdir(dir)
+    os.chdir(dir_)
     try:
-        yield dir
+        yield dir_
     finally:
         try:
             os.chdir(owd)
@@ -649,7 +649,7 @@ def path_remove(path, quiet=False):
 
     return True
 
-def _path_remove_dir(dir):
+def _path_remove_dir(dir_):
     """
     remove the provided directory (recursive)
 
@@ -663,7 +663,7 @@ def _path_remove_dir(dir):
     permissions setup during a build process).
 
     Args:
-        dir: the directory to remove
+        dir_: the directory to remove
 
     Raises:
         OSError: if a path could not be removed
@@ -672,23 +672,23 @@ def _path_remove_dir(dir):
     # ensure a caller has read/write access before hand to prepare for removal
     # (e.g. if marked as read-only) and ensure contents can be fetched as well
     try:
-        st = os.stat(dir)
+        st = os.stat(dir_)
         if not (st.st_mode & stat.S_IRUSR) or not (st.st_mode & stat.S_IWUSR):
-            os.chmod(dir, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
+            os.chmod(dir_, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
     except:
         pass
 
     # remove directory contents (if any)
-    entries = os.listdir(dir)
+    entries = os.listdir(dir_)
     for entry in entries:
-        path = os.path.join(dir, entry)
+        path = os.path.join(dir_, entry)
         if os.path.isdir(path) and not os.path.islink(path):
             _path_remove_dir(path)
         else:
             _path_remove_file(path)
 
     # remove directory
-    os.rmdir(dir)
+    os.rmdir(dir_)
 
 def _path_remove_file(path):
     """
@@ -825,7 +825,7 @@ def prepend_shebang_interpreter(args):
         pass
     return args
 
-def run_script(script, globals, subject=None):
+def run_script(script, globals_, subject=None):
     """
     execute the provided script and provide the resulting globals module
 
@@ -842,14 +842,14 @@ def run_script(script, globals, subject=None):
 
     Args:
         script: the script
-        globals: dictionary to pre-populate script's globals
+        globals_: dictionary to pre-populate script's globals
         subject (optional): subject value to enhance a final error message
 
     Returns:
         resulting globals module; ``None`` if an execution error occurs
     """
     try:
-        result = run_path(script, init_globals=globals)
+        result = run_path(script, init_globals=globals_)
     except Exception as e:
         err(traceback.format_exc())
         err('error running {}{}script: {}'.format(

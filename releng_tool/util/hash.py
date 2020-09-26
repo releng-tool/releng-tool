@@ -176,9 +176,9 @@ Please correct the following hash file:
             return HashResult.EMPTY
 
     hash_catalog = {}
-    for type, hash, asset in hash_info:
-        types = hash_catalog.setdefault(asset,{})
-        types.setdefault(type,[]).append(hash.lower())
+    for type_, hash_, asset in hash_info:
+        types = hash_catalog.setdefault(asset, {})
+        types.setdefault(type_, []).append(hash_.lower())
 
     for asset, type_hashes in hash_catalog.items():
         type_hashes.keys()
@@ -232,8 +232,8 @@ Ensure the hash file correctly names an expected file.
                         warn('hash mismatch detected: ' + asset)
                     else:
                         provided = ''
-                        for hash in hashes:
-                            provided += '\n     Provided: {}'.format(hash)
+                        for hash_ in hashes:
+                            provided += '\n     Provided: {}'.format(hash_)
 
                         err("""hash mismatch detected\
 
@@ -244,7 +244,7 @@ Ensure the hash file correctly names an expected file.
 
     return HashResult.VERIFIED
 
-def _get_hasher(type):
+def _get_hasher(type_):
     """
     obtain a hasher instance from the provided type
 
@@ -253,13 +253,13 @@ def _get_hasher(type):
     that a hasher cannot be found, this method will return ``None``.
 
     Args:
-        type: the type of hash
+        type_: the type of hash
 
     Returns:
         the hasher instance; ``None`` if the hash type is not supported
     """
-    type = type.lower()
-    func = getattr(hashlib, type, None)
+    type_ = type_.lower()
+    func = getattr(hashlib, type_, None)
     if func:
         return func()
     return None

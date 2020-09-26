@@ -34,24 +34,24 @@ class TestUtilSort(unittest.TestCase):
         c.children.append(d)
         d.children.append(e)
 
-        sorted = self.sorter.sort(e)
-        self.assertEqual(sorted, [e])
+        sorted_ = self.sorter.sort(e)
+        self.assertEqual(sorted_, [e])
         self.sorter.reset()
 
-        sorted = self.sorter.sort(c)
-        self.assertEqual(sorted, [e, d, c])
+        sorted_ = self.sorter.sort(c)
+        self.assertEqual(sorted_, [e, d, c])
         self.sorter.reset()
 
-        sorted = self.sorter.sort(a)
-        self.assertEqual(sorted, [e, d, c, b, a])
+        sorted_ = self.sorter.sort(a)
+        self.assertEqual(sorted_, [e, d, c, b, a])
         self.sorter.reset()
 
         self.sorter.sort(e)
         self.sorter.sort(b)
         self.sorter.sort(c)
         self.sorter.sort(d)
-        sorted = self.sorter.sort(e)
-        self.assertEqual(sorted, [e, d, c, b])
+        sorted_ = self.sorter.sort(e)
+        self.assertEqual(sorted_, [e, d, c, b])
 
     def test_utilsort_topologicalsorter_ordering(self):
         """
@@ -64,26 +64,26 @@ class TestUtilSort(unittest.TestCase):
 
         self.sorter.sort(a)
         self.sorter.sort(b)
-        sorted = self.sorter.sort(c)
-        self.assertEqual(sorted, [a, b, c])
+        sorted_ = self.sorter.sort(c)
+        self.assertEqual(sorted_, [a, b, c])
         self.sorter.reset()
 
         self.sorter.sort(b)
         self.sorter.sort(a)
-        sorted = self.sorter.sort(c)
-        self.assertEqual(sorted, [b, a, c])
+        sorted_ = self.sorter.sort(c)
+        self.assertEqual(sorted_, [b, a, c])
         self.sorter.reset()
 
         self.sorter.sort(c)
         self.sorter.sort(a)
-        sorted = self.sorter.sort(b)
-        self.assertEqual(sorted, [c, a, b])
+        sorted_ = self.sorter.sort(b)
+        self.assertEqual(sorted_, [c, a, b])
         self.sorter.reset()
 
         self.sorter.sort(c)
         self.sorter.sort(b)
-        sorted = self.sorter.sort(a)
-        self.assertEqual(sorted, [c, b, a])
+        sorted_ = self.sorter.sort(a)
+        self.assertEqual(sorted_, [c, b, a])
 
     def test_utilsort_topologicalsorter_multiple(self):
         """
@@ -106,8 +106,8 @@ class TestUtilSort(unittest.TestCase):
         d.children.append(f)
         d.children.append(g)
 
-        sorted = self.sorter.sort(a)
-        self.assertEqual(sorted, [b, e, f, g, d, c, a])
+        sorted_ = self.sorter.sort(a)
+        self.assertEqual(sorted_, [b, e, f, g, d, c, a])
 
     def test_utilsort_topologicalsorter_complex(self):
         """

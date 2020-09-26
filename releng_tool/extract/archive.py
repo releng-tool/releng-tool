@@ -114,8 +114,8 @@ def extract(opts):
             is_extractable = True
 
             try:
-                with ZipFile(cache_file, 'r') as zip:
-                    for member in zip.namelist():
+                with ZipFile(cache_file, 'r') as zip_:
+                    for member in zip_.namelist():
                         # strip members from package defined count
                         member_s = member
                         if strip_count > 0:
@@ -131,7 +131,7 @@ def extract(opts):
                         if not os.path.basename(member):
                             os.mkdir(dest)
                         else:
-                            with zip.open(member) as src, open(dest, 'wb') as f:
+                            with zip_.open(member) as src, open(dest, 'wb') as f:
                                 shutil.copyfileobj(src, f)
 
             except Exception as e:

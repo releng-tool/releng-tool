@@ -131,18 +131,18 @@ class RelengPackageManager:
         debug('sorting packages...')
         def fetch_deps(pkg):
             return pkg.deps
-        sorted = []
         sorter = TopologicalSorter(fetch_deps)
+        sorted_pkgs = []
         for pkg in pkgs.values():
-            sorted = sorter.sort(pkg)
+            sorted_pkgs = sorter.sort(pkg)
             if not sorted:
                 err('cyclic package dependency detected: {}'.format(name))
                 return None
         debug('sorted packages)')
-        for pkg in sorted:
+        for pkg in sorted_pkgs:
             debug(' {}'.format(pkg.name))
 
-        return sorted
+        return sorted_pkgs
 
     def load_package(self, name, script):
         """
@@ -777,7 +777,7 @@ class RelengPackage:
                 self.version,
                 )
 
-def pkg_key(pkg, type):
+def pkg_key(pkg, type_):
     """
     generate a package key for a given type string
 
@@ -790,7 +790,7 @@ def pkg_key(pkg, type):
 
     Args:
         pkg: the package name
-        type: the package key type
+        type_: the package key type
 
     Returns:
         the completed package key
@@ -798,7 +798,7 @@ def pkg_key(pkg, type):
     clean = pkg
     for c in [' ', '*', '-', '.', ':', '?', '|']:
         clean = clean.replace(c, '_')
-    return '{}_{}'.format(clean.upper(), type)
+    return '{}_{}'.format(clean.upper(), type_)
 
 class PkgKeyType(Enum):
     """
