@@ -162,7 +162,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
         if sys.platform != 'win32':
             args = prepend_shebang_interpreter(args)
 
-        verbose('invoking: ' + str(args).replace('{','{{').replace('}','}}'))
+        verbose('invoking: ' + str(args).replace('{', '{{').replace('}', '}}'))
         try:
             # check if this execution should poll (for carriage returns and new
             # lines); note if quiet mode is enabled, do not attempt to poll
@@ -183,7 +183,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
                 line = bytearray()
                 while True:
                     c = proc.stdout.read(1)
-                    if not c and proc.poll() != None:
+                    if not c and proc.poll() is not None:
                         break
                     line += c
                     if c == b'\r' or c == b'\n':
