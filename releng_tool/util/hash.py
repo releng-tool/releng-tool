@@ -221,7 +221,6 @@ Ensure the hash file correctly names an expected file.
          File: {}""".format(hash_file, asset))
             return HashResult.MISSING_LISTED
 
-        has_match = True
         for hash_type, hasher in hashers.items():
             debug('calculated-hash: {} {}:{}'.format(asset, hash_type, hash))
             digest = hasher.hexdigest()

@@ -510,7 +510,6 @@ def path_move(src, dst, quiet=False, critical=True):
         SystemExit: if the copy operation fails with ``critical=True``
     """
     success = True
-    errmsg = None
 
     if src == dst:
         return True

@@ -20,7 +20,6 @@ from ..util.io import path_remove
 from ..util.log import *
 import os
 import shutil
-import sys
 
 def stage(engine, pkg):
     """

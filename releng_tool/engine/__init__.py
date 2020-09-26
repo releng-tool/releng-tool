@@ -3,7 +3,6 @@
 
 from .. import __version__ as releng_version
 from ..defs import *
-from ..opts import RelengEngineOptions
 from ..packages import RelengPackageManager
 from ..registry import RelengRegistry
 from ..util.env import extend_script_env
@@ -39,10 +38,8 @@ from .patch import stage as patch_stage
 from .post import stage as post_stage
 from collections import OrderedDict
 from datetime import datetime
-from enum import Enum
 from shutil import copyfileobj
 import os
-import sys
 
 class RelengEngine:
     """
@@ -168,7 +165,6 @@ in the working directory or the provided root directory:
                         path_remove(pkg.build_output_dir)
                         return True
                 assert False # should not reach here
-                return True
 
             # ensure all package sources are acquired first
             for pkg in pkgs:

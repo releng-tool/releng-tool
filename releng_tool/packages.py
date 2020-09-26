@@ -298,7 +298,6 @@ class RelengPackageManager:
                     allow_expand=True, expand_extra=expand_extra)
 
             # site
-            pkg_site = None
             if opts.sites_override and name in opts.sites_override:
                 # Site overriding is permitted to help in scenarios where a builder
                 # is unable to acquire a package's source from the defined site.
