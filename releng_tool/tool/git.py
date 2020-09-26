@@ -30,5 +30,3 @@ GIT_EXTEND_ENV = {
 #: git host tool helper
 GIT = RelengTool(GIT_COMMAND,
     env_sanitize=GIT_SANITIZE_ENV_KEYS, env_include=GIT_EXTEND_ENV)
-
-
