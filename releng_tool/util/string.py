@@ -47,7 +47,7 @@ def expand(obj, kv=None):
     if isinstance(obj, basestring):
         try:
             idx = obj.index('$')
-        except:
+        except ValueError:
             return obj
 
         if kv:
@@ -73,7 +73,7 @@ def expand(obj, kv=None):
                         if var in final_kv:
                             rv += final_kv[var]
                         idx = eidx
-                    except:
+                    except ValueError:
                         rv += obj[idx:]
                         break
                 else:

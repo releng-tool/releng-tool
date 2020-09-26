@@ -14,7 +14,7 @@ class RelengSeedExtension():
         try:
             open(opts.cache_file, 'w').close()
             return opts.cache_file
-        except:
+        except IOError:
             return None
 
     def extract(self, name, opts):

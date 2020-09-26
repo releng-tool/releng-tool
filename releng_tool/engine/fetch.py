@@ -220,7 +220,7 @@ verified. Ensure the hash file defines an entry for the expected cache file:
 
                 try:
                     shutil.move(interim_cache_file, pkg.cache_file)
-                except:
+                except shutil.Error:
                     err('invalid fetch operation (internal error; fetch mode '
                         '"{}" has provided a missing cache file)'.format(
                             pkg.vcs_type))
