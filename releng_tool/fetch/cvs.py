@@ -2,8 +2,8 @@
 # Copyright 2018 releng-tool.
 
 from ..tool.cvs import *
-from ..util.io import ensureDirectoryExists
-from ..util.io import interpretStemExtension
+from ..util.io import ensure_dir_exists
+from ..util.io import interpret_stem_extension
 from ..util.log import *
 import os
 import sys
@@ -31,7 +31,7 @@ def fetch(opts):
     work_dir = opts.work_dir
 
     cache_basename = os.path.basename(cache_file)
-    cache_stem, __ = interpretStemExtension(cache_basename)
+    cache_stem, __ = interpret_stem_extension(cache_basename)
 
     if not CVS.exists():
         err('unable to fetch package; cvs is not installed')
@@ -66,7 +66,7 @@ module to checkout. For example:
         return info
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
-    if not ensureDirectoryExists(cache_dir):
+    if not ensure_dir_exists(cache_dir):
         return None
 
     cvs_module_dir = os.path.join(work_dir, cache_stem)

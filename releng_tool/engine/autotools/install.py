@@ -6,7 +6,7 @@ from ...tool.make import *
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
 from ...util.log import *
-from ...util.string import expand as EXP
+from ...util.string import expand
 
 def install(opts):
     """
@@ -27,33 +27,33 @@ def install(opts):
         return False
 
     # definitions
-    autotoolsDefs = {
+    autotools_defs = {
     }
     if opts.install_defs:
-        autotoolsDefs.update(EXP(opts.install_defs))
+        autotools_defs.update(expand(opts.install_defs))
 
     # default options
-    autotoolsOpts = {
+    autotools_opts = {
     }
     if opts.install_opts:
-        autotoolsOpts.update(EXP(opts.install_opts))
+        autotools_opts.update(expand(opts.install_opts))
 
     # argument building
-    autotoolsArgs = [
+    autotools_args = [
     ]
 
     # If the provided package has not provided any installation options,
     # indicate that the install target will be run.
     if not opts.install_opts:
-        autotoolsArgs.append('install')
+        autotools_args.append('install')
 
-    autotoolsArgs.extend(prepare_definitions(autotoolsDefs))
-    autotoolsArgs.extend(prepare_arguments(autotoolsOpts))
+    autotools_args.extend(prepare_definitions(autotools_defs))
+    autotools_args.extend(prepare_arguments(autotools_opts))
 
     # install to each destination
-    env = EXP(opts.install_env)
+    env = expand(opts.install_env)
     for dest_dir in opts.dest_dirs:
-        if not MAKE.execute(['DESTDIR=' + dest_dir] + autotoolsArgs, env=env):
+        if not MAKE.execute(['DESTDIR=' + dest_dir] + autotools_args, env=env):
             err('failed to install autotools project: {}', opts.name)
             return False
 

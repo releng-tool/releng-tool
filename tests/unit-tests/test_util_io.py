@@ -3,15 +3,15 @@
 
 from collections import OrderedDict
 from releng_tool.util.io import execute
-from releng_tool.util.io import interpretStemExtension as ise
-from releng_tool.util.io import optFile
-from releng_tool.util.io import pathCopy
-from releng_tool.util.io import pathExists
-from releng_tool.util.io import pathMove
-from releng_tool.util.io import pathRemove
+from releng_tool.util.io import interpret_stem_extension as ise
+from releng_tool.util.io import opt_file
+from releng_tool.util.io import path_copy
+from releng_tool.util.io import path_exists
+from releng_tool.util.io import path_move
+from releng_tool.util.io import path_remove
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
-from releng_tool.util.io import prependShebangInterpreter as psi
+from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import touch
 from tests import RelengTestUtil
 import os
@@ -26,7 +26,7 @@ class TestUtilIo(unittest.TestCase):
         self.assets_dir = os.path.join(base_dir, ASSETS_DIR)
 
         def assertExists(self, path, *args):
-            self.assertTrue(pathExists(path, *args),
+            self.assertTrue(path_exists(path, *args),
                 'missing file: ' + os.path.join(path, *args))
         self.assertExists = assertExists
 
@@ -34,11 +34,11 @@ class TestUtilIo(unittest.TestCase):
         check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
         check_dir_02 = os.path.join(self.assets_dir, 'copy-check-02')
 
-        with RelengTestUtil.prepareWorkdir() as work_dir:
+        with RelengTestUtil.prepare_workdir() as work_dir:
             # (directories)
 
             # copy the first batch of assets into the working directory
-            result = pathCopy(check_dir_01, work_dir, critical=False)
+            result = path_copy(check_dir_01, work_dir, critical=False)
             self.assertTrue(result)
             self.assertExists(work_dir, 'test-file-a')
             self.assertExists(work_dir, 'test-file-b')
@@ -49,7 +49,7 @@ class TestUtilIo(unittest.TestCase):
             self.assertIsNone(cc1, cc1)
 
             # override the working directory with the second batch
-            result = pathCopy(check_dir_02, work_dir, critical=False)
+            result = path_copy(check_dir_02, work_dir, critical=False)
             self.assertTrue(result)
             self.assertExists(work_dir, 'test-file-a')
             self.assertExists(work_dir, 'test-file-b')
@@ -67,14 +67,14 @@ class TestUtilIo(unittest.TestCase):
             target_ow = os.path.join(sub_dir, 'test-file-a')
 
             # copy individual files (file to new directory)
-            result = pathCopy(copied_file_a, sub_dir, critical=False)
+            result = path_copy(copied_file_a, sub_dir, critical=False)
             self.assertTrue(result)
             self.assertExists(target_ow)
             cc3 = RelengTestUtil.compare(copied_file_a, target_ow)
             self.assertIsNone(cc3, cc3)
 
             # copy individual files (overwrite)
-            result = pathCopy(copied_file_b, target_ow, critical=False)
+            result = path_copy(copied_file_b, target_ow, critical=False)
             self.assertTrue(result)
             cc4 = RelengTestUtil.compare(copied_file_b, target_ow)
             self.assertIsNone(cc4, cc4)
@@ -123,7 +123,7 @@ class TestUtilIo(unittest.TestCase):
         self.assertEqual(ise(provided), expected)
 
     def test_utilio_move(self):
-        with RelengTestUtil.prepareWorkdir() as work_dir:
+        with RelengTestUtil.prepare_workdir() as work_dir:
             def _(*args):
                 return os.path.join(work_dir, *args)
 
@@ -151,7 +151,7 @@ class TestUtilIo(unittest.TestCase):
             # (simple file move)
             src = _('file1')
             dst = _('file7')
-            moved = pathMove(src, dst, critical=False)
+            moved = path_move(src, dst, critical=False)
             self.assertTrue(moved)
             self.assertFalse(os.path.isfile(src))
             self.assertTrue(os.path.isfile(dst))
@@ -159,7 +159,7 @@ class TestUtilIo(unittest.TestCase):
             # (another file move)
             src = _('dir4', 'dir5', 'dir6', 'file6')
             dst = _('dir9', 'dir10', 'file8')
-            moved = pathMove(src, dst, critical=False)
+            moved = path_move(src, dst, critical=False)
             self.assertTrue(moved)
             self.assertFalse(os.path.isfile(src))
             self.assertTrue(os.path.isfile(dst))
@@ -167,7 +167,7 @@ class TestUtilIo(unittest.TestCase):
             # (another file move)
             src = _('dir9', 'dir10', 'file8')
             dst = _('dir9', 'dir11', '')
-            moved = pathMove(src, dst, critical=False)
+            moved = path_move(src, dst, critical=False)
             self.assertTrue(moved)
             self.assertFalse(os.path.isfile(src))
             self.assertTrue(os.path.isfile(_('dir9', 'dir11', 'file8')))
@@ -175,7 +175,7 @@ class TestUtilIo(unittest.TestCase):
             # (overwriting file move)
             src = _('dir2', 'file2')
             dst = _('file7')
-            moved = pathMove(src, dst, critical=False)
+            moved = path_move(src, dst, critical=False)
             self.assertTrue(moved)
             self.assertFalse(os.path.isfile(src))
             self.assertTrue(os.path.isfile(dst))
@@ -184,7 +184,7 @@ class TestUtilIo(unittest.TestCase):
             src = _('file7')
             dst_part = _('dir4', 'file4')
             dst = _(dst_part, 'bad')
-            moved = pathMove(src, dst, quiet=True, critical=False)
+            moved = path_move(src, dst, quiet=True, critical=False)
             self.assertFalse(moved)
             self.assertTrue(os.path.isfile(src))
             self.assertTrue(os.path.isfile(dst_part))
@@ -192,7 +192,7 @@ class TestUtilIo(unittest.TestCase):
             # (bad directory move self container)
             src = _('dir2')
             dst = _('dir2', 'dir3')
-            moved = pathMove(src, dst, quiet=True, critical=False)
+            moved = path_move(src, dst, quiet=True, critical=False)
             self.assertFalse(moved)
             self.assertTrue(os.path.isdir(src))
             self.assertTrue(os.path.isdir(dst))
@@ -200,7 +200,7 @@ class TestUtilIo(unittest.TestCase):
             # (simple directory move)
             src = _('dir2', 'dir3')
             dst = _('dir4')
-            moved = pathMove(src, dst, critical=False)
+            moved = path_move(src, dst, critical=False)
             self.assertTrue(moved)
             self.assertFalse(os.path.isdir(src))
             self.assertFalse(os.path.isdir(_(dst, 'dir3')))
@@ -209,7 +209,7 @@ class TestUtilIo(unittest.TestCase):
             # (another directory move)
             src = _('dir4')
             dst = _('dir9', 'dir10')
-            moved = pathMove(src, dst, critical=False)
+            moved = path_move(src, dst, critical=False)
             self.assertTrue(moved)
             self.assertFalse(os.path.isdir(src))
             self.assertTrue(os.path.isdir(dst))
@@ -222,13 +222,13 @@ class TestUtilIo(unittest.TestCase):
             dst = _('file7')
             self.assertTrue(os.path.isdir(src))
             self.assertTrue(os.path.isfile(dst))
-            moved = pathMove(src, dst, quiet=True, critical=False)
+            moved = path_move(src, dst, quiet=True, critical=False)
             self.assertTrue(moved)
             self.assertFalse(os.path.isdir(src))
             self.assertTrue(os.path.isdir(dst))
 
     def test_utilio_optfile(self):
-        with RelengTestUtil.prepareWorkdir() as work_dir:
+        with RelengTestUtil.prepare_workdir() as work_dir:
             def _(*args):
                 return os.path.join(work_dir, *args)
 
@@ -245,23 +245,23 @@ class TestUtilIo(unittest.TestCase):
 
             # checks
             src = _('file1')
-            target, existence = optFile(src)
+            target, existence = opt_file(src)
             self.assertTrue(existence)
             self.assertEqual(target, src)
 
             src = _('file2')
             opt = _('file2.py')
-            target, existence = optFile(src)
+            target, existence = opt_file(src)
             self.assertTrue(existence)
             self.assertEqual(target, opt)
 
             src = _('file3')
-            target, existence = optFile(src)
+            target, existence = opt_file(src)
             self.assertTrue(existence)
             self.assertEqual(target, src)
 
             src = _('file4')
-            target, existence = optFile(src)
+            target, existence = opt_file(src)
             self.assertFalse(existence)
             self.assertEqual(target, src)
 
@@ -311,7 +311,7 @@ class TestUtilIo(unittest.TestCase):
         self.assertEqual(prepared, expected)
 
     def test_utilio_remove(self):
-        with RelengTestUtil.prepareWorkdir() as work_dir:
+        with RelengTestUtil.prepare_workdir() as work_dir:
             def _(*args):
                 return os.path.join(work_dir, *args)
 
@@ -337,13 +337,13 @@ class TestUtilIo(unittest.TestCase):
                     f.write(file)
 
             path = _('file7')
-            removed = pathRemove(path)
+            removed = path_remove(path)
             self.assertTrue(removed)
             self.assertFalse(os.path.isfile(path))
 
             container = _('dir2')
             path = _(container, 'file2')
-            removed = pathRemove(path)
+            removed = path_remove(path)
             self.assertTrue(removed)
             self.assertFalse(os.path.isfile(path))
             self.assertTrue(os.path.isdir(container))
@@ -352,7 +352,7 @@ class TestUtilIo(unittest.TestCase):
             container = _('dir2')
             path = _(container, 'dir3')
             file = _(path, 'file3')
-            removed = pathRemove(path)
+            removed = path_remove(path)
             self.assertTrue(removed)
             self.assertFalse(os.path.isdir(path))
             self.assertFalse(os.path.isfile(file))
@@ -364,7 +364,7 @@ class TestUtilIo(unittest.TestCase):
                 _(path, 'dir5', 'file5'),
                 _(path, 'dir5', 'dir6', 'file6'),
             ]
-            removed = pathRemove(path)
+            removed = path_remove(path)
             self.assertTrue(removed)
             self.assertFalse(os.path.isdir(path))
             for file in files:
@@ -372,7 +372,7 @@ class TestUtilIo(unittest.TestCase):
 
             # allow noop calls to be true
             path = _('missing')
-            removed = pathRemove(path)
+            removed = path_remove(path)
             self.assertTrue(removed)
 
     def test_utilio_shebang_interpreter(self):
@@ -405,7 +405,7 @@ class TestUtilIo(unittest.TestCase):
         self.assertEqual(psi(si06), [b'/usr/bin/env', b'python'] + E(si06))
 
     def test_utilio_touch(self):
-        with RelengTestUtil.prepareWorkdir() as work_dir:
+        with RelengTestUtil.prepare_workdir() as work_dir:
             test_file = os.path.join(work_dir, 'test-file')
 
             created = touch(test_file)

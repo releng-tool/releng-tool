@@ -2,7 +2,7 @@
 # Copyright 2018-2020 releng-tool
 
 from ...util.log import *
-from ...util.io import optFile
+from ...util.io import opt_file
 from ...util.io import run_script
 import os
 
@@ -29,7 +29,7 @@ def install(opts):
 
     install_script_filename = '{}-{}'.format(opts.name, INSTALL_SCRIPT)
     install_script = os.path.join(def_dir, install_script_filename)
-    install_script, install_script_exists = optFile(install_script)
+    install_script, install_script_exists = opt_file(install_script)
     if not install_script_exists:
         return True
 

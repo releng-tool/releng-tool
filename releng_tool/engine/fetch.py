@@ -3,20 +3,20 @@
 
 from ..api import RelengFetchOptions
 from ..defs import *
-from ..fetch.bzr import fetch as fetchBzr
-from ..fetch.cvs import fetch as fetchCvs
-from ..fetch.git import fetch as fetchGit
-from ..fetch.mercurial import fetch as fetchMercurial
-from ..fetch.scp import fetch as fetchScp
-from ..fetch.svn import fetch as fetchSvn
-from ..fetch.url import fetch as fetchUrl
-from ..util.api import replicatePackageAttribs
+from ..fetch.bzr import fetch as fetch_bzr
+from ..fetch.cvs import fetch as fetch_cvs
+from ..fetch.git import fetch as fetch_git
+from ..fetch.mercurial import fetch as fetch_mercurial
+from ..fetch.scp import fetch as fetch_scp
+from ..fetch.svn import fetch as fetch_svn
+from ..fetch.url import fetch as fetch_url
+from ..util.api import replicate_package_attribs
 from ..util.hash import HashResult
 from ..util.hash import verify as verify_hashes
-from ..util.io import ensureDirectoryExists
-from ..util.io import generateTempDir as tempDir
-from ..util.io import interimWorkingDirectory
-from ..util.io import pathRemove
+from ..util.io import ensure_dir_exists
+from ..util.io import generate_temp_dir
+from ..util.io import interim_working_dir
+from ..util.io import path_remove
 from ..util.log import *
 import os
 import shutil
@@ -62,7 +62,7 @@ local sources option to use the default process).
         perform_file_hash_check = True
 
     fetch_opts = RelengFetchOptions()
-    replicatePackageAttribs(fetch_opts, pkg)
+    replicate_package_attribs(fetch_opts, pkg)
     fetch_opts.cache_dir = pkg.cache_dir
     fetch_opts.ext = pkg.ext_modifiers
     fetch_opts.name = name
@@ -73,8 +73,8 @@ local sources option to use the default process).
 
     cache_filename = os.path.basename(pkg.cache_file)
     out_dir = engine.opts.out_dir
-    with tempDir(out_dir) as work_dir, tempDir(out_dir) as interim_cache_dir:
-        with interimWorkingDirectory(work_dir):
+    with generate_temp_dir(out_dir) as work_dir, generate_temp_dir(out_dir) as interim_cache_dir:
+        with interim_working_dir(work_dir):
             interim_cache_file = os.path.join(interim_cache_dir, cache_filename)
             fetch_opts.cache_file = interim_cache_file
             fetch_opts.work_dir = work_dir
@@ -95,7 +95,7 @@ local sources option to use the default process).
 
                 if os.path.exists(pkg.cache_file):
                     verbose('removing cache file (per configuration): ' + name)
-                    if not pathRemove(pkg.cache_file):
+                    if not path_remove(pkg.cache_file):
                         return False
 
             if os.path.exists(pkg.cache_file):
@@ -114,7 +114,7 @@ local sources option to use the default process).
                             warn('hash file for package is empty: ' + name)
                         return True # empty hash file; assuming ok
                     elif hr == HashResult.MISMATCH:
-                        if not pathRemove(pkg.cache_file):
+                        if not path_remove(pkg.cache_file):
                             return False
                     elif hr in (HashResult.BAD_FORMAT, HashResult.UNSUPPORTED):
                         return False
@@ -142,19 +142,19 @@ verified. Ensure the hash file defines an entry for the expected cache file:
                         pkg.vcs_type, opts)
                 fetcher = _
             elif pkg.vcs_type == VcsType.BZR:
-                fetcher = fetchBzr
+                fetcher = fetch_bzr
             elif pkg.vcs_type == VcsType.CVS:
-                fetcher = fetchCvs
+                fetcher = fetch_cvs
             elif pkg.vcs_type == VcsType.GIT:
-                fetcher = fetchGit
+                fetcher = fetch_git
             elif pkg.vcs_type == VcsType.HG:
-                fetcher = fetchMercurial
+                fetcher = fetch_mercurial
             elif pkg.vcs_type == VcsType.SCP:
-                fetcher = fetchScp
+                fetcher = fetch_scp
             elif pkg.vcs_type == VcsType.SVN:
-                fetcher = fetchSvn
+                fetcher = fetch_svn
             elif pkg.vcs_type == VcsType.URL:
-                fetcher = fetchUrl
+                fetcher = fetch_url
 
             if not fetcher:
                 err('fetch type is not implemented: {}'.format(pkg.vcs_type))
@@ -215,7 +215,7 @@ verified. Ensure the hash file defines an entry for the expected cache file:
                 debug('fetch successful; moving cache file')
 
                 # ensure the download directory exists
-                if not ensureDirectoryExists(engine.opts.dl_dir):
+                if not ensure_dir_exists(engine.opts.dl_dir):
                     return False
 
                 try:

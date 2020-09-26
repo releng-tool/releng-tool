@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 releng-tool
 
-from releng_tool.util.env import extendScriptEnv
+from releng_tool.util.env import extend_script_env
 import unittest
 
 class TestUtilEnv(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestUtilEnv(unittest.TestCase):
         env = {'a': 1}
 
         # can append new entries
-        extendScriptEnv(env, {'b': 2})
+        extend_script_env(env, {'b': 2})
         self.assertEqual(len(env.keys()), 2)
         self.assertIn('a', env)
         self.assertIn('b', env)
@@ -17,7 +17,7 @@ class TestUtilEnv(unittest.TestCase):
         self.assertEqual(env['b'], 2)
 
         # will override existing entries
-        extendScriptEnv(env, {'b': 3})
+        extend_script_env(env, {'b': 3})
         self.assertEqual(len(env.keys()), 2)
         self.assertIn('a', env)
         self.assertIn('b', env)
@@ -25,5 +25,5 @@ class TestUtilEnv(unittest.TestCase):
         self.assertEqual(env['b'], 3)
 
         # magic values are ignored
-        extendScriptEnv(env, {'__magic__': 4})
+        extend_script_env(env, {'__magic__': 4})
         self.assertEqual(len(env.keys()), 2)

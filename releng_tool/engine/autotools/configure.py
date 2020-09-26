@@ -6,7 +6,7 @@ from ...util.io import execute
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
 from ...util.log import *
-from ...util.string import expand as EXP
+from ...util.string import expand
 
 def configure(opts):
     """
@@ -35,27 +35,27 @@ def configure(opts):
             return False
 
     # definitions
-    autotoolsDefs = {
+    autotools_defs = {
         '--prefix': opts.prefix,
         '--exec-prefix': opts.prefix,
     }
     if opts.conf_defs:
-        autotoolsDefs.update(EXP(opts.conf_defs))
+        autotools_defs.update(expand(opts.conf_defs))
 
     # default options
-    autotoolsOpts = {
+    autotools_opts = {
     }
     if opts.conf_opts:
-        autotoolsOpts.update(EXP(opts.conf_opts))
+        autotools_opts.update(expand(opts.conf_opts))
 
     # argument building
-    autotoolsArgs = [
+    autotools_args = [
     ]
-    autotoolsArgs.extend(prepare_definitions(autotoolsDefs))
-    autotoolsArgs.extend(prepare_arguments(autotoolsOpts))
+    autotools_args.extend(prepare_definitions(autotools_defs))
+    autotools_args.extend(prepare_arguments(autotools_opts))
 
-    if not execute(['./configure'] + autotoolsArgs,
-            env_update=EXP(opts.conf_env), critical=False):
+    if not execute(['./configure'] + autotools_args,
+            env_update=expand(opts.conf_env), critical=False):
         err('failed to prepare autotools project (configure): {}', opts.name)
         return False
 

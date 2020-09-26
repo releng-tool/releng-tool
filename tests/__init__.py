@@ -2,7 +2,7 @@
 # Copyright 2018-2019 releng-tool
 
 from contextlib import contextmanager
-from releng_tool.util.io import generateTempDir as tempDir
+from releng_tool.util.io import generate_temp_dir
 from difflib import unified_diff
 from io import open
 
@@ -56,7 +56,7 @@ class RelengTestUtil:
 
     @staticmethod
     @contextmanager
-    def prepareWorkdir():
+    def prepare_workdir():
         """
         prepare a working directory for a test
 
@@ -68,5 +68,5 @@ class RelengTestUtil:
             the container directory
         """
 
-        with tempDir() as work_dir:
+        with generate_temp_dir() as work_dir:
             yield work_dir

@@ -2,7 +2,8 @@
 # Copyright 2018-2019 releng-tool
 
 from ..tool.tar import *
-from ..util.io import interpretStemExtension
+from ..util.io import execute
+from ..util.io import interpret_stem_extension
 from ..util.log import *
 from zipfile import ZipFile
 import os
@@ -42,7 +43,7 @@ def extract(opts):
     work_dir = opts.work_dir
 
     cache_basename = os.path.basename(cache_file)
-    __, cache_ext = interpretStemExtension(cache_basename)
+    __, cache_ext = interpret_stem_extension(cache_basename)
 
     is_extractable = False
     if cache_ext:

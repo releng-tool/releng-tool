@@ -3,14 +3,14 @@
 
 from ..api import RelengInstallOptions
 from ..defs import *
-from ..util.api import packageInstallTypeToApiType
-from ..util.api import replicatePackageAttribs
-from ..util.io import interimWorkingDirectory
+from ..util.api import package_install_type_to_api_type
+from ..util.api import replicate_package_attribs
+from ..util.io import interim_working_dir
 from ..util.log import *
-from .autotools.install import install as installAutotools
-from .cmake.install import install as installCmake
-from .python.install import install as installPython
-from .script.install import install as installScript
+from .autotools.install import install as install_autotools
+from .cmake.install import install as install_cmake
+from .python.install import install as install_python
+from .script.install import install as install_script
 import sys
 
 def stage(engine, pkg, script_env):
@@ -50,7 +50,7 @@ def stage(engine, pkg, script_env):
         dest_dirs = [engine.opts.target_dir]
 
     install_opts = RelengInstallOptions()
-    replicatePackageAttribs(install_opts, pkg)
+    replicate_package_attribs(install_opts, pkg)
     install_opts.build_dir = build_dir
     install_opts.build_output_dir = pkg.build_output_dir
     install_opts.cache_file = pkg.cache_file
@@ -63,7 +63,7 @@ def stage(engine, pkg, script_env):
     install_opts.install_defs = pkg.install_defs
     install_opts.install_env = pkg.install_env
     install_opts.install_opts = pkg.install_opts
-    install_opts.install_type = packageInstallTypeToApiType(pkg.install_type)
+    install_opts.install_type = package_install_type_to_api_type(pkg.install_type)
     install_opts.name = pkg.name
     install_opts.prefix = pkg.prefix
     install_opts.staging_dir = engine.opts.staging_dir
@@ -79,19 +79,19 @@ def stage(engine, pkg, script_env):
                 pkg.type, opts)
         installer = _
     elif pkg.type == PackageType.AUTOTOOLS:
-        installer = installAutotools
+        installer = install_autotools
     elif pkg.type == PackageType.CMAKE:
-        installer = installCmake
+        installer = install_cmake
     elif pkg.type == PackageType.PYTHON:
-        installer = installPython
+        installer = install_python
     elif pkg.type == PackageType.SCRIPT:
-        installer = installScript
+        installer = install_script
 
     if not installer:
         err('installer type is not implemented: {}'.format(pkg.type))
         return False
 
-    with interimWorkingDirectory(build_dir):
+    with interim_working_dir(build_dir):
         installed = installer(install_opts)
         if not installed:
             return False

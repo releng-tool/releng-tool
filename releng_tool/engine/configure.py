@@ -3,13 +3,13 @@
 
 from ..api import RelengConfigureOptions
 from ..defs import *
-from ..util.api import packageInstallTypeToApiType
-from ..util.api import replicatePackageAttribs
-from ..util.io import interimWorkingDirectory
+from ..util.api import package_install_type_to_api_type
+from ..util.api import replicate_package_attribs
+from ..util.io import interim_working_dir
 from ..util.log import *
-from .autotools.configure import configure as configureAutotools
-from .cmake.configure import configure as configureCmake
-from .script.configure import configure as configureScript
+from .autotools.configure import configure as configure_autotools
+from .cmake.configure import configure as configure_cmake
+from .script.configure import configure as configure_script
 import sys
 
 def stage(engine, pkg, script_env):
@@ -41,7 +41,7 @@ def stage(engine, pkg, script_env):
         build_dir = pkg.build_dir
 
     configure_opts = RelengConfigureOptions()
-    replicatePackageAttribs(configure_opts, pkg)
+    replicate_package_attribs(configure_opts, pkg)
     configure_opts.build_dir = build_dir
     configure_opts.build_output_dir = pkg.build_output_dir
     configure_opts.conf_defs = pkg.conf_defs
@@ -51,7 +51,7 @@ def stage(engine, pkg, script_env):
     configure_opts.env = script_env
     configure_opts.ext = pkg.ext_modifiers
     configure_opts.host_dir = engine.opts.host_dir
-    configure_opts.install_type = packageInstallTypeToApiType(pkg.install_type)
+    configure_opts.install_type = package_install_type_to_api_type(pkg.install_type)
     configure_opts.name = pkg.name
     configure_opts.prefix = pkg.prefix
     configure_opts.staging_dir = engine.opts.staging_dir
@@ -75,17 +75,17 @@ def stage(engine, pkg, script_env):
                 pkg.type, opts)
         configurer = _
     elif pkg.type == PackageType.AUTOTOOLS:
-        configurer = configureAutotools
+        configurer = configure_autotools
     elif pkg.type == PackageType.CMAKE:
-        configurer = configureCmake
+        configurer = configure_cmake
     elif pkg.type == PackageType.SCRIPT:
-        configurer = configureScript
+        configurer = configure_script
 
     if not configurer:
         err('configurer type is not implemented: {}'.format(pkg.type))
         return False
 
-    with interimWorkingDirectory(build_dir):
+    with interim_working_dir(build_dir):
         configured = configurer(configure_opts)
         if not configured:
             return False

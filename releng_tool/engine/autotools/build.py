@@ -5,7 +5,7 @@ from ...tool.make import *
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
 from ...util.log import *
-from ...util.string import expand as EXP
+from ...util.string import expand
 
 def build(opts):
     """
@@ -26,28 +26,28 @@ def build(opts):
         return False
 
     # definitions
-    autotoolsDefs = {
+    autotools_defs = {
     }
     if opts.build_defs:
-        autotoolsDefs.update(EXP(opts.build_defs))
+        autotools_defs.update(expand(opts.build_defs))
 
     # default options
-    autotoolsOpts = {
+    autotools_opts = {
     }
     if opts.build_opts:
-        autotoolsOpts.update(EXP(opts.build_opts))
+        autotools_opts.update(expand(opts.build_opts))
 
     # argument building
-    autotoolsArgs = [
+    autotools_args = [
     ]
-    autotoolsArgs.extend(prepare_definitions(autotoolsDefs))
-    autotoolsArgs.extend(prepare_arguments(autotoolsOpts))
+    autotools_args.extend(prepare_definitions(autotools_defs))
+    autotools_args.extend(prepare_arguments(autotools_opts))
 
     if opts.jobs > 1:
-        autotoolsArgs.append('--jobs')
-        autotoolsArgs.append(str(opts.jobs))
+        autotools_args.append('--jobs')
+        autotools_args.append(str(opts.jobs))
 
-    if not MAKE.execute(autotoolsArgs, env=EXP(opts.build_env)):
+    if not MAKE.execute(autotools_args, env=expand(opts.build_env)):
         err('failed to build autotools project: {}', opts.name)
         return False
 

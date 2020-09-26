@@ -4,7 +4,7 @@
 import os
 import types
 
-def extendScriptEnv(env, extra):
+def extend_script_env(env, extra):
     """
     extend a partially filtered environment (globals) for a run_path event
 
@@ -28,26 +28,26 @@ def extendScriptEnv(env, extra):
     Returns:
         the same environment passed in
     """
-    extraCopy = extra.copy()
+    extra_copy = extra.copy()
 
     for key, value in extra.items():
         # remove python magic objects (if any)
         if key.startswith('__') and key.endswith('__'):
-            extraCopy.pop(key)
+            extra_copy.pop(key)
         # remove imported built-in functions
         elif isinstance(value, types.BuiltinFunctionType):
-            extraCopy.pop(key)
+            extra_copy.pop(key)
         # remove imported functions
         elif isinstance(value, types.FunctionType):
-            extraCopy.pop(key)
+            extra_copy.pop(key)
         # remove imported modules
         elif isinstance(value, types.ModuleType):
-            extraCopy.pop(key)
+            extra_copy.pop(key)
 
-    env.update(extraCopy)
+    env.update(extra_copy)
     return env
 
-def setEnvValue(key, value):
+def set_env_value(key, value):
     """
     helper to easily configure an environment variable
 

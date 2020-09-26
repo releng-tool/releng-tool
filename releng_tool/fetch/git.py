@@ -2,8 +2,8 @@
 # Copyright 2018-2020 releng-tool
 
 from ..tool.git import *
-from ..util.io import ensureDirectoryExists
-from ..util.io import pathRemove
+from ..util.io import ensure_dir_exists
+from ..util.io import path_remove
 from ..util.log import *
 from enum import Enum
 import os
@@ -79,14 +79,14 @@ def fetch(opts):
             else:
                 log('cache directory has errors; will re-downloaded')
 
-                if not pathRemove(cache_dir):
+                if not path_remove(cache_dir):
                     err('''unable to cleanup cache folder for package
  (cache folder: {})'''.format(cache_dir))
                     return None
 
     # if we have no cache for this repository, build one
     if not has_cache:
-        if not ensureDirectoryExists(cache_dir):
+        if not ensure_dir_exists(cache_dir):
             return None
 
         if not GIT.execute([git_dir, 'init', '--bare'], cwd=cache_dir):

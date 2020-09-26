@@ -3,11 +3,11 @@
 
 from ...defs import PackageInstallType
 from ...tool.cmake import *
-from ...util.io import interimWorkingDirectory
+from ...util.io import interim_working_dir
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
 from ...util.log import *
-from ...util.string import expand as EXP
+from ...util.string import expand
 from os.path import join
 
 #: default lib container directory
@@ -48,7 +48,7 @@ def configure(opts):
             join(opts.target_dir + prefix))
 
     # definitions
-    cmakeDefs = {
+    cmake_defs = {
         # configure as RelWithDebInfo (when using multi-configuration projects)
         'CMAKE_BUILD_TYPE': 'RelWithDebInfo',
         # common paths for releng-tool sysroots
@@ -64,28 +64,28 @@ def configure(opts):
         'CMAKE_INSTALL_LIBDIR': join(prefix, DEFAULT_LIB_DIR),
     }
     if opts.conf_defs:
-        cmakeDefs.update(EXP(opts.conf_defs))
+        cmake_defs.update(expand(opts.conf_defs))
 
     # options
-    cmakeOpts = {
+    cmake_opts = {
     }
     if opts.conf_opts:
-        cmakeOpts.update(EXP(opts.conf_opts))
+        cmake_opts.update(expand(opts.conf_opts))
 
     # argument building
-    cmakeArgs = [
+    cmake_args = [
         '--no-warn-unused-cli', # suppress common options if not used in project
     ]
-    cmakeArgs.extend(prepare_definitions(cmakeDefs, '-D'))
-    cmakeArgs.extend(prepare_arguments(cmakeOpts))
+    cmake_args.extend(prepare_definitions(cmake_defs, '-D'))
+    cmake_args.extend(prepare_arguments(cmake_opts))
 
     # output directory
-    cmakeArgs.append(opts.build_dir)
+    cmake_args.append(opts.build_dir)
 
     # cmake prepares build scripts out-of-source; move into the build output
     # directory and generate scripts from the build directory
-    with interimWorkingDirectory(opts.build_output_dir):
-        if not CMAKE.execute(cmakeArgs, env=EXP(opts.conf_env)):
+    with interim_working_dir(opts.build_output_dir):
+        if not CMAKE.execute(cmake_args, env=expand(opts.conf_env)):
             err('failed to prepare cmake project: {}', opts.name)
             return False
 

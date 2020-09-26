@@ -3,13 +3,13 @@
 
 from ..api import RelengBuildOptions
 from ..defs import *
-from ..util.api import replicatePackageAttribs
-from ..util.io import interimWorkingDirectory
+from ..util.api import replicate_package_attribs
+from ..util.io import interim_working_dir
 from ..util.log import *
-from .autotools.build import build as buildAutotools
-from .cmake.build import build as buildCmake
-from .python.build import build as buildPython
-from .script.build import build as buildScript
+from .autotools.build import build as build_autotools
+from .cmake.build import build as build_cmake
+from .python.build import build as build_python
+from .script.build import build as build_script
 import sys
 
 def stage(engine, pkg, script_env):
@@ -37,7 +37,7 @@ def stage(engine, pkg, script_env):
         build_dir = pkg.build_dir
 
     build_opts = RelengBuildOptions()
-    replicatePackageAttribs(build_opts, pkg)
+    replicate_package_attribs(build_opts, pkg)
     build_opts.build_defs = pkg.build_defs
     build_opts.build_dir = build_dir
     build_opts.build_env = pkg.build_env
@@ -69,19 +69,19 @@ def stage(engine, pkg, script_env):
             return engine.registry.package_types[pkg.type].build(pkg.type, opts)
         builder = _
     elif pkg.type == PackageType.AUTOTOOLS:
-        builder = buildAutotools
+        builder = build_autotools
     elif pkg.type == PackageType.CMAKE:
-        builder = buildCmake
+        builder = build_cmake
     elif pkg.type == PackageType.PYTHON:
-        builder = buildPython
+        builder = build_python
     elif pkg.type == PackageType.SCRIPT:
-        builder = buildScript
+        builder = build_script
 
     if not builder:
         err('build type is not implemented: {}'.format(pkg.type))
         return False
 
-    with interimWorkingDirectory(build_dir):
+    with interim_working_dir(build_dir):
         built = builder(build_opts)
         if not built:
             return False

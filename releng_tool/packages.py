@@ -2,17 +2,17 @@
 # Copyright 2018-2020 releng-tool
 
 from .defs import *
-from .util.env import extendScriptEnv
-from .util.io import interpretStemExtension
-from .util.io import optFile
+from .util.env import extend_script_env
+from .util.io import interpret_stem_extension
+from .util.io import opt_file
 from .util.io import run_script
 from .util.log import *
 from .util.sort import TopologicalSorter
 from .util.string import expand
-from .util.string import interpretDictionaryStrings
-from .util.string import interpretString
-from .util.string import interpretStrings
-from .util.string import interpretZeroToOneStrings
+from .util.string import interpret_dictionary_strings
+from .util.string import interpret_string
+from .util.string import interpret_strings
+from .util.string import interpret_zero_to_one_strings
 from enum import Enum
 import os
 
@@ -84,9 +84,9 @@ class RelengPackageManager:
             pkg = None
             for pkg_dir in self.opts.extern_pkg_dirs:
                 pkg_script = os.path.join(pkg_dir, name, name)
-                pkg_script, pkg_script_exists = optFile(pkg_script)
+                pkg_script, pkg_script_exists = opt_file(pkg_script)
                 if pkg_script_exists:
-                    pkg, env, deps = self.loadPackage(name, pkg_script)
+                    pkg, env, deps = self.load_package(name, pkg_script)
                     if pkg:
                         break
 
@@ -94,9 +94,9 @@ class RelengPackageManager:
             # default package directory
             if not pkg:
                 pkg_script = os.path.join(self.opts.default_pkg_dir, name, name)
-                pkg_script, _ = optFile(pkg_script)
+                pkg_script, _ = opt_file(pkg_script)
 
-                pkg, env, deps = self.loadPackage(name, pkg_script)
+                pkg, env, deps = self.load_package(name, pkg_script)
                 if not pkg:
                     return None
 
@@ -119,7 +119,7 @@ class RelengPackageManager:
                     final_deps[pkg].append(dep)
                 else:
                     pkg.deps.append(pkgs[dep])
-            extendScriptEnv(self.script_env, env)
+            extend_script_env(self.script_env, env)
 
         # for packages which have a dependency but have not been binded yet,
         # bind the dependencies now
@@ -129,10 +129,10 @@ class RelengPackageManager:
                 pkg.deps.append(pkgs[dep])
 
         debug('sorting packages...')
-        def fetchDeps(pkg):
+        def fetch_deps(pkg):
             return pkg.deps
-        sorter = TopologicalSorter(fetchDeps)
         sorted = []
+        sorter = TopologicalSorter(fetch_deps)
         for pkg in pkgs.values():
             sorted = sorter.sort(pkg)
             if not sorted:
@@ -144,7 +144,7 @@ class RelengPackageManager:
 
         return sorted
 
-    def loadPackage(self, name, script):
+    def load_package(self, name, script):
         """
         load a package definition
 
@@ -168,9 +168,9 @@ class RelengPackageManager:
         debug('script {}'.format(script))
         opts = self.opts
 
-        def notifyInvalidValue(name, key, expected):
+        def notify_invalid_value(name, key, expected):
             err('package configuration has an invalid value: {}'.format(name))
-            err(' (key: {}, expects: {})'.format(pkgKey(name, key), expected))
+            err(' (key: {}, expects: {})'.format(pkg_key(name, key), expected))
 
         BAD_RV = (None, None, None)
         if not os.path.isfile(script):
@@ -191,14 +191,14 @@ class RelengPackageManager:
         # package field -- rather initially fail on a simple field first (for
         # new packages and/or developers) than breaking on a possibly more
         # complex field below.
-        key = pkgKey(name, RPK_VERSION)
+        key = pkg_key(name, RPK_VERSION)
         if key not in env or not env[key]:
             err('package has no version defined: {}'.format(name))
             err(' (missing key: {})'.format(key))
             return BAD_RV
-        pkg_version = interpretString(env[key])
+        pkg_version = interpret_string(env[key])
         if pkg_version is None:
-            notifyInvalidValue(name, key, 'string')
+            notify_invalid_value(name, key, 'string')
             return BAD_RV
 
         try:
@@ -221,7 +221,7 @@ class RelengPackageManager:
                     pkg_version = pkg_devmode_revision
 
             # prepare helper expand values
-            expandExtra = {
+            expand_extra = {
                 key: pkg_version,
             }
 
@@ -248,7 +248,7 @@ class RelengPackageManager:
                     pkg_install_type = PackageInstallType[pkg_install_type]
                 else:
                     err('unknown install type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkgKey(name, RPK_INSTALL_TYPE)))
+                    err(' (key: {})'.format(pkg_key(name, RPK_INSTALL_TYPE)))
                     return BAD_RV
 
             if not pkg_install_type:
@@ -264,7 +264,7 @@ class RelengPackageManager:
 
                 if pkg_extract_type not in self.registry.extract_types:
                     err('unknown extract-type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkgKey(name, RPK_EXTRACT_TYPE)))
+                    err(' (key: {})'.format(pkg_key(name, RPK_EXTRACT_TYPE)))
                     return BAD_RV
 
             # fixed jobs
@@ -295,7 +295,7 @@ class RelengPackageManager:
                 pkg_revision = opts.revision_override[name]
             else:
                 pkg_revision = self._fetch(RPK_REVISION, PkgKeyType.STR,
-                    allowExpand=True, expandExtra=expandExtra)
+                    allow_expand=True, expand_extra=expand_extra)
 
             # site
             pkg_site = None
@@ -307,7 +307,7 @@ class RelengPackageManager:
                 pkg_site = opts.sites_override[name]
             else:
                 pkg_site = self._fetch(RPK_SITE, PkgKeyType.STR,
-                    allowExpand=True, expandExtra=expandExtra)
+                    allow_expand=True, expand_extra=expand_extra)
 
             # type
             pkg_type = self._fetch(RPK_TYPE, PkgKeyType.STR)
@@ -317,7 +317,7 @@ class RelengPackageManager:
                     pkg_type = PackageType[pkg_type]
                 elif pkg_type not in self.registry.package_types:
                     err('unknown package type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkgKey(name, RPK_TYPE)))
+                    err(' (key: {})'.format(pkg_key(name, RPK_TYPE)))
                     return BAD_RV
 
             if not pkg_type:
@@ -332,7 +332,7 @@ class RelengPackageManager:
                     pkg_vcs_type = VcsType[pkg_vcs_type]
                 elif pkg_vcs_type not in self.registry.fetch_types:
                     err('unknown vcs-type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkgKey(name, RPK_VCS_TYPE)))
+                    err(' (key: {})'.format(pkg_key(name, RPK_VCS_TYPE)))
                     return BAD_RV
 
             if not pkg_vcs_type:
@@ -439,15 +439,15 @@ class RelengPackageManager:
 
         # notify and return if a key uses an unsupported value
         except InvalidPackageKeyValue as ex:
-            notifyInvalidValue(name, self._active_key, ex)
+            notify_invalid_value(name, self._active_key, ex)
             return BAD_RV
 
         # ######################################################################
 
         # checks
         if pkg_is_external and pkg_is_internal:
-            key1 = pkgKey(name, RPK_EXTERNAL)
-            key2 = pkgKey(name, RPK_INTERNAL)
+            key1 = pkg_key(name, RPK_EXTERNAL)
+            key2 = pkg_key(name, RPK_INTERNAL)
             err('package has conflicting configuration values: {}'.format(name))
             err(' (package flagged as external and internal)')
             err(' (keys: {}, {})'.format(key1, key2))
@@ -487,7 +487,7 @@ class RelengPackageManager:
                     cache_ext = pkg_filename_ext
                 else:
                     basename = os.path.basename(url_parts.path)
-                    __, cache_ext = interpretStemExtension(basename)
+                    __, cache_ext = interpret_stem_extension(basename)
 
         # finalization
         pkg_nv = '{}-{}'.format(name, pkg_version)
@@ -571,16 +571,16 @@ class RelengPackageManager:
         pkg.python_interpreter = pkg_python_interpreter
         # (additional environment helpers)
         for env in (os.environ, env):
-            env[pkgKey(name, 'BUILD_DIR')] = pkg_build_dir
-            env[pkgKey(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
-            env[pkgKey(name, 'NAME')] = name
-            env[pkgKey(name, 'REVISION')] = pkg_revision
-        os.environ[pkgKey(name, RPK_VERSION)] = pkg_version
+            env[pkg_key(name, 'BUILD_DIR')] = pkg_build_dir
+            env[pkg_key(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
+            env[pkg_key(name, 'NAME')] = name
+            env[pkg_key(name, 'REVISION')] = pkg_revision
+        os.environ[pkg_key(name, RPK_VERSION)] = pkg_version
 
         return pkg, env, deps
 
-    def _fetch(self, key, type, default=None, allowExpand=False,
-            expandExtra=None):
+    def _fetch(self, key, type_, default=None, allow_expand=False,
+            expand_extra=None):
         """
         fetch a configuration value from a provided key
 
@@ -593,10 +593,10 @@ class RelengPackageManager:
 
         Args:
             key: the key
-            type: the expected type for the key's value
+            type_: the expected type for the key's value
             default (optional): default value to use if the key does not exist
-            allowExpand (optional): whether or not to expand the value
-            expandExtra (optional): extra expand defines to use
+            allow_expand (optional): whether or not to expand the value
+            expand_extra (optional): extra expand defines to use
 
         Returns:
             the value
@@ -606,48 +606,48 @@ class RelengPackageManager:
         """
         self._active_key = key
         value = default
-        pkg_key = pkgKey(self._active_package, key)
-        if pkg_key in self._active_env:
-            if type == PkgKeyType.BOOL:
-                value = self._active_env[pkg_key]
+        key = pkg_key(self._active_package, key)
+        if key in self._active_env:
+            if type_ == PkgKeyType.BOOL:
+                value = self._active_env[key]
                 if not isinstance(value, bool):
                     raise InvalidPackageKeyValue('bool')
-            elif type == PkgKeyType.DICT:
-                value = self._active_env[pkg_key]
-                if allowExpand:
-                    value = expand(value, expandExtra)
+            elif type_ == PkgKeyType.DICT:
+                value = self._active_env[key]
+                if allow_expand:
+                    value = expand(value, expand_extra)
                 if not isinstance(value, dict):
                     raise InvalidPackageKeyValue('dictionary')
-            elif type == PkgKeyType.DICT_STR_STR:
-                value = interpretDictionaryStrings(self._active_env[pkg_key])
-                if allowExpand:
-                    value = expand(value, expandExtra)
+            elif type_ == PkgKeyType.DICT_STR_STR:
+                value = interpret_dictionary_strings(self._active_env[key])
+                if allow_expand:
+                    value = expand(value, expand_extra)
                 if value is None:
                     raise InvalidPackageKeyValue('dict(str,str)')
-            elif type == PkgKeyType.DICT_STR_STR_OR_STRS:
-                value = interpretZeroToOneStrings(self._active_env[pkg_key])
-                if allowExpand:
-                    value = expand(value, expandExtra)
+            elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
+                value = interpret_zero_to_one_strings(self._active_env[key])
+                if allow_expand:
+                    value = expand(value, expand_extra)
                 if value is None:
                     raise InvalidPackageKeyValue('dict(str,str) or string(s)')
-            elif type == PkgKeyType.STR:
-                value = interpretString(self._active_env[pkg_key])
-                if allowExpand:
-                    value = expand(value, expandExtra)
+            elif type_ == PkgKeyType.STR:
+                value = interpret_string(self._active_env[key])
+                if allow_expand:
+                    value = expand(value, expand_extra)
                 if value is None:
                     raise InvalidPackageKeyValue('string')
-            elif type == PkgKeyType.STRS:
-                value = interpretStrings(self._active_env[pkg_key])
-                if allowExpand:
-                    value = expand(value, expandExtra)
+            elif type_ == PkgKeyType.STRS:
+                value = interpret_strings(self._active_env[key])
+                if allow_expand:
+                    value = expand(value, expand_extra)
                 if value is None:
                     raise InvalidPackageKeyValue('string(s)')
-            elif type == PkgKeyType.INT_NONNEGATIVE:
-                value = self._active_env[pkg_key]
+            elif type_ == PkgKeyType.INT_NONNEGATIVE:
+                value = self._active_env[key]
                 if not isinstance(value, int) or value < 0:
                     raise InvalidPackageKeyValue('non-negative int')
-            elif type == PkgKeyType.INT_POSITIVE:
-                value = self._active_env[pkg_key]
+            elif type_ == PkgKeyType.INT_POSITIVE:
+                value = self._active_env[key]
                 if not isinstance(value, int) or value <= 0:
                     raise InvalidPackageKeyValue('positive int')
             else:
@@ -777,7 +777,7 @@ class RelengPackage:
                 self.version,
                 )
 
-def pkgKey(pkg, type):
+def pkg_key(pkg, type):
     """
     generate a package key for a given type string
 

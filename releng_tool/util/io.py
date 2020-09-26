@@ -39,7 +39,7 @@ class FailedToPrepareWorkingDirectoryError(Exception):
     """
     pass
 
-def ensureDirectoryExists(dir, quiet=False):
+def ensure_dir_exists(dir, quiet=False):
     """
     ensure the provided directory exists
 
@@ -160,7 +160,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
         # attempt to always invoke using a script's interpreter (if any) to
         # help deal with long-path calls
         if sys.platform != 'win32':
-            args = prependShebangInterpreter(args)
+            args = prepend_shebang_interpreter(args)
 
         verbose('invoking: ' + str(args).replace('{','{{').replace('}','}}'))
         try:
@@ -219,7 +219,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
     return success
 
 @contextmanager
-def generateTempDir(dir=None):
+def generate_temp_dir(dir=None):
     """
     generate a context-supported temporary directory
 
@@ -243,7 +243,7 @@ def generateTempDir(dir=None):
         FailedToPrepareBaseDirectoryError: the base directory does not exist and
             could not be created
     """
-    if dir and not ensureDirectoryExists(dir):
+    if dir and not ensure_dir_exists(dir):
         raise FailedToPrepareBaseDirectoryError(dir)
 
     dir = tempfile.mkdtemp(prefix='.releng-tmp-', dir=dir)
@@ -251,14 +251,14 @@ def generateTempDir(dir=None):
         yield dir
     finally:
         try:
-            pathRemove(dir)
+            path_remove(dir)
         except OSError as e:
             if e.errno != errno.ENOENT:
                 warn('unable to cleanup temporary directory: ' + dir)
                 warn('    {}'.format(e))
 
 @contextmanager
-def interimWorkingDirectory(dir):
+def interim_working_dir(dir):
     """
     move into a context-supported working directory
 
@@ -286,7 +286,7 @@ def interimWorkingDirectory(dir):
     """
     owd = os.getcwd()
 
-    if not ensureDirectoryExists(dir):
+    if not ensure_dir_exists(dir):
         raise FailedToPrepareWorkingDirectoryError(dir)
 
     os.chdir(dir)
@@ -298,7 +298,7 @@ def interimWorkingDirectory(dir):
         except IOError:
             warn('unable to restore original working directory: ' + owd)
 
-def interpretStemExtension(basename):
+def interpret_stem_extension(basename):
     """
     interpret the stem and extension from a provided basename
 
@@ -338,7 +338,7 @@ def interpretStemExtension(basename):
 
     return (stem, ext)
 
-def optFile(file):
+def opt_file(file):
     """
     return a file (and existence) to opt for based a given file path
 
@@ -368,7 +368,7 @@ def optFile(file):
 
     return file, exists
 
-def pathCopy(src, dst, quiet=False, critical=True):
+def path_copy(src, dst, quiet=False, critical=True):
     """
     copy a file or directory into a target file or directory
 
@@ -424,7 +424,7 @@ def pathCopy(src, dst, quiet=False, critical=True):
         if os.path.isfile(src):
             parent_dir = os.path.dirname(dst)
             if parent_dir and not os.path.isdir(parent_dir):
-                ensureDirectoryExists(parent_dir, quiet=quiet)
+                ensure_dir_exists(parent_dir, quiet=quiet)
             copy2(src, dst)
         else:
             copy_tree(src, dst)
@@ -438,7 +438,7 @@ def pathCopy(src, dst, quiet=False, critical=True):
         sys.exit(-1)
     return success
 
-def pathExists(path, *args):
+def path_exists(path, *args):
     """
     return whether or not the path exists
 
@@ -463,7 +463,7 @@ def pathExists(path, *args):
     """
     return os.path.exists(os.path.join(path, *args))
 
-def pathMove(src, dst, quiet=False, critical=True):
+def path_move(src, dst, quiet=False, critical=True):
     """
     move a file or directory into a target file or directory
 
@@ -518,12 +518,12 @@ def pathMove(src, dst, quiet=False, critical=True):
     if os.path.isfile(src):
         parent_dir = os.path.dirname(dst)
         if parent_dir and not os.path.isdir(parent_dir):
-            success = ensureDirectoryExists(parent_dir, quiet=quiet)
+            success = ensure_dir_exists(parent_dir, quiet=quiet)
     elif not os.path.isdir(dst):
         if os.path.exists(dst):
-            _pathRemoveFile(dst)
+            _path_remove_file(dst)
 
-        success = ensureDirectoryExists(dst, quiet=quiet)
+        success = ensure_dir_exists(dst, quiet=quiet)
     else:
         src_dir = os.path.realpath(src)
         dst_dir = os.path.realpath(dst)
@@ -539,11 +539,11 @@ def pathMove(src, dst, quiet=False, critical=True):
         try:
             if os.path.isfile(src):
                 if os.path.isfile(dst):
-                    _pathRemoveFile(dst)
+                    _path_remove_file(dst)
 
                 move(src, dst)
             else:
-                _pathMove(src, dst)
+                _path_move(src, dst)
         except Exception as e:
             success = False
             if not quiet:
@@ -554,7 +554,7 @@ def pathMove(src, dst, quiet=False, critical=True):
         sys.exit(-1)
     return success
 
-def _pathMove(src, dst):
+def _path_move(src, dst):
     """
     move the provided directory into the target directory (recursive)
 
@@ -591,25 +591,25 @@ def _pathMove(src, dst):
 
         if os.path.isdir(src_path) and not os.path.islink(src_path):
             if os.path.isdir(dst_path):
-                _pathMove(src_path, dst_path)
+                _path_move(src_path, dst_path)
             else:
                 if os.path.exists(dst_path):
-                    _pathRemoveFile(dst_path)
+                    _path_remove_file(dst_path)
 
                 move(src_path, dst_path)
         else:
             if os.path.exists(dst_path):
                 if os.path.isdir(dst_path) and not os.path.islink(dst_path):
-                    _pathRemoveDir(dst_path)
+                    _path_remove_dir(dst_path)
                 else:
-                    _pathRemoveFile(dst_path)
+                    _path_remove_file(dst_path)
 
             move(src_path, dst_path)
 
     # remove directory
     os.rmdir(src)
 
-def pathRemove(path, quiet=False):
+def path_remove(path, quiet=False):
     """
     remove the provided path
 
@@ -637,9 +637,9 @@ def pathRemove(path, quiet=False):
     """
     try:
         if os.path.isdir(path) and not os.path.islink(path):
-            _pathRemoveDir(path)
+            _path_remove_dir(path)
         else:
-            _pathRemoveFile(path)
+            _path_remove_file(path)
     except OSError as e:
         if e.errno != errno.ENOENT:
             if not quiet:
@@ -649,7 +649,7 @@ def pathRemove(path, quiet=False):
 
     return True
 
-def _pathRemoveDir(dir):
+def _path_remove_dir(dir):
     """
     remove the provided directory (recursive)
 
@@ -683,14 +683,14 @@ def _pathRemoveDir(dir):
     for entry in entries:
         path = os.path.join(dir, entry)
         if os.path.isdir(path) and not os.path.islink(path):
-            _pathRemoveDir(path)
+            _path_remove_dir(path)
         else:
-            _pathRemoveFile(path)
+            _path_remove_file(path)
 
     # remove directory
     os.rmdir(dir)
 
-def _pathRemoveFile(path):
+def _path_remove_file(path):
     """
     remove the provided file
 
@@ -795,7 +795,7 @@ def prepare_definitions(defs, prefix=None):
 
     return final
 
-def prependShebangInterpreter(args):
+def prepend_shebang_interpreter(args):
     """
     prepend interpreter program (if any) to argument list
 
@@ -886,7 +886,7 @@ def touch(file):
     try:
         parent_dir = os.path.dirname(file)
         if parent_dir and not os.path.isdir(parent_dir):
-            ensureDirectoryExists(parent_dir)
+            ensure_dir_exists(parent_dir)
 
         with open(file, 'a'):
             os.utime(file, None)

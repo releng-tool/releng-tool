@@ -2,7 +2,7 @@
 # Copyright 2018 releng-tool
 
 from ..tool.svn import *
-from ..util.io import ensureDirectoryExists
+from ..util.io import ensure_dir_exists
 from ..util.log import *
 import os
 import sys
@@ -50,7 +50,7 @@ def fetch(opts):
 
     # ensure cache file's directory exists
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
-    if not ensureDirectoryExists(cache_dir):
+    if not ensure_dir_exists(cache_dir):
         return None
 
     with tarfile.open(cache_file, 'w:gz') as tar:

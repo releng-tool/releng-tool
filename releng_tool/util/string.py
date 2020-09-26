@@ -108,7 +108,7 @@ def expand(obj, kv=None):
 
     return rv
 
-def interpretDictionaryStrings(obj):
+def interpret_dictionary_strings(obj):
     """
     interpret a dictionary of key-value strings from the provided object
 
@@ -137,7 +137,7 @@ def interpretDictionaryStrings(obj):
 
     return rv
 
-def interpretString(obj):
+def interpret_string(obj):
     """
     interpret a string, if any, from the provided object
 
@@ -158,7 +158,7 @@ def interpretString(obj):
 
     return rv
 
-def interpretStrings(obj):
+def interpret_strings(obj):
     """
     interpret strings, if any, from the provided object
 
@@ -188,7 +188,7 @@ def interpretStrings(obj):
 
     return rv
 
-def interpretZeroToOneStrings(obj):
+def interpret_zero_to_one_strings(obj):
     """
     interpret a dictionary of zero-to-one strings from the provided object
 
@@ -230,7 +230,7 @@ def interpretZeroToOneStrings(obj):
 
     return rv
 
-def isSequenceNotString(obj):
+def is_sequence_not_string(obj):
     """
     return whether or not the provided object is a non-string sequence
 

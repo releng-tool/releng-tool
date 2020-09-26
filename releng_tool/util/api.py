@@ -4,7 +4,7 @@
 from ..defs import PackageInstallType
 from copy import deepcopy
 
-def packageInstallTypeToApiType(install_type):
+def package_install_type_to_api_type(install_type):
     """
     convert an internal package-install-type to an api-compatible string
 
@@ -33,7 +33,7 @@ def packageInstallTypeToApiType(install_type):
     else:
         return 'unknown'
 
-def replicatePackageAttribs(opts, pkg):
+def replicate_package_attribs(opts, pkg):
     """
     replicate package attributes into an engine options entity
 

@@ -5,7 +5,7 @@ from ...tool.cmake import *
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
 from ...util.log import *
-from ...util.string import expand as EXP
+from ...util.string import expand
 
 def build(opts):
     """
@@ -26,38 +26,38 @@ def build(opts):
         return False
 
     # definitions
-    cmakeDefs = {
+    cmake_defs = {
     }
     if opts.build_defs:
-        cmakeDefs.update(EXP(opts.build_defs))
+        cmake_defs.update(expand(opts.build_defs))
 
     # options
-    cmakeOpts = {
+    cmake_opts = {
         # build RelWithDebInfo (when using multi-configuration projects)
         '--config': 'RelWithDebInfo',
     }
     if opts.build_opts:
-        cmakeOpts.update(EXP(opts.build_opts))
+        cmake_opts.update(expand(opts.build_opts))
 
     # argument building
-    cmakeArgs = [
+    cmake_args = [
         # tell cmake to invoke build process in the output directory
         '--build',
         opts.build_output_dir,
     ]
-    cmakeArgs.extend(prepare_definitions(cmakeDefs, '-D'))
-    cmakeArgs.extend(prepare_arguments(cmakeOpts))
+    cmake_args.extend(prepare_definitions(cmake_defs, '-D'))
+    cmake_args.extend(prepare_arguments(cmake_opts))
 
     # enable specific number of parallel jobs is set
     #
     # https://cmake.org/cmake/help/v3.12/manual/cmake.1.html#build-tool-mode
     if 'releng.cmake.disable_parallel_option' not in opts._quirks:
         if opts.jobsconf != 1:
-            cmakeArgs.append('--parallel')
+            cmake_args.append('--parallel')
             if opts.jobsconf > 0:
-                cmakeArgs.append(str(opts.jobs))
+                cmake_args.append(str(opts.jobs))
 
-    if not CMAKE.execute(cmakeArgs, env=EXP(opts.build_env)):
+    if not CMAKE.execute(cmake_args, env=expand(opts.build_env)):
         err('failed to build cmake project: {}', opts.name)
         return False
 

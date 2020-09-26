@@ -15,9 +15,9 @@ class TestObj:
 class TestUtilSort(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        def sortingMethod(obj):
+        def sorting_method(obj):
             return obj.children
-        self.sorter = TopologicalSorter(sortingMethod)
+        self.sorter = TopologicalSorter(sorting_method)
 
     def test_utilsort_topologicalsorter_simple(self):
         """

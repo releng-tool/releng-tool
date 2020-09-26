@@ -184,7 +184,7 @@ Please correct the following hash file:
         type_hashes.keys()
         hashers = {}
         for hash_type in type_hashes.keys():
-            hashers[hash_type] = _getHasher(hash_type)
+            hashers[hash_type] = _get_hasher(hash_type)
             if not hashers[hash_type]:
                 if not quiet:
                     err('unsupported hash type')
@@ -244,7 +244,7 @@ Ensure the hash file correctly names an expected file.
 
     return HashResult.VERIFIED
 
-def _getHasher(type):
+def _get_hasher(type):
     """
     obtain a hasher instance from the provided type
 

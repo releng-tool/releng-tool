@@ -20,15 +20,15 @@ __version__='0.6.0.dev0'
 # Note: changes introduced here should be synonymous with engine-shared helpers:
 #        RelengEngine._prepareSharedEnvironment
 
-from .util.env import setEnvValue as releng_env
-from .util.io import ensureDirectoryExists as releng_mkdir
+from .util.env import set_env_value as releng_env
+from .util.io import ensure_dir_exists as releng_mkdir
 from .util.io import execute as releng_execute
-from .util.io import generateTempDir as releng_tmpdir
-from .util.io import interimWorkingDirectory as releng_wd
-from .util.io import pathCopy as releng_copy
-from .util.io import pathExists as releng_exists
-from .util.io import pathMove as releng_move
-from .util.io import pathRemove as releng_remove
+from .util.io import generate_temp_dir as releng_tmpdir
+from .util.io import interim_working_dir as releng_wd
+from .util.io import path_copy as releng_copy
+from .util.io import path_exists as releng_exists
+from .util.io import path_move as releng_move
+from .util.io import path_remove as releng_remove
 from .util.io import touch as releng_touch
 from .util.log import debug as debug
 from .util.log import err as err

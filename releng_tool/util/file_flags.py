@@ -30,7 +30,7 @@ class FileFlag(Enum):
     NOT_CONFIGURED = 2
     NO_EXIST = 3
 
-def checkFileFlag(file):
+def check_file_flag(file):
     """
     check a file flag
 
@@ -43,9 +43,9 @@ def checkFileFlag(file):
         ``FileFlag.EXISTS`` if the flag is enabled; ``FileFlag.NO_EXIST`` if the
             flag is not enabled
     """
-    return processFileFlag(None, file)
+    return process_file_flag(None, file)
 
-def processFileFlag(flag, file):
+def process_file_flag(flag, file):
     """
     process a file flag event
 

@@ -3,7 +3,7 @@
 
 from ..util.io import execute
 from ..util.log import *
-from ..util.string import isSequenceNotString
+from ..util.string import is_sequence_not_string
 import re
 import os
 
@@ -64,7 +64,7 @@ class RelengTool:
         if not self.exists():
             return False
 
-        if args and not isSequenceNotString(args):
+        if args and not is_sequence_not_string(args):
             err('invalid argument type provided into execute (should be list): '
                 + str(args))
             return False

@@ -2,7 +2,7 @@
 # Copyright 2018 releng-tool
 
 from ..tool.hg import *
-from ..util.io import ensureDirectoryExists
+from ..util.io import ensure_dir_exists
 from ..util.log import *
 import os
 import sys
@@ -44,7 +44,7 @@ def fetch(opts):
 
     # if we have no cache for this repository, build one
     if not os.path.isdir(cache_dir):
-        if not ensureDirectoryExists(cache_dir):
+        if not ensure_dir_exists(cache_dir):
             return None
 
         if not HG.execute(['--noninteractive', '--verbose',

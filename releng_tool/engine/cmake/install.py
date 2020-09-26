@@ -5,7 +5,7 @@ from ...tool.cmake import *
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
 from ...util.log import *
-from ...util.string import expand as EXP
+from ...util.string import expand
 
 def install(opts):
     """
@@ -26,39 +26,39 @@ def install(opts):
         return False
 
     # default definitions
-    cmakeDefs = {
+    cmake_defs = {
     }
     if opts.install_defs:
-        cmakeDefs.update(EXP(opts.install_defs))
+        cmake_defs.update(expand(opts.install_defs))
 
     # default options
-    cmakeOpts = {
+    cmake_opts = {
         # build RelWithDebInfo (when using multi-configuration projects)
         '--config': 'RelWithDebInfo',
         # default install using the install target
         '--target': 'install',
     }
     if opts.install_opts:
-        cmakeOpts.update(EXP(opts.install_opts))
+        cmake_opts.update(expand(opts.install_opts))
 
     # argument building
-    cmakeArgs = [
+    cmake_args = [
         '--build',
         opts.build_output_dir,
     ]
-    cmakeArgs.extend(prepare_definitions(cmakeDefs, '-D'))
-    cmakeArgs.extend(prepare_arguments(cmakeOpts))
+    cmake_args.extend(prepare_definitions(cmake_defs, '-D'))
+    cmake_args.extend(prepare_arguments(cmake_opts))
 
     # prepare environment for installation request; an environment dictionary is
     # always needed to apply a custom DESTDIR during each install request
-    env = EXP(opts.install_env)
+    env = expand(opts.install_env)
     if not env:
         env = {}
 
     # install to each destination
     for dest_dir in opts.dest_dirs:
         env['DESTDIR'] = dest_dir
-        if not CMAKE.execute(cmakeArgs, env=env):
+        if not CMAKE.execute(cmake_args, env=env):
             err('failed to install cmake project: {}', opts.name)
             return False
 

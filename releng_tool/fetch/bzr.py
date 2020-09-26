@@ -2,7 +2,7 @@
 # Copyright 2018 releng-tool
 
 from ..tool.bzr import *
-from ..util.io import ensureDirectoryExists
+from ..util.io import ensure_dir_exists
 from ..util.log import *
 import os
 import sys
@@ -35,7 +35,7 @@ def fetch(opts):
     sys.stdout.flush()
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
-    if not ensureDirectoryExists(cache_dir):
+    if not ensure_dir_exists(cache_dir):
         return None
 
     log('exporting sources')

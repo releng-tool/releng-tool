@@ -4,7 +4,7 @@
 from . import __version__ as releng_version
 from .api import *
 from .util.log import *
-from .util.string import interpretString
+from .util.string import interpret_string
 from importlib import import_module
 
 #: prefix requirement for extension named types
@@ -32,7 +32,7 @@ class RelengRegistry(RelengRegistryInterface):
         # always load base/example extension
         self.load('releng_tool.ext.seed')
 
-    def loadAllExtensions(self, names):
+    def load_all_extensions(self, names):
         """
         load all provided extensions into the registry
 
@@ -49,11 +49,11 @@ class RelengRegistry(RelengRegistryInterface):
         Returns:
             whether or not all extensions are loaded in the registry
         """
-        hasLoaded = True
+        loaded = True
         for name in names:
             if not self.load(name):
-                hasLoaded = False
-        return hasLoaded
+                loaded = False
+        return loaded
 
     def load(self, name):
         """
@@ -76,7 +76,7 @@ class RelengRegistry(RelengRegistryInterface):
         if name in self.extension:
             return True
 
-        hasLoaded = False
+        loaded = False
         debug('attempting to load extension: {}'.format(name))
         try:
             plugin = import_module(name)
@@ -85,7 +85,7 @@ class RelengRegistry(RelengRegistryInterface):
                     plugin.releng_setup(self)
                     self.extension.append(name)
                     verbose('loaded extension: {}'.format(name))
-                    hasLoaded = True
+                    loaded = True
                 except RelengInvalidSetupException as e:
                     warn('extension is not supported due to an invalid setup: '
                         '{}'.format(name))
@@ -98,7 +98,7 @@ class RelengRegistry(RelengRegistryInterface):
         except ModuleNotFoundError:
             warn('unable to find extension: {}'.format(name))
 
-        return hasLoaded
+        return loaded
 
     def add_extract_type(self, name, handler):
         """
@@ -137,7 +137,7 @@ class RelengRegistry(RelengRegistryInterface):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        if not interpretString(name):
+        if not interpret_string(name):
             raise RelengInvalidSetupException('invalid extract name provided')
         name_uc = name.upper()
         if not name_uc.startswith(PREFIX_REQUIREMENT.upper()):
@@ -188,7 +188,7 @@ class RelengRegistry(RelengRegistryInterface):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        if not interpretString(name):
+        if not interpret_string(name):
             raise RelengInvalidSetupException('invalid fetch name provided')
         name_uc = name.upper()
         if not name_uc.startswith(PREFIX_REQUIREMENT.upper()):
@@ -240,7 +240,7 @@ class RelengRegistry(RelengRegistryInterface):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        if not interpretString(name):
+        if not interpret_string(name):
             raise RelengInvalidSetupException('invalid package name provided')
         name_uc = name.upper()
         if not name_uc.startswith(PREFIX_REQUIREMENT.upper()):

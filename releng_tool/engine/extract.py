@@ -3,16 +3,15 @@
 
 from ..api import RelengExtractOptions
 from ..defs import *
-from ..extract.archive import extract as extractArchive
-from ..extract.git import extract as extractGit
-from ..extract.mercurial import extract as extractMercurial
-from ..util.api import replicatePackageAttribs
+from ..extract.archive import extract as extract_archive
+from ..extract.git import extract as extract_git
+from ..extract.mercurial import extract as extract_mercurial
+from ..util.api import replicate_package_attribs
 from ..util.hash import HashResult
 from ..util.hash import verify as verify_hashes
-from ..util.io import ensureDirectoryExists
-from ..util.io import interimWorkingDirectory
-from ..util.io import generateTempDir as tempDir
-from ..util.io import pathRemove
+from ..util.io import interim_working_dir
+from ..util.io import generate_temp_dir
+from ..util.io import path_remove
 from ..util.log import *
 import os
 import shutil
@@ -45,7 +44,7 @@ def stage(engine, pkg):
     sys.stdout.flush()
 
     extract_opts = RelengExtractOptions()
-    replicatePackageAttribs(extract_opts, pkg)
+    replicate_package_attribs(extract_opts, pkg)
     extract_opts.cache_dir = pkg.cache_dir
     extract_opts.cache_file = pkg.cache_file
     extract_opts.ext = pkg.ext_modifiers
@@ -59,7 +58,7 @@ def stage(engine, pkg):
     if os.path.exists(pkg.build_dir):
         warn('build directory exists before extraction; removing')
 
-        if not pathRemove(pkg.build_dir):
+        if not path_remove(pkg.build_dir):
             err('unable to cleanup build directory: ' + pkg.build_dir)
             return False
 
@@ -70,8 +69,8 @@ def stage(engine, pkg):
     # extraction (or moving resources), the work directory will be moved to the
     # package's respective build directory.
     out_dir = engine.opts.out_dir
-    with tempDir(out_dir) as work_dir:
-        with interimWorkingDirectory(work_dir):
+    with generate_temp_dir(out_dir) as work_dir:
+        with interim_working_dir(work_dir):
             extract_opts.work_dir = work_dir
 
             extracter = None
@@ -85,13 +84,13 @@ def stage(engine, pkg):
             elif pkg.vcs_type in extract_types:
                 extracter = extract_types[pkg.vcs_type].extract
             elif pkg.vcs_type == VcsType.GIT:
-                extracter = extractGit
+                extracter = extract_git
             elif pkg.vcs_type == VcsType.HG:
-                extracter = extractMercurial
+                extracter = extract_mercurial
             elif os.path.isfile(pkg.cache_file):
                 cache_basename = os.path.basename(pkg.cache_file)
                 hash_exclude.append(cache_basename)
-                extracter = extractArchive
+                extracter = extract_archive
 
             if not extracter:
                 err('extract type is not implemented: {}'.format(pkg.vcs_type))

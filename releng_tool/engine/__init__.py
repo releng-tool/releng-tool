@@ -6,37 +6,37 @@ from ..defs import *
 from ..opts import RelengEngineOptions
 from ..packages import RelengPackageManager
 from ..registry import RelengRegistry
-from ..util.env import extendScriptEnv
-from ..util.env import setEnvValue
+from ..util.env import extend_script_env
+from ..util.env import set_env_value
 from ..util.file_flags import FileFlag
-from ..util.file_flags import checkFileFlag
-from ..util.file_flags import processFileFlag
+from ..util.file_flags import check_file_flag
+from ..util.file_flags import process_file_flag
 from ..util.io import FailedToPrepareWorkingDirectoryError
-from ..util.io import ensureDirectoryExists
+from ..util.io import ensure_dir_exists
 from ..util.io import execute
-from ..util.io import generateTempDir
-from ..util.io import interimWorkingDirectory
-from ..util.io import optFile
-from ..util.io import pathCopy
-from ..util.io import pathExists
-from ..util.io import pathMove
-from ..util.io import pathRemove
+from ..util.io import generate_temp_dir
+from ..util.io import interim_working_dir
+from ..util.io import opt_file
+from ..util.io import path_copy
+from ..util.io import path_exists
+from ..util.io import path_move
+from ..util.io import path_remove
 from ..util.io import run_script
 from ..util.io import touch
 from ..util.log import *
 from ..util.platform import exit as releng_exit
 from ..util.string import expand
-from ..util.string import interpretDictionaryStrings
-from ..util.string import interpretString
-from ..util.string import interpretStrings
-from .bootstrap import stage as bootstrapStage
-from .build import stage as buildStage
-from .configure import stage as configureStage
-from .extract import stage as extractStage
-from .fetch import stage as fetchStage
-from .install import stage as installStage
-from .patch import stage as patchStage
-from .post import stage as postStage
+from ..util.string import interpret_dictionary_strings
+from ..util.string import interpret_string
+from ..util.string import interpret_strings
+from .bootstrap import stage as bootstrap_stage
+from .build import stage as build_stage
+from .configure import stage as configure_stage
+from .extract import stage as extract_stage
+from .fetch import stage as fetch_stage
+from .install import stage as install_stage
+from .patch import stage as patch_stage
+from .post import stage as post_stage
 from collections import OrderedDict
 from datetime import datetime
 from enum import Enum
@@ -85,9 +85,9 @@ class RelengEngine:
 
         # prepare script environment to make helpers available to configuration
         # script(s)
-        self._prepareScriptEnvironment(gbls, self.opts.pkg_action)
+        self._prepare_script_environment(gbls, self.opts.pkg_action)
 
-        conf_point, conf_point_exists = optFile(self.opts.conf_point)
+        conf_point, conf_point_exists = opt_file(self.opts.conf_point)
         if not conf_point_exists:
             err('missing configuration file')
             err("""\
@@ -102,7 +102,7 @@ in the working directory or the provided root directory:
             return False
 
         script_env = gbls.copy()
-        extendScriptEnv(script_env, settings)
+        extend_script_env(script_env, settings)
         self.pkgman.script_env = script_env
         verbose('configuration file loaded')
 
@@ -115,18 +115,18 @@ in the working directory or the provided root directory:
             if not overrides:
                 return False
 
-            extendScriptEnv(script_env, overrides)
-            extendScriptEnv(settings, overrides)
+            extend_script_env(script_env, overrides)
+            extend_script_env(settings, overrides)
             verbose('configuration overrides file loaded')
 
         # handle cleaning requests
         gaction = self.opts.gbl_action
         if gaction == GlobalAction.CLEAN or gaction == GlobalAction.MRPROPER:
-            self._handleCleanRequest(gaction == GlobalAction.MRPROPER)
+            self._handle_clean_request(gaction == GlobalAction.MRPROPER)
             return True
 
         # file flag processing
-        state = self._processFileFlags()
+        state = self._process_file_flags()
         if state is not None:
             debug('file-flag processing has triggered closure')
             return state
@@ -139,7 +139,7 @@ in the working directory or the provided root directory:
         if self.opts.target_action:
             pkg_names = [self.opts.target_action]
         else:
-            pkg_names = self._getPackageNames(settings)
+            pkg_names = self._get_package_names(settings)
         if not pkg_names:
             return False
         debug('target packages)')
@@ -147,7 +147,7 @@ in the working directory or the provided root directory:
             debug(' {}'.format(pkg_name))
 
         # processing additional settings
-        if not self._processSettings(settings):
+        if not self._process_settings(settings):
             return False
 
         # load and process packages
@@ -165,14 +165,14 @@ in the working directory or the provided root directory:
                     if pkg.name == self.opts.target_action:
                         verbose('removing output directory for package: ' +
                             pkg.name)
-                        pathRemove(pkg.build_output_dir)
+                        path_remove(pkg.build_output_dir)
                         return True
                 assert False # should not reach here
                 return True
 
             # ensure all package sources are acquired first
             for pkg in pkgs:
-                if not self._stageInit(pkg):
+                if not self._stage_init(pkg):
                     return False
 
                 # none/local-vcs-type packages do not need to fetch
@@ -183,10 +183,10 @@ in the working directory or the provided root directory:
                 # has already been extracted, completely skip the fetching stage
                 if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
                     flag = pkg.__ff_extract
-                    if checkFileFlag(flag) == FileFlag.EXISTS:
+                    if check_file_flag(flag) == FileFlag.EXISTS:
                         continue
 
-                if not fetchStage(self, pkg):
+                if not fetch_stage(self, pkg):
                     return False
 
             # prepend project's host directory to path
@@ -196,7 +196,7 @@ in the working directory or the provided root directory:
             # re-apply script environment to ensure previous script environment
             # changes have not manipulated the environment (from standard
             # helpers).
-            self._prepareScriptEnvironment(script_env, self.opts.pkg_action)
+            self._prepare_script_environment(script_env, self.opts.pkg_action)
 
             # process each package (configuring, building, etc.)
             if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
@@ -204,7 +204,7 @@ in the working directory or the provided root directory:
                 # ensure the symbols directory exists, as a package may wish to
                 # populate it anytime between a configuration stage to a
                 # post-package stage
-                if not ensureDirectoryExists(self.opts.symbols_dir):
+                if not ensure_dir_exists(self.opts.symbols_dir):
                     return False
 
                 target = self.opts.target_action
@@ -218,22 +218,22 @@ in the working directory or the provided root directory:
                         continue
 
                     # prepare environment
-                    pkg_env = self._stageEnv(pkg, script_env)
+                    pkg_env = self._stage_env(pkg, script_env)
 
                     # extracting
                     flag = pkg.__ff_extract
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
                         # none/local-vcs-type packages do not need to fetch
                         if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                             pass
-                        elif not extractStage(self, pkg):
+                        elif not extract_stage(self, pkg):
                             return False
                         # now that the extraction stage has (most likely)
                         # created a build directory, ensure the output directory
                         # exists as well (for file flags and other content)
-                        if not ensureDirectoryExists(pkg.build_output_dir):
+                        if not ensure_dir_exists(pkg.build_output_dir):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
                     if gaction == GlobalAction.EXTRACT:
                         continue
@@ -242,13 +242,13 @@ in the working directory or the provided root directory:
 
                     # patching
                     flag = pkg.__ff_patch
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
                         # local-vcs-type packages do not need to patch
                         if pkg.vcs_type is VcsType.LOCAL:
                             pass
-                        elif not patchStage(self, pkg, pkg_env):
+                        elif not patch_stage(self, pkg, pkg_env):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
                     if gaction == GlobalAction.PATCH:
                         continue
@@ -261,10 +261,10 @@ in the working directory or the provided root directory:
                     # pull license assets from the extract package content.
                     # license(s)
                     flag = pkg.__ff_license
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        if not self._stageLicense(pkg):
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
+                        if not self._stage_license(pkg):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
 
                     if pkg.license_files:
@@ -278,18 +278,18 @@ in the working directory or the provided root directory:
 
                     # bootstrapping
                     flag = pkg.__ff_bootstrap
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        if not bootstrapStage(self, pkg, pkg_env):
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
+                        if not bootstrap_stage(self, pkg, pkg_env):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
 
                     # configuring
                     flag = pkg.__ff_configure
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        if not configureStage(self, pkg, pkg_env):
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
+                        if not configure_stage(self, pkg, pkg_env):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
                     if pa in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE):
                         if pkg.name == target:
@@ -297,10 +297,10 @@ in the working directory or the provided root directory:
 
                     # building
                     flag = pkg.__ff_build
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        if not buildStage(self, pkg, pkg_env):
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
+                        if not build_stage(self, pkg, pkg_env):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
                     if pa in (PkgAction.BUILD, PkgAction.REBUILD):
                         if pkg.name == target:
@@ -308,20 +308,20 @@ in the working directory or the provided root directory:
 
                     # installing
                     flag = pkg.__ff_install
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        if not installStage(self, pkg, pkg_env):
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
+                        if not install_stage(self, pkg, pkg_env):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
                     # (note: re-install requests will re-invoke package-specific
                     # post-processing)
 
                     # package-specific post-processing
                     flag = pkg.__ff_post
-                    if checkFileFlag(flag) == FileFlag.NO_EXIST:
-                        if not postStage(self, pkg, pkg_env):
+                    if check_file_flag(flag) == FileFlag.NO_EXIST:
+                        if not post_stage(self, pkg, pkg_env):
                             return False
-                        if processFileFlag(True, flag) != FileFlag.CONFIGURED:
+                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
                     if pa in (PkgAction.INSTALL, PkgAction.REINSTALL):
                         if pkg.name == target:
@@ -342,13 +342,13 @@ has failed. Ensure the following path is accessible for this user:
         if gaction == GlobalAction.LICENSES or not is_action:
             note('generating license information...')
 
-            if not self._performLicenseGeneration(license_files):
+            if not self._perform_license_generation(license_files):
                 return False
 
         # perform post-processing and completion message if not performing a
         # specific action
         if not is_action:
-            if not self._postProcessing(script_env):
+            if not self._post_processing(script_env):
                 err('failed to perform post-processing')
                 return False
 
@@ -357,7 +357,7 @@ has failed. Ensure the following path is accessible for this user:
 
         return True
 
-    def _stageInit(self, pkg):
+    def _stage_init(self, pkg):
         """
         initialize the package environment for processing
 
@@ -389,22 +389,22 @@ has failed. Ensure the following path is accessible for this user:
         # invoked again.
         if pkg.name == self.opts.target_action:
             if self.opts.pkg_action == PkgAction.REBUILD:
-                pathRemove(pkg.__ff_build)
-                pathRemove(pkg.__ff_install)
-                pathRemove(pkg.__ff_post)
+                path_remove(pkg.__ff_build)
+                path_remove(pkg.__ff_install)
+                path_remove(pkg.__ff_post)
             elif self.opts.pkg_action == PkgAction.RECONFIGURE:
-                pathRemove(pkg.__ff_bootstrap)
-                pathRemove(pkg.__ff_configure)
-                pathRemove(pkg.__ff_build)
-                pathRemove(pkg.__ff_install)
-                pathRemove(pkg.__ff_post)
+                path_remove(pkg.__ff_bootstrap)
+                path_remove(pkg.__ff_configure)
+                path_remove(pkg.__ff_build)
+                path_remove(pkg.__ff_install)
+                path_remove(pkg.__ff_post)
             elif self.opts.pkg_action == PkgAction.REINSTALL:
-                pathRemove(pkg.__ff_install)
-                pathRemove(pkg.__ff_post)
+                path_remove(pkg.__ff_install)
+                path_remove(pkg.__ff_post)
 
         return True
 
-    def _stageEnv(self, pkg, script_env):
+    def _stage_env(self, pkg, script_env):
         """
         prepare environment variables for a specific package processing
 
@@ -451,7 +451,7 @@ has failed. Ensure the following path is accessible for this user:
 
         return pkg_env
 
-    def _stageLicense(self, pkg):
+    def _stage_license(self, pkg):
         """
         process license files for a specific package processing
 
@@ -474,7 +474,7 @@ has failed. Ensure the following path is accessible for this user:
 
         # ensure package-specific license directory exists
         pkg_license_dir = os.path.join(self.opts.license_dir, pkg.nv)
-        if not ensureDirectoryExists(pkg_license_dir):
+        if not ensure_dir_exists(pkg_license_dir):
             return False
 
         # copy over each license files
@@ -482,13 +482,13 @@ has failed. Ensure the following path is accessible for this user:
             src = os.path.join(pkg.build_dir, file)
             dst = os.path.join(pkg_license_dir, file)
 
-            if not pathCopy(src, dst, critical=False):
+            if not path_copy(src, dst, critical=False):
                 err('unable to copy license information: ' + pkg.name)
                 return False
 
         return True
 
-    def _getPackageNames(self, settings):
+    def _get_package_names(self, settings):
         """
         acquire list of project package names to process
 
@@ -506,17 +506,17 @@ has failed. Ensure the following path is accessible for this user:
             package names
         """
         pkg_names = []
-        badPkgsValue = False
+        bad_pkgs_value = False
 
         if CONF_KEY_PKGS in settings:
-            pkg_names = interpretStrings(settings[CONF_KEY_PKGS])
+            pkg_names = interpret_strings(settings[CONF_KEY_PKGS])
             if pkg_names is None:
-                badPkgsValue = True
+                bad_pkgs_value = True
 
         # remove duplicates (but maintain pre-sorted ordered)
         pkg_names = OrderedDict.fromkeys(pkg_names)
 
-        if badPkgsValue:
+        if bad_pkgs_value:
             err('bad package list definition')
             err("""\
 The configuration file does not have a properly formed list of defined packages.
@@ -538,7 +538,7 @@ list exists with the name of packages to be part of the releng process:
 
         return pkg_names
 
-    def _handleCleanRequest(self, proper=False):
+    def _handle_clean_request(self, proper=False):
         """
         handle a global clean request
 
@@ -552,26 +552,26 @@ list exists with the name of packages to be part of the releng process:
         """
         if proper:
             verbose('removing output directory')
-            pathRemove(self.opts.out_dir)
+            path_remove(self.opts.out_dir)
 
             verbose('removing file flags')
-            pathRemove(self.opts.ff_local_srcs)
-            pathRemove(self.opts.ff_devmode)
+            path_remove(self.opts.ff_local_srcs)
+            path_remove(self.opts.ff_devmode)
         else:
             verbose('removing build directory')
-            pathRemove(self.opts.build_dir)
+            path_remove(self.opts.build_dir)
             verbose('removing host directory')
-            pathRemove(self.opts.host_dir)
+            path_remove(self.opts.host_dir)
             verbose('removing license directory')
-            pathRemove(self.opts.license_dir)
+            path_remove(self.opts.license_dir)
             verbose('removing staging directory')
-            pathRemove(self.opts.staging_dir)
+            path_remove(self.opts.staging_dir)
             verbose('removing symbols directory')
-            pathRemove(self.opts.symbols_dir)
+            path_remove(self.opts.symbols_dir)
             verbose('removing target directory')
-            pathRemove(self.opts.target_dir)
+            path_remove(self.opts.target_dir)
 
-    def _performLicenseGeneration(self, license_files):
+    def _perform_license_generation(self, license_files):
         """
         generate a license file for the project
 
@@ -588,7 +588,7 @@ list exists with the name of packages to be part of the releng process:
             ``True`` if the license file was generated; ``False`` if the license
             file could not be generated
         """
-        if not ensureDirectoryExists(self.opts.license_dir):
+        if not ensure_dir_exists(self.opts.license_dir):
             return False
 
         license_file = os.path.join(self.opts.license_dir, 'licenses')
@@ -624,7 +624,7 @@ list exists with the name of packages to be part of the releng process:
 
         return True
 
-    def _postProcessing(self, env):
+    def _post_processing(self, env):
         """
         perform post-processing of a release engineering process
 
@@ -641,14 +641,14 @@ list exists with the name of packages to be part of the releng process:
             post-processing script exists; ``False`` if an error has occurred
             when processing the post-processing script
         """
-        script, script_exists = optFile(self.opts.post_point)
+        script, script_exists = opt_file(self.opts.post_point)
 
         if script_exists:
             verbose('performing post-processing...')
 
             # ensure images directory exists (as the post-processing script will
             # most likely populate it)
-            if not ensureDirectoryExists(self.opts.images_dir):
+            if not ensure_dir_exists(self.opts.images_dir):
                 return False
 
             if not run_script(script, env, subject='post-processing'):
@@ -658,7 +658,7 @@ list exists with the name of packages to be part of the releng process:
 
         return True
 
-    def _prepareScriptEnvironment(self, script_env, action):
+    def _prepare_script_environment(self, script_env, action):
         """
         prepare the script environment with common project values
 
@@ -712,24 +712,24 @@ list exists with the name of packages to be part of the releng process:
         script_env['err'] = err
         script_env['log'] = log
         script_env['note'] = note
-        script_env['releng_copy'] = pathCopy
-        script_env['releng_env'] = setEnvValue
+        script_env['releng_copy'] = path_copy
+        script_env['releng_env'] = set_env_value
         script_env['releng_execute'] = execute
-        script_env['releng_exists'] = pathExists
-        script_env['releng_exit'] = releng_exit
+        script_env['releng_exists'] = path_exists
+        script_env['releng_exit'] = platform_exit
         script_env['releng_expand'] = expand
         script_env['releng_join'] = os.path.join
-        script_env['releng_mkdir'] = ensureDirectoryExists
-        script_env['releng_move'] = pathMove
-        script_env['releng_remove'] = pathRemove
-        script_env['releng_tmpdir'] = generateTempDir
+        script_env['releng_mkdir'] = ensure_dir_exists
+        script_env['releng_move'] = path_move
+        script_env['releng_remove'] = path_remove
+        script_env['releng_tmpdir'] = generate_temp_dir
         script_env['releng_touch'] = touch
-        script_env['releng_wd'] = interimWorkingDirectory
+        script_env['releng_wd'] = interim_working_dir
         script_env['success'] = success
         script_env['verbose'] = verbose
         script_env['warn'] = warn
 
-    def _processFileFlags(self):
+    def _process_file_flags(self):
         """
         check or configure known file flags
 
@@ -747,7 +747,7 @@ list exists with the name of packages to be part of the releng process:
         configured = False
         err = False
 
-        state = processFileFlag(opts.devmode, opts.ff_devmode)
+        state = process_file_flag(opts.devmode, opts.ff_devmode)
         if state == FileFlag.CONFIGURED:
             success('configured root for development mode')
             configured = True
@@ -757,7 +757,7 @@ list exists with the name of packages to be part of the releng process:
         if opts.devmode:
             verbose('development mode enabled')
 
-        state = processFileFlag(opts.local_srcs, opts.ff_local_srcs)
+        state = process_file_flag(opts.local_srcs, opts.ff_local_srcs)
         if state == FileFlag.CONFIGURED:
             success('configured root for local-sources mode')
             configured = True
@@ -774,7 +774,7 @@ list exists with the name of packages to be part of the releng process:
         else:
             return None
 
-    def _processSettings(self, settings):
+    def _process_settings(self, settings):
         """
         process global settings provided from the user
 
@@ -791,7 +791,7 @@ list exists with the name of packages to be part of the releng process:
             flags has completed with no errors; ``False`` if the request to
             configure file flags failed to be performed
         """
-        def notifyInvalidValue(key, expected):
+        def notify_invalid_value(key, expected):
             err('invalid configuration value provided')
             err("""\
 The configuration file defines a key with an unexpected type. Correct the
@@ -805,83 +805,83 @@ following key entry and re-try again.
             if callable(settings[CONF_KEY_CACHE_EXT_TRANSFORM]):
                 cet = settings[CONF_KEY_CACHE_EXT_TRANSFORM]
             if cet is None:
-                notifyInvalidValue(CONF_KEY_CACHE_EXT_TRANSFORM, 'callable')
+                notify_invalid_value(CONF_KEY_CACHE_EXT_TRANSFORM, 'callable')
                 return False
             self.opts.cache_ext_transform = cet
 
         if CONF_KEY_DEFINTERN in settings:
             is_default_internal = settings[CONF_KEY_DEFINTERN]
             if not isinstance(is_default_internal, bool):
-                notifyInvalidValue(CONF_KEY_DEFINTERN, 'bool')
+                notify_invalid_value(CONF_KEY_DEFINTERN, 'bool')
                 return False
             self.opts.default_internal_pkgs = is_default_internal
 
         if CONF_KEY_LICENSE_HEADER in settings:
-            license_header = interpretString(settings[CONF_KEY_LICENSE_HEADER])
+            license_header = interpret_string(settings[CONF_KEY_LICENSE_HEADER])
             if license_header is None:
-                notifyInvalidValue(CONF_KEY_LICENSE_HEADER, 'str')
+                notify_invalid_value(CONF_KEY_LICENSE_HEADER, 'str')
                 return False
             self.opts.license_header = license_header
 
         if CONF_KEY_OVERRIDE_REV in settings:
-            orz = interpretDictionaryStrings(settings[CONF_KEY_OVERRIDE_REV])
+            orz = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_REV])
             if orz is None:
-                notifyInvalidValue(CONF_KEY_OVERRIDE_REV, 'dict(str,str)')
+                notify_invalid_value(CONF_KEY_OVERRIDE_REV, 'dict(str,str)')
                 return False
             self.opts.revision_override = orz
 
         if CONF_KEY_OVERRIDE_SITES in settings:
-            osz = interpretDictionaryStrings(settings[CONF_KEY_OVERRIDE_SITES])
+            osz = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_SITES])
             if osz is None:
-                notifyInvalidValue(CONF_KEY_OVERRIDE_SITES, 'dict(str,str)')
+                notify_invalid_value(CONF_KEY_OVERRIDE_SITES, 'dict(str,str)')
                 return False
             self.opts.sites_override = osz
 
         if CONF_KEY_OVERRIDE_TOOLS in settings:
-            otz = interpretDictionaryStrings(settings[CONF_KEY_OVERRIDE_TOOLS])
+            otz = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_TOOLS])
             if otz is None:
-                notifyInvalidValue(CONF_KEY_OVERRIDE_TOOLS, 'dict(str,str)')
+                notify_invalid_value(CONF_KEY_OVERRIDE_TOOLS, 'dict(str,str)')
                 return False
             self.opts.extract_override = otz
 
         if CONF_KEY_QUIRKS in settings:
-            quirks = interpretStrings(settings[CONF_KEY_QUIRKS])
+            quirks = interpret_strings(settings[CONF_KEY_QUIRKS])
             if quirks is None:
-                notifyInvalidValue(CONF_KEY_QUIRKS, 'str or list(str)')
+                notify_invalid_value(CONF_KEY_QUIRKS, 'str or list(str)')
                 return False
             self.opts.quirks.extend(quirks)
             for quirk in quirks:
                 verbose('configuration quirk applied: ' + quirk)
 
         if CONF_KEY_SYSROOT_PREFIX in settings:
-            sysroot_prefix = interpretString(settings[CONF_KEY_SYSROOT_PREFIX])
+            sysroot_prefix = interpret_string(settings[CONF_KEY_SYSROOT_PREFIX])
             if sysroot_prefix is None:
-                notifyInvalidValue(CONF_KEY_SYSROOT_PREFIX, 'str')
+                notify_invalid_value(CONF_KEY_SYSROOT_PREFIX, 'str')
                 return False
             if not sysroot_prefix.startswith('/'):
                 sysroot_prefix = '/' + sysroot_prefix
             self.opts.sysroot_prefix = sysroot_prefix
 
         if CONF_KEY_URL_MIRROR in settings:
-            url_mirror = interpretString(settings[CONF_KEY_URL_MIRROR])
+            url_mirror = interpret_string(settings[CONF_KEY_URL_MIRROR])
             if url_mirror is None:
-                notifyInvalidValue(CONF_KEY_URL_MIRROR, 'str')
+                notify_invalid_value(CONF_KEY_URL_MIRROR, 'str')
                 return False
             self.opts.url_mirror = url_mirror
 
         if CONF_KEY_EXTEN_PKGS in settings:
-            epd = interpretStrings(settings[CONF_KEY_EXTEN_PKGS])
+            epd = interpret_strings(settings[CONF_KEY_EXTEN_PKGS])
             if epd is None:
-                notifyInvalidValue(CONF_KEY_EXTEN_PKGS, 'str or list(str)')
+                notify_invalid_value(CONF_KEY_EXTEN_PKGS, 'str or list(str)')
                 return False
             self.opts.extern_pkg_dirs = epd
 
         ext_names = []
         if CONF_KEY_EXTENSIONS in settings:
-            ext_names = interpretStrings(settings[CONF_KEY_EXTENSIONS])
+            ext_names = interpret_strings(settings[CONF_KEY_EXTENSIONS])
             if ext_names is None:
-                notifyInvalidValue(CONF_KEY_EXTENSIONS, 'str or list(str)')
+                notify_invalid_value(CONF_KEY_EXTENSIONS, 'str or list(str)')
                 return False
 
-        self.registry.loadAllExtensions(ext_names)
+        self.registry.load_all_extensions(ext_names)
         return True
