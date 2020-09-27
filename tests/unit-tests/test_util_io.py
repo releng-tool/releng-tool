@@ -15,7 +15,13 @@ from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import touch
 from tests import RelengTestUtil
 import os
+import sys
 import unittest
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 ASSETS_DIR = 'assets'
 
@@ -92,6 +98,42 @@ class TestUtilIo(unittest.TestCase):
 
         result = execute(['an_unknown_command'], quiet=True, critical=False)
         self.assertFalse(result)
+
+        # verify output
+        stream = StringIO()
+        with RelengTestUtil.redirect_stdout(stream):
+            test_cmd = [sys.executable, '-c', 'print("Hello")']
+            result = execute(test_cmd, critical=False)
+            self.assertTrue(result)
+        self.assertEqual(stream.getvalue().strip(), 'Hello')
+
+        # verify quiet mode
+        stream = StringIO()
+        with RelengTestUtil.redirect_stdout(stream):
+            test_cmd = [sys.executable, '-c', 'print("Hello")']
+            result = execute(test_cmd, quiet=True, critical=False)
+            self.assertTrue(result)
+        self.assertEqual(stream.getvalue().strip(), '')
+
+        # verify capture mode which will be silent
+        stream = StringIO()
+        out = []
+        with RelengTestUtil.redirect_stdout(stream):
+            test_cmd = [sys.executable, '-c', 'print("Hello")']
+            result = execute(test_cmd, critical=False, capture=out)
+            self.assertTrue(result)
+        self.assertEqual(''.join(out), 'Hello')
+        self.assertEqual(stream.getvalue().strip(), '')
+
+        # verify capture mode that is also verbose
+        stream = StringIO()
+        out = []
+        with RelengTestUtil.redirect_stdout(stream):
+            test_cmd = [sys.executable, '-c', 'print("Hello")']
+            result = execute(test_cmd, quiet=False, critical=False, capture=out)
+            self.assertTrue(result)
+        self.assertEqual(''.join(out), 'Hello')
+        self.assertEqual(stream.getvalue().strip(), 'Hello')
 
     def test_utilio_ise(self):
         provided = 'my-file.txt'

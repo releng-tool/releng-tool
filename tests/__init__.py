@@ -5,6 +5,7 @@ from contextlib import contextmanager
 from releng_tool.util.io import generate_temp_dir
 from difflib import unified_diff
 from io import open
+import sys
 
 class RelengTestUtil:
     """
@@ -70,3 +71,24 @@ class RelengTestUtil:
 
         with generate_temp_dir() as work_dir:
             yield work_dir
+
+    @staticmethod
+    @contextmanager
+    def redirect_stdout(new_target):
+        """
+        temporarily redirect stdout to another instance
+
+        This call will temporarily redirect stdout to the provided instance
+        until the end of the context, where the previous `stdout` target will be
+        restored.
+
+        Args:
+            new_target: the instance to map stdout to
+        """
+
+        _ = sys.stdout
+        try:
+            sys.stdout = new_target
+            yield
+        finally:
+            sys.stdout = _

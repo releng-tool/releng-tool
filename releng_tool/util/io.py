@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2020 releng-tool
 
+from __future__ import unicode_literals
 from .log import *
 from contextlib import contextmanager
 from distutils.dir_util import DistutilsFileError
@@ -77,7 +78,7 @@ def ensure_dir_exists(dir_, quiet=False):
             return False
     return True
 
-def execute(args, cwd=None, env=None, env_update=None, quiet=False,
+def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         critical=True, poll=False, capture=None):
     """
     execute the provided command/arguments
@@ -155,6 +156,11 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
             final_env = os.environ.copy()
         final_env.update(env_update)
 
+    # if quiet is undefined, default its state based on whether or not the
+    # caller wishes to capture output to a list
+    if quiet is None:
+        quiet = capture is not None
+
     success = False
     if args:
         # attempt to always invoke using a script's interpreter (if any) to
@@ -190,7 +196,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=False,
                         decoded_line = line.decode('utf_8')
                         if c == b'\n' and capture is not None:
                             capture.append(decoded_line)
-                        if not capture is not None:
+                        if not quiet:
                             sys.stdout.write(decoded_line)
                             sys.stdout.flush()
                         del line[:]
