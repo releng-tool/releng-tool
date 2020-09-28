@@ -589,7 +589,7 @@ def _path_move(src, dst):
         st = os.stat(src)
         if not (st.st_mode & stat.S_IRUSR) or not (st.st_mode & stat.S_IWUSR):
             os.chmod(src, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
-    except:
+    except OSError:
         pass
 
     entries = os.listdir(src)
@@ -683,7 +683,7 @@ def _path_remove_dir(dir_):
         st = os.stat(dir_)
         if not (st.st_mode & stat.S_IRUSR) or not (st.st_mode & stat.S_IWUSR):
             os.chmod(dir_, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
-    except:
+    except OSError:
         pass
 
     # remove directory contents (if any)
@@ -733,7 +733,7 @@ def _path_remove_file(path):
 
             os.chmod(path, st.st_mode | stat.S_IWUSR)
             os.remove(path)
-        except:
+        except OSError:
             raise e
 
 def prepare_arguments(args):
@@ -899,5 +899,5 @@ def touch(file):
         with open(file, 'a'):
             os.utime(file, None)
         return True
-    except:
+    except OSError:
         return False
