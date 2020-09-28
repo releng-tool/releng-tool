@@ -10,10 +10,10 @@ from ..defs import CONF_KEY_LICENSE_HEADER
 from ..defs import CONF_KEY_OVERRIDE_REV
 from ..defs import CONF_KEY_OVERRIDE_SITES
 from ..defs import CONF_KEY_OVERRIDE_TOOLS
+from ..defs import CONF_KEY_PKGS
 from ..defs import CONF_KEY_QUIRKS
 from ..defs import CONF_KEY_SYSROOT_PREFIX
 from ..defs import CONF_KEY_URL_MIRROR
-from ..defs import CONF_KEY_PKGS
 from ..defs import GlobalAction
 from ..defs import PkgAction
 from ..defs import VcsType
