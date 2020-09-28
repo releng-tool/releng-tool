@@ -70,6 +70,7 @@ class GlobalAction(Enum):
         CLEAN: clean the working state
         EXTRACT: process all packages through extraction stage
         FETCH: process all packages through fetch stage
+        INIT: initialize example structure
         LICENSES: generate license information for a project
         MRPROPER: pristine state clean (ex. configurations)
         PATCH: process all packages through patch stage
@@ -78,9 +79,10 @@ class GlobalAction(Enum):
     CLEAN = 1
     EXTRACT = 2
     FETCH = 3
-    LICENSES = 4
-    MRPROPER = 5
-    PATCH = 6
+    INIT = 4
+    LICENSES = 5
+    MRPROPER = 6
+    PATCH = 7
 
 class PkgAction(Enum):
     """

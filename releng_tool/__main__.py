@@ -141,6 +141,7 @@ def usage():
  clean                     clean the output directory
  extract                   extract all packages
  fetch                     fetch all packages
+ init                      initialize a root with an example structure
  licenses                  generate license information for a project
  mrproper                  pristine clean of the releng project
  patch                     ensure all packages have done a patch stage

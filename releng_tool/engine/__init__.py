@@ -53,6 +53,7 @@ from .build import stage as build_stage
 from .configure import stage as configure_stage
 from .extract import stage as extract_stage
 from .fetch import stage as fetch_stage
+from .init import initialize_sample
 from .install import stage as install_stage
 from .patch import stage as patch_stage
 from .post import stage as post_stage
@@ -93,6 +94,10 @@ class RelengEngine:
             issue has occurred when interpreting or running the user's
             configuration/package definitions
         """
+        gaction = self.opts.gbl_action
+        if gaction == GlobalAction.INIT:
+            return initialize_sample(self.opts)
+
         self.start_time = datetime.now().replace(microsecond=0)
         verbose("loading user's configuration...")
         gbls = {
@@ -137,7 +142,6 @@ in the working directory or the provided root directory:
             verbose('configuration overrides file loaded')
 
         # handle cleaning requests
-        gaction = self.opts.gbl_action
         if gaction == GlobalAction.CLEAN or gaction == GlobalAction.MRPROPER:
             self._handle_clean_request(gaction == GlobalAction.MRPROPER)
             return True
