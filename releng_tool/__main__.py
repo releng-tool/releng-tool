@@ -4,7 +4,10 @@
 from . import __version__ as releng_version
 from .engine import RelengEngine
 from .opts import RelengEngineOptions
-from .util.log import *
+from .util.log import debug
+from .util.log import releng_log_configuration
+from .util.log import verbose
+from .util.log import warn
 import argparse
 import os
 import sys

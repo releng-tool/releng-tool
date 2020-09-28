@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ..util.io import execute
-from ..util.log import *
+from ..util.log import debug
+from ..util.log import err
 from ..util.string import is_sequence_not_string
 import re
 import os

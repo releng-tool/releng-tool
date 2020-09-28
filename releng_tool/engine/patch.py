@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
-from ..tool.patch import *
-from ..util.log import *
+from ..tool.patch import PATCH
+from ..util.log import err
+from ..util.log import note
+from ..util.log import verbose
 from glob import glob
 from runpy import run_path
 import os

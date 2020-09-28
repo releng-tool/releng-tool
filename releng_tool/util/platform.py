@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
-from .log import *
+from .log import err
 import sys
 
 def platform_exit(msg=None, code=None):

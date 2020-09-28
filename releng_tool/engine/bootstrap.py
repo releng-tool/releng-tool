@@ -4,7 +4,7 @@
 from ..util.io import interim_working_dir
 from ..util.io import opt_file
 from ..util.io import run_script
-from ..util.log import *
+from ..util.log import verbose
 import os
 import sys
 

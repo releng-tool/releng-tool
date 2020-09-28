@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
-from ..tool.bzr import *
+from ..tool.bzr import BZR
 from ..util.io import ensure_dir_exists
-from ..util.log import *
+from ..util.log import err
+from ..util.log import log
+from ..util.log import note
 import os
 import sys
 

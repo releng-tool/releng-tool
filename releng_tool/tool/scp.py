@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from . import RelengTool
-from ..util.log import *
+from ..util.log import debug
 import distutils.spawn
 
 #: executable used to run scp commands

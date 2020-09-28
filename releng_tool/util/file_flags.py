@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 # A flag (or option) can be driven by the existence of a file (i.e. a file
 # flag). When an instance operates with file flags, two modes are approached in
@@ -11,7 +11,7 @@
 # the running instance shutdown.
 
 from .io import touch
-from .log import *
+from .log import err
 from enum import Enum
 import os
 

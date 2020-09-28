@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
-from ..tool.scp import *
-from ..util.log import *
+from ..tool.scp import SCP
+from ..util.log import err
+from ..util.log import log
+from ..util.log import note
 import sys
 
 def fetch(opts):

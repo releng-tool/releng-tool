@@ -2,7 +2,21 @@
 # Copyright 2018-2020 releng-tool
 
 from .. import __version__ as releng_version
-from ..defs import *
+from ..defs import CONF_KEY_CACHE_EXT_TRANSFORM
+from ..defs import CONF_KEY_DEFINTERN
+from ..defs import CONF_KEY_EXTENSIONS
+from ..defs import CONF_KEY_EXTEN_PKGS
+from ..defs import CONF_KEY_LICENSE_HEADER
+from ..defs import CONF_KEY_OVERRIDE_REV
+from ..defs import CONF_KEY_OVERRIDE_SITES
+from ..defs import CONF_KEY_OVERRIDE_TOOLS
+from ..defs import CONF_KEY_QUIRKS
+from ..defs import CONF_KEY_SYSROOT_PREFIX
+from ..defs import CONF_KEY_URL_MIRROR
+from ..defs import CONF_KEY_PKGS
+from ..defs import GlobalAction
+from ..defs import PkgAction
+from ..defs import VcsType
 from ..packages import RelengPackageManager
 from ..registry import RelengRegistry
 from ..util.env import extend_script_env
@@ -22,7 +36,13 @@ from ..util.io import path_move
 from ..util.io import path_remove
 from ..util.io import run_script
 from ..util.io import touch
-from ..util.log import *
+from ..util.log import debug
+from ..util.log import err
+from ..util.log import log
+from ..util.log import note
+from ..util.log import success
+from ..util.log import verbose
+from ..util.log import warn
 from ..util.platform import platform_exit
 from ..util.string import expand
 from ..util.string import interpret_dictionary_strings

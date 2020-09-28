@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
-from ..tool.hg import *
-from ..util.log import *
+from ..tool.hg import HG
+from ..util.log import err
+from ..util.log import log
 
 def extract(opts):
     """

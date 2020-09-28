@@ -2,7 +2,7 @@
 # Copyright 2018-2020 releng-tool
 
 from ..api import RelengExtractOptions
-from ..defs import *
+from ..defs import VcsType
 from ..extract.archive import extract as extract_archive
 from ..extract.git import extract as extract_git
 from ..extract.mercurial import extract as extract_mercurial
@@ -12,7 +12,10 @@ from ..util.hash import verify as verify_hashes
 from ..util.io import interim_working_dir
 from ..util.io import generate_temp_dir
 from ..util.io import path_remove
-from ..util.log import *
+from ..util.log import debug
+from ..util.log import err
+from ..util.log import note
+from ..util.log import warn
 import os
 import shutil
 import sys

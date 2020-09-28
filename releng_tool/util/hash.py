@@ -2,7 +2,9 @@
 # Copyright 2018-2020 releng-tool
 
 from __future__ import absolute_import
-from .log import *
+from .log import debug
+from .log import err
+from .log import warn
 from enum import Enum
 from io import open
 import hashlib

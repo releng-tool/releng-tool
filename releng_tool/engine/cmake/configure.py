@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ...defs import PackageInstallType
-from ...tool.cmake import *
+from ...tool.cmake import CMAKE
 from ...util.io import interim_working_dir
 from ...util.io import prepare_arguments
 from ...util.io import prepare_definitions
-from ...util.log import *
+from ...util.log import err
 from ...util.string import expand
 from os.path import join
 

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ..api import RelengBuildOptions
-from ..defs import *
+from ..defs import PackageType
 from ..util.api import replicate_package_attribs
 from ..util.io import interim_working_dir
-from ..util.log import *
+from ..util.log import err
+from ..util.log import note
 from .autotools.build import build as build_autotools
 from .cmake.build import build as build_cmake
 from .python.build import build as build_python

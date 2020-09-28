@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from . import __version__ as releng_version
-from .api import *
-from .util.log import *
+from .api import RelengInvalidSetupException
+from .api import RelengRegistryInterface
+from .api import RelengVersionNotSupportedException
+from .util.log import debug
+from .util.log import verbose
+from .util.log import warn
 from .util.string import interpret_string
 from importlib import import_module
 

@@ -2,7 +2,10 @@
 # Copyright 2018-2020 releng-tool
 
 from __future__ import unicode_literals
-from .log import *
+from .log import debug
+from .log import err
+from .log import verbose
+from .log import warn
 from contextlib import contextmanager
 from distutils.dir_util import DistutilsFileError
 from distutils.dir_util import copy_tree

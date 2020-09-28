@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2020 releng-tool
 
-from ...util.log import *
+from ...util.log import verbose
 from ...util.io import opt_file
 from ...util.io import run_script
 import os

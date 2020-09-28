@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ..api import RelengFetchOptions
-from ..defs import *
+from ..defs import VcsType
 from ..fetch.bzr import fetch as fetch_bzr
 from ..fetch.cvs import fetch as fetch_cvs
 from ..fetch.git import fetch as fetch_git
@@ -17,7 +17,10 @@ from ..util.io import ensure_dir_exists
 from ..util.io import generate_temp_dir
 from ..util.io import interim_working_dir
 from ..util.io import path_remove
-from ..util.log import *
+from ..util.log import debug
+from ..util.log import err
+from ..util.log import verbose
+from ..util.log import warn
 import os
 import shutil
 

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2020 releng-tool
 
 from ..api import RelengInstallOptions
-from ..defs import *
+from ..defs import PackageInstallType
+from ..defs import PackageType
 from ..util.api import package_install_type_to_api_type
 from ..util.api import replicate_package_attribs
 from ..util.io import interim_working_dir
-from ..util.log import *
+from ..util.log import err
+from ..util.log import note
 from .autotools.install import install as install_autotools
 from .cmake.install import install as install_cmake
 from .python.install import install as install_python
