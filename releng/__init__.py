@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2020 releng-tool
+# flake8: noqa
 
 from releng_tool import *
 

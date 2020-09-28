@@ -20,6 +20,7 @@ __version__ = '0.6.0.dev0'
 # Note: changes introduced here should be synonymous with engine-shared helpers:
 #        RelengEngine._prepareSharedEnvironment
 
+# flake8: noqa
 from .util.env import set_env_value as releng_env
 from .util.io import ensure_dir_exists as releng_mkdir
 from .util.io import execute as releng_execute
