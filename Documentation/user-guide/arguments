@@ -35,6 +35,9 @@ The following outlines available actions:
 |                       | packages up to the fetch phase (inclusive; see also  |
 |                       | `offline builds`_).                                  |
 +-----------------------+------------------------------------------------------+
+| ``init``              | Initialize an empty root directory with a sample     |
+|                       | project.                                             |
++-----------------------+------------------------------------------------------+
 | ``licenses``          | A request to generate all license information for    |
 |                       | the project. Note that license information requires  |
 |                       | acquiring license documents from packages.           |
