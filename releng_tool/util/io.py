@@ -416,7 +416,7 @@ def path_copy(src, dst, quiet=False, critical=True):
 
     Args:
         src: the source directory or file
-        dst: the destination directory or file\* (\*if ``src`` is a file)
+        dst: the destination directory or file\\* (\\*if ``src`` is a file)
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
 
@@ -507,7 +507,7 @@ def path_move(src, dst, quiet=False, critical=True):
 
     Args:
         src: the source directory or file
-        dst: the destination directory or file\* (\*if ``src`` is a file)
+        dst: the destination directory or file\\* (\\*if ``src`` is a file)
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
 
