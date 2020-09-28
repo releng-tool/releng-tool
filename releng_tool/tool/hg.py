@@ -24,4 +24,4 @@ HG_EXTEND_ENV = {
 
 #: mercurial host tool helper
 HG = RelengTool(HG_COMMAND,
-    env_sanitize=HG_SANITIZE_ENV_KEYS, env_include=HG_EXTEND_ENV) 
+    env_sanitize=HG_SANITIZE_ENV_KEYS, env_include=HG_EXTEND_ENV)

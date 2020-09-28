@@ -7,4 +7,4 @@ from . import RelengTool
 AUTORECONF_COMMAND = 'autoreconf'
 
 #: autoreconf host tool helper
-AUTORECONF = RelengTool(AUTORECONF_COMMAND) 
+AUTORECONF = RelengTool(AUTORECONF_COMMAND)

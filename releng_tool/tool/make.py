@@ -7,4 +7,4 @@ from . import RelengTool
 MAKE_COMMAND = 'make'
 
 #: make host tool helper
-MAKE = RelengTool(MAKE_COMMAND) 
+MAKE = RelengTool(MAKE_COMMAND)

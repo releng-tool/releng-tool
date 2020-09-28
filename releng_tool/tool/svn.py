@@ -12,4 +12,4 @@ SVN_SANITIZE_ENV_KEYS = [
 ]
 
 #: svn host tool helper
-SVN = RelengTool(SVN_COMMAND, env_sanitize=SVN_SANITIZE_ENV_KEYS) 
+SVN = RelengTool(SVN_COMMAND, env_sanitize=SVN_SANITIZE_ENV_KEYS)

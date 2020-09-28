@@ -7,4 +7,4 @@ from . import RelengTool
 CMAKE_COMMAND = 'cmake'
 
 #: cmake host tool helper
-CMAKE = RelengTool(CMAKE_COMMAND) 
+CMAKE = RelengTool(CMAKE_COMMAND)
