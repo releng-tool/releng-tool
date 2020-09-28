@@ -61,9 +61,9 @@ class GlobalAction(Enum):
     """
     specific stage action to perform
 
-    A user can request a (global) action to perform over the default process. For
-    example, a user can request to "fetch" and only the fetching stage will occur
-    for registered packages.
+    A user can request a (global) action to perform over the default process.
+    For example, a user can request to "fetch" and only the fetching stage will
+    occur for registered packages.
 
     Attributes:
         UNKNOWN: unknown action
@@ -86,12 +86,13 @@ class PkgAction(Enum):
     """
     package-specific stage action to perform
 
-    A user can request a package action to perform over the default process. When a
-    package-specific action is requested, the process will perform all dependencies
-    for the target action's stage before completing the target stage. For example, a
-    user can request to perform a package's "extract" stage, which will result in
-    ensure the package's fetch stage is complete (and possibility other package
-    dependencies) performing (and stopping after) the extraction stage.
+    A user can request a package action to perform over the default process.
+    When a package-specific action is requested, the process will perform all
+    dependencies for the target action's stage before completing the target
+    stage. For example, a user can request to perform a package's "extract"
+    stage, which will result in ensure the package's fetch stage is complete
+    (and possibility other package dependencies) performing (and stopping after)
+    the extraction stage.
 
     Attributes:
         UNKNOWN: unknown action
@@ -142,8 +143,8 @@ class PackageInstallType(Enum):
     """
     package install types
 
-    Defines supported package installation types for deciding which the location to
-    push resources during the installation phase.
+    Defines supported package installation types for deciding which the location
+    to push resources during the installation phase.
 
     Attributes:
         UNKNOWN: unknown type
