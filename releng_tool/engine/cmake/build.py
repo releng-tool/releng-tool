@@ -57,6 +57,8 @@ def build(opts):
             cmake_args.append('--parallel')
             if opts.jobsconf > 0:
                 cmake_args.append(str(opts.jobs))
+    else:
+        verbose('cmake parallel jobs disabled by quirk')
 
     if not CMAKE.execute(cmake_args, env=expand(opts.build_env)):
         err('failed to build cmake project: {}', opts.name)
