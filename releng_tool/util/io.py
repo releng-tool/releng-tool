@@ -218,11 +218,11 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         except OSError as e:
             if not quiet:
                 err('unable to execute command: ' +
-                    str(args).replace('{','{{').replace('}','}}'))
+                    str(args).replace('{', '{{').replace('}', '}}'))
                 err('    {}'.format(e))
 
     if not success:
-        debug('failed cmd: ' + str(args).replace('{','{{').replace('}','}}'))
+        debug('failed cmd: ' + str(args).replace('{', '{{').replace('}', '}}'))
         if critical:
             sys.exit(-1)
     return success
