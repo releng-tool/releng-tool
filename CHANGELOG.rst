@@ -4,10 +4,12 @@ master
 - always register optional flags inside scripts (allowing developers to use
   flags like ``RELENG_RECONFIGURE`` without needing to check environment
   variables)
+- fixed issued when capturing with ``releng_execute`` which did not suppress
+  output by default
 - introduce ``LIBTOOL_GIT_CONFIG`` for package git-specific configurations
+- introduce a ``releng-tool init`` action for a quick-sample project
 - namespace moved from ``releng`` to ``releng_tool`` (``releng`` deprecated for
   an interim)
-- post-processing script ``post.py`` has been dropped
 
 0.5 (2020-09-07)
 ----------------
