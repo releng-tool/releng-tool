@@ -70,6 +70,7 @@ class RelengEngineOptions:
         out_dir: directory container for all output data
         pkg_action: the specific package-action to perform (if any)
         post_point: resource to process holding a releng project's post-work
+        prerequisites: list of required host tools (if any)
         quirks: advanced configuration quirks for the running instance
         revision_override: dictionary to override revision values
         root_dir: directory container for all (configuration, output, etc.)
@@ -110,6 +111,7 @@ class RelengEngineOptions:
         self.out_dir = None
         self.pkg_action = PkgAction.UNKNOWN
         self.post_point = None
+        self.prerequisites = []
         self.quirks = []
         self.revision_override = None
         self.root_dir = None

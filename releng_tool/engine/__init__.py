@@ -11,6 +11,7 @@ from ..defs import CONF_KEY_OVERRIDE_REV
 from ..defs import CONF_KEY_OVERRIDE_SITES
 from ..defs import CONF_KEY_OVERRIDE_TOOLS
 from ..defs import CONF_KEY_PKGS
+from ..defs import CONF_KEY_PREREQUISITES
 from ..defs import CONF_KEY_QUIRKS
 from ..defs import CONF_KEY_SYSROOT_PREFIX
 from ..defs import CONF_KEY_URL_MIRROR
@@ -18,6 +19,7 @@ from ..defs import GlobalAction
 from ..defs import PkgAction
 from ..defs import VcsType
 from ..packages import RelengPackageManager
+from ..prerequisites import RelengPrerequisites
 from ..registry import RelengRegistry
 from ..util.env import extend_script_env
 from ..util.env import set_env_value
@@ -94,6 +96,7 @@ class RelengEngine:
             issue has occurred when interpreting or running the user's
             configuration/package definitions
         """
+        opts = self.opts
         gaction = self.opts.gbl_action
         if gaction == GlobalAction.INIT:
             return initialize_sample(self.opts)
@@ -189,6 +192,12 @@ in the working directory or the provided root directory:
                         path_remove(pkg.build_output_dir)
                         return True
                 assert False # should not reach here
+
+            # ensure any of required host tools do exist
+            if 'releng.disable_prerequisites_check' not in opts.quirks:
+                prerequisites = RelengPrerequisites(pkgs, opts.prerequisites)
+                if not prerequisites.check():
+                    return False
 
             # ensure all package sources are acquired first
             for pkg in pkgs:
@@ -871,6 +880,13 @@ following key entry and re-try again.
                 notify_invalid_value(CONF_KEY_OVERRIDE_TOOLS, 'dict(str,str)')
                 return False
             self.opts.extract_override = otz
+
+        if CONF_KEY_PREREQUISITES in settings:
+            prerequisites = interpret_strings(settings[CONF_KEY_PREREQUISITES])
+            if prerequisites is None:
+                notify_invalid_value(CONF_KEY_PREREQUISITES, 'str or list(str)')
+                return False
+            self.opts.prerequisites.extend(prerequisites)
 
         if CONF_KEY_QUIRKS in settings:
             quirks = interpret_strings(settings[CONF_KEY_QUIRKS])
