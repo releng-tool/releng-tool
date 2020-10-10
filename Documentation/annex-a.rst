@@ -138,3 +138,14 @@ Functions available to scripts invoked by releng-tool or importable via
    success(msg, *args)
    verbose(msg, *args)
    warn(msg, *args)
+
+quirks
+------
+
+Quirk options used by releng-tool:
+
+.. code-block:: none
+
+   releng.cmake.disable_parallel_option
+   releng.disable_prerequisites_check
+   releng.git.no_depth
