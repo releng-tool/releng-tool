@@ -94,6 +94,21 @@ follows:
 |                          |        'package-c',                               |
 |                          |    ]                                              |
 +--------------------------+---------------------------------------------------+
+| ``prerequisites``        | A list of host tools to check for before running  |
+|                          | a releng-tool project. Allows a developer to      |
+|                          | identify tools to check and fail-fast if missing, |
+|                          | instead of waiting for a stage which requires a   |
+|                          | specific tool and failing later during a          |
+|                          | building, packaging, etc. phase.                  |
+|                          |                                                   |
+|                          | .. code-block:: python                            |
+|                          |                                                   |
+|                          |    prerequisites = [                              |
+|                          |        'tool-a',                                  |
+|                          |        'tool-b',                                  |
+|                          |        'tool-c',                                  |
+|                          |    ]                                              |
++--------------------------+---------------------------------------------------+
 | .. _CONF_SYSROOT_PREFIX: |                                                   |
 |                          |                                                   |
 | ``sysroot_prefix``       | Define a custom sysroot prefix to provide to      |
