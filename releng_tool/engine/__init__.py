@@ -97,22 +97,22 @@ class RelengEngine:
             configuration/package definitions
         """
         opts = self.opts
-        gaction = self.opts.gbl_action
+        gaction = opts.gbl_action
         if gaction == GlobalAction.INIT:
-            return initialize_sample(self.opts)
+            return initialize_sample(opts)
 
         self.start_time = datetime.now().replace(microsecond=0)
         verbose("loading user's configuration...")
         gbls = {
-            'releng_args': self.opts.forward_args,
+            'releng_args': opts.forward_args,
             'releng_version': releng_version,
         }
 
         # prepare script environment to make helpers available to configuration
         # script(s)
-        self._prepare_script_environment(gbls, self.opts.pkg_action)
+        self._prepare_script_environment(gbls, opts.pkg_action)
 
-        conf_point, conf_point_exists = opt_file(self.opts.conf_point)
+        conf_point, conf_point_exists = opt_file(opts.conf_point)
         if not conf_point_exists:
             err('missing configuration file')
             err("""\
@@ -132,10 +132,10 @@ in the working directory or the provided root directory:
         verbose('configuration file loaded')
 
         # configuration overrides file for builders
-        if os.path.isfile(self.opts.conf_point_overrides):
+        if os.path.isfile(opts.conf_point_overrides):
             warn('detected configuration overrides file')
 
-            overrides = run_script(self.opts.conf_point_overrides, gbls,
+            overrides = run_script(opts.conf_point_overrides, gbls,
                 subject='configuration overrides')
             if not overrides:
                 return False
@@ -160,8 +160,8 @@ in the working directory or the provided root directory:
         # Compile a (minimum) list of package names to be processed; either from
         # the user explicitly provided package target or from the user's
         # configuration file.
-        if self.opts.target_action:
-            pkg_names = [self.opts.target_action]
+        if opts.target_action:
+            pkg_names = [opts.target_action]
         else:
             pkg_names = self._get_package_names(settings)
         if not pkg_names:
@@ -180,13 +180,13 @@ in the working directory or the provided root directory:
             return False
 
         try:
-            pa = self.opts.pkg_action
+            pa = opts.pkg_action
             license_files = {}
 
             # if cleaning a package, remove it's build output directory and stop
             if pa == PkgAction.CLEAN:
                 for pkg in pkgs:
-                    if pkg.name == self.opts.target_action:
+                    if pkg.name == opts.target_action:
                         verbose('removing output directory for package: ' +
                             pkg.name)
                         path_remove(pkg.build_output_dir)
@@ -219,13 +219,13 @@ in the working directory or the provided root directory:
                     return False
 
             # prepend project's host directory to path
-            host_bin = os.path.join(self.opts.host_dir, 'bin')
+            host_bin = os.path.join(opts.host_dir, 'bin')
             os.environ['PATH'] = host_bin + os.pathsep + os.environ['PATH']
 
             # re-apply script environment to ensure previous script environment
             # changes have not manipulated the environment (from standard
             # helpers).
-            self._prepare_script_environment(script_env, self.opts.pkg_action)
+            self._prepare_script_environment(script_env, opts.pkg_action)
 
             # process each package (configuring, building, etc.)
             if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
@@ -233,10 +233,10 @@ in the working directory or the provided root directory:
                 # ensure the symbols directory exists, as a package may wish to
                 # populate it anytime between a configuration stage to a
                 # post-package stage
-                if not ensure_dir_exists(self.opts.symbols_dir):
+                if not ensure_dir_exists(opts.symbols_dir):
                     return False
 
-                target = self.opts.target_action
+                target = opts.target_action
                 for pkg in pkgs:
                     verbose('processing package: {}'.format(pkg.name))
 
@@ -365,7 +365,7 @@ has failed. Ensure the following path is accessible for this user:
             return False
 
         is_action = (gaction != GlobalAction.UNKNOWN or pa != PkgAction.UNKNOWN
-            or self.opts.target_action is not None)
+            or opts.target_action is not None)
 
         # perform license generation
         if gaction == GlobalAction.LICENSES or not is_action:
