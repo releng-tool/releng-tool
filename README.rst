@@ -51,6 +51,17 @@ This tool can be installed using pip_:
     (or)
    python -m pip install releng-tool
 
+usage
+-----
+
+This tool can be invoked from a command line using:
+
+.. code-block:: shell
+
+   releng-tool --help
+    (or)
+   python -m releng_tool --help
+
 examples
 --------
 
