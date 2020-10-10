@@ -66,6 +66,14 @@ _releng_tool_module()
     '-j' | '--jobs' | '-h' | '--help' | '--version')
         return 0
         ;;
+    '--quirk')
+        opts=(
+            'releng.cmake.disable_parallel_option'
+            'releng.git.no_depth'
+        )
+        COMPREPLY=($(compgen -W "${opts[*]}" -- $cur))
+        return 0
+        ;;
     esac
     case $cur in
     -*)
@@ -80,6 +88,7 @@ _releng_tool_module()
             '--nocolorout'
             '--out-dir'
             '--root-dir'
+            '--quirk'
             '--verbose'
             '--version'
         )
