@@ -25,6 +25,16 @@ a.reference.external:after {
     vertical-align: super;
 }
 
+html.writer-html5 .rst-content table.docutils td>p:not(:last-child) {
+    /* ensure paragraph spacing is applied when not the last child */
+    margin-bottom: 24px !important;
+}
+
+html.writer-html5 .rst-content table.docutils td>div:last-child {
+    /* ignore div (e.g. table) spacing on last element in table */
+    margin-bottom: 0px !important;
+}
+
 .version-warning {
     background-image: repeating-linear-gradient(-45deg,
         transparent,
