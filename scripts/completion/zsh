@@ -16,7 +16,7 @@ function _releng_tool {
         '--development[enables development mode]' \
         '--dl-dir[directory for download archives]: :_files' \
         '--help[show help]' '-h[show help]' \
-        '--jobs[numbers of jobs to handle]' '-j[numbers of jobs to handle]' \
+        '--jobs[numbers of jobs to handle]: ' '-j[numbers of jobs to handle]: ' \
         '--local-sources[enables local-sources mode]' \
         '--nocolorout[explicitly disable colorized output]' \
         '--out-dir[directory for output]: :_files' \
