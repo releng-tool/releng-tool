@@ -8,6 +8,7 @@ master
   output by default
 - introduce ``LIBTOOL_GIT_CONFIG`` for package git-specific configurations
 - introduce a ``releng-tool init`` action for a quick-sample project
+- introduce support for prerequisites
 - namespace moved from ``releng`` to ``releng_tool`` (``releng`` deprecated for
   an interim)
 
