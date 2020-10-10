@@ -5,6 +5,7 @@ function _releng_tool {
         'clean'
         'extract'
         'fetch'
+        'init'
         'licenses'
         'mrproper'
         'patch'

@@ -15,6 +15,7 @@ function __fish__releng_tool_has_action
         clean \
         extract \
         fetch \
+        init \
         licenses \
         mrproper \
         patch
@@ -45,6 +46,9 @@ complete --command releng-tool --arguments 'extract' \
 complete --command releng-tool --arguments 'fetch' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'ensure all packages have been fetched'
+complete --command releng-tool --arguments 'init' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'initialize a sample project'
 complete --command releng-tool --arguments 'licenses' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'generate license information for a project'
