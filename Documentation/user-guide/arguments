@@ -28,6 +28,16 @@ The following outlines available actions:
 |                       | instead of the output directory (if any) found in    |
 |                       | the root directory.                                  |
 +-----------------------+------------------------------------------------------+
+| .. _ACTION_DISTCLEAN: |                                                      |
+|                       |                                                      |
+| ``distclean``         | Perform a more extreme pristine clean of the         |
+|                       | releng-tool project. This request removes the        |
+|                       | ``cache/``, ``dl/`` and ``output/`` directories      |
+|                       | found in the root directory or overridden by         |
+|                       | respective arguments, as well as any mode file flags |
+|                       | which may be set. See also the |ACTION_CLEAN|_ or    |
+|                       | |ACTION_MRPROPER|_ actions.                          |
++-----------------------+------------------------------------------------------+
 | ``extract``           | The release engineering process will process all     |
 |                       | packages up to the extraction phase (inclusive).     |
 +-----------------------+------------------------------------------------------+
@@ -48,10 +58,11 @@ The following outlines available actions:
 |                       |                                                      |
 | ``mrproper``          | Perform a pristine clean of the releng-tool project. |
 |                       | This request removes the ``output/`` directory found |
-|                       | in the root directory as well as any mode file flags |
-|                       | which may be set. The ``cache/`` and ``dl/``         |
+|                       | in the root directory or overridden by the           |
+|                       | ``--out-dir`` argument, as well as any mode file     |
+|                       | flags which may be set. The ``cache/`` and ``dl/``   |
 |                       | directories will remain untouched. See also the      |
-|                       | |ACTION_CLEAN|_ action.                              |
+|                       | |ACTION_CLEAN|_ or |ACTION_DISTCLEAN|_ actions.      |
 +-----------------------+------------------------------------------------------+
 | ``patch``             | The release engineering process will process all     |
 |                       | packages up to the patch phase (inclusive).          |
@@ -135,6 +146,7 @@ The following outlines available actions:
 +-----------------------+------------------------------------------------------+
 
 .. |ACTION_CLEAN| replace:: ``clean``
+.. |ACTION_DISTCLEAN| replace:: ``distclean``
 .. |ACTION_MRPROPER| replace:: ``mrproper``
 
 The following outlines available options:
