@@ -1,5 +1,5 @@
-master
-------
+0.6 (2020-10-10)
+----------------
 
 - always register optional flags inside scripts (allowing developers to use
   flags like ``RELENG_RECONFIGURE`` without needing to check environment

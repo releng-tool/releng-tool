@@ -66,6 +66,6 @@ setup(
     platforms='any',
     test_suite='tests',
     url='https://releng.io',
-    version='0.6.0.dev0',
+    version='0.6.0',
     zip_safe=False,
 )
