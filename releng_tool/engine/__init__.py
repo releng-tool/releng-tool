@@ -145,8 +145,9 @@ in the working directory or the provided root directory:
             verbose('configuration overrides file loaded')
 
         # handle cleaning requests
-        if gaction == GlobalAction.CLEAN or gaction == GlobalAction.MRPROPER:
-            self._handle_clean_request(gaction == GlobalAction.MRPROPER)
+        if (gaction == GlobalAction.CLEAN or gaction == GlobalAction.MRPROPER
+                or gaction == GlobalAction.DISTCLEAN):
+            self._handle_clean_request(gaction)
             return True
 
         # file flag processing
@@ -567,19 +568,27 @@ list exists with the name of packages to be part of the releng process:
 
         return pkg_names
 
-    def _handle_clean_request(self, proper=False):
+    def _handle_clean_request(self, gaction):
         """
         handle a global clean request
 
         Performs a clean request for the working environment. A standard clean
         request will remove generated build, host, staging and target
-        directories. In the event a "proper" clean is requested, the entire
-        output directory (along with known file flags) will be removed.
+        directories. In the event of "proper"-based cleans are requested,
+        additional content such as the entire output directory (along with known
+        file flags) can be removed.
 
         Args:
-            proper (optional): whether this is a proper (complete) clean request
+            gaction: the specific clean action being requested
         """
-        if proper:
+
+        if gaction == GlobalAction.DISTCLEAN:
+            verbose('removing cache directory')
+            path_remove(self.opts.cache_dir)
+            verbose('removing download directory')
+            path_remove(self.opts.dl_dir)
+
+        if gaction in (GlobalAction.MRPROPER, GlobalAction.DISTCLEAN):
             verbose('removing output directory')
             path_remove(self.opts.out_dir)
 

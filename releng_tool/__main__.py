@@ -139,6 +139,7 @@ def usage():
 
 (actions)
  clean                     clean the output directory
+ distclean                 pristine clean including cache/download content
  extract                   extract all packages
  fetch                     fetch all packages
  init                      initialize a root with an example structure

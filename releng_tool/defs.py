@@ -69,21 +69,23 @@ class GlobalAction(Enum):
     Attributes:
         UNKNOWN: unknown action
         CLEAN: clean the working state
+        DISTCLEAN: pristine state clean with cache/dl clear
         EXTRACT: process all packages through extraction stage
         FETCH: process all packages through fetch stage
         INIT: initialize example structure
         LICENSES: generate license information for a project
-        MRPROPER: pristine state clean (ex. configurations)
+        MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
     """
     UNKNOWN = 0
     CLEAN = 1
-    EXTRACT = 2
-    FETCH = 3
-    INIT = 4
-    LICENSES = 5
-    MRPROPER = 6
-    PATCH = 7
+    DISTCLEAN = 2
+    EXTRACT = 3
+    FETCH = 4
+    INIT = 5
+    LICENSES = 6
+    MRPROPER = 7
+    PATCH = 8
 
 class PkgAction(Enum):
     """
