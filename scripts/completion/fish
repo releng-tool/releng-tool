@@ -13,6 +13,7 @@ function __fish__releng_tool_has_action
         -reconfigure \
         -reinstall \
         clean \
+        distclean \
         extract \
         fetch \
         init \
@@ -40,6 +41,10 @@ complete --command releng-tool --no-files
 complete --command releng-tool --arguments 'clean' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'clean extracted/build content from the output directory'
+complete --command releng-tool --arguments 'distclean' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description \
+    'pristine clean of cache, download, output directories and file flags'
 complete --command releng-tool --arguments 'extract' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'process all packages up to the extraction phase'

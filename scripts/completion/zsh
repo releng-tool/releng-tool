@@ -3,6 +3,7 @@
 function _releng_tool {
     local opts=(
         'clean'
+        'distclean'
         'extract'
         'fetch'
         'init'
