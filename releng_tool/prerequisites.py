@@ -142,7 +142,7 @@ class RelengPrerequisites:
             else:
                 missing.add(tool)
 
-        if not quiet:
+        if missing and not quiet:
             sorted_missing = list(missing)
             sorted_missing.sort()
 
