@@ -5,8 +5,8 @@ releng-tool
     :target: https://pypi.python.org/pypi/releng-tool
     :alt: pip Version
 
-.. image:: https://travis-ci.com/releng-tool/releng-tool.svg?branch=master
-    :target: https://travis-ci.com/releng-tool/releng-tool
+.. image:: https://github.com/releng-tool/releng-tool/workflows/build/badge.svg?branch=master
+    :target: https://github.com/releng-tool/releng-tool/actions?query=workflow%3Abuild
     :alt: Build Status
 
 .. image:: https://img.shields.io/badge/docs-releng.io-000.svg
