@@ -9,7 +9,7 @@ releng-tool
     :target: https://github.com/releng-tool/releng-tool/actions?query=workflow%3Abuild
     :alt: Build Status
 
-.. image:: https://img.shields.io/badge/docs-releng.io-000.svg
+.. image:: https://img.shields.io/badge/docs-releng.io-333.svg
     :target: https://docs.releng.io
     :alt: Documentation
 
