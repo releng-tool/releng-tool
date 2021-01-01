@@ -11,7 +11,9 @@ __releng_tool_has_action()
         '-install'
         '-patch'
         '-rebuild'
+        '-rebuild-only'
         '-reconfigure'
+        '-reconfigure-only'
         '-reinstall'
         'clean'
         'distclean'
@@ -114,7 +116,9 @@ _releng_tool_module()
             '${pkg}-install'
             '${pkg}-patch'
             '${pkg}-rebuild'
+            '${pkg}-rebuild-only'
             '${pkg}-reconfigure'
+            '${pkg}-reconfigure-only'
             '${pkg}-reinstall'
         )
         ;;
