@@ -124,7 +124,29 @@ The following outlines available actions:
 |                            | build step again. This can be useful during     |
 |                            | times of development where a developer attempts |
 |                            | to change a package definition or sources       |
-|                            | between build attempts.                         |
+|                            | between build attempts. After completing a      |
+|                            | rebuild, releng-tool will perform the remaining |
+|                            | stages of the package (i.e. the installation    |
+|                            | phase). Users wishing to perform only the       |
+|                            | rebuild stage are recommended to use            |
+|                            | ``<pkg>-rebuild-only`` instead.                 |
+|                            |                                                 |
+|                            | If using this action, please ensure             |
+|                            | `understanding rebuilds`_ has been read to      |
+|                            | understand this action's effect.                |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-rebuild-only``     | Force a rebuild of a specific package. Once a   |
+|                            | package has been built, the package will not    |
+|                            | attempt to be built again. Invoking a rebuild   |
+|                            | request will tell releng-tool to re-invoke the  |
+|                            | build step again. This can be useful during     |
+|                            | times of development where a developer attempts |
+|                            | to change a package definition or sources       |
+|                            | between build attempts. After completing a      |
+|                            | rebuild, releng-tool will stop and perform no   |
+|                            | other changes. Users wishing to perform a       |
+|                            | rebuild to the installation phase are           |
+|                            | recommended to use ``<pkg>-rebuild``instead.    |
 |                            |                                                 |
 |                            | If using this action, please ensure             |
 |                            | `understanding rebuilds`_ has been read to      |
@@ -138,7 +160,32 @@ The following outlines available actions:
 |                            | step again. This can be useful during times of  |
 |                            | development where a developer attempts to       |
 |                            | change a package definition or sources between  |
-|                            | configuration attempts.                         |
+|                            | configuration attempts. After completing a      |
+|                            | re-configuration, releng-tool will perform the  |
+|                            | remaining stages of the package (i.e. all the   |
+|                            | way to the installation phase). Users wishing   |
+|                            | to perform only the re-configuration stage are  |
+|                            | recommended to use ``<pkg>-reconfigure-only``   |
+|                            | instead.                                        |
+|                            |                                                 |
+|                            | If using this action, please ensure             |
+|                            | `understanding rebuilds`_ has been read to      |
+|                            | understand this action's effect.                |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-reconfigure-only`` | Force a re-configuration of a specific package. |
+|                            | Once a package has been configured, the package |
+|                            | will not attempt to configure it again.         |
+|                            | Invoking a re-configuration request will tell   |
+|                            | releng-tool to re-invoke the configuration step |
+|                            | again. This can be useful during times of       |
+|                            | development where a developer attempts to       |
+|                            | change a package definition or sources between  |
+|                            | configuration attempts. After completing a      |
+|                            | re-configuration, releng-tool will stop and     |
+|                            | perform no other changes. Users wishing to      |
+|                            | perform a re-configuration to the installation  |
+|                            | phase are recommended to use                    |
+|                            | ``<pkg>-reconfigure`` instead.                  |
 |                            |                                                 |
 |                            | If using this action, please ensure             |
 |                            | `understanding rebuilds`_ has been read to      |
