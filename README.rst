@@ -13,6 +13,10 @@ releng-tool
     :target: https://docs.releng.io
     :alt: Documentation
 
+.. image:: https://img.shields.io/pypi/dm/releng-tool.svg
+    :target: https://pypi.python.org/pypi/releng-tool
+    :alt: PyPI download month
+
 releng-tool aims to provide a method to prepare a structured environment to
 assist in the release engineering of a project.
 
