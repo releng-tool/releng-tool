@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from .. import __version__ as releng_version
 from ..defs import CONF_KEY_CACHE_EXT_TRANSFORM
@@ -754,7 +754,7 @@ list exists with the name of packages to be part of the releng process:
             if self.opts.local_srcs:
                 env['RELENG_LOCALSRCS'] = '1'
 
-        # utility methods (if adjusting, see also `releng.__init__`)
+        # utility methods (if adjusting, see also `releng_tool.__init__`)
         script_env['debug'] = debug
         script_env['err'] = err
         script_env['log'] = log
