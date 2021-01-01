@@ -4,12 +4,12 @@ contributor guide
 The following outlines common directory locations:
 
 - ``Documentation`` - project documentation
-- ``releng/api/`` - api implementation for supporting releng-tool extensions
-- ``releng/engine/`` - core implementation
-- ``releng/ext/`` - extensions that are maintained in the official tree
-- ``releng/extract/`` - translating fetched content to a build's working area
-- ``releng/fetch/`` - support for fetching content from package sites
-- ``releng/tool/`` - definitions for host tools used by tool features
+- ``releng_tool/api/`` - api for supporting releng-tool extensions
+- ``releng_tool/engine/`` - core implementation
+- ``releng_tool/ext/`` - extensions that are maintained in the official tree
+- ``releng_tool/extract/`` - translate fetched content to a build's working area
+- ``releng_tool/fetch/`` - support for fetching content from package sites
+- ``releng_tool/tool/`` - definitions for host tools used by tool features
 - ``test/`` - testing-related content for this project's implementation
 
 releng-tool is built on the Python language and aims to be the minimum
@@ -87,7 +87,7 @@ extensions
 ----------
 
 Developers wishing to provide extensions to releng-tool should consult the API
-implementation found in this tool's repository (|releng/api/__init__.py|_).
+implementation found in this tool's repository (|releng_tool/api/__init__.py|_).
 Implementation in the API folder aims to be "API safe" -- there is a strong
 attempt to prevent the changing of classes, methods, etc. to prevent
 compatibility issues as both releng-tool and extensions (if any) evolve. A
@@ -136,7 +136,7 @@ extension to register custom fetching, extraction and package implementations.
 For more details for API details, consult the documentation found inside the
 `API implementation`_.
 
-.. |releng/api/__init__.py| replace:: ``releng/api/__init__.py``
+.. |releng_tool/api/__init__.py| replace:: ``releng_tool/api/__init__.py``
 
 documentation
 -------------
@@ -155,9 +155,9 @@ following repositories:
    | https://github.com/releng-tool/releng-tool-doc-translations-builder
 
 .. _--git-dir: https://git-scm.com/docs/git#git---git-dirltpathgt
-.. _API implementation: https://github.com/releng-tool/releng-tool/blob/master/releng/api/__init__.py
+.. _API implementation: https://github.com/releng-tool/releng-tool/blob/master/releng_tool/api/__init__.py
 .. _CONTRIBUTING: https://github.com/releng-tool/releng-tool/blob/master/CONTRIBUTING.rst
 .. _Developer Certificate of Origin: https://developercertificate.org/
 .. _Git: https://git-scm.com/
 .. _Mercurial: https://www.mercurial-scm.org/
-.. _releng/api/__init__.py: https://github.com/releng-tool/releng-tool/blob/master/releng/api/__init__.py
+.. _releng_tool/api/__init__.py: https://github.com/releng-tool/releng-tool/blob/master/releng_tool/api/__init__.py
