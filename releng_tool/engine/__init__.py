@@ -736,6 +736,7 @@ list exists with the name of packages to be part of the releng process:
             env['NJOBSCONF'] = str(self.opts.jobsconf)
             env['OUTPUT_DIR'] = self.opts.out_dir
             env['PREFIX'] = self.opts.sysroot_prefix
+            env['RELENG_VERSION'] = releng_version
             env['ROOT_DIR'] = self.opts.root_dir
             env['STAGING_DIR'] = self.opts.staging_dir
             env['SYMBOLS_DIR'] = self.opts.symbols_dir
