@@ -160,19 +160,16 @@ class RelengEngineOptions:
             self.quirks.extend(args.quirk)
 
         if args.action:
-            action_val = args.action.upper()
+            action_val = args.action.upper().replace('-', '_')
             if action_val in GlobalAction.__members__:
                 self.gbl_action = GlobalAction[action_val]
             else:
-                action_parts = args.action.rsplit('-', 1)
-                action_parts += [None] * (2 - len(action_parts))
-                pkg, subaction_val = action_parts
-
-                if subaction_val:
-                    subaction_val = subaction_val.upper()
-                    if subaction_val in PkgAction.__members__:
+                for subaction_val in PkgAction.__members__:
+                    if action_val.endswith('_' + subaction_val):
                         self.pkg_action = PkgAction[subaction_val]
-                        self.target_action = pkg
+                        idx = action_val.rindex(subaction_val) - 1
+                        self.target_action = action_val[:idx]
+                        break
 
                 if self.pkg_action == PkgAction.UNKNOWN:
                     self.target_action = args.action

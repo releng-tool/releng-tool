@@ -321,7 +321,7 @@ in the working directory or the provided root directory:
                             return False
                         if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
-                    if pa in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE):
+                    if pa in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
                         if pkg.name == target:
                             break
 
@@ -332,7 +332,7 @@ in the working directory or the provided root directory:
                             return False
                         if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
-                    if pa in (PkgAction.BUILD, PkgAction.REBUILD):
+                    if pa in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
                         if pkg.name == target:
                             break
 
@@ -353,7 +353,11 @@ in the working directory or the provided root directory:
                             return False
                         if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                             return False
-                    if pa in (PkgAction.INSTALL, PkgAction.REINSTALL):
+                    if pa in (
+                            PkgAction.INSTALL,
+                            PkgAction.REBUILD_ONLY,
+                            PkgAction.RECONFIGURE_ONLY,
+                            PkgAction.REINSTALL):
                         if pkg.name == target:
                             break
         except FailedToPrepareWorkingDirectoryError as e:
@@ -418,11 +422,13 @@ has failed. Ensure the following path is accessible for this user:
         # ensure existing file flags are cleared to ensure these stages are
         # invoked again.
         if pkg.name == self.opts.target_action:
-            if self.opts.pkg_action == PkgAction.REBUILD:
+            if (self.opts.pkg_action in
+                    (PkgAction.REBUILD, PkgAction.REBUILD_ONLY)):
                 path_remove(pkg.__ff_build)
                 path_remove(pkg.__ff_install)
                 path_remove(pkg.__ff_post)
-            elif self.opts.pkg_action == PkgAction.RECONFIGURE:
+            elif (self.opts.pkg_action in
+                    (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY)):
                 path_remove(pkg.__ff_bootstrap)
                 path_remove(pkg.__ff_configure)
                 path_remove(pkg.__ff_build)
@@ -742,9 +748,9 @@ list exists with the name of packages to be part of the releng process:
             env['SYMBOLS_DIR'] = self.opts.symbols_dir
             env['TARGET_DIR'] = self.opts.target_dir
 
-            if action == PkgAction.REBUILD:
+            if action in (PkgAction.REBUILD, PkgAction.REBUILD_ONLY):
                 env['RELENG_REBUILD'] = '1'
-            elif action == PkgAction.RECONFIGURE:
+            elif action in (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY):
                 env['RELENG_RECONFIGURE'] = '1'
             elif action == PkgAction.REINSTALL:
                 env['RELENG_REINSTALL'] = '1'

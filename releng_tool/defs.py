@@ -109,7 +109,9 @@ class PkgAction(Enum):
         INSTALL: process a package till end of the install stage
         PATCH: process a package till end of the patch stage
         REBUILD: perform a re-build of a package
+        REBUILD_ONLY: perform a re-build of a package and stop
         RECONFIGURE: perform a re-configuration of a package
+        RECONFIGURE_ONLY: perform a re-configuration of a package and stop
         REINSTALL: perform a re-install of a package
     """
     UNKNOWN = 0
@@ -121,8 +123,10 @@ class PkgAction(Enum):
     INSTALL = 6
     PATCH = 7
     REBUILD = 8
-    RECONFIGURE = 9
-    REINSTALL = 10
+    REBUILD_ONLY = 9
+    RECONFIGURE = 10
+    RECONFIGURE_ONLY = 11
+    REINSTALL = 12
 
 class PackageType(Enum):
     """

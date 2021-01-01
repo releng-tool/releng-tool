@@ -154,7 +154,9 @@ def usage():
  <pkg>-install             perform install stage for the package
  <pkg>-patch               perform patch stage for the package
  <pkg>-rebuild             force a re-build of a specific package
+ <pkg>-rebuild-only        force a re-build of a specific package and stop
  <pkg>-reconfigure         force a re-configure of a specific package
+ <pkg>-reconfigure-only    force a re-configure of a specific package and stop
  <pkg>-reinstall           force a re-install of a specific package
 
 (common options)
