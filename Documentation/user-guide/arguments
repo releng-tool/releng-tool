@@ -13,137 +13,151 @@ to be performed. An example of a user invoking a clean action is as follows:
 
 The following outlines available actions:
 
-+-----------------------+------------------------------------------------------+
-| .. _ACTION_CLEAN:     |                                                      |
-|                       |                                                      |
-| ``clean``             | Clean (removes) a series of folders holding content  |
-|                       | such as extracted archives, built libraries and      |
-|                       | more. Images and downloaded assets/cache are not     |
-|                       | removed (see |ACTION_MRPROPER|_ for a more through   |
-|                       | all cleaning operation). This clean operation will   |
-|                       | remove files based off the configured output         |
-|                       | directory. If an output directory is provided (i.e.  |
-|                       | ``--out-dir <dir>``) during a clean event, select    |
-|                       | folders inside this directory will be removed        |
-|                       | instead of the output directory (if any) found in    |
-|                       | the root directory.                                  |
-+-----------------------+------------------------------------------------------+
-| .. _ACTION_DISTCLEAN: |                                                      |
-|                       |                                                      |
-| ``distclean``         | Perform a more extreme pristine clean of the         |
-|                       | releng-tool project. This request removes the        |
-|                       | ``cache/``, ``dl/`` and ``output/`` directories      |
-|                       | found in the root directory or overridden by         |
-|                       | respective arguments, as well as any mode file flags |
-|                       | which may be set. See also the |ACTION_CLEAN|_ or    |
-|                       | |ACTION_MRPROPER|_ actions.                          |
-+-----------------------+------------------------------------------------------+
-| ``extract``           | The release engineering process will process all     |
-|                       | packages up to the extraction phase (inclusive).     |
-+-----------------------+------------------------------------------------------+
-| ``fetch``             | The release engineering process will process all     |
-|                       | packages up to the fetch phase (inclusive; see also  |
-|                       | `offline builds`_).                                  |
-+-----------------------+------------------------------------------------------+
-| ``init``              | Initialize an empty root directory with a sample     |
-|                       | project.                                             |
-+-----------------------+------------------------------------------------------+
-| ``licenses``          | A request to generate all license information for    |
-|                       | the project. Note that license information requires  |
-|                       | acquiring license documents from packages.           |
-|                       | Therefore, packages will be fetched/extracted if not |
-|                       | already done.                                        |
-+-----------------------+------------------------------------------------------+
-| .. _ACTION_MRPROPER:  |                                                      |
-|                       |                                                      |
-| ``mrproper``          | Perform a pristine clean of the releng-tool project. |
-|                       | This request removes the ``output/`` directory found |
-|                       | in the root directory or overridden by the           |
-|                       | ``--out-dir`` argument, as well as any mode file     |
-|                       | flags which may be set. The ``cache/`` and ``dl/``   |
-|                       | directories will remain untouched. See also the      |
-|                       | |ACTION_CLEAN|_ or |ACTION_DISTCLEAN|_ actions.      |
-+-----------------------+------------------------------------------------------+
-| ``patch``             | The release engineering process will process all     |
-|                       | packages up to the patch phase (inclusive).          |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-build``       | Performs the build stage for the package. On         |
-|                       | success, the specified package stage will have       |
-|                       | completed its build. If a package has any package    |
-|                       | dependencies, these dependencies will be processed   |
-|                       | before the specified package. If the provided        |
-|                       | package name does not exist, a notification will be  |
-|                       | generated.                                           |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-clean``       | Cleans the build directory for package (if it        |
-|                       | exists).                                             |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-configure``   | Performs the configure stage for the package. On     |
-|                       | success, the specified package stage will have       |
-|                       | completed its configuration stage. If a package has  |
-|                       | any package dependencies, these dependencies will be |
-|                       | processed before the specified package. If the       |
-|                       | provided package name does not exist, a              |
-|                       | notification will be generated.                      |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-extract``     | Performs the extraction stage for the package. On    |
-|                       | success, the specified package stage will have       |
-|                       | completed its extraction stage. If the provided      |
-|                       | package name does not exist, a notification will be  |
-|                       | generated.                                           |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-fetch``       | Performs the fetch stage for the package. On         |
-|                       | success, the specified package stage will have       |
-|                       | completed its fetch stage. If the provided package   |
-|                       | name does not exist, a notification will be          |
-|                       | generated.                                           |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-install``     | Performs the installation stage for the package. On  |
-|                       | success, the specified package stage will have       |
-|                       | completed its installation stage. If a package has   |
-|                       | any package dependencies, these dependencies will be |
-|                       | processed before the specified package. If the       |
-|                       | provided package name does not exist, a notification |
-|                       | will be generated.                                   |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-patch``       | Performs the patch stage for the package. On         |
-|                       | success, the specified package stage will have       |
-|                       | completed its patch stage. If the provided package   |
-|                       | name does not exist, a notification will be          |
-|                       | generated.                                           |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-rebuild``     | Force a rebuild of a specific package. Once a        |
-|                       | package has been built, the package will not attempt |
-|                       | to be built again. Invoking a rebuild request will   |
-|                       | tell releng-tool to re-invoke the build step again.  |
-|                       | This can be useful during times of development where |
-|                       | a developer attempts to change a package definition  |
-|                       | or sources between build attempts. If using this     |
-|                       | action, please ensure `understanding rebuilds`_ has  |
-|                       | been read to understand this action's effect.        |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-reconfigure`` | Force a re-configuration of a specific package. Once |
-|                       | a package has been configured, the package will not  |
-|                       | attempt to configure it again. Invoking a            |
-|                       | re-configuration request will tell releng-tool to    |
-|                       | re-invoke the configuration step again. This can be  |
-|                       | useful during times of development where a developer |
-|                       | attempts to change a package definition or sources   |
-|                       | between configuration attempts. If using this        |
-|                       | action, please ensure `understanding rebuilds`_ has  |
-|                       | been read to understand this action's effect.        |
-+-----------------------+------------------------------------------------------+
-| ``<pkg>-reinstall``   | Force a re-installation of a specific package. Once  |
-|                       | a package has been installed, the package will not   |
-|                       | attempt to install it again. Invoking a              |
-|                       | re-installation request will tell releng-tool to     |
-|                       | re-invoke the installation step again. This can be   |
-|                       | useful during times of development where a developer |
-|                       | attempts to change a package definition or sources   |
-|                       | between installation attempts. If using this action, |
-|                       | please ensure `understanding rebuilds`_ has been     |
-|                       | read to understand this action's effect.             |
-+-----------------------+------------------------------------------------------+
++----------------------------+-------------------------------------------------+
+| .. _ACTION_CLEAN:          |                                                 |
+|                            |                                                 |
+| ``clean``                  | Clean (removes) a series of folders holding     |
+|                            | content such as extracted archives, built       |
+|                            | libraries and more. Images and downloaded       |
+|                            | assets/cache are not removed (see               |
+|                            | |ACTION_MRPROPER|_ for a more through all       |
+|                            | cleaningoperation). This clean operation will   |
+|                            | remove files based off the configured output    |
+|                            | directory. If an output directory is provided   |
+|                            | (i.e. ``--out-dir <dir>``) during a clean       |
+|                            | event, select folders inside this directory     |
+|                            | will be removed instead of the output directory |
+|                            | (if any) found in the root directory.           |
++----------------------------+-------------------------------------------------+
+| .. _ACTION_DISTCLEAN:      |                                                 |
+|                            |                                                 |
+| ``distclean``              | Perform a more extreme pristine clean of the    |
+|                            | releng-tool project. This request removes the   |
+|                            | ``cache/``, ``dl/`` and ``output/`` directories |
+|                            | found in the root directory or overridden by    |
+|                            | respective arguments, as well as any mode file  |
+|                            | flags which may be set. See also the            |
+|                            | |ACTION_CLEAN|_ or |ACTION_MRPROPER|_ actions.  |
++----------------------------+-------------------------------------------------+
+| ``extract``                | The release engineering process will process    |
+|                            | all packages up to the extraction phase         |
+|                            | (inclusive).                                    |
++----------------------------+-------------------------------------------------+
+| ``fetch``                  | The release engineering process will process    |
+|                            | all packages up to the fetch phase (inclusive;  |
+|                            | see also `offline builds`_).                    |
++----------------------------+-------------------------------------------------+
+| ``init``                   | Initialize an empty root directory with a       |
+|                            | sample project.                                 |
++----------------------------+-------------------------------------------------+
+| ``licenses``               | A request to generate all license information   |
+|                            | for the project. Note that license information  |
+|                            | requires acquiring license documents from       |
+|                            | packages. Therefore, packages will be           |
+|                            | fetched/extracted if not already done.          |
++----------------------------+-------------------------------------------------+
+| .. _ACTION_MRPROPER:       |                                                 |
+|                            |                                                 |
+| ``mrproper``               | Perform a pristine clean of the releng-tool     |
+|                            | project. This request removes the ``output/``   |
+|                            | directory found in the root directory or        |
+|                            | overridden by the ``--out-dir`` argument, as    |
+|                            | well as any mode file flags which may be set.   |
+|                            | The ``cache/`` and ``dl/`` directories will     |
+|                            | remain untouched. See also the  |ACTION_CLEAN|_ |
+|                            | or |ACTION_DISTCLEAN|_ actions.                 |
++----------------------------+-------------------------------------------------+
+| ``patch``                  | The release engineering process will process    |
+|                            | all packages up to the patch phase (inclusive). |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-build``            | Performs the build stage for the package. On    |
+|                            | success, the specified package stage will have  |
+|                            | completed its build. If a package has any       |
+|                            | package dependencies, these dependencies will   |
+|                            | be processed before the specified package. If   |
+|                            | the provided package name does not exist, a     |
+|                            | notification will be generated.                 |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-clean``            | Cleans the build directory for package (if it   |
+|                            | exists).                                        |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-configure``        | Performs the configure stage for the package.   |
+|                            | On success, the specified package stage will    |
+|                            | have completed its configuration stage. If a    |
+|                            | package has any package dependencies, these     |
+|                            | dependencies will be processed before the       |
+|                            | specified package. If the provided package name |
+|                            | does not exist, a notification will be          |
+|                            | generated.                                      |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-extract``          | Performs the extraction stage for the package.  |
+|                            | On success, the specified package stage will    |
+|                            | have completed its extraction stage. If the     |
+|                            | provided package name does not exist, a         |
+|                            | notification will be generated.                 |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-fetch``            | Performs the fetch stage for the package. On    |
+|                            | success, the specified package stage will have  |
+|                            | completed its fetch stage. If the provided      |
+|                            | package name does not exist, a notification     |
+|                            | will be generated.                              |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-install``          | Performs the installation stage for the         |
+|                            | package. On success, the specified package      |
+|                            | stage will have completed its installation      |
+|                            | stage. If a package has any package             |
+|                            | dependencies, these dependencies will be        |
+|                            | processed before the specified package. If the  |
+|                            | provided package name does not exist, a         |
+|                            | notification will be generated.                 |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-patch``            | Performs the patch stage for the package. On    |
+|                            | success, the specified package stage will have  |
+|                            | completed its patch stage. If the provided      |
+|                            | package name does not exist, a notification     |
+|                            | will be generated.                              |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-rebuild``          | Force a rebuild of a specific package. Once a   |
+|                            | package has been built, the package will not    |
+|                            | attempt to be built again. Invoking a rebuild   |
+|                            | request will tell releng-tool to re-invoke the  |
+|                            | build step again. This can be useful during     |
+|                            | times of development where a developer attempts |
+|                            | to change a package definition or sources       |
+|                            | between build attempts.                         |
+|                            |                                                 |
+|                            | If using this action, please ensure             |
+|                            | `understanding rebuilds`_ has been read to      |
+|                            | understand this action's effect.                |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-reconfigure``      | Force a re-configuration of a specific package. |
+|                            | Once a package has been configured, the package |
+|                            | will not attempt to configure it again.         |
+|                            | Invoking a re-configuration request will tell   |
+|                            | releng-tool to re-invoke the configuration      |
+|                            | step again. This can be useful during times of  |
+|                            | development where a developer attempts to       |
+|                            | change a package definition or sources between  |
+|                            | configuration attempts.                         |
+|                            |                                                 |
+|                            | If using this action, please ensure             |
+|                            | `understanding rebuilds`_ has been read to      |
+|                            | understand this action's effect.                |
++----------------------------+-------------------------------------------------+
+| ``<pkg>-reinstall``        | Force a re-installation of a specific package.  |
+|                            | Once a package has been installed, the package  |
+|                            | will not attempt to install it again. Invoking  |
+|                            | a re-installation request will tell releng-tool |
+|                            | to re-invoke the installation step again. This  |
+|                            | can be useful during times of development where |
+|                            | a developer attempts to change a package        |
+|                            | definition or sources between installation      |
+|                            | attempts.                                       |
+|                            |                                                 |
+|                            | If using this action, please ensure             |
+|                            | `understanding rebuilds`_ has been read to      |
+|                            | understand this action's effect.                |
++----------------------------+-------------------------------------------------+
 
 .. |ACTION_CLEAN| replace:: ``clean``
 .. |ACTION_DISTCLEAN| replace:: ``distclean``
