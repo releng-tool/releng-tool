@@ -21,9 +21,10 @@ overview
 
 When dealing with the release engineering of a project, assets may be found in
 multiple locations and may require various methods to extract, build and more.
-releng-tool can be used to process a defined set of projects which identifiers
-where resources can be fetched, how packages can be extracted and methods to
-patch, configure, build and install each individual package for a target root.
+releng-tool can be used to process a defined set of projects/packages which
+identify where resources can be fetched, how packages can be extracted and
+methods to patch, configure, build and install each individual package for a
+target root.
 
 .. image:: https://releng.io/assets/overview.png
    :align: center
