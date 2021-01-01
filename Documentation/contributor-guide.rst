@@ -56,7 +56,7 @@ stored in the root directory's cache folder (e.g. ``<ROOT>/cache``). During the
 extraction stage, target revisions will be pulled from the cache location using
 the ``git`` client.
 
-Not all packages will fetch content (i.e. placeholder packages).
+Not all packages will fetch content (e.g. placeholder packages).
 
 .. |--git-dir| replace:: ``--git-dir``
 
