@@ -7,6 +7,11 @@ from difflib import unified_diff
 from io import open
 import sys
 
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 class RelengTestUtil:
     """
     releng-tool test utility class
@@ -74,7 +79,7 @@ class RelengTestUtil:
 
     @staticmethod
     @contextmanager
-    def redirect_stdout(new_target):
+    def redirect_stdout(new_target=None):
         """
         temporarily redirect stdout to another instance
 
@@ -83,12 +88,15 @@ class RelengTestUtil:
         restored.
 
         Args:
-            new_target: the instance to map stdout to
+            new_target (optional): the instance to map stdout to
         """
+
+        if not new_target:
+            new_target = StringIO()
 
         _ = sys.stdout
         try:
             sys.stdout = new_target
-            yield
+            yield new_target
         finally:
             sys.stdout = _
