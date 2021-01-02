@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from .defs import GlobalAction
 from .defs import PkgAction
@@ -168,7 +168,7 @@ class RelengEngineOptions:
                     if action_val.endswith('_' + subaction_val):
                         self.pkg_action = PkgAction[subaction_val]
                         idx = action_val.rindex(subaction_val) - 1
-                        self.target_action = action_val[:idx]
+                        self.target_action = args.action[:idx]
                         break
 
                 if self.pkg_action == PkgAction.UNKNOWN:
