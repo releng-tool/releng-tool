@@ -207,6 +207,10 @@ in the working directory or the provided root directory:
                 if not self._stage_init(pkg):
                     return False
 
+                # if this is a package-specific fetch, only fetch this one
+                if pa is PkgAction.FETCH and pkg.name != opts.target_action:
+                    continue
+
                 # none/local-vcs-type packages do not need to fetch
                 if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                     continue
