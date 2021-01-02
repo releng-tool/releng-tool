@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from ..api import RelengFetchOptions
 from ..defs import VcsType
@@ -75,7 +75,8 @@ local sources option to use the default process).
 
     cache_filename = os.path.basename(pkg.cache_file)
     out_dir = engine.opts.out_dir
-    with generate_temp_dir(out_dir) as work_dir, generate_temp_dir(out_dir) as interim_cache_dir:
+    with generate_temp_dir(out_dir) as work_dir, \
+            generate_temp_dir(out_dir) as interim_cache_dir:
         with interim_working_dir(work_dir):
             interim_cache_file = os.path.join(interim_cache_dir, cache_filename)
             fetch_opts.cache_file = interim_cache_file
