@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from collections import OrderedDict
 from releng_tool.util.io import execute
@@ -13,7 +13,9 @@ from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import touch
-from tests import RelengTestUtil
+from tests import compare_contents
+from tests import prepare_workdir
+from tests import redirect_stdout
 import os
 import sys
 import unittest
@@ -35,7 +37,7 @@ class TestUtilIo(unittest.TestCase):
         check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
         check_dir_02 = os.path.join(self.assets_dir, 'copy-check-02')
 
-        with RelengTestUtil.prepare_workdir() as work_dir:
+        with prepare_workdir() as work_dir:
             # (directories)
 
             # copy the first batch of assets into the working directory
@@ -44,7 +46,7 @@ class TestUtilIo(unittest.TestCase):
             self.assertExists(work_dir, 'test-file-a')
             self.assertExists(work_dir, 'test-file-b')
             self.assertExists(work_dir, 'test-file-x')
-            cc1 = RelengTestUtil.compare(
+            cc1 = compare_contents(
                 os.path.join(check_dir_01, 'test-file-b'),
                 os.path.join(work_dir, 'test-file-b'))
             self.assertIsNone(cc1, cc1)
@@ -56,7 +58,7 @@ class TestUtilIo(unittest.TestCase):
             self.assertExists(work_dir, 'test-file-b')
             self.assertExists(work_dir, 'test-file-c')
             self.assertExists(work_dir, 'test-file-x')
-            cc2 = RelengTestUtil.compare(
+            cc2 = compare_contents(
                 os.path.join(check_dir_02, 'test-file-b'),
                 os.path.join(work_dir, 'test-file-b'))
             self.assertIsNone(cc2, cc2)
@@ -71,13 +73,13 @@ class TestUtilIo(unittest.TestCase):
             result = path_copy(copied_file_a, sub_dir, critical=False)
             self.assertTrue(result)
             self.assertExists(target_ow)
-            cc3 = RelengTestUtil.compare(copied_file_a, target_ow)
+            cc3 = compare_contents(copied_file_a, target_ow)
             self.assertIsNone(cc3, cc3)
 
             # copy individual files (overwrite)
             result = path_copy(copied_file_b, target_ow, critical=False)
             self.assertTrue(result)
-            cc4 = RelengTestUtil.compare(copied_file_b, target_ow)
+            cc4 = compare_contents(copied_file_b, target_ow)
             self.assertIsNone(cc4, cc4)
 
     def test_utilio_execution(self):
@@ -95,14 +97,14 @@ class TestUtilIo(unittest.TestCase):
         self.assertFalse(result)
 
         # verify output
-        with RelengTestUtil.redirect_stdout() as stream:
+        with redirect_stdout() as stream:
             test_cmd = [sys.executable, '-c', 'print("Hello")']
             result = execute(test_cmd, critical=False)
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), 'Hello')
 
         # verify quiet mode
-        with RelengTestUtil.redirect_stdout() as stream:
+        with redirect_stdout() as stream:
             test_cmd = [sys.executable, '-c', 'print("Hello")']
             result = execute(test_cmd, quiet=True, critical=False)
             self.assertTrue(result)
@@ -110,7 +112,7 @@ class TestUtilIo(unittest.TestCase):
 
         # verify capture mode which will be silent
         out = []
-        with RelengTestUtil.redirect_stdout() as stream:
+        with redirect_stdout() as stream:
             test_cmd = [sys.executable, '-c', 'print("Hello")']
             result = execute(test_cmd, critical=False, capture=out)
             self.assertTrue(result)
@@ -119,7 +121,7 @@ class TestUtilIo(unittest.TestCase):
 
         # verify capture mode that is also verbose
         out = []
-        with RelengTestUtil.redirect_stdout() as stream:
+        with redirect_stdout() as stream:
             test_cmd = [sys.executable, '-c', 'print("Hello")']
             result = execute(test_cmd, quiet=False, critical=False, capture=out)
             self.assertTrue(result)
@@ -156,7 +158,7 @@ class TestUtilIo(unittest.TestCase):
         self.assertEqual(ise(provided), expected)
 
     def test_utilio_move(self):
-        with RelengTestUtil.prepare_workdir() as work_dir:
+        with prepare_workdir() as work_dir:
             def _(*args):
                 return os.path.join(work_dir, *args)
 
@@ -261,7 +263,7 @@ class TestUtilIo(unittest.TestCase):
             self.assertTrue(os.path.isdir(dst))
 
     def test_utilio_optfile(self):
-        with RelengTestUtil.prepare_workdir() as work_dir:
+        with prepare_workdir() as work_dir:
             def _(*args):
                 return os.path.join(work_dir, *args)
 
@@ -344,7 +346,7 @@ class TestUtilIo(unittest.TestCase):
         self.assertEqual(prepared, expected)
 
     def test_utilio_remove(self):
-        with RelengTestUtil.prepare_workdir() as work_dir:
+        with prepare_workdir() as work_dir:
             def _(*args):
                 return os.path.join(work_dir, *args)
 
@@ -438,7 +440,7 @@ class TestUtilIo(unittest.TestCase):
         self.assertEqual(psi(si06), [b'/usr/bin/env', b'python'] + E(si06))
 
     def test_utilio_touch(self):
-        with RelengTestUtil.prepare_workdir() as work_dir:
+        with prepare_workdir() as work_dir:
             test_file = os.path.join(work_dir, 'test-file')
 
             created = touch(test_file)
