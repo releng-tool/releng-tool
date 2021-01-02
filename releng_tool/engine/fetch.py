@@ -104,25 +104,26 @@ local sources option to use the default process).
                         return False
 
             if os.path.exists(pkg.cache_file):
+                rv = None
                 if perform_file_hash_check:
                     hr = verify_hashes(
                         pkg.hash_file, pkg.cache_file, relaxed=True)
 
                     if hr == HashResult.VERIFIED:
-                        return True
+                        rv = True
                     elif hr == HashResult.BAD_PATH:
                         if not pkg.is_internal:
                             warn('missing hash file for package: ' + name)
-                        return True # no hash file to compare with; assuming ok
+                        rv = True # no hash file to compare with; assuming ok
                     elif hr == HashResult.EMPTY:
                         if not pkg.is_internal:
                             warn('hash file for package is empty: ' + name)
-                        return True # empty hash file; assuming ok
+                        rv = True # empty hash file; assuming ok
                     elif hr == HashResult.MISMATCH:
                         if not path_remove(pkg.cache_file):
-                            return False
+                            rv = False
                     elif hr in (HashResult.BAD_FORMAT, HashResult.UNSUPPORTED):
-                        return False
+                        rv = False
                     elif hr == HashResult.MISSING_ARCHIVE:
                         err('missing archive hash for verification')
                         err("""\
@@ -131,13 +132,19 @@ verified. Ensure the hash file defines an entry for the expected cache file:
 
     Hash File: {}
          File: {}""".format(pkg.hash_file, cache_filename))
-                        return False
+                        rv = False
                     else:
                         err('invalid fetch operation (internal error; '
                             'hash-check failure: {})'.format(hr))
-                        return False
+                        rv = False
                 else:
-                    return True
+                    rv = True
+
+                if rv is not None:
+                    if ignore_cache:
+                        verbose('ignoring cache not supported for package: {}',
+                            name)
+                    return rv
 
             # find fetching method for the target vcs-type
             fetcher = None
