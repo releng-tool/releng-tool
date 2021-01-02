@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from ..tool.hg import HG
 from ..util.log import err
@@ -23,7 +23,7 @@ def extract(opts):
 
     assert opts
     cache_dir = opts.cache_dir
-    version = opts.version
+    revision = opts.revision
     work_dir = opts.work_dir
 
     if not HG.exists():
@@ -31,7 +31,7 @@ def extract(opts):
         return None
 
     log('checking out target revision into work tree')
-    if not HG.execute(['--verbose', 'clone', '--rev', version,
+    if not HG.execute(['--verbose', 'clone', '--rev', revision,
             cache_dir, work_dir],
             cwd=work_dir):
         err('unable to checkout revision')
