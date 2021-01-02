@@ -201,6 +201,8 @@ in the working directory or the provided root directory:
                     return False
 
             # ensure all package sources are acquired first
+            requested_fetch = (
+                gaction is GlobalAction.FETCH or pa is PkgAction.FETCH)
             for pkg in pkgs:
                 if not self._stage_init(pkg):
                     return False
@@ -211,12 +213,12 @@ in the working directory or the provided root directory:
 
                 # in the event that we not not explicit fetching and the package
                 # has already been extracted, completely skip the fetching stage
-                if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
+                if not requested_fetch:
                     flag = pkg.__ff_extract
                     if check_file_flag(flag) == FileFlag.EXISTS:
                         continue
 
-                if not fetch_stage(self, pkg):
+                if not fetch_stage(self, pkg, ignore_cache=requested_fetch):
                     return False
 
             # prepend project's host directory to path

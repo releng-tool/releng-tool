@@ -24,7 +24,7 @@ from ..util.log import warn
 import os
 import shutil
 
-def stage(engine, pkg):
+def stage(engine, pkg, ignore_cache):
     """
     handles the fetching stage for a package
 
@@ -34,6 +34,7 @@ def stage(engine, pkg):
     Args:
         engine: the engine
         pkg: the package being fetched
+        ignore_cache: always attempt to ignore the cache
 
     Returns:
         ``True`` if the fetching stage is completed; ``False`` otherwise
@@ -67,6 +68,7 @@ local sources option to use the default process).
     replicate_package_attribs(fetch_opts, pkg)
     fetch_opts.cache_dir = pkg.cache_dir
     fetch_opts.ext = pkg.ext_modifiers
+    fetch_opts.ignore_cache = ignore_cache
     fetch_opts.name = name
     fetch_opts.revision = pkg.revision
     fetch_opts.site = pkg.site
