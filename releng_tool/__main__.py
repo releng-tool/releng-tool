@@ -92,7 +92,7 @@ def main():
         os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
         # support loading applications not following prefix or bin container
         sys.path.insert(0, opts.host_dir)
-        os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
+        os.environ['PATH'] = opts.host_dir + os.pathsep + os.environ['PATH']
 
         # create and start the engine
         engine = RelengEngine(opts)
