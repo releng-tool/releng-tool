@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ...tool.make import MAKE
-from ...util.io import prepare_arguments
-from ...util.io import prepare_definitions
-from ...util.log import err
-from ...util.string import expand
+from releng_tool.tool.make import MAKE
+from releng_tool.util.io import prepare_arguments
+from releng_tool.util.io import prepare_definitions
+from releng_tool.util.log import err
+from releng_tool.util.string import expand
 
 def install(opts):
     """

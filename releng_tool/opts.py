@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
-from .defs import GlobalAction
-from .defs import PkgAction
+from releng_tool.defs import GlobalAction
+from releng_tool.defs import PkgAction
 import multiprocessing
 import os
 

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ..tool.tar import TAR
-from ..util.io import execute
-from ..util.io import interpret_stem_extension
-from ..util.log import debug
-from ..util.log import err
-from ..util.log import warn
+from releng_tool.tool.tar import TAR
+from releng_tool.util.io import execute
+from releng_tool.util.io import interpret_stem_extension
+from releng_tool.util.log import debug
+from releng_tool.util.log import err
+from releng_tool.util.log import warn
 from zipfile import ZipFile
 import os
 import shutil

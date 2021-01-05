@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ...util.log import verbose
-from ...util.io import opt_file
-from ...util.io import run_script
+from releng_tool.util.io import opt_file
+from releng_tool.util.io import run_script
+from releng_tool.util.log import verbose
 import os
 
 #: filename of the script to execute the configuration operation (if any)

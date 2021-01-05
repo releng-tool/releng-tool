@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from . import __version__ as releng_version
-from .api import RelengInvalidSetupException
-from .api import RelengRegistryInterface
-from .api import RelengVersionNotSupportedException
-from .util.log import debug
-from .util.log import verbose
-from .util.log import warn
-from .util.string import interpret_string
 from importlib import import_module
+from releng_tool import __version__ as releng_version
+from releng_tool.api import RelengInvalidSetupException
+from releng_tool.api import RelengRegistryInterface
+from releng_tool.api import RelengVersionNotSupportedException
+from releng_tool.util.log import debug
+from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
+from releng_tool.util.string import interpret_string
 
 try:
     ModuleNotFoundError

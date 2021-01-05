@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ...defs import PackageInstallType
-from ...tool.cmake import CMAKE
-from ...util.io import interim_working_dir
-from ...util.io import prepare_arguments
-from ...util.io import prepare_definitions
-from ...util.log import err
-from ...util.string import expand
+from releng_tool.defs import PackageInstallType
+from releng_tool.tool.cmake import CMAKE
+from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io import prepare_arguments
+from releng_tool.util.io import prepare_definitions
+from releng_tool.util.log import err
+from releng_tool.util.string import expand
 from os.path import join
 
 #: default lib container directory

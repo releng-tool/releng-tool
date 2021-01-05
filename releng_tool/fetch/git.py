@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ..tool.git import GIT
-from ..util.io import ensure_dir_exists
-from ..util.io import path_remove
-from ..util.log import err
-from ..util.log import log
-from ..util.log import note
-from ..util.log import warn
 from enum import Enum
+from releng_tool.tool.git import GIT
+from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io import path_remove
+from releng_tool.util.log import err
+from releng_tool.util.log import log
+from releng_tool.util.log import note
+from releng_tool.util.log import warn
 import os
 import sys
 

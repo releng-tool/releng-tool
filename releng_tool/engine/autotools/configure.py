@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ...tool.autoreconf import AUTORECONF
-from ...util.io import execute
-from ...util.io import prepare_arguments
-from ...util.io import prepare_definitions
-from ...util.log import err
-from ...util.log import verbose
-from ...util.string import expand
+from releng_tool.tool.autoreconf import AUTORECONF
+from releng_tool.util.io import execute
+from releng_tool.util.io import prepare_arguments
+from releng_tool.util.io import prepare_definitions
+from releng_tool.util.log import err
+from releng_tool.util.log import verbose
+from releng_tool.util.string import expand
 
 def configure(opts):
     """

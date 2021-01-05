@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ..tool.git import GIT
-from ..util.log import err
-from ..util.log import log
+from releng_tool.tool.git import GIT
+from releng_tool.util.log import err
+from releng_tool.util.log import log
 
 def extract(opts):
     """

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from . import RelengTool
+from releng_tool.tool import RelengTool
 
 #: executable used to run patch commands
 PATCH_COMMAND = 'patch'

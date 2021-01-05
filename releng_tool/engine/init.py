@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 releng-tool
+# Copyright 2020-2021 releng-tool
 
-from ..util.io import ensure_dir_exists
-from ..util.log import err
-from ..util.log import log
-from ..util.log import verbose
-from ..util.log import warn
+from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.log import err
+from releng_tool.util.log import log
+from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 import os
 
 def initialize_sample(opts):

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ..util.io import execute
-from ..util.log import debug
-from ..util.log import err
-from ..util.string import is_sequence_not_string
-import re
+from releng_tool.util.io import execute
+from releng_tool.util.log import debug
+from releng_tool.util.log import err
+from releng_tool.util.string import is_sequence_not_string
 import os
+import re
 
 class RelengTool:
     """

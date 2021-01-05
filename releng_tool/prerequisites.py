@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 releng-tool
+# Copyright 2020-2021 releng-tool
 
-from .defs import PackageType
-from .defs import VcsType
-from .tool.autoreconf import AUTORECONF
-from .tool.bzr import BZR
-from .tool.cmake import CMAKE
-from .tool.cvs import CVS
-from .tool.git import GIT
-from .tool.hg import HG
-from .tool.make import MAKE
-from .tool.python import PYTHON
-from .tool.python import PythonTool
-from .tool.scp import SCP
-from .tool.svn import SVN
-from .util.log import err
-from .util.log import verbose
+from releng_tool.defs import PackageType
+from releng_tool.defs import VcsType
+from releng_tool.tool.autoreconf import AUTORECONF
+from releng_tool.tool.bzr import BZR
+from releng_tool.tool.cmake import CMAKE
+from releng_tool.tool.cvs import CVS
+from releng_tool.tool.git import GIT
+from releng_tool.tool.hg import HG
+from releng_tool.tool.make import MAKE
+from releng_tool.tool.python import PYTHON
+from releng_tool.tool.python import PythonTool
+from releng_tool.tool.scp import SCP
+from releng_tool.tool.svn import SVN
+from releng_tool.util.log import err
+from releng_tool.util.log import verbose
 import distutils.spawn
 
 class RelengPrerequisites:

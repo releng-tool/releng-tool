@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ..api import RelengExtractOptions
-from ..defs import VcsType
-from ..extract.archive import extract as extract_archive
-from ..extract.git import extract as extract_git
-from ..extract.mercurial import extract as extract_mercurial
-from ..util.api import replicate_package_attribs
-from ..util.hash import HashResult
-from ..util.hash import verify as verify_hashes
-from ..util.io import interim_working_dir
-from ..util.io import generate_temp_dir
-from ..util.io import path_remove
-from ..util.log import debug
-from ..util.log import err
-from ..util.log import note
-from ..util.log import warn
+from releng_tool.api import RelengExtractOptions
+from releng_tool.defs import VcsType
+from releng_tool.extract.archive import extract as extract_archive
+from releng_tool.extract.git import extract as extract_git
+from releng_tool.extract.mercurial import extract as extract_mercurial
+from releng_tool.util.api import replicate_package_attribs
+from releng_tool.util.hash import HashResult
+from releng_tool.util.hash import verify as verify_hashes
+from releng_tool.util.io import generate_temp_dir
+from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io import path_remove
+from releng_tool.util.log import debug
+from releng_tool.util.log import err
+from releng_tool.util.log import note
+from releng_tool.util.log import warn
 import os
 import shutil
 import sys

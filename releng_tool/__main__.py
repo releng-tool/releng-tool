@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from . import __version__ as releng_version
-from .engine import RelengEngine
-from .opts import RelengEngineOptions
-from .util.log import debug
-from .util.log import releng_log_configuration
-from .util.log import verbose
-from .util.log import warn
+from releng_tool import __version__ as releng_version
+from releng_tool.engine import RelengEngine
+from releng_tool.opts import RelengEngineOptions
+from releng_tool.util.log import debug
+from releng_tool.util.log import releng_log_configuration
+from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 import argparse
 import os
 import sys

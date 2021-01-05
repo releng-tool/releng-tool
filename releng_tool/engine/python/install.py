@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ...tool.python import PYTHON
-from ...tool.python import PYTHON_EXTEND_ENV
-from ...tool.python import PythonTool
-from ...util.io import prepare_arguments
-from ...util.io import prepare_definitions
-from ...util.log import err
-from ...util.string import expand
+from releng_tool.tool.python import PYTHON
+from releng_tool.tool.python import PYTHON_EXTEND_ENV
+from releng_tool.tool.python import PythonTool
+from releng_tool.util.io import prepare_arguments
+from releng_tool.util.io import prepare_definitions
+from releng_tool.util.log import err
+from releng_tool.util.string import expand
 import sys
 
 def install(opts):

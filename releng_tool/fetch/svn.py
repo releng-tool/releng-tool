@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ..tool.svn import SVN
-from ..util.io import ensure_dir_exists
-from ..util.log import err
-from ..util.log import log
-from ..util.log import note
+from releng_tool.tool.svn import SVN
+from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.log import err
+from releng_tool.util.log import log
+from releng_tool.util.log import note
 import os
 import sys
 import tarfile

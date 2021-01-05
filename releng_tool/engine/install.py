@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from ..api import RelengInstallOptions
-from ..defs import PackageInstallType
-from ..defs import PackageType
-from ..util.api import package_install_type_to_api_type
-from ..util.api import replicate_package_attribs
-from ..util.io import interim_working_dir
-from ..util.log import err
-from ..util.log import note
-from .autotools.install import install as install_autotools
-from .cmake.install import install as install_cmake
-from .python.install import install as install_python
-from .script.install import install as install_script
+from releng_tool.api import RelengInstallOptions
+from releng_tool.defs import PackageInstallType
+from releng_tool.defs import PackageType
+from releng_tool.engine.autotools.install import install as install_autotools
+from releng_tool.engine.cmake.install import install as install_cmake
+from releng_tool.engine.python.install import install as install_python
+from releng_tool.engine.script.install import install as install_script
+from releng_tool.util.api import package_install_type_to_api_type
+from releng_tool.util.api import replicate_package_attribs
+from releng_tool.util.io import interim_working_dir
+from releng_tool.util.log import err
+from releng_tool.util.log import note
 import sys
 
 def stage(engine, pkg, script_env):

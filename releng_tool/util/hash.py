@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from __future__ import absolute_import
-from .log import debug
-from .log import err
-from .log import warn
 from enum import Enum
 from io import open
+from releng_tool.util.log import debug
+from releng_tool.util.log import err
+from releng_tool.util.log import warn
 import hashlib
 import os
 

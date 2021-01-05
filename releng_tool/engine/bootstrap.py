@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-# Copyright 2019-2020 releng-tool
+# Copyright 2019-2021 releng-tool
 
-from ..util.io import interim_working_dir
-from ..util.io import opt_file
-from ..util.io import run_script
-from ..util.log import verbose
+from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io import opt_file
+from releng_tool.util.io import run_script
+from releng_tool.util.log import verbose
 import os
 import sys
 

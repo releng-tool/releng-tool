@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
-from ..api import RelengFetchOptions
-from ..defs import VcsType
-from ..fetch.bzr import fetch as fetch_bzr
-from ..fetch.cvs import fetch as fetch_cvs
-from ..fetch.git import fetch as fetch_git
-from ..fetch.mercurial import fetch as fetch_mercurial
-from ..fetch.scp import fetch as fetch_scp
-from ..fetch.svn import fetch as fetch_svn
-from ..fetch.url import fetch as fetch_url
-from ..util.api import replicate_package_attribs
-from ..util.hash import HashResult
-from ..util.hash import verify as verify_hashes
-from ..util.io import ensure_dir_exists
-from ..util.io import generate_temp_dir
-from ..util.io import interim_working_dir
-from ..util.io import path_remove
-from ..util.log import debug
-from ..util.log import err
-from ..util.log import verbose
-from ..util.log import warn
+from releng_tool.api import RelengFetchOptions
+from releng_tool.defs import VcsType
+from releng_tool.fetch.bzr import fetch as fetch_bzr
+from releng_tool.fetch.cvs import fetch as fetch_cvs
+from releng_tool.fetch.git import fetch as fetch_git
+from releng_tool.fetch.mercurial import fetch as fetch_mercurial
+from releng_tool.fetch.scp import fetch as fetch_scp
+from releng_tool.fetch.svn import fetch as fetch_svn
+from releng_tool.fetch.url import fetch as fetch_url
+from releng_tool.util.api import replicate_package_attribs
+from releng_tool.util.hash import HashResult
+from releng_tool.util.hash import verify as verify_hashes
+from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io import generate_temp_dir
+from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io import path_remove
+from releng_tool.util.log import debug
+from releng_tool.util.log import err
+from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 import os
 import shutil
 

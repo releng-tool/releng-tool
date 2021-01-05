@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 # A flag (or option) can be driven by the existence of a file (i.e. a file
 # flag). When an instance operates with file flags, two modes are approached in
@@ -10,9 +10,9 @@
 # intent would be to configure the one (or multiple) file flag state and have
 # the running instance shutdown.
 
-from .io import touch
-from .log import err
 from enum import Enum
+from releng_tool.util.io import touch
+from releng_tool.util.log import err
 import os
 
 class FileFlag(Enum):

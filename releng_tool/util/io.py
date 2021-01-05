@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from __future__ import unicode_literals
-from .log import debug
-from .log import err
-from .log import verbose
-from .log import warn
 from contextlib import contextmanager
 from distutils.dir_util import DistutilsFileError
 from distutils.dir_util import copy_tree
+from releng_tool.util.log import debug
+from releng_tool.util.log import err
+from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 from runpy import run_path
 from shutil import copy2
 from shutil import move

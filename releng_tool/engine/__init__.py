@@ -1,66 +1,66 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
-from .. import __version__ as releng_version
-from ..defs import CONF_KEY_CACHE_EXT_TRANSFORM
-from ..defs import CONF_KEY_DEFINTERN
-from ..defs import CONF_KEY_EXTENSIONS
-from ..defs import CONF_KEY_EXTEN_PKGS
-from ..defs import CONF_KEY_LICENSE_HEADER
-from ..defs import CONF_KEY_OVERRIDE_REV
-from ..defs import CONF_KEY_OVERRIDE_SITES
-from ..defs import CONF_KEY_OVERRIDE_TOOLS
-from ..defs import CONF_KEY_PKGS
-from ..defs import CONF_KEY_PREREQUISITES
-from ..defs import CONF_KEY_QUIRKS
-from ..defs import CONF_KEY_SYSROOT_PREFIX
-from ..defs import CONF_KEY_URL_MIRROR
-from ..defs import GlobalAction
-from ..defs import PkgAction
-from ..defs import VcsType
-from ..packages import RelengPackageManager
-from ..prerequisites import RelengPrerequisites
-from ..registry import RelengRegistry
-from ..util.env import extend_script_env
-from ..util.env import set_env_value
-from ..util.file_flags import FileFlag
-from ..util.file_flags import check_file_flag
-from ..util.file_flags import process_file_flag
-from ..util.io import FailedToPrepareWorkingDirectoryError
-from ..util.io import ensure_dir_exists
-from ..util.io import execute
-from ..util.io import generate_temp_dir
-from ..util.io import interim_working_dir
-from ..util.io import opt_file
-from ..util.io import path_copy
-from ..util.io import path_exists
-from ..util.io import path_move
-from ..util.io import path_remove
-from ..util.io import run_script
-from ..util.io import touch
-from ..util.log import debug
-from ..util.log import err
-from ..util.log import log
-from ..util.log import note
-from ..util.log import success
-from ..util.log import verbose
-from ..util.log import warn
-from ..util.platform import platform_exit
-from ..util.string import expand
-from ..util.string import interpret_dictionary_strings
-from ..util.string import interpret_string
-from ..util.string import interpret_strings
-from .bootstrap import stage as bootstrap_stage
-from .build import stage as build_stage
-from .configure import stage as configure_stage
-from .extract import stage as extract_stage
-from .fetch import stage as fetch_stage
-from .init import initialize_sample
-from .install import stage as install_stage
-from .patch import stage as patch_stage
-from .post import stage as post_stage
 from collections import OrderedDict
 from datetime import datetime
+from releng_tool import __version__ as releng_version
+from releng_tool.defs import CONF_KEY_CACHE_EXT_TRANSFORM
+from releng_tool.defs import CONF_KEY_DEFINTERN
+from releng_tool.defs import CONF_KEY_EXTENSIONS
+from releng_tool.defs import CONF_KEY_EXTEN_PKGS
+from releng_tool.defs import CONF_KEY_LICENSE_HEADER
+from releng_tool.defs import CONF_KEY_OVERRIDE_REV
+from releng_tool.defs import CONF_KEY_OVERRIDE_SITES
+from releng_tool.defs import CONF_KEY_OVERRIDE_TOOLS
+from releng_tool.defs import CONF_KEY_PKGS
+from releng_tool.defs import CONF_KEY_PREREQUISITES
+from releng_tool.defs import CONF_KEY_QUIRKS
+from releng_tool.defs import CONF_KEY_SYSROOT_PREFIX
+from releng_tool.defs import CONF_KEY_URL_MIRROR
+from releng_tool.defs import GlobalAction
+from releng_tool.defs import PkgAction
+from releng_tool.defs import VcsType
+from releng_tool.engine.bootstrap import stage as bootstrap_stage
+from releng_tool.engine.build import stage as build_stage
+from releng_tool.engine.configure import stage as configure_stage
+from releng_tool.engine.extract import stage as extract_stage
+from releng_tool.engine.fetch import stage as fetch_stage
+from releng_tool.engine.init import initialize_sample
+from releng_tool.engine.install import stage as install_stage
+from releng_tool.engine.patch import stage as patch_stage
+from releng_tool.engine.post import stage as post_stage
+from releng_tool.packages import RelengPackageManager
+from releng_tool.prerequisites import RelengPrerequisites
+from releng_tool.registry import RelengRegistry
+from releng_tool.util.env import extend_script_env
+from releng_tool.util.env import set_env_value
+from releng_tool.util.file_flags import FileFlag
+from releng_tool.util.file_flags import check_file_flag
+from releng_tool.util.file_flags import process_file_flag
+from releng_tool.util.io import FailedToPrepareWorkingDirectoryError
+from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io import execute
+from releng_tool.util.io import generate_temp_dir
+from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io import opt_file
+from releng_tool.util.io import path_copy
+from releng_tool.util.io import path_exists
+from releng_tool.util.io import path_move
+from releng_tool.util.io import path_remove
+from releng_tool.util.io import run_script
+from releng_tool.util.io import touch
+from releng_tool.util.log import debug
+from releng_tool.util.log import err
+from releng_tool.util.log import log
+from releng_tool.util.log import note
+from releng_tool.util.log import success
+from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
+from releng_tool.util.platform import platform_exit
+from releng_tool.util.string import expand
+from releng_tool.util.string import interpret_dictionary_strings
+from releng_tool.util.string import interpret_string
+from releng_tool.util.string import interpret_strings
 from shutil import copyfileobj
 import os
 
