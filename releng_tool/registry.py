@@ -11,6 +11,11 @@ from .util.log import warn
 from .util.string import interpret_string
 from importlib import import_module
 
+try:
+    ModuleNotFoundError
+except NameError:
+    ModuleNotFoundError = ImportError
+
 #: prefix requirement for extension named types
 PREFIX_REQUIREMENT = 'ext-'
 
