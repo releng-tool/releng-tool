@@ -110,7 +110,7 @@ class RelengEngine:
 
         # prepare script environment to make helpers available to configuration
         # script(s)
-        self._prepare_script_environment(gbls, opts.pkg_action)
+        self._prepare_script_environment(gbls, gaction, opts.pkg_action)
 
         conf_point, conf_point_exists = opt_file(opts.conf_point)
         if not conf_point_exists:
@@ -232,7 +232,8 @@ in the working directory or the provided root directory:
             # re-apply script environment to ensure previous script environment
             # changes have not manipulated the environment (from standard
             # helpers).
-            self._prepare_script_environment(script_env, opts.pkg_action)
+            self._prepare_script_environment(
+                script_env, gaction, opts.pkg_action)
 
             # process each package (configuring, building, etc.)
             if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
@@ -716,7 +717,7 @@ list exists with the name of packages to be part of the releng process:
 
         return True
 
-    def _prepare_script_environment(self, script_env, action):
+    def _prepare_script_environment(self, script_env, gaction, paction):
         """
         prepare the script environment with common project values
 
@@ -726,12 +727,16 @@ list exists with the name of packages to be part of the releng process:
 
         Args:
             script_env: environment dictionary to prepare
-            action: the package-specific invoked
+            gaction: the global action invoked (if any)
+            paction: the package-specific action invoked (if any)
         """
 
         # always register optional flags in script environment
+        script_env['RELENG_CLEAN'] = None
         script_env['RELENG_DEVMODE'] = None
+        script_env['RELENG_DISTCLEAN'] = None
         script_env['RELENG_LOCALSRCS'] = None
+        script_env['RELENG_MRPROPER'] = None
         script_env['RELENG_REBUILD'] = None
         script_env['RELENG_RECONFIGURE'] = None
         script_env['RELENG_REINSTALL'] = None
@@ -754,11 +759,21 @@ list exists with the name of packages to be part of the releng process:
             env['SYMBOLS_DIR'] = self.opts.symbols_dir
             env['TARGET_DIR'] = self.opts.target_dir
 
-            if action in (PkgAction.REBUILD, PkgAction.REBUILD_ONLY):
+            if gaction == GlobalAction.CLEAN:
+                env['RELENG_CLEAN'] = '1'
+            elif gaction == GlobalAction.DISTCLEAN:
+                env['RELENG_CLEAN'] = '1' # also set clean flag
+                env['RELENG_DISTCLEAN'] = '1'
+                env['RELENG_MRPROPER'] = '1' # also set mrproper flag
+            elif gaction == GlobalAction.MRPROPER:
+                env['RELENG_CLEAN'] = '1' # also set clean flag
+                env['RELENG_MRPROPER'] = '1'
+
+            if paction in (PkgAction.REBUILD, PkgAction.REBUILD_ONLY):
                 env['RELENG_REBUILD'] = '1'
-            elif action in (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY):
+            elif paction in (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY):
                 env['RELENG_RECONFIGURE'] = '1'
-            elif action == PkgAction.REINSTALL:
+            elif paction == PkgAction.REINSTALL:
                 env['RELENG_REINSTALL'] = '1'
 
             if self.opts.devmode:
