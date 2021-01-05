@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from __future__ import print_function
 import sys
@@ -168,6 +168,7 @@ def __log(prefix, color, msg, file, *args):
         post = ''
     else:
         post = '\033[0m'
+    msg = str(msg)
     print('{}{}{}{}'.format(color, prefix, msg.format(*args), post), file=file)
 
 def releng_log_configuration(debug, nocolor, verbose):
