@@ -179,6 +179,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
             args = prepend_shebang_interpreter(args)
 
         if is_verbose():
+            debug('(wd) {}'.format(cwd if cwd else os.getcwd()))
             cmd_str = _cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
 
