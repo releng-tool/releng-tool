@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2021 releng-tool
 
+from releng_tool.util.log import releng_log_configuration
+import argparse
 import fnmatch
 import os
 import sys
@@ -19,6 +21,32 @@ def main():
     """
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--unbuffered', '-U', action='store_true')
+    parser.add_argument('--verbose', '-V', action='count', default=0)
+
+    args, _ = parser.parse_known_args()
+
+    # configure logging for unit test output
+    buffered = not args.unbuffered
+    verbosity = 0
+    if args.verbose:
+        try:
+            verbosity = int(args.verbose)
+            # ignore first verbose level for unbuffered mode
+            if buffered:
+                verbosity -= 1
+        except ValueError:
+            pass
+
+        buffered = False
+
+    if args.debug:
+        buffered = False
+
+    releng_log_configuration(args.debug, False, verbosity)
 
     # discover unit tests
     test_base = os.path.dirname(os.path.realpath(__file__))
@@ -54,7 +82,8 @@ def main():
         suite.addTests(unit_tests)
 
     # invoke test suite
-    runner = unittest.TextTestRunner(verbosity=DEFAULT_VERBOSITY)
+    runner = unittest.TextTestRunner(buffer=buffered,
+        verbosity=DEFAULT_VERBOSITY)
     return 0 if runner.run(suite).wasSuccessful() else 1
 
 def find_tests(entity, pattern):
