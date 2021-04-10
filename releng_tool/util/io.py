@@ -7,6 +7,7 @@ from distutils.dir_util import DistutilsFileError
 from distutils.dir_util import copy_tree
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import is_verbose
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from runpy import run_path
@@ -19,6 +20,11 @@ import subprocess
 import sys
 import tempfile
 import traceback
+
+try:
+    from shlex import quote
+except ImportError:
+    from pipes import quote
 
 #: list of (lower-cased) extension with "multiple parts"
 #: (see ``interpretStemExtension``)
@@ -164,6 +170,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
     if quiet is None:
         quiet = capture is not None
 
+    cmd_str = None
     success = False
     if args:
         # attempt to always invoke using a script's interpreter (if any) to
@@ -171,7 +178,10 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         if sys.platform != 'win32':
             args = prepend_shebang_interpreter(args)
 
-        verbose('invoking: ' + str(args).replace('{', '{{').replace('}', '}}'))
+        if is_verbose():
+            cmd_str = _cmd_args_to_str(args)
+            verbose('invoking: ' + cmd_str)
+
         try:
             # check if this execution should poll (for carriage returns and new
             # lines); note if quiet mode is enabled, do not attempt to poll
@@ -217,15 +227,42 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
             success = (proc.returncode == 0)
         except OSError as e:
             if not quiet:
-                err('unable to execute command: ' +
-                    str(args).replace('{', '{{').replace('}', '}}'))
+                if not cmd_str:
+                    cmd_str = _cmd_args_to_str(args)
+
+                err('unable to execute command: ' + cmd_str)
                 err('    {}'.format(e))
 
     if not success:
-        debug('failed cmd: ' + str(args).replace('{', '{{').replace('}', '}}'))
+        if args:
+            debug('failed to issue last command')
+        else:
+            debug('failed to issue an empty command')
         if critical:
             sys.exit(-1)
     return success
+
+def _cmd_args_to_str(args):
+    """
+    convert an argument list to a platform escaped string
+
+    This call attempts to convert a list of arguments (to be passed into a
+    `subprocess.Popen` request) into a string value. This is primarily to help
+    support logging commands for a user in error/verbose scenarios to minimize
+    the effort needed to manually re-invoke a command in a shell.
+
+    Args:
+        args: the argument list
+
+    Returns:
+        the argument(s) represented as a single string
+    """
+    if sys.platform == 'win32':
+        cmd_str = subprocess.list2cmdline(args)
+    else:
+        cmd_str = ' '.join(quote(x) for x in args)
+
+    return cmd_str
 
 @contextmanager
 def generate_temp_dir(dir_=None):

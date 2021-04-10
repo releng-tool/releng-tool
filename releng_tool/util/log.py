@@ -71,6 +71,27 @@ def err(msg, *args):
     __log('(error) ', '\033[1;31m', msg, sys.stderr, *args)
     sys.stderr.flush()
 
+def is_verbose():
+    """
+    report if the instance is configured with verbose messaging
+
+    Allows a caller to determine whether or not the instance is actively
+    configured with verbose messaging. This allow a caller to have the option to
+    decide whether or not it needs to prepare a message for a ``verbose`` call,
+    if the message to be built may include a performance cost.
+
+    .. code-block:: python
+
+        if is_verbose():
+            msg = generate_info()
+            verbose(msg)
+
+    Returns:
+        whether or not the instance is configured with verbose messaging
+    """
+    global RELENG_LOG_VERBOSE_FLAG
+    return RELENG_LOG_VERBOSE_FLAG
+
 def note(msg, *args):
     """
     log a notification message
