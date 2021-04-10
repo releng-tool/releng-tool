@@ -3,8 +3,10 @@
 
 from releng_tool import __version__ as releng_version
 from releng_tool.engine import RelengEngine
+from releng_tool.exceptions import RelengToolException
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.log import debug
+from releng_tool.util.log import err
 from releng_tool.util.log import releng_log_configuration
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -96,8 +98,11 @@ def main():
 
         # create and start the engine
         engine = RelengEngine(opts)
-        if engine.run():
-            retval = 0
+        try:
+            if engine.run():
+                retval = 0
+        except RelengToolException as e:
+            err(e)
     except KeyboardInterrupt:
         print('')
         pass
