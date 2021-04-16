@@ -722,6 +722,7 @@ of the releng process:
 
         # always register optional flags in script environment
         script_env['RELENG_CLEAN'] = None
+        script_env['RELENG_DEBUG'] = None
         script_env['RELENG_DEVMODE'] = None
         script_env['RELENG_DISTCLEAN'] = None
         script_env['RELENG_LOCALSRCS'] = None
@@ -729,6 +730,7 @@ of the releng process:
         script_env['RELENG_REBUILD'] = None
         script_env['RELENG_RECONFIGURE'] = None
         script_env['RELENG_REINSTALL'] = None
+        script_env['RELENG_VERBOSE'] = None
 
         # global variables
         for env in (os.environ, script_env):
@@ -765,10 +767,14 @@ of the releng process:
             elif paction == PkgAction.REINSTALL:
                 env['RELENG_REINSTALL'] = '1'
 
+            if self.opts.debug:
+                env['RELENG_DEBUG'] = '1'
             if self.opts.devmode:
                 env['RELENG_DEVMODE'] = '1'
             if self.opts.local_srcs:
                 env['RELENG_LOCALSRCS'] = '1'
+            if self.opts.verbose:
+                env['RELENG_VERBOSE'] = '1'
 
         # utility methods (if adjusting, see also `releng_tool.__init__`)
         script_env['debug'] = debug
