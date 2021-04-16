@@ -108,9 +108,16 @@ environment variables will be made available:
 +--------------------------+---------------------------------------------------+
 | ``PREFIX``               | The sysroot prefix for the package.               |
 +--------------------------+---------------------------------------------------+
+| ``RELENG_CLEAN``         | Flag set if performing a clean request.           |
++--------------------------+---------------------------------------------------+
 | ``RELENG_DEVMODE``       | Flag set if in :ref:`development mode`.           |
 +--------------------------+---------------------------------------------------+
+| ``RELENG_DISTCLEAN``     | Flag set if performing an extreme pristine clean  |
+|                          | request.                                          |
++--------------------------+---------------------------------------------------+
 | ``RELENG_LOCALSRCS``     | Flag set if in :ref:`local-sources mode`.         |
++--------------------------+---------------------------------------------------+
+| ``RELENG_MRPROPER``      | Flag set if performing a pristine clean request.  |
 +--------------------------+---------------------------------------------------+
 | ``RELENG_REBUILD``       | Flag set if performing a re-build request.        |
 +--------------------------+---------------------------------------------------+
