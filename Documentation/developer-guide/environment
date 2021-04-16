@@ -110,6 +110,9 @@ environment variables will be made available:
 +--------------------------+---------------------------------------------------+
 | ``RELENG_CLEAN``         | Flag set if performing a clean request.           |
 +--------------------------+---------------------------------------------------+
+| ``RELENG_DEBUG``         | Flag set if debug-related information should be   |
+|                          | shown.                                            |
++--------------------------+---------------------------------------------------+
 | ``RELENG_DEVMODE``       | Flag set if in :ref:`development mode`.           |
 +--------------------------+---------------------------------------------------+
 | ``RELENG_DISTCLEAN``     | Flag set if performing an extreme pristine clean  |
@@ -125,6 +128,9 @@ environment variables will be made available:
 |                          | request.                                          |
 +--------------------------+---------------------------------------------------+
 | ``RELENG_REINSTALL``     | Flag set if performing a re-install request.      |
++--------------------------+---------------------------------------------------+
+| ``RELENG_VERBOSE``       | Flag set if verbose-related information should be |
+|                          | shown.                                            |
 +--------------------------+---------------------------------------------------+
 | ``RELENG_VERSION``       | The version of releng-tool.                       |
 +--------------------------+---------------------------------------------------+
