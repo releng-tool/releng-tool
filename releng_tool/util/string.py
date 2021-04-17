@@ -197,8 +197,8 @@ def interpret_zero_to_one_strings(obj):
     an associated value assigned to it. If a key-value string dictionary value
     is provided, it will be returned. If the sequence of strings or a single
     string is provided, a dictionary will be populated with matching keys to
-    provided names with ``None`` values. In the case where an unexpected type is
-    detected, this method will return ``None``.
+    provided names with empty string values. In the case where an unexpected
+    type is detected, this method will return ``None``.
 
     Args:
         obj: the object to interpret
@@ -220,7 +220,7 @@ def interpret_zero_to_one_strings(obj):
     elif isinstance(obj, Sequence):
         rv = {}
         if isinstance(obj, basestring):
-            rv[obj] = None
+            rv[obj] = ''
         else:
             for child in obj:
                 if not isinstance(child, basestring):
