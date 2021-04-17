@@ -261,7 +261,12 @@ def _cmd_args_to_str(args):
     if sys.platform == 'win32':
         cmd_str = subprocess.list2cmdline(args)
     else:
-        cmd_str = ' '.join(quote(x) for x in args)
+        cmd_str = ''
+        for arg in args:
+            if isinstance(arg, bytes):
+                arg = arg.decode('utf_8')
+            cmd_str += ' ' + quote(arg)
+        cmd_str = cmd_str.strip()
 
     return cmd_str
 
