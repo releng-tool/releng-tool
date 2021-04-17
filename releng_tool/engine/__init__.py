@@ -29,8 +29,8 @@ from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.install import stage as install_stage
 from releng_tool.engine.patch import stage as patch_stage
 from releng_tool.engine.post import stage as post_stage
-from releng_tool.exceptions import MissingConfigurationError
-from releng_tool.exceptions import MissingPackagesError
+from releng_tool.exceptions import RelengToolMissingConfigurationError
+from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
@@ -116,7 +116,7 @@ class RelengEngine:
 
         conf_point, conf_point_exists = opt_file(opts.conf_point)
         if not conf_point_exists:
-            raise MissingConfigurationError(conf_point)
+            raise RelengToolMissingConfigurationError(conf_point)
 
         settings = run_script(conf_point, gbls, subject='configuration')
         if not settings:
@@ -568,7 +568,8 @@ of the releng process:
         {} = ['liba', 'libb', 'libc']""".format(
                 self.opts.conf_point, CONF_KEY_PKGS))
         elif not pkg_names:
-            raise MissingPackagesError(self.opts.conf_point, CONF_KEY_PKGS)
+            raise RelengToolMissingPackagesError(
+                self.opts.conf_point, CONF_KEY_PKGS)
 
         return pkg_names
 

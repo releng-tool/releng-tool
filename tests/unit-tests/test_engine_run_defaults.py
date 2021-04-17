@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021 releng-tool
 
-from releng_tool.exceptions import MissingConfigurationError
-from releng_tool.exceptions import MissingPackagesError
+from releng_tool.exceptions import RelengToolMissingConfigurationError
+from releng_tool.exceptions import RelengToolMissingPackagesError
 from tests import prepare_testenv
 from tests import run_testenv
 import os
@@ -24,9 +24,9 @@ class TestEngineRunDefaults(unittest.TestCase):
             self.assertEqual(engine.opts.out_dir, expected_out_dir)
 
     def test_engine_run_defaults_noconfig(self):
-        with self.assertRaises(MissingConfigurationError):
+        with self.assertRaises(RelengToolMissingConfigurationError):
             run_testenv()
 
     def test_engine_run_defaults_nopackages(self):
-        with self.assertRaises(MissingPackagesError):
+        with self.assertRaises(RelengToolMissingPackagesError):
             run_testenv(template='no-packages')

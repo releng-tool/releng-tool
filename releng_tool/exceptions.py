@@ -10,7 +10,7 @@ class RelengToolException(Exception):
 """
 exception thrown when missing a project's configuration file
 """
-class MissingConfigurationError(RelengToolException):
+class RelengToolMissingConfigurationError(RelengToolException):
     def __init__(self, path):
         RelengToolException.__init__(self, """\
 missing configuration file
@@ -24,7 +24,7 @@ in the working directory or the provided root directory:
 """
 exception thrown when a project's configuration does not provide any packages
 """
-class MissingPackagesError(RelengToolException):
+class RelengToolMissingPackagesError(RelengToolException):
     def __init__(self, path, key):
         RelengToolException.__init__(self, """\
 no defined packages
