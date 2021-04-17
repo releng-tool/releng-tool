@@ -91,6 +91,43 @@ class RelengPackageManager:
         self.opts = opts
         self.registry = registry
         self.script_env = {}
+        self._key_types = {}
+
+        # register expected types for each configuration
+        self._register_conf(RPK_AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL)
+        self._register_conf(RPK_BUILD_DEFS, PkgKeyType.DICT_STR_STR)
+        self._register_conf(RPK_BUILD_ENV, PkgKeyType.DICT_STR_STR)
+        self._register_conf(RPK_BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+        self._register_conf(RPK_BUILD_SUBDIR, PkgKeyType.STR)
+        self._register_conf(RPK_CONF_DEFS, PkgKeyType.DICT_STR_STR)
+        self._register_conf(RPK_CONF_ENV, PkgKeyType.DICT_STR_STR)
+        self._register_conf(RPK_CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+        self._register_conf(RPK_DEPS, PkgKeyType.STRS)
+        self._register_conf(RPK_DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL)
+        self._register_conf(RPK_DEVMODE_REVISION, PkgKeyType.STR)
+        self._register_conf(RPK_EXTENSION, PkgKeyType.STR)
+        self._register_conf(RPK_EXTERNAL, PkgKeyType.BOOL)
+        self._register_conf(RPK_EXTOPT, PkgKeyType.DICT)
+        self._register_conf(RPK_EXTRACT_TYPE, PkgKeyType.STR)
+        self._register_conf(RPK_FIXED_JOBS, PkgKeyType.INT_POSITIVE)
+        self._register_conf(RPK_GIT_CONFIG, PkgKeyType.DICT_STR_STR)
+        self._register_conf(RPK_GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE)
+        self._register_conf(RPK_GIT_REFSPECS, PkgKeyType.STRS)
+        self._register_conf(RPK_INSTALL_DEFS, PkgKeyType.DICT_STR_STR)
+        self._register_conf(RPK_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
+        self._register_conf(RPK_INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+        self._register_conf(RPK_INSTALL_TYPE, PkgKeyType.STR)
+        self._register_conf(RPK_INTERNAL, PkgKeyType.BOOL)
+        self._register_conf(RPK_LICENSE, PkgKeyType.STRS)
+        self._register_conf(RPK_LICENSE_FILES, PkgKeyType.STRS)
+        self._register_conf(RPK_NO_EXTRACTION, PkgKeyType.BOOL)
+        self._register_conf(RPK_PREFIX, PkgKeyType.STR)
+        self._register_conf(RPK_PYTHON_INTERPRETER, PkgKeyType.STR)
+        self._register_conf(RPK_REVISION, PkgKeyType.STR)
+        self._register_conf(RPK_SITE, PkgKeyType.STR)
+        self._register_conf(RPK_STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE)
+        self._register_conf(RPK_TYPE, PkgKeyType.STR)
+        self._register_conf(RPK_VCS_TYPE, PkgKeyType.STR)
 
     def load(self, names):
         """
@@ -251,8 +288,7 @@ class RelengPackageManager:
             # this value may override the package's version value if development
             # mode is enabled.
             pkg_has_devmode_option = False
-            pkg_devmode_revision = self._fetch(
-                RPK_DEVMODE_REVISION, PkgKeyType.STR)
+            pkg_devmode_revision = self._fetch(RPK_DEVMODE_REVISION)
 
             if pkg_devmode_revision:
                 pkg_has_devmode_option = True
@@ -269,22 +305,20 @@ class RelengPackageManager:
             }
 
             # archive extraction strip count
-            pkg_strip_count = self._fetch(
-                RPK_STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE,
+            pkg_strip_count = self._fetch(RPK_STRIP_COUNT,
                 default=DEFAULT_STRIP_COUNT)
 
             # build subdirectory
-            pkg_build_subdir = self._fetch(RPK_BUILD_SUBDIR, PkgKeyType.STR)
+            pkg_build_subdir = self._fetch(RPK_BUILD_SUBDIR)
 
             # dependencies
-            deps = self._fetch(RPK_DEPS, PkgKeyType.STRS, default=[])
+            deps = self._fetch(RPK_DEPS, default=[])
 
             # ignore cache
-            pkg_devmode_ignore_cache = self._fetch(
-                RPK_DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL)
+            pkg_devmode_ignore_cache = self._fetch(RPK_DEVMODE_IGNORE_CACHE)
 
             # install type
-            pkg_install_type = self._fetch(RPK_INSTALL_TYPE, PkgKeyType.STR)
+            pkg_install_type = self._fetch(RPK_INSTALL_TYPE)
             if pkg_install_type:
                 pkg_install_type = pkg_install_type.upper()
                 if pkg_install_type in PackageInstallType.__members__:
@@ -298,10 +332,10 @@ class RelengPackageManager:
                 pkg_install_type = PackageInstallType.TARGET
 
             # extension (override)
-            pkg_filename_ext = self._fetch(RPK_EXTENSION, PkgKeyType.STR)
+            pkg_filename_ext = self._fetch(RPK_EXTENSION)
 
             # extract type
-            pkg_extract_type = self._fetch(RPK_EXTRACT_TYPE, PkgKeyType.STR)
+            pkg_extract_type = self._fetch(RPK_EXTRACT_TYPE)
             if pkg_extract_type:
                 pkg_extract_type = pkg_extract_type.upper()
 
@@ -311,33 +345,31 @@ class RelengPackageManager:
                     return BAD_RV
 
             # fixed jobs
-            pkg_fixed_jobs = self._fetch(
-                RPK_FIXED_JOBS, PkgKeyType.INT_POSITIVE)
+            pkg_fixed_jobs = self._fetch(RPK_FIXED_JOBS)
 
             # is-external
-            pkg_is_external = self._fetch(RPK_EXTERNAL, PkgKeyType.BOOL)
+            pkg_is_external = self._fetch(RPK_EXTERNAL)
 
             # is-internal
-            pkg_is_internal = self._fetch(RPK_INTERNAL, PkgKeyType.BOOL)
+            pkg_is_internal = self._fetch(RPK_INTERNAL)
 
             # license
-            pkg_license = self._fetch(RPK_LICENSE, PkgKeyType.STRS)
+            pkg_license = self._fetch(RPK_LICENSE)
 
             # license files
-            pkg_license_files = self._fetch(
-                RPK_LICENSE_FILES, PkgKeyType.STRS)
+            pkg_license_files = self._fetch(RPK_LICENSE_FILES)
 
             # no extraction
-            pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION, PkgKeyType.BOOL)
+            pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION)
 
             # prefix
-            pkg_prefix = self._fetch(RPK_PREFIX, PkgKeyType.STR)
+            pkg_prefix = self._fetch(RPK_PREFIX)
 
             # revision
             if opts.revision_override and name in opts.revision_override:
                 pkg_revision = opts.revision_override[name]
             else:
-                pkg_revision = self._fetch(RPK_REVISION, PkgKeyType.STR,
+                pkg_revision = self._fetch(RPK_REVISION,
                     allow_expand=True, expand_extra=expand_extra)
 
             # site
@@ -348,11 +380,11 @@ class RelengPackageManager:
                 # source when experiencing network connectivity issues.
                 pkg_site = opts.sites_override[name]
             else:
-                pkg_site = self._fetch(RPK_SITE, PkgKeyType.STR,
+                pkg_site = self._fetch(RPK_SITE,
                     allow_expand=True, expand_extra=expand_extra)
 
             # type
-            pkg_type = self._fetch(RPK_TYPE, PkgKeyType.STR)
+            pkg_type = self._fetch(RPK_TYPE)
             if pkg_type:
                 pkg_type = pkg_type.upper()
                 if pkg_type in PackageType.__members__:
@@ -366,7 +398,7 @@ class RelengPackageManager:
                 pkg_type = PackageType.SCRIPT
 
             # vcs-type
-            pkg_vcs_type = self._fetch(RPK_VCS_TYPE, PkgKeyType.STR)
+            pkg_vcs_type = self._fetch(RPK_VCS_TYPE)
             if pkg_vcs_type:
                 pkg_vcs_type = pkg_vcs_type.upper()
 
@@ -413,71 +445,57 @@ class RelengPackageManager:
             # ##################################################################
 
             # package-type build definitions
-            pkg_build_defs = self._fetch(
-                RPK_BUILD_DEFS, PkgKeyType.DICT_STR_STR)
+            pkg_build_defs = self._fetch(RPK_BUILD_DEFS)
 
             # package-type build environment options
-            pkg_build_env = self._fetch(
-                RPK_BUILD_ENV, PkgKeyType.DICT_STR_STR)
+            pkg_build_env = self._fetch(RPK_BUILD_ENV)
 
             # package-type build options
-            pkg_build_opts = self._fetch(
-                RPK_BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+            pkg_build_opts = self._fetch(RPK_BUILD_OPTS)
 
             # package-type configuration definitions
-            pkg_conf_defs = self._fetch(
-                RPK_CONF_DEFS, PkgKeyType.DICT_STR_STR)
+            pkg_conf_defs = self._fetch(RPK_CONF_DEFS)
 
             # package-type configuration environment options
-            pkg_conf_env = self._fetch(
-                RPK_CONF_ENV, PkgKeyType.DICT_STR_STR)
+            pkg_conf_env = self._fetch(RPK_CONF_ENV)
 
             # package-type configuration options
-            pkg_conf_opts = self._fetch(
-                RPK_CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+            pkg_conf_opts = self._fetch(RPK_CONF_OPTS)
 
             # package-type installation definitions
-            pkg_install_defs = self._fetch(
-                RPK_INSTALL_DEFS, PkgKeyType.DICT_STR_STR)
+            pkg_install_defs = self._fetch(RPK_INSTALL_DEFS)
 
             # package-type installation environment options
-            pkg_install_env = self._fetch(
-                RPK_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
+            pkg_install_env = self._fetch(RPK_INSTALL_ENV)
 
             # package-type installation options
-            pkg_install_opts = self._fetch(
-                RPK_INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
+            pkg_install_opts = self._fetch(RPK_INSTALL_OPTS)
 
             # ##################################################################
 
             # autotools autoreconf flag
-            pkg_autotools_autoreconf = self._fetch(
-                RPK_AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL)
+            pkg_autotools_autoreconf = self._fetch(RPK_AUTOTOOLS_AUTORECONF)
 
             # ##################################################################
 
             # git configuration options for a repository
-            pkg_git_config = self._fetch(
-                RPK_GIT_CONFIG, PkgKeyType.DICT_STR_STR)
+            pkg_git_config = self._fetch(RPK_GIT_CONFIG)
 
             # git-depth
-            pkg_git_depth = self._fetch(
-                RPK_GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE)
+            pkg_git_depth = self._fetch(RPK_GIT_DEPTH)
 
             # git-refspecs
-            pkg_git_refspecs = self._fetch(
-                RPK_GIT_REFSPECS, PkgKeyType.STRS, default=[])
+            pkg_git_refspecs = self._fetch(RPK_GIT_REFSPECS, default=[])
 
             # ##################################################################
 
             # python interpreter
-            pkg_python_interpreter = self._fetch(
-                RPK_PYTHON_INTERPRETER, PkgKeyType.STR)
+            pkg_python_interpreter = self._fetch(RPK_PYTHON_INTERPRETER)
 
             # ##################################################################
 
             # extension modifiers
-            pkg_ext_modifiers = self._fetch(RPK_EXTOPT, PkgKeyType.DICT)
+            pkg_ext_modifiers = self._fetch(RPK_EXTOPT)
 
         # notify and return if a key uses an unsupported value
         except InvalidPackageKeyValue as ex:
@@ -621,7 +639,7 @@ class RelengPackageManager:
 
         return pkg, env, deps
 
-    def _fetch(self, key, type_, default=None, allow_expand=False,
+    def _fetch(self, key, default=None, allow_expand=False,
             expand_extra=None):
         """
         fetch a configuration value from a provided key
@@ -630,12 +648,11 @@ class RelengPackageManager:
         the release engineering process to use. For specific keys, there will be
         expected value types where a key is provided. The fetch operation can be
         provided a key and will return the desired value; however, if the value
-        is of a type/value that is not supported, an exception
+        is of a value that is not supported, an exception
         ``InvalidPackageKeyValue`` is raised.
 
         Args:
             key: the key
-            type_: the expected type for the key's value
             default (optional): default value to use if the key does not exist
             allow_expand (optional): whether or not to expand the value
             expand_extra (optional): extra expand defines to use
@@ -646,8 +663,12 @@ class RelengPackageManager:
         Raises:
             InvalidPackageKeyValue: value type is invalid for the key
         """
+        assert key in self._key_types
+
         self._active_key = key
+        type_ = self._key_types[key]
         value = default
+
         key = pkg_key(self._active_package, key)
         if key in self._active_env:
             if type_ == PkgKeyType.BOOL:
@@ -696,3 +717,19 @@ class RelengPackageManager:
                 raise InvalidPackageKeyValue('<unsupported key-value>')
 
         return value
+
+    def _register_conf(self, key, type_):
+        """
+        register an expected configure type for a provided configuration key
+
+        When attempting to fetch a configuration value for a specific key, the
+        fetch process will sanity check the type based off a specific PkgKeyType
+        type. This call registers the expected type for a key which can later
+        be used when fetching.
+
+        Args:
+            key: the key
+            type_: the expected configuration type
+        """
+        assert key not in self._key_types
+        self._key_types[key] = type_
