@@ -572,8 +572,6 @@ class RelengPackageManager:
             pkg_cache_file = os.path.join(opts.dl_dir, pkg_nv + '.' + cache_ext)
         else:
             pkg_cache_file = os.path.join(opts.dl_dir, pkg_nv)
-        if not pkg_prefix:
-            pkg_prefix = opts.sysroot_prefix
         if opts.devmode and pkg_devmode_revision:
             pkg_revision = pkg_devmode_revision
         elif not pkg_revision:

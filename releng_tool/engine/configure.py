@@ -6,6 +6,7 @@ from releng_tool.defs import PackageType
 from releng_tool.engine.autotools.configure import configure as configure_autotools
 from releng_tool.engine.cmake.configure import configure as configure_cmake
 from releng_tool.engine.script.configure import configure as configure_script
+from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import package_install_type_to_api_type
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io import interim_working_dir
@@ -54,7 +55,7 @@ def stage(engine, pkg, script_env):
     configure_opts.host_dir = engine.opts.host_dir
     configure_opts.install_type = package_install_type_to_api_type(pkg.install_type)
     configure_opts.name = pkg.name
-    configure_opts.prefix = pkg.prefix
+    configure_opts.prefix = NC(pkg.prefix, engine.opts.sysroot_prefix)
     configure_opts.staging_dir = engine.opts.staging_dir
     configure_opts.symbols_dir = engine.opts.symbols_dir
     configure_opts.target_dir = engine.opts.target_dir

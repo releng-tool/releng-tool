@@ -479,7 +479,9 @@ has failed. Ensure the following path is accessible for this user:
             env['PKG_SITE'] = pkg.site if pkg.site else ''
             env['PKG_REVISION'] = pkg.revision
             env['PKG_VERSION'] = pkg.version
-            env['PREFIX'] = pkg.prefix # will override existing prefix
+
+            if pkg.prefix is not None:
+                env['PREFIX'] = pkg.prefix # will override existing prefix
 
             if pkg.fixed_jobs:
                 env['NJOBS'] = str(pkg.fixed_jobs)

@@ -8,6 +8,7 @@ from releng_tool.engine.autotools.install import install as install_autotools
 from releng_tool.engine.cmake.install import install as install_cmake
 from releng_tool.engine.python.install import install as install_python
 from releng_tool.engine.script.install import install as install_script
+from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import package_install_type_to_api_type
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io import interim_working_dir
@@ -67,7 +68,7 @@ def stage(engine, pkg, script_env):
     install_opts.install_opts = pkg.install_opts
     install_opts.install_type = package_install_type_to_api_type(pkg.install_type)
     install_opts.name = pkg.name
-    install_opts.prefix = pkg.prefix
+    install_opts.prefix = NC(pkg.prefix, engine.opts.sysroot_prefix)
     install_opts.staging_dir = engine.opts.staging_dir
     install_opts.symbols_dir = engine.opts.symbols_dir
     install_opts.target_dir = engine.opts.target_dir

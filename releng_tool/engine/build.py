@@ -7,6 +7,7 @@ from releng_tool.engine.autotools.build import build as build_autotools
 from releng_tool.engine.cmake.build import build as build_cmake
 from releng_tool.engine.python.build import build as build_python
 from releng_tool.engine.script.build import build as build_script
+from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.log import err
@@ -49,7 +50,7 @@ def stage(engine, pkg, script_env):
     build_opts.ext = pkg.ext_modifiers
     build_opts.host_dir = engine.opts.host_dir
     build_opts.name = pkg.name
-    build_opts.prefix = pkg.prefix
+    build_opts.prefix = NC(pkg.prefix, engine.opts.sysroot_prefix)
     build_opts.staging_dir = engine.opts.staging_dir
     build_opts.symbols_dir = engine.opts.symbols_dir
     build_opts.target_dir = engine.opts.target_dir
