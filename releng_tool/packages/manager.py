@@ -39,8 +39,8 @@ from releng_tool.defs import RPK_TYPE
 from releng_tool.defs import RPK_VCS_TYPE
 from releng_tool.defs import RPK_VERSION
 from releng_tool.defs import VcsType
-from releng_tool.packages import InvalidPackageKeyValue
 from releng_tool.packages import PkgKeyType
+from releng_tool.packages import RelengToolInvalidPackageKeyValue
 from releng_tool.packages import pkg_key
 from releng_tool.packages.package import RelengPackage
 from releng_tool.util.env import extend_script_env
@@ -243,14 +243,13 @@ class RelengPackageManager:
             extracted environment/globals from the package script and a list of
             known package dependencies; a tuple of ``None`` types are returned
             on error
+
+        Raises:
+            RelengToolInvalidPackageKeyValue: value type is invalid for the key
         """
         verbose('loading package: {}'.format(name))
         debug('script {}'.format(script))
         opts = self.opts
-
-        def notify_invalid_value(name, key, expected):
-            err('package configuration has an invalid value: {}'.format(name))
-            err(' (key: {}, expects: {})'.format(pkg_key(name, key), expected))
 
         BAD_RV = (None, None, None)
         if not os.path.isfile(script):
@@ -278,229 +277,222 @@ class RelengPackageManager:
             return BAD_RV
         pkg_version = interpret_string(env[key])
         if pkg_version is None:
-            notify_invalid_value(name, key, 'string')
-            return BAD_RV
+            raise RelengToolInvalidPackageKeyValue(name, key, 'string')
 
-        try:
-            # development mode revision
-            #
-            # Always check for a development-mode revision after the version, as
-            # this value may override the package's version value if development
-            # mode is enabled.
-            pkg_has_devmode_option = False
-            pkg_devmode_revision = self._fetch(RPK_DEVMODE_REVISION)
+        # development mode revision
+        #
+        # Always check for a development-mode revision after the version, as
+        # this value may override the package's version value if development
+        # mode is enabled.
+        pkg_has_devmode_option = False
+        pkg_devmode_revision = self._fetch(RPK_DEVMODE_REVISION)
 
-            if pkg_devmode_revision:
-                pkg_has_devmode_option = True
+        if pkg_devmode_revision:
+            pkg_has_devmode_option = True
 
-                if opts.revision_override and name in opts.revision_override:
-                    pkg_devmode_revision = opts.revision_override[name]
-
-                if opts.devmode:
-                    pkg_version = pkg_devmode_revision
-
-            # prepare helper expand values
-            expand_extra = {
-                key: pkg_version,
-            }
-
-            # archive extraction strip count
-            pkg_strip_count = self._fetch(RPK_STRIP_COUNT,
-                default=DEFAULT_STRIP_COUNT)
-
-            # build subdirectory
-            pkg_build_subdir = self._fetch(RPK_BUILD_SUBDIR)
-
-            # dependencies
-            deps = self._fetch(RPK_DEPS, default=[])
-
-            # ignore cache
-            pkg_devmode_ignore_cache = self._fetch(RPK_DEVMODE_IGNORE_CACHE)
-
-            # install type
-            pkg_install_type = self._fetch(RPK_INSTALL_TYPE)
-            if pkg_install_type:
-                pkg_install_type = pkg_install_type.upper()
-                if pkg_install_type in PackageInstallType.__members__:
-                    pkg_install_type = PackageInstallType[pkg_install_type]
-                else:
-                    err('unknown install type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkg_key(name, RPK_INSTALL_TYPE)))
-                    return BAD_RV
-
-            if not pkg_install_type:
-                pkg_install_type = PackageInstallType.TARGET
-
-            # extension (override)
-            pkg_filename_ext = self._fetch(RPK_EXTENSION)
-
-            # extract type
-            pkg_extract_type = self._fetch(RPK_EXTRACT_TYPE)
-            if pkg_extract_type:
-                pkg_extract_type = pkg_extract_type.upper()
-
-                if pkg_extract_type not in self.registry.extract_types:
-                    err('unknown extract-type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkg_key(name, RPK_EXTRACT_TYPE)))
-                    return BAD_RV
-
-            # fixed jobs
-            pkg_fixed_jobs = self._fetch(RPK_FIXED_JOBS)
-
-            # is-external
-            pkg_is_external = self._fetch(RPK_EXTERNAL)
-
-            # is-internal
-            pkg_is_internal = self._fetch(RPK_INTERNAL)
-
-            # license
-            pkg_license = self._fetch(RPK_LICENSE)
-
-            # license files
-            pkg_license_files = self._fetch(RPK_LICENSE_FILES)
-
-            # no extraction
-            pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION)
-
-            # prefix
-            pkg_prefix = self._fetch(RPK_PREFIX)
-
-            # revision
             if opts.revision_override and name in opts.revision_override:
-                pkg_revision = opts.revision_override[name]
+                pkg_devmode_revision = opts.revision_override[name]
+
+            if opts.devmode:
+                pkg_version = pkg_devmode_revision
+
+        # prepare helper expand values
+        expand_extra = {
+            key: pkg_version,
+        }
+
+        # archive extraction strip count
+        pkg_strip_count = self._fetch(RPK_STRIP_COUNT,
+            default=DEFAULT_STRIP_COUNT)
+
+        # build subdirectory
+        pkg_build_subdir = self._fetch(RPK_BUILD_SUBDIR)
+
+        # dependencies
+        deps = self._fetch(RPK_DEPS, default=[])
+
+        # ignore cache
+        pkg_devmode_ignore_cache = self._fetch(RPK_DEVMODE_IGNORE_CACHE)
+
+        # install type
+        pkg_install_type = self._fetch(RPK_INSTALL_TYPE)
+        if pkg_install_type:
+            pkg_install_type = pkg_install_type.upper()
+            if pkg_install_type in PackageInstallType.__members__:
+                pkg_install_type = PackageInstallType[pkg_install_type]
             else:
-                pkg_revision = self._fetch(RPK_REVISION,
-                    allow_expand=True, expand_extra=expand_extra)
+                err('unknown install type value provided: {}'.format(name))
+                err(' (key: {})'.format(pkg_key(name, RPK_INSTALL_TYPE)))
+                return BAD_RV
 
-            # site
-            if opts.sites_override and name in opts.sites_override:
-                # Site overriding is permitted to help in scenarios where a builder
-                # is unable to acquire a package's source from the defined site.
-                # This includes firewall settings or a desire to use a mirrored
-                # source when experiencing network connectivity issues.
-                pkg_site = opts.sites_override[name]
-            else:
-                pkg_site = self._fetch(RPK_SITE,
-                    allow_expand=True, expand_extra=expand_extra)
+        if not pkg_install_type:
+            pkg_install_type = PackageInstallType.TARGET
 
-            # type
-            pkg_type = self._fetch(RPK_TYPE)
-            if pkg_type:
-                pkg_type = pkg_type.upper()
-                if pkg_type in PackageType.__members__:
-                    pkg_type = PackageType[pkg_type]
-                elif pkg_type not in self.registry.package_types:
-                    err('unknown package type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkg_key(name, RPK_TYPE)))
-                    return BAD_RV
+        # extension (override)
+        pkg_filename_ext = self._fetch(RPK_EXTENSION)
 
-            if not pkg_type:
-                pkg_type = PackageType.SCRIPT
+        # extract type
+        pkg_extract_type = self._fetch(RPK_EXTRACT_TYPE)
+        if pkg_extract_type:
+            pkg_extract_type = pkg_extract_type.upper()
 
-            # vcs-type
-            pkg_vcs_type = self._fetch(RPK_VCS_TYPE)
-            if pkg_vcs_type:
-                pkg_vcs_type = pkg_vcs_type.upper()
+            if pkg_extract_type not in self.registry.extract_types:
+                err('unknown extract-type value provided: {}'.format(name))
+                err(' (key: {})'.format(pkg_key(name, RPK_EXTRACT_TYPE)))
+                return BAD_RV
 
-                if pkg_vcs_type in VcsType.__members__:
-                    pkg_vcs_type = VcsType[pkg_vcs_type]
-                elif pkg_vcs_type not in self.registry.fetch_types:
-                    err('unknown vcs-type value provided: {}'.format(name))
-                    err(' (key: {})'.format(pkg_key(name, RPK_VCS_TYPE)))
-                    return BAD_RV
+        # fixed jobs
+        pkg_fixed_jobs = self._fetch(RPK_FIXED_JOBS)
 
-            if not pkg_vcs_type:
-                if pkg_site:
-                    site_lc = pkg_site.lower()
-                    if site_lc.startswith('bzr+'):
-                        pkg_site = pkg_site[4:]
-                        pkg_vcs_type = VcsType.BZR
-                    elif site_lc.startswith('cvs+'):
-                        pkg_site = pkg_site[4:]
-                        pkg_vcs_type = VcsType.CVS
-                    elif site_lc.startswith('git+'):
-                        pkg_site = pkg_site[4:]
-                        pkg_vcs_type = VcsType.GIT
-                    elif site_lc.endswith('.git'):
-                        pkg_vcs_type = VcsType.GIT
-                    elif site_lc.startswith('hg+'):
-                        pkg_site = pkg_site[3:]
-                        pkg_vcs_type = VcsType.HG
-                    elif site_lc.startswith('scp+'):
-                        pkg_site = pkg_site[4:]
-                        pkg_vcs_type = VcsType.SCP
-                    elif site_lc.startswith('svn+'):
-                        pkg_site = pkg_site[4:]
-                        pkg_vcs_type = VcsType.SVN
-                    elif site_lc == 'local':
-                        pkg_vcs_type = VcsType.LOCAL
-                    else:
-                        pkg_vcs_type = VcsType.URL
+        # is-external
+        pkg_is_external = self._fetch(RPK_EXTERNAL)
+
+        # is-internal
+        pkg_is_internal = self._fetch(RPK_INTERNAL)
+
+        # license
+        pkg_license = self._fetch(RPK_LICENSE)
+
+        # license files
+        pkg_license_files = self._fetch(RPK_LICENSE_FILES)
+
+        # no extraction
+        pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION)
+
+        # prefix
+        pkg_prefix = self._fetch(RPK_PREFIX)
+
+        # revision
+        if opts.revision_override and name in opts.revision_override:
+            pkg_revision = opts.revision_override[name]
+        else:
+            pkg_revision = self._fetch(RPK_REVISION,
+                allow_expand=True, expand_extra=expand_extra)
+
+        # site
+        if opts.sites_override and name in opts.sites_override:
+            # Site overriding is permitted to help in scenarios where a builder
+            # is unable to acquire a package's source from the defined site.
+            # This includes firewall settings or a desire to use a mirrored
+            # source when experiencing network connectivity issues.
+            pkg_site = opts.sites_override[name]
+        else:
+            pkg_site = self._fetch(RPK_SITE,
+                allow_expand=True, expand_extra=expand_extra)
+
+        # type
+        pkg_type = self._fetch(RPK_TYPE)
+        if pkg_type:
+            pkg_type = pkg_type.upper()
+            if pkg_type in PackageType.__members__:
+                pkg_type = PackageType[pkg_type]
+            elif pkg_type not in self.registry.package_types:
+                err('unknown package type value provided: {}'.format(name))
+                err(' (key: {})'.format(pkg_key(name, RPK_TYPE)))
+                return BAD_RV
+
+        if not pkg_type:
+            pkg_type = PackageType.SCRIPT
+
+        # vcs-type
+        pkg_vcs_type = self._fetch(RPK_VCS_TYPE)
+        if pkg_vcs_type:
+            pkg_vcs_type = pkg_vcs_type.upper()
+
+            if pkg_vcs_type in VcsType.__members__:
+                pkg_vcs_type = VcsType[pkg_vcs_type]
+            elif pkg_vcs_type not in self.registry.fetch_types:
+                err('unknown vcs-type value provided: {}'.format(name))
+                err(' (key: {})'.format(pkg_key(name, RPK_VCS_TYPE)))
+                return BAD_RV
+
+        if not pkg_vcs_type:
+            if pkg_site:
+                site_lc = pkg_site.lower()
+                if site_lc.startswith('bzr+'):
+                    pkg_site = pkg_site[4:]
+                    pkg_vcs_type = VcsType.BZR
+                elif site_lc.startswith('cvs+'):
+                    pkg_site = pkg_site[4:]
+                    pkg_vcs_type = VcsType.CVS
+                elif site_lc.startswith('git+'):
+                    pkg_site = pkg_site[4:]
+                    pkg_vcs_type = VcsType.GIT
+                elif site_lc.endswith('.git'):
+                    pkg_vcs_type = VcsType.GIT
+                elif site_lc.startswith('hg+'):
+                    pkg_site = pkg_site[3:]
+                    pkg_vcs_type = VcsType.HG
+                elif site_lc.startswith('scp+'):
+                    pkg_site = pkg_site[4:]
+                    pkg_vcs_type = VcsType.SCP
+                elif site_lc.startswith('svn+'):
+                    pkg_site = pkg_site[4:]
+                    pkg_vcs_type = VcsType.SVN
+                elif site_lc == 'local':
+                    pkg_vcs_type = VcsType.LOCAL
                 else:
-                    pkg_vcs_type = VcsType.NONE
+                    pkg_vcs_type = VcsType.URL
+            else:
+                pkg_vcs_type = VcsType.NONE
 
-            if pkg_vcs_type is VcsType.LOCAL:
-                warn('package using local content: {}'.format(name))
+        if pkg_vcs_type is VcsType.LOCAL:
+            warn('package using local content: {}'.format(name))
 
-            # ##################################################################
+        # ######################################################################
 
-            # package-type build definitions
-            pkg_build_defs = self._fetch(RPK_BUILD_DEFS)
+        # package-type build definitions
+        pkg_build_defs = self._fetch(RPK_BUILD_DEFS)
 
-            # package-type build environment options
-            pkg_build_env = self._fetch(RPK_BUILD_ENV)
+        # package-type build environment options
+        pkg_build_env = self._fetch(RPK_BUILD_ENV)
 
-            # package-type build options
-            pkg_build_opts = self._fetch(RPK_BUILD_OPTS)
+        # package-type build options
+        pkg_build_opts = self._fetch(RPK_BUILD_OPTS)
 
-            # package-type configuration definitions
-            pkg_conf_defs = self._fetch(RPK_CONF_DEFS)
+        # package-type configuration definitions
+        pkg_conf_defs = self._fetch(RPK_CONF_DEFS)
 
-            # package-type configuration environment options
-            pkg_conf_env = self._fetch(RPK_CONF_ENV)
+        # package-type configuration environment options
+        pkg_conf_env = self._fetch(RPK_CONF_ENV)
 
-            # package-type configuration options
-            pkg_conf_opts = self._fetch(RPK_CONF_OPTS)
+        # package-type configuration options
+        pkg_conf_opts = self._fetch(RPK_CONF_OPTS)
 
-            # package-type installation definitions
-            pkg_install_defs = self._fetch(RPK_INSTALL_DEFS)
+        # package-type installation definitions
+        pkg_install_defs = self._fetch(RPK_INSTALL_DEFS)
 
-            # package-type installation environment options
-            pkg_install_env = self._fetch(RPK_INSTALL_ENV)
+        # package-type installation environment options
+        pkg_install_env = self._fetch(RPK_INSTALL_ENV)
 
-            # package-type installation options
-            pkg_install_opts = self._fetch(RPK_INSTALL_OPTS)
+        # package-type installation options
+        pkg_install_opts = self._fetch(RPK_INSTALL_OPTS)
 
-            # ##################################################################
+        # ######################################################################
 
-            # autotools autoreconf flag
-            pkg_autotools_autoreconf = self._fetch(RPK_AUTOTOOLS_AUTORECONF)
+        # autotools autoreconf flag
+        pkg_autotools_autoreconf = self._fetch(RPK_AUTOTOOLS_AUTORECONF)
 
-            # ##################################################################
+        # ######################################################################
 
-            # git configuration options for a repository
-            pkg_git_config = self._fetch(RPK_GIT_CONFIG)
+        # git configuration options for a repository
+        pkg_git_config = self._fetch(RPK_GIT_CONFIG)
 
-            # git-depth
-            pkg_git_depth = self._fetch(RPK_GIT_DEPTH)
+        # git-depth
+        pkg_git_depth = self._fetch(RPK_GIT_DEPTH)
 
-            # git-refspecs
-            pkg_git_refspecs = self._fetch(RPK_GIT_REFSPECS, default=[])
+        # git-refspecs
+        pkg_git_refspecs = self._fetch(RPK_GIT_REFSPECS, default=[])
 
-            # ##################################################################
+        # ######################################################################
 
-            # python interpreter
-            pkg_python_interpreter = self._fetch(RPK_PYTHON_INTERPRETER)
+        # python interpreter
+        pkg_python_interpreter = self._fetch(RPK_PYTHON_INTERPRETER)
 
-            # ##################################################################
+        # ######################################################################
 
-            # extension modifiers
-            pkg_ext_modifiers = self._fetch(RPK_EXTOPT)
-
-        # notify and return if a key uses an unsupported value
-        except InvalidPackageKeyValue as ex:
-            notify_invalid_value(name, self._active_key, ex)
-            return BAD_RV
+        # extension modifiers
+        pkg_ext_modifiers = self._fetch(RPK_EXTOPT)
 
         # ######################################################################
 
@@ -647,7 +639,7 @@ class RelengPackageManager:
         expected value types where a key is provided. The fetch operation can be
         provided a key and will return the desired value; however, if the value
         is of a value that is not supported, an exception
-        ``InvalidPackageKeyValue`` is raised.
+        ``RelengToolInvalidPackageKeyValue`` is raised.
 
         Args:
             key: the key
@@ -659,7 +651,7 @@ class RelengPackageManager:
             the value
 
         Raises:
-            InvalidPackageKeyValue: value type is invalid for the key
+            RelengToolInvalidPackageKeyValue: value type is invalid for the key
         """
         assert key in self._key_types
 
@@ -667,52 +659,58 @@ class RelengPackageManager:
         type_ = self._key_types[key]
         value = default
 
-        key = pkg_key(self._active_package, key)
-        if key in self._active_env:
+        pkg_name = self._active_package
+        pkg_key_ = pkg_key(pkg_name, key)
+
+        def raise_kv_exception(type_):
+            raise RelengToolInvalidPackageKeyValue(pkg_name, pkg_key_, type_)
+
+        if pkg_key_ in self._active_env:
             if type_ == PkgKeyType.BOOL:
-                value = self._active_env[key]
+                value = self._active_env[pkg_key_]
                 if not isinstance(value, bool):
-                    raise InvalidPackageKeyValue('bool')
+                    raise_kv_exception('bool')
             elif type_ == PkgKeyType.DICT:
-                value = self._active_env[key]
+                value = self._active_env[pkg_key_]
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if not isinstance(value, dict):
-                    raise InvalidPackageKeyValue('dictionary')
+                    raise_kv_exception('dictionary')
             elif type_ == PkgKeyType.DICT_STR_STR:
-                value = interpret_dictionary_strings(self._active_env[key])
+                value = interpret_dictionary_strings(self._active_env[pkg_key_])
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
-                    raise InvalidPackageKeyValue('dict(str,str)')
+                    raise_kv_exception('dict(str,str)')
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
-                value = interpret_zero_to_one_strings(self._active_env[key])
+                value = interpret_zero_to_one_strings(
+                    self._active_env[pkg_key_])
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
-                    raise InvalidPackageKeyValue('dict(str,str) or string(s)')
+                    raise_kv_exception('dict(str,str) or string(s)')
             elif type_ == PkgKeyType.STR:
-                value = interpret_string(self._active_env[key])
+                value = interpret_string(self._active_env[pkg_key_])
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
-                    raise InvalidPackageKeyValue('string')
+                    raise_kv_exception('string')
             elif type_ == PkgKeyType.STRS:
-                value = interpret_strings(self._active_env[key])
+                value = interpret_strings(self._active_env[pkg_key_])
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
-                    raise InvalidPackageKeyValue('string(s)')
+                    raise_kv_exception('string(s)')
             elif type_ == PkgKeyType.INT_NONNEGATIVE:
-                value = self._active_env[key]
+                value = self._active_env[pkg_key_]
                 if not isinstance(value, int) or value < 0:
-                    raise InvalidPackageKeyValue('non-negative int')
+                    raise_kv_exception('non-negative int')
             elif type_ == PkgKeyType.INT_POSITIVE:
-                value = self._active_env[key]
+                value = self._active_env[pkg_key_]
                 if not isinstance(value, int) or value <= 0:
-                    raise InvalidPackageKeyValue('positive int')
+                    raise_kv_exception('positive int')
             else:
-                raise InvalidPackageKeyValue('<unsupported key-value>')
+                raise_kv_exception('<unsupported key-value>')
 
         return value
 

@@ -2,6 +2,7 @@
 # Copyright 2018-2021 releng-tool
 
 from enum import Enum
+from releng_tool.exceptions import RelengToolException
 
 class PkgKeyType(Enum):
     """
@@ -31,11 +32,15 @@ class PkgKeyType(Enum):
     INT_NONNEGATIVE = 7
     INT_POSITIVE = 8
 
-class InvalidPackageKeyValue(Exception):
-    """
-    raised when a package key is using an unsupported value
-    """
-    pass
+"""
+raised when a package key is using an unsupported value
+"""
+class RelengToolInvalidPackageKeyValue(RelengToolException):
+    def __init__(self, name, key, type_):
+        RelengToolException.__init__(self, """\
+package configuration has an invalid value: {}
+ (key: {}, expects: {})\
+""".format(name, key, type_))
 
 def pkg_key(pkg, type_):
     """
