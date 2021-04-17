@@ -616,7 +616,7 @@ class RelengPackageManager:
         pkg.install_env = pkg_install_env
         pkg.install_opts = pkg_install_opts
         # (package type - autotools)
-        pkg.autotools_autoreconf = pkg_autotools_autoreconf is True
+        pkg.autotools_autoreconf = pkg_autotools_autoreconf
         # (package type - python)
         pkg.python_interpreter = pkg_python_interpreter
         # (additional environment helpers)
