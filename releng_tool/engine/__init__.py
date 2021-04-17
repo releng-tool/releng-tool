@@ -31,7 +31,7 @@ from releng_tool.engine.patch import stage as patch_stage
 from releng_tool.engine.post import stage as post_stage
 from releng_tool.exceptions import MissingConfigurationError
 from releng_tool.exceptions import MissingPackagesError
-from releng_tool.packages import RelengPackageManager
+from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
 from releng_tool.util.env import extend_script_env
