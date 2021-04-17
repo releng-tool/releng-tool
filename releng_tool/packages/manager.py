@@ -167,8 +167,8 @@ class RelengPackageManager:
                 pkg_script, pkg_script_exists = opt_file(pkg_script)
                 if pkg_script_exists:
                     pkg, env, deps = self.load_package(name, pkg_script)
-                    if pkg:
-                        break
+                    if not pkg:
+                        return None
 
             # if a package location has not been found, finally check the
             # default package directory
