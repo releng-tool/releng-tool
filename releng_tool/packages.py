@@ -5,6 +5,7 @@ from enum import Enum
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
 from releng_tool.defs import RPK_AUTOTOOLS_AUTORECONF
+from releng_tool.defs import RPK_BUILD_DEFS
 from releng_tool.defs import RPK_BUILD_ENV
 from releng_tool.defs import RPK_BUILD_OPTS
 from releng_tool.defs import RPK_BUILD_SUBDIR
@@ -22,6 +23,7 @@ from releng_tool.defs import RPK_FIXED_JOBS
 from releng_tool.defs import RPK_GIT_CONFIG
 from releng_tool.defs import RPK_GIT_DEPTH
 from releng_tool.defs import RPK_GIT_REFSPECS
+from releng_tool.defs import RPK_INSTALL_DEFS
 from releng_tool.defs import RPK_INSTALL_ENV
 from releng_tool.defs import RPK_INSTALL_OPTS
 from releng_tool.defs import RPK_INSTALL_TYPE
@@ -409,7 +411,7 @@ class RelengPackageManager:
 
             # package-type build definitions
             pkg_build_defs = self._fetch(
-                RPK_BUILD_ENV, PkgKeyType.DICT_STR_STR)
+                RPK_BUILD_DEFS, PkgKeyType.DICT_STR_STR)
 
             # package-type build environment options
             pkg_build_env = self._fetch(
@@ -433,7 +435,7 @@ class RelengPackageManager:
 
             # package-type installation definitions
             pkg_install_defs = self._fetch(
-                RPK_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
+                RPK_INSTALL_DEFS, PkgKeyType.DICT_STR_STR)
 
             # package-type installation environment options
             pkg_install_env = self._fetch(
