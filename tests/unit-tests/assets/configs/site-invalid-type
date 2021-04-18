@@ -1,0 +1,2 @@
+TEST_SITE = False
+TEST_VERSION = 'dummy'

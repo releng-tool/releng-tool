@@ -1,0 +1,2 @@
+TEST_PREFIX = 123
+TEST_VERSION = 'dummy'

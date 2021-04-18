@@ -1,0 +1,2 @@
+TEST_STRIP_COUNT = -1
+TEST_VERSION = 'dummy'

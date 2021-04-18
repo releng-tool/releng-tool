@@ -1,0 +1,2 @@
+TEST_SITE = 'hg+example'
+TEST_VERSION = 'dummy'

@@ -1,0 +1,2 @@
+TEST_TYPE = 'autotools'
+TEST_VERSION = 'dummy'

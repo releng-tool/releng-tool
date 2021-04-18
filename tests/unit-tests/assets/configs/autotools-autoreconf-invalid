@@ -1,0 +1,2 @@
+TEST_AUTOTOOLS_AUTORECONF = 'invalid'
+TEST_VERSION = 'dummy'

@@ -1,0 +1,2 @@
+TEST_TYPE = 'cmake'
+TEST_VERSION = 'dummy'

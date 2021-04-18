@@ -1,0 +1,6 @@
+TEST_LICENSE_FILES = [
+    'license-file1',
+    'license-file2',
+    'license-file3',
+]
+TEST_VERSION = 'dummy'

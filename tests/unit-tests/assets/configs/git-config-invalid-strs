@@ -1,0 +1,6 @@
+TEST_GIT_CONFIG = [
+    'invalid-cfg',
+    'invalid-cfg',
+    'invalid-cfg',
+]
+TEST_VERSION = 'dummy'

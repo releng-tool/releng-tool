@@ -1,0 +1,4 @@
+TEST_INSTALL_DEFS = {
+    'key1': False,
+}
+TEST_VERSION = 'dummy'

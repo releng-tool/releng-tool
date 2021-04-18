@@ -1,0 +1,2 @@
+TEST_INSTALL_OPTS = False
+TEST_VERSION = 'dummy'

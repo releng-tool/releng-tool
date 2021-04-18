@@ -1,0 +1,6 @@
+TEST_LICENSE = [
+    'license1',
+    'license2',
+    'license3',
+]
+TEST_VERSION = 'dummy'

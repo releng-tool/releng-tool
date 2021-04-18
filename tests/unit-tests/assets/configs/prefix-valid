@@ -1,0 +1,2 @@
+TEST_PREFIX = 'myprefix'
+TEST_VERSION = 'dummy'

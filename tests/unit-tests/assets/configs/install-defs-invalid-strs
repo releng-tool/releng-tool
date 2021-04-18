@@ -1,0 +1,6 @@
+TEST_INSTALL_DEFS = [
+    'invalid-def',
+    'invalid-def',
+    'invalid-def',
+]
+TEST_VERSION = 'dummy'

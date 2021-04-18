@@ -1,0 +1,2 @@
+TEST_PYTHON_INTERPRETER = 'mypython'
+TEST_VERSION = 'dummy'

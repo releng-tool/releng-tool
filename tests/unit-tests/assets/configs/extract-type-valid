@@ -1,0 +1,2 @@
+TEST_EXTRACT_TYPE = 'ext-my-custom-extract-type'
+TEST_VERSION = 'dummy'

@@ -1,0 +1,6 @@
+TEST_INSTALL_OPTS = [
+    'option1',
+    'option2',
+    'option3',
+]
+TEST_VERSION = 'dummy'

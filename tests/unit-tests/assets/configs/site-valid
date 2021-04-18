@@ -1,0 +1,2 @@
+TEST_SITE = 'https://example.com/file.tgz'
+TEST_VERSION = 'dummy'

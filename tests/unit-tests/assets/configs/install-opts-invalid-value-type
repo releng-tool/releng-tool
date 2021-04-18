@@ -1,0 +1,4 @@
+TEST_INSTALL_OPTS = {
+    'key1': False,
+}
+TEST_VERSION = 'dummy'

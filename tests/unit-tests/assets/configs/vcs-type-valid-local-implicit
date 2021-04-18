@@ -1,0 +1,2 @@
+TEST_SITE = 'local'
+TEST_VERSION = 'dummy'

@@ -1,0 +1,2 @@
+TEST_VCS_TYPE = 'bzr'
+TEST_VERSION = 'dummy'

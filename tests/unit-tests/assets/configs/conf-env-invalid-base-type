@@ -1,0 +1,2 @@
+TEST_CONF_ENV = 'invalid'
+TEST_VERSION = 'dummy'

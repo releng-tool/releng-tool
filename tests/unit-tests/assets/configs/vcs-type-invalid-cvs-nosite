@@ -1,0 +1,2 @@
+TEST_VCS_TYPE = 'cvs'
+TEST_VERSION = 'dummy'

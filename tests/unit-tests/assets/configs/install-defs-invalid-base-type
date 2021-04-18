@@ -1,0 +1,2 @@
+TEST_INSTALL_DEFS = 'invalid'
+TEST_VERSION = 'dummy'

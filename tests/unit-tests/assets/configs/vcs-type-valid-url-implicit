@@ -1,0 +1,2 @@
+TEST_SITE = 'example.com'
+TEST_VERSION = 'dummy'

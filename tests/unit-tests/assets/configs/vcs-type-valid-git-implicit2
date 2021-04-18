@@ -1,0 +1,2 @@
+TEST_SITE = 'example.git'
+TEST_VERSION = 'dummy'

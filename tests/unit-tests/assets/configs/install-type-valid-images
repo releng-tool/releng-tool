@@ -1,0 +1,2 @@
+TEST_INSTALL_TYPE = 'images'
+TEST_VERSION = 'dummy'

@@ -1,0 +1,8 @@
+TEST_EXTOPT = {
+    'mod1': 'value',
+    'mod2': True,
+    123: {
+        'more': 'data',
+    },
+}
+TEST_VERSION = 'dummy'

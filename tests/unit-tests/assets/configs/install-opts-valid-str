@@ -1,0 +1,2 @@
+TEST_INSTALL_OPTS = 'option'
+TEST_VERSION = 'dummy'

@@ -1,0 +1,2 @@
+TEST_NO_EXTRACTION = True
+TEST_VERSION = 'dummy'

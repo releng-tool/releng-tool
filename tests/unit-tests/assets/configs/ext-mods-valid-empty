@@ -1,0 +1,2 @@
+TEST_EXTOPT = {}
+TEST_VERSION = 'dummy'

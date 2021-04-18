@@ -1,0 +1,4 @@
+TEST_CONF_ENV = {
+    'key1': False,
+}
+TEST_VERSION = 'dummy'

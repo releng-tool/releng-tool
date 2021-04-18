@@ -1,0 +1,2 @@
+TEST_CONF_OPTS = 'option'
+TEST_VERSION = 'dummy'

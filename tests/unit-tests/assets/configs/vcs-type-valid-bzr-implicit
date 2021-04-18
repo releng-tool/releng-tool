@@ -1,0 +1,2 @@
+TEST_SITE = 'bzr+example'
+TEST_VERSION = 'dummy'

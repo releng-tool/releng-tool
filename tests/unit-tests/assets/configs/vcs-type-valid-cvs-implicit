@@ -1,0 +1,2 @@
+TEST_SITE = 'cvs+example'
+TEST_VERSION = 'dummy'

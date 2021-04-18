@@ -1,0 +1,6 @@
+TEST_INSTALL_ENV = [
+    'invalid-def',
+    'invalid-def',
+    'invalid-def',
+]
+TEST_VERSION = 'dummy'

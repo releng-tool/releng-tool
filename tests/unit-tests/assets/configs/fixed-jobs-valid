@@ -1,0 +1,2 @@
+TEST_FIXED_JOBS = 24
+TEST_VERSION = 'dummy'

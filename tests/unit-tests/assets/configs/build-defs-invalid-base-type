@@ -1,0 +1,2 @@
+TEST_BUILD_DEFS = 'invalid'
+TEST_VERSION = 'dummy'

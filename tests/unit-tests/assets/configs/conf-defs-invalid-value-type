@@ -1,0 +1,4 @@
+TEST_CONF_DEFS = {
+    'key1': False,
+}
+TEST_VERSION = 'dummy'

@@ -1,0 +1,2 @@
+TEST_SITE = 'svn+example'
+TEST_VERSION = 'dummy'

@@ -1,0 +1,2 @@
+TEST_VCS_TYPE = 'git'
+TEST_VERSION = 'dummy'

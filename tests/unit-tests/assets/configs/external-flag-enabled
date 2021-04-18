@@ -1,0 +1,2 @@
+TEST_EXTERNAL = True
+TEST_VERSION = 'dummy'

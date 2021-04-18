@@ -1,0 +1,2 @@
+TEST_VCS_TYPE = 'svn'
+TEST_VERSION = 'dummy'

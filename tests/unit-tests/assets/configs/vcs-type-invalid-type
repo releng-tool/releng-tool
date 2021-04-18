@@ -1,0 +1,2 @@
+TEST_VCS_TYPE = ['bad-type']
+TEST_VERSION = 'dummy'

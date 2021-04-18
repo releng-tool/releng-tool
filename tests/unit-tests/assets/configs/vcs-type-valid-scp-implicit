@@ -1,0 +1,2 @@
+TEST_SITE = 'scp+example'
+TEST_VERSION = 'dummy'

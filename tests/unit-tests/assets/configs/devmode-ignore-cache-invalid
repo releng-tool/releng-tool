@@ -1,0 +1,2 @@
+TEST_DEVMODE_IGNORE_CACHE = 'invalid'
+TEST_VERSION = 'dummy'

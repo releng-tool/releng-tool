@@ -1,0 +1,2 @@
+TEST_VCS_TYPE = 'scp'
+TEST_VERSION = 'dummy'

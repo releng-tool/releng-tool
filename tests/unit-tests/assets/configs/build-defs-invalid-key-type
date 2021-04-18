@@ -1,0 +1,4 @@
+TEST_BUILD_DEFS = {
+    123: 'value',
+}
+TEST_VERSION = 'dummy'

@@ -1,0 +1,4 @@
+TEST_BUILD_ENV = {
+    'key1': False,
+}
+TEST_VERSION = 'dummy'

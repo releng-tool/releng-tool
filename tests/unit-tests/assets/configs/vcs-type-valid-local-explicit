@@ -1,0 +1,2 @@
+TEST_VCS_TYPE = 'local'
+TEST_VERSION = 'dummy'

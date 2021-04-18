@@ -1,0 +1,4 @@
+TEST_INSTALL_ENV = {
+    123: 'value',
+}
+TEST_VERSION = 'dummy'

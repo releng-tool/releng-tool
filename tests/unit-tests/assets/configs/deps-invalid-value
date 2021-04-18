@@ -1,0 +1,5 @@
+TEST_DEPENDENCIES = [
+    'valid',
+    123,
+]
+TEST_VERSION = 'dummy'

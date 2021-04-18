@@ -1,0 +1,2 @@
+TEST_LICENSE_FILES = 'license-file'
+TEST_VERSION = 'dummy'

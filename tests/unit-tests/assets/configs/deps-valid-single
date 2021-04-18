@@ -1,0 +1,2 @@
+TEST_DEPENDENCIES = 'dep'
+TEST_VERSION = 'dummy'

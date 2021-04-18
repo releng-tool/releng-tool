@@ -1,0 +1,2 @@
+TEST_INSTALL_TYPE = 'staging'
+TEST_VERSION = 'dummy'

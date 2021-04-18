@@ -1,0 +1,5 @@
+TEST_GIT_REFSPECS = [
+    'refspec',
+    123,
+]
+TEST_VERSION = 'dummy'
