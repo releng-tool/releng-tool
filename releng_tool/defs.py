@@ -148,7 +148,7 @@ class PackageType(Enum):
     PYTHON = 3
     SCRIPT = 4
 
-class PackageInstallType(Enum):
+class PackageInstallType():
     """
     package install types
 
@@ -163,12 +163,12 @@ class PackageInstallType(Enum):
         STAGING_AND_TARGET: install to the staging and target containers
         TARGET: install to the target container
     """
-    UNKNOWN = 0
-    HOST = 1
-    IMAGES = 2
-    STAGING = 3
-    STAGING_AND_TARGET = 4
-    TARGET = 5
+    UNKNOWN = 'unknown'
+    HOST = 'host'
+    IMAGES = 'images'
+    STAGING = 'staging'
+    STAGING_AND_TARGET = 'staging_and_target'
+    TARGET = 'target'
 
 class VcsType(Enum):
     """

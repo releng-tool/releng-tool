@@ -315,11 +315,18 @@ class RelengPackageManager:
         pkg_devmode_ignore_cache = self._fetch(RPK_DEVMODE_IGNORE_CACHE)
 
         # install type
-        pkg_install_type = self._fetch(RPK_INSTALL_TYPE)
-        if pkg_install_type:
-            pkg_install_type = pkg_install_type.upper()
-            if pkg_install_type in PackageInstallType.__members__:
-                pkg_install_type = PackageInstallType[pkg_install_type]
+        pkg_install_type = None
+        pkg_install_type_raw = self._fetch(RPK_INSTALL_TYPE)
+        if pkg_install_type_raw:
+            pkg_install_type_raw = pkg_install_type_raw.lower()
+            if pkg_install_type_raw in (
+                    PackageInstallType.HOST,
+                    PackageInstallType.IMAGES,
+                    PackageInstallType.STAGING,
+                    PackageInstallType.STAGING_AND_TARGET,
+                    PackageInstallType.TARGET,
+                    ):
+                pkg_install_type = pkg_install_type_raw
             else:
                 err('unknown install type value provided: {}'.format(name))
                 err(' (key: {})'.format(pkg_key(name, RPK_INSTALL_TYPE)))
