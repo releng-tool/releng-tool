@@ -502,17 +502,18 @@ unknown install type value provided: {}
         # ######################################################################
 
         # checks
-        if pkg_is_external and pkg_is_internal:
-            key1 = pkg_key(name, RPK_EXTERNAL)
-            key2 = pkg_key(name, RPK_INTERNAL)
-            err('package has conflicting configuration values: {}'.format(name))
-            err(' (package flagged as external and internal)')
-            err(' (keys: {}, {})'.format(key1, key2))
-            return BAD_RV
-        elif pkg_is_internal:
-            pkg_is_internal = True
-        elif pkg_is_external:
-            pkg_is_internal = False
+        if pkg_is_external is not None and pkg_is_internal is not None:
+            if pkg_is_external == pkg_is_internal:
+                key1 = pkg_key(name, RPK_EXTERNAL)
+                key2 = pkg_key(name, RPK_INTERNAL)
+                raise RelengToolInvalidPackageConfiguration("""\
+package has conflicting configuration values: {}
+ (package flagged as external and internal)
+ (keys: {}, {})""".format(name, key1, key2))
+        elif pkg_is_external is not None:
+            pkg_is_internal = not pkg_is_external
+        elif pkg_is_internal is not None:
+            pass
         elif opts.default_internal_pkgs:
             pkg_is_internal = True
         else:
