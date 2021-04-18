@@ -106,9 +106,10 @@ def fetch(opts):
         '+refs/tags/*:refs/tags/*']
 
     # allow fetching addition references if configured (e.g. pull requests)
-    for ref in opts._git_refspecs:
-        fetch_cmd.append(
-            '+refs/{}/*/head:refs/remotes/origin/{}/*'.format(ref, ref))
+    if opts._git_refspecs:
+        for ref in opts._git_refspecs:
+            fetch_cmd.append(
+                '+refs/{}/*/head:refs/remotes/origin/{}/*'.format(ref, ref))
 
     # limit fetch depth
     target_depth = 1

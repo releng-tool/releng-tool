@@ -510,7 +510,7 @@ class RelengPackageManager:
         pkg_git_depth = self._fetch(RPK_GIT_DEPTH)
 
         # git-refspecs
-        pkg_git_refspecs = self._fetch(RPK_GIT_REFSPECS, default=[])
+        pkg_git_refspecs = self._fetch(RPK_GIT_REFSPECS)
 
         # ######################################################################
 
