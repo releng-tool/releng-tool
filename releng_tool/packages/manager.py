@@ -39,17 +39,26 @@ from releng_tool.defs import RPK_TYPE
 from releng_tool.defs import RPK_VCS_TYPE
 from releng_tool.defs import RPK_VERSION
 from releng_tool.defs import VcsType
-from releng_tool.exceptions import RelengToolInvalidPackageConfiguration
 from releng_tool.packages import PkgKeyType
-from releng_tool.packages import RelengToolInvalidPackageKeyValue
 from releng_tool.packages import pkg_key
+from releng_tool.packages.exceptions import RelengToolConflictingConfiguration
+from releng_tool.packages.exceptions import RelengToolConflictingLocalSrcsPath
+from releng_tool.packages.exceptions import RelengToolCyclicPackageDependency
+from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
+from releng_tool.packages.exceptions import RelengToolInvalidPackageScript
+from releng_tool.packages.exceptions import RelengToolMissingPackageScript
+from releng_tool.packages.exceptions import RelengToolMissingPackageSite
+from releng_tool.packages.exceptions import RelengToolMissingPackageVersion
+from releng_tool.packages.exceptions import RelengToolUnknownExtractType
+from releng_tool.packages.exceptions import RelengToolUnknownInstallType
+from releng_tool.packages.exceptions import RelengToolUnknownPackageType
+from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import opt_file
 from releng_tool.util.io import run_script
 from releng_tool.util.log import debug
-from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.sort import TopologicalSorter
@@ -59,6 +68,7 @@ from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from releng_tool.util.string import interpret_zero_to_one_strings
 import os
+import traceback
 
 try:
     from urllib.parse import urlparse
@@ -143,15 +153,17 @@ class RelengPackageManager:
         list will be an ordered package list based on configured dependencies
         outlined in the user's package definitions. When package dependencies do
         not play a role in the required order of the releng process, a
-        first-configured first-returned approach is used. In the event that a
-        package cannot be found or a cyclic dependency is detected, this call
-        with return ``None``.
+        first-configured first-returned approach is used.
 
         Args:
             names: the names of packages to load
 
         Returns:
-            returns an ordered list of packages to use; ``None`` on error
+            returns an ordered list of packages to use
+
+        Raises:
+            RelengToolInvalidPackageConfiguration: when an error has been
+                                                    detected loading the package
         """
         pkgs = {}
         final_deps = {}
@@ -168,8 +180,6 @@ class RelengPackageManager:
                 pkg_script, pkg_script_exists = opt_file(pkg_script)
                 if pkg_script_exists:
                     pkg, env, deps = self.load_package(name, pkg_script)
-                    if not pkg:
-                        return None
 
             # if a package location has not been found, finally check the
             # default package directory
@@ -178,17 +188,15 @@ class RelengPackageManager:
                 pkg_script, _ = opt_file(pkg_script)
 
                 pkg, env, deps = self.load_package(name, pkg_script)
-                if not pkg:
-                    return None
 
             pkgs[pkg.name] = pkg
             for dep in deps:
                 # if this is an unknown package and is not in out current list,
                 # append it to the list of names to process
                 if dep == name:
-                    err('cyclic package dependency detected with self: '
-                        '{}'.format(name))
-                    return None
+                    raise RelengToolCyclicPackageDependency({
+                        'pkg_name': name,
+                    })
                 elif dep not in pkgs:
                     if dep not in names_left:
                         verbose(
@@ -217,8 +225,9 @@ class RelengPackageManager:
         for pkg in pkgs.values():
             sorted_pkgs = sorter.sort(pkg)
             if not sorted:
-                err('cyclic package dependency detected: {}'.format(name))
-                return None
+                raise RelengToolCyclicPackageDependency({
+                    'pkg_name': name,
+                })
         debug('sorted packages)')
         for pkg in sorted_pkgs:
             debug(' {}'.format(pkg.name))
@@ -242,25 +251,30 @@ class RelengPackageManager:
         Returns:
             returns a tuple of three (3) containing the package instance, the
             extracted environment/globals from the package script and a list of
-            known package dependencies; a tuple of ``None`` types are returned
-            on error
+            known package dependencies
 
         Raises:
-            RelengToolInvalidPackageKeyValue: value type is invalid for the key
+            RelengToolInvalidPackageConfiguration: when an error has been
+                                                    detected loading the package
         """
         verbose('loading package: {}'.format(name))
         debug('script {}'.format(script))
         opts = self.opts
 
-        BAD_RV = (None, None, None)
         if not os.path.isfile(script):
-            err('unknown package provided: {}'.format(name))
-            err(' (script) {}'.format(script))
-            return BAD_RV
+            raise RelengToolMissingPackageScript({
+                'pkg_name': name,
+                'script': script,
+            })
 
-        env = run_script(script, self.script_env, subject='package')
-        if not env:
-            return BAD_RV
+        try:
+            env = run_script(script, self.script_env, catch=False)
+        except Exception as e:
+            raise RelengToolInvalidPackageScript({
+                'description': str(e),
+                'script': script,
+                'traceback': traceback.format_exc(),
+            })
 
         self._active_package = name
         self._active_env = env
@@ -273,12 +287,17 @@ class RelengPackageManager:
         # complex field below.
         key = pkg_key(name, RPK_VERSION)
         if key not in env or not env[key]:
-            err('package has no version defined: {}'.format(name))
-            err(' (missing key: {})'.format(key))
-            return BAD_RV
+            raise RelengToolMissingPackageVersion({
+                'pkg_name': name,
+                'pkg_key': key,
+            })
         pkg_version = interpret_string(env[key])
         if pkg_version is None:
-            raise RelengToolInvalidPackageKeyValue(name, key, 'string')
+            raise RelengToolInvalidPackageKeyValue({
+                'pkg_name': name,
+                'pkg_key': key,
+                'expected_type': 'string',
+            })
 
         # development mode revision
         #
@@ -329,9 +348,10 @@ class RelengPackageManager:
                     ):
                 pkg_install_type = pkg_install_type_raw
             else:
-                raise RelengToolInvalidPackageConfiguration("""\
-unknown install type value provided: {}
- (key: {})""".format(name, key))
+                raise RelengToolUnknownInstallType({
+                    'pkg_name': name,
+                    'pkg_key': key,
+                })
 
         # extension (override)
         pkg_filename_ext = self._fetch(RPK_EXTENSION)
@@ -342,9 +362,10 @@ unknown install type value provided: {}
             pkg_extract_type = pkg_extract_type.upper()
 
             if pkg_extract_type not in self.registry.extract_types:
-                err('unknown extract-type value provided: {}'.format(name))
-                err(' (key: {})'.format(pkg_key(name, RPK_EXTRACT_TYPE)))
-                return BAD_RV
+                raise RelengToolUnknownExtractType({
+                    'pkg_name': name,
+                    'pkg_key': key,
+                })
 
         # fixed jobs
         pkg_fixed_jobs = self._fetch(RPK_FIXED_JOBS)
@@ -392,9 +413,10 @@ unknown install type value provided: {}
             if pkg_type in PackageType.__members__:
                 pkg_type = PackageType[pkg_type]
             elif pkg_type not in self.registry.package_types:
-                err('unknown package type value provided: {}'.format(name))
-                err(' (key: {})'.format(pkg_key(name, RPK_TYPE)))
-                return BAD_RV
+                raise RelengToolUnknownPackageType({
+                    'pkg_name': name,
+                    'pkg_key': key,
+                })
 
         if not pkg_type:
             pkg_type = PackageType.SCRIPT
@@ -407,9 +429,10 @@ unknown install type value provided: {}
             if pkg_vcs_type in VcsType.__members__:
                 pkg_vcs_type = VcsType[pkg_vcs_type]
             elif pkg_vcs_type not in self.registry.fetch_types:
-                err('unknown vcs-type value provided: {}'.format(name))
-                err(' (key: {})'.format(pkg_key(name, RPK_VCS_TYPE)))
-                return BAD_RV
+                raise RelengToolUnknownVcsType({
+                    'pkg_name': name,
+                    'pkg_key': key,
+                })
 
         if not pkg_vcs_type:
             if pkg_site:
@@ -504,12 +527,12 @@ unknown install type value provided: {}
         # checks
         if pkg_is_external is not None and pkg_is_internal is not None:
             if pkg_is_external == pkg_is_internal:
-                key1 = pkg_key(name, RPK_EXTERNAL)
-                key2 = pkg_key(name, RPK_INTERNAL)
-                raise RelengToolInvalidPackageConfiguration("""\
-package has conflicting configuration values: {}
- (package flagged as external and internal)
- (keys: {}, {})""".format(name, key1, key2))
+                raise RelengToolConflictingConfiguration({
+                    'pkg_name': name,
+                    'pkg_key1': pkg_key(name, RPK_EXTERNAL),
+                    'pkg_key2': pkg_key(name, RPK_INTERNAL),
+                    'desc': 'package flagged as external and internal',
+                })
         elif pkg_is_external is not None:
             pkg_is_internal = not pkg_is_external
         elif pkg_is_internal is not None:
@@ -529,9 +552,11 @@ package has conflicting configuration values: {}
                 VcsType.SVN,
                 VcsType.URL,
                 ):
-            raise RelengToolInvalidPackageConfiguration("""\
-package defines vcs-type ({}) but no site: {}
- (key: {})""".format(pkg_vcs_type, name, key))
+            raise RelengToolMissingPackageSite({
+                'pkg_name': name,
+                'pkg_key': key,
+                'vcs_type': pkg_vcs_type,
+            })
 
         # find possible extension for a cache file
         #
@@ -572,10 +597,11 @@ package defines vcs-type ({}) but no site: {}
             pkg_build_dir = os.path.join(container_dir, name)
 
             if pkg_build_dir == opts.root_dir:
-                err('conflicting local-sources package path and root directory')
-                err(' (root: {})'.format(opts.root_dir))
-                err(' ({} path: {})'.format(name, pkg_build_dir))
-                return BAD_RV
+                raise RelengToolConflictingLocalSrcsPath({
+                    'pkg_name': name,
+                    'root': opts.root_dir,
+                    'path': pkg_build_dir,
+                })
         else:
             pkg_build_dir = pkg_build_output_dir
         if pkg_build_subdir:
@@ -683,7 +709,11 @@ package defines vcs-type ({}) but no site: {}
         pkg_key_ = pkg_key(pkg_name, key)
 
         def raise_kv_exception(type_):
-            raise RelengToolInvalidPackageKeyValue(pkg_name, pkg_key_, type_)
+            raise RelengToolInvalidPackageKeyValue({
+                'pkg_name': pkg_name,
+                'pkg_key': pkg_key_,
+                'expected_type': type_,
+            })
 
         if pkg_key_ in self._active_env:
             if type_ == PkgKeyType.BOOL:
