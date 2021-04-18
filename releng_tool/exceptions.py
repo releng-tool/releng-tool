@@ -35,3 +35,9 @@ list exists with the name of packages to be part of the releng process:
     {}
         {} = ['liba', 'libb', 'libc']
 """.format(path, key))
+
+"""
+exception thrown when a project's configuration value has an issue
+"""
+class RelengToolInvalidPackageConfiguration(RelengToolException):
+    pass

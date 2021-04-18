@@ -39,6 +39,7 @@ from releng_tool.defs import RPK_TYPE
 from releng_tool.defs import RPK_VCS_TYPE
 from releng_tool.defs import RPK_VERSION
 from releng_tool.defs import VcsType
+from releng_tool.exceptions import RelengToolInvalidPackageConfiguration
 from releng_tool.packages import PkgKeyType
 from releng_tool.packages import RelengToolInvalidPackageKeyValue
 from releng_tool.packages import pkg_key
@@ -328,9 +329,9 @@ class RelengPackageManager:
                     ):
                 pkg_install_type = pkg_install_type_raw
             else:
-                err('unknown install type value provided: {}'.format(name))
-                err(' (key: {})'.format(pkg_key(name, RPK_INSTALL_TYPE)))
-                return BAD_RV
+                raise RelengToolInvalidPackageConfiguration("""\
+unknown install type value provided: {}
+ (key: {})""".format(name, key))
 
         # extension (override)
         pkg_filename_ext = self._fetch(RPK_EXTENSION)
