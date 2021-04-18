@@ -519,6 +519,20 @@ package has conflicting configuration values: {}
         else:
             pkg_is_internal = False
 
+        # check a site is defined for vcs types which require it
+        if not pkg_site and pkg_vcs_type in (
+                VcsType.BZR,
+                VcsType.CVS,
+                VcsType.GIT,
+                VcsType.HG,
+                VcsType.SCP,
+                VcsType.SVN,
+                VcsType.URL,
+                ):
+            raise RelengToolInvalidPackageConfiguration("""\
+package defines vcs-type ({}) but no site: {}
+ (key: {})""".format(pkg_vcs_type, name, key))
+
         # find possible extension for a cache file
         #
         # non-dvcs's will be always gzip-tar'ed.
