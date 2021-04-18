@@ -325,9 +325,6 @@ class RelengPackageManager:
                 err(' (key: {})'.format(pkg_key(name, RPK_INSTALL_TYPE)))
                 return BAD_RV
 
-        if not pkg_install_type:
-            pkg_install_type = PackageInstallType.TARGET
-
         # extension (override)
         pkg_filename_ext = self._fetch(RPK_EXTENSION)
 

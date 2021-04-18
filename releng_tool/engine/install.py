@@ -40,13 +40,15 @@ def stage(engine, pkg, script_env):
     else:
         build_dir = pkg.build_dir
 
-    if pkg.install_type == PackageInstallType.HOST:
+    pkg_install_type = NC(pkg.install_type, PackageInstallType.TARGET)
+
+    if pkg_install_type == PackageInstallType.HOST:
         dest_dirs = [engine.opts.host_dir]
-    elif pkg.install_type == PackageInstallType.IMAGES:
+    elif pkg_install_type == PackageInstallType.IMAGES:
         dest_dirs = [engine.opts.images_dir]
-    elif pkg.install_type == PackageInstallType.STAGING:
+    elif pkg_install_type == PackageInstallType.STAGING:
         dest_dirs = [engine.opts.staging_dir]
-    elif pkg.install_type == PackageInstallType.STAGING_AND_TARGET:
+    elif pkg_install_type == PackageInstallType.STAGING_AND_TARGET:
         dest_dirs = [engine.opts.staging_dir, engine.opts.target_dir]
     else:
         # default to target directory
@@ -66,7 +68,7 @@ def stage(engine, pkg, script_env):
     install_opts.install_defs = pkg.install_defs
     install_opts.install_env = pkg.install_env
     install_opts.install_opts = pkg.install_opts
-    install_opts.install_type = package_install_type_to_api_type(pkg.install_type)
+    install_opts.install_type = package_install_type_to_api_type(pkg_install_type)
     install_opts.name = pkg.name
     install_opts.prefix = NC(pkg.prefix, engine.opts.sysroot_prefix)
     install_opts.staging_dir = engine.opts.staging_dir

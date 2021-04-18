@@ -2,6 +2,7 @@
 # Copyright 2018-2021 releng-tool
 
 from releng_tool.api import RelengConfigureOptions
+from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
 from releng_tool.engine.autotools.configure import configure as configure_autotools
 from releng_tool.engine.cmake.configure import configure as configure_cmake
@@ -42,6 +43,8 @@ def stage(engine, pkg, script_env):
     else:
         build_dir = pkg.build_dir
 
+    pkg_install_type = NC(pkg.install_type, PackageInstallType.TARGET)
+
     configure_opts = RelengConfigureOptions()
     replicate_package_attribs(configure_opts, pkg)
     configure_opts.build_dir = build_dir
@@ -53,7 +56,7 @@ def stage(engine, pkg, script_env):
     configure_opts.env = script_env
     configure_opts.ext = pkg.ext_modifiers
     configure_opts.host_dir = engine.opts.host_dir
-    configure_opts.install_type = package_install_type_to_api_type(pkg.install_type)
+    configure_opts.install_type = package_install_type_to_api_type(pkg_install_type)
     configure_opts.name = pkg.name
     configure_opts.prefix = NC(pkg.prefix, engine.opts.sysroot_prefix)
     configure_opts.staging_dir = engine.opts.staging_dir
