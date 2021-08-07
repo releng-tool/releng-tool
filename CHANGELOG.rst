@@ -1,3 +1,24 @@
+development
+-----------
+
+- fetch from an already cached package's site if the fetch is explicitly
+  requested
+- fixed an issue with registry failing to import on python 2.7
+- fixed issue where build/install definitions where not used in in their
+  respective stages
+- fixed issue where mercurial packages fetched using the version option instead
+  of the revision option
+- fixed issue where the host directory was not registered in a stage's path
+- introduce clean, logging flags and releng-version into the script environments
+- only fetch a single package if only said package is requested to be fetched
+- package without a site will throw an error when vcs-type is set
+- reconfigure/rebuild requests will now perform all trailing stages for the
+  package(s) being redone; rebuild/reconfigure-only actions have been introduced
+  to force re-invoking a specific stage
+- releng-tool will now full stop if external package definition fails to load
+- support loading remote package configuration
+- support loading remote package scripts
+
 0.6 (2020-10-10)
 ----------------
 
