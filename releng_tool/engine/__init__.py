@@ -24,6 +24,7 @@ from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
+from releng_tool.packages.exceptions import RelengToolStageFailure
 from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
@@ -241,6 +242,8 @@ class RelengEngine:
                         break
                 license_files = pipeline.license_files
 
+        except RelengToolStageFailure:
+            return False
         except FailedToPrepareWorkingDirectoryError as e:
             err("unable to prepare a package's working directory")
             err("""\

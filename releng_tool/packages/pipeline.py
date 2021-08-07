@@ -11,6 +11,14 @@ from releng_tool.engine.extract import stage as extract_stage
 from releng_tool.engine.install import stage as install_stage
 from releng_tool.engine.patch import stage as patch_stage
 from releng_tool.engine.post import stage as post_stage
+from releng_tool.packages.exceptions import RelengToolBootstrapStageFailure
+from releng_tool.packages.exceptions import RelengToolBuildStageFailure
+from releng_tool.packages.exceptions import RelengToolConfigurationStageFailure
+from releng_tool.packages.exceptions import RelengToolExtractionStageFailure
+from releng_tool.packages.exceptions import RelengToolInstallStageFailure
+from releng_tool.packages.exceptions import RelengToolLicenseStageFailure
+from releng_tool.packages.exceptions import RelengToolPatchStageFailure
+from releng_tool.packages.exceptions import RelengToolPostStageFailure
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.io import path_copy
@@ -87,12 +95,12 @@ class RelengPackagePipeline:
             if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                 pass
             elif not extract_stage(self.engine, pkg):
-                return False
+                raise RelengToolExtractionStageFailure
             # now that the extraction stage has (most likely)
             # created a build directory, ensure the output directory
             # exists as well (for file flags and other content)
             if not ensure_dir_exists(pkg.build_output_dir):
-                return False
+                raise RelengToolExtractionStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if gaction == GlobalAction.EXTRACT:
@@ -107,7 +115,7 @@ class RelengPackagePipeline:
             if pkg.vcs_type is VcsType.LOCAL:
                 pass
             elif not patch_stage(self.engine, pkg, pkg_env):
-                return False
+                raise RelengToolPatchStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if gaction == GlobalAction.PATCH:
@@ -123,7 +131,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_license
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             if not self._stage_license(pkg):
-                return False
+                raise RelengToolLicenseStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
 
@@ -149,7 +157,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_bootstrap
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             if not bootstrap_stage(self.engine, pkg, pkg_env):
-                return False
+                raise RelengToolBootstrapStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
 
@@ -157,7 +165,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_configure
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             if not configure_stage(self.engine, pkg, pkg_env):
-                return False
+                raise RelengToolConfigurationStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
@@ -168,7 +176,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_build
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             if not build_stage(self.engine, pkg, pkg_env):
-                return False
+                raise RelengToolBuildStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
@@ -179,7 +187,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_install
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             if not install_stage(self.engine, pkg, pkg_env):
-                return False
+                raise RelengToolInstallStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         # (note: re-install requests will re-invoke package-specific
@@ -189,7 +197,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_post
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             if not post_stage(self.engine, pkg, pkg_env):
-                return False
+                raise RelengToolPostStageFailure
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if paction in (

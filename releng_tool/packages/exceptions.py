@@ -141,3 +141,48 @@ class RelengToolUnknownVcsType(RelengToolInvalidPackageConfiguration):
 unknown vcs type value provided
  (package: {pkg_name}, key: {pkg_key})
 '''.strip().format(**args))
+
+class RelengToolStageFailure(RelengToolException):
+    """
+    exception thrown when a stage event has an issue
+    """
+
+class RelengToolBootstrapStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when a boostrap stage event has an issue
+    """
+
+class RelengToolBuildStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when a build stage event has an issue
+    """
+
+class RelengToolConfigurationStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when a configuration stage event has an issue
+    """
+
+class RelengToolExtractionStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when an extraction stage event has an issue
+    """
+
+class RelengToolInstallStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when an install stage event has an issue
+    """
+
+class RelengToolLicenseStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when a license stage event has an issue
+    """
+
+class RelengToolPatchStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when a patch stage event has an issue
+    """
+
+class RelengToolPostStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when a post stage event has an issue
+    """
