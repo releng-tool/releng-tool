@@ -24,6 +24,7 @@ def configure(opts):
     """
 
     assert opts
+    build_dir = opts.build_dir
     def_dir = opts.def_dir
     env = opts.env
 
@@ -31,7 +32,15 @@ def configure(opts):
     configure_script = os.path.join(def_dir, configure_script_filename)
     configure_script, configure_script_exists = opt_file(configure_script)
     if not configure_script_exists:
-        return True
+        if (opts._skip_remote_scripts or
+                'releng.disable_remote_scripts' in opts._quirks):
+            return True
+
+        configure_script_filename = '{}-{}'.format('releng', CONFIGURE_SCRIPT)
+        configure_script = os.path.join(build_dir, configure_script_filename)
+        configure_script, configure_script_exists = opt_file(configure_script)
+        if not configure_script_exists:
+            return True
 
     if not run_script(configure_script, env, subject='configure'):
         return False

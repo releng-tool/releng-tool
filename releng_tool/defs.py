@@ -40,6 +40,7 @@ RPK_PREFIX = 'PREFIX' #: system root prefix override (if needed)
 RPK_REVISION = 'REVISION' #: revision to acquire from sources (if any)
 RPK_SITE = 'SITE' #: site where to fetch package sources
 RPK_SKIP_REMOTE_CONFIG = 'SKIP_REMOTE_CONFIG' #: skip any remote configuration
+RPK_SKIP_REMOTE_SCRIPTS = 'SKIP_REMOTE_SCRIPTS' #: skip any remote scripts
 RPK_STRIP_COUNT = 'STRIP_COUNT' #: strip count for archive extract
 RPK_TYPE = 'TYPE' #: type of project the package is
 RPK_VCS_TYPE = 'VCS_TYPE' #: type of project the package's fetch source is

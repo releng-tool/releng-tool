@@ -35,6 +35,7 @@ from releng_tool.defs import RPK_PYTHON_INTERPRETER
 from releng_tool.defs import RPK_REVISION
 from releng_tool.defs import RPK_SITE
 from releng_tool.defs import RPK_SKIP_REMOTE_CONFIG
+from releng_tool.defs import RPK_SKIP_REMOTE_SCRIPTS
 from releng_tool.defs import RPK_STRIP_COUNT
 from releng_tool.defs import RPK_TYPE
 from releng_tool.defs import RPK_VCS_TYPE
@@ -139,6 +140,7 @@ class RelengPackageManager:
         self._register_conf(RPK_REVISION, PkgKeyType.STR)
         self._register_conf(RPK_SITE, PkgKeyType.STR)
         self._register_conf(RPK_SKIP_REMOTE_CONFIG, PkgKeyType.BOOL)
+        self._register_conf(RPK_SKIP_REMOTE_SCRIPTS, PkgKeyType.BOOL)
         self._register_conf(RPK_STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE)
         self._register_conf(RPK_TYPE, PkgKeyType.STR)
         self._register_conf(RPK_VCS_TYPE, PkgKeyType.STR)
@@ -381,6 +383,9 @@ class RelengPackageManager:
         # skip any remote configuration
         pkg_skip_remote_config = self._fetch(RPK_SKIP_REMOTE_CONFIG)
 
+        # skip any remote scripts
+        pkg_skip_remote_scripts = self._fetch(RPK_SKIP_REMOTE_SCRIPTS)
+
         # type
         pkg_type = self._fetch(RPK_TYPE)
         if pkg_type:
@@ -574,6 +579,7 @@ class RelengPackageManager:
         pkg.revision = pkg_revision
         pkg.site = pkg_site
         pkg.skip_remote_config = pkg_skip_remote_config
+        pkg.skip_remote_scripts = pkg_skip_remote_scripts
         pkg.strip_count = pkg_strip_count
         pkg.type = pkg_type
         pkg.vcs_type = pkg_vcs_type
