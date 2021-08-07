@@ -149,7 +149,7 @@ class RelengEngineOptions:
             self.root_dir = os.path.abspath(args.root_dir)
 
         self.debug = args.debug
-        self.jobs = self.jobsconf = args.jobs
+        self.jobs = self.jobsconf = (args.jobs or 0)
         self.no_color_out = args.nocolorout
         self.verbose = args.verbose
 
