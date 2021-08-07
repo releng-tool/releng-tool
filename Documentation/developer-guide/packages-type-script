@@ -15,7 +15,6 @@ A script package has the ability to define three Python stage scripts:
 - ``<package>-configure`` - script to invoke during the configuration stage
 - ``<package>-build`` - script to invoke during the build stage
 - ``<package>-install`` - script to invoke during the installation stage
-- ``<package>-post`` - script to invoke after the installation stage
 
 An example build script (``libfoo-build``) can be as follows:
 
@@ -31,4 +30,6 @@ respective script (mentioned above) will be invoked. Package scripts are
 optional; thus, if a script is not provided for a stage, the stage will be
 skipped.
 
-See also `script helpers`_ for helper functions/variables available for use.
+See also `script helpers`_ for helper functions/variables available for use an
+`bootstrapping/post-processing <package_bootstrapping_and_postprocessing_>`_ for
+more stage script support.
