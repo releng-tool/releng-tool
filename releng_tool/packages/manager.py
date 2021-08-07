@@ -673,6 +673,18 @@ class RelengPackageManager:
             env[pkg_key(name, 'REVISION')] = pkg_revision
         os.environ[pkg_key(name, RPK_VERSION)] = pkg_version
 
+        # (internals)
+        prefix = '.stage_'
+        outdir = pkg.build_output_dir
+        pkg._ff_bootstrap = os.path.join(outdir, prefix + 'bootstrap')
+        pkg._ff_build = os.path.join(outdir, prefix + 'build')
+        pkg._ff_configure = os.path.join(outdir, prefix + 'configure')
+        pkg._ff_extract = os.path.join(outdir, prefix + 'extract')
+        pkg._ff_install = os.path.join(outdir, prefix + 'install')
+        pkg._ff_license = os.path.join(outdir, prefix + 'license')
+        pkg._ff_patch = os.path.join(outdir, prefix + 'patch')
+        pkg._ff_post = os.path.join(outdir, prefix + 'post')
+
         return pkg, env, deps
 
     def _fetch(self, key, default=None, allow_expand=False,

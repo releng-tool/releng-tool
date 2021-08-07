@@ -20,18 +20,12 @@ from releng_tool.defs import CONF_KEY_URL_MIRROR
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import VcsType
-from releng_tool.engine.bootstrap import stage as bootstrap_stage
-from releng_tool.engine.build import stage as build_stage
-from releng_tool.engine.configure import stage as configure_stage
-from releng_tool.engine.extract import stage as extract_stage
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
-from releng_tool.engine.install import stage as install_stage
-from releng_tool.engine.patch import stage as patch_stage
-from releng_tool.engine.post import stage as post_stage
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.packages.manager import RelengPackageManager
+from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
 from releng_tool.util.env import extend_script_env
@@ -214,7 +208,7 @@ class RelengEngine:
                 # in the event that we not not explicit fetching and the package
                 # has already been extracted, completely skip the fetching stage
                 if not requested_fetch:
-                    flag = pkg.__ff_extract
+                    flag = pkg._ff_extract
                     if check_file_flag(flag) == FileFlag.EXISTS:
                         continue
 
@@ -240,129 +234,13 @@ class RelengEngine:
                 if not ensure_dir_exists(opts.symbols_dir):
                     return False
 
-                target = opts.target_action
+                pipeline = RelengPackagePipeline(self, opts, script_env)
                 for pkg in pkgs:
                     verbose('processing package: {}'.format(pkg.name))
-
-                    # skip if generating license information and no license
-                    # files exist for this package
-                    if (gaction == GlobalAction.LICENSES and
-                            not pkg.license_files):
-                        continue
-
-                    # prepare environment
-                    pkg_env = self._stage_env(pkg, script_env)
-
-                    # extracting
-                    flag = pkg.__ff_extract
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        # none/local-vcs-type packages do not need to fetch
-                        if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
-                            pass
-                        elif not extract_stage(self, pkg):
-                            return False
-                        # now that the extraction stage has (most likely)
-                        # created a build directory, ensure the output directory
-                        # exists as well (for file flags and other content)
-                        if not ensure_dir_exists(pkg.build_output_dir):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-                    if gaction == GlobalAction.EXTRACT:
-                        continue
-                    if pa == PkgAction.EXTRACT and pkg.name == target:
+                    if not pipeline.process(pkg):
                         break
+                license_files = pipeline.license_files
 
-                    # patching
-                    flag = pkg.__ff_patch
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        # local-vcs-type packages do not need to patch
-                        if pkg.vcs_type is VcsType.LOCAL:
-                            pass
-                        elif not patch_stage(self, pkg, pkg_env):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-                    if gaction == GlobalAction.PATCH:
-                        continue
-                    if pa == PkgAction.PATCH and pkg.name == target:
-                        break
-
-                    # handle license generation request
-                    #
-                    # If the user has requested to generate license information,
-                    # pull license assets from the extract package content.
-                    # license(s)
-                    flag = pkg.__ff_license
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        if not self._stage_license(pkg):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-
-                    if pkg.license_files:
-                        license_files[pkg.name] = []
-                        for file in pkg.license_files:
-                            file = os.path.join(pkg.build_dir, file)
-                            license_files[pkg.name].append(file)
-
-                    if gaction == GlobalAction.LICENSES:
-                        continue
-
-                    # bootstrapping
-                    flag = pkg.__ff_bootstrap
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        if not bootstrap_stage(self, pkg, pkg_env):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-
-                    # configuring
-                    flag = pkg.__ff_configure
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        if not configure_stage(self, pkg, pkg_env):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-                    if pa in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
-                        if pkg.name == target:
-                            break
-
-                    # building
-                    flag = pkg.__ff_build
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        if not build_stage(self, pkg, pkg_env):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-                    if pa in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
-                        if pkg.name == target:
-                            break
-
-                    # installing
-                    flag = pkg.__ff_install
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        if not install_stage(self, pkg, pkg_env):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-                    # (note: re-install requests will re-invoke package-specific
-                    # post-processing)
-
-                    # package-specific post-processing
-                    flag = pkg.__ff_post
-                    if check_file_flag(flag) == FileFlag.NO_EXIST:
-                        if not post_stage(self, pkg, pkg_env):
-                            return False
-                        if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                            return False
-                    if pa in (
-                            PkgAction.INSTALL,
-                            PkgAction.REBUILD_ONLY,
-                            PkgAction.RECONFIGURE_ONLY,
-                            PkgAction.REINSTALL):
-                        if pkg.name == target:
-                            break
         except FailedToPrepareWorkingDirectoryError as e:
             err("unable to prepare a package's working directory")
             err("""\
@@ -408,16 +286,6 @@ has failed. Ensure the following path is accessible for this user:
             ``True`` if the stage has been properly initialized; ``False``
             otherwise
         """
-        prefix = '.stage_'
-        outdir = pkg.build_output_dir
-        pkg.__ff_bootstrap = os.path.join(outdir, prefix + 'bootstrap')
-        pkg.__ff_build = os.path.join(outdir, prefix + 'build')
-        pkg.__ff_configure = os.path.join(outdir, prefix + 'configure')
-        pkg.__ff_extract = os.path.join(outdir, prefix + 'extract')
-        pkg.__ff_install = os.path.join(outdir, prefix + 'install')
-        pkg.__ff_license = os.path.join(outdir, prefix + 'license')
-        pkg.__ff_patch = os.path.join(outdir, prefix + 'patch')
-        pkg.__ff_post = os.path.join(outdir, prefix + 'post')
 
         # user invoking a package-specific override
         #
@@ -427,105 +295,19 @@ has failed. Ensure the following path is accessible for this user:
         if pkg.name == self.opts.target_action:
             if (self.opts.pkg_action in
                     (PkgAction.REBUILD, PkgAction.REBUILD_ONLY)):
-                path_remove(pkg.__ff_build)
-                path_remove(pkg.__ff_install)
-                path_remove(pkg.__ff_post)
+                path_remove(pkg._ff_build)
+                path_remove(pkg._ff_install)
+                path_remove(pkg._ff_post)
             elif (self.opts.pkg_action in
                     (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY)):
-                path_remove(pkg.__ff_bootstrap)
-                path_remove(pkg.__ff_configure)
-                path_remove(pkg.__ff_build)
-                path_remove(pkg.__ff_install)
-                path_remove(pkg.__ff_post)
+                path_remove(pkg._ff_bootstrap)
+                path_remove(pkg._ff_configure)
+                path_remove(pkg._ff_build)
+                path_remove(pkg._ff_install)
+                path_remove(pkg._ff_post)
             elif self.opts.pkg_action == PkgAction.REINSTALL:
-                path_remove(pkg.__ff_install)
-                path_remove(pkg.__ff_post)
-
-        return True
-
-    def _stage_env(self, pkg, script_env):
-        """
-        prepare environment variables for a specific package processing
-
-        When a package is being processed (configuration, building, etc.), a
-        unique set of environment variables may be provided specifically for the
-        package. These are provided out of convenience as an alternative to
-        needing to rely on the Python-provided stage options.
-
-        Args:
-            pkg: the package being processed
-            script_env: global environment settings to use
-
-        Returns:
-            the prepared package-enhanced environment variables
-        """
-
-        # copy environment since packages do not share values
-        pkg_env = script_env.copy()
-
-        if pkg.build_subdir:
-            build_dir = pkg.build_subdir
-        else:
-            build_dir = pkg.build_dir
-
-        # package variables
-        for env in (os.environ, pkg_env):
-            env['PKG_BUILD_DIR'] = build_dir
-            env['PKG_BUILD_OUTPUT_DIR'] = pkg.build_output_dir
-            env['PKG_CACHE_DIR'] = pkg.cache_dir
-            env['PKG_CACHE_FILE'] = pkg.cache_file
-            env['PKG_DEFDIR'] = pkg.def_dir
-            env['PKG_NAME'] = pkg.name
-            env['PKG_SITE'] = pkg.site if pkg.site else ''
-            env['PKG_REVISION'] = pkg.revision
-            env['PKG_VERSION'] = pkg.version
-
-            if pkg.prefix is not None:
-                env['PREFIX'] = pkg.prefix # will override existing prefix
-
-            if pkg.fixed_jobs:
-                env['NJOBS'] = str(pkg.fixed_jobs)
-                env['NJOBSCONF'] = str(pkg.fixed_jobs)
-
-            if pkg.is_internal:
-                env['PKG_INTERNAL'] = '1'
-
-        return pkg_env
-
-    def _stage_license(self, pkg):
-        """
-        process license files for a specific package processing
-
-        If a package contains one or more files containing licenses information,
-        this information will be populated in the package's license folder.
-
-        Args:
-            pkg: the package being processed
-
-        Returns:
-            ``True`` if the license information was copied; ``False`` if these
-            license information could not be copied
-        """
-
-        # skip if package has no license files
-        if not pkg.license_files:
-            if pkg.license and not pkg.is_internal and not pkg.no_extraction:
-                warn('package defines no license files: ' + pkg.name)
-            return True
-
-        # ensure package-specific license directory exists
-        pkg_license_dir = os.path.join(self.opts.license_dir, pkg.nv)
-        if not ensure_dir_exists(pkg_license_dir):
-            return False
-
-        # copy over each license files
-        for file in pkg.license_files:
-            src = os.path.join(pkg.build_dir, file)
-            dst = os.path.join(pkg_license_dir, file)
-
-            if not path_copy(src, dst, critical=False):
-                err('unable to copy license information: ' + pkg.name)
-                return False
+                path_remove(pkg._ff_install)
+                path_remove(pkg._ff_post)
 
         return True
 
