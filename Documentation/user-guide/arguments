@@ -146,7 +146,7 @@ The following outlines available actions:
 |                            | rebuild, releng-tool will stop and perform no   |
 |                            | other changes. Users wishing to perform a       |
 |                            | rebuild to the installation phase are           |
-|                            | recommended to use ``<pkg>-rebuild``instead.    |
+|                            | recommended to use ``<pkg>-rebuild`` instead.   |
 |                            |                                                 |
 |                            | If using this action, please ensure             |
 |                            | `understanding rebuilds`_ has been read to      |
