@@ -464,6 +464,22 @@ will use the configured |LIBFOO_VERSION|_.
 
 See also |LIBFOO_DEVMODE_REVISION|_ and |LIBFOO_VERSION|_.
 
+LIBFOO_SKIP_REMOTE_CONFIG
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Flag value to explicitly indicate that a package should not attempt to load any
+package configurations which may be defined in the package's source. A package,
+by default, has the ability to load configuration information from a package's
+source. If the package includes a ``.releng-tool`` file at the root of their
+sources, supported configuration options that have not been populated will be
+registered into the package before invoking a package's configuration stage.
+
+.. code-block:: python
+
+   LIBFOO_SKIP_REMOTE_CONFIG = True
+
+See also :ref:`configuration quirks <quirks>`.
+
 LIBFOO_STRIP_COUNT
 ^^^^^^^^^^^^^^^^^^
 
