@@ -5,7 +5,7 @@ from tests import prepare_testenv
 import os
 import unittest
 
-class TestPkgPipelineLicenses(unittest.TestCase):
+class TestPkgPipelineRemoteConfigs(unittest.TestCase):
     def test_pkg_pipeline_remote_cfg_disabled_option(self):
         with prepare_testenv(template='remote-cfg-disabled') as engine:
             engine.run()
