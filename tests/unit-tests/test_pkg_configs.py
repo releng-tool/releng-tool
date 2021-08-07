@@ -247,6 +247,22 @@ class TestPkgConfigs(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('site-valid')
         self.assertEqual(pkg.site, 'https://example.com/file.tgz')
 
+    def test_pkgconfig_skip_remote_config_disabled(self):
+        pkg, _, _ = self.LOAD('skip-remote-config-disabled')
+        self.assertFalse(pkg.skip_remote_config)
+
+    def test_pkgconfig_skip_remote_config_enabled(self):
+        pkg, _, _ = self.LOAD('skip-remote-config-enabled')
+        self.assertTrue(pkg.skip_remote_config)
+
+    def test_pkgconfig_skip_remote_config_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('skip-remote-config-invalid')
+
+    def test_pkgconfig_skip_remote_config_missing(self):
+        pkg, _, _ = self.LOAD('missing')
+        self.assertIsNone(pkg.skip_remote_config)
+
     def test_pkgconfig_strip_count_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('strip-count-invalid-type')

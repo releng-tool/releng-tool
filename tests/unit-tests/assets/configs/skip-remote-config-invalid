@@ -1,0 +1,2 @@
+TEST_SKIP_REMOTE_CONFIG = 'invalid'
+TEST_VERSION = 'dummy'
