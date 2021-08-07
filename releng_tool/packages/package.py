@@ -37,6 +37,7 @@ class RelengPackage:
         prefix: system root prefix override (if applicable)
         revision: revision to use to fetch from vcs (if applicable)
         site: site to acquire package assets
+        skip_remote_config: whether or not to skip any remote configuration
         strip_count: archive extraction strip count (if applicable)
         type: package type (script-based, cmake, etc.)
         vcs_type: vcs type of the package (git, file, etc.)
@@ -82,6 +83,7 @@ class RelengPackage:
         self.prefix = None
         self.revision = None
         self.site = None
+        self.skip_remote_config = None
         self.strip_count = None
         self.type = None
         self.vcs_type = None

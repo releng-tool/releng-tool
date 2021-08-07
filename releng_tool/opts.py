@@ -20,6 +20,7 @@ DEFAULT_SYMBOLS_DIR  = 'symbols'   #: default symbols container directory
 DEFAULT_TARGET_DIR   = 'target'    #: default target container directory
 
 # default directory/file paths
+RELENG_CONF_EXTENDED_NAME = '.releng-tool' #: extended configuration script
 RELENG_CONF_NAME = 'releng' #: configuration script filename
 RELENG_CONF_OVERRIDES_NAME = 'releng-overrides' #: conf. overrides filename
 RELENG_POST_NAME = 'releng-post' #: post script filename

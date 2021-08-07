@@ -34,6 +34,7 @@ from releng_tool.defs import RPK_PREFIX
 from releng_tool.defs import RPK_PYTHON_INTERPRETER
 from releng_tool.defs import RPK_REVISION
 from releng_tool.defs import RPK_SITE
+from releng_tool.defs import RPK_SKIP_REMOTE_CONFIG
 from releng_tool.defs import RPK_STRIP_COUNT
 from releng_tool.defs import RPK_TYPE
 from releng_tool.defs import RPK_VCS_TYPE
@@ -54,6 +55,7 @@ from releng_tool.packages.exceptions import RelengToolUnknownInstallType
 from releng_tool.packages.exceptions import RelengToolUnknownPackageType
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
+from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import opt_file
@@ -136,6 +138,7 @@ class RelengPackageManager:
         self._register_conf(RPK_PYTHON_INTERPRETER, PkgKeyType.STR)
         self._register_conf(RPK_REVISION, PkgKeyType.STR)
         self._register_conf(RPK_SITE, PkgKeyType.STR)
+        self._register_conf(RPK_SKIP_REMOTE_CONFIG, PkgKeyType.BOOL)
         self._register_conf(RPK_STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE)
         self._register_conf(RPK_TYPE, PkgKeyType.STR)
         self._register_conf(RPK_VCS_TYPE, PkgKeyType.STR)
@@ -334,25 +337,6 @@ class RelengPackageManager:
         # ignore cache
         pkg_devmode_ignore_cache = self._fetch(RPK_DEVMODE_IGNORE_CACHE)
 
-        # install type
-        pkg_install_type = None
-        pkg_install_type_raw = self._fetch(RPK_INSTALL_TYPE)
-        if pkg_install_type_raw:
-            pkg_install_type_raw = pkg_install_type_raw.lower()
-            if pkg_install_type_raw in (
-                    PackageInstallType.HOST,
-                    PackageInstallType.IMAGES,
-                    PackageInstallType.STAGING,
-                    PackageInstallType.STAGING_AND_TARGET,
-                    PackageInstallType.TARGET,
-                    ):
-                pkg_install_type = pkg_install_type_raw
-            else:
-                raise RelengToolUnknownInstallType({
-                    'pkg_name': name,
-                    'pkg_key': key,
-                })
-
         # extension (override)
         pkg_filename_ext = self._fetch(RPK_EXTENSION)
 
@@ -367,26 +351,14 @@ class RelengPackageManager:
                     'pkg_key': key,
                 })
 
-        # fixed jobs
-        pkg_fixed_jobs = self._fetch(RPK_FIXED_JOBS)
-
         # is-external
         pkg_is_external = self._fetch(RPK_EXTERNAL)
 
         # is-internal
         pkg_is_internal = self._fetch(RPK_INTERNAL)
 
-        # license
-        pkg_license = self._fetch(RPK_LICENSE)
-
-        # license files
-        pkg_license_files = self._fetch(RPK_LICENSE_FILES)
-
         # no extraction
         pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION)
-
-        # prefix
-        pkg_prefix = self._fetch(RPK_PREFIX)
 
         # revision
         if opts.revision_override and name in opts.revision_override:
@@ -405,6 +377,9 @@ class RelengPackageManager:
         else:
             pkg_site = self._fetch(RPK_SITE,
                 allow_expand=True, expand_extra=expand_extra)
+
+        # skip any remote configuration
+        pkg_skip_remote_config = self._fetch(RPK_SKIP_REMOTE_CONFIG)
 
         # type
         pkg_type = self._fetch(RPK_TYPE)
@@ -469,40 +444,6 @@ class RelengPackageManager:
 
         # ######################################################################
 
-        # package-type build definitions
-        pkg_build_defs = self._fetch(RPK_BUILD_DEFS)
-
-        # package-type build environment options
-        pkg_build_env = self._fetch(RPK_BUILD_ENV)
-
-        # package-type build options
-        pkg_build_opts = self._fetch(RPK_BUILD_OPTS)
-
-        # package-type configuration definitions
-        pkg_conf_defs = self._fetch(RPK_CONF_DEFS)
-
-        # package-type configuration environment options
-        pkg_conf_env = self._fetch(RPK_CONF_ENV)
-
-        # package-type configuration options
-        pkg_conf_opts = self._fetch(RPK_CONF_OPTS)
-
-        # package-type installation definitions
-        pkg_install_defs = self._fetch(RPK_INSTALL_DEFS)
-
-        # package-type installation environment options
-        pkg_install_env = self._fetch(RPK_INSTALL_ENV)
-
-        # package-type installation options
-        pkg_install_opts = self._fetch(RPK_INSTALL_OPTS)
-
-        # ######################################################################
-
-        # autotools autoreconf flag
-        pkg_autotools_autoreconf = self._fetch(RPK_AUTOTOOLS_AUTORECONF)
-
-        # ######################################################################
-
         # git configuration options for a repository
         pkg_git_config = self._fetch(RPK_GIT_CONFIG)
 
@@ -511,16 +452,6 @@ class RelengPackageManager:
 
         # git-refspecs
         pkg_git_refspecs = self._fetch(RPK_GIT_REFSPECS)
-
-        # ######################################################################
-
-        # python interpreter
-        pkg_python_interpreter = self._fetch(RPK_PYTHON_INTERPRETER)
-
-        # ######################################################################
-
-        # extension modifiers
-        pkg_ext_modifiers = self._fetch(RPK_EXTOPT)
 
         # ######################################################################
 
@@ -586,7 +517,7 @@ class RelengPackageManager:
                     basename = os.path.basename(url_parts.path)
                     __, cache_ext = interpret_stem_extension(basename)
 
-        # finalization
+        # prepare package container and directory locations
         pkg_nv = '{}-{}'.format(name, pkg_version)
         pkg_build_output_dir = os.path.join(opts.build_dir, pkg_nv)
         pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
@@ -632,39 +563,23 @@ class RelengPackageManager:
         pkg.cache_file = pkg_cache_file
         pkg.def_dir = pkg_def_dir
         pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
-        pkg.ext_modifiers = pkg_ext_modifiers
         pkg.extract_type = pkg_extract_type
-        pkg.fixed_jobs = pkg_fixed_jobs
         pkg.git_config = pkg_git_config
         pkg.git_depth = pkg_git_depth
         pkg.git_refspecs = pkg_git_refspecs
         pkg.has_devmode_option = pkg_has_devmode_option
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
-        pkg.install_type = pkg_install_type
         pkg.is_internal = pkg_is_internal
-        pkg.license = pkg_license
-        pkg.license_files = pkg_license_files
         pkg.no_extraction = pkg_no_extraction
-        pkg.prefix = pkg_prefix
         pkg.revision = pkg_revision
         pkg.site = pkg_site
+        pkg.skip_remote_config = pkg_skip_remote_config
         pkg.strip_count = pkg_strip_count
         pkg.type = pkg_type
         pkg.vcs_type = pkg_vcs_type
-        # (package type - common)
-        pkg.build_defs = pkg_build_defs
-        pkg.build_env = pkg_build_env
-        pkg.build_opts = pkg_build_opts
-        pkg.conf_defs = pkg_conf_defs
-        pkg.conf_env = pkg_conf_env
-        pkg.conf_opts = pkg_conf_opts
-        pkg.install_defs = pkg_install_defs
-        pkg.install_env = pkg_install_env
-        pkg.install_opts = pkg_install_opts
-        # (package type - autotools)
-        pkg.autotools_autoreconf = pkg_autotools_autoreconf
-        # (package type - python)
-        pkg.python_interpreter = pkg_python_interpreter
+
+        self._apply_postinit_options(pkg)
+
         # (additional environment helpers)
         for env in (os.environ, env):
             env[pkg_key(name, 'BUILD_DIR')] = pkg_build_dir
@@ -686,6 +601,210 @@ class RelengPackageManager:
         pkg._ff_post = os.path.join(outdir, prefix + 'post')
 
         return pkg, env, deps
+
+    def _apply_postinit_options(self, pkg):
+        """
+        apply post-initialization package options
+
+        Using the active package instance/environment, this call will fetch a
+        subset of post-initialization-supported package configuration options
+        and apply them onto the package instance. This call will set a package
+        attribute only if the attribute has yet to be configured. This allows
+        applying package options with multiple environments where an additional
+        environment may have additional information to "complete" a package's
+        configuration state.
+
+        Args:
+            pkg: the package
+
+        Raises:
+            RelengToolInvalidPackageConfiguration: when an error has been
+                                                    detected loading a package
+                                                    option
+        """
+
+        # ######################################################################
+        # (common)
+        # ######################################################################
+
+        # extension modifiers
+        if pkg.ext_modifiers is None:
+            pkg.ext_modifiers = self._fetch(RPK_EXTOPT)
+
+        # fixed jobs
+        if pkg.fixed_jobs is None:
+            pkg.fixed_jobs = self._fetch(RPK_FIXED_JOBS)
+
+        # install type
+        if pkg.install_type is None:
+            pkg_install_type_raw = self._fetch(RPK_INSTALL_TYPE)
+            if pkg_install_type_raw:
+                pkg_install_type_raw = pkg_install_type_raw.lower()
+                if pkg_install_type_raw in (
+                        PackageInstallType.HOST,
+                        PackageInstallType.IMAGES,
+                        PackageInstallType.STAGING,
+                        PackageInstallType.STAGING_AND_TARGET,
+                        PackageInstallType.TARGET,
+                        ):
+                    pkg.install_type = pkg_install_type_raw
+                else:
+                    raise RelengToolUnknownInstallType({
+                        'pkg_name': pkg.name,
+                        'pkg_key': pkg_key(pkg.name, RPK_INSTALL_TYPE),
+                    })
+
+        # license
+        if pkg.license is None:
+            pkg.license = self._fetch(RPK_LICENSE)
+
+        # license files
+        if pkg.license_files is None:
+            pkg.license_files = self._fetch(RPK_LICENSE_FILES)
+
+        # prefix
+        if pkg.prefix is None:
+            pkg.prefix = self._fetch(RPK_PREFIX)
+
+        # ######################################################################
+        # (package type - shared)
+        # ######################################################################
+
+        # package-type build definitions
+        if pkg.build_defs is None:
+            pkg.build_defs = self._fetch(RPK_BUILD_DEFS)
+
+        # package-type build environment options
+        if pkg.build_env is None:
+            pkg.build_env = self._fetch(RPK_BUILD_ENV)
+
+        # package-type build options
+        if pkg.build_opts is None:
+            pkg.build_opts = self._fetch(RPK_BUILD_OPTS)
+
+        # package-type configuration definitions
+        if pkg.conf_defs is None:
+            pkg.conf_defs = self._fetch(RPK_CONF_DEFS)
+
+        # package-type configuration environment options
+        if pkg.conf_env is None:
+            pkg.conf_env = self._fetch(RPK_CONF_ENV)
+
+        # package-type configuration options
+        if pkg.conf_opts is None:
+            pkg.conf_opts = self._fetch(RPK_CONF_OPTS)
+
+        # package-type installation definitions
+        if pkg.install_defs is None:
+            pkg.install_defs = self._fetch(RPK_INSTALL_DEFS)
+
+        # package-type installation environment options
+        if pkg.install_env is None:
+            pkg.install_env = self._fetch(RPK_INSTALL_ENV)
+
+        # package-type installation options
+        if pkg.install_opts is None:
+            pkg.install_opts = self._fetch(RPK_INSTALL_OPTS)
+
+        # ######################################################################
+        # (package type - autotools)
+        # ######################################################################
+
+        # autotools autoreconf flag
+        if pkg.autotools_autoreconf is None:
+            pkg.autotools_autoreconf = self._fetch(RPK_AUTOTOOLS_AUTORECONF)
+
+        # ######################################################################
+        # (package type - python)
+        # ######################################################################
+
+        # python interpreter
+        if pkg.python_interpreter is None:
+            pkg_python_interpreter = self._fetch(RPK_PYTHON_INTERPRETER)
+            pkg.python_interpreter = pkg_python_interpreter
+
+    def load_remote_configuration(self, pkg):
+        """
+        attempt to load any remote configuration options for a package
+
+        This call will scan select output locations of a package's content for
+        any releng-tool-specific package configurations to late-load into a
+        package definition.
+
+        Args:
+            pkg: the package
+
+        Raises:
+            RelengToolInvalidPackageConfiguration: when an error has been
+                                                    detected loading any of the
+                                                    package's extended options
+        """
+
+        target_remote_configurations = [
+            os.path.join(pkg.build_dir, RELENG_CONF_EXTENDED_NAME)
+        ]
+
+        if pkg.build_subdir:
+            target_remote_configurations.append(
+                os.path.join(pkg.build_subdir, RELENG_CONF_EXTENDED_NAME))
+
+        # find the first available script to load from
+        for target in target_remote_configurations:
+            pkg_script, pkg_script_exists = opt_file(target)
+            if pkg_script_exists:
+                # attempt to finalize the package
+                self.finalize_package(pkg, pkg_script)
+                break
+
+    def finalize_package(self, pkg, script):
+        """
+        finalize configuration for a package
+
+        Attempts to finalize any configuration entries of an already populated
+        package instance with options provided at a later stage in the
+        releng-tool process. This is to support projects where select
+        configuration options are defined in the package's source content,
+        instead of the main releng-tool project.
+
+        This call will accept as package instance to update and the script file
+        which may include a series of configuration options to apply to a
+        package. Note that any configuration option already set on the package
+        will be used over any new detected package option.
+
+        Args:
+            pkg: the package
+            script: the package script to load
+
+        Raises:
+            RelengToolInvalidPackageConfiguration: when an error has been
+                                                    detected loading any of the
+                                                    package's extended options
+        """
+        verbose('finalize package configuration: {}'.format(pkg.name))
+        debug('script {}'.format(script))
+
+        if not os.path.isfile(script):
+            raise RelengToolMissingPackageScript({
+                'pkg_name': pkg.name,
+                'script': script,
+            })
+
+        try:
+            env = run_script(script, self.script_env, catch=False)
+        except Exception as e:
+            raise RelengToolInvalidPackageScript({
+                'description': str(e),
+                'script': script,
+                'traceback': traceback.format_exc(),
+            })
+
+        # apply any options to unset configuration entries
+        self._active_package = pkg.name
+        self._active_env = env
+        self._apply_postinit_options(pkg)
+
+        # extend the active script environment if the post-init call succeeds
+        extend_script_env(self.script_env, env)
 
     def _fetch(self, key, default=None, allow_expand=False,
             expand_extra=None):

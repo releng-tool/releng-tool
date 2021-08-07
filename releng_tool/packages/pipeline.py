@@ -136,6 +136,15 @@ class RelengPackagePipeline:
         if gaction == GlobalAction.LICENSES:
             return True
 
+        # load any late-stage configuration options from the remote
+        # sources
+        if (not pkg.skip_remote_config and
+                'releng.disable_remote_configs' not in self.opts.quirks):
+            self.engine.pkgman.load_remote_configuration(pkg)
+
+        # finalize package environment
+        self._stage_env_finalize(pkg, pkg_env)
+
         # bootstrapping
         flag = pkg._ff_bootstrap
         if check_file_flag(flag) == FileFlag.NO_EXIST:
@@ -229,17 +238,32 @@ class RelengPackagePipeline:
             env['PKG_REVISION'] = pkg.revision
             env['PKG_VERSION'] = pkg.version
 
+            if pkg.is_internal:
+                env['PKG_INTERNAL'] = '1'
+
+        return pkg_env
+
+    def _stage_env_finalize(self, pkg, pkg_env):
+        """
+        finalize environment variables for a specific package processing
+
+        While a `_stage_env` call will prepare the script environment for
+        various stages of a package, some options of a package may be loaded in
+        at a later stage. Options which can be late-loaded are populated into
+        the existing environment in this call.
+
+        Args:
+            pkg: the package being processed
+            pkg_env: the environment to populate
+        """
+
+        for env in (os.environ, pkg_env):
             if pkg.prefix is not None:
                 env['PREFIX'] = pkg.prefix # will override existing prefix
 
             if pkg.fixed_jobs:
                 env['NJOBS'] = str(pkg.fixed_jobs)
                 env['NJOBSCONF'] = str(pkg.fixed_jobs)
-
-            if pkg.is_internal:
-                env['PKG_INTERNAL'] = '1'
-
-        return pkg_env
 
     def _stage_license(self, pkg):
         """
