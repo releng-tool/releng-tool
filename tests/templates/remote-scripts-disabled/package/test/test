@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+TEST_SKIP_REMOTE_SCRIPTS = True
+TEST_VCS_TYPE = 'local'
+TEST_VERSION = '1.0'
