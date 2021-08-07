@@ -1,0 +1,4 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+TEST_FIXED_JOBS = 1
