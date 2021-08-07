@@ -301,6 +301,8 @@ applied to deal with rare host environment scenarios.
   check from running.
 - ``releng.disable_remote_configs`` -- Disables any attempt to load
   remote-defined configurations for a package.
+- ``releng.disable_remote_scripts`` -- Disables any attempt to load
+  remote-defined scripts for a package.
 - ``releng.git.no_depth`` -- Disables the ``--depth`` option from being injected
   when a Git-site-defined package is performing a fetch stage.
 

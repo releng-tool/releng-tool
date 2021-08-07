@@ -480,6 +480,26 @@ registered into the package before invoking a package's configuration stage.
 
 See also :ref:`configuration quirks <quirks>`.
 
+LIBFOO_SKIP_REMOTE_SCRIPTS
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Flag value to explicitly indicate that a package should not attempt to load any
+package scripts which may be defined in the package's source. Typically, a
+script-based package will load configuration, build, etc. scripts from its
+package definition folder. If a script-based package is missing a stage script
+to invoke and finds an associated script in the package's source, the detected
+script will be invoked. For example, if ``libfoo`` package may attempt to load
+a ``libfoo-configure`` script for a configuration stage. In the event that the
+script cannot be found and remote scripting is permitted for a package, the
+script (if exists) ``releng-configure`` will be loaded from the root of the
+package's contents.
+
+.. code-block:: python
+
+   LIBFOO_SKIP_REMOTE_CONFIG = True
+
+See also :ref:`configuration quirks <quirks>`.
+
 LIBFOO_STRIP_COUNT
 ^^^^^^^^^^^^^^^^^^
 
@@ -534,6 +554,8 @@ module content located in a site to be fetched -- specifically, for initial
 development/testing/training scenarios. It is never recommended to store the
 package's "main content" inside a releng-tool project, thus using the ``local``
 type will always generate a warning message.
+
+.. _package_bootstrapping_and_postprocessing:
 
 package bootstrapping and post-processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
