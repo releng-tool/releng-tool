@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
-from enum import Enum
 from releng_tool.tool.git import GIT
+from releng_tool.util.enum import Enum
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.log import err
@@ -24,9 +24,9 @@ class GitExistsType(Enum):
         MISSING: revision does not exist
         MISSING_HASH: a hash-provided revision does not exist
     """
-    EXISTS = 0
-    MISSING = 1
-    MISSING_HASH = 2
+    EXISTS = 'exists'
+    MISSING = 'missing'
+    MISSING_HASH = 'missing_hash'
 
 def fetch(opts):
     """

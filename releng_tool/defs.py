@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from enum import Enum
+from releng_tool.util.enum import Enum
 
 # configuration file keys
 CONF_KEY_CACHE_EXT_TRANSFORM = 'cache_ext' #: cache extension transform
@@ -69,7 +69,6 @@ class GlobalAction(Enum):
     occur for registered packages.
 
     Attributes:
-        UNKNOWN: unknown action
         CLEAN: clean the working state
         DISTCLEAN: pristine state clean with cache/dl clear
         EXTRACT: process all packages through extraction stage
@@ -79,15 +78,14 @@ class GlobalAction(Enum):
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
     """
-    UNKNOWN = 0
-    CLEAN = 1
-    DISTCLEAN = 2
-    EXTRACT = 3
-    FETCH = 4
-    INIT = 5
-    LICENSES = 6
-    MRPROPER = 7
-    PATCH = 8
+    CLEAN = 'clean'
+    DISTCLEAN = 'distclean'
+    EXTRACT = 'extract'
+    FETCH = 'fetch'
+    INIT = 'init'
+    LICENSES = 'licenses'
+    MRPROPER = 'mrproper'
+    PATCH = 'patch'
 
 class PkgAction(Enum):
     """
@@ -102,7 +100,6 @@ class PkgAction(Enum):
     the extraction stage.
 
     Attributes:
-        UNKNOWN: unknown action
         BUILD: process a package till end of the build stage
         CLEAN: process a package till end of the clean stage
         CONFIGURE: process a package till end of the configure stage
@@ -116,19 +113,18 @@ class PkgAction(Enum):
         RECONFIGURE_ONLY: perform a re-configuration of a package and stop
         REINSTALL: perform a re-install of a package
     """
-    UNKNOWN = 0
-    BUILD = 1
-    CLEAN = 2
-    CONFIGURE = 3
-    EXTRACT = 4
-    FETCH = 5
-    INSTALL = 6
-    PATCH = 7
-    REBUILD = 8
-    REBUILD_ONLY = 9
-    RECONFIGURE = 10
-    RECONFIGURE_ONLY = 11
-    REINSTALL = 12
+    BUILD = 'build'
+    CLEAN = 'clean'
+    CONFIGURE = 'configure'
+    EXTRACT = 'extract'
+    FETCH = 'fetch'
+    INSTALL = 'install'
+    PATCH = 'patch'
+    REBUILD = 'rebuild'
+    REBUILD_ONLY = 'rebuild_only'
+    RECONFIGURE = 'reconfigure'
+    RECONFIGURE_ONLY = 'reconfigure_only'
+    REINSTALL = 'reinstall'
 
 class PackageType(Enum):
     """
@@ -138,19 +134,17 @@ class PackageType(Enum):
     building and installing is performed.
 
     Attributes:
-        UNKNOWN: unknown type
         AUTOTOOLS: autotools-based package
         CMAKE: cmake-based package
         PYTHON: python-based package
         SCRIPT: releng script-based package
     """
-    UNKNOWN = 0
-    AUTOTOOLS = 1
-    CMAKE = 2
-    PYTHON = 3
-    SCRIPT = 4
+    AUTOTOOLS = 'autotools'
+    CMAKE = 'cmake'
+    PYTHON = 'python'
+    SCRIPT = 'script'
 
-class PackageInstallType():
+class PackageInstallType(Enum):
     """
     package install types
 
@@ -158,14 +152,12 @@ class PackageInstallType():
     to push resources during the installation phase.
 
     Attributes:
-        UNKNOWN: unknown type
         HOST: install to the host container
         IMAGES: install to the images container
         STAGING: install to the staging container
         STAGING_AND_TARGET: install to the staging and target containers
         TARGET: install to the target container
     """
-    UNKNOWN = 'unknown'
     HOST = 'host'
     IMAGES = 'images'
     STAGING = 'staging'
@@ -180,7 +172,6 @@ class VcsType(Enum):
     processing is used when acquiring resources.
 
     Attributes:
-        UNKNOWN: unknown type
         CVS: concurrent versions system
         GIT: git
         HG: mercurial
@@ -190,13 +181,12 @@ class VcsType(Enum):
         SVN: subversion
         URL: url (http, https, ftp, file, etc.)
     """
-    UNKNOWN = 0
-    BZR = 1
-    CVS = 2
-    GIT = 3
-    HG = 4
-    LOCAL = 5
-    NONE = 6
-    SCP = 7
-    SVN = 8
-    URL = 9
+    BZR = 'bzr'
+    CVS = 'cvs'
+    GIT = 'git'
+    HG = 'hg'
+    LOCAL = 'local'
+    NONE = 'none'
+    SCP = 'scp'
+    SVN = 'svn'
+    URL = 'url'

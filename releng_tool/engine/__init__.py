@@ -193,13 +193,13 @@ class RelengEngine:
 
             # ensure all package sources are acquired first
             requested_fetch = (
-                gaction is GlobalAction.FETCH or pa is PkgAction.FETCH)
+                gaction == GlobalAction.FETCH or pa == PkgAction.FETCH)
             for pkg in pkgs:
                 if not self._stage_init(pkg):
                     return False
 
                 # if this is a package-specific fetch, only fetch this one
-                if pa is PkgAction.FETCH and pkg.name != opts.target_action:
+                if pa == PkgAction.FETCH and pkg.name != opts.target_action:
                     continue
 
                 # none/local-vcs-type packages do not need to fetch
@@ -253,8 +253,7 @@ has failed. Ensure the following path is accessible for this user:
     {}""".format(e))
             return False
 
-        is_action = (gaction != GlobalAction.UNKNOWN or pa != PkgAction.UNKNOWN
-            or opts.target_action is not None)
+        is_action = (gaction or pa or opts.target_action is not None)
 
         # perform license generation
         if gaction == GlobalAction.LICENSES or not is_action:

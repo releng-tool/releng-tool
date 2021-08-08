@@ -2,8 +2,8 @@
 # Copyright 2018-2021 releng-tool
 
 from __future__ import absolute_import
-from enum import Enum
 from io import open
+from releng_tool.util.enum import Enum
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import warn
@@ -18,7 +18,6 @@ class HashResult(Enum):
     result of a hash verification check
 
     Attributes:
-        UNKNOWN: unknown result
         BAD_FORMAT: a bad format was detected in hash file
         BAD_PATH: a path is missing or cannot be read
         EMPTY: the hash file is empty
@@ -28,15 +27,14 @@ class HashResult(Enum):
         UNSUPPORTED: an unsupported hash type was provided
         VERIFIED: hash verification has completed
     """
-    UNKNOWN = 0
-    BAD_FORMAT = 1
-    BAD_PATH = 2
-    EMPTY = 3
-    MISMATCH = 4
-    MISSING_ARCHIVE = 5
-    MISSING_LISTED = 6
-    UNSUPPORTED = 7
-    VERIFIED = 8
+    BAD_FORMAT = 'bad_format'
+    BAD_PATH = 'bad_path'
+    EMPTY = 'empty'
+    MISMATCH = 'mismatch'
+    MISSING_ARCHIVE = 'missing_archive'
+    MISSING_LISTED = 'missing_listed'
+    UNSUPPORTED = 'unsupported'
+    VERIFIED = 'verified'
 
 class BadFileHashLoadError(Exception):
     """

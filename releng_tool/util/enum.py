@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+# Copyright 2021 releng-tool
+
+class MetaEnum(type):
+    """
+    metaclass for an enum class
+
+    Provides the ability for an enum-like class to be treated as a container for
+    its defined class variables.
+    """
+    def __contains__(cls, item):
+        return item in cls.__iter__()
+
+    def __iter__(cls):
+        return iter(
+            [getattr(cls, a) for a in vars(cls) if not a.startswith('_')])
+
+"""
+basic enum class
+"""
+Enum = MetaEnum('Enum', (object,), {'__slots__': ()})

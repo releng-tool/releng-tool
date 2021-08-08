@@ -10,7 +10,7 @@
 # intent would be to configure the one (or multiple) file flag state and have
 # the running instance shutdown.
 
-from enum import Enum
+from releng_tool.util.enum import Enum
 from releng_tool.util.io import touch
 from releng_tool.util.log import err
 import os
@@ -25,10 +25,10 @@ class FileFlag(Enum):
         NOT_CONFIGURED: unable to configure the file flag
         NO_EXIST: file flag does not exist
     """
-    CONFIGURED = 0
-    EXISTS = 1
-    NOT_CONFIGURED = 2
-    NO_EXIST = 3
+    CONFIGURED = 'configured'
+    EXISTS = 'exists'
+    NOT_CONFIGURED = 'not_configured'
+    NO_EXIST = 'no_exist'
 
 def check_file_flag(file):
     """

@@ -49,7 +49,7 @@ class TestPkgConfigsExtensions(TestPkgConfigsBase):
             def extract(self, name, opts):
                 return False
 
-        CUSTOM_EXTRACT_NAME = 'EXT-MY-CUSTOM-EXTRACT-TYPE'
+        CUSTOM_EXTRACT_NAME = 'ext-my-custom-extract-type'
         registry.add_extract_type(CUSTOM_EXTRACT_NAME, MockExtract)
 
         pkg, _, _ = self.LOAD('extract-type-valid', manager=manager)

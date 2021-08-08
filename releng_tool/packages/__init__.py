@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
-from enum import Enum
+from releng_tool.util.enum import Enum
 
 class PkgKeyType(Enum):
     """
@@ -11,7 +11,6 @@ class PkgKeyType(Enum):
     package definition.
 
     Attributes:
-        UNKNOWN: unknown type
         BOOL: boolean value
         DICT: dictionary value
         DICT_STR_STR: dictionary of string pairs value
@@ -21,15 +20,14 @@ class PkgKeyType(Enum):
         INT_NONNEGATIVE: non-negative integer value
         INT_POSITIVE: positive integer value
     """
-    UNKNOWN = 0
-    BOOL = 1
-    DICT = 2
-    DICT_STR_STR = 3
-    DICT_STR_STR_OR_STRS = 4
-    STR = 5
-    STRS = 6
-    INT_NONNEGATIVE = 7
-    INT_POSITIVE = 8
+    BOOL = 'bool'
+    DICT = 'dict'
+    DICT_STR_STR = 'dict_str_str'
+    DICT_STR_STR_OR_STRS = 'dict_str_str_or_strs'
+    STR = 'str'
+    STRS = 'strs'
+    INT_NONNEGATIVE = 'int_nonnegative'
+    INT_POSITIVE = 'int_positive'
 
 def pkg_key(pkg, type_):
     """

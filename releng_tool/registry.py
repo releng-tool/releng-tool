@@ -148,11 +148,11 @@ class RelengRegistry(RelengRegistryInterface):
         """
         if not interpret_string(name):
             raise RelengInvalidSetupException('invalid extract name provided')
-        name_uc = name.upper()
-        if not name_uc.startswith(PREFIX_REQUIREMENT.upper()):
+        name_key = name.lower()
+        if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined extract types '
                 'must be prefixed with "{}"'.format(PREFIX_REQUIREMENT))
-        if name_uc in self.extract_types:
+        if name_key in self.extract_types:
             raise RelengInvalidSetupException('extension extract type {} is '
                 'already defined by another extension'.format(name))
         extract_type = handler()
@@ -160,7 +160,7 @@ class RelengRegistry(RelengRegistryInterface):
         if not callable(extract_op):
             raise RelengInvalidSetupException('extract type does not defined '
                 'required method(s)')
-        self.extract_types[name_uc] = extract_type
+        self.extract_types[name_key] = extract_type
 
     def add_fetch_type(self, name, handler):
         """
@@ -199,11 +199,11 @@ class RelengRegistry(RelengRegistryInterface):
         """
         if not interpret_string(name):
             raise RelengInvalidSetupException('invalid fetch name provided')
-        name_uc = name.upper()
-        if not name_uc.startswith(PREFIX_REQUIREMENT.upper()):
+        name_key = name.lower()
+        if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined fetch types '
                 'must be prefixed with "{}"'.format(PREFIX_REQUIREMENT))
-        if name_uc in self.fetch_types:
+        if name_key in self.fetch_types:
             raise RelengInvalidSetupException('extension fetch type {} is '
                 'already defined by another extension'.format(name))
         fetch_type = handler()
@@ -211,7 +211,7 @@ class RelengRegistry(RelengRegistryInterface):
         if not callable(fetch_op):
             raise RelengInvalidSetupException('fetch type does not defined '
                 'required method(s)')
-        self.fetch_types[name_uc] = fetch_type
+        self.fetch_types[name_key] = fetch_type
 
     def add_package_type(self, name, handler):
         """
@@ -251,11 +251,11 @@ class RelengRegistry(RelengRegistryInterface):
         """
         if not interpret_string(name):
             raise RelengInvalidSetupException('invalid package name provided')
-        name_uc = name.upper()
-        if not name_uc.startswith(PREFIX_REQUIREMENT.upper()):
+        name_key = name.lower()
+        if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined package types '
                 'must be prefixed with "{}"'.format(PREFIX_REQUIREMENT))
-        if name_uc in self.package_types:
+        if name_key in self.package_types:
             raise RelengInvalidSetupException('extension package type {} '
                 'is already defined by another extension'.format(name))
         package_type = handler()
@@ -266,7 +266,7 @@ class RelengRegistry(RelengRegistryInterface):
                 not callable(install_op)):
             raise RelengInvalidSetupException('package type does not defined '
                 'required method(s)')
-        self.package_types[name_uc] = package_type
+        self.package_types[name_key] = package_type
 
     def require_version(self, version):
         """

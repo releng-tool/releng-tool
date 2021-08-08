@@ -100,7 +100,7 @@ class RelengEngineOptions:
         self.ff_devmode = None
         self.ff_local_srcs = None
         self.forward_args = forward_args
-        self.gbl_action = GlobalAction.UNKNOWN
+        self.gbl_action = None
         self.host_dir = None
         self.images_dir = None
         self.jobs = 1
@@ -110,7 +110,7 @@ class RelengEngineOptions:
         self.local_srcs = None
         self.no_color_out = False
         self.out_dir = None
-        self.pkg_action = PkgAction.UNKNOWN
+        self.pkg_action = None
         self.post_point = None
         self.prerequisites = []
         self.quirks = []
@@ -161,18 +161,18 @@ class RelengEngineOptions:
             self.quirks.extend(args.quirk)
 
         if args.action:
-            action_val = args.action.upper().replace('-', '_')
-            if action_val in GlobalAction.__members__:
-                self.gbl_action = GlobalAction[action_val]
+            action_val = args.action.lower().replace('-', '_')
+            if action_val in GlobalAction:
+                self.gbl_action = action_val
             else:
-                for subaction_val in PkgAction.__members__:
+                for subaction_val in PkgAction:
                     if action_val.endswith('_' + subaction_val):
-                        self.pkg_action = PkgAction[subaction_val]
+                        self.pkg_action = subaction_val
                         idx = action_val.rindex(subaction_val) - 1
                         self.target_action = args.action[:idx]
                         break
 
-                if self.pkg_action == PkgAction.UNKNOWN:
+                if not self.pkg_action:
                     self.target_action = args.action
 
     def _finalize_options(self):

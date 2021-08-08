@@ -345,7 +345,7 @@ class RelengPackageManager:
         # extract type
         pkg_extract_type = self._fetch(RPK_EXTRACT_TYPE)
         if pkg_extract_type:
-            pkg_extract_type = pkg_extract_type.upper()
+            pkg_extract_type = pkg_extract_type.lower()
 
             if pkg_extract_type not in self.registry.extract_types:
                 raise RelengToolUnknownExtractType({
@@ -387,12 +387,15 @@ class RelengPackageManager:
         pkg_skip_remote_scripts = self._fetch(RPK_SKIP_REMOTE_SCRIPTS)
 
         # type
-        pkg_type = self._fetch(RPK_TYPE)
-        if pkg_type:
-            pkg_type = pkg_type.upper()
-            if pkg_type in PackageType.__members__:
-                pkg_type = PackageType[pkg_type]
-            elif pkg_type not in self.registry.package_types:
+        pkg_type = None
+        pkg_type_raw = self._fetch(RPK_TYPE)
+        if pkg_type_raw:
+            pkg_type_raw = pkg_type_raw.lower()
+            if pkg_type_raw in PackageType:
+                pkg_type = pkg_type_raw
+            elif pkg_type_raw in self.registry.package_types:
+                pkg_type = pkg_type_raw
+            else:
                 raise RelengToolUnknownPackageType({
                     'pkg_name': name,
                     'pkg_key': key,
@@ -402,13 +405,15 @@ class RelengPackageManager:
             pkg_type = PackageType.SCRIPT
 
         # vcs-type
-        pkg_vcs_type = self._fetch(RPK_VCS_TYPE)
-        if pkg_vcs_type:
-            pkg_vcs_type = pkg_vcs_type.upper()
-
-            if pkg_vcs_type in VcsType.__members__:
-                pkg_vcs_type = VcsType[pkg_vcs_type]
-            elif pkg_vcs_type not in self.registry.fetch_types:
+        pkg_vcs_type = None
+        pkg_vcs_type_raw = self._fetch(RPK_VCS_TYPE)
+        if pkg_vcs_type_raw:
+            pkg_vcs_type_raw = pkg_vcs_type_raw.lower()
+            if pkg_vcs_type_raw in VcsType:
+                pkg_vcs_type = pkg_vcs_type_raw
+            elif pkg_vcs_type_raw in self.registry.fetch_types:
+                pkg_vcs_type = pkg_vcs_type_raw
+            else:
                 raise RelengToolUnknownVcsType({
                     'pkg_name': name,
                     'pkg_key': key,
@@ -444,7 +449,7 @@ class RelengPackageManager:
             else:
                 pkg_vcs_type = VcsType.NONE
 
-        if pkg_vcs_type is VcsType.LOCAL:
+        if pkg_vcs_type == VcsType.LOCAL:
             warn('package using local content: {}'.format(name))
 
         # ######################################################################
@@ -526,7 +531,7 @@ class RelengPackageManager:
         pkg_nv = '{}-{}'.format(name, pkg_version)
         pkg_build_output_dir = os.path.join(opts.build_dir, pkg_nv)
         pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
-        if pkg_vcs_type is VcsType.LOCAL:
+        if pkg_vcs_type == VcsType.LOCAL:
             pkg_build_dir = pkg_def_dir
         elif opts.local_srcs and pkg_is_internal:
             container_dir = os.path.dirname(opts.root_dir)
@@ -646,13 +651,7 @@ class RelengPackageManager:
             pkg_install_type_raw = self._fetch(RPK_INSTALL_TYPE)
             if pkg_install_type_raw:
                 pkg_install_type_raw = pkg_install_type_raw.lower()
-                if pkg_install_type_raw in (
-                        PackageInstallType.HOST,
-                        PackageInstallType.IMAGES,
-                        PackageInstallType.STAGING,
-                        PackageInstallType.STAGING_AND_TARGET,
-                        PackageInstallType.TARGET,
-                        ):
+                if pkg_install_type_raw in PackageInstallType:
                     pkg.install_type = pkg_install_type_raw
                 else:
                     raise RelengToolUnknownInstallType({

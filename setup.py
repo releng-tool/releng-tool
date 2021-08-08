@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2020 releng-tool
+# Copyright 2018-2021 releng-tool
 
 from distutils.command.clean import clean
 from distutils import dir_util
@@ -56,9 +56,6 @@ setup(
             'releng-tool = releng_tool.__main__:main',
         ],
     },
-    install_requires=[
-        "enum34; python_version == '2.7'"
-    ],
     license='BSD-2-Clause',
     long_description=read('README.rst'),
     name='releng-tool',
