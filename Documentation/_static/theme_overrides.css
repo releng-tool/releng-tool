@@ -41,6 +41,16 @@ html.writer-html5 .rst-content table.docutils td>div:last-child {
     margin-bottom: 0px !important;
 }
 
+dl.footnote {
+    /* center align footnote entries */
+    align-items: center !important;
+}
+
+dl.footnote dd {
+    /* prevent footnote entries from being offset from their ids */
+    margin: 0px !important;
+}
+
 .version-warning {
     background-image: repeating-linear-gradient(-45deg,
         transparent,
