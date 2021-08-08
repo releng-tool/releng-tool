@@ -6,7 +6,7 @@ import subprocess
 
 try:
     import ctypes.wintypes
-except ImportError:
+except Exception:
     pass
 
 def enable_ansi():
