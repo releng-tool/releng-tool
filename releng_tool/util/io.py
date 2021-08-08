@@ -471,6 +471,7 @@ def path_copy(src, dst, quiet=False, critical=True):
         SystemExit: if the copy operation fails with ``critical=True``
     """
     success = False
+    errmsg = None
 
     try:
         if os.path.isfile(src):
@@ -478,13 +479,18 @@ def path_copy(src, dst, quiet=False, critical=True):
             if parent_dir and not os.path.isdir(parent_dir):
                 ensure_dir_exists(parent_dir, quiet=quiet)
             copy2(src, dst)
-        else:
+            success = True
+        elif os.path.exists(src):
             copy_tree(src, dst)
-        success = True
+            success = True
+        else:
+            errmsg = 'source does not exist: {}'.format(src)
     except (DistutilsFileError, IOError) as e:
-        if not quiet:
-            err('unable to copy source contents to target location')
-            err('    {}'.format(e))
+        errmsg = str(e)
+
+    if not quiet and errmsg:
+        err('unable to copy source contents to target location\n'
+            '    {}'.format(errmsg))
 
     if not success and critical:
         sys.exit(-1)
