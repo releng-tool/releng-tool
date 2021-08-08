@@ -10,6 +10,7 @@ from releng_tool.util.log import err
 from releng_tool.util.log import releng_log_configuration
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
+from releng_tool.util.win32 import enable_ansi as enable_ansi_win32
 import argparse
 import os
 import sys
@@ -63,6 +64,14 @@ def main():
 
         releng_log_configuration(args.debug, args.nocolorout, args.verbose)
 
+        # toggle on ansi colors by default for commands
+        if not args.nocolorout:
+            os.environ['CLICOLOR_FORCE'] = '1'
+
+            # support character sequences (for color output on win32 cmd)
+            if sys.platform == 'win32':
+                enable_ansi_win32()
+
         verbose('releng-tool {}'.format(releng_version))
 
         if unknown_args:
@@ -70,10 +79,6 @@ def main():
 
         if forward_args:
             debug('forwarded arguments: {}', ' '.join(forward_args))
-
-        # toggle on ansi colors by default for commands
-        if not args.nocolorout:
-            os.environ['CLICOLOR_FORCE'] = '1'
 
         # warn if the *nix-based system is running as root; ill-formed projects
         # may attempt to modify the local system's root
