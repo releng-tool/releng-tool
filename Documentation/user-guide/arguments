@@ -21,7 +21,7 @@ The following outlines available actions:
 |                            | libraries and more. Images and downloaded       |
 |                            | assets/cache are not removed (see               |
 |                            | |ACTION_MRPROPER|_ for a more through all       |
-|                            | cleaningoperation). This clean operation will   |
+|                            | cleaning operation). This clean operation will  |
 |                            | remove files based off the configured output    |
 |                            | directory. If an output directory is provided   |
 |                            | (i.e. ``--out-dir <dir>``) during a clean       |
