@@ -1,5 +1,5 @@
-development
------------
+0.7 (2021-08-08)
+----------------
 
 - fetch from an already cached package's site if the fetch is explicitly
   requested
