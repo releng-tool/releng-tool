@@ -35,6 +35,12 @@ html.writer-html5 .rst-content table.docutils td>div:last-child {
     margin-bottom: 0px !important;
 }
 
+.toctree-wrapper ul {
+    /* remove unwanted margins in nested toctree entries */
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
 .version-warning {
     background-image: repeating-linear-gradient(-45deg,
         transparent,
