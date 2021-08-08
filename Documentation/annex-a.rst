@@ -112,6 +112,8 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_PREFIX = '<path>' # '/usr'
    LIBFOO_PYTHON_INTERPRETER = '<path>'
    LIBFOO_REVISION = '<revision>'
+   LIBFOO_SKIP_REMOTE_CONFIG = bool
+   LIBFOO_SKIP_REMOTE_SCRIPTS = bool
    LIBFOO_SITE = '<site>'
    LIBFOO_STRIP_COUNT = int # >= 0
    LIBFOO_TYPE = '<type>' # autotools, cmake, python, script, ext-<extension>
@@ -156,4 +158,6 @@ Quirk options used by releng-tool:
 
    releng.cmake.disable_parallel_option
    releng.disable_prerequisites_check
+   releng.disable_remote_configs
+   releng.disable_remote_scripts
    releng.git.no_depth
