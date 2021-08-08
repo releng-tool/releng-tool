@@ -164,9 +164,8 @@ def run_testenv(config=None, template=None, args=None):
         args (optional): additional arguments to add to the "forwarded options"
 
     Returns:
-        the engine
+        the engine's return code
     """
 
     with prepare_testenv(config=config, template=template, args=args) as engine:
-        engine.run()
-    return engine
+        return engine.run()
