@@ -7,6 +7,7 @@ from io import open
 from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.io import generate_temp_dir
+from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import path_copy
 import os
 import sys
@@ -81,7 +82,7 @@ def prepare_testenv(config=None, template=None, args=None):
     if config is None:
         config = {}
 
-    with generate_temp_dir() as work_dir:
+    with generate_temp_dir() as work_dir, interim_working_dir(work_dir):
         # force root directory to temporary directory; or configure all working
         # content based off the generated temporary directory
         if 'root_dir' not in config:
