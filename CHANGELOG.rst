@@ -1,3 +1,17 @@
+development
+-----------
+
+- fixed an issue where tools/``releng_execute`` requests would fail on python
+  2.7 with unicode-defined environment variables
+- fixed an issue where a diverged revision in git would incorrectly populate a
+  package's build directory with the cached revision instead of the remote
+  revision
+- rework ``LIBTOOL_GIT_REFSPECS`` to provide more control over custom revisions
+  that can be fixed (i.e. no longer fixed on ``<target>/*/head``; instead, a
+  configured value-wildcard string should be used)
+- support pruning any remote-tracked references in a git-cached project when a
+  forced fetch request is made
+
 0.7 (2021-08-08)
 ----------------
 
