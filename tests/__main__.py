@@ -3,6 +3,7 @@
 # Copyright 2018-2021 releng-tool
 
 from releng_tool.util.log import releng_log_configuration
+from releng_tool.util.win32 import enable_ansi as enable_ansi_win32
 import argparse
 import fnmatch
 import os
@@ -47,6 +48,10 @@ def main():
         buffered = False
 
     releng_log_configuration(args.debug, False, verbosity)
+
+    # support character sequences (for color output on win32 cmd)
+    if sys.platform == 'win32':
+        enable_ansi_win32()
 
     # discover unit tests
     test_base = os.path.dirname(os.path.realpath(__file__))
