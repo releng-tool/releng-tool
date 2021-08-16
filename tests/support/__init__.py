@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021 releng-tool
 
+from tests import find_test_base
 import os
 
 def fetch_unittest_assets_dir():
@@ -12,6 +13,5 @@ def fetch_unittest_assets_dir():
     Returns:
         the directory
     """
-    support_dir = os.path.dirname(os.path.realpath(__file__))
-    base_dir = os.path.dirname(support_dir)
+    base_dir = find_test_base()
     return os.path.join(base_dir, 'unit-tests', 'assets')

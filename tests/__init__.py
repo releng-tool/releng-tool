@@ -95,8 +95,7 @@ def prepare_testenv(config=None, template=None, args=None):
                 config['out_dir'] = os.path.join(work_dir, 'out')
 
         if template:
-            test_base = os.path.dirname(os.path.realpath(__file__))
-            templates_dir = os.path.join(test_base, 'templates')
+            templates_dir = os.path.join(find_test_base(), 'templates')
             template_dir = os.path.join(templates_dir, template)
             if not path_copy(template_dir, work_dir, critical=False):
                 assert False, 'failed to setup template into workdir'
@@ -171,6 +170,19 @@ def run_testenv(config=None, template=None, args=None):
 
     with prepare_testenv(config=config, template=template, args=args) as engine:
         return engine.run()
+
+def find_test_base():
+    """
+    return the absolute path of the test base directory
+
+    A utility call to return the absolute path of the "tests" directory for this
+    implementation. This is to support interpreters (i.e. Python 2.7) which do
+    not provide an absolute path via the `__file__` variable.
+
+    Returns:
+        the path
+    """
+    return os.path.dirname(os.path.abspath(sys.argv[0]))
 
 class RelengToolTestSuite(unittest.TestSuite):
     def run(self, result):
