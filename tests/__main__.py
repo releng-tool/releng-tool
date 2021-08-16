@@ -14,6 +14,9 @@ import unittest
 #: default verbosity for unit tests
 DEFAULT_VERBOSITY = 2
 
+#: directory name for the standard unit tests
+UNIT_TESTS_DIRNAME = 'unit-tests'
+
 def main():
     """
     process main for unit tests
@@ -26,10 +29,11 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--test-dir', default=UNIT_TESTS_DIRNAME)
     parser.add_argument('--unbuffered', '-U', action='store_true')
     parser.add_argument('--verbose', '-V', action='count', default=0)
 
-    args, _ = parser.parse_known_args()
+    args, args_extra = parser.parse_known_args()
 
     # configure logging for unit test output
     buffered = not args.unbuffered
@@ -56,12 +60,12 @@ def main():
 
     # discover unit tests
     test_base = os.path.dirname(os.path.realpath(__file__))
-    tests_dir = os.path.join(test_base, 'unit-tests')
+    tests_dir = os.path.join(test_base, args.test_dir)
     unit_tests = loader.discover(tests_dir)
 
     # check if a unit test name was provided
     target_test_name_pattern = None
-    for arg in sys.argv[1:]:
+    for arg in args_extra:
         if not arg.startswith('-'):
             target_test_name_pattern = arg
             break
