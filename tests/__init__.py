@@ -98,7 +98,8 @@ def prepare_testenv(config=None, template=None, args=None):
             test_base = os.path.dirname(os.path.realpath(__file__))
             templates_dir = os.path.join(test_base, 'templates')
             template_dir = os.path.join(templates_dir, template)
-            path_copy(template_dir, work_dir)
+            if not path_copy(template_dir, work_dir, critical=False):
+                assert False, 'failed to setup template into workdir'
 
         # build arguments instance
         test_args = MockArgs()
