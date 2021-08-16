@@ -105,6 +105,7 @@ def fetch(opts):
         git_dir,
         'fetch',
         '--progress',
+        '--prune',
         'origin',
         '+refs/heads/*:refs/remotes/origin/*',
         '+refs/tags/*:refs/tags/*',
