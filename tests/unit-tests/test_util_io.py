@@ -13,6 +13,7 @@ from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import touch
+from releng_tool.util.log import is_verbose
 from tests import compare_contents
 from tests import prepare_workdir
 from tests import redirect_stdout
@@ -95,6 +96,11 @@ class TestUtilIo(unittest.TestCase):
 
         result = execute(['an_unknown_command'], quiet=True, critical=False)
         self.assertFalse(result)
+
+        # skip output checks if verbose mode is enabled
+        if is_verbose():
+            raise unittest.SkipTest(
+                'ignoring execution output checks while in verbose mode')
 
         # verify output
         with redirect_stdout() as stream:
