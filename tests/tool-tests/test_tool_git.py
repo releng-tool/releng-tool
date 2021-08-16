@@ -14,6 +14,8 @@ class TestToolGit(TestSiteToolBase):
 
     def prepare_repo_dir(self, repo_dir):
         self._git_repo('init', repo_dir, '--initial-branch=' + DEFAULT_BRANCH)
+        self._git_repo('config', 'user.email', 'unit-test@releng.io')
+        self._git_repo('config', 'user.name', 'Unit Test')
         self._create_commit('initial commit')
 
     def test_tool_git_basic_branch(self):

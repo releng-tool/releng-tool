@@ -31,8 +31,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - run: git config --global user.email "unit-test@releng.io"
-    - run: git config --global user.name "Unit Test"
 
     - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v2
