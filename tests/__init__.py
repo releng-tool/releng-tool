@@ -10,6 +10,7 @@ from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import path_copy
 import os
 import sys
+import unittest
 
 try:
     from StringIO import StringIO
@@ -169,3 +170,25 @@ def run_testenv(config=None, template=None, args=None):
 
     with prepare_testenv(config=config, template=template, args=args) as engine:
         return engine.run()
+
+class RelengToolTestSuite(unittest.TestSuite):
+    def run(self, result):
+        """
+        a releng-tool helper test suite
+
+        Provides a `unittest.TestSuite` which will ensure stdout is flushed
+        after the execution of tests. This is to help ensure all stdout content
+        from the test is output to the stream before the unittest framework
+        outputs a test result summary which may be output to stderr.
+
+        See `unittest.TestSuite.run()` for more details.
+
+        Args:
+            result: the test result object to populate
+
+        Returns:
+            the test result object
+        """
+        rv = unittest.TestSuite.run(self, result)
+        sys.stdout.flush()
+        return rv

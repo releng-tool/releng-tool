@@ -4,6 +4,7 @@
 
 from releng_tool.util.log import releng_log_configuration
 from releng_tool.util.win32 import enable_ansi as enable_ansi_win32
+from tests import RelengToolTestSuite
 import argparse
 import fnmatch
 import os
@@ -21,7 +22,7 @@ def main():
     perform a run.
     """
     loader = unittest.TestLoader()
-    suite = unittest.TestSuite()
+    suite = RelengToolTestSuite()
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--debug', action='store_true')
