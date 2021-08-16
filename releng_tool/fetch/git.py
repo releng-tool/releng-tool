@@ -101,15 +101,20 @@ def fetch(opts):
         return None
 
     log('fetching most recent sources')
-    fetch_cmd = [git_dir, 'fetch', '--progress', 'origin',
+    prepared_fetch_cmd = [
+        git_dir,
+        'fetch',
+        '--progress',
+        'origin',
         '+refs/heads/*:refs/remotes/origin/*',
-        '+refs/tags/*:refs/tags/*']
+        '+refs/tags/*:refs/tags/*',
+    ]
 
     # allow fetching addition references if configured (e.g. pull requests)
     if opts._git_refspecs:
         for ref in opts._git_refspecs:
-            fetch_cmd.append(
-                '+refs/{}/*/head:refs/remotes/origin/{}/*'.format(ref, ref))
+            prepared_fetch_cmd.append(
+                '+refs/{}:refs/remotes/origin/{}'.format(ref, ref))
 
     # limit fetch depth
     target_depth = 1
@@ -117,6 +122,7 @@ def fetch(opts):
         target_depth = opts._git_depth
     limited_fetch = (target_depth and 'releng.git.no_depth' not in opts._quirks)
 
+    fetch_cmd = list(prepared_fetch_cmd)
     if limited_fetch:
         fetch_cmd.append('--depth')
         fetch_cmd.append(str(target_depth))
@@ -133,8 +139,10 @@ def fetch(opts):
             limited_fetch and opts._git_depth is None):
         warn('failed to find hash on depth-limited fetch; fetching all...')
 
-        if not GIT.execute([git_dir, 'fetch', '--progress', '--unshallow'],
-                cwd=cache_dir):
+        fetch_cmd = list(prepared_fetch_cmd)
+        fetch_cmd.append('--unshallow')
+
+        if not GIT.execute(fetch_cmd, cwd=cache_dir):
             err('unable to unshallow fetch state')
             return None
 
