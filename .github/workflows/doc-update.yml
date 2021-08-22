@@ -38,7 +38,7 @@ jobs:
       run: |
         sudo apt-get install gettext 
         pip install --upgrade \
-            "docutils<0.18" \
+            "docutils<0.17" \
             sphinx \
             sphinx-intl \
             sphinx-rtd-theme
