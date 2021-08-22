@@ -163,6 +163,7 @@ def usage():
  <pkg>-build               perform build stage for the package
  <pkg>-clean               clean build directory for package
  <pkg>-configure           perform configure stage for the package
+ <pkg>-distclean           pristine clean for package
  <pkg>-extract             perform extract stage for the package
  <pkg>-fetch               perform fetch stage for the package
  <pkg>-install             perform install stage for the package

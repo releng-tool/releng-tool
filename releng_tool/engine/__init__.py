@@ -177,12 +177,22 @@ class RelengEngine:
             license_files = {}
 
             # if cleaning a package, remove it's build output directory and stop
-            if pa == PkgAction.CLEAN:
+            if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN):
                 for pkg in pkgs:
                     if pkg.name == opts.target_action:
-                        verbose('removing output directory for package: ' +
-                            pkg.name)
+                        def pkg_verbose_clean(desc):
+                            verbose('{} for package: {}', desc, pkg.name)
+                        pkg_verbose_clean('removing output directory')
                         path_remove(pkg.build_output_dir)
+
+                        if pa == PkgAction.DISTCLEAN:
+                            if os.path.exists(pkg.cache_file):
+                                pkg_verbose_clean('removing cache file')
+                                path_remove(pkg.cache_file)
+                            if os.path.isdir(pkg.cache_dir):
+                                pkg_verbose_clean('removing cache directory')
+                                path_remove(pkg.cache_dir)
+
                         return True
                 assert False # should not reach here
 
