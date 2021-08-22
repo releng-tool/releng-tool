@@ -25,6 +25,7 @@ from os.path import join as releng_join
 from releng_tool.util.env import set_env_value as releng_env
 from releng_tool.util.io import ensure_dir_exists as releng_mkdir
 from releng_tool.util.io import execute as releng_execute
+from releng_tool.util.io import execute_rv as releng_execute_rv
 from releng_tool.util.io import generate_temp_dir as releng_tmpdir
 from releng_tool.util.io import interim_working_dir as releng_wd
 from releng_tool.util.io import path_copy as releng_copy

@@ -155,6 +155,116 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         SystemExit: if the execution operation fails with ``critical=True``
     """
 
+    rv = _execute(args, cwd=cwd, env=env, env_update=env_update,
+        quiet=quiet, critical=critical, poll=poll, capture=capture)
+    return (rv == 0)
+
+def execute_rv(command, *args, **kwargs):
+    """
+    execute the provided command/arguments
+
+    Runs the command ``command`` with provided ``args`` until completion. A
+    caller can adjust the working directory of the executed command by
+    explicitly setting the directory in ``cwd``. The execution request will
+    return the command's return code as well as any captured output.
+
+    The environment variables used on execution can be manipulated in two ways.
+    First, the environment can be explicitly controlled by applying a new
+    environment content using the ``env`` dictionary. Key of the dictionary will
+    be used as environment variable names, whereas the respective values will be
+    the respective environment variable's value. If ``env`` is not provided, the
+    existing environment of the executing context will be used. Second, a caller
+    can instead update the existing environment by using the ``env_update``
+    option. Like ``env``, the key-value pairs match to respective environment
+    key-value pairs. The difference with this option is that the call will use
+    the original environment values and update select values which match in the
+    updated environment request. When ``env`` and ``env_update`` are both
+    provided, ``env_update`` will be updated the options based off of ``env``
+    instead of the original environment of the caller.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        rv, out = releng_execute_rv('echo', '$TEST', env={'TEST': 'env-test'})
+
+    Args:
+        command: the command to invoke
+        *args (optional): arguments to add to the command
+        **cwd: working directory to use
+        **env: environment variables to use for the process
+        **env_update: environment variables to append for the process
+
+    Returns:
+        the return code and output of the execution request
+    """
+
+    out = []
+    rv = _execute([command] + list(args),
+        cwd=kwargs.get('cwd'),
+        env=kwargs.get('env'),
+        env_update=kwargs.get('env_update'),
+        capture=out, quiet=True, critical=False)
+    return rv, '\n'.join(out)
+
+def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
+        critical=True, poll=False, capture=None):
+    """
+    execute the provided command/arguments
+
+    Runs the command described by ``args`` until completion. A caller can adjust
+    the working directory of the executed command by explicitly setting the
+    directory in ``cwd``. The execution request will return the command's return
+    code as well as any captured output.
+
+    The environment variables used on execution can be manipulated in two ways.
+    First, the environment can be explicitly controlled by applying a new
+    environment content using the ``env`` dictionary. Key of the dictionary will
+    be used as environment variable names, whereas the respective values will be
+    the respective environment variable's value. If ``env`` is not provided, the
+    existing environment of the executing context will be used. Second, a caller
+    can instead update the existing environment by using the ``env_update``
+    option. Like ``env``, the key-value pairs match to respective environment
+    key-value pairs. The difference with this option is that the call will use
+    the original environment values and update select values which match in the
+    updated environment request. When ``env`` and ``env_update`` are both
+    provided, ``env_update`` will be updated the options based off of ``env``
+    instead of the original environment of the caller.
+
+    If ``critical`` is set to ``True`` and the execution fails for any reason,
+    this call will issue a system exit (``SystemExit``). By default, the
+    critical flag is enabled (i.e. ``critical=True``).
+
+    In special cases, an executing process may not provide carriage returns/new
+    lines to simple output processing. This can lead the output of a process to
+    be undesirably buffered. To workaround this issue, the execution call can
+    instead poll for output results by using the ``poll`` option with a value
+    of ``True``. By default, polling is disabled with a value of ``False``.
+
+    A caller may wish to capture the provided output from a process for
+    examination. If a list is provided in the call argument ``capture``, the
+    list will be populated with the output provided from an invoked process.
+
+    Args:
+        args: the list of arguments to execute
+        cwd (optional): working directory to use
+        env (optional): environment variables to use for the process
+        env_update (optional): environment variables to append for the process
+        quiet (optional): whether or not to suppress output (defaults to
+            ``False``)
+        critical (optional): whether or not to stop execution on failure
+            (defaults to ``True``)
+        poll (optional): force polling stdin/stdout for output data (defaults to
+            ``False``)
+        capture (optional): list to capture output into
+
+    Returns:
+        the return code of the execution request
+
+    Raises:
+        SystemExit: if the execution operation fails with ``critical=True``
+    """
+
     # append provided environment updates (if any) to the provided or existing
     # environment dictionary
     final_env = None
@@ -171,7 +281,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         quiet = capture is not None
 
     cmd_str = None
-    success = False
+    rv = 1
     if args:
         # attempt to always invoke using a script's interpreter (if any) to
         # help deal with long-path calls
@@ -234,7 +344,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
                             sys.stdout.flush()
             proc.communicate()
 
-            success = (proc.returncode == 0)
+            rv = proc.returncode
         except OSError as e:
             if not quiet:
                 if not cmd_str:
@@ -243,14 +353,14 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
                 err('unable to execute command: ' + cmd_str)
                 err('    {}'.format(e))
 
-    if not success:
+    if rv != 0:
         if args:
             debug('failed to issue last command')
         else:
             debug('failed to issue an empty command')
         if critical:
             sys.exit(-1)
-    return success
+    return rv
 
 def _cmd_args_to_str(args):
     """
