@@ -283,6 +283,11 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
     cmd_str = None
     rv = 1
     if args:
+        # force any `None` arguments to empty strings, as a subprocess request
+        # will not accept it; ideally, a call should not be passing a `None`
+        # entry, but providing flexibility when it has been done
+        args = [arg if arg is not None else '' for arg in args]
+
         # attempt to always invoke using a script's interpreter (if any) to
         # help deal with long-path calls
         if sys.platform != 'win32':
