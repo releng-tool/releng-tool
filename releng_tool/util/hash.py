@@ -181,7 +181,6 @@ Please correct the following hash file:
         types.setdefault(type_, []).append(hash_.lower())
 
     for asset, type_hashes in hash_catalog.items():
-        type_hashes.keys()
         hashers = {}
         for hash_type in type_hashes.keys():
             hashers[hash_type] = _get_hasher(hash_type)
@@ -222,8 +221,8 @@ Ensure the hash file correctly names an expected file.
             return HashResult.MISSING_LISTED
 
         for hash_type, hasher in hashers.items():
-            debug('calculated-hash: {} {}:{}'.format(asset, hash_type, hash))
             digest = hasher.hexdigest()
+            debug('calculated-hash: {} {}:{}'.format(asset, hash_type, digest))
             hashes = type_hashes[hash_type]
             if digest not in hashes:
                 if not quiet:
