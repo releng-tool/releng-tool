@@ -136,3 +136,47 @@ class TestSiteToolBase(unittest.TestCase):
         print('-------------------------------')
         print(''.join(content).strip())
         print('-------------------------------')
+
+    def dir_dump(self, dir_):
+        """
+        dump a test folders's file list to standard out
+
+        When requested, a provide directory will be scanned for files and the
+        file list will be dumped to the configured standard output stream.
+
+        Args:
+            dir_: the directory to search
+        """
+
+        files = self._dir_fetch(dir_)
+
+        print('DIR: {}]'.format(dir_))
+        print('-------------------------------')
+        for file_ in files:
+            print(file_[len(dir_) + 1:])
+        print('-------------------------------')
+
+    def _dir_fetch(self, dir_):
+        """
+        compile a list of files in a test folder
+
+        This call will return a list of all files found in the provided
+        directory. If the provided directory contains other directories, they
+        will also be searched for file entries to populate.
+
+        Args:
+            dir_: the directory to search
+
+        Returns:
+            the file list
+        """
+
+        files = []
+
+        for f in os.scandir(dir_):
+            if f.is_dir():
+                files.extend(self._dir_fetch(f.path))
+            elif f.is_file():
+                files.append(f.path)
+
+        return files

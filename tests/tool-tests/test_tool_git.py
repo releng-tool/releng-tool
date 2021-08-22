@@ -3,8 +3,11 @@
 
 from releng_tool.defs import GlobalAction
 from releng_tool.util.io import execute
+from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io import touch
 from tests.support.site_tool_test import TestSiteToolBase
+import os
 
 DEFAULT_BRANCH = 'test'
 
@@ -14,9 +17,9 @@ class TestToolGit(TestSiteToolBase):
 
     def prepare_repo_dir(self, repo_dir):
         self._git_repo('init', repo_dir, '--initial-branch=' + DEFAULT_BRANCH)
-        self._git_repo('config', 'user.email', 'unit-test@releng.io')
-        self._git_repo('config', 'user.name', 'Unit Test')
-        self._create_commit('initial commit')
+        self._git_repo('config', 'user.email', 'test@releng.io', repo=repo_dir)
+        self._git_repo('config', 'user.name', 'Unit Test', repo=repo_dir)
+        self._create_commit('initial commit', repo=repo_dir)
 
     def test_tool_git_basic_branch(self):
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
@@ -265,6 +268,84 @@ class TestToolGit(TestSiteToolBase):
         current_hash = self._git_cache('rev-parse', 'HEAD')
         self.assertEqual(current_hash, second_hash)
 
+    def test_tool_git_submodules_default(self):
+        self.defconfig_add('VERSION', DEFAULT_BRANCH)
+
+        with generate_temp_dir() as repo2:
+            # prepare additional mock repository directories
+            repo1 = self.repo_dir
+            self.prepare_repo_dir(repo2)
+
+            # dummy file on repo1
+            touch(os.path.join(repo1, 'file1'))
+            self._create_commit('add file', repo=repo1, add=True)
+
+            # dummy file on repo2
+            touch(os.path.join(repo2, 'file2'))
+            self._create_commit('add file', repo=repo2, add=True)
+
+            # add a submodule repo2 to repo1
+            self._git_repo('submodule', 'add', repo2, 'repo2', repo=repo1)
+            self._create_commit('add module', repo=repo1, add=True)
+
+            # extract package but not submodules (by defaylt)
+            self.engine.opts.gbl_action = GlobalAction.EXTRACT
+            rv = self.engine.run()
+            self.assertTrue(rv)
+
+            # verify expected content from main package; not submodules
+            out_dir = os.path.join(
+                self.engine.opts.build_dir, 'test-' + DEFAULT_BRANCH)
+            repo1_file = os.path.join(out_dir, 'file1')
+            repo2_file = os.path.join(out_dir, 'repo2', 'file2')
+            self.assertTrue(os.path.exists(repo1_file))
+            self.assertFalse(os.path.exists(repo2_file))
+
+    def test_tool_git_submodules_enabled(self):
+        self.defconfig_add('GIT_SUBMODULES', True)
+        self.defconfig_add('VERSION', DEFAULT_BRANCH)
+
+        with generate_temp_dir() as repo2, generate_temp_dir() as repo3:
+            # prepare additional mock repository directories
+            repo1 = self.repo_dir
+            self.prepare_repo_dir(repo2)
+            self.prepare_repo_dir(repo3)
+
+            # dummy file on repo1
+            touch(os.path.join(repo1, 'file1'))
+            self._create_commit('add file', repo=repo1, add=True)
+
+            # dummy file on repo2
+            touch(os.path.join(repo2, 'file2'))
+            self._create_commit('add file', repo=repo2, add=True)
+
+            # dummy file on repo3
+            touch(os.path.join(repo3, 'file3'))
+            self._create_commit('add file', repo=repo3, add=True)
+
+            # add a submodule repo2 to repo1
+            self._git_repo('submodule', 'add', repo2, 'repo2', repo=repo1)
+            self._create_commit('add module', repo=repo1, add=True)
+
+            # add a submodule repo3 to repo2
+            self._git_repo('submodule', 'add', repo3, 'repo3', repo=repo2)
+            self._create_commit('add module', repo=repo2, add=True)
+
+            # extract package and submodules
+            self.engine.opts.gbl_action = GlobalAction.EXTRACT
+            rv = self.engine.run()
+            self.assertTrue(rv)
+
+            # verify expected content from main package and submodules
+            out_dir = os.path.join(
+                self.engine.opts.build_dir, 'test-' + DEFAULT_BRANCH)
+            repo1_file = os.path.join(out_dir, 'file1')
+            repo2_file = os.path.join(out_dir, 'repo2', 'file2')
+            repo3_file = os.path.join(out_dir, 'repo2', 'repo3', 'file3')
+            self.assertTrue(os.path.exists(repo1_file))
+            self.assertTrue(os.path.exists(repo2_file))
+            self.assertTrue(os.path.exists(repo3_file))
+
     def test_tool_git_unknown_branch_tag(self):
         self.defconfig_add('VERSION', 'unknown')
         rv = self.engine.run()
@@ -280,6 +361,7 @@ class TestToolGit(TestSiteToolBase):
         with interim_working_dir(workdir):
             out = []
             if not execute(['git'] + list(args), capture=out, critical=False):
+                print(['git'] + list(args))
                 print('\n'.join(out))
                 assert False, 'failed to issue git command'
             return '\n'.join(out)
@@ -287,16 +369,20 @@ class TestToolGit(TestSiteToolBase):
     def _git_cache(self, *args):
         return self._git(self.cache_dir, *args)
 
-    def _git_repo(self, *args):
-        return self._git(self.repo_dir, *args)
+    def _git_repo(self, *args, repo=None):
+        if not repo:
+            repo = self.repo_dir
+        return self._git(repo, *args)
 
-    def _create_commit(self, msg='test'):
-        self._git_repo('commit', '--allow-empty', '-m', msg)
-        return self._git_repo('rev-parse', 'HEAD')
+    def _create_commit(self, msg='test', add=False, repo=None):
+        if add:
+            self._git_repo('add', '.', repo=repo)
+        self._git_repo('commit', '--allow-empty', '-m', msg, repo=repo)
+        return self._git_repo('rev-parse', 'HEAD', repo=repo)
 
-    def _create_tag(self, tag):
-        self._git_repo('tag', tag)
+    def _create_tag(self, tag, repo=None):
+        self._git_repo('tag', tag, repo=repo)
         return tag
 
-    def _delete_tag(self, tag):
-        self._git_repo('tag', '-d', tag)
+    def _delete_tag(self, tag, repo=None):
+        self._git_repo('tag', '-d', tag, repo=repo)

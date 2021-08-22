@@ -1,0 +1,2 @@
+TEST_GIT_SUBMODULES = True
+TEST_VERSION = 'dummy'

@@ -82,3 +82,19 @@ class TestPkgConfigsGit(TestPkgConfigsBase):
         self.assertListEqual(pkg.git_refspecs, [
             'refspec',
         ])
+
+    def test_pkgconfig_git_submodules_disabled(self):
+        pkg, _, _ = self.LOAD('git-submodules-disabled')
+        self.assertFalse(pkg.git_submodules)
+
+    def test_pkgconfig_git_submodules_enabled(self):
+        pkg, _, _ = self.LOAD('git-submodules-enabled')
+        self.assertTrue(pkg.git_submodules)
+
+    def test_pkgconfig_git_submodules_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('git-submodules-invalid')
+
+    def test_pkgconfig_git_submodules_missing(self):
+        pkg, _, _ = self.LOAD('missing')
+        self.assertIsNone(pkg.git_submodules)
