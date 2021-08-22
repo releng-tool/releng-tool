@@ -31,6 +31,7 @@ RPK_FIXED_JOBS = 'FIXED_JOBS' #: fixed job count for the project
 RPK_GIT_CONFIG = 'GIT_CONFIG' #: git configurations to set (if any)
 RPK_GIT_DEPTH = 'GIT_DEPTH' #: git fetch depth (if any)
 RPK_GIT_REFSPECS = 'GIT_REFSPECS' #: additional git refspecs to fetch (if any)
+RPK_GIT_SUBMODULES = 'GIT_SUBMODULES' #: fetch any submodules (if any)
 RPK_INSTALL_TYPE = 'INSTALL_TYPE' #: install container target for the package
 RPK_INTERNAL = 'INTERNAL' #: whether or not package is considered "internal"
 RPK_LICENSE = 'LICENSE' #: license information for the package

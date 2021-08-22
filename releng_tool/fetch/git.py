@@ -5,10 +5,12 @@ from releng_tool.tool.git import GIT
 from releng_tool.util.enum import Enum
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
+from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import warn
+from releng_tool.util.log import verbose
 import os
 import sys
 
@@ -53,11 +55,11 @@ def fetch(opts):
 
     git_dir = '--git-dir=' + cache_dir
 
-    # check if we have the target revision; if so, full stop
+    # check if we have the target revision cached; if so, package is ready
     if os.path.isdir(cache_dir) and not opts.ignore_cache:
         if revision_exists(git_dir, revision) == GitExistsType.EXISTS:
             # ensure configuration is properly synchronized
-            if not sync_git_configuration(git_dir, opts):
+            if not _sync_git_configuration(opts):
                 return None
 
             return cache_dir
@@ -97,8 +99,48 @@ def fetch(opts):
             return None
 
     # ensure configuration is properly synchronized
-    if not sync_git_configuration(git_dir, opts):
+    if not _sync_git_configuration(opts):
         return None
+
+    # fetch sources for this repository
+    if not _fetch_srcs(opts, cache_dir, revision, refspecs=opts._git_refspecs):
+        return None
+
+    # fetch submodules (if configured to do so)
+    if opts._git_submodules:
+        if not _fetch_submodules(opts, cache_dir, revision):
+            return None
+
+    return cache_dir
+
+def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
+    """
+    invokes a git fetch call of the configured origin into a bare repository
+
+    With a provided cache directory (``cache_dir``; bare repository), fetch the
+    contents of a configured origin into the directory. The fetch call will
+    use a restricted depth, unless configured otherwise. In the event a target
+    revision cannot be found (if provided), an unshallow fetch will be made.
+
+    This call may be invoked without a revision provided -- specifically, this
+    can occur for submodule configurations which do not have a specific revision
+    explicitly set.
+
+    Args:
+        opts: fetch options
+        cache_dir: the bare repository to fetch into
+        revision: expected revision desired from the repository
+        desc (optional): description to use for error message
+        refspecs (optional): additional refspecs to add to the fetch call
+
+    Returns:
+        ``True`` if the fetch was successful; ``False`` otherwise
+    """
+
+    git_dir = '--git-dir=' + cache_dir
+
+    if not desc:
+        desc = 'repository: {}'.format(opts.name)
 
     log('fetching most recent sources')
     prepared_fetch_cmd = [
@@ -112,8 +154,8 @@ def fetch(opts):
     ]
 
     # allow fetching addition references if configured (e.g. pull requests)
-    if opts._git_refspecs:
-        for ref in opts._git_refspecs:
+    if refspecs:
+        for ref in refspecs:
             prepared_fetch_cmd.append(
                 '+refs/{}:refs/remotes/origin/{}'.format(ref, ref))
 
@@ -130,33 +172,34 @@ def fetch(opts):
 
     if not GIT.execute(fetch_cmd, cwd=cache_dir):
         err('unable to fetch branches/tags from remote repository')
-        return None
+        return False
 
-    log('verifying target revision exists')
-    exists_state = revision_exists(git_dir, revision)
-    if exists_state == GitExistsType.EXISTS:
-        pass
-    elif (exists_state == GitExistsType.MISSING_HASH and
-            limited_fetch and opts._git_depth is None):
-        warn('failed to find hash on depth-limited fetch; fetching all...')
+    if revision:
+        log('verifying target revision exists')
+        exists_state = revision_exists(git_dir, revision)
+        if exists_state == GitExistsType.EXISTS:
+            pass
+        elif (exists_state == GitExistsType.MISSING_HASH and
+                limited_fetch and opts._git_depth is None):
+            warn('failed to find hash on depth-limited fetch; fetching all...')
 
-        fetch_cmd = list(prepared_fetch_cmd)
-        fetch_cmd.append('--unshallow')
+            fetch_cmd = list(prepared_fetch_cmd)
+            fetch_cmd.append('--unshallow')
 
-        if not GIT.execute(fetch_cmd, cwd=cache_dir):
-            err('unable to unshallow fetch state')
-            return None
+            if not GIT.execute(fetch_cmd, cwd=cache_dir):
+                err('unable to unshallow fetch state')
+                return False
 
-        if revision_exists(git_dir, revision) != GitExistsType.EXISTS:
-            err('unable to find matching revision in repository: ' + name)
+            if revision_exists(git_dir, revision) != GitExistsType.EXISTS:
+                err('unable to find matching revision in ' + desc)
+                err(' (revision: {}) '.format(revision))
+                return False
+        else:
+            err('unable to find matching revision in ' + desc)
             err(' (revision: {}) '.format(revision))
-            return None
-    else:
-        err('unable to find matching revision in repository: ' + name)
-        err(' (revision: {}) '.format(revision))
-        return None
+            return False
 
-    return cache_dir
+    return True
 
 def revision_exists(git_dir, revision):
     """
@@ -193,7 +236,7 @@ def revision_exists(git_dir, revision):
 
     return GitExistsType.EXISTS
 
-def sync_git_configuration(git_dir, opts):
+def _sync_git_configuration(opts):
     """
     ensure the git configuration is properly synchronized with this repository
 
@@ -207,7 +250,6 @@ def sync_git_configuration(git_dir, opts):
        options need to be set (e.g. overriding `core.autocrlf`).
 
     Args:
-        git_dir: the Git directory
         opts: fetch options
 
     Returns:
@@ -215,15 +257,10 @@ def sync_git_configuration(git_dir, opts):
     """
 
     cache_dir = opts.cache_dir
+    git_dir = '--git-dir=' + cache_dir
     site = opts.site
 
-    # silently try to add origin first, to lazily handle a missing case
-    GIT.execute([git_dir, 'remote', 'add', 'origin', site],
-        cwd=cache_dir, quiet=True)
-
-    if not GIT.execute([git_dir, 'remote', 'set-url', 'origin', site],
-            cwd=cache_dir):
-        err('unable to ensure origin is set on repository cache')
+    if not _sync_git_origin(cache_dir, site):
         return False
 
     # apply repository-specific configurations
@@ -235,3 +272,189 @@ def sync_git_configuration(git_dir, opts):
                 return False
 
     return True
+
+def _sync_git_origin(cache_dir, site):
+    """
+    synchronize an origin site to a git configuration
+
+    Ensures the configured site is set as the origin of the repository. This is
+    to help handle scenarios where a package's site has changed while content is
+    already cached.
+
+    Args:
+        cache_dir: the cache/bare repository
+        site: the site that should be set
+
+    Returns:
+        ``True`` if the site is synchronized; ``False`` otherwise
+    """
+
+    git_dir = '--git-dir=' + cache_dir
+
+    # silently try to add origin first, to lazily handle a missing case
+    GIT.execute([git_dir, 'remote', 'add', 'origin', site],
+        cwd=cache_dir, quiet=True)
+
+    if not GIT.execute([git_dir, 'remote', 'set-url', 'origin', site],
+            cwd=cache_dir):
+        err('unable to ensure origin is set on repository cache')
+        return False
+
+    return True
+
+def _fetch_submodules(opts, cache_dir, revision):
+    """
+    fetch the submodules on a provided cache/bar repository
+
+    Using a provided bare repository, submodules configured at the provided
+    revision will be fetched into the bare repository's modules directory. If it
+    has been detected that a submodule contains additional submodules, they will
+    also be fetched into a cache directory.
+
+    Args:
+        opts: fetch options
+        cache_dir: the cache/bare repository
+        revision: the revision (branch, tag, hash) to fetch
+
+    Returns:
+        ``True`` if submodules have been processed; ``False`` otherwise
+    """
+    assert revision
+
+    git_dir = '--git-dir=' + cache_dir
+
+    # find a .gitmodules configuration on the target revision
+    submodule_ref = '{}:.gitmodules'.format(revision)
+    rv, raw_submodules = GIT.execute_rv(git_dir, 'show', submodule_ref)
+    if rv != 0:
+        submodule_ref = 'origin/' + submodule_ref
+        rv, raw_submodules = GIT.execute_rv(git_dir, 'show', submodule_ref)
+        if rv != 0:
+            verbose('no git submodules file detected for this revision')
+            return True
+
+    debug('parsing git submodules file...')
+    cfg = GIT.parse_cfg_str(raw_submodules)
+    if not cfg:
+        verbose('no git submodules file detected for this revision')
+        return False
+
+    for sec_name in cfg.sections():
+        if not sec_name.startswith('submodule'):
+            continue
+
+        sec = cfg[sec_name]
+        if 'path' not in sec or 'url' not in sec:
+            debug('submodule section missing path/url')
+            continue
+
+        submodule_path = sec['path']
+        submodule_revision = sec.get('branch', None)
+        submodule_url = sec['url']
+        verbose('detected submodule: {}', submodule_path)
+        debug('submodule revision: {}',
+            submodule_revision if submodule_revision else '(none)')
+        debug('submodule url: {}', submodule_url)
+
+        submodule_cache_dir = os.path.join(
+            cache_dir, 'modules', *os.path.split(submodule_path))
+
+        # check to make sure the submodule's path isn't pointing to a relative
+        # path outside the expected cache base
+        check_abs = os.path.abspath(submodule_cache_dir)
+        check_common = os.path.commonpath((submodule_cache_dir, check_abs))
+        if check_abs != check_common:
+            err('unable to process submodule pathed outside of bare repository')
+            verbose('submodule expected base path: {}', check_common)
+            verbose('submodule absolute path: {}', check_abs)
+            return False
+
+        # fetch/cache the submodule repository
+        if not _fetch_submodule(opts, submodule_path, submodule_cache_dir,
+                submodule_revision, submodule_url):
+            return False
+
+        # if a revision is not provided, extract the HEAD from the cache
+        if not submodule_revision:
+            submodule_revision = GIT.extract_submodule_revision(
+                submodule_cache_dir)
+            if not submodule_revision:
+                return False
+
+        # process nested submodules
+        if not _fetch_submodules(opts, submodule_cache_dir, submodule_revision):
+            return False
+
+    return True
+
+def _fetch_submodule(opts, name, cache_dir, revision, site):
+    """
+    fetch a submodule into a provided cache/bar repository
+
+    Fetches an individual submodule into the provided cache directory. The
+    origin of the submodule is provided via the ``site`` argument. A revision,
+    if provided, can be used to help verify the target revision desired for a
+    submodule; however, it is not required (e.g. when a repository does not set
+    an explicit submodule revision).
+
+    Args:
+        opts: fetch options
+        name: the name of the submodule (for state messages)
+        cache_dir: the cache/bare repository to fetch into
+        revision: the revision (branch, tag, hash) to fetch
+        site: the site to fetch the submodule from
+
+    Returns:
+        ``True`` if the submodule has been fetched; ``False`` otherwise
+    """
+    git_dir = '--git-dir=' + cache_dir
+
+    # check if we have the target revision cached; if so, submodule is ready
+    if os.path.isdir(cache_dir) and not opts.ignore_cache:
+        if not revision:
+            return _sync_git_origin(cache_dir, site)
+
+        if revision_exists(git_dir, revision) == GitExistsType.EXISTS:
+            return _sync_git_origin(cache_dir, site)
+
+    log('processing submodule (package: {}) {}...'.format(opts.name, name))
+    sys.stdout.flush()
+
+    # if we have a cache dir, ensure it's stable
+    #
+    # If we have a cache directory for this page but didn't find the the target
+    # revision above, first check if the Git cache has been corrupted. If
+    # anything is suspected wrong, start from a fresh state.
+    has_cache = False
+    if os.path.isdir(cache_dir):
+        if opts.ignore_cache:
+            has_cache = True
+        else:
+            log('cache directory exists for submodule; validating')
+            if GIT.execute([git_dir, 'fsck', '--full'], cwd=cache_dir,
+                    quiet=True):
+                has_cache = True
+            else:
+                log('cache directory has errors; will re-downloaded')
+
+                if not path_remove(cache_dir):
+                    err('''unable to cleanup cache folder for package
+ (cache folder: {})'''.format(cache_dir))
+                    return False
+
+    # if we have no cache for this repository, build one
+    if not has_cache:
+        if not ensure_dir_exists(cache_dir):
+            return False
+
+        if not GIT.execute([git_dir, 'init', '--bare'], cwd=cache_dir):
+            err('unable to initialize bare git repository')
+            return False
+
+    # ensure configuration is properly synchronized
+    if not _sync_git_origin(cache_dir, site):
+        return False
+
+    # fetch sources for this submodule
+    desc = 'submodule ({}): {}'.format(opts.name, name)
+    return _fetch_srcs(opts, cache_dir, revision, desc=desc)

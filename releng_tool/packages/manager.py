@@ -22,6 +22,7 @@ from releng_tool.defs import RPK_FIXED_JOBS
 from releng_tool.defs import RPK_GIT_CONFIG
 from releng_tool.defs import RPK_GIT_DEPTH
 from releng_tool.defs import RPK_GIT_REFSPECS
+from releng_tool.defs import RPK_GIT_SUBMODULES
 from releng_tool.defs import RPK_INSTALL_DEFS
 from releng_tool.defs import RPK_INSTALL_ENV
 from releng_tool.defs import RPK_INSTALL_OPTS
@@ -127,6 +128,7 @@ class RelengPackageManager:
         self._register_conf(RPK_GIT_CONFIG, PkgKeyType.DICT_STR_STR)
         self._register_conf(RPK_GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE)
         self._register_conf(RPK_GIT_REFSPECS, PkgKeyType.STRS)
+        self._register_conf(RPK_GIT_SUBMODULES, PkgKeyType.BOOL)
         self._register_conf(RPK_INSTALL_DEFS, PkgKeyType.DICT_STR_STR)
         self._register_conf(RPK_INSTALL_ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(RPK_INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
@@ -463,6 +465,9 @@ class RelengPackageManager:
         # git-refspecs
         pkg_git_refspecs = self._fetch(RPK_GIT_REFSPECS)
 
+        # git-submodules
+        pkg_git_submodules = self._fetch(RPK_GIT_SUBMODULES)
+
         # ######################################################################
 
         # checks
@@ -577,6 +582,7 @@ class RelengPackageManager:
         pkg.git_config = pkg_git_config
         pkg.git_depth = pkg_git_depth
         pkg.git_refspecs = pkg_git_refspecs
+        pkg.git_submodules = pkg_git_submodules
         pkg.has_devmode_option = pkg_has_devmode_option
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
         pkg.is_internal = pkg_is_internal

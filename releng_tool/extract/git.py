@@ -6,6 +6,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import warn
+import os
 
 def extract(opts):
     """
@@ -31,8 +32,100 @@ def extract(opts):
         err('unable to extract package; git is not installed')
         return None
 
+    # extract the package
+    if not _workdir_extract(cache_dir, work_dir, revision):
+        return False
+
+    # extract submodules (if configured to do so)
+    if opts._git_submodules:
+        if not _process_submodules(opts, cache_dir, work_dir):
+            return False
+
+    return True
+
+def _process_submodules(opts, cache_dir, work_dir):
+    """
+    process submodules for an extracted repository
+
+    After extracting a repository to a working tree, this call can be used to
+    extract any tracked submodules configured on the repository. The
+    ``.gitmodules`` file is parsed for submodules and caches will be populated
+    for each submodule. This call is recursive.
+
+    Args:
+        opts: the extraction options
+        cache_dir: the cache directory for the working directory's contents
+        work_dir: the working directory to look for submodules
+
+    Returns:
+        ``True`` if submodules have been processed; ``False`` otherwise
+    """
+
+    git_modules_file = os.path.join(work_dir, '.gitmodules')
+    if not os.path.exists(git_modules_file):
+        return True
+
+    debug('parsing git submodules file: {}', git_modules_file)
+    cfg = GIT.parse_cfg_file(git_modules_file)
+    if not cfg:
+        err('failed to parse git submodule')
+        return False
+
+    for sec_name in cfg.sections():
+        if not sec_name.startswith('submodule'):
+            continue
+
+        sec = cfg[sec_name]
+        if 'path' not in sec or 'url' not in sec:
+            debug('submodule section missing path/url')
+            continue
+
+        submodule_path = sec['path']
+        submodule_revision = sec.get('branch', None)
+        log('extracing submodule ({}): {}', opts.name, submodule_path)
+        debug('submodule revision: {}',
+            submodule_revision if submodule_revision else '(none)')
+
+        postfix_path = os.path.split(submodule_path)
+        sm_cache_dir = os.path.join(cache_dir, 'modules', *postfix_path)
+        sm_work_dir = os.path.join(work_dir, *postfix_path)
+
+        if not _workdir_extract(sm_cache_dir, sm_work_dir, submodule_revision):
+            return False
+
+        # process nested submodules
+        if not _process_submodules(opts, sm_cache_dir, sm_work_dir):
+            return False
+
+    return True
+
+def _workdir_extract(cache_dir, work_dir, revision):
+    """
+    extract a provided revision from a cache (bare) repository to a work tree
+
+    Using a provided bare repository (``cache_dir``) and a working tree
+    (``work_dir``), extract the contents of the repository using the providing
+    ``revision`` value. This call will force the working directory to match the
+    target revision. In the case where the work tree is diverged, the contents
+    will be replaced with the origin's revision.
+
+    Args:
+        cache_dir: the cache repository
+        work_dir: the working directory
+        revision: the revision
+
+    Returns:
+        ``True`` if the extraction has succeeded; ``False`` otherwise
+    """
+
     git_dir = '--git-dir=' + cache_dir
     work_tree = '--work-tree=' + work_dir
+
+    # if a revision is not provided, extract the HEAD from the cache
+    if not revision:
+        revision = GIT.extract_submodule_revision(cache_dir)
+        if not revision:
+            return False
 
     log('checking out target revision into work tree')
     if not GIT.execute([git_dir, work_tree, '-c', 'advice.detachedHead=false',
