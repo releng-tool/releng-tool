@@ -17,7 +17,7 @@ Consider the following example: a project has three packages ``module-a``,
 ``module-b`` and ``module-c`` which are C++-based. For this example, project
 ``module-b`` depends on ``module-a`` and project ``module-c`` depends on
 ``module-b``; therefore, releng-tool will process packages in the order
-``module-a -> module-b-> module-c``. In this example, the project is building
+``module-a -> module-b -> module-c``. In this example, the project is building
 until a failure is detected in package ``module-c``:
 
 .. code-block:: shell
