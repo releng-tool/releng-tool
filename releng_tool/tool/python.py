@@ -48,7 +48,7 @@ class PythonTool(RelengTool):
             version = ''
             if self.execute(['-c', "import sys; " +
                     "print('.'.join(map(str, sys.version_info[:2])))"],
-                    capture=output):
+                    capture=output, quiet=True):
                 version = ''.join(output)
                 if sys.platform == 'win32':
                     version = version.replace('.', '')
