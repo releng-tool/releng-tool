@@ -5,6 +5,7 @@ function __fish__releng_tool_has_action
         -build \
         -clean \
         -configure \
+        -distclean \
         -extract \
         -fetch \
         -install \
