@@ -118,7 +118,7 @@ extension to register custom fetching, extraction and package implementations.
    #!/usr/bin/env python
    # -*- coding: utf-8 -*-
 
-   import releng.api
+   import releng_tool.api
 
    def releng_setup(app):
        # explicit version check for releng-tool version (if needed)
