@@ -372,7 +372,7 @@ def _fetch_submodules(opts, cache_dir, revision):
         # check to make sure the submodule's path isn't pointing to a relative
         # path outside the expected cache base
         check_abs = os.path.abspath(submodule_cache_dir)
-        check_common = os.path.commonpath((submodule_cache_dir, check_abs))
+        check_common = os.path.commonprefix((submodule_cache_dir, check_abs))
         if check_abs != check_common:
             err('unable to process submodule pathed outside of bare repository')
             verbose('submodule expected base path: {}', check_common)
