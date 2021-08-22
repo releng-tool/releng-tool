@@ -90,7 +90,7 @@ value. A site can be defined as follows:
 
 .. code-block:: python
 
-   LIBFOO_SITE = 'scp+TODO'
+   LIBFOO_SITE = 'scp+[user@]host:]file'
 
 The value after the prefix is a path which will be provided to a ``scp`` call's
 [#scpcommand]_ source host value. The SCP site only supports copying a file from
