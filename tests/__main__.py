@@ -51,6 +51,8 @@ def main():
 
     if args.debug:
         buffered = False
+        if not verbosity:
+            verbosity = 1
 
     releng_log_configuration(args.debug, False, verbosity)
 
