@@ -369,13 +369,15 @@ class TestToolGit(TestSiteToolBase):
     def _git_cache(self, *args):
         return self._git(self.cache_dir, *args)
 
-    def _git_repo(self, *args, repo=None):
+    def _git_repo(self, *args, **kwargs):
+        repo = kwargs.get('repo')
         if not repo:
             repo = self.repo_dir
         return self._git(repo, *args)
 
-    def _create_commit(self, msg='test', add=False, repo=None):
-        if add:
+    def _create_commit(self, msg='test', **kwargs):
+        repo = kwargs.get('repo')
+        if kwargs.get('add'):
             self._git_repo('add', '.', repo=repo)
         self._git_repo('commit', '--allow-empty', '-m', msg, repo=repo)
         return self._git_repo('rev-parse', 'HEAD', repo=repo)

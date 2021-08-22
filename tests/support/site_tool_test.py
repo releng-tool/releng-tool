@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021 releng-tool
 
+from __future__ import unicode_literals
+from io import open
 from releng_tool.defs import GlobalAction
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
@@ -120,7 +122,8 @@ class TestSiteToolBase(unittest.TestCase):
             key: the key to use for the configuration entry
             value: the value to use for the configuration entry
         """
-        with open(self.defconfig, 'a') as file_def:
+
+        with open(self.defconfig, mode='a', encoding='utf_8') as file_def:
             file_def.write('{}{} = {}\n'.format(
                 PKG_CFG_PREFIX, key, repr(value)))
 
