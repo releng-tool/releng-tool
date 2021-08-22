@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
+from releng_tool.util.io import _execute
 from releng_tool.util.io import execute
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
@@ -62,6 +63,51 @@ class RelengTool:
             ``True`` if the execution has completed with no error; ``False`` if
             the execution has failed
         """
+
+        rv = self._execute(args=args, cwd=cwd, quiet=quiet, env=env, poll=poll,
+            capture=capture)
+        return (rv == 0)
+
+    def execute_rv(self, *args, **kwargs):
+        """
+        execute the host tool with the provided arguments (if any)
+
+        Runs the host tool described by ``args`` until completion.
+
+        Args:
+            *args (optional): arguments to add to the command
+            **cwd: working directory to use
+            **env: environment variables to include
+
+        Returns:
+            the return code of the execution request
+        """
+
+        out = []
+        rv = self._execute(list(args),
+            cwd=kwargs.get('cwd'),
+            env=kwargs.get('env'),
+            capture=out, quiet=True)
+        return rv, '\n'.join(out)
+
+    def _execute(self, args=None, cwd=None, quiet=False, env=None, poll=False,
+            capture=None):
+        """
+        execute the host tool with the provided arguments (if any)
+
+        Runs the host tool described by ``args`` until completion.
+
+        Args:
+            args (optional): the list of arguments for the tool
+            cwd (optional): working directory to use
+            quiet (optional): whether or not to suppress output
+            env (optional): environment variables to include
+            poll (optional): force polling stdin/stdout for output data
+            capture (optional): list to capture output into
+
+        Returns:
+            the return code of the execution request
+        """
         if not self.exists():
             return False
 
@@ -85,7 +131,7 @@ class RelengTool:
         if args:
             final_args.extend(args)
 
-        return execute(final_args, cwd=cwd, env=final_env, quiet=quiet,
+        return _execute(final_args, cwd=cwd, env=final_env, quiet=quiet,
             critical=False, poll=poll, capture=capture)
 
     def exists(self):
