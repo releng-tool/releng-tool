@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 releng-tool
+# Copyright 2018-2021 releng-tool
 
+from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
+import os
 import unittest
 
 class TestUtilEnv(unittest.TestCase):
@@ -27,3 +29,48 @@ class TestUtilEnv(unittest.TestCase):
         # magic values are ignored
         extend_script_env(env, {'__magic__': 4})
         self.assertEqual(len(env.keys()), 2)
+
+    def test_utilenv_env_value(self):
+        test_env_key = 'RELENG_TOOL_UNIT_TEST_KEY'
+        test_env_val = 'NEW_VALUE'
+
+        # check a (should be) empty/unset environment variable
+        value = os.environ.get(test_env_key)
+        self.assertIsNone(value)
+
+        value = env_value(test_env_key)
+        self.assertIsNone(value)
+
+        # configure an environment variable
+        value = env_value(test_env_key, test_env_val)
+        self.assertEqual(value, test_env_val)
+
+        value = env_value(test_env_key)
+        self.assertEqual(value, test_env_val)
+
+        value = os.environ.get(test_env_key)
+        self.assertEqual(value, test_env_val)
+
+        # configure an empty environment variable
+        value = env_value(test_env_key, '')
+        self.assertEqual(value, '')
+
+        value = env_value(test_env_key)
+        self.assertEqual(value, '')
+
+        value = os.environ.get(test_env_key)
+        self.assertEqual(value, '')
+
+        # remove the environment variable
+        value = env_value(test_env_key, None)
+        self.assertIsNone(value)
+
+        value = env_value(test_env_key)
+        self.assertIsNone(value)
+
+        value = os.environ.get(test_env_key)
+        self.assertIsNone(value)
+
+        # retry removing the environment variable (no-op)
+        value = env_value(test_env_key, None)
+        self.assertIsNone(value)
