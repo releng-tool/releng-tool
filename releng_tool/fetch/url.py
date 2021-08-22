@@ -76,6 +76,10 @@ def fetch(opts):
         err('    {}'.format(e))
         return None
 
+    # cleanup any download progress prints
+    if read > 0:
+        log('')
+
     log('completed download ({})', display_size(read))
     return cache_file
 
