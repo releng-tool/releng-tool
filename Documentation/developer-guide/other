@@ -193,6 +193,10 @@ listed below:
 |                          |     :members: releng_execute                      |
 |                          |     :noindex:                                     |
 +--------------------------+---------------------------------------------------+
+| ``releng_execute_rv``    | .. automodule:: releng_tool                       |
+|                          |     :members: releng_execute_rv                   |
+|                          |     :noindex:                                     |
++--------------------------+---------------------------------------------------+
 | ``releng_exists``        | .. automodule:: releng_tool                       |
 |                          |     :members: releng_exists                       |
 |                          |     :noindex:                                     |
