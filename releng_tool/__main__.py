@@ -36,6 +36,7 @@ def main():
         parser.add_argument('--development', '-D', action='store_true')
         parser.add_argument('--dl-dir')
         parser.add_argument('--help', '-h', action='store_true')
+        parser.add_argument('--help-quirks', action='store_true')
         parser.add_argument('--jobs', '-j', default=0, type=type_nonnegativeint)
         parser.add_argument('--local-sources', action='store_true')
         parser.add_argument('--nocolorout', action='store_true')
@@ -56,6 +57,9 @@ def main():
         args, unknown_args = parser.parse_known_args(known_args)
         if args.help:
             print(usage())
+            sys.exit(0)
+        if args.help_quirks:
+            print(usage_quirks())
             sys.exit(0)
 
         # force verbose messages if debugging is enabled
@@ -189,6 +193,24 @@ def usage():
  --quirk <value>           inject in quirk into this run
  -V, --verbose             show additional messages
  --version                 show the version
+"""
+
+def usage_quirks():
+    """
+    display the available quirks in this tool
+
+    Returns a string of available quirks in this tool.
+
+    Returns:
+        the quirks string
+    """
+    return """releng-tool quirks
+
+releng.cmake.disable_parallel_option   disable parallel cmake
+releng.disable_prerequisites_check     disable prerequisites check
+releng.disable_remote_configs          disable remote configurations
+releng.disable_remote_scripts          disable remote scripts
+releng.git.no_depth                    disable depth-limits for git calls
 """
 
 if __name__ == '__main__':
