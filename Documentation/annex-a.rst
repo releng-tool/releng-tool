@@ -134,7 +134,7 @@ Functions available to scripts invoked by releng-tool or importable via
    log(msg, *args)
    note(msg, *args)
    releng_copy(src, dst, quiet=False, critical=True)
-   releng_env(key, value)
+   releng_env(key, value=None)
    releng_execute(args, cwd=None, env=None, env_update=None, quiet=False, critical=True, poll=False, capture=None)
    releng_execute_rv(command, args, cwd=None, env=None, env_update=None)
    releng_exists(path, *args)
