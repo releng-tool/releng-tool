@@ -78,8 +78,11 @@ The following outlines available actions:
 |                            | the provided package name does not exist, a     |
 |                            | notification will be generated.                 |
 +----------------------------+-------------------------------------------------+
+| .. _ACTION_PKG_CLEAN:      |                                                 |
+|                            |                                                 |
 | ``<pkg>-clean``            | Cleans the build directory for package (if it   |
-|                            | exists).                                        |
+|                            | exists).  See also the |ACTION_PKG_DISTCLEAN|_  |
+|                            | action.                                         |
 +----------------------------+-------------------------------------------------+
 | ``<pkg>-configure``        | Performs the configure stage for the package.   |
 |                            | On success, the specified package stage will    |
@@ -89,6 +92,14 @@ The following outlines available actions:
 |                            | specified package. If the provided package name |
 |                            | does not exist, a notification will be          |
 |                            | generated.                                      |
++----------------------------+-------------------------------------------------+
+| .. _ACTION_PKG_DISTCLEAN:  |                                                 |
+|                            |                                                 |
+| ``<pkg>-distclean``        | Perform a pristine clean of a releng-tool       |
+|                            | package. This request not only removes the      |
+|                            | build directory but also any cached file or     |
+|                            | directory associated with the package. See also |
+|                            | the |ACTION_PKG_CLEAN|_ action.                 |
 +----------------------------+-------------------------------------------------+
 | ``<pkg>-extract``          | Performs the extraction stage for the package.  |
 |                            | On success, the specified package stage will    |
@@ -209,6 +220,8 @@ The following outlines available actions:
 .. |ACTION_CLEAN| replace:: ``clean``
 .. |ACTION_DISTCLEAN| replace:: ``distclean``
 .. |ACTION_MRPROPER| replace:: ``mrproper``
+.. |ACTION_PKG_CLEAN| replace:: ``<pkg>-clean``
+.. |ACTION_PKG_DISTCLEAN| replace:: ``<pkg>-distclean``
 
 The following outlines available options:
 
