@@ -22,7 +22,7 @@ __version__ = '0.8.0.dev0'
 
 # flake8: noqa
 from os.path import join as releng_join
-from releng_tool.util.env import set_env_value as releng_env
+from releng_tool.util.env import env_value as releng_env
 from releng_tool.util.io import ensure_dir_exists as releng_mkdir
 from releng_tool.util.io import execute as releng_execute
 from releng_tool.util.io import execute_rv as releng_execute_rv

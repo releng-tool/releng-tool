@@ -30,7 +30,7 @@ from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
 from releng_tool.util.env import extend_script_env
-from releng_tool.util.env import set_env_value
+from releng_tool.util.env import env_value
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
@@ -594,7 +594,7 @@ of the releng process:
         script_env['log'] = log
         script_env['note'] = note
         script_env['releng_copy'] = path_copy
-        script_env['releng_env'] = set_env_value
+        script_env['releng_env'] = env_value
         script_env['releng_execute'] = execute
         script_env['releng_execute_rv'] = execute_rv
         script_env['releng_exists'] = path_exists

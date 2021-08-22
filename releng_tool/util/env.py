@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2021 releng-tool
 
 import os
 import types
@@ -47,22 +47,44 @@ def extend_script_env(env, extra):
     env.update(extra_copy)
     return env
 
-def set_env_value(key, value):
-    """
-    helper to easily configure an environment variable
+# unique default helper for env_value
+__ENV_VALUE_DEFAULT = object()
 
-    Provides a caller an simple method to configure an environment variable for
-    the current context. This call is the same as if one directly added a
-    key-value into ``os.environ``.
+def env_value(key, value=__ENV_VALUE_DEFAULT):
+    """
+    helper to easily fetch or configure an environment variable
+
+    Provides a caller a simple method to fetch or configure an environment
+    variable for the current context. This call is the same as if one directly
+    fetched from or managed a key-value with ``os.environ``. If ``value`` is not
+    provided, the environment variable's value (if set) will be returned. If
+    ``value`` is set to a value of ``None``, any set environment variable will
+    be removed.
 
     An example when using in the context of script helpers is as follows:
 
     .. code-block:: python
 
+        # get an environment variable
+        value = releng_env('KEY')
+
+        # set an environment variable
         releng_env('KEY', 'VALUE')
 
     Args:
-        key: the environment key to set the value on
-        value: the environment value to set
+        key: the environment key
+        value (optional): the environment value to set
+
+    Returns:
+        the value of the environment variable
     """
-    os.environ[key] = value
+    if value is __ENV_VALUE_DEFAULT:
+        return os.environ.get(key)
+
+    if value is None:
+        if key in os.environ:
+            del os.environ[key]
+    else:
+        os.environ[key] = value
+
+    return value
