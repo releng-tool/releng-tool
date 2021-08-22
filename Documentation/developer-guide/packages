@@ -389,6 +389,24 @@ fetching.
 
    LIBFOO_GIT_REFSPECS = ['pull']
 
+LIBFOO_GIT_SUBMODULES
+^^^^^^^^^^^^^^^^^^^^^
+
+Flag value to indicate whether or not a package's Git submodules should be
+fetched/extracted during a package's own fetch/extraction stages. By default,
+submodules are not fetched. Ideally, any dependencies for a package are
+recommended to be defined in their own individual package; however, this may not
+be ideal for all environments. When configured, submodules will be cached in the
+same fashion as other Git-based packages. Note that submodule caching is
+specific to the repository being processed (i.e. they cannot be "shared" between
+other packages). If multiple packages have the same dependency defined through a
+submodule, it is recommended to create a new package and reference its contents
+instead.
+
+.. code-block:: python
+
+   LIBFOO_GIT_SUBMODULES = True
+
 LIBFOO_INTERNAL
 ^^^^^^^^^^^^^^^
 .. |LIBFOO_INTERNAL| replace:: ``LIBFOO_INTERNAL``

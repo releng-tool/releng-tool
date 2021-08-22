@@ -101,6 +101,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_GIT_CONFIG = {'FOO': 'BAR'}
    LIBFOO_GIT_DEPTH = int # >= 0
    LIBFOO_GIT_REFSPECS = ['<refspec>'] # e.g. pull
+   LIBFOO_GIT_SUBMODULES = bool
    LIBFOO_INSTALL_DEFS = {'FOO': 'BAR'}
    LIBFOO_INSTALL_ENV = {'FOO': 'BAR'}
    LIBFOO_INSTALL_OPTS = {'--option': 'value'} or ['--option', 'value']
