@@ -75,13 +75,15 @@ def _process_submodules(opts, cache_dir, work_dir):
         if not sec_name.startswith('submodule'):
             continue
 
-        sec = cfg[sec_name]
-        if 'path' not in sec or 'url' not in sec:
+        if not cfg.has_option(sec_name, 'path') or \
+                not cfg.has_option(sec_name, 'url'):
             debug('submodule section missing path/url')
             continue
 
-        submodule_path = sec['path']
-        submodule_revision = sec.get('branch', None)
+        submodule_path = cfg.get(sec_name, 'path')
+        submodule_revision = None
+        if cfg.has_option(sec_name, 'branch'):
+            submodule_revision = cfg.get(sec_name, 'branch')
         log('extracing submodule ({}): {}', opts.name, submodule_path)
         debug('submodule revision: {}',
             submodule_revision if submodule_revision else '(none)')

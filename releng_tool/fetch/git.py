@@ -351,14 +351,16 @@ def _fetch_submodules(opts, cache_dir, revision):
         if not sec_name.startswith('submodule'):
             continue
 
-        sec = cfg[sec_name]
-        if 'path' not in sec or 'url' not in sec:
+        if not cfg.has_option(sec_name, 'path') or \
+                not cfg.has_option(sec_name, 'url'):
             debug('submodule section missing path/url')
             continue
 
-        submodule_path = sec['path']
-        submodule_revision = sec.get('branch', None)
-        submodule_url = sec['url']
+        submodule_path = cfg.get(sec_name, 'path')
+        submodule_revision = None
+        if cfg.has_option(sec_name, 'branch'):
+            submodule_revision = cfg.get(sec_name, 'branch')
+        submodule_url = cfg.get(sec_name, 'url')
         verbose('detected submodule: {}', submodule_path)
         debug('submodule revision: {}',
             submodule_revision if submodule_revision else '(none)')

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
+from io import open
 from releng_tool.tool import RelengTool
 from releng_tool.util.log import err
 
@@ -8,6 +9,11 @@ try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 #: executable used to run git commands
 GIT_COMMAND = 'git'
@@ -81,13 +87,10 @@ class GitTool(RelengTool):
             the parser; ``None`` when a parsing error is detected
         """
 
-        cfg = configparser.ConfigParser(allow_no_value=True)
-        try:
-            cfg.read(target)
-        except configparser.Error:
-            return None
+        with open(target, mode='r', encoding='utf_8') as f:
+            data = '\n'.join(f.readlines())
 
-        return cfg
+        return self.parse_cfg_str(data)
 
     def parse_cfg_str(self, value):
         """
@@ -106,7 +109,11 @@ class GitTool(RelengTool):
 
         cfg = configparser.ConfigParser(allow_no_value=True)
         try:
-            cfg.read_string(value)
+            # strip whitespaces from lines for python 2.7
+            value = '\n'.join([line.strip() for line in value.splitlines()])
+
+            fp = StringIO(value)
+            cfg.readfp(fp)
         except configparser.Error:
             return None
 
