@@ -191,6 +191,14 @@ class RelengEngine:
                 if not prerequisites.check():
                     return False
 
+            # track if this action is "pre-configuration", where a package
+            # dependency chain can be ignored
+            requested_preconfig = pa in [
+                PkgAction.EXTRACT,
+                PkgAction.FETCH,
+                PkgAction.PATCH,
+            ]
+
             # ensure all package sources are acquired first
             requested_fetch = (
                 gaction == GlobalAction.FETCH or pa == PkgAction.FETCH)
@@ -198,8 +206,9 @@ class RelengEngine:
                 if not self._stage_init(pkg):
                     return False
 
-                # if this is a package-specific fetch, only fetch this one
-                if pa == PkgAction.FETCH and pkg.name != opts.target_action:
+                # if this is a package-specific pre-configure action, only
+                # ensure a fetched this specific package
+                if requested_preconfig and pkg.name != opts.target_action:
                     continue
 
                 # none/local-vcs-type packages do not need to fetch
@@ -237,6 +246,11 @@ class RelengEngine:
 
                 pipeline = RelengPackagePipeline(self, opts, script_env)
                 for pkg in pkgs:
+                    # if this is a package-specific pre-configure action, only
+                    # process the specific action
+                    if requested_preconfig and pkg.name != opts.target_action:
+                        continue
+
                     verbose('processing package: {}'.format(pkg.name))
                     if not pipeline.process(pkg):
                         break
