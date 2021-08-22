@@ -190,6 +190,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
             debug('(wd) {}'.format(cwd if cwd else os.getcwd()))
             cmd_str = _cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
+            sys.stdout.flush()
 
         try:
             # check if this execution should poll (for carriage returns and new
