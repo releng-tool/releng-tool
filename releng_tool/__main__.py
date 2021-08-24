@@ -167,6 +167,7 @@ def usage():
  <pkg>-extract             perform extract stage for the package
  <pkg>-fetch               perform fetch stage for the package
  <pkg>-install             perform install stage for the package
+ <pkg>-license             generate license information for the package
  <pkg>-patch               perform patch stage for the package
  <pkg>-rebuild             force a re-build of a specific package
  <pkg>-rebuild-only        force a re-build of a specific package and stop

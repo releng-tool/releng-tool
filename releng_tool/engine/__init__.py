@@ -207,6 +207,7 @@ class RelengEngine:
             requested_preconfig = pa in [
                 PkgAction.EXTRACT,
                 PkgAction.FETCH,
+                PkgAction.LICENSE,
                 PkgAction.PATCH,
             ]
 
@@ -281,7 +282,8 @@ has failed. Ensure the following path is accessible for this user:
         is_action = (gaction or pa or opts.target_action is not None)
 
         # perform license generation
-        if gaction == GlobalAction.LICENSES or not is_action:
+        if gaction == GlobalAction.LICENSES or pa == PkgAction.LICENSE \
+                or not is_action:
             note('generating license information...')
 
             if not self._perform_license_generation(license_files):

@@ -108,6 +108,7 @@ class PkgAction(Enum):
         EXTRACT: process a package till end of the extraction stage
         FETCH: process a package till end of the fetch stage
         INSTALL: process a package till end of the install stage
+        LICENSE: generate license information for a package
         PATCH: process a package till end of the patch stage
         REBUILD: perform a re-build of a package
         REBUILD_ONLY: perform a re-build of a package and stop
@@ -122,6 +123,7 @@ class PkgAction(Enum):
     EXTRACT = 'extract'
     FETCH = 'fetch'
     INSTALL = 'install'
+    LICENSE = 'license'
     PATCH = 'patch'
     REBUILD = 'rebuild'
     REBUILD_ONLY = 'rebuild_only'

@@ -143,6 +143,8 @@ class RelengPackagePipeline:
 
         if gaction == GlobalAction.LICENSES:
             return True
+        if paction == PkgAction.LICENSE and pkg.name == target:
+            return False
 
         # load any late-stage configuration options from the remote
         # sources
