@@ -122,6 +122,13 @@ The following outlines available actions:
 |                            | provided package name does not exist, a         |
 |                            | notification will be generated.                 |
 +----------------------------+-------------------------------------------------+
+| ``<pkg>-license``          | A request to generate the license information   |
+|                            | for a specific package in a project. Note that  |
+|                            | license information requires acquiring license  |
+|                            | documents from the package itself. Therefore,   |
+|                            | the package will be fetched/extracted if not    |
+|                            | already done.                                   |
++----------------------------+-------------------------------------------------+
 | ``<pkg>-patch``            | Performs the patch stage for the package. On    |
 |                            | success, the specified package stage will have  |
 |                            | completed its patch stage. If the provided      |
