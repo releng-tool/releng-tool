@@ -16,6 +16,11 @@ except ImportError:
 
 # optional imports
 try:
+    # disable xwindows backend (as it is not required and may cause issue with
+    # systems without a display configured)
+    import matplotlib
+    matplotlib.use('Agg')
+
     import matplotlib.pyplot as plt
     import numpy
     has_matplotlib = True
