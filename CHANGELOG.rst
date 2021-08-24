@@ -8,10 +8,14 @@ development
   revision
 - introduce ``LIBFOO_GIT_SUBMODULES`` for package git-specific configurations
 - introduce ``releng_execute_rv`` helper script function
+- introduce statistic tracking (stage durations) which generate to into the
+  output folder after execution
 - introduce support for package-specific distclean
+- introduce support for package-specific license processing
 - rework ``LIBTOOL_GIT_REFSPECS`` to provide more control over custom revisions
   that can be fixed (i.e. no longer fixed on ``<target>/*/head``; instead, a
   configured value-wildcard string should be used)
+- support faster git fetching
 - support pruning any remote-tracked references in a git-cached project when a
   forced fetch request is made
 - package-specific extraction/patching no longer requires dependency processing
