@@ -157,15 +157,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
         '--progress',
         '--prune',
         'origin',
-        '+refs/heads/*:refs/remotes/origin/*',
-        '+refs/tags/*:refs/tags/*',
     ]
-
-    # allow fetching addition references if configured (e.g. pull requests)
-    if refspecs:
-        for ref in refspecs:
-            prepared_fetch_cmd.append(
-                '+refs/{}:refs/remotes/origin/{}'.format(ref, ref))
 
     # limit fetch depth
     target_depth = 1
@@ -173,17 +165,66 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
         target_depth = opts._git_depth
     limited_fetch = (target_depth and 'releng.git.no_depth' not in opts._quirks)
 
+    depth_cmds = [
+        '--depth',
+        str(target_depth),
+    ]
+
+    # if a revision is provided, first attempt to do a revision-specific fetch
+    quick_fetch = 'releng.git.no_quick_fetch' not in opts._quirks
+    if revision and quick_fetch:
+        ls_cmd = [
+            'ls-remote',
+            'origin',
+        ]
+        debug('checking if tag exists on remote')
+        if GIT.execute(ls_cmd + ['--tags', revision], cwd=cache_dir):
+            debug('attempting a tag reference fetch operation')
+            fetch_cmd = list(prepared_fetch_cmd)
+            fetch_cmd.append('+refs/tags/{0}:refs/tags/{0}'.format(revision))
+            if limited_fetch:
+                fetch_cmd.extend(depth_cmds)
+
+            if GIT.execute(fetch_cmd, cwd=cache_dir):
+                debug('found the reference')
+                return True
+
+        debug('checking if reference exists on remote')
+        if GIT.execute(ls_cmd + ['--heads', revision], cwd=cache_dir):
+            debug('attempting a head reference fetch operation')
+            fetch_cmd = list(prepared_fetch_cmd)
+            fetch_cmd.append(
+                '+refs/heads/{0}:refs/remotes/origin/{0}'.format(revision))
+            if limited_fetch:
+                fetch_cmd.extend(depth_cmds)
+
+            if GIT.execute(fetch_cmd, cwd=cache_dir):
+                debug('found the reference')
+                return True
+
+    # fetch standard (and configured) refspecs
+    std_refspecs = [
+        '+refs/heads/*:refs/remotes/origin/*',
+        '+refs/tags/*:refs/tags/*',
+    ]
+    prepared_fetch_cmd.extend(std_refspecs)
+
+    # allow fetching addition references if configured (e.g. pull requests)
+    if refspecs:
+        for ref in refspecs:
+            prepared_fetch_cmd.append(
+                '+refs/{0}:refs/remotes/origin/{0}'.format(ref))
+
     fetch_cmd = list(prepared_fetch_cmd)
     if limited_fetch:
-        fetch_cmd.append('--depth')
-        fetch_cmd.append(str(target_depth))
+        fetch_cmd.extend(depth_cmds)
 
     if not GIT.execute(fetch_cmd, cwd=cache_dir):
         err('unable to fetch branches/tags from remote repository')
         return False
 
     if revision:
-        log('verifying target revision exists')
+        verbose('verifying target revision exists')
         exists_state = revision_exists(git_dir, revision)
         if exists_state == GitExistsType.EXISTS:
             pass
