@@ -163,3 +163,4 @@ Quirk options used by releng-tool:
    releng.disable_remote_configs
    releng.disable_remote_scripts
    releng.git.no_depth
+   releng.git.no_quick_fetch
