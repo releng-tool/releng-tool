@@ -29,6 +29,7 @@ from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
+from releng_tool.stats import RelengStats
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.env import env_value
 from releng_tool.util.file_flags import FileFlag
@@ -81,6 +82,7 @@ class RelengEngine:
         self.registry = RelengRegistry()
         self.opts = opts
         self.pkgman = RelengPackageManager(opts, self.registry)
+        self.stats = RelengStats(opts)
 
     def run(self):
         """
@@ -105,6 +107,9 @@ class RelengEngine:
             'releng_args': opts.forward_args,
             'releng_version': releng_version,
         }
+
+        verbose('loading statistics...')
+        self.stats.load()
 
         # prepare script environment to make helpers available to configuration
         # script(s)
@@ -234,7 +239,10 @@ class RelengEngine:
                     if check_file_flag(flag) == FileFlag.EXISTS:
                         continue
 
-                if not fetch_stage(self, pkg, ignore_cache=requested_fetch):
+                self.stats.track_duration_start(pkg.name, 'fetch')
+                fetched = fetch_stage(self, pkg, ignore_cache=requested_fetch)
+                self.stats.track_duration_end(pkg.name, 'fetch')
+                if not fetched:
                     return False
 
             # prepend project's host directory to path
@@ -298,6 +306,9 @@ has failed. Ensure the following path is accessible for this user:
 
             self.end_time = datetime.now().replace(microsecond=0)
             success('completed ({})'.format(self.end_time - self.start_time))
+
+        # attempt to generate a report at the end of a run
+        self.stats.generate()
 
         return True
 

@@ -56,6 +56,11 @@ setup(
             'releng-tool = releng_tool.__main__:main',
         ],
     },
+    extras_require={
+        'statistics': [
+            'matplotlib',
+        ],
+    },
     license='BSD-2-Clause',
     long_description=read('README.rst'),
     name='releng-tool',

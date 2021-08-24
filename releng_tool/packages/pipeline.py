@@ -91,6 +91,7 @@ class RelengPackagePipeline:
         # extracting
         flag = pkg._ff_extract
         if check_file_flag(flag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'extract')
             # none/local-vcs-type packages do not need to fetch
             if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                 pass
@@ -101,6 +102,7 @@ class RelengPackagePipeline:
             # exists as well (for file flags and other content)
             if not ensure_dir_exists(pkg.build_output_dir):
                 raise RelengToolExtractionStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'extract')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if gaction == GlobalAction.EXTRACT:
@@ -111,11 +113,13 @@ class RelengPackagePipeline:
         # patching
         flag = pkg._ff_patch
         if check_file_flag(flag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'patch')
             # local-vcs-type packages do not need to patch
             if pkg.vcs_type is VcsType.LOCAL:
                 pass
             elif not patch_stage(self.engine, pkg, pkg_env):
                 raise RelengToolPatchStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'patch')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if gaction == GlobalAction.PATCH:
@@ -158,16 +162,20 @@ class RelengPackagePipeline:
         # bootstrapping
         flag = pkg._ff_bootstrap
         if check_file_flag(flag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'boot')
             if not bootstrap_stage(self.engine, pkg, pkg_env):
                 raise RelengToolBootstrapStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'boot')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
 
         # configuring
         flag = pkg._ff_configure
         if check_file_flag(flag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'configure')
             if not configure_stage(self.engine, pkg, pkg_env):
                 raise RelengToolConfigurationStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'configure')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
@@ -177,8 +185,10 @@ class RelengPackagePipeline:
         # building
         flag = pkg._ff_build
         if check_file_flag(flag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'build')
             if not build_stage(self.engine, pkg, pkg_env):
                 raise RelengToolBuildStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'build')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
@@ -188,8 +198,10 @@ class RelengPackagePipeline:
         # installing
         flag = pkg._ff_install
         if check_file_flag(flag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'install')
             if not install_stage(self.engine, pkg, pkg_env):
                 raise RelengToolInstallStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'install')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         # (note: re-install requests will re-invoke package-specific
@@ -198,8 +210,10 @@ class RelengPackagePipeline:
         # package-specific post-processing
         flag = pkg._ff_post
         if check_file_flag(flag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'post')
             if not post_stage(self.engine, pkg, pkg_env):
                 raise RelengToolPostStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'post')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:
                 return False
         if paction in (
