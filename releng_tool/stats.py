@@ -181,6 +181,25 @@ class RelengStats():
             categories.update(pkg_data.keys())
         categories = sorted(categories)
 
+        ordered_categories = [
+            'boot',
+            'fetch',
+            'extract',
+            'patch',
+            'configure',
+            'build',
+            'install',
+            'post',
+        ]
+
+        for ordered_category in ordered_categories:
+            if ordered_category not in categories:
+                ordered_categories.remove(ordered_category)
+        for category in categories:
+            if category not in ordered_categories:
+                ordered_categories.append(category)
+        categories = ordered_categories
+
         # duration statistics to csv
         verbose('generating duration statistics (csv)...')
         dur_csv = os.path.join(self.out_dir, 'durations.csv')
