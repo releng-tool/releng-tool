@@ -140,10 +140,13 @@ class RelengPackagePipeline:
                 return False
 
         if pkg.license_files:
-            self.license_files[pkg.name] = []
+            self.license_files[pkg.name] = {
+                'files': [],
+                'version': pkg.version,
+            }
             for file in pkg.license_files:
                 file = os.path.join(pkg.build_dir, file)
-                self.license_files[pkg.name].append(file)
+                self.license_files[pkg.name]['files'].append(file)
 
         if gaction == GlobalAction.LICENSES:
             return True

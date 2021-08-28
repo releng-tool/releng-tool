@@ -34,7 +34,7 @@ class TestPkgPipelineLicenses(unittest.TestCase):
                     self.assertTrue(pkg in pipeline.license_files)
 
                     # verify we have expected license counts
-                    licenses = pipeline.license_files[pkg]
+                    licenses = pipeline.license_files[pkg]['files']
                     self.assertEqual(len(licenses), expected)
 
                     # verify that the license reference maps to a real file

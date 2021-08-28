@@ -469,14 +469,16 @@ of the releng process:
 """.format(license_header))
 
                 # output license header
-                for key, val in sorted(license_files.items()):
+                for license_name, license_data in sorted(license_files.items()):
+                    license_files = license_data['files']
+                    license_version = license_data['version']
                     dst.write("""
-{}
+{}-{}
 --------------------------------------------------------------------------------
-""".format(key))
-                    for pkg_license_file in sorted(val):
+""".format(license_name, license_version))
+                    for pkg_license_file in sorted(license_files):
                         verbose('writing license file ({}): {}'.format(
-                            key, pkg_license_file))
+                            license_name, pkg_license_file))
                         with open(pkg_license_file, 'r') as f:
                             copyfileobj(f, dst)
                         dst.write('')
