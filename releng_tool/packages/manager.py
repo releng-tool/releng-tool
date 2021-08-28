@@ -438,6 +438,8 @@ class RelengPackageManager:
                 elif site_lc.startswith('cvs+'):
                     pkg_site = pkg_site[4:]
                     pkg_vcs_type = VcsType.CVS
+                elif site_lc.startswith(':pserver:'):
+                    pkg_vcs_type = VcsType.CVS
                 elif site_lc.startswith('git+'):
                     pkg_site = pkg_site[4:]
                     pkg_vcs_type = VcsType.GIT
