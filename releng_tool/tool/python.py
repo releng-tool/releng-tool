@@ -2,6 +2,9 @@
 # Copyright 2018-2021 releng-tool
 
 from releng_tool.tool import RelengTool
+from releng_tool.util.io import execute
+from releng_tool.util.log import debug
+from releng_tool.util.win32 import find_win32_python_interpreter
 import os
 import sys
 
@@ -20,6 +23,50 @@ class PythonTool(RelengTool):
 
     Provides addition helper methods for Python-based tool interaction.
     """
+
+    def exists(self):
+        """
+        return whether or not the host tool exists
+
+        Returns whether or not the tool is available on the host for use.
+
+        Returns:
+            ``True``, if the tool exists; ``False`` otherwise
+        """
+        if self.tool in RelengTool.detected:
+            return RelengTool.detected[self.tool]
+
+        found = True
+        tool = self.tool
+
+        if execute([tool] + self.exists_args, quiet=True, critical=False):
+            found = True
+        # if windows and a non-path entry, try to find the interpreter on the
+        # local system
+        elif sys.platform == 'win32' and os.path.basename(tool) == tool:
+            debug('{} tool not available in path; '
+                  'attempting to search the system...'.format(tool))
+            alt_tool = find_win32_python_interpreter(tool)
+            if alt_tool:
+                debug('{} tool to be replaced by: {}'.format(tool, alt_tool))
+
+                if execute([alt_tool] + self.exists_args, quiet=True,
+                        critical=False):
+                    found = True
+
+                    # adjust the tool for this instance to the newly detected
+                    # interpreter path
+                    tool = alt_tool
+                    self.tool = tool
+
+        if found:
+            debug('{} tool is detected on this system'.format(tool))
+            RelengTool.detected[tool] = True
+        else:
+            debug('{} tool is not detected on this system'.format(tool))
+            RelengTool.detected[tool] = False
+
+        return RelengTool.detected[tool]
 
     def path(self, sysroot=None, prefix=None):
         """
