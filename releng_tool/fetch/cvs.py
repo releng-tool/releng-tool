@@ -61,6 +61,11 @@ module to checkout. For example:
         err('unable to checkout module')
         return None
 
+    cvs_module_dir = os.path.join(work_dir, cache_stem)
+    if not os.path.exists(cvs_module_dir):
+        err('no sources available for the provided revision')
+        return None
+
     log('caching sources')
     def cvs_filter(info):
         if info.name.endswith('CVS'):
@@ -71,7 +76,6 @@ module to checkout. For example:
     if not ensure_dir_exists(cache_dir):
         return None
 
-    cvs_module_dir = os.path.join(work_dir, cache_stem)
     with tarfile.open(cache_file, 'w:gz') as tar:
         tar.add(cvs_module_dir, arcname=cache_stem, filter=cvs_filter)
 
