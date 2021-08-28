@@ -1,6 +1,7 @@
 development
 -----------
 
+- allow dvcs packages to share caches (to minimize space/time fetching)
 - fixed an issue where tools/``releng_execute`` requests would fail on python
   2.7 with unicode-defined environment variables
 - fixed an issue where a diverged revision in git would incorrectly populate a
@@ -15,6 +16,7 @@ development
 - rework ``LIBTOOL_GIT_REFSPECS`` to provide more control over custom revisions
   that can be fixed (i.e. no longer fixed on ``<target>/*/head``; instead, a
   configured value-wildcard string should be used)
+- support auto-detecting python interpreter path overrides in windows
 - support faster git fetching
 - support pruning any remote-tracked references in a git-cached project when a
   forced fetch request is made
