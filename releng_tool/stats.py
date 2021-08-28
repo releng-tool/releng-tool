@@ -228,56 +228,67 @@ class RelengStats():
         # duration statistics to plot (if available)
         if has_matplotlib:
             verbose('generating duration statistics (pdf)...')
-            fig_pkgs, ax_pkgs = plt.subplots()
-            fig_total, ax_total = plt.subplots()
+
+            BAR_HEIGHT = 0.4
+            EXTRA_HEIGHT = 1
+            FIG_WIDTH = 10
+            fig_height_pkgs = (BAR_HEIGHT + EXTRA_HEIGHT) * len(pkgs)
+            fig_height_total = (BAR_HEIGHT + EXTRA_HEIGHT) * (len(pkgs) + 1)
+
+            figsize_pkgs = (FIG_WIDTH, fig_height_pkgs)
+            figsize_total = (FIG_WIDTH, fig_height_total)
+
+            fig_pkgs, ax_pkgs = plt.subplots(figsize=figsize_pkgs)
+            fig_total, ax_total = plt.subplots(figsize=figsize_total)
             axs = [ax_pkgs, ax_total]
             figs = [fig_pkgs, fig_total]
-            BAR_WIDTH = 0.3
 
+            pkgs.reverse()
             pkgs_total = list(pkgs)
-            pkgs_total.append('total')
+            pkgs_total.insert(0, 'total')
 
             offset = [0] * len(pkgs)
             offset_total = [0] * len(pkgs_total)
             for category in categories:
-                height = []
-                height_total = []
+                width = []
+                width_total = []
                 total = 0
+
                 for pkg in pkgs:
                     if category in durations[pkg]:
                         duration = durations[pkg][category]
-                        height.append(duration)
-                        height_total.append(duration)
+                        width.append(duration)
+                        width_total.append(duration)
                         total += duration
                     else:
-                        height.append(0)
-                        height_total.append(0)
-                height_total.append(total)
+                        width.append(0)
+                        width_total.append(0)
+                width_total.insert(0, total)
 
-                ax_pkgs.bar(pkgs, height, width=BAR_WIDTH,
-                    bottom=offset, label=category)
-                ax_total.bar(pkgs_total, height_total, width=BAR_WIDTH,
-                    bottom=offset_total, label=category)
-                offset = numpy.add(offset, height)
-                offset_total = numpy.add(offset_total, height_total)
+                ax_pkgs.barh(pkgs, width, height=BAR_HEIGHT,
+                    left=offset, label=category)
+                ax_total.barh(pkgs_total, width_total, height=BAR_HEIGHT,
+                    left=offset_total, label=category)
+                offset = numpy.add(offset, width)
+                offset_total = numpy.add(offset_total, width_total)
 
-            # provide some spacing near the top
-            ylim = int(math.ceil(max(offset) / 10.)) * 10
-            ax_pkgs.set_ylim([0, ylim])
+            # provide some spacing near the right
+            xlim = int(math.ceil(max(offset) / 10.)) * 10
+            if xlim - max(offset) < 10:
+                xlim += 10
+            ax_pkgs.set_xlim([0, xlim])
 
-            ylim_total = int(math.ceil(max(offset_total) / 10.)) * 10
-            ax_total.set_ylim([0, ylim_total])
+            xlim_total = int(math.ceil(max(offset_total) / 10.)) * 10
+            if xlim_total - max(offset_total) < 10:
+                xlim_total += 10
+            ax_total.set_xlim([0, xlim_total])
 
             # labels
             for ax in axs:
-                ax.set_ylabel('Duration (seconds)')
                 ax.set_title('Package Stage Durations')
+                ax.set_xlabel('Duration (seconds)')
                 ax.legend()
-
-            # rotate x-labels or package names may overlap
-            for ax in axs:
-                for tick in ax.get_xticklabels():
-                    tick.set_rotation(90)
+                ax.grid(axis='x', linestyle=':', linewidth=0.4)
 
             # ensure rotated labels state in render area
             for fig in figs:
