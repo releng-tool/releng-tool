@@ -43,6 +43,7 @@ from releng_tool.defs import RPK_VCS_TYPE
 from releng_tool.defs import RPK_VERSION
 from releng_tool.defs import VcsType
 from releng_tool.packages import PkgKeyType
+from releng_tool.packages import pkg_cache_key
 from releng_tool.packages import pkg_key
 from releng_tool.packages.exceptions import RelengToolConflictingConfiguration
 from releng_tool.packages.exceptions import RelengToolConflictingLocalSrcsPath
@@ -59,6 +60,7 @@ from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
 from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
 from releng_tool.util.env import extend_script_env
+from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import opt_file
 from releng_tool.util.io import run_script
@@ -71,6 +73,7 @@ from releng_tool.util.string import interpret_dictionary_strings
 from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from releng_tool.util.string import interpret_zero_to_one_strings
+import pickle
 import os
 import traceback
 
@@ -106,7 +109,12 @@ class RelengPackageManager:
         self.opts = opts
         self.registry = registry
         self.script_env = {}
+        self._dvcs_cache = {}
+        self._dvcs_cache_fname = os.path.join(opts.cache_dir, '.dvcsdb')
         self._key_types = {}
+
+        # load any cached dvcs information
+        self._load_dvcs_cache()
 
         # register expected types for each configuration
         self._register_conf(RPK_AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL)
@@ -504,13 +512,20 @@ class RelengPackageManager:
                 'vcs_type': pkg_vcs_type,
             })
 
+        # list of support dvcs types
+        SUPPORTED_DVCS = [
+            VcsType.GIT,
+            VcsType.HG,
+        ]
+        is_pkg_dvcs = (pkg_vcs_type in SUPPORTED_DVCS)
+
         # find possible extension for a cache file
         #
         # non-dvcs's will be always gzip-tar'ed.
         if pkg_vcs_type in (VcsType.BZR, VcsType.CVS, VcsType.SVN):
             cache_ext = 'tgz'
         # dvcs's will not have an extension type
-        elif pkg_vcs_type in (VcsType.GIT, VcsType.HG):
+        elif is_pkg_dvcs:
             cache_ext = None
         # non-vcs type does not have an extension
         elif pkg_vcs_type in (VcsType.LOCAL, VcsType.NONE):
@@ -569,12 +584,52 @@ class RelengPackageManager:
             pkg_build_output_dir = os.path.join(
                 pkg_build_output_dir, 'releng-output')
 
+        # determine the package directory for this package
+        #
+        # Typically, a package's "cache directory" will be stored in the output
+        # folder's "cache/<pkg-name>" path. However, having package-name driven
+        # cache folder targets does not provide an easy way to manage sharing
+        # caches between projects if they share the same content (either the
+        # same site or sharing submodules). Cache targets for packages will be
+        # stored in a database and can be used here to decide if a package's
+        # cache will actually be stored in a different container.
+        pkg_cache_dir = os.path.join(opts.cache_dir, name)
+        if is_pkg_dvcs:
+            ckey = pkg_cache_key(pkg_site)
+
+            pkg_cache_dirname = name
+
+            # if the default cache directory exists, always prioritize it (and
+            # force update the cache location)
+            if os.path.exists(pkg_cache_dir):
+                self._dvcs_cache[name] = name
+            # if the cache content is stored in another container, use it
+            elif ckey in self._dvcs_cache:
+                pkg_cache_dirname = self._dvcs_cache[ckey]
+                verbose('alternative cache path for package: {} -> {}'.format(
+                    name, pkg_cache_dirname))
+
+            # track ckey entry to point to our cache container
+            #
+            # This package's "ckey" will be used to cache the target folder
+            # being used for this package, so other packages with matching site
+            # values could use it. In the rare case that the "ckey" entry
+            # already exists but is pointing to another folder that our target
+            # one, leave it as is (assume ownership of key is managed by another
+            # package).
+            if ckey not in self._dvcs_cache:
+                self._dvcs_cache[ckey] = pkg_cache_dirname
+
+            # adjust the cache directory and save any new cache changes
+            pkg_cache_dir = os.path.join(opts.cache_dir, pkg_cache_dirname)
+            self._save_dvcs_cache()
+
         # (commons)
         pkg = RelengPackage(name, pkg_version)
         pkg.build_dir = pkg_build_dir
         pkg.build_output_dir = pkg_build_output_dir
         pkg.build_subdir = pkg_build_subdir
-        pkg.cache_dir = os.path.join(opts.cache_dir, name)
+        pkg.cache_dir = pkg_cache_dir
         pkg.cache_file = pkg_cache_file
         pkg.def_dir = pkg_def_dir
         pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
@@ -905,6 +960,45 @@ class RelengPackageManager:
                 raise_kv_exception('<unsupported key-value>')
 
         return value
+
+    def _load_dvcs_cache(self):
+        """
+        load any persisted dvcs cache information
+
+        DVCS can be cached and shared over multiple projects. The following
+        loads any cached DVCS database stored in the project's output folder
+        where may hint the folder name for a project's cache.
+        """
+
+        if os.path.exists(self._dvcs_cache_fname):
+            try:
+                with open(self._dvcs_cache_fname, 'rb') as f:
+                    self._dvcs_cache = pickle.load(f)
+                debug('loaded dvcs cache database')
+            except IOError:
+                verbose('failed to load dvcs cache database (io error)')
+            except ValueError:
+                verbose('failed to load dvcs cache database (pickle error)')
+
+    def _save_dvcs_cache(self):
+        """
+        save dvcs cache information
+
+        Will save any DVCS cache information which future runs of releng-tool
+        can be used to hint where package cache data is stored.
+        """
+
+        if not ensure_dir_exists(self.opts.cache_dir):
+            verbose('unable to generate output directory for dvcs cache')
+            return None
+
+        try:
+            with open(self._dvcs_cache_fname, 'wb') as f:
+                pickle.dump(self._dvcs_cache, f,
+                    protocol=2) # 2 for py2/py3 support
+            debug('saved dvcs cache')
+        except IOError:
+            verbose('failed to save dvcs cache')
 
     def _register_conf(self, key, type_):
         """

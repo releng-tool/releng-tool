@@ -2,6 +2,7 @@
 # Copyright 2018-2021 releng-tool
 
 from releng_tool.util.enum import Enum
+import hashlib
 
 class PkgKeyType(Enum):
     """
@@ -28,6 +29,18 @@ class PkgKeyType(Enum):
     STRS = 'strs'
     INT_NONNEGATIVE = 'int_nonnegative'
     INT_POSITIVE = 'int_positive'
+
+def pkg_cache_key(site):
+    """
+    generate a cache key for a provided package's site
+
+    Package's may share caching data if their sites match. This call returns a
+    calculated "cache key" for a provided cache site.
+
+    Returns:
+        the cache key
+    """
+    return hashlib.sha1(site.encode('utf_8')).hexdigest()
 
 def pkg_key(pkg, type_):
     """

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
+from releng_tool.packages import pkg_cache_key
 from releng_tool.tool.git import GIT
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
@@ -38,12 +39,12 @@ def extract(opts):
 
     # extract submodules (if configured to do so)
     if opts._git_submodules:
-        if not _process_submodules(opts, cache_dir, work_dir):
+        if not _process_submodules(opts, work_dir):
             return False
 
     return True
 
-def _process_submodules(opts, cache_dir, work_dir):
+def _process_submodules(opts, work_dir):
     """
     process submodules for an extracted repository
 
@@ -54,7 +55,6 @@ def _process_submodules(opts, cache_dir, work_dir):
 
     Args:
         opts: the extraction options
-        cache_dir: the cache directory for the working directory's contents
         work_dir: the working directory to look for submodules
 
     Returns:
@@ -84,19 +84,24 @@ def _process_submodules(opts, cache_dir, work_dir):
         submodule_revision = None
         if cfg.has_option(sec_name, 'branch'):
             submodule_revision = cfg.get(sec_name, 'branch')
+        submodule_url = cfg.get(sec_name, 'url')
         log('extracing submodule ({}): {}', opts.name, submodule_path)
         debug('submodule revision: {}',
             submodule_revision if submodule_revision else '(none)')
 
+        ckey = pkg_cache_key(submodule_url)
+        root_cache_dir = os.path.abspath(
+            os.path.join(opts.cache_dir, os.pardir))
+        sm_cache_dir = os.path.join(root_cache_dir, ckey)
+
         postfix_path = os.path.split(submodule_path)
-        sm_cache_dir = os.path.join(cache_dir, 'modules', *postfix_path)
         sm_work_dir = os.path.join(work_dir, *postfix_path)
 
         if not _workdir_extract(sm_cache_dir, sm_work_dir, submodule_revision):
             return False
 
         # process nested submodules
-        if not _process_submodules(opts, sm_cache_dir, sm_work_dir):
+        if not _process_submodules(opts, sm_work_dir):
             return False
 
     return True

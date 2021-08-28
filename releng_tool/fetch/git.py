@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
+from releng_tool.packages import pkg_cache_key
 from releng_tool.tool.git import GIT
 from releng_tool.util.enum import Enum
 from releng_tool.util.io import ensure_dir_exists
@@ -407,8 +408,11 @@ def _fetch_submodules(opts, cache_dir, revision):
             submodule_revision if submodule_revision else '(none)')
         debug('submodule url: {}', submodule_url)
 
-        submodule_cache_dir = os.path.join(
-            cache_dir, 'modules', *os.path.split(submodule_path))
+        ckey = pkg_cache_key(submodule_url)
+        root_cache_dir = os.path.abspath(
+            os.path.join(opts.cache_dir, os.pardir))
+        submodule_cache_dir = os.path.join(root_cache_dir, ckey)
+        verbose('submodule_cache_dir: {}', submodule_cache_dir)
 
         # check to make sure the submodule's path isn't pointing to a relative
         # path outside the expected cache base
@@ -416,7 +420,7 @@ def _fetch_submodules(opts, cache_dir, revision):
         check_common = os.path.commonprefix((submodule_cache_dir, check_abs))
         if check_abs != check_common:
             err('unable to process submodule pathed outside of bare repository')
-            verbose('submodule expected base path: {}', check_common)
+            verbose('submodule expected base: {}', check_common)
             verbose('submodule absolute path: {}', check_abs)
             return False
 
