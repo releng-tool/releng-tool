@@ -213,6 +213,7 @@ releng.disable_prerequisites_check     disable prerequisites check
 releng.disable_remote_configs          disable remote configurations
 releng.disable_remote_scripts          disable remote scripts
 releng.git.no_depth                    disable depth-limits for git calls
+releng.git.no_quick_fetch              disable quick-fetching for git calls
 """
 
 if __name__ == '__main__':
