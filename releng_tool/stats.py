@@ -69,12 +69,13 @@ class RelengStats():
         try:
             with open(self.dat_file, 'rb') as f:
                 self.data = pickle.load(f)
+            debug('loaded statistics')
         except IOError:
             verbose('failed to load original statistics (io error)')
         except ValueError:
             verbose('failed to load original statistics (pickle error)')
 
-    def save(self):
+    def save(self, desc=None):
         """
         save statistics for future reference
 
@@ -82,12 +83,26 @@ class RelengStats():
         considerations. This is to help render a "complete" report of statistics
         when re-running releng-tool with packages which may already been
         completed.
+
+        Args:
+            desc (optional): description of this save event (for logging)
         """
+
+        if not ensure_dir_exists(self.out_dir):
+            verbose('unable to generate output directory for statistics')
+            return None
+
+        if desc:
+            desc = ' ({})'.format(desc)
+        else:
+            desc = ''
+
         try:
             with open(self.dat_file, 'wb') as f:
                 pickle.dump(self.data, f, protocol=2) # 2 for py2/py3 support
+            debug('saved statistics' + desc)
         except IOError:
-            verbose('failed to save statistics')
+            verbose('failed to save statistics' + desc)
 
     def track_duration_start(self, pkg, stage):
         """
@@ -129,7 +144,7 @@ class RelengStats():
         self.data['duration'][pkg][stage] = end_time - start_time
 
         if save:
-            self.save()
+            self.save(desc='{}-{}'.format(pkg, stage))
 
     def generate(self):
         """
