@@ -191,6 +191,7 @@ def usage():
 (other)
  --debug                   show debug-related messages
  -h, --help                show this help
+ --help-quirks             show available quirks
  --nocolorout              explicitly disable colorized output
  --quirk <value>           inject in quirk into this run
  -V, --verbose             show additional messages
