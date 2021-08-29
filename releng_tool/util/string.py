@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2021 releng-tool
 
-from collections import Sequence
 import os
 
 try:
     basestring
 except NameError:
     basestring = str
+
+try:
+    from collections.abc import Sequence
+except ImportError:
+    from collections import Sequence
 
 def expand(obj, kv=None):
     """
