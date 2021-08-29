@@ -34,11 +34,13 @@ cvs site
 ^^^^^^^^
 
 To define a CVS_-based location, the site value must be prefixed with a ``cvs+``
-value. A site can be defined as follows:
+or other common CVSROOT value. A site can be defined as follows:
 
 .. code-block:: python
 
-   LIBFOO_SITE = 'cvs+:pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule'
+   LIBFOO_SITE = ':pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule'
+   # (or)
+   LIBFOO_SITE = 'cvs+:ext:cvs@cvs.example.org:/usr/local/cvsroot mymodule'
 
 The value after the prefix is a space-separated pair, where the first part
 represents the CVSROOT [#cvsroot]_ to use and the second part specifies the CVS
