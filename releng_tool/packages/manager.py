@@ -85,6 +85,9 @@ except ImportError:
 #: default strip-count value for packages
 DEFAULT_STRIP_COUNT = 1
 
+# cache name for dvcs database
+DVCS_CACHE_FNAME = '.dvcsdb'
+
 class RelengPackageManager:
     """
     a releng package manager
@@ -99,18 +102,20 @@ class RelengPackageManager:
     Args:
         opts: options used to configure the package manager (same as engine)
         registry: registry for extension information (same as engine)
+        dvcs_cache (optional): whether or not to permit dvcs caching
 
     Attributes:
         opts: options used to configure the package manager
         registry: registry for extension information
         script_env: package script environment dictionary
     """
-    def __init__(self, opts, registry):
+    def __init__(self, opts, registry, dvcs_cache=False):
         self.opts = opts
         self.registry = registry
         self.script_env = {}
         self._dvcs_cache = {}
-        self._dvcs_cache_fname = os.path.join(opts.cache_dir, '.dvcsdb')
+        self._dvcs_cache_enabled = dvcs_cache
+        self._dvcs_cache_fname = os.path.join(opts.cache_dir, DVCS_CACHE_FNAME)
         self._key_types = {}
 
         # load any cached dvcs information
@@ -978,6 +983,9 @@ class RelengPackageManager:
         where may hint the folder name for a project's cache.
         """
 
+        if not self._dvcs_cache_enabled:
+            return
+
         if os.path.exists(self._dvcs_cache_fname):
             try:
                 with open(self._dvcs_cache_fname, 'rb') as f:
@@ -996,9 +1004,12 @@ class RelengPackageManager:
         can be used to hint where package cache data is stored.
         """
 
+        if not self._dvcs_cache_enabled:
+            return
+
         if not ensure_dir_exists(self.opts.cache_dir):
             verbose('unable to generate output directory for dvcs cache')
-            return None
+            return
 
         try:
             with open(self._dvcs_cache_fname, 'wb') as f:
