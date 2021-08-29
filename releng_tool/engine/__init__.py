@@ -109,7 +109,7 @@ class RelengEngine:
             'releng_version': releng_version,
         }
 
-        verbose('loading statistics...')
+        debug('loading statistics...')
         self.stats.load()
 
         # prepare script environment to make helpers available to configuration
