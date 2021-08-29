@@ -29,3 +29,5 @@ function _releng_tool {
         "--version[print the version and exit]" \
         "1: :($opts)"
 }
+
+_releng_tool "$@"
