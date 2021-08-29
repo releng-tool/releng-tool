@@ -64,6 +64,21 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit')
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
+        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit2')
+        self.assertEqual(pkg.vcs_type, VcsType.CVS)
+
+        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit3')
+        self.assertEqual(pkg.vcs_type, VcsType.CVS)
+
+        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit4')
+        self.assertEqual(pkg.vcs_type, VcsType.CVS)
+
+        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit5')
+        self.assertEqual(pkg.vcs_type, VcsType.CVS)
+
+        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit6')
+        self.assertEqual(pkg.vcs_type, VcsType.CVS)
+
     def test_pkgconfig_vcs_type_valid_git_explicit(self):
         pkg, _, _ = self.LOAD('vcs-type-valid-git-explicit')
         self.assertEqual(pkg.vcs_type, VcsType.GIT)

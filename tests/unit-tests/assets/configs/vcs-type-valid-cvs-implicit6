@@ -1,0 +1,2 @@
+TEST_SITE = ':kserver:cvs@cvs.example.org:/usr/local/cvsroot mymodule'
+TEST_VERSION = 'dummy'

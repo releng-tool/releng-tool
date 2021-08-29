@@ -1,0 +1,2 @@
+TEST_SITE = ':pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule'
+TEST_VERSION = 'dummy'
