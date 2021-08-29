@@ -73,16 +73,9 @@ _releng_tool_module()
         ;;
     '-j' | '--jobs' | \
     '-h' | '--help' | \
+    '--quirk' | \
     '--help-quirks' | \
     '--version' )
-        return 0
-        ;;
-    '--quirk')
-        opts=(
-            'releng.cmake.disable_parallel_option'
-            'releng.git.no_depth'
-        )
-        COMPREPLY=($(compgen -W "${opts[*]}" -- $cur))
         return 0
         ;;
     esac
