@@ -399,7 +399,7 @@ def generate_temp_dir(dir_=None):
     """
     generate a context-supported temporary directory
 
-    Creates a temporary directory in the provided directory ``dir`` (or system
+    Creates a temporary directory in the provided directory ``dir_`` (or system
     default, is not provided). This is a context-supported call and will
     automatically remove the directory when completed. If the provided
     directory does not exist, it will created. If the directory could not be
@@ -409,8 +409,8 @@ def generate_temp_dir(dir_=None):
 
     .. code-block:: python
 
-        with releng_tmpdir() as dir:
-            print(dir)
+        with releng_tmpdir() as dir_:
+            print(dir_)
 
     Args:
         dir_ (optional): the directory to create the temporary directory in
