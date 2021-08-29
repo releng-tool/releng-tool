@@ -183,7 +183,13 @@ def find_test_base():
     Returns:
         the path
     """
-    return os.path.dirname(os.path.abspath(sys.argv[0]))
+
+    test_base = os.path.dirname(os.path.realpath(__file__))
+
+    if not os.path.exists(os.path.join(test_base, 'templates')):
+        test_base = os.path.dirname(os.path.abspath(sys.argv[0]))
+
+    return test_base
 
 class RelengToolTestSuite(unittest.TestSuite):
     def run(self, result):
