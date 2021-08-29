@@ -1,5 +1,5 @@
-development
------------
+0.8 (2021-08-28)
+----------------
 
 - allow dvcs packages to share caches (to minimize space/time fetching)
 - fixed an issue where tools/``releng_execute`` requests would fail on python
