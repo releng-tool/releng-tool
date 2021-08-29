@@ -1,3 +1,8 @@
+development
+-----------
+
+- fixed an import issue when running with python 3.10
+
 0.8 (2021-08-28)
 ----------------
 
