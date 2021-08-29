@@ -23,9 +23,9 @@ function _releng_tool {
         '--local-sources[enables local-sources mode]' \
         '--nocolorout[explicitly disable colorized output]' \
         '--out-dir[directory for output]: :_files' \
-        '--root-dir[directory to process a releng-tool project]: :_files' \
+        '--root-dir[directory of the project to process]: :_files' \
         '--quirk[quirk to apply to a run]: ' \
         '--verbose[show additional messages]' \
-        "--version[show releng-tool's version]" \
+        "--version[print the version and exit]" \
         "1: :($opts)"
 }
