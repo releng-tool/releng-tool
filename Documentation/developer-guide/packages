@@ -387,7 +387,7 @@ fetching.
 
 .. code-block:: python
 
-   LIBFOO_GIT_REFSPECS = ['pull']
+   LIBFOO_GIT_REFSPECS = ['pull/*']
 
 LIBFOO_GIT_SUBMODULES
 ^^^^^^^^^^^^^^^^^^^^^
