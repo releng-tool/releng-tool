@@ -294,9 +294,9 @@ LIBFOO_EXTERNAL
 .. |LIBFOO_EXTERNAL| replace:: ``LIBFOO_EXTERNAL``
 
 Flag value to explicitly indicate that a package is an external package.
-External packages will generate warnings if :ref:`hashes <hash_files>` or
-`licenses`_ are missing. By default, packages are considered external unless
-explicitly configured to be internal.
+External packages will generate warnings if :ref:`hashes <hash_files>`, an
+:ref:`ASCII-armor <ascii_armor>` or `licenses`_ are missing. By default,
+packages are considered external unless explicitly configured to be internal.
 
 .. code-block:: python
 
@@ -412,11 +412,11 @@ LIBFOO_INTERNAL
 .. |LIBFOO_INTERNAL| replace:: ``LIBFOO_INTERNAL``
 
 Flag value to explicitly indicate that a package is an internal package.
-Internal packages will not generate warnings if :ref:`hashes <hash_files>` or
-`licenses`_ are missing. When configured in :ref:`local-sources mode`, package
-sources are searched for in the local directory opposed to site fetched sources.
-By default, packages are considered external unless explicitly configured to be
-internal.
+Internal packages will not generate warnings if :ref:`hashes <hash_files>`, an
+:ref:`ASCII-armor <ascii_armor>` or `licenses`_ are missing. When configured in
+:ref:`local-sources mode`, package sources are searched for in the local
+directory opposed to site fetched sources. By default, packages are considered
+external unless explicitly configured to be internal.
 
 .. code-block:: python
 
@@ -430,9 +430,10 @@ LIBFOO_NO_EXTRACTION
 .. warning::
 
    If ``LIBFOO_NO_EXTRACTION`` is configured for a package, the package cannot
-   define additional :ref:`hashes <hash_files>`, define a list of
-   ``LIBFOO_LICENSE_FILES`` to manage or expect to support various actions (such
-   as building; since no sources are available).
+   define additional :ref:`hashes <hash_files>`, configure an
+   :ref:`ASCII-armor <ascii_armor>`, define a list of ``LIBFOO_LICENSE_FILES``
+   to manage or expect to support various actions (such as building; since no
+   sources are available).
 
 Flag value to explicitly indicate that a package should not extract the package
 contents. This feature is primarily used when using releng-tool to fetch content
@@ -613,6 +614,7 @@ See also `script helpers`_ for helper functions/variables available for use.
 
 .. include:: developer-guide/packages-sites
 .. include:: developer-guide/packages-hashes
+.. include:: developer-guide/packages-ascii-armor
 .. include:: developer-guide/packages-type-script
 .. include:: developer-guide/packages-type-autotools
 .. include:: developer-guide/packages-type-cmake

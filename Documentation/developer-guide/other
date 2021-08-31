@@ -146,7 +146,8 @@ configuration |CONF_DEFAULT_INTERN|_ (see also |LIBFOO_EXTERNAL|_). Both package
 types are almost treated the same except for the following:
 
 - An internal package will not generate output warnings if the package is
-  missing :ref:`hash information <hash_files>`.
+  missing :ref:`hash information <hash_files>` or an
+  :ref:`ASCII-armor <ascii_armor>`.
 - An internal package will not generate output warnings if the package is
   missing :ref:`license information <license_information>`.
 - When configured for :ref:`development mode`; the patch stage will not be

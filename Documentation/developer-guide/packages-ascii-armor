@@ -1,0 +1,21 @@
+.. _ascii_armor:
+
+ascii armor
+~~~~~~~~~~~
+
+.. note::
+
+   An alternative to using an ASCII-armor to validate a package's cache is to
+   use :ref:`hashes <hash_files>` instead.
+
+When downloading assets from a remote instance, an ASCII-armor file can be used
+to help verify the integrity of any fetched content. For example, if a package
+lists a site with a ``my-archive.tgz`` to download, the fetch process will
+download the archive and verify its contents with an associated ASCII-armor file
+(if one is provided). If the integrity of the file cannot be verified, the build
+process stops indicating an unexpected asset was downloaded.
+
+To include an ASCII-armor file for a package, add a ``<my-package>.asc`` file
+inside the package's directory. Verification is performed using the host
+system's ``gpg``. For verification's to succeed, the system must already have
+the required public keys registered.

@@ -3,9 +3,15 @@
 hash file
 ~~~~~~~~~
 
+.. note::
+
+   An alternative to using a hash to validate a package's cache is to use an
+   :ref:`ASCII-armor <ascii_armor>` instead. Although users can benefit from
+   using both validation methods, if desired.
+
 When downloading assets from a remote instance, a package's hash file can be
 used to help verify the integrity of any fetched content. For example, if a
-package lists a host with a ``my-archive.tgz`` to download, the fetch process
+package lists a site with a ``my-archive.tgz`` to download, the fetch process
 will download the archive and verify its hash to a listed entry before
 continuing. If a hash does not match, the build process stops indicating an
 unexpected asset was downloaded.
