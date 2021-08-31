@@ -63,7 +63,10 @@ def fetch(opts):
             if not _sync_git_configuration(opts):
                 return None
 
-            return cache_dir
+            # return cache dir if not verifying or verification succeeds
+            if not opts._git_verify_revision or _verify_revision(
+                    git_dir, revision, quiet=True):
+                return cache_dir
 
     note('fetching {}...'.format(name))
     sys.stdout.flush()
@@ -114,6 +117,20 @@ def fetch(opts):
     # fetch sources for this repository
     if not _fetch_srcs(opts, cache_dir, revision, refspecs=opts._git_refspecs):
         return None
+
+    # verify revision (if configured to check it)
+    if opts._git_verify_revision:
+        if not _verify_revision(git_dir, revision):
+            err("""\
+failed to validate git revision
+
+Package has been configured to require the verification of the GPG signature
+for the target revision. The verification has failed. Ensure that the revision
+is signed and that the package's public key has been registered in the system.
+
+      Package: {}
+     Revision: {}""".format(name, revision))
+            return None
 
     # fetch submodules (if configured to do so)
     if opts._git_submodules:
@@ -515,3 +532,39 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
     # fetch sources for this submodule
     desc = 'submodule ({}): {}'.format(opts.name, name)
     return _fetch_srcs(opts, cache_dir, revision, desc=desc)
+
+def _verify_revision(git_dir, revision, quiet=False):
+    """
+    verify the gpg signature for a target revision
+
+    The GPG signature for a provided revision (tag or commit) will be checked
+    to validate the revision.
+
+    Args:
+        git_dir: the Git directory
+        revision: the revision to verify
+        quiet (optional): whether or not the log if verification is happening
+
+    Returns:
+        ``True`` if the revision is signed; ``False`` otherwise
+    """
+
+    if not quiet:
+        log('verifying the gpg signature on the target revision')
+    else:
+        verbose('verifying the gpg signature on the target revision')
+
+    if GIT.execute([git_dir, 'rev-parse', '--quiet',
+            '--verify', revision + '^{tag}'], quiet=True):
+        verified_cmd = 'verify-tag'
+    else:
+        verified_cmd = 'verify-commit'
+
+        # acquire the commit if (if not already set), to ensure we can verify
+        # against commits or branches
+        rv, revision = GIT.execute_rv(git_dir, 'rev-parse', revision)
+        if rv != 0:
+            verbose('failed to determine the commit id for a revision')
+            return False
+
+    return GIT.execute([git_dir, verified_cmd, revision], quiet=quiet)

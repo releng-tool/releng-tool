@@ -27,6 +27,7 @@ class RelengPackage:
         git_depth: git fetch depth (if applicable)
         git_refspecs: additional git refspecs to fetch (if applicable)
         git_submodules: fetch any git submodules (if applicable)
+        git_verify_revision: verify signed git revisions
         has_devmode_option: whether or not the package has a devmode revision
         hash_file: file containing hashes to validate this package
         install_type: install container for the package (target, staged, etc.)
@@ -109,6 +110,7 @@ class RelengPackage:
         self.git_depth = None
         self.git_refspecs = None
         self.git_submodules = None
+        self.git_verify_revision = None
         # (other - python)
         self.python_interpreter = None
 
