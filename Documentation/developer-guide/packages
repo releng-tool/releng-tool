@@ -407,6 +407,19 @@ instead.
 
    LIBFOO_GIT_SUBMODULES = True
 
+LIBFOO_GIT_VERIFY_REVISION
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Flag value to indicate whether or not the target revision is required to be
+signed before it can be used. When this value is set, the configured revision
+for a repository will not be extracted unless the GPG signature. This includes
+if the public key for the author is not registered in the local system or if the
+target revision is not signed.
+
+.. code-block:: python
+
+   LIBFOO_GIT_VERIFY_REVISION = True
+
 LIBFOO_INTERNAL
 ^^^^^^^^^^^^^^^
 .. |LIBFOO_INTERNAL| replace:: ``LIBFOO_INTERNAL``
