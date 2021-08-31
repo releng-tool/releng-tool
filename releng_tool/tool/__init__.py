@@ -109,12 +109,12 @@ class RelengTool:
             the return code of the execution request
         """
         if not self.exists():
-            return False
+            return 1
 
         if args and not is_sequence_not_string(args):
             err('invalid argument type provided into execute (should be list): '
                 + str(args))
-            return False
+            return 1
 
         final_env = None
         if self.include or self.sanitize or env:
