@@ -98,3 +98,19 @@ class TestPkgConfigsGit(TestPkgConfigsBase):
     def test_pkgconfig_git_submodules_missing(self):
         pkg, _, _ = self.LOAD('missing')
         self.assertIsNone(pkg.git_submodules)
+
+    def test_pkgconfig_git_verify_disabled(self):
+        pkg, _, _ = self.LOAD('git-verify-disabled')
+        self.assertFalse(pkg.git_verify_revision)
+
+    def test_pkgconfig_git_verify_enabled(self):
+        pkg, _, _ = self.LOAD('git-verify-enabled')
+        self.assertTrue(pkg.git_verify_revision)
+
+    def test_pkgconfig_git_verify_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('git-verify-invalid')
+
+    def test_pkgconfig_git_verify_missing(self):
+        pkg, _, _ = self.LOAD('missing')
+        self.assertIsNone(pkg.git_verify_revision)
