@@ -639,6 +639,7 @@ class RelengPackageManager:
 
         # (commons)
         pkg = RelengPackage(name, pkg_version)
+        pkg.asc_file = os.path.join(pkg_def_dir, name + '.asc')
         pkg.build_dir = pkg_build_dir
         pkg.build_output_dir = pkg_build_output_dir
         pkg.build_subdir = pkg_build_subdir

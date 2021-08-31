@@ -10,6 +10,7 @@ from releng_tool.fetch.mercurial import fetch as fetch_mercurial
 from releng_tool.fetch.scp import fetch as fetch_scp
 from releng_tool.fetch.svn import fetch as fetch_svn
 from releng_tool.fetch.url import fetch as fetch_url
+from releng_tool.tool.gpg import GPG
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.hash import HashResult
 from releng_tool.util.hash import verify as verify_hashes
@@ -60,8 +61,10 @@ local sources option to use the default process).
         return False
 
     # if the vcs-type is archive-based, flag that hash checks are needed
+    perform_file_asc_check = False
     perform_file_hash_check = False
     if pkg.vcs_type == VcsType.URL:
+        perform_file_asc_check = os.path.exists(pkg.asc_file)
         perform_file_hash_check = True
 
     fetch_opts = RelengFetchOptions()
@@ -112,7 +115,7 @@ local sources option to use the default process).
                     if hr == HashResult.VERIFIED:
                         rv = True
                     elif hr == HashResult.BAD_PATH:
-                        if not pkg.is_internal:
+                        if not perform_file_asc_check and not pkg.is_internal:
                             warn('missing hash file for package: ' + name)
                         rv = True # no hash file to compare with; assuming ok
                     elif hr == HashResult.EMPTY:
@@ -125,20 +128,40 @@ local sources option to use the default process).
                     elif hr in (HashResult.BAD_FORMAT, HashResult.UNSUPPORTED):
                         rv = False
                     elif hr == HashResult.MISSING_ARCHIVE:
-                        err('missing archive hash for verification')
-                        err("""\
+                        if not perform_file_asc_check:
+                            err("""\
+missing archive hash for verification
+
 The hash file for this package does not have an entry for the cache file to be
 verified. Ensure the hash file defines an entry for the expected cache file:
 
     Hash File: {}
          File: {}""".format(pkg.hash_file, cache_filename))
-                        rv = False
+                            rv = False
                     else:
                         err('invalid fetch operation (internal error; '
                             'hash-check failure: {})'.format(hr))
                         rv = False
                 else:
                     rv = True
+
+                if rv is not False and perform_file_asc_check and \
+                        os.path.exists(pkg.cache_file):
+                    if GPG.validate(pkg.asc_file, pkg.cache_file):
+                        rv = True
+                    else:
+                        if not path_remove(pkg.cache_file):
+                            err("""\
+failed to validate against ascii-armor
+
+Validation of a package resource failed to verify against a provided ASCII-armor
+file. Ensure that the package's public key has been registered into gpg.
+
+ ASC File: {}
+     File: {}""".format(pkg.asc_file, cache_filename))
+                            rv = False
+                        else:
+                            rv = None
 
                 if rv is not None:
                     if ignore_cache:
@@ -201,7 +224,7 @@ verified. Ensure the hash file defines an entry for the expected cache file:
                     if hr == HashResult.VERIFIED:
                         pass
                     elif hr == HashResult.BAD_PATH:
-                        if not pkg.is_internal:
+                        if not perform_file_asc_check and not pkg.is_internal:
                             warn('missing hash file for package: ' + name)
                     elif hr == HashResult.EMPTY:
                         if not pkg.is_internal:
@@ -211,17 +234,31 @@ verified. Ensure the hash file defines an entry for the expected cache file:
                     elif hr in (HashResult.BAD_FORMAT, HashResult.UNSUPPORTED):
                         return False
                     elif hr == HashResult.MISSING_ARCHIVE:
-                        err('missing archive hash for verification')
-                        err("""\
+                        if not perform_file_asc_check:
+                            err("""\
+missing archive hash for verification
+
 The hash file for this package does not have an entry for the cache file to be
 verified. Ensure the hash file defines an entry for the expected cache file:
 
     Hash File: {}
          File: {}""".format(pkg.hash_file, cache_filename))
-                        return False
+                            return False
                     else:
                         err('invalid fetch operation (internal error; '
                             'hash-check failure: {})'.format(hr))
+                        return False
+
+                if perform_file_asc_check:
+                    if not GPG.validate(pkg.asc_file, interim_cache_file):
+                        err("""\
+failed to validate against ascii-armor
+
+Validation of a package resource failed to verify against a provided ASCII-armor
+file. Ensure that the package's public key has been registered into gpg.
+
+     ASC File: {}
+         File: {}""".format(pkg.asc_file, cache_filename))
                         return False
 
                 debug('fetch successful; moving cache file')

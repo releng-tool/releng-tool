@@ -11,6 +11,7 @@ class RelengPackage:
         name: the name of the package
 
     Attributes:
+        asc_file: file containing ascii-armored data to validate this package
         build_dir: directory for a package's buildable content
         build_output_dir: build output directory for the package process
         build_subdir: override for a package's buildable content (if applicable)
@@ -64,6 +65,7 @@ class RelengPackage:
         self.nv = '{}-{}'.format(name, version)
         self.version = version
         # (commons)
+        self.asc_file = None
         self.build_dir = None
         self.build_subdir = None
         self.build_output_dir = None
