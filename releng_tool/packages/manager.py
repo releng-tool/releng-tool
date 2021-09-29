@@ -246,7 +246,7 @@ class RelengPackageManager:
         sorted_pkgs = []
         for pkg in pkgs.values():
             sorted_pkgs = sorter.sort(pkg)
-            if not sorted:
+            if sorted_pkgs is None:
                 raise RelengToolCyclicPackageDependency({
                     'pkg_name': name,
                 })
