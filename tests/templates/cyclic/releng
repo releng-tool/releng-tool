@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+packages = [
+    'test-a',
+    'test-b',
+    'test-c',
+]

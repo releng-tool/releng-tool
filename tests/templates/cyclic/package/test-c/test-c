@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+TEST_C_DEPENDENCIES = 'test-b'
+TEST_C_VERSION = '1.0'
