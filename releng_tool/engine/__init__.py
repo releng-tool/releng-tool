@@ -509,28 +509,35 @@ of the releng process:
             post-processing script exists; ``False`` if an error has occurred
             when processing the post-processing script
         """
-        script, script_exists = opt_file(self.opts.post_point)
+        build_script, postbuild_exists = opt_file(self.opts.post_build_point)
 
         # TODO remove deprecated configuration load in (at maximum) v1.0
-        if not script_exists:
-            script = os.path.join(self.opts.root_dir, 'post.py')
-            if os.path.isfile(script):
-                warn('using deprecated post-processing file post.py -- switch '
-                     'to releng-post for future projects')
-                script_exists = True
+        if not postbuild_exists:
+            deprecated_posts = [
+                'releng-post',
+                'post.py',
+            ]
 
-        if script_exists:
-            verbose('performing post-processing...')
+            for script_name in deprecated_posts:
+                build_script = os.path.join(self.opts.root_dir, script_name)
+                if os.path.isfile(build_script):
+                    warn('using deprecated post-processing file {} -- switch '
+                         'to releng-post for future projects', script_name)
+                    postbuild_exists = True
+                    break
+
+        if postbuild_exists:
+            verbose('performing post-processing (build)...')
 
             # ensure images directory exists (as the post-processing script will
             # most likely populate it)
             if not ensure_dir_exists(self.opts.images_dir):
                 return False
 
-            if not run_script(script, env, subject='post-processing'):
+            if not run_script(build_script, env, subject='post-build'):
                 return False
 
-            verbose('post-processing completed')
+            verbose('post-processing (build) completed')
 
         return True
 

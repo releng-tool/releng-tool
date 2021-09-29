@@ -23,7 +23,7 @@ DEFAULT_TARGET_DIR   = 'target'    #: default target container directory
 RELENG_CONF_EXTENDED_NAME = '.releng-tool' #: extended configuration script
 RELENG_CONF_NAME = 'releng' #: configuration script filename
 RELENG_CONF_OVERRIDES_NAME = 'releng-overrides' #: conf. overrides filename
-RELENG_POST_NAME = 'releng-post' #: post script filename
+RELENG_POST_BUILD_NAME = 'releng-post-build' #: post build script filename
 FF_PREFIX = '.releng-flag-' #: prefix for all file flags
 FF_DEVMODE_NAME = 'devmode' #: postfix for development mode file flag
 FF_LOCALSRCS_NAME = 'local-sources' #: postfix for local sources mode file flag
@@ -70,7 +70,7 @@ class RelengEngineOptions:
         no_color_out: whether or not colored messages are shown
         out_dir: directory container for all output data
         pkg_action: the specific package-action to perform (if any)
-        post_point: resource to process holding a releng project's post-work
+        post_build_point: resource to process a releng project's post-build work
         prerequisites: list of required host tools (if any)
         quirks: advanced configuration quirks for the running instance
         revision_override: dictionary to override revision values
@@ -111,7 +111,7 @@ class RelengEngineOptions:
         self.no_color_out = False
         self.out_dir = None
         self.pkg_action = None
-        self.post_point = None
+        self.post_build_point = None
         self.prerequisites = []
         self.quirks = []
         self.revision_override = None
@@ -222,8 +222,8 @@ class RelengEngineOptions:
             self.ff_devmode = join(root, FF_PREFIX + FF_DEVMODE_NAME)
         if not self.ff_local_srcs:
             self.ff_local_srcs = join(root, FF_PREFIX + FF_LOCALSRCS_NAME)
-        if not self.post_point:
-            self.post_point = join(root, RELENG_POST_NAME)
+        if not self.post_build_point:
+            self.post_build_point = join(root, RELENG_POST_BUILD_NAME)
 
         # provided fixed job count with auto-configuration (value: 0)
         #
