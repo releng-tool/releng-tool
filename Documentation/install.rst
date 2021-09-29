@@ -42,6 +42,9 @@ arch
    $ releng-tool --version
    releng-tool <version>
 
+This package is also
+`available on AUR <https://aur.archlinux.org/packages/releng-tool/>`_.
+
 centos
 ++++++
 
