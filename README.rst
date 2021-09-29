@@ -20,7 +20,7 @@ releng-tool
 releng-tool aims to provide a method to prepare a structured environment to
 assist in the release engineering of a project.
 
-overview
+Overview
 --------
 
 When dealing with the release engineering of a project, assets may be found in
@@ -33,7 +33,7 @@ target root.
 For detailed documentation on the releng-tool project, please consult the
 `releng-tool documentation`_.
 
-requirements
+Requirements
 ------------
 
 * Python_ 2.7 or 3.4+
@@ -42,7 +42,7 @@ Host tools such as Git_, scp, etc. may be required depending on the project
 being processed (e.g. if a package's sources fetch from a Git source, a Git
 client tool is required to perform said fetch).
 
-installation
+Installation
 ------------
 
 This tool can be installed using pip_:
@@ -69,7 +69,7 @@ This tool can be invoked from a command line using:
     (or)
    python -m releng_tool --help
 
-examples
+Examples
 --------
 
 Examples of releng-tool projects can be found in
