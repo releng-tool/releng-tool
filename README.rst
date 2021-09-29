@@ -58,7 +58,7 @@ For Arch Linux users, this package is also available on AUR:
  | Arch User Repository - releng-tool
  | https://aur.archlinux.org/packages/releng-tool/
 
-usage
+Usage
 -----
 
 This tool can be invoked from a command line using:
