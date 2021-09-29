@@ -113,22 +113,3 @@ class RelengPackage:
         self.git_verify_revision = None
         # (other - python)
         self.python_interpreter = None
-
-    def __str__(self):
-        return (
-            'package "{}"\n'
-            '      build: {}\n'
-            '  build-out: {}\n'
-            ' definition: {}\n'
-            '       site: {}\n'
-            '   vcs-type: {}\n'
-            '    version: {}'
-            ).format(
-                self.name,
-                self.build_dir,
-                self.build_output_dir,
-                self.def_dir,
-                self.site,
-                self.vcs_type,
-                self.version,
-                )
