@@ -32,9 +32,9 @@ html_theme_options = {
     'prev_next_buttons_location': 'both',
     'style_external_links': True,
 }
-html_context = {
-    'css_files': ['_static/theme_overrides.css'],
-}
 html_static_path = ['_static']
 html_show_copyright = False
 html_show_sphinx = False
+
+def setup(app):
+    app.add_css_file('theme_overrides.css')
