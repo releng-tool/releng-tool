@@ -12,11 +12,11 @@ post-processing
 After each package has been processed, a project has the ability to perform
 post-processing. Post-processing allows a developer to cleanup the target
 directory, build an archive/package from generated results and more. If a
-project contains a ``releng-post`` inside the root directory, the
+project contains a ``releng-post-build`` inside the root directory, the
 post-processing script will be invoked in the final stage of a build.
 
 A developer may start out with the following post-processing script
-``<root>/releng-post``:
+``<root>/releng-post-build``:
 
 .. code-block:: python
 

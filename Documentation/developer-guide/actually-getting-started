@@ -156,11 +156,11 @@ tar/zip/etc. container, pkg/rpm/etc. package or more). A developer could deal
 with such a capability outside the releng-tool process; but if a developer
 wishes to hook the end of the process, a post-processing script can be used.
 
-A developer may create a post-processing file ``releng-post`` in the root
+A developer may create a post-processing file ``releng-post-build`` in the root
 directory. On the completion of processing each package, the post-processing
 script will be invoked. It is important to note that the post-processing script
 may be invoked multiple times if a user attempts to rebuild the project. For
-example, if the file ``releng-post`` has the following contents:
+example, if the file ``releng-post-build`` has the following contents:
 
 .. code-block:: python
 
