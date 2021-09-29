@@ -53,6 +53,11 @@ This tool can be installed using pip_:
     (or)
    python -m pip install releng-tool
 
+For Arch Linux users, this package is also available on AUR:
+
+ | Arch User Repository - releng-tool
+ | https://aur.archlinux.org/packages/releng-tool/
+
 usage
 -----
 
