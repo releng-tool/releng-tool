@@ -2,6 +2,8 @@ development
 -----------
 
 - fixed an import issue when running with python 3.10
+- fixed an issue where a cyclic package check provided a bad message
+- post-processing script renamed to ``releng-post-build``
 - support requiring a git source's revision to be gpg-signed
 - support using ascii-armor (asc) files to package integrity checks
 
