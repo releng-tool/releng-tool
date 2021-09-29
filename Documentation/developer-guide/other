@@ -28,7 +28,7 @@ A developer may start out with the following post-processing script
 The above script will output the newly inserted print message at the end of a
 build process:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool
    ...
@@ -111,7 +111,7 @@ package folder are applied in ascending order. It is recommended to prefix
 patch filenames with a numerical value for clarity. For example, the following
 package patches:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ cd package/liba
    $ ls *.patch

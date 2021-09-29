@@ -16,7 +16,7 @@ venture to the `actually getting started`_ section.
 To start, make a new folder for the project, two sample packages and move into
 the root folder:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ mkdir -p my-project/package/libx
    $ mkdir -p my-project/package/liby
@@ -85,7 +85,7 @@ configuration file with the following contents:
 This sample project should be ready for a spin. While in the ``my-project``
 folder, invoke ``releng-tool``:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool
    patching libx...
@@ -108,7 +108,7 @@ elaborate scripts can be made to handle a package's source to build.
 
 To clean the project, a ``releng-tool clean`` request can be invoked:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool clean
 

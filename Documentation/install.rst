@@ -34,7 +34,7 @@ specific distributions of Linux. From a terminal, invoke the following commands:
 arch
 ++++
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ sudo pacman -Sy
    $ sudo pacman -S python-pip
@@ -45,7 +45,7 @@ arch
 centos
 ++++++
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ sudo yum install epel-release
    $ sudo yum install python-pip
@@ -56,7 +56,7 @@ centos
 fedora
 ++++++
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ sudo dnf install python-pip
    $ sudo pip install releng-tool
@@ -66,7 +66,7 @@ fedora
 opensuse
 ++++++++
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ pip install releng-tool
    $ releng-tool --version
@@ -75,7 +75,7 @@ opensuse
 ubuntu
 ++++++
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ sudo apt-get update
    $ sudo apt-get install python-pip
@@ -88,7 +88,7 @@ os x
 
 From a terminal, invoke the following commands:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ sudo easy_install pip
    $ sudo pip install releng-tool
@@ -109,7 +109,7 @@ path (the remainder of these steps will assume Python is available in the path).
 
 Open a Windows command prompt and invoke the following:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    > python -m pip install releng-tool
    > python -m releng_tool --version
@@ -121,7 +121,7 @@ development
 To install the most recent development sources, the following pip_ command can
 be used:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    pip install git+https://github.com/releng-tool/releng-tool.git
 

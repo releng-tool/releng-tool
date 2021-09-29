@@ -7,7 +7,7 @@ can be provided before or after an action (if provided). By default, if a user
 does not specify an action, it is assumed that all release engineering steps are
 to be performed. An example of a user invoking a clean action is as follows:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool clean
 

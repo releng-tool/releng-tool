@@ -6,7 +6,7 @@ offline builds
 
 A user can prepare for an offline build by using the ``fetch`` action:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool fetch
 
@@ -24,7 +24,7 @@ amount of jobs available for a stage can be configured using the ``--jobs``
 argument. For example, if a user wishes to override the amount of jobs attempted
 for stages to two jobs, the following can be used:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool --jobs 2
 
@@ -46,7 +46,7 @@ package license information (if licenses are defined). If a user wishes to
 compile a project's list of license information without performing an entire
 build, the ``licenses`` action can be used:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool licenses
 

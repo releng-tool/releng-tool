@@ -14,7 +14,7 @@ will look into the current working directory for the project information to
 process. For example, if a project found inside ``my-project`` with the single
 package ``package-a`` defined, the following output may be observed:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ cd my-project
    $ releng-tool
@@ -34,7 +34,7 @@ files will be stored.
 If a user wishes to pass the directory of a project location via command line,
 the argument ``--root-dir`` can be used:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool --root-dir my-project/
    ...
@@ -42,6 +42,6 @@ the argument ``--root-dir`` can be used:
 For a complete list of actions and other argument options provided by the tool,
 the ``--help`` option can be used to show this information:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool --help

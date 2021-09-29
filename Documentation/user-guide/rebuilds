@@ -20,7 +20,7 @@ Consider the following example: a project has three packages ``module-a``,
 ``module-a -> module-b -> module-c``. In this example, the project is building
 until a failure is detected in package ``module-c``:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool
    [module-a built]
@@ -33,7 +33,7 @@ wishes to test the process by manually making the change in ``module-b`` to
 complete the build process. The developer makes the change, re-invokes
 ``releng-tool`` but still notices the build error occurs:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool
    [error in module-c]
@@ -43,7 +43,7 @@ the interim changes made will be available for ``module-c`` to use. To take
 advantage of the new implementation in ``module-b``, the builder can signal for
 the updated package to be rebuilt:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool module-b-rebuild
    [module-b rebuilt]
@@ -51,7 +51,7 @@ the updated package to be rebuilt:
 With ``module-b`` in a more desired state, a re-invoke of ``releng-tool`` could
 allow ``module-c`` to be built.
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool
    [module-c built]

@@ -4,7 +4,7 @@ actually getting started
 Start building a new releng-tool project by creating the following root and
 package folders for a project, and venture into the root folder:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ mkdir -p <my-project>/package
    $ cd <my-project>/
@@ -28,7 +28,7 @@ libraries, simple asset fetching (e.g. image/document downloading) and more.
 For each package, create a new folder inside ``<my-project>/package`` to
 represent the package.
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ mkdir <my-project>/package/<my-package>
 
@@ -116,7 +116,7 @@ and processed like any other package.
 Once all the project's packages are ready, a developer can try their luck by
 attempting to perform the release engineering process:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool
 
@@ -126,20 +126,20 @@ developer may invoke ``releng-tool`` multiple times to attempt to continue the
 build process for a project. A developer may wish to use the ``clean`` option to
 remove an existing extracted sources/partially built sources:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool clean
 
 Or start from a completely fresh state using ``mrproper`` to remove any built
 images and file mode flags:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool mrproper
 
 There may also be times if a single project needs to be cleaned:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool my-package-clean
 

@@ -20,7 +20,7 @@ To enable development mode, invoking ``releng-tool`` with the ``--development``
 argument will enable the mode. Future calls to releng-tool for the project will
 use the development revision for packages where define. For example:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool --development
    (success) configured root for development mode
@@ -65,7 +65,7 @@ To enable local-sources mode, invoking ``releng-tool`` with the
 for the project will use local sources for packages defined as internal
 packages. For example:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ releng-tool --local-sources
    (success) configured root for local-sources mode
@@ -154,7 +154,7 @@ v3.x is desired, the tool ``cmake3`` needs to be invoked instead. To configure
 this, an environment variable can be set to switch which tool to invoke.
 Consider the following example:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
    $ export RELENG_CMAKE=cmake3
    $ releng-tool
