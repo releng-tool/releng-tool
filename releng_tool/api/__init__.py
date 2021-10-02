@@ -292,7 +292,7 @@ class RelengFetchOptions(RelengPackageOptions):
         super(RelengFetchOptions, self).__init__()
         self.cache_dir = None
         self.cache_file = None
-        self.ignore_cache = False
+        self.ignore_cache = None
         self.revision = None
         self.site = None
 

@@ -98,13 +98,16 @@ local sources option to use the default process).
             # two parts, ignoring cached assets can be partially achieved by
             # just removing any detected cache file if a project is configured
             # to ignore a cache file.
-            if engine.opts.devmode and pkg.devmode_ignore_cache:
-                fetch_opts.ignore_cache = True
+            if engine.opts.devmode and pkg.devmode_ignore_cache is not None:
+                fetch_opts.ignore_cache = pkg.devmode_ignore_cache
 
-                if os.path.exists(pkg.cache_file):
+                if pkg.devmode_ignore_cache and os.path.exists(pkg.cache_file):
                     verbose('removing cache file (per configuration): ' + name)
                     if not path_remove(pkg.cache_file):
                         return False
+            # force explicit ignore cache when not in development mode
+            elif not engine.opts.devmode and ignore_cache is None:
+                fetch_opts.ignore_cache = False
 
             if os.path.exists(pkg.cache_file):
                 rv = None

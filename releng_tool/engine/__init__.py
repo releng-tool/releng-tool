@@ -217,9 +217,12 @@ class RelengEngine:
                 PkgAction.PATCH,
             ]
 
+            # determine if an explicit fetch request has been made
+            requested_fetch = None
+            if gaction == GlobalAction.FETCH or pa == PkgAction.FETCH:
+                requested_fetch = True
+
             # ensure all package sources are acquired first
-            requested_fetch = (
-                gaction == GlobalAction.FETCH or pa == PkgAction.FETCH)
             for pkg in pkgs:
                 if not self._stage_init(pkg):
                     return False

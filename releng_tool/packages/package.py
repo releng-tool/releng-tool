@@ -74,7 +74,7 @@ class RelengPackage:
         self.cache_file = None
         self.def_dir = None
         self.deps = []
-        self.devmode_ignore_cache = False
+        self.devmode_ignore_cache = None
         self.fixed_jobs = None
         self.has_devmode_option = None
         self.hash_file = None
