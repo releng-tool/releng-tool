@@ -257,7 +257,10 @@ option to have a user always force fetching new content from a clean state.
 
    LIBFOO_DEVMODE_IGNORE_CACHE = True
 
-By default, this option is disabled with a value of ``False``.
+By default, this option is not defined and results can vary based off the site
+type being fetched. In most cases, fetch operations will treat the default case
+of this option as disabled (``False``). DVCS site types may elect to enable this
+option by default (``True``) if the target revision is a branch.
 
 LIBFOO_DEVMODE_REVISION
 ^^^^^^^^^^^^^^^^^^^^^^^
