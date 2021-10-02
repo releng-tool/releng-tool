@@ -424,8 +424,12 @@ of the releng process:
             path_remove(self.opts.out_dir)
 
             verbose('removing file flags')
-            path_remove(self.opts.ff_local_srcs)
-            path_remove(self.opts.ff_devmode)
+            if os.path.exists(self.opts.ff_devmode):
+                if path_remove(self.opts.ff_devmode):
+                    warn('development mode has been unconfigured')
+            if os.path.exists(self.opts.ff_local_srcs):
+                if path_remove(self.opts.ff_local_srcs):
+                    warn('local-sources mode has been unconfigured')
         else:
             verbose('removing build directory')
             path_remove(self.opts.build_dir)
