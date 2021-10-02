@@ -30,6 +30,20 @@ class TestUtilEnv(unittest.TestCase):
         extend_script_env(env, {'__magic__': 4})
         self.assertEqual(len(env.keys()), 2)
 
+        # imported built-in functions are ignored
+        extend_script_env(env,
+            {'test': globals()['__builtins__']['hash']})
+        self.assertEqual(len(env.keys()), 2)
+
+        # imported functions are ignored
+        extend_script_env(env,
+            {'test': globals()['extend_script_env']})
+        self.assertEqual(len(env.keys()), 2)
+
+        # imported modules are ignored
+        extend_script_env(env, {'test': globals()['unittest']})
+        self.assertEqual(len(env.keys()), 2)
+
     def test_utilenv_env_value(self):
         test_env_key = 'RELENG_TOOL_UNIT_TEST_KEY'
         test_env_val = 'NEW_VALUE'
