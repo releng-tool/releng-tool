@@ -23,13 +23,24 @@ class GitExistsType(Enum):
     revision exists in a Git repository.
 
     Attributes:
-        EXISTS: revision exists
+        EXISTS_BRANCH: branch exists
+        EXISTS_HASH: hash exists
+        EXISTS_TAG: tag exists
         MISSING: revision does not exist
         MISSING_HASH: a hash-provided revision does not exist
     """
-    EXISTS = 'exists'
+    EXISTS_BRANCH = 'exists_branch'
+    EXISTS_HASH = 'exists_hash'
+    EXISTS_TAG = 'exists_tag'
     MISSING = 'missing'
     MISSING_HASH = 'missing_hash'
+
+# types indicating a revision exists
+REVISION_EXISTS = [
+    GitExistsType.EXISTS_BRANCH,
+    GitExistsType.EXISTS_HASH,
+    GitExistsType.EXISTS_TAG,
+]
 
 def fetch(opts):
     """
@@ -58,13 +69,18 @@ def fetch(opts):
 
     # check if we have the target revision cached; if so, package is ready
     if os.path.isdir(cache_dir) and not opts.ignore_cache:
-        if revision_exists(git_dir, revision) == GitExistsType.EXISTS:
+        erv = revision_exists(git_dir, revision)
+        if erv in REVISION_EXISTS:
             # ensure configuration is properly synchronized
             if not _sync_git_configuration(opts):
                 return None
 
+            # if no explicit ignore-cache request and if the revision is a
+            # branch, force ignore-cache on and allow fetching to proceed
+            if opts.ignore_cache is None and erv == GitExistsType.EXISTS_BRANCH:
+                opts.ignore_cache = True
             # return cache dir if not verifying or verification succeeds
-            if not opts._git_verify_revision or _verify_revision(
+            elif not opts._git_verify_revision or _verify_revision(
                     git_dir, revision, quiet=True):
                 return cache_dir
 
@@ -246,7 +262,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
     if revision:
         verbose('verifying target revision exists')
         exists_state = revision_exists(git_dir, revision)
-        if exists_state == GitExistsType.EXISTS:
+        if exists_state in REVISION_EXISTS:
             pass
         elif (exists_state == GitExistsType.MISSING_HASH and
                 limited_fetch and opts._git_depth is None):
@@ -259,7 +275,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
                 err('unable to unshallow fetch state')
                 return False
 
-            if revision_exists(git_dir, revision) != GitExistsType.EXISTS:
+            if revision_exists(git_dir, revision) not in REVISION_EXISTS:
                 err('unable to find matching revision in ' + desc)
                 err(' (revision: {}) '.format(revision))
                 return False
@@ -285,6 +301,10 @@ def revision_exists(git_dir, revision):
         a value of ``GitExistsType``
     """
 
+    if GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
+            'refs/tags/' + revision], quiet=True):
+        return GitExistsType.EXISTS_TAG
+
     output = []
     if not GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
             revision], quiet=True, capture=output):
@@ -300,10 +320,12 @@ def revision_exists(git_dir, revision):
     # valid provided. If so, perform a `cat-file` request to ensure the long
     # hash entry is indeed a valid commit.
     if output and output[0] == revision:
-        if not GIT.execute([git_dir, 'cat-file', '-t', revision], quiet=True):
+        if GIT.execute([git_dir, 'cat-file', '-t', revision], quiet=True):
+            return GitExistsType.EXISTS_HASH
+        else:
             return GitExistsType.MISSING_HASH
 
-    return GitExistsType.EXISTS
+    return GitExistsType.EXISTS_BRANCH
 
 def _sync_git_configuration(opts):
     """
@@ -488,7 +510,7 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
         if not revision:
             return _sync_git_origin(cache_dir, site)
 
-        if revision_exists(git_dir, revision) == GitExistsType.EXISTS:
+        if revision_exists(git_dir, revision) in REVISION_EXISTS:
             return _sync_git_origin(cache_dir, site)
 
     log('processing submodule (package: {}) {}...'.format(opts.name, name))
