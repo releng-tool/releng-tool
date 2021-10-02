@@ -362,7 +362,7 @@ class TestToolGit(TestSiteToolBase):
             self._git_repo('submodule', 'add', repo2, 'repo2', repo=repo1)
             self._create_commit('add module', repo=repo1, add=True)
 
-            # extract package but not submodules (by defaylt)
+            # extract package but not submodules (by default)
             self.engine.opts.gbl_action = GlobalAction.EXTRACT
             rv = self.engine.run()
             self.assertTrue(rv)
