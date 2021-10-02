@@ -88,10 +88,9 @@ class TestUtilHash(unittest.TestCase):
 
     def test_utilhash_verify(self):
         samples = self.samples_dir
-
-        # archive-specific check
         target_sample = os.path.join(samples, 'sample-asset')
 
+        # archive-specific check
         file = os.path.join(samples, 'verify-missing-archive')
         result = verify_hashes(file, target_sample, quiet=True)
         self.assertEqual(result, HashResult.MISSING_ARCHIVE)
@@ -128,3 +127,13 @@ class TestUtilHash(unittest.TestCase):
         file = os.path.join(samples, 'verify-unknown-hash-type')
         result = verify_hashes(file, samples, quiet=True)
         self.assertEqual(result, HashResult.UNSUPPORTED)
+
+        # missing check
+        result = verify_hashes('', '', quiet=True)
+        self.assertEqual(result, HashResult.BAD_PATH)
+
+        # excluded/empty
+        exclude = ['sample-asset']
+        file = os.path.join(samples, 'verify-success')
+        result = verify_hashes(file, target_sample, exclude=exclude, quiet=True)
+        self.assertEqual(result, HashResult.EMPTY)
