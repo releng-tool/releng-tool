@@ -45,7 +45,7 @@ def check_file_flag(file):
     """
     return process_file_flag(None, file)
 
-def process_file_flag(flag, file):
+def process_file_flag(flag, file, quiet=False):
     """
     process a file flag event
 
@@ -59,6 +59,7 @@ def process_file_flag(flag, file):
     Args:
         flag: the flag option to used; ``None`` to check flag state
         file: the filename
+        quiet: suppression of any error messages to standard out
 
     Returns:
         ``FileFlag.EXISTS`` if the flag is enabled; ``FileFlag.NO_EXIST`` if the
@@ -79,7 +80,8 @@ def process_file_flag(flag, file):
                 rv = FileFlag.CONFIGURED
             else:
                 rv = FileFlag.NOT_CONFIGURED
-                err('unable to configure file flag: {}'.format(file))
+                if not quiet:
+                    err('unable to configure file flag: {}', file)
     elif flag is None and os.path.isfile(file):
         rv = FileFlag.EXISTS
     else:
