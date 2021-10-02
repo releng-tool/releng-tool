@@ -87,35 +87,10 @@ def fetch(opts):
     note('fetching {}...'.format(name))
     sys.stdout.flush()
 
-    # if we have a cache dir, ensure it's stable
-    #
-    # If we have a cache directory for this page but didn't find the the target
-    # revision above, first check if the Git cache has been corrupted. If
-    # anything is suspected wrong, start from a fresh state.
-    has_cache = False
-    clean_cache = False
-    if os.path.isdir(cache_dir):
-        if opts.ignore_cache:
-            verbose('sanity checking if cached directory is valid')
-            if GIT.execute([git_dir, 'rev-parse'], cwd=cache_dir, quiet=True):
-                has_cache = True
-            else:
-                clean_cache = True
-        else:
-            log('cache directory exists for package; validating')
-            if GIT.execute([git_dir, 'fsck', '--full'], cwd=cache_dir,
-                    quiet=True):
-                has_cache = True
-            else:
-                clean_cache = True
-
-    if clean_cache:
-        log('cache directory has errors; will re-downloaded')
-
-        if not path_remove(cache_dir):
-            err('''unable to cleanup cache folder for package
-(cache folder: {})'''.format(cache_dir))
-            return None
+    # validate any cache directory (if one exists)
+    has_cache, bad_validation = _validate_cache(cache_dir)
+    if bad_validation:
+        return None
 
     # if we have no cache for this repository, build one
     if not has_cache:
@@ -516,27 +491,10 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
     log('processing submodule (package: {}) {}...'.format(opts.name, name))
     sys.stdout.flush()
 
-    # if we have a cache dir, ensure it's stable
-    #
-    # If we have a cache directory for this page but didn't find the the target
-    # revision above, first check if the Git cache has been corrupted. If
-    # anything is suspected wrong, start from a fresh state.
-    has_cache = False
-    if os.path.isdir(cache_dir):
-        if opts.ignore_cache:
-            has_cache = True
-        else:
-            log('cache directory exists for submodule; validating')
-            if GIT.execute([git_dir, 'fsck', '--full'], cwd=cache_dir,
-                    quiet=True):
-                has_cache = True
-            else:
-                log('cache directory has errors; will re-downloaded')
-
-                if not path_remove(cache_dir):
-                    err('''unable to cleanup cache folder for package
- (cache folder: {})'''.format(cache_dir))
-                    return False
+    # validate any cache directory (if one exists)
+    has_cache, bad_validation = _validate_cache(cache_dir)
+    if bad_validation:
+        return None
 
     # if we have no cache for this repository, build one
     if not has_cache:
@@ -554,6 +512,40 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
     # fetch sources for this submodule
     desc = 'submodule ({}): {}'.format(opts.name, name)
     return _fetch_srcs(opts, cache_dir, revision, desc=desc)
+
+def _validate_cache(cache_dir):
+    """
+    validate an existing cache directory to fetch on
+
+    A fetch operation may occur on an existing cache directory, typically when
+    a force-fetch or a configured revision has changed. This call helps
+    validate the existing cache directory (from a bad state such as a corrupted
+    repository). If a cache directory does exist,
+
+    Args:
+        cache_dir: the cache/bare repository to fetch into
+
+    Returns:
+        a 2-tuple (if a cache directory exists; and if validation failed)
+    """
+
+    git_dir = '--git-dir=' + cache_dir
+
+    bad_validation = False
+    has_cache = False
+    if os.path.isdir(cache_dir):
+        log('cache directory detected; validating')
+        if GIT.execute([git_dir, 'rev-parse'], cwd=cache_dir, quiet=True):
+            debug('cache directory validated')
+            has_cache = True
+        else:
+            log('cache directory has errors; will re-downloaded')
+            if not path_remove(cache_dir):
+                err('unable to cleanup cache folder for package\n'
+                    ' (cache folder: {})', cache_dir)
+                bad_validation = True
+
+    return has_cache, bad_validation
 
 def _verify_revision(git_dir, revision, quiet=False):
     """
