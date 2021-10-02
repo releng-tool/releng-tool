@@ -69,7 +69,7 @@ class GitTool(RelengTool):
 
         # a `--head` fetch may fetch more than one reference; extract the first
         # entry and remove any known ref prefix from it
-        revision = ref.split(sep=None, maxsplit=2)[1]
+        revision = ref.split(None, 2)[1]
         if revision.startswith('refs/heads/'):
             revision = revision[len('refs/heads/'):]
         elif revision.startswith('refs/remotes/origin/'):
