@@ -77,7 +77,15 @@ class TestToolGit(TestSiteToolBase):
         current_hash = self._git_cache('rev-parse', 'HEAD')
         self.assertEqual(current_hash, first_hash)
 
-    def test_tool_git_custom_options(self):
+    def test_tool_git_custom_options_invalid(self):
+        self.defconfig_add('GIT_CONFIG', {
+            'bad-config-key': '',
+        })
+        self.defconfig_add('VERSION', DEFAULT_BRANCH)
+        rv = self.engine.run()
+        self.assertFalse(rv)
+
+    def test_tool_git_custom_options_valid(self):
         MY_CUSTOM_CFG = 'tmp.example'
         MY_CUSTOM_CFG_VALUE = 'my-value'
 
