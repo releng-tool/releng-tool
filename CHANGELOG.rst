@@ -3,7 +3,9 @@ development
 
 - fixed an import issue when running with python 3.10
 - fixed an issue where a cyclic package check provided a bad message
+- fixed an issue where a git submodule with a target branch may fail to extract
 - post-processing script renamed to ``releng-post-build``
+- support development mode relaxed branch fetching for git sites
 - support requiring a git source's revision to be gpg-signed
 - support using ascii-armor (asc) files to package integrity checks
 
