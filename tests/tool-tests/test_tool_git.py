@@ -412,6 +412,70 @@ class TestToolGit(TestSiteToolBase):
             self.assertTrue(os.path.exists(repo2_file))
             self.assertTrue(os.path.exists(repo3_file))
 
+    def test_tool_git_submodules_branch_revision(self):
+        self.defconfig_add('GIT_SUBMODULES', True)
+        self.defconfig_add('VERSION', DEFAULT_BRANCH)
+
+        with generate_temp_dir() as repo2:
+            # prepare additional mock repository directories
+            repo1 = self.repo_dir
+            self.prepare_repo_dir(repo2)
+
+            # dummy file on repo1
+            touch(os.path.join(repo1, 'file1'))
+            self._create_commit('add file', repo=repo1, add=True)
+
+            # dummy files on repo2 for two branches
+            CUSTOM_BRANCH = 'custom'
+
+            touch(os.path.join(repo2, 'file2'))
+            self._create_commit('add file', repo=repo2, add=True)
+
+            self._git_repo('checkout', '-b', CUSTOM_BRANCH, repo=repo2)
+
+            touch(os.path.join(repo2, 'file3'))
+            self._create_commit('add file', repo=repo2, add=True)
+
+            self._git_repo('checkout', DEFAULT_BRANCH, repo=repo2)
+
+            # add a submodule repo2 to repo1
+            self._git_repo('submodule', 'add', repo2, 'repo2', repo=repo1)
+            self._create_commit('add module', repo=repo1, add=True)
+
+            # extract package but not submodules (by default)
+            self.engine.opts.gbl_action = GlobalAction.EXTRACT
+            rv = self.engine.run()
+            self.assertTrue(rv)
+
+            # verify expected content from main package; not submodules
+            out_dir = os.path.join(
+                self.engine.opts.build_dir, 'test-' + DEFAULT_BRANCH)
+            repo1_file = os.path.join(out_dir, 'file1')
+            repo2_file = os.path.join(out_dir, 'repo2', 'file2')
+            self.assertTrue(os.path.exists(repo1_file))
+            self.assertTrue(os.path.exists(repo2_file))
+
+            # cleanup
+            self.cleanup_outdir()
+
+            # adjust submodule to target the custom branch
+            self._git_repo('config', '-f', '.gitmodules',
+                'submodule.repo2.branch', CUSTOM_BRANCH, repo=repo1)
+
+            # force a fetch (which should update the cache)
+            self.engine.opts.gbl_action = GlobalAction.FETCH
+            rv = self.engine.run()
+            self.assertTrue(rv)
+
+            # re-extract package and submodules
+            self.engine.opts.gbl_action = GlobalAction.EXTRACT
+            rv = self.engine.run()
+            self.assertTrue(rv)
+
+            # verify expected content from main package and submodules
+            repo3_file = os.path.join(out_dir, 'repo2', 'file3')
+            self.assertTrue(os.path.exists(repo3_file))
+
     def test_tool_git_unknown_branch_tag(self):
         self.defconfig_add('VERSION', 'unknown')
         rv = self.engine.run()
