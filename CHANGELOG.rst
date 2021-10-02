@@ -1,5 +1,5 @@
-development
------------
+0.9 (2021-10-02)
+----------------
 
 - fixed an import issue when running with python 3.10
 - fixed an issue where a cyclic package check provided a bad message
