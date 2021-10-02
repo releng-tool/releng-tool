@@ -24,6 +24,7 @@ from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
+from releng_tool.opts import RELENG_POST_BUILD_NAME
 from releng_tool.packages.exceptions import RelengToolStageFailure
 from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.packages.pipeline import RelengPackagePipeline
@@ -529,7 +530,8 @@ of the releng process:
                 build_script = os.path.join(self.opts.root_dir, script_name)
                 if os.path.isfile(build_script):
                     warn('using deprecated post-processing file {} -- switch '
-                         'to releng-post for future projects', script_name)
+                         'to {} for future projects', script_name,
+                         RELENG_POST_BUILD_NAME)
                     postbuild_exists = True
                     break
 
