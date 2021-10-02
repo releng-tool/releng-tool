@@ -188,6 +188,72 @@ class TestToolGit(TestSiteToolBase):
         rev_count = self._git_cache('rev-list', '--count', 'HEAD')
         self.assertNotEqual(int(rev_count), 1)
 
+    def test_tool_git_devmode_auto_fetch_branch(self):
+        # create a new branch with a commit
+        TARGET_BRANCH = 'target'
+        self._git_repo('checkout', '-b', TARGET_BRANCH)
+        first_hash = self._create_commit('first')
+
+        # enable development mode
+        touch(self.engine.opts.ff_devmode)
+
+        # note: default state should be automatic cache-ignoring
+        #        (i.e enabled in development mode)
+
+        # fetch the target
+        self.defconfig_add('VERSION', TARGET_BRANCH)
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
+        current_hash = self._git_cache('rev-parse', 'HEAD')
+        self.assertEqual(current_hash, first_hash)
+
+        # cleanup
+        self.cleanup_outdir()
+        self.engine.opts.devmode = None
+
+        # create a new commit
+        second_hash = self._create_commit('second')
+
+        # extract project; should be the second commit
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
+        current_hash = self._git_cache('rev-parse', 'HEAD')
+        self.assertEqual(current_hash, second_hash)
+
+        # cleanup
+        self.cleanup_outdir()
+        self.engine.opts.devmode = None
+
+        # create a new commit
+        third_hash = self._create_commit('third')
+
+        # explicitly indicate that cache-ignoring should not happen
+        self.defconfig_add('DEVMODE_IGNORE_CACHE', False)
+        self.defconfig_dump()
+
+        # extract; should be the second commit
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
+        current_hash = self._git_cache('rev-parse', 'HEAD')
+        self.assertEqual(current_hash, second_hash)
+
+        # cleanup
+        self.cleanup_outdir()
+        self.engine.opts.devmode = None
+
+        # explicitly indicate that cache-ignoring can happen
+        self.defconfig_add('DEVMODE_IGNORE_CACHE', True)
+
+        # extract; should be the third commit
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
+        current_hash = self._git_cache('rev-parse', 'HEAD')
+        self.assertEqual(current_hash, third_hash)
+
     def test_tool_git_diverged_branch(self):
         # create a new branch with a commit
         TARGET_BRANCH = 'target'
