@@ -62,14 +62,18 @@ class GitTool(RelengTool):
             the revision; ``None`` when a revision cannot be extracted
         """
 
-        rv, ref = self.execute_rv(
-            '--git-dir=' + bare_dir, 'show-ref', '--head')
+        rv, ref = self.execute_rv('--git-dir=' + bare_dir, 'show-ref', '--head')
         if rv != 0:
             err('failed to extract a submodule revision')
             return None
 
-        revision = ref.split(' ', 1)[1]
-        revision = revision[len('refs/remotes/origin/'):]
+        # a `--head` fetch may fetch more than one reference; extract the first
+        # entry and remove any known ref prefix from it
+        revision = ref.split(sep=None, maxsplit=2)[1]
+        if revision.startswith('refs/heads/'):
+            revision = revision[len('refs/heads/'):]
+        elif revision.startswith('refs/remotes/origin/'):
+            revision = revision[len('refs/remotes/origin/'):]
         return revision
 
     def parse_cfg_file(self, target):
