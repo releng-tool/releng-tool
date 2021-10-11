@@ -1,13 +1,17 @@
+development
+-----------
+
+- fixed an issue where ``releng_mkdir`` reports success if the target path is a
+  file that already exists
+- fixed an issue where post-processing may be invoked even if a package's stage
+  would fail
+
 0.9 (2021-10-02)
 ----------------
 
 - fixed an import issue when running with python 3.10
-- fixed an issue where ``releng_mkdir`` reports success if the target path is a
-  file that already exists
 - fixed an issue where a cyclic package check provided a bad message
 - fixed an issue where a git submodule with a target branch may fail to extract
-- fixed an issue where post-processing may be invoked even if a package's stage
-  would fail
 - post-processing script renamed to ``releng-post-build``
 - support development mode relaxed branch fetching for git sites
 - support requiring a git source's revision to be gpg-signed
