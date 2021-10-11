@@ -681,7 +681,7 @@ class RelengPackageManager:
         os.environ[pkg_key(name, RPK_VERSION)] = pkg_version
 
         # (internals)
-        prefix = '.stage_'
+        prefix = '.releng_tool-stage-'
         outdir = pkg.build_output_dir
         pkg._ff_bootstrap = os.path.join(outdir, prefix + 'bootstrap')
         pkg._ff_build = os.path.join(outdir, prefix + 'build')
