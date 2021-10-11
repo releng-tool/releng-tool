@@ -278,7 +278,7 @@ class RelengEngine:
 
                     verbose('processing package: {}'.format(pkg.name))
                     if not pipeline.process(pkg):
-                        break
+                        return False
                 license_files = pipeline.license_files
 
         except RelengToolStageFailure:
