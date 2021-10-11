@@ -80,7 +80,7 @@ def ensure_dir_exists(dir_, quiet=False):
     try:
         os.makedirs(dir_)
     except OSError as e:
-        if e.errno != errno.EEXIST:
+        if e.errno != errno.EEXIST or not os.path.isdir(dir_):
             if not quiet:
                 err('unable to create directory: ' + dir_)
                 err('    {}'.format(e))
