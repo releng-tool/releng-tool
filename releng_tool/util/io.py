@@ -824,6 +824,10 @@ def path_remove(path, quiet=False):
         ``True`` if the path was removed or does not exist; ``False`` if the
         path could not be removed from the system
     """
+
+    if not os.path.exists(path):
+        return True
+
     try:
         if os.path.isdir(path) and not os.path.islink(path):
             _path_remove_dir(path)
