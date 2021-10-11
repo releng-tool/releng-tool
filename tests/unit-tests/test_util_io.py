@@ -2,6 +2,7 @@
 # Copyright 2018-2021 releng-tool
 
 from collections import OrderedDict
+from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension as ise
 from releng_tool.util.io import opt_file
@@ -82,6 +83,27 @@ class TestUtilIo(unittest.TestCase):
             self.assertTrue(result)
             cc4 = compare_contents(copied_file_b, target_ow)
             self.assertIsNone(cc4, cc4)
+
+    def test_utilio_ensuredirexists(self):
+        with prepare_workdir() as work_dir:
+            result = ensure_dir_exists(work_dir)
+            self.assertTrue(result)
+
+            new_dir = os.path.join(work_dir, 'test1')
+            self.assertFalse(os.path.exists(new_dir))
+
+            result = ensure_dir_exists(new_dir)
+            self.assertTrue(result)
+            self.assertTrue(os.path.exists(new_dir))
+
+            new_file = os.path.join(work_dir, 'test2')
+            with open(new_file, 'a'):
+                pass
+            self.assertTrue(os.path.isfile(new_file))
+
+            result = ensure_dir_exists(new_file)
+            self.assertFalse(result)
+            self.assertTrue(os.path.isfile(new_file))
 
     def test_utilio_execution(self):
         result = execute(None, quiet=True, critical=False)
