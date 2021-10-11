@@ -82,8 +82,8 @@ def ensure_dir_exists(dir_, quiet=False):
     except OSError as e:
         if e.errno != errno.EEXIST or not os.path.isdir(dir_):
             if not quiet:
-                err('unable to create directory: ' + dir_)
-                err('    {}'.format(e))
+                err('unable to create directory: {}\n'
+                    '    {}', dir_, e)
             return False
     return True
 
@@ -355,8 +355,8 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                 if not cmd_str:
                     cmd_str = _cmd_args_to_str(args)
 
-                err('unable to execute command: ' + cmd_str)
-                err('    {}'.format(e))
+                err('unable to execute command: {}\n'
+                    '    {}', cmd_str, e)
 
     if rv != 0:
         if critical:
@@ -622,7 +622,7 @@ def path_copy(src, dst, quiet=False, critical=True):
 
     if not quiet and errmsg:
         err('unable to copy source contents to target location\n'
-            '    {}'.format(errmsg))
+            '    {}', errmsg)
 
     if not success and critical:
         sys.exit(-1)
@@ -718,8 +718,8 @@ def path_move(src, dst, quiet=False, critical=True):
         dst_dir = os.path.realpath(dst)
         if dst_dir.startswith(src_dir):
             if not quiet:
-                err('unable to move source contents to target location')
-                err('    attempt to move directory into a child subdirectory')
+                err('unable to move source contents to target location\n'
+                    '    attempt to move directory into a child subdirectory')
             if critical:
                 sys.exit(-1)
             return False
@@ -736,8 +736,8 @@ def path_move(src, dst, quiet=False, critical=True):
         except Exception as e:
             success = False
             if not quiet:
-                err('unable to move source contents to target location')
-                err('    {}'.format(e))
+                err('unable to move source contents to target location\n'
+                    '    {}', e)
 
     if not success and critical:
         sys.exit(-1)
@@ -836,8 +836,8 @@ def path_remove(path, quiet=False):
     except OSError as e:
         if e.errno != errno.ENOENT:
             if not quiet:
-                err('unable to remove path: ' + path)
-                err('    {}'.format(e))
+                err('unable to remove path: {}\n'
+                    '    {}', path, e)
             return False
 
     return True
@@ -1048,10 +1048,12 @@ def run_script(script, globals_, subject=None, catch=True):
         try:
             result = run_path(script, init_globals=globals_)
         except Exception as e:
-            err(traceback.format_exc())
-            err('error running {}{}script: {}'.format(
-                subject, subject and ' ', script))
-            err('    {}'.format(e))
+            err('{}\n'
+                'error running {}{}script: {}\n'
+                '    {}',
+                traceback.format_exc(),
+                subject, subject and ' ', script,
+                e)
             return None
 
     return result
