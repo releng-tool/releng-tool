@@ -13,6 +13,7 @@ from releng_tool.util.io import path_remove
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prepend_shebang_interpreter as psi
+from releng_tool.util.io import run_script
 from releng_tool.util.io import touch
 from releng_tool.util.log import is_verbose
 from tests import compare_contents
@@ -437,6 +438,25 @@ class TestUtilIo(unittest.TestCase):
             path = _('missing')
             removed = path_remove(path)
             self.assertTrue(removed)
+
+    def test_utilio_runscript(self):
+        with prepare_workdir() as work_dir:
+            valid_script = os.path.join(work_dir, 'valid')
+            with open(valid_script, 'a') as f:
+                f.write('test=1\n')
+
+            result = run_script(valid_script, {})
+            self.assertEqual(result['test'], 1)
+
+            invalid_script = os.path.join(work_dir, 'invalid')
+            with open(invalid_script, 'a') as f:
+                f.write('bad-line\n')
+
+            result = run_script(invalid_script, {})
+            self.assertIsNone(result)
+
+            with self.assertRaises(NameError):
+                run_script(invalid_script, {}, catch=False)
 
     def test_utilio_shebang_interpreter(self):
         si_dir = os.path.join(self.assets_dir, 'shebang-interpreter')
