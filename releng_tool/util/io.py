@@ -155,9 +155,17 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         SystemExit: if the execution operation fails with ``critical=True``
     """
 
-    rv = _execute(args, cwd=cwd, env=env, env_update=env_update,
-        quiet=quiet, critical=critical, poll=poll, capture=capture)
-    return (rv == 0)
+    rv = _execute(
+        args,
+        capture=capture,
+        critical=critical,
+        cwd=cwd,
+        env=env,
+        env_update=env_update,
+        poll=poll,
+        quiet=quiet,
+    )
+    return rv == 0
 
 def execute_rv(command, *args, **kwargs):
     """
@@ -200,11 +208,15 @@ def execute_rv(command, *args, **kwargs):
     """
 
     out = []
-    rv = _execute([command] + list(args),
+    rv = _execute(
+        [command] + list(args),
+        capture=out,
+        critical=False,
         cwd=kwargs.get('cwd'),
         env=kwargs.get('env'),
         env_update=kwargs.get('env_update'),
-        capture=out, quiet=True, critical=False)
+        quiet=True,
+    )
     return rv, '\n'.join(out)
 
 def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
@@ -319,9 +331,15 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                 bufsize = 1
                 universal_newlines = True
 
-            proc = subprocess.Popen(args, bufsize=bufsize,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                cwd=cwd, env=final_env, universal_newlines=universal_newlines)
+            proc = subprocess.Popen(
+                args,
+                bufsize=bufsize,
+                cwd=cwd,
+                env=final_env,
+                stderr=subprocess.STDOUT,
+                stdout=subprocess.PIPE,
+                universal_newlines=universal_newlines,
+            )
 
             if bufsize == 0:
                 line = bytearray()
