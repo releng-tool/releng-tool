@@ -473,18 +473,18 @@ of the releng process:
                     license_header = 'license(s)'
 
                 # output license header
-                dst.write("""{}
+                dst.write('''{}
 ################################################################################
-""".format(license_header))
+'''.format(license_header))
 
                 # output license header
                 for license_name, license_data in sorted(license_files.items()):
                     license_files = license_data['files']
                     license_version = license_data['version']
-                    dst.write("""
+                    dst.write('''
 {}-{}
 --------------------------------------------------------------------------------
-""".format(license_name, license_version))
+'''.format(license_name, license_version))
                     for pkg_license_file in sorted(license_files):
                         verbose('writing license file ({}): {}'.format(
                             license_name, pkg_license_file))
