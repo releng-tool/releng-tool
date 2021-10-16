@@ -82,8 +82,7 @@ class RelengEngine:
     def __init__(self, opts):
         self.registry = RelengRegistry()
         self.opts = opts
-        self.pkgman = RelengPackageManager(opts, self.registry,
-            dvcs_cache=True)
+        self.pkgman = RelengPackageManager(opts, self.registry, dvcs_cache=True)
         self.stats = RelengStats(opts)
 
     def run(self):
