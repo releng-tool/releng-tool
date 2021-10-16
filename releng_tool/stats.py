@@ -30,7 +30,8 @@ except ImportError:
 # filename for the statistics database
 STATISTICS_NAME = 'statistics.dat'
 
-class RelengStats():
+
+class RelengStats:
     """
     statistics tracking
 
