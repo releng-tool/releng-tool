@@ -30,7 +30,7 @@ def stage(engine, pkg, script_env):
         ``True`` if the configuration stage is completed; ``False`` otherwise
     """
 
-    note('configuring {}...'.format(pkg.name))
+    note('configuring {}...', pkg.name)
     sys.stdout.flush()
 
     # ignore configuration step for types which do not have one
@@ -86,7 +86,7 @@ def stage(engine, pkg, script_env):
         configurer = configure_script
 
     if not configurer:
-        err('configurer type is not implemented: {}'.format(pkg.type))
+        err('configurer type is not implemented: {}', pkg.type)
         return False
 
     with interim_working_dir(build_dir):

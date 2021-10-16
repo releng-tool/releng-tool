@@ -49,15 +49,16 @@ def stage(engine, pkg, ignore_cache):
         if os.path.isdir(pkg.build_dir):
             return True
 
-        err('missing local sources for internal package: ' + name)
-        err("""\
+        err('''\
+missing local sources for internal package: {0}
+
 The active configuration is flagged for 'local sources' mode; however, an
 internal package cannot be found in the local system. Before continuing, ensure
 you have checked out all internal packages on your local system (or, disable the
 local sources option to use the default process).
 
-       Package: {}
- Expected Path: {}""".format(name, pkg.build_dir))
+       Package: {0}
+ Expected Path: {1}''', name, pkg.build_dir)
         return False
 
     # if the vcs-type is archive-based, flag that hash checks are needed
@@ -132,18 +133,18 @@ local sources option to use the default process).
                         rv = False
                     elif hr == HashResult.MISSING_ARCHIVE:
                         if not perform_file_asc_check:
-                            err("""\
+                            err('''\
 missing archive hash for verification
 
 The hash file for this package does not have an entry for the cache file to be
 verified. Ensure the hash file defines an entry for the expected cache file:
 
     Hash File: {}
-         File: {}""".format(pkg.hash_file, cache_filename))
+         File: {}''', pkg.hash_file, cache_filename)
                             rv = False
                     else:
                         err('invalid fetch operation (internal error; '
-                            'hash-check failure: {})'.format(hr))
+                            'hash-check failure: {})', hr)
                         rv = False
                 else:
                     rv = True
@@ -154,14 +155,14 @@ verified. Ensure the hash file defines an entry for the expected cache file:
                         rv = True
                     else:
                         if not path_remove(pkg.cache_file):
-                            err("""\
+                            err('''\
 failed to validate against ascii-armor
 
 Validation of a package resource failed to verify against a provided ASCII-armor
 file. Ensure that the package's public key has been registered into gpg.
 
  ASC File: {}
-     File: {}""".format(pkg.asc_file, cache_filename))
+     File: {}''', pkg.asc_file, cache_filename)
                             rv = False
                         else:
                             rv = None
@@ -195,7 +196,7 @@ file. Ensure that the package's public key has been registered into gpg.
                 fetcher = fetch_url
 
             if not fetcher:
-                err('fetch type is not implemented: {}'.format(pkg.vcs_type))
+                err('fetch type is not implemented: {}', pkg.vcs_type)
                 return False
 
             # if this is url-type location, attempt to search on the mirror
@@ -238,30 +239,30 @@ file. Ensure that the package's public key has been registered into gpg.
                         return False
                     elif hr == HashResult.MISSING_ARCHIVE:
                         if not perform_file_asc_check:
-                            err("""\
+                            err('''\
 missing archive hash for verification
 
 The hash file for this package does not have an entry for the cache file to be
 verified. Ensure the hash file defines an entry for the expected cache file:
 
     Hash File: {}
-         File: {}""".format(pkg.hash_file, cache_filename))
+         File: {}''', pkg.hash_file, cache_filename)
                             return False
                     else:
                         err('invalid fetch operation (internal error; '
-                            'hash-check failure: {})'.format(hr))
+                            'hash-check failure: {})', hr)
                         return False
 
                 if perform_file_asc_check:
                     if not GPG.validate(pkg.asc_file, interim_cache_file):
-                        err("""\
+                        err('''\
 failed to validate against ascii-armor
 
 Validation of a package resource failed to verify against a provided ASCII-armor
 file. Ensure that the package's public key has been registered into gpg.
 
      ASC File: {}
-         File: {}""".format(pkg.asc_file, cache_filename))
+         File: {}''', pkg.asc_file, cache_filename)
                         return False
 
                 debug('fetch successful; moving cache file')
@@ -274,12 +275,11 @@ file. Ensure that the package's public key has been registered into gpg.
                     shutil.move(interim_cache_file, pkg.cache_file)
                 except shutil.Error:
                     err('invalid fetch operation (internal error; fetch mode '
-                        '"{}" has provided a missing cache file)'.format(
-                            pkg.vcs_type))
+                        '"{}" has provided a missing cache file)', pkg.vcs_type)
                     return False
             else:
                 err('invalid fetch operation (internal error; fetch mode "{}" '
-                    'has returned an unsupported value)'.format(pkg.vcs_type))
+                    'has returned an unsupported value)', pkg.vcs_type)
                 return False
 
     return True

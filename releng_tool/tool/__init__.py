@@ -147,10 +147,10 @@ class RelengTool:
             return RelengTool.detected[self.tool]
 
         if execute([self.tool] + self.exists_args, quiet=True, critical=False):
-            debug('{} tool is detected on this system'.format(self.tool))
+            debug('{} tool is detected on this system', self.tool)
             RelengTool.detected[self.tool] = True
         else:
-            debug('{} tool is not detected on this system'.format(self.tool))
+            debug('{} tool is not detected on this system', self.tool)
             RelengTool.detected[self.tool] = False
 
         return RelengTool.detected[self.tool]

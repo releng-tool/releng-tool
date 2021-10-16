@@ -31,7 +31,7 @@ def fetch(opts):
         err('unable to fetch package; scp is not installed')
         return None
 
-    note('fetching {}...'.format(name))
+    note('fetching {}...', name)
     sys.stdout.flush()
 
     if not SCP.execute(['-o', 'BatchMode yes', site, cache_file], cwd=work_dir):

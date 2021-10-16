@@ -31,7 +31,7 @@ def stage(engine, pkg, script_env):
         ``True`` if the installation stage is completed; ``False`` otherwise
     """
 
-    note('installing {}...'.format(pkg.name))
+    note('installing {}...', pkg.name)
     sys.stdout.flush()
 
     if pkg.build_subdir:
@@ -92,7 +92,7 @@ def stage(engine, pkg, script_env):
         installer = install_script
 
     if not installer:
-        err('installer type is not implemented: {}'.format(pkg.type))
+        err('installer type is not implemented: {}', pkg.type)
         return False
 
     with interim_working_dir(build_dir):

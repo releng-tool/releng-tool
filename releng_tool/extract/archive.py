@@ -60,8 +60,8 @@ def extract(opts):
                 file=cache_file, dir=work_dir)
 
             if not execute(tool_cmd.split(), cwd=work_dir, critical=False):
-                err('unable to extract with tool override')
-                err(' (command: {})'.format(tool_cmd))
+                err('unable to extract with tool override\n'
+                    ' (command: {})', tool_cmd)
                 return None
 
         # attempt to extract the (compressed) tar archive with the host's
@@ -104,10 +104,10 @@ def extract(opts):
                         tar.extractall(path=work_dir,
                             members=tar_extract(tar, strip_count))
                 except Exception as e:
-                    err('unable to extract tar file')
-                    err('    {}'.format(e))
-                    err(' (file: {})'.format(cache_file))
-                    err(' (target: {})'.format(work_dir))
+                    err('unable to extract tar file\n'
+                        '    {}\n'
+                        ' (file: {})\n'
+                        ' (target: {})', e, cache_file, work_dir)
                     return False
 
         # extract a zip-extension cache file using python's internal
@@ -137,10 +137,10 @@ def extract(opts):
                                 shutil.copyfileobj(src, f)
 
             except Exception as e:
-                err('unable to extract zip file')
-                err('    {}'.format(e))
-                err(' (file: {})'.format(cache_file))
-                err(' (target: {})'.format(work_dir))
+                err('unable to extract zip file\n'
+                    '    {}\n'
+                    ' (file: {})\n'
+                    ' (target: {})', e, cache_file, work_dir)
                 return False
 
     if not is_extractable:
@@ -148,10 +148,10 @@ def extract(opts):
         try:
             shutil.copy2(cache_file, work_dir)
         except IOError as e:
-            err('unable to copy over cache file')
-            err('    {}'.format(e))
-            err(' (file: {})'.format(cache_file))
-            err(' (target: {})'.format(work_dir))
+            err('unable to copy over cache file\n'
+                '    {}\n'
+                ' (file: {})\n'
+                ' (target: {})', e, cache_file, work_dir)
             return False
 
     return True

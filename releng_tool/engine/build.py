@@ -30,7 +30,7 @@ def stage(engine, pkg, script_env):
         ``True`` if the build stage is completed; ``False`` otherwise
     """
 
-    note('building {}...'.format(pkg.name))
+    note('building {}...', pkg.name)
     sys.stdout.flush()
 
     if pkg.build_subdir:
@@ -80,7 +80,7 @@ def stage(engine, pkg, script_env):
         builder = build_script
 
     if not builder:
-        err('build type is not implemented: {}'.format(pkg.type))
+        err('build type is not implemented: {}', pkg.type)
         return False
 
     with interim_working_dir(build_dir):

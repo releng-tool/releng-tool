@@ -84,7 +84,7 @@ def fetch(opts):
                     git_dir, revision, quiet=True):
                 return cache_dir
 
-    note('fetching {}...'.format(name))
+    note('fetching {}...', name)
     sys.stdout.flush()
 
     # validate any cache directory (if one exists)
@@ -112,7 +112,7 @@ def fetch(opts):
     # verify revision (if configured to check it)
     if opts._git_verify_revision:
         if not _verify_revision(git_dir, revision):
-            err("""\
+            err('''\
 failed to validate git revision
 
 Package has been configured to require the verification of the GPG signature
@@ -120,7 +120,7 @@ for the target revision. The verification has failed. Ensure that the revision
 is signed and that the package's public key has been registered in the system.
 
       Package: {}
-     Revision: {}""".format(name, revision))
+     Revision: {}''', name, revision)
             return None
 
     # fetch submodules (if configured to do so)
@@ -251,12 +251,12 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
                 return False
 
             if revision_exists(git_dir, revision) not in REVISION_EXISTS:
-                err('unable to find matching revision in ' + desc)
-                err(' (revision: {}) '.format(revision))
+                err('unable to find matching revision in {}\n'
+                    ' (revision: {})', desc, revision)
                 return False
         else:
-            err('unable to find matching revision in ' + desc)
-            err(' (revision: {}) '.format(revision))
+            err('unable to find matching revision in {}\n'
+                'revision: {})', desc, revision)
             return False
 
     return True
@@ -488,7 +488,7 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
         if revision_exists(git_dir, revision) in REVISION_EXISTS:
             return _sync_git_origin(cache_dir, site)
 
-    log('processing submodule (package: {}) {}...'.format(opts.name, name))
+    log('processing submodule (package: {}) {}...', opts.name, name)
     sys.stdout.flush()
 
     # validate any cache directory (if one exists)

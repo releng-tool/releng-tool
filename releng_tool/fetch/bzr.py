@@ -33,7 +33,7 @@ def fetch(opts):
         err('unable to fetch package; bzr is not installed')
         return None
 
-    note('fetching {}...'.format(name))
+    note('fetching {}...', name)
     sys.stdout.flush()
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))

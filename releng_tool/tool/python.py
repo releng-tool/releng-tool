@@ -45,10 +45,10 @@ class PythonTool(RelengTool):
         # local system
         elif sys.platform == 'win32' and os.path.basename(tool) == tool:
             debug('{} tool not available in path; '
-                  'attempting to search the system...'.format(tool))
+                  'attempting to search the system...', tool)
             alt_tool = find_win32_python_interpreter(tool)
             if alt_tool:
-                debug('{} tool to be replaced by: {}'.format(tool, alt_tool))
+                debug('{} tool to be replaced by: {}', tool, alt_tool)
 
                 if execute([alt_tool] + self.exists_args, quiet=True,
                         critical=False):
@@ -60,10 +60,10 @@ class PythonTool(RelengTool):
                     self.tool = tool
 
         if found:
-            debug('{} tool is detected on this system'.format(tool))
+            debug('{} tool is detected on this system', tool)
             RelengTool.detected[tool] = True
         else:
-            debug('{} tool is not detected on this system'.format(tool))
+            debug('{} tool is not detected on this system', tool)
             RelengTool.detected[tool] = False
 
         return RelengTool.detected[tool]

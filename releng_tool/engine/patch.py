@@ -39,7 +39,7 @@ def stage(engine, pkg, script_env):
         if engine.opts.devmode and pkg.has_devmode_option:
             return True
 
-    note('patching {}...'.format(pkg.name))
+    note('patching {}...', pkg.name)
     sys.stdout.flush()
 
     if pkg.build_subdir:
@@ -55,8 +55,8 @@ def stage(engine, pkg, script_env):
 
             verbose('patch script executed: ' + patch_script)
         except Exception as e:
-            err('error running patch script: ' + patch_script)
-            err('    {}'.format(e))
+            err('error running patch script: \n'
+                '    {}', patch_script, e)
             return False
 
     # find all patches in the package's folder, sort and apply each

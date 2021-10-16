@@ -43,7 +43,7 @@ def stage(engine, pkg):
     if pkg.no_extraction:
         return True
 
-    note('extracting {}...'.format(pkg.name))
+    note('extracting {}...', pkg.name)
     sys.stdout.flush()
 
     extract_opts = RelengExtractOptions()
@@ -96,7 +96,7 @@ def stage(engine, pkg):
                 extracter = extract_archive
 
             if not extracter:
-                err('extract type is not implemented: {}'.format(pkg.vcs_type))
+                err('extract type is not implemented: {}', pkg.vcs_type)
                 return False
 
             # perform the extract request
@@ -118,7 +118,7 @@ def stage(engine, pkg):
                 return False
             else:
                 err('invalid extract operation (internal error; '
-                    'hash-check failure: {})'.format(result))
+                    'hash-check failure: {})', result)
                 return False
 
         debug('extraction successful; moving sources into package output '

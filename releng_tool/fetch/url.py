@@ -38,7 +38,7 @@ def fetch(opts):
 
     filename = os.path.basename(cache_file)
 
-    note('fetching {}...'.format(name))
+    note('fetching {}...', name)
     sys.stdout.flush()
 
     log('requesting: ' + site)
@@ -72,8 +72,8 @@ def fetch(opts):
 
                     f.write(buf)
     except Exception as e:
-        err('failed to download resource')
-        err('    {}'.format(e))
+        err('failed to download resource\n'
+            '    {}', e)
         return None
 
     # cleanup any download progress prints

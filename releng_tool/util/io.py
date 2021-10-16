@@ -302,7 +302,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                     final_env[k] = v.encode('ascii', 'replace')
 
         if is_verbose():
-            debug('(wd) {}'.format(cwd if cwd else os.getcwd()))
+            debug('(wd) {}', cwd if cwd else os.getcwd())
             cmd_str = _cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
             sys.stdout.flush()
@@ -438,8 +438,8 @@ def generate_temp_dir(dir_=None):
             path_remove(dir_)
         except OSError as e:
             if e.errno != errno.ENOENT:
-                warn('unable to cleanup temporary directory: ' + dir_)
-                warn('    {}'.format(e))
+                warn('unable to cleanup temporary directory: {}\n'
+                     '    {}', dir_, e)
 
 @contextmanager
 def interim_working_dir(dir_):

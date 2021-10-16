@@ -29,7 +29,7 @@ def stage(engine, pkg, script_env):
         ``True`` if the post-processing stage is completed; ``False`` otherwise
     """
 
-    verbose('post-processing {}...'.format(pkg.name))
+    verbose('post-processing {}...', pkg.name)
     sys.stdout.flush()
 
     post_script_filename = '{}-{}'.format(pkg.name, POST_SCRIPT)

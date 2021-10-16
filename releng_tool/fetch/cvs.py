@@ -39,20 +39,21 @@ def fetch(opts):
         err('unable to fetch package; cvs is not installed')
         return None
 
-    note('fetching {}...'.format(name))
+    note('fetching {}...', name)
     sys.stdout.flush()
 
     try:
         cvsroot, module = site.rsplit(' ', 1)
     except ValueError:
-        err('improper cvs site defined')
-        err("""\
+        err('''\
+improper cvs site defined
+
 The provided CVS site does not define both the CVSROOT as well as the target
 module to checkout. For example:
 
     :pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule
 
- Site: {}""".format(site))
+ Site: {}''', site)
         return None
 
     log('checking out sources')

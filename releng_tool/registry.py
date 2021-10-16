@@ -86,26 +86,26 @@ class RelengRegistry(RelengRegistryInterface):
             return True
 
         loaded = False
-        debug('attempting to load extension: {}'.format(name))
+        debug('attempting to load extension: {}', name)
         try:
             plugin = import_module(name)
             if hasattr(plugin, 'releng_setup'):
                 try:
                     plugin.releng_setup(self)
                     self.extension.append(name)
-                    verbose('loaded extension: {}'.format(name))
+                    verbose('loaded extension: {}', name)
                     loaded = True
                 except RelengInvalidSetupException as e:
-                    warn('extension is not supported due to an invalid setup: '
-                        '{}'.format(name))
-                    warn(' ({})'.format(e))
+                    warn('extension is not supported '
+                         'due to an invalid setup: {}\n'
+                         ' ({})', name, e)
                 except RelengVersionNotSupportedException:
-                    warn('extension is not supported with this '
-                        'version: {}'.format(name))
+                    warn('extension is not supported '
+                         'with this version: {}', name)
             else:
-                warn('extension does not have a setup method: {}'.format(name))
+                warn('extension does not have a setup method: {}', name)
         except ModuleNotFoundError:
-            warn('unable to find extension: {}'.format(name))
+            warn('unable to find extension: {}', name)
 
         return loaded
 

@@ -221,8 +221,7 @@ class RelengPackageManager:
                     })
                 elif dep not in pkgs:
                     if dep not in names_left:
-                        verbose(
-                            'adding implicitly defined package: {}'.format(dep))
+                        verbose('adding implicitly defined package: {}', dep)
                         names_left.append(dep)
 
                     if pkg not in final_deps:
@@ -252,7 +251,7 @@ class RelengPackageManager:
                 })
         debug('sorted packages)')
         for pkg in sorted_pkgs:
-            debug(' {}'.format(pkg.name))
+            debug(' {}', pkg.name)
 
         return sorted_pkgs
 
@@ -279,8 +278,8 @@ class RelengPackageManager:
             RelengToolInvalidPackageConfiguration: when an error has been
                                                     detected loading the package
         """
-        verbose('loading package: {}'.format(name))
-        debug('script {}'.format(script))
+        verbose('loading package: {}', name)
+        debug('script {}', script)
         opts = self.opts
 
         if not os.path.isfile(script):
@@ -475,7 +474,7 @@ class RelengPackageManager:
                 pkg_vcs_type = VcsType.NONE
 
         if pkg_vcs_type == VcsType.LOCAL:
-            warn('package using local content: {}'.format(name))
+            warn('package using local content: {}', name)
 
         # ######################################################################
 
@@ -624,8 +623,8 @@ class RelengPackageManager:
             # if the cache content is stored in another container, use it
             elif ckey in self._dvcs_cache:
                 pkg_cache_dirname = self._dvcs_cache[ckey]
-                verbose('alternative cache path for package: {} -> {}'.format(
-                    name, pkg_cache_dirname))
+                verbose('alternative cache path for package: {} -> {}',
+                        name, pkg_cache_dirname)
 
             # track ckey entry to point to our cache container
             #

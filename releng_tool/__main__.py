@@ -76,7 +76,7 @@ def main():
             if sys.platform == 'win32':
                 enable_ansi_win32()
 
-        verbose('releng-tool {}'.format(releng_version))
+        verbose('releng-tool {}', releng_version)
 
         if unknown_args:
             warn('unknown arguments: {}', ' '.join(unknown_args))

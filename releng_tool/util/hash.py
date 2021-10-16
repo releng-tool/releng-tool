@@ -144,7 +144,7 @@ def verify(hash_file, path, exclude=None, relaxed=False, quiet=False):
         return HashResult.BAD_PATH
     except BadFormatHashLoadError as e:
         if not quiet:
-            err("""\
+            err('''\
 hash file is not properly formatted
 
 The hash file provided is incorrectly formatted. The hash file expects lines
@@ -155,7 +155,8 @@ with the hash type, hash and target file provided. For example:
 Please correct the following hash file:
 
     Hash File: {}
-      Details: {}""".format(hash_file, e))
+      Details: {}''', hash_file, e)
+
         return HashResult.BAD_FORMAT
 
     # no hash information
@@ -187,7 +188,7 @@ Please correct the following hash file:
             hashers[hash_type] = _get_hasher(hash_type)
             if not hashers[hash_type]:
                 if not quiet:
-                    err("""\
+                    err('''\
 unsupported hash type
 
 The hash file defines a hash type not supported by the releng-tool. Officially
@@ -197,7 +198,8 @@ while unofficially supported, can be used if provided by the system's OpenSSL
 library.
 
      Hash File: {}
- Provided Type: {}""".format(hash_file, type))
+ Provided Type: {}''', hash_file, type)
+
                 return HashResult.UNSUPPORTED
 
         target_file = os.path.join(path, asset)
@@ -213,19 +215,20 @@ library.
                 if relaxed:
                     warn('missing expected file for verification: ' + asset)
                 else:
-                    err("""\
+                    err('''\
 missing expected file for verification
 
 A defined hash entry cannot be verified since the target file does not exist.
 Ensure the hash file correctly names an expected file.
 
     Hash File: {}
-         File: {}""".format(hash_file, asset))
+         File: {}''', hash_file, asset)
+
             return HashResult.MISSING_LISTED
 
         for hash_type, hasher in hashers.items():
             digest = hasher.hexdigest()
-            debug('calculated-hash: {} {}:{}'.format(asset, hash_type, digest))
+            debug('calculated-hash: {} {}:{}', asset, hash_type, digest)
             hashes = type_hashes[hash_type]
             if digest not in hashes:
                 if not quiet:
@@ -236,11 +239,13 @@ Ensure the hash file correctly names an expected file.
                         for hash_ in hashes:
                             provided += '\n     Provided: {}'.format(hash_)
 
-                        err("""hash mismatch detected\
+                        err('''\
+hash mismatch detected
 
     Hash File: {}
          File: {}
-     Detected: {}{}""".format(hash_file, asset, digest, provided))
+     Detected: {}{}''', hash_file, asset, digest, provided)
+
                 return HashResult.MISMATCH
 
     return HashResult.VERIFIED

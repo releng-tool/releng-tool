@@ -29,7 +29,7 @@ def stage(engine, pkg, script_env):
         ``True`` if the bootstrapping stage is completed; ``False`` otherwise
     """
 
-    verbose('bootstrapping {}...'.format(pkg.name))
+    verbose('bootstrapping {}...', pkg.name)
     sys.stdout.flush()
 
     bootstrap_script_filename = '{}-{}'.format(pkg.name, BOOTSTRAP_SCRIPT)

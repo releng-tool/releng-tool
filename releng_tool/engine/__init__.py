@@ -168,7 +168,7 @@ class RelengEngine:
             return False
         debug('target packages)')
         for pkg_name in pkg_names:
-            debug(' {}'.format(pkg_name))
+            debug(' {}', pkg_name)
 
         # processing additional settings
         if not self._process_settings(settings):
@@ -276,7 +276,7 @@ class RelengEngine:
                     if requested_preconfig and pkg.name != opts.target_action:
                         continue
 
-                    verbose('processing package: {}'.format(pkg.name))
+                    verbose('processing package: {}', pkg.name)
                     if not pipeline.process(pkg):
                         return False
                 license_files = pipeline.license_files
@@ -284,12 +284,13 @@ class RelengEngine:
         except RelengToolStageFailure:
             return False
         except FailedToPrepareWorkingDirectoryError as e:
-            err("unable to prepare a package's working directory")
-            err("""\
+            err('''\
+unable to prepare a package's working directory
+
 An attempt to prepare and move into a working directory for a package process
 has failed. Ensure the following path is accessible for this user:
 
-    {}""".format(e))
+    {}''', e)
             return False
 
         is_action = (gaction or pa or opts.target_action is not None)
@@ -310,7 +311,7 @@ has failed. Ensure the following path is accessible for this user:
                 return False
 
             self.end_time = datetime.now().replace(microsecond=0)
-            success('completed ({})'.format(self.end_time - self.start_time))
+            success('completed ({})', self.end_time - self.start_time)
 
         # attempt to generate a report at the end of a run
         self.stats.generate()
@@ -385,15 +386,17 @@ has failed. Ensure the following path is accessible for this user:
         pkg_names = OrderedDict.fromkeys(pkg_names)
 
         if bad_pkgs_value:
-            err('bad package list definition')
-            err("""\
+            err('''\
+bad package list definition
+
 The configuration file does not have a properly formed list of defined packages.
 Ensure a package list exists with the string-based names of packages to be part
 of the releng process:
 
     {}
-        {} = ['liba', 'libb', 'libc']""".format(
-                self.opts.conf_point, CONF_KEY_PKGS))
+        {} = ['liba', 'libb', 'libc']''',
+                self.opts.conf_point,
+                CONF_KEY_PKGS)
         elif not pkg_names:
             raise RelengToolMissingPackagesError(
                 self.opts.conf_point, CONF_KEY_PKGS)
@@ -486,16 +489,16 @@ of the releng process:
 --------------------------------------------------------------------------------
 '''.format(license_name, license_version))
                     for pkg_license_file in sorted(license_files):
-                        verbose('writing license file ({}): {}'.format(
-                            license_name, pkg_license_file))
+                        verbose('writing license file ({}): {}',
+                            license_name, pkg_license_file)
                         with open(pkg_license_file, 'r') as f:
                             copyfileobj(f, dst)
                         dst.write('')
 
             verbose('license file has been written')
         except IOError as e:
-            err('unable to populate license information')
-            err('    {}'.format(e))
+            err('unable to populate license information\n'
+                '    {}', e)
             return False
 
         return True
@@ -706,13 +709,14 @@ of the releng process:
             configure file flags failed to be performed
         """
         def notify_invalid_value(key, expected):
-            err('invalid configuration value provided')
-            err("""\
+            err('''\
+invalid configuration value provided
+
 The configuration file defines a key with an unexpected type. Correct the
 following key entry and re-try again.
 
     Key: {}
-    Expected Type: {}""".format(key, expected))
+    Expected Type: {}''', key, expected)
 
         if CONF_KEY_CACHE_EXT_TRANSFORM in settings:
             cet = None
