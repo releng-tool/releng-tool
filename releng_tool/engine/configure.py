@@ -4,9 +4,9 @@
 from releng_tool.api import RelengConfigureOptions
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
-from releng_tool.engine.autotools.configure import configure as configure_autotools
-from releng_tool.engine.cmake.configure import configure as configure_cmake
-from releng_tool.engine.script.configure import configure as configure_script
+from releng_tool.engine.autotools.configure import configure as conf_autotools
+from releng_tool.engine.cmake.configure import configure as conf_cmake
+from releng_tool.engine.script.configure import configure as conf_script
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io import interim_working_dir
@@ -79,11 +79,11 @@ def stage(engine, pkg, script_env):
                 pkg.type, opts)
         configurer = _
     elif pkg.type == PackageType.AUTOTOOLS:
-        configurer = configure_autotools
+        configurer = conf_autotools
     elif pkg.type == PackageType.CMAKE:
-        configurer = configure_cmake
+        configurer = conf_cmake
     elif pkg.type == PackageType.SCRIPT:
-        configurer = configure_script
+        configurer = conf_script
 
     if not configurer:
         err('configurer type is not implemented: {}', pkg.type)

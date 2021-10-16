@@ -14,12 +14,12 @@ class TestPkgPipelineRemoteScripts(unittest.TestCase):
             self._assertFileFlag(engine, 'install-remote', False)
 
     def test_pkg_pipeline_remote_scripts_disabled_quirk(self):
-        config = {
+        conf = {
             'quirk': [
                 'releng.disable_remote_scripts',
             ],
         }
-        with prepare_testenv(config=config, template='remote-scripts') as engine:
+        with prepare_testenv(config=conf, template='remote-scripts') as engine:
             engine.run()
             self._assertFileFlag(engine, 'build-remote', False)
             self._assertFileFlag(engine, 'configure-remote', False)
@@ -43,7 +43,8 @@ class TestPkgPipelineRemoteScripts(unittest.TestCase):
             self._assertFileFlag(engine, 'install-remote', False)
 
     def test_pkg_pipeline_remote_scripts_override_subset(self):
-        with prepare_testenv(template='remote-scripts-override-subset') as engine:
+        template = 'remote-scripts-override-subset'
+        with prepare_testenv(template=template) as engine:
             engine.run()
             self._assertFileFlag(engine, 'build-remote', True)
             self._assertFileFlag(engine, 'configure-remote', True)

@@ -749,18 +749,18 @@ following key entry and re-try again.
             self.opts.revision_override = orz
 
         if CONF_KEY_OVERRIDE_SITES in settings:
-            osz = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_SITES])
-            if osz is None:
+            v = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_SITES])
+            if v is None:
                 notify_invalid_value(CONF_KEY_OVERRIDE_SITES, 'dict(str,str)')
                 return False
-            self.opts.sites_override = osz
+            self.opts.sites_override = v
 
         if CONF_KEY_OVERRIDE_TOOLS in settings:
-            otz = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_TOOLS])
-            if otz is None:
+            v = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_TOOLS])
+            if v is None:
                 notify_invalid_value(CONF_KEY_OVERRIDE_TOOLS, 'dict(str,str)')
                 return False
-            self.opts.extract_override = otz
+            self.opts.extract_override = v
 
         if CONF_KEY_PREREQUISITES in settings:
             prerequisites = interpret_strings(settings[CONF_KEY_PREREQUISITES])

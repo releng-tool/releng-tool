@@ -8,8 +8,8 @@ class PkgKeyType(Enum):
     """
     package key type
 
-    Enumeration of types supported when fetching configuration values defined by a
-    package definition.
+    Enumeration of types supported when fetching configuration values defined by
+    a package definition.
 
     Attributes:
         BOOL: boolean value

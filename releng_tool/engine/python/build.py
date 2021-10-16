@@ -47,10 +47,10 @@ def build(opts):
         python_opts.update(expand(opts.build_opts))
 
     # default environment
-    python_path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
-    python_path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
+    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
+    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
     env = {
-        'PYTHONPATH': python_path1 + os.pathsep + python_path2
+        'PYTHONPATH': path1 + os.pathsep + path2
     }
 
     # apply package-specific environment options

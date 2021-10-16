@@ -133,8 +133,8 @@ def extract(opts):
                         if not os.path.basename(member):
                             os.mkdir(dest)
                         else:
-                            with zip_.open(member) as src, open(dest, 'wb') as f:
-                                shutil.copyfileobj(src, f)
+                            with zip_.open(member) as s, open(dest, 'wb') as f:
+                                shutil.copyfileobj(s, f)
 
             except Exception as e:
                 err('unable to extract zip file\n'
