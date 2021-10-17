@@ -102,7 +102,7 @@ class RelengEngine:
         if gaction == GlobalAction.INIT:
             return initialize_sample(opts)
 
-        self.start_time = datetime.now().replace(microsecond=0)
+        start_time = datetime.now().replace(microsecond=0)
         verbose("loading user's configuration...")
         gbls = {
             'releng_args': opts.forward_args,
@@ -309,8 +309,8 @@ has failed. Ensure the following path is accessible for this user:
                 err('failed to perform post-processing')
                 return False
 
-            self.end_time = datetime.now().replace(microsecond=0)
-            success('completed ({})', self.end_time - self.start_time)
+            end_time = datetime.now().replace(microsecond=0)
+            success('completed ({})', end_time - start_time)
 
         # attempt to generate a report at the end of a run
         self.stats.generate()
