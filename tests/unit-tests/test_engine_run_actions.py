@@ -2,10 +2,35 @@
 # Copyright 2021 releng-tool
 
 from releng_tool.packages.exceptions import RelengToolMissingPackageScript
+from tests import prepare_testenv
 from tests import run_testenv
+import os
 import unittest
 
 class TestEngineRunActions(unittest.TestCase):
+    def test_engine_run_actions_invalid_init(self):
+        config = {
+            'action': 'init',
+        }
+
+        # init should fail if we already have a project
+        rv = run_testenv(config=config, template='minimal')
+        self.assertFalse(rv)
+
+    def test_engine_run_actions_valid_init(self):
+        config = {
+            'action': 'init',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            root_dir = engine.opts.root_dir
+            releng_script = os.path.join(root_dir, 'releng')
+            self.assertFalse(os.path.exists(releng_script))
+
+            rv = engine.run()
+            self.assertTrue(rv)
+            self.assertTrue(os.path.exists(releng_script))
+
     def test_engine_run_actions_unknown_package(self):
         config = {
             'action': 'unknown-package',
