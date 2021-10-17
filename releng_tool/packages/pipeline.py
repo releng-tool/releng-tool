@@ -253,6 +253,9 @@ class RelengPackagePipeline:
         else:
             build_dir = pkg.build_dir
 
+        # always register optional flags in script environment
+        pkg_env['PKG_INTERNAL'] = None
+
         # package variables
         for env in (os.environ, pkg_env):
             env['PKG_BUILD_DIR'] = build_dir
