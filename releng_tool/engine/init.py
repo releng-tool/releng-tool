@@ -65,10 +65,11 @@ SAMPLE_VERSION = '<package-version>'
         project_gitignore = os.path.join(root_dir, '.gitignore') # (assumption)
         with open(project_gitignore, 'w') as f:
             f.write('''\
-# releng default output containers
+# releng-tool
 /cache/
 /dl/
 /output/
+.releng-flag-*
 ''')
 
         verbose('written .gitignore file')
