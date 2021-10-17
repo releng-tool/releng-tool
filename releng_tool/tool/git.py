@@ -113,11 +113,14 @@ class GitTool(RelengTool):
 
         cfg = configparser.ConfigParser(allow_no_value=True)
         try:
-            # strip whitespaces from lines for python 2.7
-            value = '\n'.join([line.strip() for line in value.splitlines()])
+            if hasattr(cfg, 'read_string'):
+                cfg.read_string(value)
+            else:
+                # strip whitespaces from lines for python 2.7
+                value = '\n'.join([line.strip() for line in value.splitlines()])
 
-            fp = StringIO(value)
-            cfg.readfp(fp)
+                fp = StringIO(value)
+                cfg.readfp(fp)
         except configparser.Error:
             return None
 
