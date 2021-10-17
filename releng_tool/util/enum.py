@@ -9,7 +9,7 @@ class MetaEnum(type):
     its defined class variables.
     """
     def __contains__(cls, item):
-        return item in cls.__iter__()
+        return item in cls.__iter__()  # pylint: disable=E1120
 
     def __iter__(cls):
         return iter(
