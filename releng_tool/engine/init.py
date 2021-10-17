@@ -40,7 +40,8 @@ def initialize_sample(opts):
         sample_defs = os.path.join(root_dir, 'package', 'sample', 'sample')
         try:
             with open(sample_defs, 'w') as f:
-                f.write("""#!/usr/bin/env python
+                f.write('''\
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 SAMPLE_DEPENDENCIES = []
@@ -49,7 +50,7 @@ SAMPLE_LICENSE_FILES = ['<license file>']
 SAMPLE_SITE = '<location for sources>'
 SAMPLE_TYPE = '<package-type>'
 SAMPLE_VERSION = '<package-version>'
-""")
+''')
 
             verbose('written sample file')
         except IOError as e:
@@ -63,11 +64,12 @@ SAMPLE_VERSION = '<package-version>'
     try:
         project_gitignore = os.path.join(root_dir, '.gitignore') # (assumption)
         with open(project_gitignore, 'w') as f:
-            f.write("""# releng default output containers
+            f.write('''\
+# releng default output containers
 /cache/
 /dl/
 /output/
-""")
+''')
 
         verbose('written .gitignore file')
     except IOError as e:
@@ -79,13 +81,14 @@ SAMPLE_VERSION = '<package-version>'
     try:
         project_defs = os.path.join(root_dir, 'releng')
         with open(project_defs, 'w') as f:
-            f.write("""#!/usr/bin/env python
+            f.write('''\
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 packages = [
     'sample',
 ]
-""")
+''')
 
         verbose('written releng file')
     except IOError as e:
