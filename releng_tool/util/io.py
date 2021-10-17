@@ -1101,7 +1101,7 @@ def touch(file):
         if parent_dir and not os.path.isdir(parent_dir):
             ensure_dir_exists(parent_dir)
 
-        with open(file, 'a'):
+        with open(file, 'ab'):
             os.utime(file, None)
         return True
     except OSError:

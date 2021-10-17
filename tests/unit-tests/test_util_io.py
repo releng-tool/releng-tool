@@ -98,7 +98,7 @@ class TestUtilIo(unittest.TestCase):
             self.assertTrue(os.path.exists(new_dir))
 
             new_file = os.path.join(work_dir, 'test2')
-            with open(new_file, 'a'):
+            with open(new_file, 'ab'):
                 pass
             self.assertTrue(os.path.isfile(new_file))
 

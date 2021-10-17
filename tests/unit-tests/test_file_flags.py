@@ -26,7 +26,7 @@ class TestFileFlags(unittest.TestCase):
             self.assertEqual(state, FileFlag.NO_EXIST)
             self.assertTrue(not os.path.exists(file))
 
-            open(file, 'a').close()
+            open(file, 'ab').close()
             self.assertTrue(os.path.exists(file))
             state = process_file_flag(False, file)
             self.assertEqual(state, FileFlag.NO_EXIST)
@@ -35,7 +35,7 @@ class TestFileFlags(unittest.TestCase):
     def test_ff_read_existence(self):
         with prepare_workdir() as work_dir:
             file = os.path.join(work_dir, 'flag-exists')
-            open(file, 'a').close()
+            open(file, 'ab').close()
 
             state = process_file_flag(None, file)
             self.assertEqual(state, FileFlag.EXISTS)
