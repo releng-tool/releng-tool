@@ -11,7 +11,7 @@ except NameError:
 try:
     from collections.abc import Sequence
 except ImportError:
-    from collections import Sequence
+    from collections import Sequence  # pylint: disable=W1512
 
 def expand(obj, kv=None):
     """
