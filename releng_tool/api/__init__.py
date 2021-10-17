@@ -54,7 +54,6 @@ class RelengRegistryInterface(object):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        pass
 
     def add_fetch_type(self, name, handler):
         """
@@ -91,7 +90,6 @@ class RelengRegistryInterface(object):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        pass
 
     def add_package_type(self, name, handler):
         """
@@ -129,7 +127,6 @@ class RelengRegistryInterface(object):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        pass
 
     def require_version(self, version):
         """
@@ -151,7 +148,6 @@ class RelengRegistryInterface(object):
             RelengVersionNotSupportedException: raised when the required version
                 for this extension is not met
         """
-        pass
 
 # ##############################################################################
 
@@ -348,7 +344,6 @@ class RelengExtensionInterface(object):
     setup stage. This will allow an project support custom VCS-types defined in
     package definitions (for example "<PKG>_VCS_TYPE='ext-myawesomefetchtype'").
     """
-    pass
 
 class RelengExtractExtensionInterface(RelengExtensionInterface):
     """
@@ -534,10 +529,8 @@ class RelengInvalidSetupException(Exception):
     """
     exception raised when a loading extension has a setup issue
     """
-    pass
 
 class RelengVersionNotSupportedException(Exception):
     """
     exception raised when an extension does not support the releng-tool version
     """
-    pass

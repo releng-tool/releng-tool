@@ -115,7 +115,6 @@ def main():
             err(e)
     except KeyboardInterrupt:
         print('')
-        pass
 
     return retval
 

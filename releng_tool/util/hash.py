@@ -40,13 +40,11 @@ class BadFileHashLoadError(Exception):
     """
     raised when a file could not be loaded for hash information
     """
-    pass
 
 class BadFormatHashLoadError(Exception):
     """
     raised when invalid format/contents is detected in a hash file
     """
-    pass
 
 def load(hash_file):
     """

@@ -71,7 +71,6 @@ class TestSiteToolBase(unittest.TestCase):
         Args:
             defconfig: the definition file
         """
-        pass
 
     def prepare_repo_dir(self, repo_dir):
         """
@@ -86,7 +85,6 @@ class TestSiteToolBase(unittest.TestCase):
         Args:
             repo_dir: the repository directory
         """
-        pass
 
     def tool_template(self):
         """

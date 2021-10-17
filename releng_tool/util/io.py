@@ -41,13 +41,11 @@ class FailedToPrepareBaseDirectoryError(Exception):
     """
     raised when a base directory could not be prepared
     """
-    pass
 
 class FailedToPrepareWorkingDirectoryError(Exception):
     """
     raised when a working directory could not be prepared
     """
-    pass
 
 def ensure_dir_exists(dir_, quiet=False):
     """
