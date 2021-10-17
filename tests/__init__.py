@@ -192,7 +192,7 @@ def find_test_base():
     return test_base
 
 class RelengToolTestSuite(unittest.TestSuite):
-    def run(self, result):
+    def run(self, result, debug=False):
         """
         a releng-tool helper test suite
 
@@ -205,10 +205,11 @@ class RelengToolTestSuite(unittest.TestSuite):
 
         Args:
             result: the test result object to populate
+            debug (optional): debug flag to ignore error collection
 
         Returns:
             the test result object
         """
-        rv = unittest.TestSuite.run(self, result)
+        rv = unittest.TestSuite.run(self, result, debug)
         sys.stdout.flush()
         return rv
