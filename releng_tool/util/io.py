@@ -994,8 +994,6 @@ def prepare_definitions(defs, prefix=None):
 
             if prefix:
                 key = prefix + key
-            else:
-                key = key
 
             if val:
                 final.append('{}={}'.format(key, val))
