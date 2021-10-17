@@ -86,8 +86,9 @@ def main():
 
         # warn if the *nix-based system is running as root; ill-formed projects
         # may attempt to modify the local system's root
-        if sys.platform != 'win32' and os.geteuid() == 0:
-            warn('running as root; this may be unsafe')
+        if sys.platform != 'win32':
+            if os.geteuid() == 0: # pylint: disable=E1101
+                warn('running as root; this may be unsafe')
 
         # prepare engine options
         opts = RelengEngineOptions(args=args, forward_args=forward_args)
