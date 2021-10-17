@@ -624,7 +624,7 @@ class RelengPackageManager:
             elif ckey in self._dvcs_cache:
                 pkg_cache_dirname = self._dvcs_cache[ckey]
                 verbose('alternative cache path for package: {} -> {}',
-                        name, pkg_cache_dirname)
+                    name, pkg_cache_dirname)
 
             # track ckey entry to point to our cache container
             #
@@ -865,8 +865,8 @@ class RelengPackageManager:
                                                     detected loading any of the
                                                     package's extended options
         """
-        verbose('finalize package configuration: {}'.format(pkg.name))
-        debug('script {}'.format(script))
+        verbose('finalize package configuration: {}', pkg.name)
+        debug('script {}', script)
 
         if not os.path.isfile(script):
             raise RelengToolMissingPackageScript({
