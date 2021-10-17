@@ -18,7 +18,7 @@ __pycache__/
 # testing
 /htmlcov*/
 /.tox/
-.coverage
+.coverage*
 
 # other
 /.idea/
