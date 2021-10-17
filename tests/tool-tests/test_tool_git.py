@@ -27,8 +27,8 @@ class TestToolGit(TestSiteToolBase):
         self.assertTrue(rv)
 
     def test_tool_git_basic_commit(self):
-        hash = self._create_commit()
-        self.defconfig_add('VERSION', hash)
+        hash_ = self._create_commit()
+        self.defconfig_add('VERSION', hash_)
         rv = self.engine.run()
         self.assertTrue(rv)
 
@@ -103,14 +103,14 @@ class TestToolGit(TestSiteToolBase):
         # create a commit on a new custom reference
         TMP_BRANCH = 'tmp'
         self._git_repo('checkout', '-b', TMP_BRANCH)
-        hash = self._create_commit()
-        self._git_repo('update-ref', 'refs/mycustomref/test', hash)
+        hash_ = self._create_commit()
+        self._git_repo('update-ref', 'refs/mycustomref/test', hash_)
         self._git_repo('checkout', DEFAULT_BRANCH)
         self._git_repo('branch', '-D', TMP_BRANCH)
 
         # first fetch attempt should fail since the custom reference will not be
         # fetched by default
-        self.defconfig_add('VERSION', hash)
+        self.defconfig_add('VERSION', hash_)
         rv = self.engine.run()
         self.assertFalse(rv)
 
@@ -121,8 +121,8 @@ class TestToolGit(TestSiteToolBase):
 
     def test_tool_git_depth_shallow_default(self):
         self._create_commit()
-        hash = self._create_commit()
-        self.defconfig_add('VERSION', hash)
+        hash_ = self._create_commit()
+        self.defconfig_add('VERSION', hash_)
 
         rv = self.engine.run()
         self.assertTrue(rv)
@@ -132,9 +132,9 @@ class TestToolGit(TestSiteToolBase):
 
     def test_tool_git_depth_shallow_disabled_config(self):
         self._create_commit()
-        hash = self._create_commit()
+        hash_ = self._create_commit()
         self.defconfig_add('GIT_DEPTH', 0)
-        self.defconfig_add('VERSION', hash)
+        self.defconfig_add('VERSION', hash_)
 
         rv = self.engine.run()
         self.assertTrue(rv)
@@ -146,8 +146,8 @@ class TestToolGit(TestSiteToolBase):
         self.engine.opts.quirks.append('releng.git.no_depth')
 
         self._create_commit()
-        hash = self._create_commit()
-        self.defconfig_add('VERSION', hash)
+        hash_ = self._create_commit()
+        self.defconfig_add('VERSION', hash_)
 
         rv = self.engine.run()
         self.assertTrue(rv)
@@ -156,9 +156,9 @@ class TestToolGit(TestSiteToolBase):
         self.assertNotEqual(int(rev_count), 1)
 
     def test_tool_git_depth_unshallow_initial(self):
-        hash = self._create_commit()
+        hash_ = self._create_commit()
         self._create_commit()
-        self.defconfig_add('VERSION', hash)
+        self.defconfig_add('VERSION', hash_)
 
         rv = self.engine.run()
         self.assertTrue(rv)

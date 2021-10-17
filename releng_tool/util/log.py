@@ -194,7 +194,7 @@ def __log(prefix, color, msg, file, *args):
         msg = msg.format(*args)
     print('{}{}{}{}'.format(color, prefix, msg, post), file=file)
 
-def releng_log_configuration(debug, nocolor, verbose):
+def releng_log_configuration(debug_, nocolor, verbose_):
     """
     configure the global logging state of the running instance
 
@@ -204,13 +204,13 @@ def releng_log_configuration(debug, nocolor, verbose):
     not required to be invoked to invoke provided logging methods.
 
     Args:
-        debug: toggle the enablement of debug messages
+        debug_: toggle the enablement of debug messages
         nocolor: toggle the disablement of colorized messages
-        verbose: toggle the enablement of verbose messages
+        verbose_: toggle the enablement of verbose messages
     """
     global RELENG_LOG_DEBUG_FLAG
     global RELENG_LOG_NOCOLOR_FLAG
     global RELENG_LOG_VERBOSE_FLAG
-    RELENG_LOG_DEBUG_FLAG = debug
+    RELENG_LOG_DEBUG_FLAG = debug_
     RELENG_LOG_NOCOLOR_FLAG = nocolor
-    RELENG_LOG_VERBOSE_FLAG = verbose
+    RELENG_LOG_VERBOSE_FLAG = verbose_

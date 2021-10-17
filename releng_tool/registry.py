@@ -12,9 +12,9 @@ from releng_tool.util.log import warn
 from releng_tool.util.string import interpret_string
 
 try:
-    ModuleNotFoundError
+    RelengModuleNotFoundError = ModuleNotFoundError
 except NameError:
-    ModuleNotFoundError = ImportError
+    RelengModuleNotFoundError = ImportError
 
 #: prefix requirement for extension named types
 PREFIX_REQUIREMENT = 'ext-'
@@ -104,7 +104,7 @@ class RelengRegistry(RelengRegistryInterface):
                          'with this version: {}', name)
             else:
                 warn('extension does not have a setup method: {}', name)
-        except ModuleNotFoundError:
+        except RelengModuleNotFoundError:
             warn('unable to find extension: {}', name)
 
         return loaded

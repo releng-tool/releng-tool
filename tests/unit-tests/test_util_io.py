@@ -385,8 +385,8 @@ class TestUtilIo(unittest.TestCase):
                 _('dir2', 'dir3'),
                 _('dir4', 'dir5', 'dir6'),
             ]
-            for dir in directories:
-                os.makedirs(dir)
+            for dir_ in directories:
+                os.makedirs(dir_)
 
             files = [
                 _('file1'),

@@ -38,8 +38,8 @@ class TestPkgPipelineLicenses(unittest.TestCase):
                     self.assertEqual(len(licenses), expected)
 
                     # verify that the license reference maps to a real file
-                    for license in licenses:
-                        self.assertTrue(os.path.exists(license))
+                    for license_ in licenses:
+                        self.assertTrue(os.path.exists(license_))
                 else:
                     # packages without license data should not provide any
                     # information
