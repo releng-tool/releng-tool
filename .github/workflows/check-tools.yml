@@ -4,9 +4,25 @@ on:
   push:
     branches:
     - master
+    paths:
+      - '.github/workflows/check-tools.yml'
+      - 'releng/**'
+      - 'releng_tool/**'
+      - 'tests/**'
+      - 'setup.cfg'
+      - 'setup.py'
+      - 'tox.ini'
   pull_request:
     branches:
     - master
+    paths:
+      - '.github/workflows/check-tools.yml'
+      - 'releng/**'
+      - 'releng_tool/**'
+      - 'tests/**'
+      - 'setup.cfg'
+      - 'setup.py'
+      - 'tox.ini'
 
 jobs:
   build:
