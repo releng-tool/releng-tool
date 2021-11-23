@@ -4,6 +4,10 @@ on:
   push:
     branches:
     - master
+    paths:
+      - '.github/workflows/doc-update.yml'
+      - 'Documentation/**'
+      - 'CHANGES.rst'
 
 jobs:
   development-doc-update:
