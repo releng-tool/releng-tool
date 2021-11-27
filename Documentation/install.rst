@@ -112,11 +112,11 @@ path (the remainder of these steps will assume Python is available in the path).
 
 Open a Windows command prompt and invoke the following:
 
-.. code-block:: shell-session
+.. code-block:: doscon
 
    > python -m pip install releng-tool
    > python -m releng_tool --version
-   releng-tool <version>
+   releng-tool ~version~
 
 development
 -----------
@@ -124,7 +124,7 @@ development
 To install the most recent development sources, the following pip_ command can
 be used:
 
-.. code-block:: shell-session
+.. code-block:: shell
 
    pip install git+https://github.com/releng-tool/releng-tool.git
 
