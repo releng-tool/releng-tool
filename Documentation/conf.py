@@ -25,16 +25,15 @@ root_dir = os.path.dirname(doc_dir)
 sys.path.insert(0, root_dir)
 
 # output - html
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 html_theme_options = {
-    'collapse_navigation': False,
-    'logo_only': False,
-    'prev_next_buttons_location': 'both',
-    'style_external_links': True,
+    'navigation_with_keys': True,
 }
 html_static_path = ['_static']
 html_show_copyright = False
-html_show_sphinx = False
+html_show_sourcelink = False
+html_show_sphinx = True
+
 
 def setup(app):
     app.add_css_file('theme_overrides.css')

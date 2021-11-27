@@ -1,73 +1,21 @@
-﻿@media screen {
-    /* allow the use of the entire viewport width */
-    .wy-nav-content {
-        max-width: none;
+﻿/* increase right-toc for longer titles in this documentation */
+.toc-drawer
+{
+    width: 20em;
+}
+
+@media (max-width: 82em) {
+    .toc-drawer {
+        right: -20em;
     }
 }
 
-.wy-table-responsive table td {
-    /* allow table contents to wrap (corrects bullet list issues) */
-    white-space: normal !important;
+/* increasing spacing on headers to give some top-space on anchor links */
+h3, h4, h5, h6 {
+    padding-top: 10px;
 }
 
-.wy-table-responsive table ul {
-    /* remove bottom margin for lists in tables (corrects excessive spacing) */
-    margin-bottom: unset !important;
-}
-
-a.reference.external:after {
-    /* add external icon for any external link (i.e. sidebar) */
-    color: #b3b3b3;
-    content: "";
-    font-family: FontAwesome;
-    font-size: 50%;
-    margin: 0 .2em;
-    vertical-align: super;
-}
-
-html.writer-html5 .rst-content table.docutils td>p:not(:last-child) {
-    /* ensure paragraph spacing is applied when not the last child */
-    margin-bottom: 24px !important;
-}
-
-html.writer-html5 .rst-content table.docutils td>div:last-child {
-    /* ignore div (e.g. table) spacing on last element in table */
-    margin-bottom: 0px !important;
-}
-
-.toctree-wrapper ul {
-    /* remove unwanted margins in nested toctree entries */
-    margin-top: 0px !important;
-    margin-bottom: 0px !important;
-}
-
-dl.footnote {
-    /* center align footnote entries */
-    align-items: center !important;
-}
-
-dl.footnote dd {
-    /* prevent footnote entries from being offset from their ids */
-    margin: 0px !important;
-}
-
-.version-warning {
-    background-image: repeating-linear-gradient(-45deg,
-        transparent,
-        transparent 10px,
-        #5b5206 10px,
-        #5b5206 20px);
-    box-sizing: border-box;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    padding: 8px 20px 8px;
-    text-align: center;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    width: 100%;
-}
-.version-warning a {
-    display: inline;
-    padding: 0px;
+/* avoid all-caps on lower header entries */
+h4, h5, h6 {
+    text-transform: unset !important;
 }

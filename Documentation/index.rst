@@ -11,8 +11,8 @@ engineering process. A package is not required to handle every stage. Helper
 package types are provided, such as autotools, for projects using common build
 capabilities.
 
-.. image:: _static/overview.png
-   :align: center
+.. raw:: html
+   :file: assets/overview-furo.svg
 
 While this tool can assist in the configuration and building of a project, the
 framework does not attempt to provide a perfect sandbox for the process. Users
@@ -20,12 +20,6 @@ defining their projects will have ownership on what compilers/toolchains are
 used and the interaction between the staging/target area and the host system.
 
 .. toctree::
-   :hidden:
-
-   self
-
-.. toctree::
-   :maxdepth: 2
 
    requirements
    install
@@ -36,6 +30,6 @@ used and the interaction between the staging/target area and the host system.
    annex-a
 
 .. toctree::
-   :hidden:
+   :maxdepth: 1
 
    release-notes
