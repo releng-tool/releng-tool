@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+builder=
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -*)
+        shift
+        ;;
+    *)
+        [[ -z "$builder" ]] && builder=$1
+        shift
+        ;;
+    esac
+done
+[[ -z "$builder" ]] && builder=dirhtml
+
+exec python -m sphinx -M $builder . _build -E -a -W
