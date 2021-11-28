@@ -179,6 +179,12 @@ features of the releng-tool process. The following environment variables are
 accepted:
 
 +-------------------------------------+----------------------------------------+
+| ``RELENG_ASSETS_DIR=<dir>``         | The asset directory to use.            |
++-------------------------------------+----------------------------------------+
+| ``RELENG_CACHE_DIR=<dir>``          | The cache directory to use.            |
++-------------------------------------+----------------------------------------+
+| ``RELENG_DL_DIR=<dir>``             | The download directory to use.         |
++-------------------------------------+----------------------------------------+
 | ``RELENG_IGNORE_RUNNING_AS_ROOT=1`` | Suppress the warning generated when    |
 |                                     | running releng-tool with a root user.  |
 +-------------------------------------+----------------------------------------+
