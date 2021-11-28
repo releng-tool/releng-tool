@@ -233,6 +233,12 @@ The following outlines available actions:
 The following outlines available options:
 
 +---------------------------+--------------------------------------------------+
+| ``--assets-dir <dir>``    | Directory to hold cache and download folders     |
+|                           | instead of using a configured root directory.    |
+|                           |                                                  |
+|                           | This argument can be ignored if ``--cache-dir``  |
+|                           | or ``--dl-dir`` are set.                         |
++---------------------------+--------------------------------------------------+
 | ``--cache-dir <dir>``     | Directory for distributed version control cache  |
 |                           | information (defaults to ``<root>/cache``).      |
 +---------------------------+--------------------------------------------------+
