@@ -1,8 +1,15 @@
 environment variables
 ---------------------
 
-When packages and the post-processing event are processed, the following
-environment variables will be made available:
+.. tip::
+
+    Avoid using environment variables to configure package options such as
+    compiler flags or interpreters. Managing these options inside a releng-tool
+    project configuration or package definitions can improve configuration
+    management.
+
+When configuration, package definitions or various scripts are invoked by
+releng-tool, the following environment variables are available:
 
 +--------------------------+---------------------------------------------------+
 | ``BUILD_DIR``            | The build directory.                              |
@@ -148,11 +155,10 @@ environment variables will be made available:
 .. |CONF_PKG_BUILD_DIR| replace:: ``PKG_BUILD_DIR``
 .. |CONF_PKG_BUILD_ODIR| replace:: ``PKG_BUILD_OUTPUT_DIR``
 
-Package-defined environment variables are also available in the rare chance
-that package content needs to be mangled (e.g. including a dependent module
-which does not properly support a sysroot staged environment). The following
-package-defined environment variables are available for use (where ``<PKG>``
-translates to a releng-tool's determined package key):
+Package-specific environment variables are also available if another package or
+script needs to rely on the (generated) configuration of another package. The
+following package-specific environment variables are available for use (where
+``<PKG>`` translates to a releng-tool's determined package key):
 
 +----------------------------+-------------------------------------------------+
 | ``<PKG>_BUILD_DIR``        | The directory for a defined package's           |
@@ -168,8 +174,3 @@ translates to a releng-tool's determined package key):
 | ``<PKG>_VERSION``          | The version of a defined package.               |
 +----------------------------+-------------------------------------------------+
 
-Note that is it not recommended to define environment variables for the
-releng-tool process to use outside the project definition except for special
-cases (such as authentication tokens, etc.). Attempting to configure, for
-example, compiler flags outside the project definition circumvents configuration
-control a releng-tool project aims to maintain.
