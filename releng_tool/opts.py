@@ -129,6 +129,7 @@ class RelengEngineOptions:
 
         if args:
             self._handle_arguments(args)
+        self._handle_environment_opts()
         self._finalize_options()
 
     def _handle_arguments(self, args):
@@ -178,6 +179,21 @@ class RelengEngineOptions:
 
                 if not self.pkg_action:
                     self.target_action = args.action
+
+    def _handle_environment_opts(self):
+        """
+        handle environment variables to populate engine options
+
+        Configure various options which support assignment from an
+        environment variable.
+        """
+
+        if not self.assets_dir:
+            self.assets_dir = os.environ.get('RELENG_ASSETS_DIR')
+        if not self.cache_dir:
+            self.cache_dir = os.environ.get('RELENG_CACHE_DIR')
+        if not self.dl_dir:
+            self.dl_dir = os.environ.get('RELENG_DL_DIR')
 
     def _finalize_options(self):
         """
