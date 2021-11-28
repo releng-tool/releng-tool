@@ -65,7 +65,7 @@ _releng_tool_module()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     case $prev in
-    '--cache-dir' | '--dl-dir' | '--out-dir' | '--root-dir')
+    '--assets-dir' | '--cache-dir' | '--dl-dir' | '--out-dir' | '--root-dir')
         local IFS=$'\n'
         compopt -o filenames
         COMPREPLY=($(compgen -A directory -- $cur))
@@ -82,6 +82,7 @@ _releng_tool_module()
     case $cur in
     -*)
         opts=(
+            '--assets-dir'
             '--cache-dir'
             '--debug'
             '--development'
