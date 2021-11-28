@@ -12,6 +12,6 @@ while [[ $# -gt 0 ]]; do
         ;;
     esac
 done
-[[ -z "$builder" ]] && builder=dirhtml
+[[ -z "$builder" ]] && builder=html
 
 exec python -m sphinx -M $builder . _build -E -a -W
