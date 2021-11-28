@@ -1,4 +1,4 @@
-development
+Development
 -----------
 
 - fixed an issue where ``releng_mkdir`` reports success if the target path is a
