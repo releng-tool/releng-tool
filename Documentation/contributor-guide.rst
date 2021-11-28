@@ -133,8 +133,8 @@ extension to register custom fetching, extraction and package implementations.
        # package support (configure, build, installation modifications)
        app.add_package_type('ext-myextension', <impl>)
 
-For more details for API details, consult the documentation found inside the
-`API implementation`_.
+For more information on available API interfaces, see the documentation found
+inside the `API implementation`_.
 
 .. |releng_tool/api/__init__.py| replace:: ``releng_tool/api/__init__.py``
 
