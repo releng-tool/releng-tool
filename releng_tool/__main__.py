@@ -31,6 +31,7 @@ def main():
             prog='releng-tool', add_help=False, usage=usage())
 
         parser.add_argument('action', nargs='?')
+        parser.add_argument('--assets-dir')
         parser.add_argument('--cache-dir')
         parser.add_argument('--debug', action='store_true')
         parser.add_argument('--development', '-D', action='store_true')
@@ -177,6 +178,8 @@ def usage():
  <pkg>-reinstall           force a re-install of a specific package
 
 (common options)
+ --assets-dir <dir>        container directory for download and vcs-cache
+                            directories (e.g. <ASSETS_DIR>/cache)
  --cache-dir <dir>         directory for vcs-cache (default: <ROOT>/cache)
  --dl-dir <dir>            directory for download archives (default: <ROOT>/dl)
  -j, --jobs <jobs>         numbers of jobs to handle (default: 0; automatic)

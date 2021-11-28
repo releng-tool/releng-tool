@@ -44,6 +44,7 @@ class RelengEngineOptions:
             be forwarded to the releng-tool project's configuration
 
     Attributes:
+        assets_dir: directory container for cache/download directories
         build_dir: directory container for all builds
         cache_dir: directory container for cache (vcs bare sources)
         cache_ext_transform: transform for cache extension from site path
@@ -85,6 +86,7 @@ class RelengEngineOptions:
         verbose: whether or not verbose messages are shown
     """
     def __init__(self, args=None, forward_args=None):
+        self.assets_dir = None
         self.build_dir = None
         self.cache_dir = None
         self.cache_ext_transform = None
@@ -139,6 +141,8 @@ class RelengEngineOptions:
         Args:
             args: the arguments
         """
+        if args.assets_dir:
+            self.assets_dir = os.path.abspath(args.assets_dir)
         if args.cache_dir:
             self.cache_dir = os.path.abspath(args.cache_dir)
         if args.dl_dir:
@@ -189,6 +193,12 @@ class RelengEngineOptions:
         join = os.path.join
         root = self.root_dir
 
+        # asset container
+        if self.assets_dir:
+            if not self.cache_dir:
+                self.cache_dir = join(self.assets_dir, DEFAULT_CACHE_DIR)
+            if not self.dl_dir:
+                self.dl_dir = join(self.assets_dir, DEFAULT_DL_DIR)
         # root container
         if not self.cache_dir:
             self.cache_dir = join(root, DEFAULT_CACHE_DIR)
