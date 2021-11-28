@@ -88,7 +88,8 @@ def main():
         # may attempt to modify the local system's root
         if sys.platform != 'win32':
             if os.geteuid() == 0: # pylint: disable=E1101
-                warn('running as root; this may be unsafe')
+                if 'RELENG_IGNORE_RUNNING_AS_ROOT' not in os.environ:
+                    warn('running as root; this may be unsafe')
 
         # prepare engine options
         opts = RelengEngineOptions(args=args, forward_args=forward_args)
