@@ -1,7 +1,7 @@
-tips
+Tips
 ====
 
-examples
+Examples
 --------
 
 Examples of releng-tool projects can be found in the following repository:
@@ -9,7 +9,7 @@ Examples of releng-tool projects can be found in the following repository:
    | releng-tool - examples repository
    | https://github.com/releng-tool/releng-tool-examples
 
-requesting help
+Requesting help
 ---------------
 
 If experience issues with using releng-tool, developing extensions, etc.; do not

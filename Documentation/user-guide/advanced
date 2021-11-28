@@ -1,9 +1,9 @@
-advanced builder capabilities
+Advanced builder capabilities
 -----------------------------
 
 .. _development mode:
 
-development mode
+Development mode
 ~~~~~~~~~~~~~~~~
 
 Development mode provides a way for builder to request to process supported
@@ -34,7 +34,7 @@ directory. A user can either disable development mode by performing a
 
 .. _local-sources mode:
 
-local-sources mode
+Local-sources mode
 ~~~~~~~~~~~~~~~~~~
 
 .. note::
@@ -79,7 +79,7 @@ directory. A user can either disable local sources mode by performing a
 
 .. _conf_overrides:
 
-configuration overrides
+Configuration overrides
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 While it is not recommended to have users manually modify a project's
@@ -89,7 +89,7 @@ user and define either environment options or setup a configuration override
 script ``releng-overrides``. It is never recommended to persist a configuration
 overrides file into a project's source repository.
 
-extraction tool overrides
+Extraction tool overrides
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``override_extract_tools`` option inside a configuration override script
@@ -105,7 +105,7 @@ own extraction utility. Consider the following example:
        'zip': '/opt/my-custom-unzip',
    }
 
-revision overrides
+Revision overrides
 ^^^^^^^^^^^^^^^^^^
 
 The ``override_revisions`` option inside a configuration override script allows
@@ -126,7 +126,7 @@ the developer does not want to explicitly change the revision inside package
 The above example shows that package ``module-b`` will fetch using a test branch
 instead of what is defined in the actual package definition.
 
-site overrides
+Site overrides
 ^^^^^^^^^^^^^^
 
 The ``override_sites`` option inside a configuration override script allows a
@@ -144,7 +144,7 @@ be access from the host machine. If a mirror location has been setup at
        '<package-name>': 'git@example.org:myproject.git',
    }
 
-tool overrides
+Tool overrides
 ^^^^^^^^^^^^^^
 
 Environment variables can be used to help override external tool invoked by the
@@ -160,7 +160,7 @@ Consider the following example:
    $ releng-tool
    [cmake3 will be used for cmake projects]
 
-quirks
+Quirks
 ^^^^^^
 
 releng-tool also provides a series of configuration quirks to deal with rare

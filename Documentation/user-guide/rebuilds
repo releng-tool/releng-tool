@@ -1,4 +1,4 @@
-understanding rebuilds
+Understanding rebuilds
 ----------------------
 
 As packages are processed in order (based off of detected dependencies, if any),

@@ -1,4 +1,4 @@
-installation
+Installation
 ============
 
 The recommended method of installation is using pip_:
@@ -17,21 +17,21 @@ To verify the package has been installed the following command can be used:
     (or)
    python -m releng_tool --version
 
-quick-start
+Quick-start
 -----------
 
 The following provides a series of steps to assist in preparing a new
 environment to use this package. This quick-start will aim to use the most
 recent version of Python.
 
-linux
+Linux
 ~~~~~
 
 While the use of Python_/pip_ is almost consistent between Linux distributions,
 the following are a series of helpful steps to install this package under
 specific distributions of Linux. From a terminal, invoke the following commands:
 
-arch
+Arch
 ++++
 
 .. code-block:: shell-session
@@ -45,7 +45,7 @@ arch
 This package is also
 `available on AUR <https://aur.archlinux.org/packages/releng-tool/>`_.
 
-centos
+CentOS
 ++++++
 
 .. code-block:: shell-session
@@ -56,7 +56,7 @@ centos
    $ releng-tool --version
    releng-tool <version>
 
-fedora
+Fedora
 ++++++
 
 .. code-block:: shell-session
@@ -66,7 +66,7 @@ fedora
    $ releng-tool --version
    releng-tool <version>
 
-opensuse
+openSUSE
 ++++++++
 
 .. code-block:: shell-session
@@ -75,7 +75,7 @@ opensuse
    $ releng-tool --version
    releng-tool <version>
 
-ubuntu
+Ubuntu
 ++++++
 
 .. code-block:: shell-session
@@ -86,7 +86,7 @@ ubuntu
    $ releng-tool --version
    releng-tool <version>
 
-os x
+OS X
 ~~~~
 
 From a terminal, invoke the following commands:
@@ -98,7 +98,7 @@ From a terminal, invoke the following commands:
    $ releng-tool --version
    releng-tool <version>
 
-windows
+Windows
 ~~~~~~~
 
 If not already installed, download the most recent version of Python_:
@@ -118,7 +118,7 @@ Open a Windows command prompt and invoke the following:
    > python -m releng_tool --version
    releng-tool ~version~
 
-development
+Development
 -----------
 
 To install the most recent development sources, the following pip_ command can

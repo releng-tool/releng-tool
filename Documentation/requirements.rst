@@ -1,4 +1,4 @@
-requirements
+Requirements
 ============
 
 releng-tool is developed in Python_ and requires either Python_ 2.7 or 3.4+ to

@@ -1,6 +1,6 @@
 .. _site_definitions:
 
-site definitions
+Site definitions
 ~~~~~~~~~~~~~~~~
 
 The following outlines the details for defining supported site definitions. If
@@ -13,7 +13,7 @@ documentation provided by said extension.
    sources) or postfix value; however, this is optional if a package wishes to
    use the |LIBFOO_VCS_TYPE|_ option.
 
-bazaar site
+Bazaar Site
 ^^^^^^^^^^^
 
 To define a Bazaar_-based location, the site value must be prefixed with a
@@ -30,7 +30,7 @@ call [#bzrexport]_. Content from a Bazaar repository will be fetched and
 archived into a file during fetch stage. Once a cached archive is made, the
 fetch stage will be skipped unless the archive is manually removed.
 
-cvs site
+CVS Site
 ^^^^^^^^
 
 To define a CVS_-based location, the site value must be prefixed with a ``cvs+``
@@ -48,7 +48,7 @@ module [#cvsmodule]_  to use. Content from a CVS repository will be fetched and
 archived into a file during fetch stage. Once a cached archive is made, the
 fetch stage will be skipped unless the archive is manually removed.
 
-git site
+Git Site
 ^^^^^^^^
 
 To define a Git_-based location, the site value must be prefixed with a ``git+``
@@ -67,7 +67,7 @@ cached Git file system. If a desired revision exists, content will be acquired
 from the cache location. If a desired revision does not exist, the origin remote
 will be fetched for the new revision (if it exists).
 
-mercurial site
+Mercurial Site
 ^^^^^^^^^^^^^^
 
 To define a Mercurial_-based location, the site value must be prefixed with a
@@ -84,7 +84,7 @@ repository. If a desired revision exists, content will be acquired from the
 cache location. If a desired revision does not exist, the origin remote will be
 pulled for the new revision (if it exists).
 
-scp site
+SCP Site
 ^^^^^^^^
 
 To define an SCP-based location, the site value must be prefixed with a ``scp+``
@@ -99,7 +99,7 @@ The value after the prefix is a path which will be provided to a ``scp`` call's
 a remote host. The fetched file will be stored inside the ``dl`` directory. Once
 fetch, the fetch stage will be skipped unless the file is manually removed.
 
-svn site
+SVN Site
 ^^^^^^^^
 
 To define a Subversion_-based location, the site value must be prefixed with a
@@ -114,7 +114,7 @@ The value after the prefix is a path which will be provided to a
 be fetched and archived into a file during fetch stage. Once a cached archive
 is made, the fetch stage will be skipped unless the archive is manually removed.
 
-url site (default)
+URL Site (default)
 ^^^^^^^^^^^^^^^^^^
 
 All packages that do not define a helper prefix/postfix value (as seen in other

@@ -1,4 +1,4 @@
-user guide
+User guide
 ==========
 
 The following will outline the capabilities on using releng-tool with an already

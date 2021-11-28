@@ -1,4 +1,4 @@
-cmake package
+CMake Package
 ~~~~~~~~~~~~~
 
 A CMake package provides support for processing a `CMake`_ supported module.

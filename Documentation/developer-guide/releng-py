@@ -1,5 +1,5 @@
-releng configuration
---------------------
+Project configuration
+---------------------
 
 A releng-tool project defines its configuration options inside the a ``releng``
 file at the root of a project. The primary configuration option for a developer

@@ -1,4 +1,4 @@
-developer guide
+Developer guide
 ===============
 
 The following will outline details on how to prepare a releng-tool project to be

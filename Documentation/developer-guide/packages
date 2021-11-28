@@ -1,4 +1,4 @@
-packages
+Packages
 --------
 
 Packages are defined inside the ``package/`` directory. There is no explicit
@@ -38,7 +38,7 @@ the following can be defined (``PACKAGE_A_VERSION``):
 
 More details on available configuration options are as follows.
 
-common package configurations
+Common package configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following outlines common configuration options available for packages.
@@ -65,7 +65,7 @@ the host directory. The following options are available for the installation
 type:
 
 ====================== ===
-type                   description
+Type                   Description
 ====================== ===
 ``host``               The host directory.
 ``images``             The images directory.
@@ -132,7 +132,7 @@ archive, or describe a source control URL such as Git or SVN. The following
 outline a series of supported site definitions:
 
 ========= ===
-type      prefix/postfix
+Type      Prefix/Postfix
 ========= ===
 Bazaar    ``bzr+``
 CVS       ``cvs+``
@@ -180,7 +180,7 @@ however, releng-tool also provides a series of helper package types for common
 frameworks. The following outline a series of supported site definitions:
 
 ========= ===
-type      value
+Type      Value
 ========= ===
 Autotools ``autotools``
 CMake     ``cmake``
@@ -222,7 +222,7 @@ gracefully defined (e.g. ``libfoo-v1.0`` will produce output directories such as
 
 See also |LIBFOO_DEVMODE_REVISION|_ and |LIBFOO_REVISION|_.
 
-advanced package configurations
+Advanced package configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following outlines more advanced configuration options available for
@@ -592,7 +592,7 @@ type will always generate a warning message.
 
 .. _package_bootstrapping_and_postprocessing:
 
-package bootstrapping and post-processing
+Package bootstrapping and post-processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Every package, no matter which package |LIBFOO_TYPE|_ is defined, can create a

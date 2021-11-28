@@ -1,4 +1,4 @@
-prelude
+Prelude
 -------
 
 A releng-tool project can define multiple packages, each can be based off of

@@ -1,4 +1,4 @@
-release notes
+Release notes
 =============
 
 The following provides the notable features, bug fixes and more for each release

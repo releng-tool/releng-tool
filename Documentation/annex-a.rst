@@ -1,11 +1,11 @@
-annex a - quick reference
+ANNEX A - Quick reference
 =========================
 
 A quick reference document listing available options to developers building a
 releng-tool project. Consult the :doc:`developer's guide <developer-guide>` for
 more detailed information.
 
-configuration options
+Configuration options
 ---------------------
 
 Options which are read by releng-tool from a project's configuration script:
@@ -26,7 +26,7 @@ Options which are read by releng-tool from a project's configuration script:
    sysroot_prefix = '<path>' # '/usr'
    url_mirror = '<mirror-url>'
 
-environment variables
+Environment variables
 ---------------------
 
 Environment (and script) variables available to context's invoked by
@@ -75,7 +75,7 @@ releng-tool (may vary per context):
    <PKG_NAME>_REVISION
    <PKG_NAME>_VERSION
 
-package options
+Package options
 ---------------
 
 Configuration options parsed by releng-tool for a package definition:
@@ -122,7 +122,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_VCS_TYPE = '<vcs-type>' # bzr, cvs, git, hg, local, none, scp, svn, url
    LIBFOO_VERSION = '<version>'
 
-script helpers
+Script helpers
 --------------
 
 Functions available to scripts invoked by releng-tool or importable via
@@ -152,7 +152,7 @@ Functions available to scripts invoked by releng-tool or importable via
    verbose(msg, *args)
    warn(msg, *args)
 
-quirks
+Quirks
 ------
 
 Quirk options used by releng-tool:

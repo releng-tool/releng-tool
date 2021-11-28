@@ -1,7 +1,7 @@
-other
+Other
 -----
 
-post-processing
+Post-processing
 ~~~~~~~~~~~~~~~
 
 .. warning::
@@ -49,7 +49,7 @@ be found inside the target directory.
 
 .. _license_information:
 
-licenses
+Licenses
 ~~~~~~~~
 
 A releng-tool project can defined multiple packages, each with the possibility
@@ -84,7 +84,7 @@ A side note is that licenses for a project are generated before the
 `post-processing`_ phase; hence, generated license document(s) may be included
 when attempting to generated final archives/packages.
 
-patching
+Patching
 ~~~~~~~~
 
 .. note::
@@ -136,7 +136,7 @@ patches will not be applied to the sources. This is to prevent the patching
 system from making unexpected modifications to a developer's local source
 variants.
 
-internal and external packages
+Internal and External packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Packages are either internal packages or external packages. All packages are
@@ -156,7 +156,7 @@ types are almost treated the same except for the following:
 - When configured for :ref:`local-sources mode`; the fetch, extract and patch
   stages will not be performed.
 
-script helpers
+Script helpers
 ~~~~~~~~~~~~~~
 
 releng-tool provides a series of helper functions which can be used in
@@ -164,7 +164,7 @@ script-based packages, post-processing and more. Helper functions provided are
 listed below:
 
 +--------------------------+---------------------------------------------------+
-| method                   | documentation                                     |
+| Method                   | Documentation                                     |
 +==========================+===================================================+
 | ``debug``                | .. automodule:: releng_tool                       |
 |                          |     :members: debug                               |
@@ -273,7 +273,7 @@ Or, if desired, all helper methods can be imported at once:
 
     from releng_tool import *
 
-vcs ignore
+VCS Ignore
 ~~~~~~~~~~
 
 When invoking releng-tool on a project, the project's root directory will be
@@ -292,7 +292,7 @@ can be applied for Git-based repositories (via ``.gitignore``):
 
 .. _quirks:
 
-quirks
+Quirks
 ~~~~~~
 
 The following outlines a series of configuration |CONF_QUIRKS|_ that can be
@@ -321,7 +321,7 @@ Quirks are enabled through a configuration (override) script such as follows:
        '<quirk-value>',
    ]
 
-loading extensions
+Loading extensions
 ~~~~~~~~~~~~~~~~~~
 
 .. note::

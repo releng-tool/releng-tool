@@ -1,7 +1,7 @@
-tips
+Tips
 ----
 
-offline builds
+Offline builds
 ~~~~~~~~~~~~~~
 
 A user can prepare for an offline build by using the ``fetch`` action:
@@ -14,7 +14,7 @@ Package content will be downloaded into the respective ``dl/`` and/or ``cache/``
 folders. Future builds for the project will no longer need external access until
 these folders are manually removed.
 
-parallel builds
+Parallel builds
 ~~~~~~~~~~~~~~~
 
 A stage (such as a build stage) for a package can take advantage of multiple
@@ -31,14 +31,14 @@ for stages to two jobs, the following can be used:
 Note that a developer may restrict the amount of jobs allowed for a specific
 package if a package cannot support parallel processing.
 
-privileged builds
+Privileged builds
 ~~~~~~~~~~~~~~~~~
 
 It is never recommended to invoke a build with elevated (e.g. root) privileges.
 A builder invoking in an elevated environment runs the risk of a misconfigured
 releng-tool project dirtying or destroying the builder's host environment.
 
-license generation
+License generation
 ~~~~~~~~~~~~~~~~~~
 
 At the end of a ``releng-tool`` invoke, the final stages will compile a list of

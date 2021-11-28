@@ -1,4 +1,4 @@
-contributor guide
+Contributor guide
 =================
 
 The following outlines common directory locations:
@@ -18,7 +18,7 @@ project may require additional tools (e.g. using Git_ to fetch sources requires
 ``git`` to be installed); however, a user should not be required to install
 tools for features that are not being used.
 
-contributing
+Contributing
 ------------
 
 Developers are free to submit contributions for this project. Developers wishing
@@ -29,7 +29,7 @@ that any contributions must be signed off with the
 Implementation (source, comments, commits, etc.) submitted to this project
 should be provided in English.
 
-root directory
+Root directory
 --------------
 
 A user invoking releng-tool will attempt to operate in a project root directory.
@@ -38,7 +38,7 @@ sources, etc.) should all be performed inside the root directory. Some
 exceptions exist where a user requests to adjust the download directory (i.e.
 providing the ``--dl-dir`` argument).
 
-fetching design
+Fetching design
 ---------------
 
 Packages can describe where external content should be fetched from. The most
@@ -60,7 +60,7 @@ Not all packages will fetch content (e.g. placeholder packages).
 
 .. |--git-dir| replace:: ``--git-dir``
 
-extraction design
+Extraction design
 -----------------
 
 In most cases, the extraction phase will process archives (e.g. ``.tar.gz``,
@@ -70,7 +70,7 @@ content into a cache directory. For example, Git_ and Mercurial_ sources have
 their own extraction implementations to pull content from their respective
 distributed file systems into a package's build working directory.
 
-host and build environment
+Host and Build environment
 --------------------------
 
 releng-tool attempts to minimize the impact of a host system's environment on a
@@ -83,7 +83,7 @@ tokens.
 
 .. _contributor_guide_ext:
 
-extensions
+Extensions
 ----------
 
 Developers wishing to provide extensions to releng-tool should consult the API
@@ -138,7 +138,7 @@ For more details for API details, consult the documentation found inside the
 
 .. |releng_tool/api/__init__.py| replace:: ``releng_tool/api/__init__.py``
 
-documentation
+Documentation
 -------------
 
 Improvements to this project's documentation (found inside ``Documentation``)
