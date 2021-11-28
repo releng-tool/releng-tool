@@ -30,3 +30,19 @@ class TestEngineRunDefaults(unittest.TestCase):
     def test_engine_run_defaults_nopackages(self):
         with self.assertRaises(RelengToolMissingPackagesError):
             run_testenv(template='no-packages')
+
+    def test_engine_run_defaults_options_jobs(self):
+        with prepare_testenv() as engine:
+            self.assertNotEqual(engine.opts.jobs, 0)
+            self.assertEqual(engine.opts.jobsconf, 0)
+
+    def test_engine_run_defaults_options_logging(self):
+        with prepare_testenv() as engine:
+            self.assertFalse(engine.opts.debug)
+            self.assertFalse(engine.opts.no_color_out)
+            self.assertFalse(engine.opts.verbose)
+
+    def test_engine_run_defaults_options_modes(self):
+        with prepare_testenv() as engine:
+            self.assertFalse(engine.opts.devmode)
+            self.assertFalse(engine.opts.local_srcs)
