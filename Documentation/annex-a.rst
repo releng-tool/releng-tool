@@ -12,12 +12,12 @@ Options which are read by releng-tool from a project's configuration script:
 
 .. code-block:: python
 
-   cache_ext = <function>
+   cache_ext = <callable>
    default_internal = bool
    extensions = ['<extension>', '<extension>']
    external_packages = ['<path>', '<path>']
    license_header = '<data>'
-   override_extract_tools = {'<extension>': '<tool-path>'}
+   override_extract_tools = {'<tool>': '<tool-path>'}
    override_revisions = {'<pkg>': '<revision>'}
    override_sites = {'<pkg>': '<site>'}
    packages = ['<pkg>', '<pkg>', '<pkg>']
