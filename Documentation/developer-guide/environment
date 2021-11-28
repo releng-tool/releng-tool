@@ -174,3 +174,11 @@ following package-specific environment variables are available for use (where
 | ``<PKG>_VERSION``          | The version of a defined package.               |
 +----------------------------+-------------------------------------------------+
 
+releng-tool also accepts environment variables for configuring specific
+features of the releng-tool process. The following environment variables are
+accepted:
+
++-------------------------------------+----------------------------------------+
+| ``RELENG_IGNORE_RUNNING_AS_ROOT=1`` | Suppress the warning generated when    |
+|                                     | running releng-tool with a root user.  |
++-------------------------------------+----------------------------------------+
