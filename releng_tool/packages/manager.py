@@ -675,6 +675,7 @@ class RelengPackageManager:
         for env in (os.environ, env):
             env[pkg_key(name, 'BUILD_DIR')] = pkg_build_dir
             env[pkg_key(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
+            env[pkg_key(name, 'DEFDIR')] = pkg_def_dir
             env[pkg_key(name, 'NAME')] = name
             env[pkg_key(name, 'REVISION')] = pkg_revision
         os.environ[pkg_key(name, RPK_VERSION)] = pkg_version
