@@ -112,6 +112,13 @@ class RelengEngine:
         debug('loading statistics...')
         self.stats.load()
 
+        # inform the user of any active running modes
+        if self.opts.devmode:
+            verbose('running in development mode')
+
+        if self.opts.local_srcs:
+            verbose('running in local-sources mode')
+
         # register the project's root directory as a system path; permits a
         # project to import locally created modules in their build/etc. scripts
         debug('registering root directory in path...')
