@@ -225,6 +225,10 @@ following package-specific environment variables are available for use (where
       - The directory for where a defined package's build output will
         be stored.
 
+    * - ``<PKG>_DEFDIR``
+
+      - The directory where a defined package's definition is stored.
+
     * - ``<PKG>_NAME``
 
       - The name of the package.

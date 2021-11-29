@@ -71,6 +71,7 @@ releng-tool (may vary per context):
    TARGET_DIR
    <PKG_NAME>_BUILD_DIR
    <PKG_NAME>_BUILD_OUTPUT_DIR
+   <PKG_NAME>_DEFDIR
    <PKG_NAME>_NAME
    <PKG_NAME>_REVISION
    <PKG_NAME>_VERSION
