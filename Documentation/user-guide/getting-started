@@ -34,14 +34,13 @@ files will be stored.
 If a user wishes to pass the directory of a project location via command line,
 the argument ``--root-dir`` can be used:
 
-.. code-block:: shell-session
+.. code-block:: shell
 
-   $ releng-tool --root-dir my-project/
-   ...
+    releng-tool --root-dir my-project/
 
 For a complete list of actions and other argument options provided by the tool,
 the ``--help`` option can be used to show this information:
 
-.. code-block:: shell-session
+.. code-block:: shell
 
-   $ releng-tool --help
+    releng-tool --help
