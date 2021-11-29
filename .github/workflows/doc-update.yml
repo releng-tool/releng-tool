@@ -8,6 +8,7 @@ on:
       - '.github/workflows/doc-update.yml'
       - 'Documentation/**'
       - 'CHANGES.rst'
+  workflow_dispatch:
 
 jobs:
   development-doc-update:
