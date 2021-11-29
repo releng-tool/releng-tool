@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2021 releng-tool
 
+from sphinx.ext.autodoc import cut_lines
 import os
 import sys
 
@@ -38,3 +39,6 @@ html_show_sphinx = True
 
 def setup(app):
     app.add_css_file('theme_overrides.css')
+
+    # remove first line description docstrings in documentation
+    app.connect('autodoc-process-docstring', cut_lines(1))
