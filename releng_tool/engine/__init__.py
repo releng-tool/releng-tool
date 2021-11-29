@@ -63,6 +63,7 @@ from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from shutil import copyfileobj
 import os
+import sys
 
 class RelengEngine:
     """
@@ -103,7 +104,6 @@ class RelengEngine:
             return initialize_sample(opts)
 
         start_time = datetime.now().replace(microsecond=0)
-        verbose("loading user's configuration...")
         gbls = {
             'releng_args': opts.forward_args,
             'releng_version': releng_version,
@@ -112,10 +112,28 @@ class RelengEngine:
         debug('loading statistics...')
         self.stats.load()
 
+        # register the project's root directory as a system path; permits a
+        # project to import locally created modules in their build/etc. scripts
+        debug('registering root directory in path...')
+        sys.path.append(opts.root_dir)
+
+        # register the project's host directory as a system path; lazily permits
+        # loading host tools (not following prefix or bin container) built by a
+        # project over the system
+        debug('registering host directory in path...')
+        sys.path.insert(0, opts.host_dir)
+        os.environ['PATH'] = opts.host_dir + os.pathsep + os.environ['PATH']
+
         # prepare script environment to make helpers available to configuration
         # script(s)
+        #
+        # Note that some options prepared for the configuration script may
+        # need to be updated after running the project's configuration (e.g.
+        # possibly needing to update the `PREFIX` variable if `sysroot_prefix`
+        # was configured). This is peformed later in the engine run call.
         self._prepare_script_environment(gbls, gaction, opts.pkg_action)
 
+        verbose("loading user's configuration...")
         conf_point, conf_point_exists = opt_file(opts.conf_point)
         if not conf_point_exists:
             raise RelengToolMissingConfigurationError(conf_point)
@@ -172,6 +190,13 @@ class RelengEngine:
         # processing additional settings
         if not self._process_settings(settings):
             return False
+
+        # register the project's host-bin directory as a system path; lazily
+        # permits loading host tools built by a project over the system
+        debug('registering host bin directory in path...')
+        host_bin_dir = os.path.join(opts.host_dir + opts.sysroot_prefix, 'bin')
+        sys.path.insert(0, host_bin_dir)
+        os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
 
         # load and process packages
         pkgs = self.pkgman.load(pkg_names)
@@ -248,10 +273,6 @@ class RelengEngine:
                 self.stats.track_duration_end(pkg.name, 'fetch')
                 if not fetched:
                     return False
-
-            # prepend project's host directory to path
-            host_bin = os.path.join(opts.host_dir, 'bin')
-            os.environ['PATH'] = host_bin + os.pathsep + os.environ['PATH']
 
             # re-apply script environment to ensure previous script environment
             # changes have not manipulated the environment (from standard
