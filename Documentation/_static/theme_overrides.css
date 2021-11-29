@@ -19,3 +19,8 @@ h3, h4, h5, h6 {
 h4, h5, h6 {
     text-transform: unset !important;
 }
+
+/* force "auto" widths tables to be a maximum width */
+table.colwidths-auto {
+    width: 100%;
+}
