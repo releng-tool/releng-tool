@@ -40,7 +40,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install gettext 
+        sudo apt-get install gettext
         pip install --upgrade \
             "docutils<0.17" \
             furo \
