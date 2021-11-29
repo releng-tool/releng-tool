@@ -17,6 +17,7 @@ author = 'releng-tool'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'sphinx_inline_tabs',
 ]
 
 # add root for autodoc documentation

@@ -1,13 +1,13 @@
 Installation
 ============
 
-The recommended method of installation is using pip_:
+The recommended method of installing/upgrading releng-tool is using pip_:
 
 .. code-block:: shell
 
-   pip install releng-tool
+   pip install -U releng-tool
     (or)
-   python -m pip install releng-tool
+   python -m pip install -U releng-tool
 
 To verify the package has been installed the following command can be used:
 
@@ -21,102 +21,95 @@ Quick-start
 -----------
 
 The following provides a series of steps to assist in preparing a new
-environment to use this package. This quick-start will aim to use the most
-recent version of Python.
+environment to use this package.
 
-Linux
-~~~~~
+.. tab:: Linux
 
-While the use of Python_/pip_ is almost consistent between Linux distributions,
-the following are a series of helpful steps to install this package under
-specific distributions of Linux. From a terminal, invoke the following commands:
+    While the use of Python_/pip_ is almost consistent between Linux
+    distributions, the following are a series of helpful steps to install
+    this package under specific distributions of Linux. From a terminal,
+    invoke the following commands:
 
-Arch
-++++
+    .. tab:: Arch
 
-.. code-block:: shell-session
+        .. code-block:: shell-session
 
-   $ sudo pacman -Sy
-   $ sudo pacman -S python-pip
-   $ sudo pip install releng-tool
-   $ releng-tool --version
-   releng-tool <version>
+            $ sudo pacman -Sy
+            $ sudo pacman -S python-pip
+            $ sudo pip install -U releng-tool
+            $ releng-tool --version
+            releng-tool <version>
 
-This package is also
-`available on AUR <https://aur.archlinux.org/packages/releng-tool/>`_.
+        This package is also
+        `available on AUR <https://aur.archlinux.org/packages/releng-tool/>`_.
 
-CentOS
-++++++
+    .. tab:: CentOS
 
-.. code-block:: shell-session
+        .. code-block:: shell-session
 
-   $ sudo yum install epel-release
-   $ sudo yum install python-pip
-   $ sudo pip install releng-tool
-   $ releng-tool --version
-   releng-tool <version>
+            $ sudo yum install epel-release
+            $ sudo yum install python-pip
+            $ sudo pip install -U releng-tool
+            $ releng-tool --version
+            releng-tool <version>
 
-Fedora
-++++++
+    .. tab:: Fedora
 
-.. code-block:: shell-session
+        .. code-block:: shell-session
 
-   $ sudo dnf install python-pip
-   $ sudo pip install releng-tool
-   $ releng-tool --version
-   releng-tool <version>
+            $ sudo dnf install python-pip
+            $ sudo pip install -U releng-tool
+            $ releng-tool --version
+            releng-tool <version>
 
-openSUSE
-++++++++
+    .. tab:: openSUSE
 
-.. code-block:: shell-session
+        .. code-block:: shell-session
 
-   $ pip install releng-tool
-   $ releng-tool --version
-   releng-tool <version>
+            $ pip install releng-tool
+            $ releng-tool --version
+            releng-tool <version>
 
-Ubuntu
-++++++
+    .. tab:: Ubuntu
 
-.. code-block:: shell-session
+        .. code-block:: shell-session
 
-   $ sudo apt-get update
-   $ sudo apt-get install python-pip
-   $ sudo pip install releng-tool
-   $ releng-tool --version
-   releng-tool <version>
+            $ sudo apt-get update
+            $ sudo apt-get install python-pip
+            $ sudo pip install -U releng-tool
+            $ releng-tool --version
+            releng-tool <version>
 
-OS X
-~~~~
+.. tab:: OS X
 
-From a terminal, invoke the following commands:
+    From a terminal, invoke the following commands:
 
-.. code-block:: shell-session
+    .. code-block:: shell-session
 
-   $ sudo easy_install pip
-   $ sudo pip install releng-tool
-   $ releng-tool --version
-   releng-tool <version>
+        $ sudo easy_install pip
+        $ sudo pip install -U releng-tool
+        $ releng-tool --version
+        releng-tool <version>
 
-Windows
-~~~~~~~
+.. tab:: Windows
 
-If not already installed, download the most recent version of Python_:
+    If not already installed, download the most recent version of Python_:
 
-   | Python - Downloads
-   | https://www.python.org/downloads/
+     | Python - Downloads
+     | https://www.python.org/downloads/
 
-When invoking the installer, it is recommended to select the option to "Add
-Python to PATH"; however, users can explicitly invoked Python from an absolute
-path (the remainder of these steps will assume Python is available in the path).
+    When invoking the installer, it is recommended to select the option to
+    "Add Python to PATH"; however, users can explicitly invoked Python from
+    an absolute path (the remainder of these steps will assume Python is
+    available in the path).
 
-Open a Windows command prompt and invoke the following:
+    Open a Windows command prompt and invoke the following:
 
-.. code-block:: doscon
+    .. code-block:: doscon
 
-   > python -m pip install releng-tool
-   > python -m releng_tool --version
-   releng-tool ~version~
+        > python -m pip install -U releng-tool
+        > python -m releng_tool --version
+        releng-tool ~version~
 
 Development
 -----------
@@ -126,7 +119,7 @@ be used:
 
 .. code-block:: shell
 
-   pip install git+https://github.com/releng-tool/releng-tool.git
+    pip install git+https://github.com/releng-tool/releng-tool.git
 
 .. _Python: https://www.python.org/
 .. _pip: https://pip.pypa.io/
