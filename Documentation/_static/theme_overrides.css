@@ -24,3 +24,8 @@ h4, h5, h6 {
 table.colwidths-auto {
     width: 100%;
 }
+
+/* avoid wrapping literals */
+.literal {
+    white-space: nowrap;
+}
