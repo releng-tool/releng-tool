@@ -2,9 +2,9 @@ Arguments
 ---------
 
 The command line can be used to specify either a single action to perform and/or
-provide various options to configure the release engineering process. Options
+provide various options to configure the releng-tool process. Options
 can be provided before or after an action (if provided). By default, if a user
-does not specify an action, it is assumed that all release engineering steps are
+does not specify an action, it is assumed that all steps are
 to be performed. An example of a user invoking a clean action is as follows:
 
 .. code-block:: shell-session
@@ -39,13 +39,12 @@ The following outlines available actions:
 |                            | flags which may be set. See also the            |
 |                            | |ACTION_CLEAN|_ or |ACTION_MRPROPER|_ actions.  |
 +----------------------------+-------------------------------------------------+
-| ``extract``                | The release engineering process will process    |
-|                            | all packages up to the extraction phase         |
-|                            | (inclusive).                                    |
+| ``extract``                | All packages will be processed up to the        |
+|                            | extraction phase (inclusive).                   |
 +----------------------------+-------------------------------------------------+
-| ``fetch``                  | The release engineering process will process    |
-|                            | all packages up to the fetch phase (inclusive;  |
-|                            | see also `offline builds`_).                    |
+| ``fetch``                  | All packages will be processed up to the        |
+|                            | fetch phase (inclusive; see also                |
+|                            | `offline builds`_).                             |
 +----------------------------+-------------------------------------------------+
 | ``init``                   | Initialize an empty root directory with a       |
 |                            | sample project.                                 |
@@ -67,8 +66,8 @@ The following outlines available actions:
 |                            | remain untouched. See also the  |ACTION_CLEAN|_ |
 |                            | or |ACTION_DISTCLEAN|_ actions.                 |
 +----------------------------+-------------------------------------------------+
-| ``patch``                  | The release engineering process will process    |
-|                            | all packages up to the patch phase (inclusive). |
+| ``patch``                  | All packages will be processed up to the patch  |
+|                            | phase (inclusive).                              |
 +----------------------------+-------------------------------------------------+
 | ``<pkg>-build``            | Performs the build stage for the package. On    |
 |                            | success, the specified package stage will have  |

@@ -430,9 +430,9 @@ LIBFOO_INTERNAL
 Flag value to explicitly indicate that a package is an internal package.
 Internal packages will not generate warnings if :ref:`hashes <hash_files>`, an
 :ref:`ASCII-armor <ascii_armor>` or `licenses`_ are missing. When configured in
-:ref:`local-sources mode`, package sources are searched for in the local
-directory opposed to site fetched sources. By default, packages are considered
-external unless explicitly configured to be internal.
+:ref:`local-sources mode <local-sources mode>`, package sources are searched
+for in the local directory opposed to site fetched sources. By default,
+packages are considered external unless explicitly configured to be internal.
 
 .. code-block:: python
 
@@ -584,11 +584,11 @@ set, the host system will need to have ``git`` installed on the system.
 Note that the ``local`` type is designed to be a special/development-helper type
 only. When set, this option allows placing the contents of a module directly
 inside the definition folder (alongside the definition file). This approach is
-similar to using :ref:`local-sources mode` where it avoids the need to have the
-module content located in a site to be fetched -- specifically, for initial
-development/testing/training scenarios. It is never recommended to store the
-package's "main content" inside a releng-tool project, thus using the ``local``
-type will always generate a warning message.
+similar to using :ref:`local-sources mode <local-sources mode>` where it avoids
+the need to have the module content located in a site to be fetched --
+specifically, for initial development/testing/training scenarios. It is never
+recommended to store the package's "main content" inside a releng-tool project,
+thus using the ``local`` type will always generate a warning message.
 
 .. _package_bootstrapping_and_postprocessing:
 

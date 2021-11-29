@@ -66,5 +66,5 @@ the nitty-gritty details to make a proper build of a project. For example:
 
 releng-tool will attempt to provide an easy way to deal with fetching sources,
 ensuring projects are invoked in order, and more; however, the more advanced
-features/actions a developer may want in their release engineering (like the
-examples above), the more a developer will need to manage in their project.
+features/actions a developer may want in their project (like the examples
+mentioned above), the more a developer will need to manage their project.

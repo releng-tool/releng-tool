@@ -89,9 +89,9 @@ Patching
 
 .. note::
 
-   Patches are ignored when in :ref:`development mode` for packages with a
-   development version revision or when in :ref:`local-sources mode` for
-   internal packages.
+   Patches are ignored when in :ref:`development mode <development mode>` for
+   packages with a development revision or when in
+   :ref:`local-sources mode <local-sources mode>` for internal packages.
 
 The patching stage for a package provides the ability for a developer to apply
 one or more patches to extracted sources. A project may define an external
@@ -119,7 +119,7 @@ package patches:
    0002-correct-output-path.patch
    0003-support-disabling-test-build.patch
    liba
-   lib.hash
+   liba.hash
 
 With be applied in the following order:
 
@@ -127,14 +127,15 @@ With be applied in the following order:
 2. ``0002-correct-output-path.patch``
 3. ``0003-support-disabling-test-build.patch``
 
-If a user configures their build environment in :ref:`development mode`, patches
-will not be applied if a package defines a development revisions. The idea is
-that a development revision is most likely the bleeding edge source of a
-package and does not need any patches. If a user configures their build
-environment in :ref:`local-sources mode` and a package is defined as internal,
-patches will not be applied to the sources. This is to prevent the patching
-system from making unexpected modifications to a developer's local source
-variants.
+If a user configures their build environment in
+:ref:`development mode <development mode>`, patches will not be applied if a
+package defines a development revisions. The idea is that a development
+revision is most likely the bleeding edge source of a package and does not
+need any patches. If a user configures their build environment in
+:ref:`local-sources mode <local-sources mode>` and a package is defined as
+internal, patches will not be applied to the sources. This is to prevent the
+patching system from making unexpected modifications to a developer's local
+source variants.
 
 Internal and External packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,11 +151,11 @@ types are almost treated the same except for the following:
   :ref:`ASCII-armor <ascii_armor>`.
 - An internal package will not generate output warnings if the package is
   missing :ref:`license information <license_information>`.
-- When configured for :ref:`development mode`; the patch stage will not be
-  performed if the package specifies a development revision
+- When configured for :ref:`development mode <development mode>`; the patch
+  stage will not be performed if the package specifies a development revision
   (|LIBFOO_DEVMODE_REVISION|_).
-- When configured for :ref:`local-sources mode`; the fetch, extract and patch
-  stages will not be performed.
+- When configured for :ref:`local-sources mode <local-sources mode>`; the fetch,
+  extract and patch stages will not be performed.
 
 Script helpers
 ~~~~~~~~~~~~~~
@@ -341,7 +342,7 @@ configuration:
        'ext-b',
    ]
 
-During the initial stages of a release engineering process, releng-tool will
+During the initial stages of a releng-tool process, the process will
 check and load any configured extension. In the event that an extension is
 missing, is unsupported for the running releng-tool version or fails to load, a
 detailed error message will be presented to the user.

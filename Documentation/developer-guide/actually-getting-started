@@ -21,9 +21,9 @@ the following skeleton content:
    ]
 
 This configuration defines a releng-tool project with no packages. Start to
-change this by adding a package or more for each a module to be built in the
-release engineering process. For example, packages can be individual static
-libraries, simple asset fetching (e.g. image/document downloading) and more.
+change this by adding a package or more for each a module to be built. For
+example, packages can be individual static libraries, simple asset fetching
+(e.g. image/document downloading) and more.
 
 For each package, create a new folder inside ``<my-project>/package`` to
 represent the package.
@@ -114,7 +114,7 @@ When processing, both ``liba`` and ``libb`` packages will be implicitly loaded
 and processed like any other package.
 
 Once all the project's packages are ready, a developer can try their luck by
-attempting to perform the release engineering process:
+attempting to perform a build:
 
 .. code-block:: shell-session
 

@@ -1,9 +1,9 @@
 Developer guide
 ===============
 
-The following will outline details on how to prepare a releng-tool project to be
-used to assist the release engineering of a project. For details on a user
-interaction with releng-tool, consult the :doc:`user's guide <user-guide>`.
+The following will outline details on how to prepare a releng-tool project to
+be used for a project. For details on a user interaction with releng-tool, see
+the :doc:`user's guide <user-guide>`.
 
 .. include:: developer-guide/prelude
 .. include:: developer-guide/getting-started

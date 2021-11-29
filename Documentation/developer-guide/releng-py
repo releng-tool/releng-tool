@@ -37,8 +37,8 @@ follows:
 +--------------------------+---------------------------------------------------+
 | ``extensions``           | A list of extensions to load before processing a  |
 |                          | releng-tool project. If an extension cannot be    |
-|                          | loaded, the release engineering process will fail |
-|                          | with detailed information.                        |
+|                          | loaded, releng-tool will stop with detailed       |
+|                          | information.                                      |
 |                          |                                                   |
 |                          | .. code-block:: python                            |
 |                          |                                                   |

@@ -26,7 +26,7 @@ package ``package-a`` defined, the following output may be observed:
    generating license information...
    (success) completed (0:01:30)
 
-On a successful execution, it is common that the release engineering process
+On a successful execution, it is most likely that the releng-tool process
 will have an asset (or multiple) generated into a ``images/`` location; however,
 it is up to the developer of a releng-tool project to decide where generated
 files will be stored.
