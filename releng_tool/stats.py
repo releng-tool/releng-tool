@@ -304,6 +304,6 @@ class RelengStats:
 
             # close/cleanup figures
             for fig in figs:
-                plt.close()
+                fig.close()
         else:
             debug('duration statistics plot not supported')
