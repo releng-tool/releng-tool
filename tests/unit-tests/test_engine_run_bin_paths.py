@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021 releng-tool
 
+from releng_tool.util.io import run_script
 from tests import prepare_testenv
 import os
 import sys
@@ -36,18 +37,14 @@ class TestEngineRunBinPaths(unittest.TestCase):
             self._validate_test_script(expected)
 
     def _validate_test_script(self, name):
-        code = None
+        gbls = None
 
         for path in sys.path:
             script = os.path.join(path, name)
-            print(script)
 
             if os.path.exists(script):
-                with open(script, 'rb') as f:
-                    code = compile(f.read(), name, 'exec')
-                    break
+                gbls = run_script(script, gbls, catch=False)
+                break
 
-        self.assertIsNotNone(code)
-
-        exec(code, globals(), locals())
-        self.assertEqual(var, name)
+        self.assertIsNotNone(gbls)
+        self.assertEqual(gbls['var'], name)
