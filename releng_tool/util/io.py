@@ -523,10 +523,10 @@ def interpret_stem_extension(basename):
         a 2-tuple (stem, extension)
     """
     if not basename:
-        return (None, None)
+        return None, None
 
     if '.' not in basename:
-        return (basename, None)
+        return basename, None
 
     stem, ext = basename.split('.', 1)
     while '.' in ext:
@@ -536,7 +536,7 @@ def interpret_stem_extension(basename):
         part, ext = ext.split('.', 1)
         stem = '{}.{}'.format(stem, part)
 
-    return (stem, ext)
+    return stem, ext
 
 def opt_file(file):
     """
