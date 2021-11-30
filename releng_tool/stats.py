@@ -303,7 +303,6 @@ class RelengStats:
             fig_total.savefig(dur_pdf_total)
 
             # close/cleanup figures
-            for fig in figs:
-                fig.close()
+            plt.close()
         else:
             debug('duration statistics plot not supported')
