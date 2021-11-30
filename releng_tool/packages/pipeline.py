@@ -140,9 +140,13 @@ class RelengPackagePipeline:
                 return False
 
         if pkg.license_files:
+            version_desc = pkg.version
+            if not version_desc and pkg.revision:
+                version_desc = pkg.revision
+
             self.license_files[pkg.name] = {
                 'files': [],
-                'version': pkg.version,
+                'version': version_desc,
             }
             for file in pkg.license_files:
                 file = os.path.join(pkg.build_dir, file)

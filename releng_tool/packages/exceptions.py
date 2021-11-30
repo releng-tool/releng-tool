@@ -53,6 +53,17 @@ package configuration has an invalid value: {pkg_name}
  (key: {pkg_key}, expects: {expected_type})
 '''.strip().format(**args))
 
+class RelengToolMissingPackageRevision(RelengToolInvalidPackageConfiguration):
+    """
+    raised when a required package revision has not been defined
+    """
+    def __init__(self, args):
+        RelengToolInvalidPackageConfiguration.__init__(self,
+'''
+package defines vcs-type ({vcs_type}) but no version/revision: {pkg_name}
+ (missing either key: {pkg_key1}, {pkg_key2})
+'''.strip().format(**args))
+
 class RelengToolInvalidPackageScript(RelengToolInvalidPackageConfiguration):
     """
     raised when a package script has an issue loading (e.g. syntax error)
@@ -85,17 +96,6 @@ class RelengToolMissingPackageSite(RelengToolInvalidPackageConfiguration):
 '''
 package defines vcs-type ({vcs_type}) but no site: {pkg_name}
  (key: {pkg_key})
-'''.strip().format(**args))
-
-class RelengToolMissingPackageVersion(RelengToolInvalidPackageConfiguration):
-    """
-    raised when a package version has not been defined
-    """
-    def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
-'''
-package has no version defined: {pkg_name}
- (missing key: {pkg_key})
 '''.strip().format(**args))
 
 class RelengToolUnknownExtractType(RelengToolInvalidPackageConfiguration):

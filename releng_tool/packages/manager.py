@@ -52,9 +52,9 @@ from releng_tool.packages.exceptions import RelengToolConflictingLocalSrcsPath
 from releng_tool.packages.exceptions import RelengToolCyclicPackageDependency
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from releng_tool.packages.exceptions import RelengToolInvalidPackageScript
+from releng_tool.packages.exceptions import RelengToolMissingPackageRevision
 from releng_tool.packages.exceptions import RelengToolMissingPackageScript
 from releng_tool.packages.exceptions import RelengToolMissingPackageSite
-from releng_tool.packages.exceptions import RelengToolMissingPackageVersion
 from releng_tool.packages.exceptions import RelengToolUnknownExtractType
 from releng_tool.packages.exceptions import RelengToolUnknownInstallType
 from releng_tool.packages.exceptions import RelengToolUnknownPackageType
@@ -163,6 +163,7 @@ class RelengPackageManager:
         self._register_conf(RPK_STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE)
         self._register_conf(RPK_TYPE, PkgKeyType.STR)
         self._register_conf(RPK_VCS_TYPE, PkgKeyType.STR)
+        self._register_conf(RPK_VERSION, PkgKeyType.STR)
 
     def load(self, names):
         """
@@ -302,33 +303,37 @@ class RelengPackageManager:
         self._active_package = name
         self._active_env = env
 
-        # version
+        # prepare helper expand values
+        expand_extra = {
+        }
+
+        # version/revision extraction first
         #
-        # Always check version first since it will be the most commonly used
-        # package field -- rather initially fail on a simple field first (for
-        # new packages and/or developers) than breaking on a possibly more
-        # complex field below.
-        key = pkg_key(name, RPK_VERSION)
-        if key not in env or not env[key]:
-            raise RelengToolMissingPackageVersion({
-                'pkg_name': name,
-                'pkg_key': key,
-            })
-        pkg_version = interpret_string(env[key])
-        if pkg_version is None:
-            raise RelengToolInvalidPackageKeyValue({
-                'pkg_name': name,
-                'pkg_key': key,
-                'expected_type': 'string',
-            })
+        # Attempt to check the version first since it will be the most commonly
+        # used package field -- rather initially fail on a simple field first
+        # (for new packages and/or developers) than breaking on a possibly more
+        # complex field below. Note that the version field is optional, in cases
+        # where a package type does not need a version entry (e.g. sites which
+        # do not require a version value for fetching or there is not revision
+        # value to use instead).
+        #
+        # Note that when in development mode, the development-mode revision
+        # (if any is set) needs to be checked as well. This value may override
+        # the package's version value.
+
+        # version
+        pkg_version = self._fetch(RPK_VERSION)
+
+        if not pkg_version:
+            pkg_version = ''
+
+        pkg_version_key = pkg_key(name, RPK_VERSION)
+        expand_extra[pkg_version_key] = pkg_version
 
         # development mode revision
-        #
-        # Always check for a development-mode revision after the version, as
-        # this value may override the package's version value if development
-        # mode is enabled.
         pkg_has_devmode_option = False
-        pkg_devmode_revision = self._fetch(RPK_DEVMODE_REVISION)
+        pkg_devmode_revision = self._fetch(RPK_DEVMODE_REVISION,
+            allow_expand=True, expand_extra=expand_extra)
 
         if pkg_devmode_revision:
             pkg_has_devmode_option = True
@@ -338,47 +343,7 @@ class RelengPackageManager:
 
             if opts.devmode:
                 pkg_version = pkg_devmode_revision
-
-        # prepare helper expand values
-        expand_extra = {
-            key: pkg_version,
-        }
-
-        # archive extraction strip count
-        pkg_strip_count = self._fetch(RPK_STRIP_COUNT,
-            default=DEFAULT_STRIP_COUNT)
-
-        # build subdirectory
-        pkg_build_subdir = self._fetch(RPK_BUILD_SUBDIR)
-
-        # dependencies
-        deps = self._fetch(RPK_DEPS, default=[])
-
-        # ignore cache
-        pkg_devmode_ignore_cache = self._fetch(RPK_DEVMODE_IGNORE_CACHE)
-
-        # extension (override)
-        pkg_filename_ext = self._fetch(RPK_EXTENSION)
-
-        # extract type
-        pkg_extract_type = self._fetch(RPK_EXTRACT_TYPE)
-        if pkg_extract_type:
-            pkg_extract_type = pkg_extract_type.lower()
-
-            if pkg_extract_type not in self.registry.extract_types:
-                raise RelengToolUnknownExtractType({
-                    'pkg_name': name,
-                    'pkg_key': pkg_key(name, RPK_EXTRACT_TYPE),
-                })
-
-        # is-external
-        pkg_is_external = self._fetch(RPK_EXTERNAL)
-
-        # is-internal
-        pkg_is_internal = self._fetch(RPK_INTERNAL)
-
-        # no extraction
-        pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION)
+                expand_extra[pkg_version_key] = pkg_version
 
         # revision
         if opts.revision_override and name in opts.revision_override:
@@ -386,6 +351,17 @@ class RelengPackageManager:
         else:
             pkg_revision = self._fetch(RPK_REVISION,
                 allow_expand=True, expand_extra=expand_extra)
+        if opts.devmode and pkg_devmode_revision:
+            pkg_revision = pkg_devmode_revision
+        elif not pkg_revision:
+            pkg_revision = pkg_version
+
+        # site / vcs-site detection
+        #
+        # After extracted required version information, the site / VCS type
+        # needs to be checked next. This will allow the manage to early detect
+        # if a version/revision field is required, and fail early if we have
+        # not detected one from above.
 
         # site
         if opts.sites_override and name in opts.sites_override:
@@ -397,30 +373,6 @@ class RelengPackageManager:
         else:
             pkg_site = self._fetch(RPK_SITE,
                 allow_expand=True, expand_extra=expand_extra)
-
-        # skip any remote configuration
-        pkg_skip_remote_config = self._fetch(RPK_SKIP_REMOTE_CONFIG)
-
-        # skip any remote scripts
-        pkg_skip_remote_scripts = self._fetch(RPK_SKIP_REMOTE_SCRIPTS)
-
-        # type
-        pkg_type = None
-        pkg_type_raw = self._fetch(RPK_TYPE)
-        if pkg_type_raw:
-            pkg_type_raw = pkg_type_raw.lower()
-            if pkg_type_raw in PackageType:
-                pkg_type = pkg_type_raw
-            elif pkg_type_raw in self.registry.package_types:
-                pkg_type = pkg_type_raw
-            else:
-                raise RelengToolUnknownPackageType({
-                    'pkg_name': name,
-                    'pkg_key': pkg_key(name, RPK_TYPE),
-                })
-
-        if not pkg_type:
-            pkg_type = PackageType.SCRIPT
 
         # vcs-type
         pkg_vcs_type = None
@@ -480,6 +432,82 @@ class RelengPackageManager:
 
         if pkg_vcs_type == VcsType.LOCAL:
             warn('package using local content: {}', name)
+
+        # check if the detected vcs type needs a revision, and fail if we do
+        # not have one
+        if not pkg_revision and pkg_vcs_type in (
+                VcsType.BZR,
+                VcsType.CVS,
+                VcsType.GIT,
+                VcsType.HG,
+                VcsType.SVN,
+                ):
+            raise RelengToolMissingPackageRevision({
+                'pkg_name': name,
+                'pkg_key1': pkg_key(name, RPK_VERSION),
+                'pkg_key2': pkg_key(name, RPK_REVISION),
+                'vcs_type': pkg_vcs_type,
+            })
+
+        # archive extraction strip count
+        pkg_strip_count = self._fetch(RPK_STRIP_COUNT,
+            default=DEFAULT_STRIP_COUNT)
+
+        # build subdirectory
+        pkg_build_subdir = self._fetch(RPK_BUILD_SUBDIR)
+
+        # dependencies
+        deps = self._fetch(RPK_DEPS, default=[])
+
+        # ignore cache
+        pkg_devmode_ignore_cache = self._fetch(RPK_DEVMODE_IGNORE_CACHE)
+
+        # extension (override)
+        pkg_filename_ext = self._fetch(RPK_EXTENSION)
+
+        # extract type
+        pkg_extract_type = self._fetch(RPK_EXTRACT_TYPE)
+        if pkg_extract_type:
+            pkg_extract_type = pkg_extract_type.lower()
+
+            if pkg_extract_type not in self.registry.extract_types:
+                raise RelengToolUnknownExtractType({
+                    'pkg_name': name,
+                    'pkg_key': pkg_key(name, RPK_EXTRACT_TYPE),
+                })
+
+        # is-external
+        pkg_is_external = self._fetch(RPK_EXTERNAL)
+
+        # is-internal
+        pkg_is_internal = self._fetch(RPK_INTERNAL)
+
+        # no extraction
+        pkg_no_extraction = self._fetch(RPK_NO_EXTRACTION)
+
+        # skip any remote configuration
+        pkg_skip_remote_config = self._fetch(RPK_SKIP_REMOTE_CONFIG)
+
+        # skip any remote scripts
+        pkg_skip_remote_scripts = self._fetch(RPK_SKIP_REMOTE_SCRIPTS)
+
+        # type
+        pkg_type = None
+        pkg_type_raw = self._fetch(RPK_TYPE)
+        if pkg_type_raw:
+            pkg_type_raw = pkg_type_raw.lower()
+            if pkg_type_raw in PackageType:
+                pkg_type = pkg_type_raw
+            elif pkg_type_raw in self.registry.package_types:
+                pkg_type = pkg_type_raw
+            else:
+                raise RelengToolUnknownPackageType({
+                    'pkg_name': name,
+                    'pkg_key': pkg_key(name, RPK_TYPE),
+                })
+
+        if not pkg_type:
+            pkg_type = PackageType.SCRIPT
 
         # ######################################################################
 
@@ -576,7 +604,11 @@ class RelengPackageManager:
                     __, cache_ext = interpret_stem_extension(basename)
 
         # prepare package container and directory locations
-        pkg_nv = '{}-{}'.format(name, pkg_version)
+        if pkg_version:
+            pkg_nv = '{}-{}'.format(name, pkg_version)
+        else:
+            pkg_nv = name
+
         pkg_build_output_dir = os.path.join(opts.build_dir, pkg_nv)
         pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
         if pkg_vcs_type == VcsType.LOCAL:
@@ -599,10 +631,6 @@ class RelengPackageManager:
             pkg_cache_file = os.path.join(opts.dl_dir, pkg_nv + '.' + cache_ext)
         else:
             pkg_cache_file = os.path.join(opts.dl_dir, pkg_nv)
-        if opts.devmode and pkg_devmode_revision:
-            pkg_revision = pkg_devmode_revision
-        elif not pkg_revision:
-            pkg_revision = pkg_version
 
         # Select sources (like CMake-based projects) may wish to be using
         # out-of-source tree builds. For supported project types, adjust the

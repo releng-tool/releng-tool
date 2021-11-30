@@ -9,6 +9,7 @@ class RelengPackage:
 
     Args:
         name: the name of the package
+        version: the version of the package
 
     Attributes:
         asc_file: file containing ascii-armored data to validate this package
@@ -64,8 +65,11 @@ class RelengPackage:
     """
     def __init__(self, name, version):
         self.name = name
-        self.nv = '{}-{}'.format(name, version)
         self.version = version
+        if version:
+            self.nv = '{}-{}'.format(name, version)
+        else:
+            self.nv = self.name
         # (commons)
         self.asc_file = None
         self.build_dir = None
