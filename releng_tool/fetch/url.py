@@ -35,6 +35,7 @@ def fetch(opts):
     cache_file = opts.cache_file
     name = opts.name
     site = opts.site
+    urlopen_context = opts._urlopen_context
 
     filename = os.path.basename(cache_file)
 
@@ -43,7 +44,7 @@ def fetch(opts):
 
     log('requesting: ' + site)
     try:
-        with contextlib.closing(urlopen(site)) as rsp:
+        with contextlib.closing(urlopen(site, context=urlopen_context)) as rsp:
             total = 0
             if 'content-length' in rsp.headers:
                 try:

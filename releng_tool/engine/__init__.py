@@ -17,6 +17,7 @@ from releng_tool.defs import CONF_KEY_PREREQUISITES
 from releng_tool.defs import CONF_KEY_QUIRKS
 from releng_tool.defs import CONF_KEY_SYSROOT_PREFIX
 from releng_tool.defs import CONF_KEY_URL_MIRROR
+from releng_tool.defs import CONF_KEY_URLOPEN_CONTEXT
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import VcsType
@@ -63,6 +64,7 @@ from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from shutil import copyfileobj
 import os
+import ssl
 import sys
 
 class RelengEngine:
@@ -821,6 +823,15 @@ following key entry and re-try again.
                 notify_invalid_value(CONF_KEY_URL_MIRROR, 'str')
                 return False
             self.opts.url_mirror = url_mirror
+
+        if CONF_KEY_URLOPEN_CONTEXT in settings:
+            urlopen_context = None
+            if isinstance(settings[CONF_KEY_URLOPEN_CONTEXT], ssl.SSLContext):
+                urlopen_context = settings[CONF_KEY_URLOPEN_CONTEXT]
+            if urlopen_context is None:
+                notify_invalid_value(CONF_KEY_URLOPEN_CONTEXT, 'ssl.SSLContext')
+                return False
+            self.opts.urlopen_context = urlopen_context
 
         if CONF_KEY_EXTEN_PKGS in settings:
             epd = interpret_strings(settings[CONF_KEY_EXTEN_PKGS])

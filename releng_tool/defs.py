@@ -17,6 +17,7 @@ CONF_KEY_PREREQUISITES = 'prerequisites' #: project's host-tool prerequisites
 CONF_KEY_QUIRKS = 'quirks' #: configure quirks to apply
 CONF_KEY_SYSROOT_PREFIX = 'sysroot_prefix' #: project's default sys-root prefix
 CONF_KEY_URL_MIRROR = 'url_mirror' #: mirror base site for url fetches
+CONF_KEY_URLOPEN_CONTEXT = 'urlopen_context' #: context to use for urlopen
 
 # releng package keys (postfixes)
 RPK_BUILD_SUBDIR = 'BUILD_SUBDIR' #: sub-directory in fetched to find root src

@@ -83,6 +83,7 @@ class RelengEngineOptions:
         target_action: the specific package to work on (if any)
         target_dir: directory container for target content
         url_mirror: mirror base site for url fetches
+        urlopen_context: context to apply for all url open calls
         verbose: whether or not verbose messages are shown
     """
     def __init__(self, args=None, forward_args=None):
@@ -125,6 +126,7 @@ class RelengEngineOptions:
         self.target_action = None
         self.target_dir = None
         self.url_mirror = None
+        self.urlopen_context = None
         self.verbose = False
 
         if args:
