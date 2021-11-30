@@ -24,6 +24,10 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-hg-nosite')
 
+    def test_pkgconfig_vcs_type_invalid_rsync(self):
+        with self.assertRaises(RelengToolMissingPackageSite):
+            self.LOAD('vcs-type-invalid-rsync-nosite')
+
     def test_pkgconfig_vcs_type_invalid_scp(self):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-scp-nosite')
@@ -113,6 +117,14 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
     def test_pkgconfig_vcs_type_valid_none_implicit(self):
         pkg, _, _ = self.LOAD('vcs-type-valid-none-implicit')
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
+
+    def test_pkgconfig_vcs_type_valid_rsync_explicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-rsync-explicit')
+        self.assertEqual(pkg.vcs_type, VcsType.RSYNC)
+
+    def test_pkgconfig_vcs_type_valid_rsync_implicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-rsync-implicit')
+        self.assertEqual(pkg.vcs_type, VcsType.RSYNC)
 
     def test_pkgconfig_vcs_type_valid_scp_explicit(self):
         pkg, _, _ = self.LOAD('vcs-type-valid-scp-explicit')
