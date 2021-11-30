@@ -181,7 +181,7 @@ The following outlines available actions:
         be useful during times of development where a developer attempts
         to change a package definition or sources between configuration
         attempts. After completing a re-configuration, releng-tool will
-        perform the remaining stages of the package (i.e. all theway to
+        perform the remaining stages of the package (i.e. all the way to
         the installation phase). Users wishing to perform only the
         re-configuration stage are recommended to use
         ``<pkg>-reconfigure-only`` instead.

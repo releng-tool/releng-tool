@@ -85,7 +85,7 @@ def _process_submodules(opts, work_dir):
         if cfg.has_option(sec_name, 'branch'):
             submodule_revision = cfg.get(sec_name, 'branch')
         submodule_url = cfg.get(sec_name, 'url')
-        log('extracing submodule ({}): {}', opts.name, submodule_path)
+        log('extracting submodule ({}): {}', opts.name, submodule_path)
         debug('submodule revision: {}',
             submodule_revision if submodule_revision else '(none)')
 

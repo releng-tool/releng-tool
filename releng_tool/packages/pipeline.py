@@ -33,7 +33,7 @@ class RelengPackagePipeline:
     a releng package pipeline
 
     A pipeline will process a provide package through the various stages of its
-    life (extractiong, patching, configuring, etc.).
+    life (extracting, patching, configuring, etc.).
 
     Args:
         engine: the package engine
@@ -41,7 +41,7 @@ class RelengPackagePipeline:
         script_env: the script environment to load
 
     Attributes:
-        license_files: dictionary of package-to-license enties found when
+        license_files: dictionary of package-to-license entities found when
                         processing packages
         opts: options used to configure the engine
         script_env: the script environment to load

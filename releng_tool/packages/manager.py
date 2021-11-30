@@ -233,7 +233,7 @@ class RelengPackageManager:
                     pkg.deps.append(pkgs[dep])
             extend_script_env(self.script_env, env)
 
-        # for packages which have a dependency but have not been binded yet,
+        # for packages which have a dependency but have not been bound yet,
         # bind the dependencies now
         for pkg, deps in final_deps.items():
             for dep in deps:
