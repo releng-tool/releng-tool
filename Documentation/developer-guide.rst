@@ -20,6 +20,7 @@ the :doc:`user's guide <user-guide>`.
 .. [#cvsroot] https://www.gnu.org/software/trans-coord/manual/cvs/html_node/Specifying-a-repository.html
 .. [#gitremote] https://git-scm.com/docs/git-remote
 .. [#hgclone] https://www.selenic.com/mercurial/hg.1.html#clone
+.. [#rsynccommand] https://linux.die.net/man/1/rsync
 .. [#scpcommand] https://linux.die.net/man/1/scp
 .. [#svncheckout] http://svnbook.red-bean.com/en/1.7/svn.ref.svn.c.checkout.html
 .. [#urlopen] https://docs.python.org/3.7/library/urllib.request.html#urllib.request.urlopen

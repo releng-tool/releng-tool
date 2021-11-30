@@ -138,6 +138,7 @@ Bazaar    ``bzr+``
 CVS       ``cvs+``
 Git       ``git+`` or ``.git``
 Mercurial ``hg+``
+rsync     ``rsync+``
 SCP       ``scp+``
 SVN       ``svn+``
 URL       `(wildcard)`
@@ -331,6 +332,30 @@ explicitly registered in this option.
 .. code-block:: python
 
    LIBFOO_EXTRACT_TYPE = 'ext-custom-extract'
+
+LIBFOO_FETCH_OPTS
+^^^^^^^^^^^^^^^^^
+.. |LIBFOO_FETCH_OPTS| replace:: ``LIBFOO_FETCH_OPTS``
+
+Provides a means to pass command line options into the fetch process. This
+option can be defined as a dictionary of string pairs or a list with strings --
+either way defined will generate argument values which may be included in a
+fetch event. This field is optional. Not all site types may support this
+option.
+
+.. code-block:: python
+
+   LIBFOO_FETCH_OPTS = {
+       # adds "--option value" to the command
+       '--option': 'value',
+   }
+
+   # (or)
+
+   LIBFOO_FETCH_OPTS = [
+       # adds "--some-option" to the command
+       '--some-option',
+   ]
 
 LIBFOO_FIXED_JOBS
 ^^^^^^^^^^^^^^^^^
@@ -566,6 +591,7 @@ Supported types are as follows:
 - ``hg``  (Mercurial)
 - ``local`` (no VCS; local interim-development package)
 - ``none`` (no VCS; virtual package)
+- ``rsync`` (rsync)
 - ``scp`` (SCP)
 - ``svn`` (SVN)
 - ``url`` (URL)

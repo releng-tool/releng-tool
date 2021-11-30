@@ -84,6 +84,23 @@ repository. If a desired revision exists, content will be acquired from the
 cache location. If a desired revision does not exist, the origin remote will be
 pulled for the new revision (if it exists).
 
+rsync Site
+^^^^^^^^^^
+
+To define an rsync-based location, the site value must be prefixed with an
+``rsync+`` value. A site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'rsync+<source>'
+
+The value of ``<source>`` will be provided to a ``rsync`` call's
+[#rsynccommand]_ ``SRC`` value. Fetched content will be stored in an archive
+inside the ``dl`` directory. Once fetched, the fetch stage will be skipped
+unless the archive is manually removed. By default, the ``--recursive``
+argument is applied. Adding or replacing options can be done by using the
+|LIBFOO_FETCH_OPTS|_ option.
+
 SCP Site
 ^^^^^^^^
 
@@ -97,7 +114,7 @@ value. A site can be defined as follows:
 The value after the prefix is a path which will be provided to a ``scp`` call's
 [#scpcommand]_ source host value. The SCP site only supports copying a file from
 a remote host. The fetched file will be stored inside the ``dl`` directory. Once
-fetch, the fetch stage will be skipped unless the file is manually removed.
+fetched, the fetch stage will be skipped unless the file is manually removed.
 
 SVN Site
 ^^^^^^^^
