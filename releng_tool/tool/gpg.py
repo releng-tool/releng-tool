@@ -23,11 +23,11 @@ class GpgTool(RelengTool):
         against the provided target.
 
         Args:
-            engine: the engine
-            pkg: the package being extracted
+            asc: the asc file
+            target: the target file
 
         Returns:
-            ``True`` if the extraction stage is completed; ``False`` otherwise
+            ``True`` if the target has been validated; ``False`` otherwise
         """
 
         rv, out = self.execute_rv('--verify', asc, target)
