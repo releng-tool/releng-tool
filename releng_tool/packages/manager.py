@@ -366,7 +366,7 @@ class RelengPackageManager:
             if pkg_extract_type not in self.registry.extract_types:
                 raise RelengToolUnknownExtractType({
                     'pkg_name': name,
-                    'pkg_key': key,
+                    'pkg_key': pkg_key(name, RPK_EXTRACT_TYPE),
                 })
 
         # is-external
@@ -414,7 +414,7 @@ class RelengPackageManager:
             else:
                 raise RelengToolUnknownPackageType({
                     'pkg_name': name,
-                    'pkg_key': key,
+                    'pkg_key': pkg_key(name, RPK_TYPE),
                 })
 
         if not pkg_type:
@@ -432,7 +432,7 @@ class RelengPackageManager:
             else:
                 raise RelengToolUnknownVcsType({
                     'pkg_name': name,
-                    'pkg_key': key,
+                    'pkg_key': pkg_key(name, RPK_VCS_TYPE),
                 })
 
         if not pkg_vcs_type:
