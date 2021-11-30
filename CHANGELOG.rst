@@ -1,10 +1,17 @@
 Development
 -----------
 
+- fixed an issue where a configured ``sysroot_prefix`` bin path would not be
+  registered in the script environment's path
 - fixed an issue where ``releng_mkdir`` reports success if the target path is a
   file that already exists
 - fixed an issue where post-processing may be invoked even if a package's stage
   would fail
+- introduce support for rsync sites
+- introduce the ``<PKG_NAME>_DEFDIR`` environment/script variable
+- provide an option to suppress root warning (for zero-uid containers)
+- support configuring cache/download directories using environment variables
+- support providing an assets container directory (for cache/download folders)
 
 0.9 (2021-10-02)
 ----------------
