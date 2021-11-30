@@ -147,3 +147,5 @@ The site value provided will be directly used in a URL request. URL values
 supported are defined by the Python's ``urlopen`` implementation [#urlopen]_,
 which includes (but not limited to) ``http(s)://``, ``ftp://``, ``file://`` and
 more.
+
+See also |CONF_URLOPEN_CONTEXT|_.

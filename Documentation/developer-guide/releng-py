@@ -263,5 +263,23 @@ A list of more advanced configuration options are as follows:
 
         For a list of available quirks, see `quirks`_.
 
+    * - .. _CONF_URLOPEN_CONTEXT:
+
+        ``urlopen_context``
+
+      - Allows a project to specify a custom SSL context [#urlopen]_ to apply
+        for URL fetch requests. This can be useful for environments which may
+        experience ``CERTIFICATE_VERIFY_FAILED`` errors when attempting to
+        fetch files. A custom SSL context can be created and tailored for
+        a build environment. For example:
+
+        .. code-block:: python
+
+            import ssl
+            ...
+
+            urlopen_context = ssl.create_default_context()
+
 .. |CONF_OVERRIDES| replace:: :ref:`configuration overrides <conf_overrides>`
 .. |CONF_QUIRKS| replace:: ``quirks``
+.. |CONF_URLOPEN_CONTEXT| replace:: ``urlopen_context``

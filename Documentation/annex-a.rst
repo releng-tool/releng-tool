@@ -25,6 +25,7 @@ Options which are read by releng-tool from a project's configuration script:
    quirks = ['<quirk-id>']
    sysroot_prefix = '<path>' # '/usr'
    url_mirror = '<mirror-url>'
+   urlopen_context = <ssl.SSLContext>
 
 Environment variables
 ---------------------
