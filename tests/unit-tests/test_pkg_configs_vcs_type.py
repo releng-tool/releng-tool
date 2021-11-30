@@ -3,6 +3,7 @@
 
 from releng_tool.defs import VcsType
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
+from releng_tool.packages.exceptions import RelengToolMissingPackageRevision
 from releng_tool.packages.exceptions import RelengToolMissingPackageSite
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from tests.support.pkg_config_test import TestPkgConfigsBase
@@ -48,7 +49,27 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         with self.assertRaises(RelengToolUnknownVcsType):
             self.LOAD('vcs-type-invalid-value')
 
-    def test_pkgconfig_vcs_type_missing(self):
+    def test_pkgconfig_vcs_type_missing_revision_bzr(self):
+        with self.assertRaises(RelengToolMissingPackageRevision):
+            self.LOAD('vcs-type-invalid-bzr-norevision')
+
+    def test_pkgconfig_vcs_type_missing_revision_cvs(self):
+        with self.assertRaises(RelengToolMissingPackageRevision):
+            self.LOAD('vcs-type-invalid-cvs-norevision')
+
+    def test_pkgconfig_vcs_type_missing_revision_git(self):
+        with self.assertRaises(RelengToolMissingPackageRevision):
+            self.LOAD('vcs-type-invalid-git-norevision')
+
+    def test_pkgconfig_vcs_type_missing_revision_hg(self):
+        with self.assertRaises(RelengToolMissingPackageRevision):
+            self.LOAD('vcs-type-invalid-hg-norevision')
+
+    def test_pkgconfig_vcs_type_missing_revision_svn(self):
+        with self.assertRaises(RelengToolMissingPackageRevision):
+            self.LOAD('vcs-type-invalid-svn-norevision')
+
+    def test_pkgconfig_vcs_type_missing_site(self):
         pkg, _, _ = self.LOAD('missing')
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
 
