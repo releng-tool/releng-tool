@@ -1,4 +1,3 @@
 TEST_CONF_OPTS = {
     123: 'value1',
 }
-TEST_VERSION = 'dummy'

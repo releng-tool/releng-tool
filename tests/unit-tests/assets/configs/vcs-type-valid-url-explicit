@@ -1,3 +1,2 @@
 TEST_SITE = 'dummy'
 TEST_VCS_TYPE = 'url'
-TEST_VERSION = 'dummy'

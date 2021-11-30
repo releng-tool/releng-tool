@@ -1,4 +1,3 @@
 TEST_CONF_DEFS = {
     123: 'value',
 }
-TEST_VERSION = 'dummy'

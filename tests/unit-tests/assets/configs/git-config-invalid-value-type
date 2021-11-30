@@ -1,4 +1,3 @@
 TEST_GIT_CONFIG = {
     'key1': False,
 }
-TEST_VERSION = 'dummy'

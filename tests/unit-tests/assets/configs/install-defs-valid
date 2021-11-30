@@ -3,4 +3,3 @@ TEST_INSTALL_DEFS = {
     'key2': None,
     'key3': 'val3',
 }
-TEST_VERSION = 'dummy'

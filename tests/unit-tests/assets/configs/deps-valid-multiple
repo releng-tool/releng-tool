@@ -3,4 +3,3 @@ TEST_DEPENDENCIES = [
     'dep2',
     'dep3',
 ]
-TEST_VERSION = 'dummy'

@@ -3,4 +3,3 @@ TEST_BUILD_OPTS = {
     'key2': None,
     'key3': 'val3',
 }
-TEST_VERSION = 'dummy'

@@ -1,4 +1,3 @@
 TEST_INSTALL_DEFS = {
     123: 'value',
 }
-TEST_VERSION = 'dummy'

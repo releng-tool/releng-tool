@@ -1,4 +1,3 @@
 TEST_GIT_CONFIG = {
     123: 'value',
 }
-TEST_VERSION = 'dummy'

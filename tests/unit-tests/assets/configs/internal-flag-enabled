@@ -1,2 +1,1 @@
 TEST_INTERNAL = True
-TEST_VERSION = 'dummy'

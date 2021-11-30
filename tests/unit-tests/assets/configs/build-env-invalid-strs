@@ -3,4 +3,3 @@ TEST_BUILD_ENV = [
     'invalid-def',
     'invalid-def',
 ]
-TEST_VERSION = 'dummy'

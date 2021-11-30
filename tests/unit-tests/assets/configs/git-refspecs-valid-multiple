@@ -3,4 +3,3 @@ TEST_GIT_REFSPECS = [
     'refspec2',
     'refspec3',
 ]
-TEST_VERSION = 'dummy'

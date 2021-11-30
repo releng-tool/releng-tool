@@ -5,4 +5,3 @@ TEST_EXTOPT = {
         'more': 'data',
     },
 }
-TEST_VERSION = 'dummy'

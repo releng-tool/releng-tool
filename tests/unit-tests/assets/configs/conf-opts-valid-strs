@@ -3,4 +3,3 @@ TEST_CONF_OPTS = [
     'option2',
     'option3',
 ]
-TEST_VERSION = 'dummy'

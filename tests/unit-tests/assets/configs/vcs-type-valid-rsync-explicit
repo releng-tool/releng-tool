@@ -1,3 +1,2 @@
 TEST_SITE = 'dummy'
 TEST_VCS_TYPE = 'rsync'
-TEST_VERSION = 'dummy'

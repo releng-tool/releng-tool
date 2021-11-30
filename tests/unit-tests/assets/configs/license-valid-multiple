@@ -3,4 +3,3 @@ TEST_LICENSE = [
     'license2',
     'license3',
 ]
-TEST_VERSION = 'dummy'

@@ -1,4 +1,3 @@
 TEST_BUILD_OPTS = {
     123: 'value1',
 }
-TEST_VERSION = 'dummy'
