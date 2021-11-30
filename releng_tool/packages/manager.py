@@ -18,6 +18,7 @@ from releng_tool.defs import RPK_EXTENSION
 from releng_tool.defs import RPK_EXTERNAL
 from releng_tool.defs import RPK_EXTOPT
 from releng_tool.defs import RPK_EXTRACT_TYPE
+from releng_tool.defs import RPK_FETCH_OPTS
 from releng_tool.defs import RPK_FIXED_JOBS
 from releng_tool.defs import RPK_GIT_CONFIG
 from releng_tool.defs import RPK_GIT_DEPTH
@@ -138,6 +139,7 @@ class RelengPackageManager:
         self._register_conf(RPK_EXTERNAL, PkgKeyType.BOOL)
         self._register_conf(RPK_EXTOPT, PkgKeyType.DICT)
         self._register_conf(RPK_EXTRACT_TYPE, PkgKeyType.STR)
+        self._register_conf(RPK_FETCH_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
         self._register_conf(RPK_FIXED_JOBS, PkgKeyType.INT_POSITIVE)
         self._register_conf(RPK_GIT_CONFIG, PkgKeyType.DICT_STR_STR)
         self._register_conf(RPK_GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE)
@@ -460,6 +462,9 @@ class RelengPackageManager:
                 elif site_lc.startswith('hg+'):
                     pkg_site = pkg_site[3:]
                     pkg_vcs_type = VcsType.HG
+                elif site_lc.startswith('rsync+'):
+                    pkg_site = pkg_site[6:]
+                    pkg_vcs_type = VcsType.RSYNC
                 elif site_lc.startswith('scp+'):
                     pkg_site = pkg_site[4:]
                     pkg_vcs_type = VcsType.SCP
@@ -519,13 +524,14 @@ class RelengPackageManager:
                 VcsType.CVS,
                 VcsType.GIT,
                 VcsType.HG,
+                VcsType.RSYNC,
                 VcsType.SCP,
                 VcsType.SVN,
                 VcsType.URL,
                 ):
             raise RelengToolMissingPackageSite({
                 'pkg_name': name,
-                'pkg_key': key,
+                'pkg_key': pkg_key(name, RPK_SITE),
                 'vcs_type': pkg_vcs_type,
             })
 
@@ -539,7 +545,12 @@ class RelengPackageManager:
         # find possible extension for a cache file
         #
         # non-dvcs's will be always gzip-tar'ed.
-        if pkg_vcs_type in (VcsType.BZR, VcsType.CVS, VcsType.SVN):
+        if pkg_vcs_type in (
+                VcsType.BZR,
+                VcsType.CVS,
+                VcsType.RSYNC,
+                VcsType.SVN,
+                ):
             cache_ext = 'tgz'
         # dvcs's will not have an extension type
         elif is_pkg_dvcs:
@@ -722,6 +733,10 @@ class RelengPackageManager:
         # extension modifiers
         if pkg.ext_modifiers is None:
             pkg.ext_modifiers = self._fetch(RPK_EXTOPT)
+
+        # fetch options
+        if pkg.fetch_opts is None:
+            pkg.fetch_opts = self._fetch(RPK_FETCH_OPTS)
 
         # fixed jobs
         if pkg.fixed_jobs is None:

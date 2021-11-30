@@ -276,7 +276,8 @@ class RelengEngine:
                         continue
 
                 self.stats.track_duration_start(pkg.name, 'fetch')
-                fetched = fetch_stage(self, pkg, ignore_cache=requested_fetch)
+                fetched = fetch_stage(
+                    self, pkg, requested_fetch, pkg.fetch_opts)
                 self.stats.track_duration_end(pkg.name, 'fetch')
                 if not fetched:
                     return False

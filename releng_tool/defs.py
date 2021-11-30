@@ -27,6 +27,7 @@ RPK_EXTENSION = 'EXTENSION' #: filename extension for package (if needed)
 RPK_EXTERNAL = 'EXTERNAL' #: whether or not package is considered "external"
 RPK_EXTOPT = 'EXTOPT' #: extension-defined package modifiers (if any)
 RPK_EXTRACT_TYPE = 'EXTRACT_TYPE' #: extraction type for sources
+RPK_FETCH_OPTS = 'FETCH_OPTS' #: fetch options (if any)
 RPK_FIXED_JOBS = 'FIXED_JOBS' #: fixed job count for the project
 RPK_GIT_CONFIG = 'GIT_CONFIG' #: git configurations to set (if any)
 RPK_GIT_DEPTH = 'GIT_DEPTH' #: git fetch depth (if any)
@@ -183,6 +184,7 @@ class VcsType(Enum):
         HG: mercurial
         LOCAL: no version control (local interim-development package)
         NONE: no version control (placeholder package)
+        RSYNC: secure copy
         SCP: secure copy
         SVN: subversion
         URL: url (http, https, ftp, file, etc.)
@@ -193,6 +195,7 @@ class VcsType(Enum):
     HG = 'hg'
     LOCAL = 'local'
     NONE = 'none'
+    RSYNC = 'rsync'
     SCP = 'scp'
     SVN = 'svn'
     URL = 'url'

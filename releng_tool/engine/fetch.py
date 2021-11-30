@@ -7,6 +7,7 @@ from releng_tool.fetch.bzr import fetch as fetch_bzr
 from releng_tool.fetch.cvs import fetch as fetch_cvs
 from releng_tool.fetch.git import fetch as fetch_git
 from releng_tool.fetch.mercurial import fetch as fetch_mercurial
+from releng_tool.fetch.rsync import fetch as fetch_rsync
 from releng_tool.fetch.scp import fetch as fetch_scp
 from releng_tool.fetch.svn import fetch as fetch_svn
 from releng_tool.fetch.url import fetch as fetch_url
@@ -25,7 +26,7 @@ from releng_tool.util.log import warn
 import os
 import shutil
 
-def stage(engine, pkg, ignore_cache):
+def stage(engine, pkg, ignore_cache, extra_opts):
     """
     handles the fetching stage for a package
 
@@ -36,6 +37,7 @@ def stage(engine, pkg, ignore_cache):
         engine: the engine
         pkg: the package being fetched
         ignore_cache: always attempt to ignore the cache
+        extra_opts: extra options for the fetch operation (if applicable)
 
     Returns:
         ``True`` if the fetching stage is completed; ``False`` otherwise
@@ -72,6 +74,7 @@ local sources option to use the default process).
     replicate_package_attribs(fetch_opts, pkg)
     fetch_opts.cache_dir = pkg.cache_dir
     fetch_opts.ext = pkg.ext_modifiers
+    fetch_opts.extra_opts = extra_opts
     fetch_opts.ignore_cache = ignore_cache
     fetch_opts.name = name
     fetch_opts.revision = pkg.revision
@@ -188,6 +191,8 @@ file. Ensure that the package's public key has been registered into gpg.
                 fetcher = fetch_git
             elif pkg.vcs_type == VcsType.HG:
                 fetcher = fetch_mercurial
+            elif pkg.vcs_type == VcsType.RSYNC:
+                fetcher = fetch_rsync
             elif pkg.vcs_type == VcsType.SCP:
                 fetcher = fetch_scp
             elif pkg.vcs_type == VcsType.SVN:

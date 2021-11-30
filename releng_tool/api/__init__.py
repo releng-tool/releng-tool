@@ -280,6 +280,7 @@ class RelengFetchOptions(RelengPackageOptions):
     Attributes:
         cache_dir: directory to store cached content (if applicable)
         cache_file: file to store cached content (if applicable)
+        fetch_opts: command line options to apply (if applicable)
         ignore_cache: whether or not there is a hint to ignore cache information
         revision: revision to use to fetch from source control
         site: the site (uri) to acquire a package's resources
@@ -288,6 +289,7 @@ class RelengFetchOptions(RelengPackageOptions):
         super(RelengFetchOptions, self).__init__()
         self.cache_dir = None
         self.cache_file = None
+        self.fetch_opts = None
         self.ignore_cache = None
         self.revision = None
         self.site = None

@@ -22,6 +22,7 @@ class RelengPackage:
         devmode_ignore_cache: whether or not cache files should be ignored
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
+        fetch_opts: fetch options (if applicable)
         fixed_jobs: fixed job count for this specific package
         git_config: git config options to apply (if applicable)
         git_depth: git fetch depth (if applicable)
@@ -75,6 +76,7 @@ class RelengPackage:
         self.def_dir = None
         self.deps = []
         self.devmode_ignore_cache = None
+        self.fetch_opts = None
         self.fixed_jobs = None
         self.has_devmode_option = None
         self.hash_file = None

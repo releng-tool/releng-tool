@@ -12,6 +12,7 @@ from releng_tool.tool.hg import HG
 from releng_tool.tool.make import MAKE
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
+from releng_tool.tool.rsync import RSYNC
 from releng_tool.tool.scp import SCP
 from releng_tool.tool.svn import SVN
 from releng_tool.util.log import err
@@ -122,6 +123,12 @@ class RelengPrerequisites:
                 self._verbose_exists(HG)
             else:
                 missing.add(HG.tool)
+
+        if VcsType.RSYNC in vcs_types:
+            if RSYNC.exists():
+                self._verbose_exists(RSYNC)
+            else:
+                missing.add(RSYNC.tool)
 
         if VcsType.SCP in vcs_types:
             if SCP.exists():
