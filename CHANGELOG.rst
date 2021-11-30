@@ -11,6 +11,7 @@ Development
 - introduce the ``<PKG_NAME>_DEFDIR`` environment/script variable
 - provide an option to suppress root warning (for zero-uid containers)
 - support configuring cache/download directories using environment variables
+- support custom ssl context overrides via ``urlopen_context``
 - support providing an assets container directory (for cache/download folders)
 
 0.9 (2021-10-02)
