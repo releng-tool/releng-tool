@@ -70,7 +70,7 @@ class RelengRegistry(RelengRegistryInterface):
                 loaded = False
         return loaded
 
-    def load(self, name):
+    def load(self, name, ignore=True):
         """
         load the provided extension into the registry
 
@@ -82,6 +82,8 @@ class RelengRegistry(RelengRegistryInterface):
 
         Args:
             name: name of the extension to load
+            ignore (optional): ignore if the detected extension could not be
+                                loaded (default: True)
 
         Returns:
             whether or not the extension was loaded in the registry
@@ -123,18 +125,26 @@ class RelengRegistry(RelengRegistryInterface):
                 plugin = imp.load_module(last_part, file, pathname, desc)
 
             if hasattr(plugin, 'releng_setup'):
-                try:
+                if not ignore:
                     plugin.releng_setup(self)
+                    loaded = True
+                else:
+                    try:
+                        plugin.releng_setup(self)
+                        loaded = True
+                    except RelengInvalidSetupException as e:
+                        warn('extension is not supported '
+                             'due to an invalid setup: {}\n'
+                             ' ({})', name, e)
+                    except RelengVersionNotSupportedException as e:
+                        warn('extension is not supported '
+                             'with this version: {}\n'
+                             ' ({})', name, e)
+
+                if loaded:
                     self.extension.append(name)
                     verbose('loaded extension: {}', name)
                     loaded = True
-                except RelengInvalidSetupException as e:
-                    warn('extension is not supported '
-                         'due to an invalid setup: {}\n'
-                         ' ({})', name, e)
-                except RelengVersionNotSupportedException:
-                    warn('extension is not supported '
-                         'with this version: {}', name)
             else:
                 warn('extension does not have a setup method: {}', name)
         except RelengModuleNotFoundError:
