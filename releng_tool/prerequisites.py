@@ -15,9 +15,9 @@ from releng_tool.tool.python import PythonTool
 from releng_tool.tool.rsync import RSYNC
 from releng_tool.tool.scp import SCP
 from releng_tool.tool.svn import SVN
+from releng_tool.util.compat import which
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
-import distutils.spawn
 
 class RelengPrerequisites:
     """
@@ -144,7 +144,7 @@ class RelengPrerequisites:
 
         # project-provided tools check
         for tool in self.tools:
-            if distutils.spawn.find_executable(tool):
+            if which(tool):
                 verbose('prerequisite exists: ' + tool)
             else:
                 missing.add(tool)

@@ -3,14 +3,15 @@
 
 from __future__ import unicode_literals
 from contextlib import contextmanager
-from distutils.dir_util import DistutilsFileError
-from distutils.dir_util import copy_tree
+from releng_tool.util.compat import CopyTreeError
+from releng_tool.util.compat import copy_tree
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_verbose
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from runpy import run_path
+from shutil import Error as ShutilError
 from shutil import copy2
 from shutil import move
 import errno
@@ -633,7 +634,7 @@ def path_copy(src, dst, quiet=False, critical=True):
             success = True
         else:
             errmsg = 'source does not exist: {}'.format(src)
-    except (DistutilsFileError, IOError) as e:
+    except (CopyTreeError, IOError, ShutilError) as e:
         errmsg = str(e)
 
     if not quiet and errmsg:

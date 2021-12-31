@@ -2,8 +2,8 @@
 # Copyright 2018-2021 releng-tool
 
 from releng_tool.tool import RelengTool
+from releng_tool.util.compat import which
 from releng_tool.util.log import debug
-import distutils.spawn
 
 #: executable used to run scp commands
 SCP_COMMAND = 'scp'
@@ -33,7 +33,7 @@ class ScpTool(RelengTool):
         if self.tool in RelengTool.detected:
             return RelengTool.detected[self.tool]
 
-        if distutils.spawn.find_executable(self.tool):
+        if which(self.tool):
             debug('{} tool is detected on this system', self.tool)
             RelengTool.detected[self.tool] = True
         else:
