@@ -19,6 +19,15 @@ class TestEngineRunArgs(unittest.TestCase):
                 self.assertEqual(engine.opts.cache_dir, expected_cache_dir)
                 self.assertEqual(engine.opts.dl_dir, expected_dl_dir)
 
+    def test_engine_run_args_cache_dir(self):
+        with prepare_workdir() as cache_dir:
+            config = {
+                'cache_dir': cache_dir,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.cache_dir, cache_dir)
+
     def test_engine_run_args_debug(self):
         config = {
             'debug': True,
@@ -26,6 +35,15 @@ class TestEngineRunArgs(unittest.TestCase):
 
         with prepare_testenv(config=config) as engine:
             self.assertTrue(engine.opts.debug)
+
+    def test_engine_run_args_dl_dir(self):
+        with prepare_workdir() as dl_dir:
+            config = {
+                'dl_dir': dl_dir,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.dl_dir, dl_dir)
 
     def test_engine_run_args_mode_devmode(self):
         config = {
@@ -59,6 +77,15 @@ class TestEngineRunArgs(unittest.TestCase):
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.jobs, 4)
             self.assertEqual(engine.opts.jobsconf, 4)
+
+    def test_engine_run_args_out_dir(self):
+        with prepare_workdir() as out_dir:
+            config = {
+                'out_dir': out_dir,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.out_dir, out_dir)
 
     def test_engine_run_args_quirks(self):
         quirks = [
