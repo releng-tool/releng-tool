@@ -5,11 +5,14 @@ Development
   registered in the script environment's path
 - fixed an issue where ``releng_mkdir`` reports success if the target path is a
   file that already exists
+- fixed an issue where extensions may not load on python 2.7
 - fixed an issue where post-processing may be invoked even if a package's stage
   would fail
+- introduce ``LIBFOO_CMAKE_NOINSTALL`` for cmake packages with no install rule
 - introduce support for rsync sites
 - introduce the ``<PKG_NAME>_DEFDIR`` environment/script variable
 - provide an option to suppress root warning (for zero-uid containers)
+- remove the requirement to have a package version entry
 - support configuring cache/download directories using environment variables
 - support custom ssl context overrides via ``urlopen_context``
 - support providing an assets container directory (for cache/download folders)
