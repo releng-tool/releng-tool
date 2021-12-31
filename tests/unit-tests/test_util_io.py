@@ -101,8 +101,8 @@ class TestUtilIo(unittest.TestCase):
                 path_copy(src, src)
 
             # attempt to copy a directory to itself in legacy python, to ensure
-            # `DistutilsFileError` is handled properly
-            if sys.version_info < (3, 0):
+            # `DistutilsFileError` is handled properly (windows only)
+            if sys.version_info < (3, 0) and sys.platform == 'win32':
                 with self.assertRaises(SystemExit):
                     path_copy(work_dir, work_dir)
 
