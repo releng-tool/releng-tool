@@ -10,14 +10,20 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.string import interpret_string
+import sys
+
+if sys.version_info < (3, 0):
+    import imp
 
 try:
     RelengModuleNotFoundError = ModuleNotFoundError
 except NameError:
     RelengModuleNotFoundError = ImportError
 
+
 #: prefix requirement for extension named types
 PREFIX_REQUIREMENT = 'ext-'
+
 
 class RelengRegistry(RelengRegistryInterface):
     """
@@ -88,7 +94,34 @@ class RelengRegistry(RelengRegistryInterface):
         loaded = False
         debug('attempting to load extension: {}', name)
         try:
-            plugin = import_module(name)
+            try:
+                plugin = import_module(name)
+            except RelengModuleNotFoundError:
+                # python 2.7 may not be able to load from a nested path; try
+                # searching through each package (if a nested module)
+                if sys.version_info >= (3, 0) or '.' not in name:
+                    raise
+
+                # split the module into parts and for each part, check to see
+                # if it's a package directory; if so, keep going until the last
+                # namespace package
+                ext_parts = name.split('.')
+                path = None
+                for part in ext_parts[:-1]:
+                    file, pathname, desc = imp.find_module(part, path)
+
+                    if desc[-1] != imp.PKG_DIRECTORY:
+                        raise ImportError(name)
+
+                    pkg = imp.load_module(part, file, pathname, desc)
+                    path = pkg.__path__
+
+                # with the path of the last namespace package found, find the
+                # desired module in this path
+                last_part = ext_parts[-1]
+                file, pathname, desc = imp.find_module(last_part, path)
+                plugin = imp.load_module(last_part, file, pathname, desc)
+
             if hasattr(plugin, 'releng_setup'):
                 try:
                     plugin.releng_setup(self)
