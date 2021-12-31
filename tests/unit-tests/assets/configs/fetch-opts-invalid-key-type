@@ -1,0 +1,3 @@
+TEST_FETCH_OPTS = {
+    123: 'value1',
+}

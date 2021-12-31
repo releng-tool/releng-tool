@@ -1,0 +1,5 @@
+TEST_FETCH_OPTS = [
+    'option4',
+    'option5',
+    'option6',
+]

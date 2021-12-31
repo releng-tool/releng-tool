@@ -1,0 +1,5 @@
+TEST_FETCH_OPTS = {
+    'key4': 'value',
+    'key8': None,
+    'key1': None,
+}

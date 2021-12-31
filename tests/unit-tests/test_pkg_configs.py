@@ -38,6 +38,40 @@ class TestPkgConfigs(TestPkgConfigsBase):
             'dep',
         ])
 
+    def test_pkgconfig_fetch_opts_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('fetch-opts-invalid-base-type')
+
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('fetch-opts-invalid-key-type')
+
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('fetch-opts-invalid-value-type')
+
+    def test_pkgconfig_fetch_opts_missing(self):
+        pkg, _, _ = self.LOAD('missing')
+        self.assertIsNone(pkg.fetch_opts)
+
+    def test_pkgconfig_fetch_opts_valid(self):
+        pkg, _, _ = self.LOAD('fetch-opts-valid-dict')
+        self.assertDictEqual(pkg.fetch_opts, {
+            'key1': None,
+            'key4': 'value',
+            'key8': None,
+        })
+
+        pkg, _, _ = self.LOAD('fetch-opts-valid-str')
+        self.assertDictEqual(pkg.fetch_opts, {
+            '--my-option': '',
+        })
+
+        pkg, _, _ = self.LOAD('fetch-opts-valid-strs')
+        self.assertDictEqual(pkg.fetch_opts, {
+            'option4': '',
+            'option5': '',
+            'option6': '',
+        })
+
     def test_pkgconfig_fixed_jobs_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('fixed-jobs-invalid-type')
