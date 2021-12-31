@@ -186,8 +186,21 @@ def find_test_base():
 
     test_base = os.path.dirname(os.path.realpath(__file__))
 
-    if not os.path.exists(os.path.join(test_base, 'templates')):
+    def templates_exist(test_base):
+        return os.path.exists(os.path.join(test_base, 'templates'))
+
+    if not templates_exist(test_base):
         test_base = os.path.dirname(os.path.abspath(sys.argv[0]))
+        if not templates_exist(test_base):
+            # python 2.7 may not always be able to find the test directory at
+            # all stages of test; try to rely on a tox working directory if
+            # running in a tox environment
+            if sys.version_info < (3, 0) and 'TOX_WORK_DIR' in os.environ:
+                root_dir = os.path.dirname(os.environ['TOX_WORK_DIR'])
+                test_base = os.path.join(root_dir, 'tests')
+
+            if not templates_exist(test_base):
+                raise RuntimeError('unable to find test base directory')
 
     return test_base
 
