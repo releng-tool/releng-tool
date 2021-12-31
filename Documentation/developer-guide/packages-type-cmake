@@ -40,6 +40,22 @@ package.
 .. _cmake_build_opts:
 .. include:: developer-guide/packages-build-opts
 
+LIBFOO_CMAKE_NOINSTALL
+^^^^^^^^^^^^^^^^^^^^^^
+
+Specifies whether or not the CMake package should skip an attempt to invoke
+the install command. Ideally, projects will have an `install <cmake-install_>`_
+rule configured to define how a project will install files into a target (or
+staging) environment. Not all CMake projects may have this rule defined, which
+can cause the installation stage for a package to fail. A developer can
+specify this no-install flag to skip a CMake-driven install request and
+managing installation actions through other means (such as post-processing).
+By default, the installation stage is invoked with a value of ``True``.
+
+.. code-block:: python
+
+   LIBFOO_CMAKE_NOINSTALL = True
+
 .. _cmake_conf_defs:
 .. include:: developer-guide/packages-conf-defs
 
@@ -57,3 +73,6 @@ package.
 
 .. _cmake_install_opts:
 .. include:: developer-guide/packages-install-opts
+
+
+.. _cmake-install: https://cmake.org/cmake/help/latest/command/install.html
