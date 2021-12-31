@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from tests.support.http_daemon import fetch_cert_files
+import ssl
+
+packages = [
+    'pkg',
+]
+
+# configure for testing self-signed certificates
+_, certfile = fetch_cert_files()
+urlopen_context = ssl.create_default_context()
+urlopen_context.load_verify_locations(certfile)
