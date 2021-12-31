@@ -5,6 +5,7 @@ from releng_tool.tool.cmake import CMAKE
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
+from releng_tool.util.log import verbose
 from releng_tool.util.string import expand
 
 def install(opts):
@@ -24,6 +25,11 @@ def install(opts):
     if not CMAKE.exists():
         err('unable to install package; cmake is not installed')
         return False
+
+    # check if the no-install flag is set
+    if opts._cmake_noinstall:
+        verbose('configured to skip install stage for cmake')
+        return True
 
     # default definitions
     cmake_defs = {

@@ -8,6 +8,7 @@ from releng_tool.defs import RPK_BUILD_DEFS
 from releng_tool.defs import RPK_BUILD_ENV
 from releng_tool.defs import RPK_BUILD_OPTS
 from releng_tool.defs import RPK_BUILD_SUBDIR
+from releng_tool.defs import RPK_CMAKE_NOINSTALL
 from releng_tool.defs import RPK_CONF_DEFS
 from releng_tool.defs import RPK_CONF_ENV
 from releng_tool.defs import RPK_CONF_OPTS
@@ -129,6 +130,7 @@ class RelengPackageManager:
         self._register_conf(RPK_BUILD_ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(RPK_BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
         self._register_conf(RPK_BUILD_SUBDIR, PkgKeyType.STR)
+        self._register_conf(RPK_CMAKE_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(RPK_CONF_DEFS, PkgKeyType.DICT_STR_STR)
         self._register_conf(RPK_CONF_ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(RPK_CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
@@ -842,6 +844,14 @@ class RelengPackageManager:
         # autotools autoreconf flag
         if pkg.autotools_autoreconf is None:
             pkg.autotools_autoreconf = self._fetch(RPK_AUTOTOOLS_AUTORECONF)
+
+        # ######################################################################
+        # (package type - cmake)
+        # ######################################################################
+
+        # cmake noinstall flag
+        if pkg.cmake_noinstall is None:
+            pkg.cmake_noinstall = self._fetch(RPK_CMAKE_NOINSTALL)
 
         # ######################################################################
         # (package type - python)

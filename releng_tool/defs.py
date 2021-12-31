@@ -61,6 +61,8 @@ RPK_INSTALL_ENV = 'INSTALL_ENV' #: package-type install environment values
 RPK_INSTALL_OPTS = 'INSTALL_OPTS' #: package-type install options
 # (package type - autotools)
 RPK_AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF' #: autotools /w autoreconf
+# (package type - cmake)
+RPK_CMAKE_NOINSTALL = 'CMAKE_NOINSTALL' #: skip cmake install stage
 # (package type - python)
 RPK_PYTHON_INTERPRETER = 'PYTHON_INTERPRETER' #: python interpreter
 

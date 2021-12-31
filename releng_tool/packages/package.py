@@ -60,6 +60,8 @@ class RelengPackage:
         install_opts: package-type installation option overrides
         (package type - autotools)
         autotools_autoreconf: flag to invoke autoreconf
+        (package type - cmake)
+        cmake_noinstall: flag to disable the install stage for a cmake project
         (other - python)
         python_interpreter: python interpreter to invoke stages with
     """
@@ -111,6 +113,8 @@ class RelengPackage:
         self.install_opts = None
         # (package type - autotools)
         self.autotools_autoreconf = None
+        # (package type - cmake)
+        self.cmake_noinstall = None
         # (other - git)
         self.git_config = None
         self.git_depth = None
