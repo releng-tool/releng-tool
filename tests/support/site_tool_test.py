@@ -49,8 +49,7 @@ class TestSiteToolBase(unittest.TestCase):
             with prepare_testenv(template=self.tool_template()) as engine:
                 opts = engine.opts
 
-                # by default, only perform up to the extraction stage
-                opts.gbl_action = GlobalAction.EXTRACT
+                opts.gbl_action = self.prepare_global_action()
 
                 self.cache_dir = os.path.join(opts.cache_dir, PKG_NAME)
                 self.defconfig = os.path.join(opts.root_dir, PKG_DEFINITION)
@@ -60,6 +59,22 @@ class TestSiteToolBase(unittest.TestCase):
                 self.prepare_defconfig(self.defconfig)
 
                 super(TestSiteToolBase, self).run(result)
+
+    def prepare_global_action(self):
+        """
+        hook invoked to prepare a default global action for tool testing
+
+        By default, site tool testing will default to only performing up to
+        the extraction stage; however, some unit testing may wish to use an
+        alternative default. This hook provides a means to override the
+        default action.
+
+        Returns:
+            the global action
+        """
+
+        # by default, only perform up to the extraction stage
+        return GlobalAction.EXTRACT
 
     def prepare_defconfig(self, defconfig):
         """
