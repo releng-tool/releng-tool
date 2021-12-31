@@ -56,6 +56,9 @@ def main():
 
     releng_log_configuration(args.debug, False, verbosity)
 
+    # disable short descriptions
+    unittest.TestCase.shortDescription = lambda x: None
+
     # support character sequences (for color output on win32 cmd)
     if sys.platform == 'win32':
         enable_ansi_win32()
