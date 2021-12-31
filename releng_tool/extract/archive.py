@@ -72,13 +72,20 @@ def extract(opts):
 
             has_extracted = False
             if TAR.exists():
-                if TAR.execute([
-                        '--extract',
-                        '--file=' + cache_file,
-                        '--force-local',
-                        '--strip-components={}'.format(strip_count),
-                        '--verbose'],
-                        cwd=work_dir):
+                tar_args = [
+                    '--extract',
+                    '--file=' + cache_file,
+                    '--strip-components={}'.format(strip_count),
+                    '--verbose',
+                ]
+
+                # only inject the force-local option if a colon exists in the
+                # cache filename (since not all tar commands support this
+                # option)
+                if ':' in cache_file and TAR.force_local:
+                    tar_args.append('--force-local')
+
+                if TAR.execute(tar_args, cwd=work_dir):
                     has_extracted = True
                 else:
                     warn('unable to extract archive with host tar; '
