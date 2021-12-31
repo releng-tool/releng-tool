@@ -85,6 +85,27 @@ class TestUtilIo(unittest.TestCase):
             cc4 = compare_contents(copied_file_b, target_ow)
             self.assertIsNone(cc4, cc4)
 
+            # attempt to copy a missing file
+            missing_file = os.path.join(work_dir, 'test-file-missing')
+            target = os.path.join(work_dir, 'container')
+            result = path_copy(missing_file, target, critical=False)
+            self.assertFalse(result)
+
+            # attempt to copy a missing file (critical)
+            with self.assertRaises(SystemExit):
+                path_copy(missing_file, target)
+
+            # attempt to copy a file to itself
+            src = copied_file_a
+            with self.assertRaises(SystemExit):
+                path_copy(src, src)
+
+            # attempt to copy a directory to itself in legacy python, to ensure
+            # `DistutilsFileError` is handled properly
+            if sys.version_info < (3, 0):
+                with self.assertRaises(SystemExit):
+                    path_copy(work_dir, work_dir)
+
     def test_utilio_ensuredirexists(self):
         with prepare_workdir() as work_dir:
             result = ensure_dir_exists(work_dir)
