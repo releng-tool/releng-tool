@@ -1,5 +1,5 @@
-Development
------------
+0.10 (2021-12-31)
+-----------------
 
 - fixed an issue where a configured ``sysroot_prefix`` bin path would not be
   registered in the script environment's path
