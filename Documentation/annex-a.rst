@@ -89,6 +89,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_BUILD_ENV = {'FOO': 'BAR'}
    LIBFOO_BUILD_OPTS = {'--option': 'value'} or ['--option', 'value']
    LIBFOO_BUILD_SUBDIR = '<subdir>'
+   LIBFOO_CMAKE_NOINSTALL = bool
    LIBFOO_CONF_DEFS = {'FOO': 'BAR'}
    LIBFOO_CONF_ENV = {'FOO': 'BAR'}
    LIBFOO_CONF_OPTS = {'--option': 'value'} or ['--option', 'value']
