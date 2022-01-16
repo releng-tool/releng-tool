@@ -15,6 +15,7 @@ from releng_tool.util.io import path_remove
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
+from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 import os
 import shutil
@@ -112,7 +113,7 @@ def stage(engine, pkg):
                     warn('missing hash file for package: ' + pkg.name)
             elif result == HashResult.EMPTY:
                 if not pkg.is_internal:
-                    warn('hash file for package is empty: ' + pkg.name)
+                    verbose('hash file for package is empty: ' + pkg.name)
             elif result in (HashResult.BAD_FORMAT, HashResult.MISMATCH,
                     HashResult.MISSING_LISTED, HashResult.UNSUPPORTED):
                 return False
