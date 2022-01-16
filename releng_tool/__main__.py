@@ -36,6 +36,7 @@ def main():
         parser.add_argument('--debug', action='store_true')
         parser.add_argument('--development', '-D', action='store_true')
         parser.add_argument('--dl-dir')
+        parser.add_argument('--force', '-F', action='store_true')
         parser.add_argument('--help', '-h', action='store_true')
         parser.add_argument('--help-quirks', action='store_true')
         parser.add_argument('--jobs', '-j', default=0, type=type_nonnegativeint)
@@ -181,6 +182,7 @@ def usage():
 
 (other)
  --debug                   show debug-related messages
+ -F, --force               trigger a forced request
  -h, --help                show this help
  --help-quirks             show available quirks
  --nocolorout              explicitly disable colorized output

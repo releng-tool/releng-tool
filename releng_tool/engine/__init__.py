@@ -363,12 +363,23 @@ has failed. Ensure the following path is accessible for this user:
             otherwise
         """
 
+        # forced request
+        #
+        # When a forced request is made, clear all file flags so these stages
+        # can be invoked again.
+        if self.opts.force:
+            path_remove(pkg._ff_bootstrap)
+            path_remove(pkg._ff_configure)
+            path_remove(pkg._ff_build)
+            path_remove(pkg._ff_install)
+            path_remove(pkg._ff_post)
+
         # user invoking a package-specific override
         #
         # If the user is invoking a package rebuild, reconfiguration, etc.,
         # ensure existing file flags are cleared to ensure these stages are
         # invoked again.
-        if pkg.name == self.opts.target_action:
+        elif pkg.name == self.opts.target_action:
             if (self.opts.pkg_action in
                     (PkgAction.REBUILD, PkgAction.REBUILD_ONLY)):
                 path_remove(pkg._ff_build)
@@ -602,6 +613,7 @@ of the releng process:
         script_env['RELENG_DEBUG'] = None
         script_env['RELENG_DEVMODE'] = None
         script_env['RELENG_DISTCLEAN'] = None
+        script_env['RELENG_FORCE'] = None
         script_env['RELENG_LOCALSRCS'] = None
         script_env['RELENG_MRPROPER'] = None
         script_env['RELENG_REBUILD'] = None
@@ -648,6 +660,8 @@ of the releng process:
                 env['RELENG_DEBUG'] = '1'
             if self.opts.devmode:
                 env['RELENG_DEVMODE'] = '1'
+            if self.opts.force:
+                env['RELENG_FORCE'] = '1'
             if self.opts.local_srcs:
                 env['RELENG_LOCALSRCS'] = '1'
             if self.opts.verbose:

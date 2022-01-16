@@ -59,6 +59,7 @@ class RelengEngineOptions:
         extract_override: dictionary to override extraction commands
         ff_devmode: the file flag path for development mode detection
         ff_local_srcs: the file flag path for local sources mode detection
+        force: whether or not the force flag is set
         forward_args: command line arguments forwarded to configuration script
         gbl_action: the specific global-action to perform (if any)
         host_dir: directory container for host tools
@@ -102,6 +103,7 @@ class RelengEngineOptions:
         self.extract_override = None
         self.ff_devmode = None
         self.ff_local_srcs = None
+        self.force = False
         self.forward_args = forward_args
         self.gbl_action = None
         self.host_dir = None
@@ -156,6 +158,7 @@ class RelengEngineOptions:
             self.root_dir = os.path.abspath(args.root_dir)
 
         self.debug = args.debug
+        self.force = args.force
         self.jobs = self.jobsconf = (args.jobs or 0)
         self.no_color_out = args.nocolorout
         self.verbose = args.verbose

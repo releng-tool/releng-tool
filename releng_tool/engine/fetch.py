@@ -110,6 +110,14 @@ local sources option to use the default process).
                     verbose('removing cache file (per configuration): ' + name)
                     if not path_remove(pkg.cache_file):
                         return False
+
+            # remove cache file if there is a force request to ignore the cache
+            elif engine.opts.force and ignore_cache:
+                if os.path.exists(pkg.cache_file):
+                    verbose('removing cache file (forced): ' + name)
+                    if not path_remove(pkg.cache_file):
+                        return False
+
             # force explicit ignore cache when not in development mode
             elif not engine.opts.devmode and ignore_cache is None:
                 fetch_opts.ignore_cache = False
