@@ -71,8 +71,16 @@ def extract(opts):
         elif cache_ext.startswith(TAR_SUPPORTED):
             is_extractable = True
 
+            # before attempting to use an external tar command, only allow
+            # using it if the `force-local` option is available whenever a
+            # colon character is provided, to prevent tar from assuming the
+            # path is a remote target
+            needs_force_local = False
+            if ':' in cache_file:
+                needs_force_local = True
+
             has_extracted = False
-            if TAR.exists():
+            if TAR.exists() and (TAR.force_local or not needs_force_local):
                 tar_args = [
                     '--extract',
                     '--file=' + cache_file,
@@ -80,10 +88,7 @@ def extract(opts):
                     '--verbose',
                 ]
 
-                # only inject the force-local option if a colon exists in the
-                # cache filename (since not all tar commands support this
-                # option)
-                if ':' in cache_file and TAR.force_local:
+                if needs_force_local:
                     tar_args.append('--force-local')
 
                 if TAR.execute(tar_args, cwd=work_dir):
