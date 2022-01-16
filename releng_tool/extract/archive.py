@@ -2,6 +2,7 @@
 # Copyright 2018-2021 releng-tool
 
 from releng_tool.tool.tar import TAR
+from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.log import debug
@@ -137,9 +138,18 @@ def extract(opts):
 
                         # notify the user of the target member to extract
                         print(member)
+
+                        # if this is a directory entry, ensure the directory
+                        # exists for the destination
                         if not os.path.basename(member):
-                            os.mkdir(dest)
+                            ensure_dir_exists(dest)
                         else:
+                            # always ensure the container directory for a file
+                            # exists before attempting to extract a member into
+                            # it, as not all processed zip files may process
+                            # a directory entry (to be created) ahead of time
+                            ensure_dir_exists(os.path.dirname(dest))
+
                             with zip_.open(member) as s, open(dest, 'wb') as f:
                                 shutil.copyfileobj(s, f)
 
