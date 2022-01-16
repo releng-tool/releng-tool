@@ -159,6 +159,10 @@ releng-tool, the following environment variables are available:
 
       - Flag set if performing an extreme pristine clean request.
 
+    * - ``RELENG_FORCE``
+
+      - Flag set if performing a forced request from the command line.
+
     * - ``RELENG_LOCALSRCS``
 
       - Flag set if in :ref:`local-sources mode`.

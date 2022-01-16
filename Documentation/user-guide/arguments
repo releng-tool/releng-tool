@@ -253,6 +253,16 @@ The following outlines available options:
 
       - Directory for download archives (defaults to ``<root>/dl``).
 
+    * - ``-F``, ``--force``
+
+      - Triggers a forced request for the releng-tool invoke. This entails:
+
+        - Packages will be processed as if a re-configuration request has
+          been made.
+        - If an explicit fetch request is made (``fetch`` or ``<pkg>-fetch``),
+          any packages which cache to a file will have their cache files
+          deleted to be re-fetched.
+
     * - ``-h``, ``--help``
 
       - Show this help.
