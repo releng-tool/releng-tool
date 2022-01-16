@@ -105,7 +105,7 @@ complete --command releng-tool --long-option='quirk' \
     --no-files \
     --require-parameter \
     --description 'quirk to apply to a run'
-complete --command releng-tool --long-option='verbose' \
+complete --command releng-tool --long-option='verbose' --short-option=V \
     --no-files \
     --description 'show additional messages'
 complete --command releng-tool --long-option='version' \

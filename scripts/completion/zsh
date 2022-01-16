@@ -18,16 +18,16 @@ function _releng_tool {
         '--debug[show debug-related messages]' \
         '--development[enables development mode]' \
         '--dl-dir[directory for download archives]: :_files' \
-        '--help[show help]' '-h[show help]' \
+        {--help,-h}'[show help]' \
         '--help-quirks[show available quirks]' \
-        '--jobs[numbers of jobs to handle]: ' '-j[numbers of jobs to handle]: ' \
+        {--jobs,-j}'[numbers of jobs to handle]: ' \
         '--local-sources[enables local-sources mode]' \
         '--nocolorout[explicitly disable colorized output]' \
         '--out-dir[directory for output]: :_files' \
         '--root-dir[directory of the project to process]: :_files' \
         '--quirk[quirk to apply to a run]: ' \
-        '--verbose[show additional messages]' \
-        "--version[print the version and exit]" \
+        {--verbose,-V}'[show additional messages]' \
+        '--version[print the version and exit]' \
         "1: :($opts)"
 }
 

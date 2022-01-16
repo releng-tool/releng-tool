@@ -71,10 +71,10 @@ _releng_tool_module()
         COMPREPLY=($(compgen -A directory -- $cur))
         return 0
         ;;
-    '-j' | '--jobs' | \
-    '-h' | '--help' | \
-    '--quirk' | \
+    '--help' | '-h' | \
     '--help-quirks' | \
+    '--jobs' | '-j' | \
+    '--quirk' | \
     '--version' )
         return 0
         ;;
