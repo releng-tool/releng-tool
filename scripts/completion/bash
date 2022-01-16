@@ -87,6 +87,7 @@ _releng_tool_module()
             '--debug'
             '--development'
             '--dl-dir'
+            '--force'
             '--help'
             '--help-quirks'
             '--jobs'

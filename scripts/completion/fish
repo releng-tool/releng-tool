@@ -80,6 +80,9 @@ complete --command releng-tool --long-option='development' \
 complete --command releng-tool --long-option='dl-dir' \
     --require-parameter \
     --description 'directory for download archives'
+complete --command releng-tool --long-option='force' --short-option=F \
+    --no-files \
+    --description 'trigger a forced request'
 complete --command releng-tool --long-option='help' --short-option=h \
     --no-files \
     --description 'show help'

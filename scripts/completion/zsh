@@ -18,6 +18,7 @@ function _releng_tool {
         '--debug[show debug-related messages]' \
         '--development[enables development mode]' \
         '--dl-dir[directory for download archives]: :_files' \
+        {--force,-F}'[trigger a forced request]' \
         {--help,-h}'[show help]' \
         '--help-quirks[show available quirks]' \
         {--jobs,-j}'[numbers of jobs to handle]: ' \
