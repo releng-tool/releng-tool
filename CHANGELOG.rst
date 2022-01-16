@@ -1,3 +1,13 @@
+development
+-----------
+
+- always pre-create install directory before package install scripts are invoked
+- fixed an issue where nested zip files could not extract
+- no longer extract with non-local-supported tar command if host format detected 
+- no longer warn if hash file is empty for extracted contents check
+- support removing cached assets through a forced fetch argument
+- support triggering a reconfiguration of all packages through a force argument
+
 0.10 (2021-12-31)
 -----------------
 
