@@ -53,6 +53,14 @@ class TestEngineRunArgs(unittest.TestCase):
         with prepare_testenv(config=config) as engine:
             self.assertTrue(engine.opts.devmode)
 
+    def test_engine_run_args_mode_force(self):
+        config = {
+            'force': True,
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertTrue(engine.opts.force)
+
     def test_engine_run_args_mode_localsrcs(self):
         config = {
             'local_sources': True,

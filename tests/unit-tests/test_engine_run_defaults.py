@@ -45,4 +45,5 @@ class TestEngineRunDefaults(unittest.TestCase):
     def test_engine_run_defaults_options_modes(self):
         with prepare_testenv() as engine:
             self.assertFalse(engine.opts.devmode)
+            self.assertFalse(engine.opts.force)
             self.assertFalse(engine.opts.local_srcs)
