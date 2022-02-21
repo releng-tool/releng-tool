@@ -164,96 +164,142 @@ releng-tool provides a series of helper functions which can be used in
 script-based packages, post-processing and more. Helper functions provided are
 listed below:
 
-+--------------------------+---------------------------------------------------+
-| Method                   | Documentation                                     |
-+==========================+===================================================+
-| ``debug``                | .. automodule:: releng_tool                       |
-|                          |     :members: debug                               |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``err``                  | .. automodule:: releng_tool                       |
-|                          |     :members: err                                 |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``log``                  | .. automodule:: releng_tool                       |
-|                          |     :members: log                                 |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``note``                 | .. automodule:: releng_tool                       |
-|                          |     :members: note                                |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_copy``          | .. automodule:: releng_tool                       |
-|                          |     :members: releng_copy                         |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_env``           | .. automodule:: releng_tool                       |
-|                          |     :members: releng_env                          |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_execute``       | .. automodule:: releng_tool                       |
-|                          |     :members: releng_execute                      |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_execute_rv``    | .. automodule:: releng_tool                       |
-|                          |     :members: releng_execute_rv                   |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_exists``        | .. automodule:: releng_tool                       |
-|                          |     :members: releng_exists                       |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_exit``          | .. automodule:: releng_tool                       |
-|                          |     :members: releng_exit                         |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_expand``        | .. automodule:: releng_tool                       |
-|                          |     :members: releng_expand                       |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_join``          | .. automodule:: releng_tool                       |
-|                          |     :noindex:                                     |
-|                          |                                                   |
-|                          |     .. method:: releng_join(path, *paths)         |
-|                          |                                                   |
-|                          |        An alias for |os.path.join|_.              |
-+--------------------------+---------------------------------------------------+
-| ``releng_mkdir``         | .. automodule:: releng_tool                       |
-|                          |     :members: releng_mkdir                        |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_move``          | .. automodule:: releng_tool                       |
-|                          |     :members: releng_move                         |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_remove``        | .. automodule:: releng_tool                       |
-|                          |     :members: releng_remove                       |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_tmpdir``        | .. automodule:: releng_tool                       |
-|                          |     :members: releng_tmpdir                       |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_touch``         | .. automodule:: releng_tool                       |
-|                          |     :members: releng_touch                        |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``releng_wd``            | .. automodule:: releng_tool                       |
-|                          |     :members: releng_wd                           |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``success``              | .. automodule:: releng_tool                       |
-|                          |     :members: success                             |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``verbose``              | .. automodule:: releng_tool                       |
-|                          |     :members: verbose                             |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
-| ``warn``                 | .. automodule:: releng_tool                       |
-|                          |     :members: warn                                |
-|                          |     :noindex:                                     |
-+--------------------------+---------------------------------------------------+
+.. list-table::
+    :header-rows: 1
+    :widths: auto
+
+    * - Method
+
+      - Documentation
+
+    * - ``debug``
+
+      - .. automodule:: releng_tool
+            :members: debug
+            :noindex:
+
+    * - ``err``
+
+      - .. automodule:: releng_tool
+            :members: err
+            :noindex:
+
+    * - ``log``
+
+      - .. automodule:: releng_tool
+            :members: log
+            :noindex:
+
+    * - ``note``
+
+      - .. automodule:: releng_tool
+            :members: note
+            :noindex:
+
+    * - ``releng_copy``
+
+      - .. automodule:: releng_tool
+            :members: releng_copy
+            :noindex:
+
+    * - ``releng_env``
+
+      - .. automodule:: releng_tool
+            :members: releng_env
+            :noindex:
+
+    * - ``releng_execute``
+
+      - .. automodule:: releng_tool
+            :members: releng_execute
+            :noindex:
+
+    * - ``releng_execute_rv``
+
+      - .. automodule:: releng_tool
+            :members: releng_execute_rv
+            :noindex:
+
+    * - ``releng_exists``
+
+      - .. automodule:: releng_tool
+            :members: releng_exists
+            :noindex:
+
+    * - ``releng_exit``
+
+      - .. automodule:: releng_tool
+            :members: releng_exit
+            :noindex:
+
+    * - ``releng_expand``
+
+      - .. automodule:: releng_tool
+            :members: releng_expand
+            :noindex:
+
+    * - ``releng_join``
+
+      - .. automodule:: releng_tool
+            :noindex:
+
+            .. method:: releng_join(path, *paths)
+
+                An alias for |os.path.join|_.
+
+    * - ``releng_mkdir``
+
+      - .. automodule:: releng_tool
+            :members: releng_mkdir
+            :noindex:
+
+    * - ``releng_move``
+
+      - .. automodule:: releng_tool
+            :members: releng_move
+            :noindex:
+
+    * - ``releng_remove``
+
+      - .. automodule:: releng_tool
+            :members: releng_remove
+            :noindex:
+
+    * - ``releng_tmpdir``
+
+      - .. automodule:: releng_tool
+            :members: releng_tmpdir
+            :noindex:
+
+    * - ``releng_touch``
+
+      - .. automodule:: releng_tool
+            :members: releng_touch
+            :noindex:
+
+    * - ``releng_wd``
+
+      - .. automodule:: releng_tool
+            :members: releng_wd
+            :noindex:
+
+    * - ``success``
+
+      - .. automodule:: releng_tool
+            :members: success
+            :noindex:
+
+    * - ``verbose``
+
+      - .. automodule:: releng_tool
+            :members: verbose
+            :noindex:
+
+    * - ``warn``
+
+      - .. automodule:: releng_tool
+            :members: warn
+            :noindex:
 
 .. |os.path.join| replace:: ``os.path.join``
 .. _os.path.join: https://docs.python.org/library/os.path.html#os.path.join
