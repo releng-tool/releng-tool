@@ -6,6 +6,7 @@ from releng_tool import __version__ as releng_version
 from releng_tool.api import RelengInvalidSetupException
 from releng_tool.api import RelengRegistryInterface
 from releng_tool.api import RelengVersionNotSupportedException
+from releng_tool.support import require_version
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -331,9 +332,7 @@ class RelengRegistry(RelengRegistryInterface):
             RelengVersionNotSupportedException: raised when the required version
                 for this extension is not met
         """
-        if version:
-            requested = version.split('.')
-            current = releng_version.split('.')
-            if requested > current:
-                raise RelengVersionNotSupportedException(
-                    'requires {}, has {}'.format(version, releng_version))
+
+        if not require_version(version, quiet=True, critical=False):
+            raise RelengVersionNotSupportedException(
+                'requires {}, has {}'.format(version, releng_version))

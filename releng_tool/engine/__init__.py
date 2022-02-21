@@ -32,6 +32,7 @@ from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
 from releng_tool.stats import RelengStats
+from releng_tool.support import require_version
 from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
@@ -683,6 +684,7 @@ of the releng process:
         script_env['releng_mkdir'] = ensure_dir_exists
         script_env['releng_move'] = path_move
         script_env['releng_remove'] = path_remove
+        script_env['releng_require_version'] = require_version
         script_env['releng_tmpdir'] = generate_temp_dir
         script_env['releng_touch'] = touch
         script_env['releng_wd'] = interim_working_dir
