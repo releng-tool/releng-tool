@@ -265,6 +265,12 @@ listed below:
             :members: releng_remove
             :noindex:
 
+    * - ``releng_require_version``
+
+      - .. automodule:: releng_tool
+            :members: releng_require_version
+            :noindex:
+
     * - ``releng_tmpdir``
 
       - .. automodule:: releng_tool

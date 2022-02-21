@@ -149,6 +149,7 @@ Functions available to scripts invoked by releng-tool or importable via
    releng_mkdir(dir_, quiet=False)
    releng_move(src, dst, quiet=False, critical=True)
    releng_remove(path, quiet=False)
+   releng_require_version(version)
    releng_tmpdir(dir_=None)
    releng_touch(file)
    releng_wd(dir_)
