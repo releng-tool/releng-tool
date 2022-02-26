@@ -253,6 +253,12 @@ listed below:
 
                 An alias for |os.path.join|_.
 
+    * - ``releng_ls``
+
+      - .. automodule:: releng_tool
+            :members: releng_ls
+            :noindex:
+
     * - ``releng_mkdir``
 
       - .. automodule:: releng_tool
