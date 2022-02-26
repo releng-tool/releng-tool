@@ -23,6 +23,10 @@ class TestEngineRunScripts(unittest.TestCase):
         rv = run_testenv(template='scripts-invalid-install')
         self.assertFalse(rv)
 
+    def test_engine_run_scripts_invalid_post(self):
+        rv = run_testenv(template='scripts-invalid-post')
+        self.assertFalse(rv)
+
     def test_engine_run_scripts_valid(self):
         with prepare_testenv(template='scripts-valid') as engine:
             rv = engine.run()
@@ -33,6 +37,7 @@ class TestEngineRunScripts(unittest.TestCase):
                 os.path.join(engine.opts.target_dir, 'invoked-configure'),
                 os.path.join(engine.opts.target_dir, 'invoked-build'),
                 os.path.join(engine.opts.target_dir, 'invoked-install'),
+                os.path.join(engine.opts.target_dir, 'invoked-post'),
             ]
 
             for file_flag in file_flags:
