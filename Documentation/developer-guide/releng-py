@@ -196,7 +196,7 @@ A list of more advanced configuration options are as follows:
         .. code-block:: python
 
             override_extract_tools = {
-                'zip': '/opt/my-custom-unzip',
+                'zip': '/opt/my-custom-unzip {file} {dir}',
             }
 
         Note that the use of an override option should only be used in

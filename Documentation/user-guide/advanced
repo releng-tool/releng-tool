@@ -102,8 +102,11 @@ own extraction utility. Consider the following example:
 .. code-block:: python
 
    override_extract_tools = {
-       'zip': '/opt/my-custom-unzip',
+       'zip': '/opt/my-custom-unzip {file} {dir}',
    }
+
+The `{file}` key will be replaced with the file to be extracted, and the
+`{dir}` key will be replaced where the contents should extract to.
 
 Revision overrides
 ^^^^^^^^^^^^^^^^^^
