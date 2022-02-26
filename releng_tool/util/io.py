@@ -13,6 +13,7 @@ from releng_tool.util.log import warn
 from runpy import run_path
 from shutil import Error as ShutilError
 from shutil import copy2
+from shutil import copyfileobj
 from shutil import move
 import errno
 import os
@@ -47,6 +48,46 @@ class FailedToPrepareWorkingDirectoryError(Exception):
     """
     raised when a working directory could not be prepared
     """
+
+def cat(file, *args):
+    """
+    concatenate files and print on the standard output
+
+    Attempts to read one or more files provided to this call. For each file, it
+    will be read and printed out to the standard output.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        releng_cat('my-file')
+
+    Args:
+        file: the file
+        *args (optional): additional files to include
+
+    Returns:
+        ``True`` if all the files exists and were printed to the standard
+        output; ``False`` if one or more files could not be read
+    """
+
+    files = []
+    files.append(file)
+    for arg in args:
+        files.append(arg)
+
+    for f in files:
+        if not os.path.isfile(f):
+            return False
+
+    try:
+        for filename in files:
+            with open(filename, 'r') as f:
+                copyfileobj(f, sys.stdout)
+
+        return True
+    except OSError:
+        return False
 
 def ensure_dir_exists(dir_, quiet=False):
     """

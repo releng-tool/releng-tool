@@ -39,6 +39,7 @@ from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import FailedToPrepareWorkingDirectoryError
+from releng_tool.util.io import cat
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
@@ -673,6 +674,7 @@ of the releng process:
         script_env['err'] = err
         script_env['log'] = log
         script_env['note'] = note
+        script_env['releng_cat'] = cat
         script_env['releng_copy'] = path_copy
         script_env['releng_env'] = env_value
         script_env['releng_execute'] = execute
