@@ -45,6 +45,7 @@ from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io import ls
 from releng_tool.util.io import opt_file
 from releng_tool.util.io import path_copy
 from releng_tool.util.io import path_exists
@@ -683,6 +684,7 @@ of the releng process:
         script_env['releng_exit'] = platform_exit
         script_env['releng_expand'] = expand
         script_env['releng_join'] = os.path.join
+        script_env['releng_ls'] = ls
         script_env['releng_mkdir'] = ensure_dir_exists
         script_env['releng_move'] = path_move
         script_env['releng_remove'] = path_remove

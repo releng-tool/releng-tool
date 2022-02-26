@@ -580,6 +580,42 @@ def interpret_stem_extension(basename):
 
     return stem, ext
 
+def ls(dir_):
+    """
+    list a directory's contents
+
+    Attempts to read a directory for its contents and prints this information
+    to the configured standard output stream.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        releng_ls('my-dir/')
+
+    Args:
+        dir_: the directory
+
+    Returns:
+        ``True`` if the directory could be read and its contents have been
+        printed to the standard output; ``False`` if the directory could not
+        be read
+    """
+
+    if not os.path.isdir(dir_):
+        return False
+
+    try:
+        for entry in os.listdir(dir_):
+            if os.path.isdir(os.path.join(dir_, entry)):
+                print(entry + '/')
+            else:
+                print(entry)
+
+        return True
+    except OSError:
+        return False
+
 def opt_file(file):
     """
     return a file (and existence) to opt for based a given file path
