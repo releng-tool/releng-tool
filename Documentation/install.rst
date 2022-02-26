@@ -74,8 +74,8 @@ environment to use this package.
 
         .. code-block:: shell-session
 
-            $ sudo apt-get update
-            $ sudo apt-get install python-pip
+            $ sudo apt update
+            $ sudo apt install python-pip
             $ sudo pip install -U releng-tool
             $ releng-tool --version
             releng-tool <version>
