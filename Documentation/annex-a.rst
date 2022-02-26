@@ -138,6 +138,7 @@ Functions available to scripts invoked by releng-tool or importable via
    err(msg, *args)
    log(msg, *args)
    note(msg, *args)
+   releng_cat(file, *args)
    releng_copy(src, dst, quiet=False, critical=True)
    releng_env(key, value=None)
    releng_execute(args, cwd=None, env=None, env_update=None, quiet=False, critical=True, poll=False, capture=None)

@@ -196,6 +196,12 @@ listed below:
             :members: note
             :noindex:
 
+    * - ``releng_cat``
+
+      - .. automodule:: releng_tool
+            :members: releng_cat
+            :noindex:
+
     * - ``releng_copy``
 
       - .. automodule:: releng_tool
