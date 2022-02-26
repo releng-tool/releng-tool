@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+if releng_exists('tar-file-container.txt'):
+    file_flag = releng_join(TARGET_DIR, 'invoked-build')
+    releng_touch(file_flag)
