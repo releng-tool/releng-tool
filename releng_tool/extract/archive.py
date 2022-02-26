@@ -51,13 +51,15 @@ def extract(opts):
     is_extractable = False
     if cache_ext:
         cache_ext = cache_ext.lower()
+
         # if the user defines a tool override for this extension type, use
         # whatever the user wants to use (passing the file and directory to
         # extract to)
-        if opts._extract_override and cache_ext in opts._extract_override:
+        extract_override = getattr(opts, '_extract_override', None)
+        if extract_override and cache_ext in extract_override:
             is_extractable = True
 
-            tool_cmd = opts._extract_override[cache_ext].format(
+            tool_cmd = extract_override[cache_ext].format(
                 file=cache_file, dir=work_dir)
 
             if not execute(tool_cmd.split(), cwd=work_dir, critical=False):
