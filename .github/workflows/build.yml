@@ -50,6 +50,9 @@ jobs:
 
     - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v2
+      env:
+        PIP_DISABLE_PIP_VERSION_CHECK: 1
+        PIP_NO_PYTHON_VERSION_WARNING: 1
       with:
         python-version: ${{ matrix.python }}
 
