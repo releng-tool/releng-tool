@@ -129,6 +129,29 @@ def prepare_workdir():
         yield work_dir
 
 @contextmanager
+def redirect_stderr(new_target=None):
+    """
+    temporarily redirect stderr to another instance
+
+    This call will temporarily redirect stderr to the provided instance
+    until the end of the context, where the previous `stderr` target will be
+    restored.
+
+    Args:
+        new_target (optional): the instance to map stderr to
+    """
+
+    if not new_target:
+        new_target = StringIO()
+
+    _ = sys.stderr
+    try:
+        sys.stderr = new_target
+        yield new_target
+    finally:
+        sys.stderr = _
+
+@contextmanager
 def redirect_stdout(new_target=None):
     """
     temporarily redirect stdout to another instance
