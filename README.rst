@@ -17,8 +17,8 @@ releng-tool
     :target: https://pypi.python.org/pypi/releng-tool
     :alt: PyPI download month
 
-releng-tool aims to provide a method to prepare a structured environment to
-assist in the release engineering of a project.
+releng-tool aims to provide a way to prepare a structured environment to
+assist in the building of a project.
 
 Overview
 --------
