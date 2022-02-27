@@ -1,5 +1,5 @@
-Development
------------
+0.11 (2022-02-26)
+-----------------
 
 - always pre-create install directory before package install scripts are invoked
 - fixed an issue where nested zip files could not extract

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2022 releng-tool
 
 from distutils.command.clean import clean
 from distutils import dir_util
@@ -69,6 +69,6 @@ setup(
     platforms='any',
     test_suite='tests',
     url='https://releng.io',
-    version='0.11.0.dev0',
+    version='0.11.0',
     zip_safe=False,
 )
