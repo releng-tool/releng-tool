@@ -161,10 +161,8 @@ class GlobalAction(Enum):
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
     """
-    CHECKS = 'checks'
     CLEAN = 'clean'
     DISTCLEAN = 'distclean'
-    DESCRIBE = 'describe'
     EXTRACT = 'extract'
     FETCH = 'fetch'
     INIT = 'init'
