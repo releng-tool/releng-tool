@@ -90,8 +90,12 @@ class RelengEngine:
             issue has occurred when interpreting or running the user's
             configuration/package definitions
         """
+
         opts = self.opts
         gaction = opts.gbl_action
+        license_files = {}
+        pa = opts.pkg_action
+
         if gaction == GlobalAction.INIT:
             return initialize_sample(opts)
 
@@ -202,50 +206,47 @@ class RelengEngine:
         if not pkgs:
             return False
 
+        # if cleaning a package, remove it's build output directory and stop
+        if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN):
+            for pkg in pkgs:
+                if pkg.name == opts.target_action:
+                    def pkg_verbose_clean(desc):
+                        verbose('{} for package: {}', desc, pkg.name)
+                    pkg_verbose_clean('removing output directory')
+                    path_remove(pkg.build_output_dir)
+
+                    if pa == PkgAction.DISTCLEAN:
+                        if os.path.exists(pkg.cache_file):
+                            pkg_verbose_clean('removing cache file')
+                            path_remove(pkg.cache_file)
+                        if os.path.isdir(pkg.cache_dir):
+                            pkg_verbose_clean('removing cache directory')
+                            path_remove(pkg.cache_dir)
+
+                    return True
+            assert False # should not reach here
+
+        # ensure any of required host tools do exist
+        if 'releng.disable_prerequisites_check' not in opts.quirks:
+            prerequisites = RelengPrerequisites(pkgs, opts.prerequisites)
+            if not prerequisites.check():
+                return False
+
+        # track if this action is "pre-configuration", where a package
+        # dependency chain can be ignored
+        requested_preconfig = pa in [
+            PkgAction.EXTRACT,
+            PkgAction.FETCH,
+            PkgAction.LICENSE,
+            PkgAction.PATCH,
+        ]
+
+        # determine if an explicit fetch request has been made
+        requested_fetch = None
+        if gaction == GlobalAction.FETCH or pa == PkgAction.FETCH:
+            requested_fetch = True
+
         try:
-            pa = opts.pkg_action
-            license_files = {}
-
-            # if cleaning a package, remove it's build output directory and stop
-            if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN):
-                for pkg in pkgs:
-                    if pkg.name == opts.target_action:
-                        def pkg_verbose_clean(desc):
-                            verbose('{} for package: {}', desc, pkg.name)
-                        pkg_verbose_clean('removing output directory')
-                        path_remove(pkg.build_output_dir)
-
-                        if pa == PkgAction.DISTCLEAN:
-                            if os.path.exists(pkg.cache_file):
-                                pkg_verbose_clean('removing cache file')
-                                path_remove(pkg.cache_file)
-                            if os.path.isdir(pkg.cache_dir):
-                                pkg_verbose_clean('removing cache directory')
-                                path_remove(pkg.cache_dir)
-
-                        return True
-                assert False # should not reach here
-
-            # ensure any of required host tools do exist
-            if 'releng.disable_prerequisites_check' not in opts.quirks:
-                prerequisites = RelengPrerequisites(pkgs, opts.prerequisites)
-                if not prerequisites.check():
-                    return False
-
-            # track if this action is "pre-configuration", where a package
-            # dependency chain can be ignored
-            requested_preconfig = pa in [
-                PkgAction.EXTRACT,
-                PkgAction.FETCH,
-                PkgAction.LICENSE,
-                PkgAction.PATCH,
-            ]
-
-            # determine if an explicit fetch request has been made
-            requested_fetch = None
-            if gaction == GlobalAction.FETCH or pa == PkgAction.FETCH:
-                requested_fetch = True
-
             # ensure all package sources are acquired first
             for pkg in pkgs:
                 if not self._stage_init(pkg):
