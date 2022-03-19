@@ -97,8 +97,7 @@ def fetch(opts):
         if not ensure_dir_exists(cache_dir):
             return None
 
-        if not GIT.execute([git_dir, 'init', '--bare'], cwd=cache_dir):
-            err('unable to initialize bare git repository')
+        if not _create_bare_git_repo(cache_dir):
             return None
 
     # ensure configuration is properly synchronized
@@ -302,6 +301,29 @@ def revision_exists(git_dir, revision):
 
     return GitExistsType.EXISTS_BRANCH
 
+def _create_bare_git_repo(cache_dir):
+    """
+    create a bare git repository
+
+    This call will build a bare Git repository in the provided cache
+    directory. If the repository could not be created, an error message
+    will be generated and this method will return ``False``.
+
+    Args:
+        cache_dir: the cache/bare repository
+
+    Returns:
+        ``True`` if the repository could be created; ``False`` otherwise
+    """
+
+    git_dir = '--git-dir=' + cache_dir
+
+    if GIT.execute([git_dir, 'init', '--bare', '--quiet'], cwd=cache_dir):
+        return True
+
+    err('unable to initialize bare git repository')
+    return False
+
 def _sync_git_configuration(opts):
     """
     ensure the git configuration is properly synchronized with this repository
@@ -501,8 +523,7 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
         if not ensure_dir_exists(cache_dir):
             return False
 
-        if not GIT.execute([git_dir, 'init', '--bare'], cwd=cache_dir):
-            err('unable to initialize bare git repository')
+        if not _create_bare_git_repo(cache_dir):
             return False
 
     # ensure configuration is properly synchronized
