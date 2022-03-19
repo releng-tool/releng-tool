@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2022 releng-tool
 
 from releng_tool.util.enum import Enum
 
@@ -161,8 +161,10 @@ class GlobalAction(Enum):
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
     """
+    CHECKS = 'checks'
     CLEAN = 'clean'
     DISTCLEAN = 'distclean'
+    DESCRIBE = 'describe'
     EXTRACT = 'extract'
     FETCH = 'fetch'
     INIT = 'init'
