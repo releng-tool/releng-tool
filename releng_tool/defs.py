@@ -19,52 +19,106 @@ CONF_KEY_SYSROOT_PREFIX = 'sysroot_prefix' #: project's default sys-root prefix
 CONF_KEY_URL_MIRROR = 'url_mirror' #: mirror base site for url fetches
 CONF_KEY_URLOPEN_CONTEXT = 'urlopen_context' #: context to use for urlopen
 
-# releng package keys (postfixes)
-RPK_BUILD_SUBDIR = 'BUILD_SUBDIR' #: sub-directory in fetched to find root src
-RPK_DEPS = 'DEPENDENCIES' #: list of package dependencies
-RPK_DEVMODE_IGNORE_CACHE = 'DEVMODE_IGNORE_CACHE' #: whether or not ignore cache
-RPK_DEVMODE_REVISION = 'DEVMODE_REVISION' #: devmode-rev to acquire from srcs
-RPK_EXTENSION = 'EXTENSION' #: filename extension for package (if needed)
-RPK_EXTERNAL = 'EXTERNAL' #: whether or not package is considered "external"
-RPK_EXTOPT = 'EXTOPT' #: extension-defined package modifiers (if any)
-RPK_EXTRACT_TYPE = 'EXTRACT_TYPE' #: extraction type for sources
-RPK_FETCH_OPTS = 'FETCH_OPTS' #: fetch options (if any)
-RPK_FIXED_JOBS = 'FIXED_JOBS' #: fixed job count for the project
-RPK_GIT_CONFIG = 'GIT_CONFIG' #: git configurations to set (if any)
-RPK_GIT_DEPTH = 'GIT_DEPTH' #: git fetch depth (if any)
-RPK_GIT_REFSPECS = 'GIT_REFSPECS' #: additional git refspecs to fetch (if any)
-RPK_GIT_SUBMODULES = 'GIT_SUBMODULES' #: fetch any submodules (if any)
-RPK_GIT_VERIFY_REVISION = 'GIT_VERIFY_REVISION' #: verify signed revisions
-RPK_INSTALL_TYPE = 'INSTALL_TYPE' #: install container target for the package
-RPK_INTERNAL = 'INTERNAL' #: whether or not package is considered "internal"
-RPK_LICENSE = 'LICENSE' #: license information for the package
-RPK_LICENSE_FILES = 'LICENSE_FILES' #: source file(s) with license information
-RPK_NO_EXTRACTION = 'NO_EXTRACTION' #: whether or not package extraction is done
-RPK_PREFIX = 'PREFIX' #: system root prefix override (if needed)
-RPK_REVISION = 'REVISION' #: revision to acquire from sources (if any)
-RPK_SITE = 'SITE' #: site where to fetch package sources
-RPK_SKIP_REMOTE_CONFIG = 'SKIP_REMOTE_CONFIG' #: skip any remote configuration
-RPK_SKIP_REMOTE_SCRIPTS = 'SKIP_REMOTE_SCRIPTS' #: skip any remote scripts
-RPK_STRIP_COUNT = 'STRIP_COUNT' #: strip count for archive extract
-RPK_TYPE = 'TYPE' #: type of project the package is
-RPK_VCS_TYPE = 'VCS_TYPE' #: type of project the package's fetch source is
-RPK_VERSION = 'VERSION' #: the version of the package
-# (package type - common)
-RPK_CONF_DEFS = 'CONF_DEFS' #: package-type configuration definitions
-RPK_CONF_ENV = 'CONF_ENV' #: package-type configuration environment values
-RPK_CONF_OPTS = 'CONF_OPTS' #: package-type configuration options
-RPK_BUILD_DEFS = 'BUILD_DEFS' #: package-type build definitions
-RPK_BUILD_ENV = 'BUILD_ENV' #: package-type build environment values
-RPK_BUILD_OPTS = 'BUILD_OPTS' #: package-type build options
-RPK_INSTALL_DEFS = 'INSTALL_DEFS' #: package-type install definitions
-RPK_INSTALL_ENV = 'INSTALL_ENV' #: package-type install environment values
-RPK_INSTALL_OPTS = 'INSTALL_OPTS' #: package-type install options
-# (package type - autotools)
-RPK_AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF' #: autotools /w autoreconf
-# (package type - cmake)
-RPK_CMAKE_NOINSTALL = 'CMAKE_NOINSTALL' #: skip cmake install stage
-# (package type - python)
-RPK_PYTHON_INTERPRETER = 'PYTHON_INTERPRETER' #: python interpreter
+class Rpk(Enum):
+    """
+    releng package keys (postfixes)
+
+    Defines a series of attributes which define every support package
+    configuration key supported by this tool. Package configuration keys
+    are in an uppercase format.
+
+    Attributes:
+        BUILD_SUBDIR: sub-directory in fetched to find root src
+        DEPS: list of package dependencies
+        DEVMODE_IGNORE_CACHE: whether or not ignore cache
+        DEVMODE_REVISION: devmode-rev to acquire from srcs
+        EXTENSION: filename extension for package (if needed)
+        EXTERNAL: whether or not package is considered "external"
+        EXTOPT: extension-defined package modifiers (if any)
+        EXTRACT_TYPE: extraction type for sources
+        FETCH_OPTS: fetch options (if any)
+        FIXED_JOBS: fixed job count for the project
+        GIT_CONFIG: git configurations to set (if any)
+        GIT_DEPTH: git fetch depth (if any)
+        GIT_REFSPECS: additional git refspecs to fetch (if any)
+        GIT_SUBMODULES: fetch any submodules (if any)
+        GIT_VERIFY_REVISION: verify signed revisions
+        INSTALL_TYPE: install container target for the package
+        INTERNAL: whether or not package is considered "internal"
+        LICENSE: license information for the package
+        LICENSE_FILES: source file(s) with license information
+        NO_EXTRACTION: whether or not package extraction is done
+        PREFIX: system root prefix override (if needed)
+        REVISION: revision to acquire from sources (if any)
+        SITE: site where to fetch package sources
+        SKIP_REMOTE_CONFIG: skip any remote configuration
+        SKIP_REMOTE_SCRIPTS: skip any remote scripts
+        STRIP_COUNT: strip count for archive extract
+        TYPE: type of project the package is
+        VCS_TYPE: type of project the package's fetch source is
+        VERSION: the version of the package
+        # (package type - common)
+        CONF_DEFS: package-type configuration definitions
+        CONF_ENV: package-type configuration environment values
+        CONF_OPTS: package-type configuration options
+        BUILD_DEFS: package-type build definitions
+        BUILD_ENV: package-type build environment values
+        BUILD_OPTS: package-type build options
+        INSTALL_DEFS: package-type install definitions
+        INSTALL_ENV: package-type install environment values
+        INSTALL_OPTS: package-type install options
+        # (package type - autotools)
+        AUTOTOOLS_AUTORECONF: autotools /w autoreconf
+        # (package type - cmake)
+        CMAKE_NOINSTALL: skip cmake install stage
+        # (package type - python)
+        PYTHON_INTERPRETER: python interpreter
+    """
+    BUILD_SUBDIR = 'BUILD_SUBDIR'
+    DEPS = 'DEPENDENCIES'
+    DEVMODE_IGNORE_CACHE = 'DEVMODE_IGNORE_CACHE'
+    DEVMODE_REVISION = 'DEVMODE_REVISION'
+    EXTENSION = 'EXTENSION'
+    EXTERNAL = 'EXTERNAL'
+    EXTOPT = 'EXTOPT'
+    EXTRACT_TYPE = 'EXTRACT_TYPE'
+    FETCH_OPTS = 'FETCH_OPTS'
+    FIXED_JOBS = 'FIXED_JOBS'
+    GIT_CONFIG = 'GIT_CONFIG'
+    GIT_DEPTH = 'GIT_DEPTH'
+    GIT_REFSPECS = 'GIT_REFSPECS'
+    GIT_SUBMODULES = 'GIT_SUBMODULES'
+    GIT_VERIFY_REVISION = 'GIT_VERIFY_REVISION'
+    INSTALL_TYPE = 'INSTALL_TYPE'
+    INTERNAL = 'INTERNAL'
+    LICENSE = 'LICENSE'
+    LICENSE_FILES = 'LICENSE_FILES'
+    NO_EXTRACTION = 'NO_EXTRACTION'
+    PREFIX = 'PREFIX'
+    REVISION = 'REVISION'
+    SITE = 'SITE'
+    SKIP_REMOTE_CONFIG = 'SKIP_REMOTE_CONFIG'
+    SKIP_REMOTE_SCRIPTS = 'SKIP_REMOTE_SCRIPTS'
+    STRIP_COUNT = 'STRIP_COUNT'
+    TYPE = 'TYPE'
+    VCS_TYPE = 'VCS_TYPE'
+    VERSION = 'VERSION'
+    # (package type - common)
+    CONF_DEFS = 'CONF_DEFS'
+    CONF_ENV = 'CONF_ENV'
+    CONF_OPTS = 'CONF_OPTS'
+    BUILD_DEFS = 'BUILD_DEFS'
+    BUILD_ENV = 'BUILD_ENV'
+    BUILD_OPTS = 'BUILD_OPTS'
+    INSTALL_DEFS = 'INSTALL_DEFS'
+    INSTALL_ENV = 'INSTALL_ENV'
+    INSTALL_OPTS = 'INSTALL_OPTS'
+    # (package type - autotools)
+    AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF'
+    # (package type - cmake)
+    CMAKE_NOINSTALL = 'CMAKE_NOINSTALL'
+    # (package type - python)
+    PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
 
 class GlobalAction(Enum):
     """
