@@ -3,21 +3,44 @@
 
 from releng_tool.util.enum import Enum
 
-# configuration file keys
-CONF_KEY_CACHE_EXT_TRANSFORM = 'cache_ext' #: cache extension transform
-CONF_KEY_DEFINTERN = 'default_internal' #: packages are internal (implicitly)
-CONF_KEY_EXTENSIONS = 'extensions' #: project releng-extension list
-CONF_KEY_EXTEN_PKGS = 'external_packages' #: project external packages list
-CONF_KEY_LICENSE_HEADER = 'license_header' #: license header information
-CONF_KEY_OVERRIDE_REV = 'override_revisions' #: revision overriding dictionary
-CONF_KEY_OVERRIDE_SITES = 'override_sites' #: site overriding dictionary
-CONF_KEY_OVERRIDE_TOOLS = 'override_extract_tools' #: extract-tool overriding
-CONF_KEY_PKGS = 'packages' #: project's package (name) list
-CONF_KEY_PREREQUISITES = 'prerequisites' #: project's host-tool prerequisites
-CONF_KEY_QUIRKS = 'quirks' #: configure quirks to apply
-CONF_KEY_SYSROOT_PREFIX = 'sysroot_prefix' #: project's default sys-root prefix
-CONF_KEY_URL_MIRROR = 'url_mirror' #: mirror base site for url fetches
-CONF_KEY_URLOPEN_CONTEXT = 'urlopen_context' #: context to use for urlopen
+class ConfKey(Enum):
+    """
+    configuration file keys
+
+    Defines a series of attributes which define every support project
+    configuration key supported by this tool. Project configuration keys
+    are in a lowercase format.
+
+    Attributes:
+        CACHE_EXT_TRANSFORM: cache extension transform
+        DEFINTERN: packages are internal (implicitly)
+        EXTENSIONS: project releng-extension list
+        EXTEN_PKGS: project external packages list
+        LICENSE_HEADER: license header information
+        OVERRIDE_REV: revision overriding dictionary
+        OVERRIDE_SITES: site overriding dictionary
+        OVERRIDE_TOOLS: extract-tool overriding
+        PKGS: project's package (name) list
+        PREREQUISITES: project's host-tool prerequisites
+        QUIRKS: configure quirks to apply
+        SYSROOT_PREFIX: project's default sys-root prefix
+        URL_MIRROR: mirror base site for url fetches
+        URLOPEN_CONTEXT: context to use for urlopen
+    """
+    CACHE_EXT_TRANSFORM = 'cache_ext'
+    DEFINTERN = 'default_internal'
+    EXTENSIONS = 'extensions'
+    EXTEN_PKGS = 'external_packages'
+    LICENSE_HEADER = 'license_header'
+    OVERRIDE_REV = 'override_revisions'
+    OVERRIDE_SITES = 'override_sites'
+    OVERRIDE_TOOLS = 'override_extract_tools'
+    PKGS = 'packages'
+    PREREQUISITES = 'prerequisites'
+    QUIRKS = 'quirks'
+    SYSROOT_PREFIX = 'sysroot_prefix'
+    URL_MIRROR = 'url_mirror'
+    URLOPEN_CONTEXT = 'urlopen_context'
 
 class Rpk(Enum):
     """

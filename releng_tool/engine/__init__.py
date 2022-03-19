@@ -4,20 +4,7 @@
 from collections import OrderedDict
 from datetime import datetime
 from releng_tool import __version__ as releng_version
-from releng_tool.defs import CONF_KEY_CACHE_EXT_TRANSFORM
-from releng_tool.defs import CONF_KEY_DEFINTERN
-from releng_tool.defs import CONF_KEY_EXTENSIONS
-from releng_tool.defs import CONF_KEY_EXTEN_PKGS
-from releng_tool.defs import CONF_KEY_LICENSE_HEADER
-from releng_tool.defs import CONF_KEY_OVERRIDE_REV
-from releng_tool.defs import CONF_KEY_OVERRIDE_SITES
-from releng_tool.defs import CONF_KEY_OVERRIDE_TOOLS
-from releng_tool.defs import CONF_KEY_PKGS
-from releng_tool.defs import CONF_KEY_PREREQUISITES
-from releng_tool.defs import CONF_KEY_QUIRKS
-from releng_tool.defs import CONF_KEY_SYSROOT_PREFIX
-from releng_tool.defs import CONF_KEY_URL_MIRROR
-from releng_tool.defs import CONF_KEY_URLOPEN_CONTEXT
+from releng_tool.defs import ConfKey
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import VcsType
@@ -406,7 +393,7 @@ has failed. Ensure the following path is accessible for this user:
         acquire list of project package names to process
 
         From a dictionary of user-defined settings, extract the known list of
-        package names from the package configuration key ``CONF_KEY_PKGS``. This
+        package names from the package configuration key ``ConfKey.PKGS``. This
         method will return a (duplicate-removed) list of packages (if any) to be
         processed.
 
@@ -421,8 +408,8 @@ has failed. Ensure the following path is accessible for this user:
         pkg_names = []
         bad_pkgs_value = False
 
-        if CONF_KEY_PKGS in settings:
-            pkg_names = interpret_strings(settings[CONF_KEY_PKGS])
+        if ConfKey.PKGS in settings:
+            pkg_names = interpret_strings(settings[ConfKey.PKGS])
             if pkg_names is None:
                 bad_pkgs_value = True
 
@@ -440,10 +427,10 @@ of the releng process:
     {}
         {} = ['liba', 'libb', 'libc']''',
                 self.opts.conf_point,
-                CONF_KEY_PKGS)
+                ConfKey.PKGS)
         elif not pkg_names:
             raise RelengToolMissingPackagesError(
-                self.opts.conf_point, CONF_KEY_PKGS)
+                self.opts.conf_point, ConfKey.PKGS)
 
         return pkg_names
 
@@ -768,103 +755,103 @@ following key entry and re-try again.
     Key: {}
     Expected Type: {}''', key, expected)
 
-        if CONF_KEY_CACHE_EXT_TRANSFORM in settings:
+        if ConfKey.CACHE_EXT_TRANSFORM in settings:
             cet = None
-            if callable(settings[CONF_KEY_CACHE_EXT_TRANSFORM]):
-                cet = settings[CONF_KEY_CACHE_EXT_TRANSFORM]
+            if callable(settings[ConfKey.CACHE_EXT_TRANSFORM]):
+                cet = settings[ConfKey.CACHE_EXT_TRANSFORM]
             if cet is None:
-                notify_invalid_value(CONF_KEY_CACHE_EXT_TRANSFORM, 'callable')
+                notify_invalid_value(ConfKey.CACHE_EXT_TRANSFORM, 'callable')
                 return False
             self.opts.cache_ext_transform = cet
 
-        if CONF_KEY_DEFINTERN in settings:
-            is_default_internal = settings[CONF_KEY_DEFINTERN]
+        if ConfKey.DEFINTERN in settings:
+            is_default_internal = settings[ConfKey.DEFINTERN]
             if not isinstance(is_default_internal, bool):
-                notify_invalid_value(CONF_KEY_DEFINTERN, 'bool')
+                notify_invalid_value(ConfKey.DEFINTERN, 'bool')
                 return False
             self.opts.default_internal_pkgs = is_default_internal
 
-        if CONF_KEY_LICENSE_HEADER in settings:
-            license_header = interpret_string(settings[CONF_KEY_LICENSE_HEADER])
+        if ConfKey.LICENSE_HEADER in settings:
+            license_header = interpret_string(settings[ConfKey.LICENSE_HEADER])
             if license_header is None:
-                notify_invalid_value(CONF_KEY_LICENSE_HEADER, 'str')
+                notify_invalid_value(ConfKey.LICENSE_HEADER, 'str')
                 return False
             self.opts.license_header = license_header
 
-        if CONF_KEY_OVERRIDE_REV in settings:
-            orz = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_REV])
+        if ConfKey.OVERRIDE_REV in settings:
+            orz = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_REV])
             if orz is None:
-                notify_invalid_value(CONF_KEY_OVERRIDE_REV, 'dict(str,str)')
+                notify_invalid_value(ConfKey.OVERRIDE_REV, 'dict(str,str)')
                 return False
             self.opts.revision_override = orz
 
-        if CONF_KEY_OVERRIDE_SITES in settings:
-            v = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_SITES])
+        if ConfKey.OVERRIDE_SITES in settings:
+            v = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_SITES])
             if v is None:
-                notify_invalid_value(CONF_KEY_OVERRIDE_SITES, 'dict(str,str)')
+                notify_invalid_value(ConfKey.OVERRIDE_SITES, 'dict(str,str)')
                 return False
             self.opts.sites_override = v
 
-        if CONF_KEY_OVERRIDE_TOOLS in settings:
-            v = interpret_dictionary_strings(settings[CONF_KEY_OVERRIDE_TOOLS])
+        if ConfKey.OVERRIDE_TOOLS in settings:
+            v = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_TOOLS])
             if v is None:
-                notify_invalid_value(CONF_KEY_OVERRIDE_TOOLS, 'dict(str,str)')
+                notify_invalid_value(ConfKey.OVERRIDE_TOOLS, 'dict(str,str)')
                 return False
             self.opts.extract_override = v
 
-        if CONF_KEY_PREREQUISITES in settings:
-            prerequisites = interpret_strings(settings[CONF_KEY_PREREQUISITES])
+        if ConfKey.PREREQUISITES in settings:
+            prerequisites = interpret_strings(settings[ConfKey.PREREQUISITES])
             if prerequisites is None:
-                notify_invalid_value(CONF_KEY_PREREQUISITES, 'str or list(str)')
+                notify_invalid_value(ConfKey.PREREQUISITES, 'str or list(str)')
                 return False
             self.opts.prerequisites.extend(prerequisites)
 
-        if CONF_KEY_QUIRKS in settings:
-            quirks = interpret_strings(settings[CONF_KEY_QUIRKS])
+        if ConfKey.QUIRKS in settings:
+            quirks = interpret_strings(settings[ConfKey.QUIRKS])
             if quirks is None:
-                notify_invalid_value(CONF_KEY_QUIRKS, 'str or list(str)')
+                notify_invalid_value(ConfKey.QUIRKS, 'str or list(str)')
                 return False
             self.opts.quirks.extend(quirks)
             for quirk in quirks:
                 verbose('configuration quirk applied: ' + quirk)
 
-        if CONF_KEY_SYSROOT_PREFIX in settings:
-            sysroot_prefix = interpret_string(settings[CONF_KEY_SYSROOT_PREFIX])
+        if ConfKey.SYSROOT_PREFIX in settings:
+            sysroot_prefix = interpret_string(settings[ConfKey.SYSROOT_PREFIX])
             if sysroot_prefix is None:
-                notify_invalid_value(CONF_KEY_SYSROOT_PREFIX, 'str')
+                notify_invalid_value(ConfKey.SYSROOT_PREFIX, 'str')
                 return False
             if not sysroot_prefix.startswith('/'):
                 sysroot_prefix = '/' + sysroot_prefix
             self.opts.sysroot_prefix = sysroot_prefix
 
-        if CONF_KEY_URL_MIRROR in settings:
-            url_mirror = interpret_string(settings[CONF_KEY_URL_MIRROR])
+        if ConfKey.URL_MIRROR in settings:
+            url_mirror = interpret_string(settings[ConfKey.URL_MIRROR])
             if url_mirror is None:
-                notify_invalid_value(CONF_KEY_URL_MIRROR, 'str')
+                notify_invalid_value(ConfKey.URL_MIRROR, 'str')
                 return False
             self.opts.url_mirror = url_mirror
 
-        if CONF_KEY_URLOPEN_CONTEXT in settings:
+        if ConfKey.URLOPEN_CONTEXT in settings:
             urlopen_context = None
-            if isinstance(settings[CONF_KEY_URLOPEN_CONTEXT], ssl.SSLContext):
-                urlopen_context = settings[CONF_KEY_URLOPEN_CONTEXT]
+            if isinstance(settings[ConfKey.URLOPEN_CONTEXT], ssl.SSLContext):
+                urlopen_context = settings[ConfKey.URLOPEN_CONTEXT]
             if urlopen_context is None:
-                notify_invalid_value(CONF_KEY_URLOPEN_CONTEXT, 'ssl.SSLContext')
+                notify_invalid_value(ConfKey.URLOPEN_CONTEXT, 'ssl.SSLContext')
                 return False
             self.opts.urlopen_context = urlopen_context
 
-        if CONF_KEY_EXTEN_PKGS in settings:
-            epd = interpret_strings(settings[CONF_KEY_EXTEN_PKGS])
+        if ConfKey.EXTEN_PKGS in settings:
+            epd = interpret_strings(settings[ConfKey.EXTEN_PKGS])
             if epd is None:
-                notify_invalid_value(CONF_KEY_EXTEN_PKGS, 'str or list(str)')
+                notify_invalid_value(ConfKey.EXTEN_PKGS, 'str or list(str)')
                 return False
             self.opts.extern_pkg_dirs = epd
 
         ext_names = []
-        if CONF_KEY_EXTENSIONS in settings:
-            ext_names = interpret_strings(settings[CONF_KEY_EXTENSIONS])
+        if ConfKey.EXTENSIONS in settings:
+            ext_names = interpret_strings(settings[ConfKey.EXTENSIONS])
             if ext_names is None:
-                notify_invalid_value(CONF_KEY_EXTENSIONS, 'str or list(str)')
+                notify_invalid_value(ConfKey.EXTENSIONS, 'str or list(str)')
                 return False
 
         self.registry.load_all_extensions(ext_names)
