@@ -646,7 +646,7 @@ def opt_file(file):
 
     return file, exists
 
-def path_copy(src, dst, quiet=False, critical=True):
+def path_copy(src, dst, quiet=False, critical=True, dst_dir=False):
     """
     copy a file or directory into a target file or directory
 
@@ -688,6 +688,7 @@ def path_copy(src, dst, quiet=False, critical=True):
         dst: the destination directory or file\\* (\\*if ``src`` is a file)
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
+        dst_dir (optional): force hint that the destination is a directory
 
     Returns:
         ``True`` if the copy has completed with no error; ``False`` if the copy
@@ -701,11 +702,19 @@ def path_copy(src, dst, quiet=False, critical=True):
 
     try:
         if os.path.isfile(src):
-            parent_dir = os.path.dirname(dst)
-            if parent_dir and not os.path.isdir(parent_dir):
-                ensure_dir_exists(parent_dir, quiet=quiet)
-            copy2(src, dst)
-            success = True
+            attempt_copy = True
+
+            if dst_dir:
+                base_dir = dst
+            else:
+                base_dir = os.path.dirname(dst)
+
+            if base_dir and not os.path.isdir(base_dir):
+                attempt_copy = ensure_dir_exists(base_dir, quiet=quiet)
+
+            if attempt_copy:
+                copy2(src, dst)
+                success = True
         elif os.path.exists(src):
             copy_tree(src, dst)
             success = True
