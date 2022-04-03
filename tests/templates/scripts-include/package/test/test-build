@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+releng_include('test-build-stage1')
+releng_include(releng_join(PKG_DEFDIR, 'test-build-stage2'))

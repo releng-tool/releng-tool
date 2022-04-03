@@ -7,6 +7,19 @@ import os
 import unittest
 
 class TestEngineRunScripts(unittest.TestCase):
+    def test_engine_run_scripts_include(self):
+        with prepare_testenv(template='scripts-include') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            file_flags = [
+                os.path.join(engine.opts.target_dir, 'invoked-stage1'),
+                os.path.join(engine.opts.target_dir, 'invoked-stage2'),
+            ]
+
+            for file_flag in file_flags:
+                self.assertTrue(os.path.exists(file_flag))
+
     def test_engine_run_scripts_invalid_bootstrap(self):
         rv = run_testenv(template='scripts-invalid-bootstrap')
         self.assertFalse(rv)
