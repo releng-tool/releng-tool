@@ -244,6 +244,12 @@ listed below:
             :members: releng_expand
             :noindex:
 
+    * - ``releng_include``
+
+      - .. automodule:: releng_tool
+            :members: releng_include
+            :noindex:
+
     * - ``releng_join``
 
       - .. automodule:: releng_tool

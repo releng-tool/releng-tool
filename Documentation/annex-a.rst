@@ -146,6 +146,7 @@ Functions available to scripts invoked by releng-tool or importable via
    releng_exists(path, *args)
    releng_exit(msg=None, code=None)
    releng_expand(obj, kv=None)
+   releng_include(file_path)
    releng_join(path, *args)
    releng_ls(dir_)
    releng_mkdir(dir_, quiet=False)
