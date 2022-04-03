@@ -948,48 +948,56 @@ class RelengPackageManager:
                 'expected_type': type_,
             })
 
-        if pkg_key_ in self._active_env:
+        # check if this package key has been explicitly overridden; if so,
+        # use its contents for the raw value to process
+        raw_value = self.opts.injected_kv.get(pkg_key_, None)
+
+        # if no raw value was injected, pull the key's value (if any) from the
+        # active environment
+        if raw_value is None:
+            raw_value = self._active_env.get(pkg_key_, None)
+
+        if raw_value is not None:
             if type_ == PkgKeyType.BOOL:
-                value = self._active_env[pkg_key_]
+                value = raw_value
                 if not isinstance(value, bool):
                     raise_kv_exception('bool')
             elif type_ == PkgKeyType.DICT:
-                value = self._active_env[pkg_key_]
+                value = raw_value
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if not isinstance(value, dict):
                     raise_kv_exception('dictionary')
             elif type_ == PkgKeyType.DICT_STR_STR:
-                value = interpret_dictionary_strings(self._active_env[pkg_key_])
+                value = interpret_dictionary_strings(raw_value)
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('dict(str,str)')
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
-                value = interpret_zero_to_one_strings(
-                    self._active_env[pkg_key_])
+                value = interpret_zero_to_one_strings(raw_value)
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('dict(str,str) or string(s)')
             elif type_ == PkgKeyType.STR:
-                value = interpret_string(self._active_env[pkg_key_])
+                value = interpret_string(raw_value)
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('string')
             elif type_ == PkgKeyType.STRS:
-                value = interpret_strings(self._active_env[pkg_key_])
+                value = interpret_strings(raw_value)
                 if allow_expand:
                     value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('string(s)')
             elif type_ == PkgKeyType.INT_NONNEGATIVE:
-                value = self._active_env[pkg_key_]
+                value = raw_value
                 if not isinstance(value, int) or value < 0:
                     raise_kv_exception('non-negative int')
             elif type_ == PkgKeyType.INT_POSITIVE:
-                value = self._active_env[pkg_key_]
+                value = raw_value
                 if not isinstance(value, int) or value <= 0:
                     raise_kv_exception('positive int')
             else:
