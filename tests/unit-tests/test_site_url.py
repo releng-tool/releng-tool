@@ -110,9 +110,9 @@ class TestSiteUrl(unittest.TestCase):
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
 
+                otes = TAR.exists()
                 try:
                     # temporarily force a non-external tar command (if needed)
-                    otes = TAR.exists()
                     RelengTool.detected[TAR_COMMAND] = False
 
                     httpd.rsp.append((200, data))
