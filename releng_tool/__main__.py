@@ -30,7 +30,6 @@ def main():
         parser = argparse.ArgumentParser(
             prog='releng-tool', add_help=False, usage=usage())
 
-        parser.add_argument('action', nargs='?')
         parser.add_argument('--assets-dir')
         parser.add_argument('--cache-dir')
         parser.add_argument('--debug', action='store_true')
@@ -80,6 +79,16 @@ def main():
 
         verbose('releng-tool {}', releng_version)
 
+        # extract key-value entries to be injected into the running
+        # script/working environment
+        action, injected_kv, unknown_args = process_action_kvargs(unknown_args)
+        args.action = action
+        args.injected_kv = injected_kv
+
+        # register any injected entry into the working environment right away
+        for k, v in injected_kv.items():
+            os.environ[k] = v
+
         if unknown_args:
             warn('unknown arguments: {}', ' '.join(unknown_args))
 
@@ -107,6 +116,51 @@ def main():
         print('')
 
     return retval
+
+def process_action_kvargs(args):
+    """
+    process arguments for an action and key-value entries for environments
+
+    The following will process a remaining argument set for an provided action
+    and entries which could be injected into the script/working environment.
+    The goal is to support Make-styled variable assignment options from a
+    command line, providing users a consistent way to override/set options no
+    matter the platform.
+
+    Args:
+        args: the arguments to check for entries
+
+    Returns:
+        the action, key-value entries and the remaining/unknown arguments
+    """
+
+    action = None
+    entries = {}
+    unknown_args = list(args)
+
+    for arg in args:
+        # always ignore option entries
+        if arg.startswith('-'):
+            continue
+
+        is_entry = False
+        if '=' in arg:
+            key, value = arg.split('=', 1)
+            key = key.strip()
+            if key:
+                is_entry = True
+                entries[key] = value.strip()
+                unknown_args.remove(arg)
+                debug('detected entry: {}={}', key, entries[key])
+
+        # if this argument is not an entry and we haven't yet registered an
+        # action yet, consider this argument the action
+        if not action and not is_entry:
+            action = arg
+            unknown_args.remove(arg)
+            debug('detected action: {}', action)
+
+    return action, entries, unknown_args
 
 def type_nonnegativeint(value):
     """

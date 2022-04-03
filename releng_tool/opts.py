@@ -64,6 +64,7 @@ class RelengEngineOptions:
         gbl_action: the specific global-action to perform (if any)
         host_dir: directory container for host tools
         images_dir: directory container for (final) images
+        injected_kv: injected key-value entries for script/env context
         jobs: number of calculated jobs to allow at a given time
         jobsconf: number of jobs to allow at a given time (0: auto)
         license_dir: directory container for license information
@@ -108,6 +109,7 @@ class RelengEngineOptions:
         self.gbl_action = None
         self.host_dir = None
         self.images_dir = None
+        self.injected_kv = {}
         self.jobs = 1
         self.jobsconf = 0
         self.license_dir = None
@@ -165,6 +167,8 @@ class RelengEngineOptions:
 
         if args.development:
             self.devmode = True
+        if args.injected_kv:
+            self.injected_kv = args.injected_kv
         if args.local_sources:
             self.local_srcs = True
         if args.quirk:
