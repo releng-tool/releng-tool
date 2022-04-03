@@ -19,6 +19,7 @@ from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
 from releng_tool.stats import RelengStats
+from releng_tool.support import releng_include
 from releng_tool.support import require_version
 from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
@@ -677,6 +678,7 @@ of the releng process:
         script_env['releng_exists'] = path_exists
         script_env['releng_exit'] = platform_exit
         script_env['releng_expand'] = expand
+        script_env['releng_include'] = releng_include
         script_env['releng_join'] = os.path.join
         script_env['releng_ls'] = ls
         script_env['releng_mkdir'] = ensure_dir_exists

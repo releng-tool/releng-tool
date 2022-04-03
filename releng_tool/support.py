@@ -3,8 +3,42 @@
 
 from releng_tool import __version__ as releng_version
 from releng_tool.util.log import err
+from runpy import run_path
+import inspect
+import os
 import sys
 
+def releng_include(file_path):
+    """
+    include/execute a script
+
+    The provided call will execute code at the provided file path. The path
+    will be relative to the caller's script, unless an absolute path is
+    provided. The executed script will be initialized with globals matching
+    the caller's script.
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        # load "my-other-script" found alongside the current script
+        releng_include('my-other-script')
+
+    Args:
+        file_path: the script to invoke
+    """
+
+    caller_stack = inspect.stack()[1]
+
+    if os.path.isabs(file_path):
+        target_script = file_path
+    else:
+        invoked_script = caller_stack[1]
+        invoked_script_base = os.path.dirname(invoked_script)
+        target_script = os.path.join(invoked_script_base, file_path)
+
+    globals = caller_stack[0].f_globals
+    run_path(target_script, init_globals=globals)
 
 def require_version(version, quiet=False, critical=True):
     """
