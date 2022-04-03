@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021 releng-tool
 
+from contextlib import contextmanager
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import VcsType
@@ -164,72 +165,72 @@ class RelengPackagePipeline:
             self.engine.pkgman.load_remote_configuration(pkg)
 
         # finalize package environment
-        self._stage_env_finalize(pkg, pkg_env)
+        with self._stage_env_finalize(pkg, pkg_env):
 
-        # bootstrapping
-        flag = pkg._ff_bootstrap
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'boot')
-            if not bootstrap_stage(self.engine, pkg, pkg_env):
-                raise RelengToolBootstrapStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'boot')
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                return False
+            # bootstrapping
+            flag = pkg._ff_bootstrap
+            if check_file_flag(flag) == FileFlag.NO_EXIST:
+                self.engine.stats.track_duration_start(pkg.name, 'boot')
+                if not bootstrap_stage(self.engine, pkg, pkg_env):
+                    raise RelengToolBootstrapStageFailure
+                self.engine.stats.track_duration_end(pkg.name, 'boot')
+                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                    return False
 
-        # configuring
-        flag = pkg._ff_configure
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'configure')
-            if not configure_stage(self.engine, pkg, pkg_env):
-                raise RelengToolConfigurationStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'configure')
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                return False
-        if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
-            if pkg.name == target:
-                return False
+            # configuring
+            flag = pkg._ff_configure
+            if check_file_flag(flag) == FileFlag.NO_EXIST:
+                self.engine.stats.track_duration_start(pkg.name, 'configure')
+                if not configure_stage(self.engine, pkg, pkg_env):
+                    raise RelengToolConfigurationStageFailure
+                self.engine.stats.track_duration_end(pkg.name, 'configure')
+                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                    return False
+            if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
+                if pkg.name == target:
+                    return False
 
-        # building
-        flag = pkg._ff_build
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'build')
-            if not build_stage(self.engine, pkg, pkg_env):
-                raise RelengToolBuildStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'build')
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                return False
-        if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
-            if pkg.name == target:
-                return False
+            # building
+            flag = pkg._ff_build
+            if check_file_flag(flag) == FileFlag.NO_EXIST:
+                self.engine.stats.track_duration_start(pkg.name, 'build')
+                if not build_stage(self.engine, pkg, pkg_env):
+                    raise RelengToolBuildStageFailure
+                self.engine.stats.track_duration_end(pkg.name, 'build')
+                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                    return False
+            if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
+                if pkg.name == target:
+                    return False
 
-        # installing
-        flag = pkg._ff_install
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'install')
-            if not install_stage(self.engine, pkg, pkg_env):
-                raise RelengToolInstallStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'install')
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                return False
-        # (note: re-install requests will re-invoke package-specific
-        # post-processing)
+            # installing
+            flag = pkg._ff_install
+            if check_file_flag(flag) == FileFlag.NO_EXIST:
+                self.engine.stats.track_duration_start(pkg.name, 'install')
+                if not install_stage(self.engine, pkg, pkg_env):
+                    raise RelengToolInstallStageFailure
+                self.engine.stats.track_duration_end(pkg.name, 'install')
+                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                    return False
+            # (note: re-install requests will re-invoke package-specific
+            # post-processing)
 
-        # package-specific post-processing
-        flag = pkg._ff_post
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'post')
-            if not post_stage(self.engine, pkg, pkg_env):
-                raise RelengToolPostStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'post')
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
-                return False
-        if paction in (
-                PkgAction.INSTALL,
-                PkgAction.REBUILD_ONLY,
-                PkgAction.RECONFIGURE_ONLY,
-                PkgAction.REINSTALL):
-            if pkg.name == target:
-                return False
+            # package-specific post-processing
+            flag = pkg._ff_post
+            if check_file_flag(flag) == FileFlag.NO_EXIST:
+                self.engine.stats.track_duration_start(pkg.name, 'post')
+                if not post_stage(self.engine, pkg, pkg_env):
+                    raise RelengToolPostStageFailure
+                self.engine.stats.track_duration_end(pkg.name, 'post')
+                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                    return False
+            if paction in (
+                    PkgAction.INSTALL,
+                    PkgAction.REBUILD_ONLY,
+                    PkgAction.RECONFIGURE_ONLY,
+                    PkgAction.REINSTALL):
+                if pkg.name == target:
+                    return False
 
         return True
 
@@ -277,6 +278,7 @@ class RelengPackagePipeline:
 
         return pkg_env
 
+    @contextmanager
     def _stage_env_finalize(self, pkg, pkg_env):
         """
         finalize environment variables for a specific package processing
@@ -291,13 +293,35 @@ class RelengPackagePipeline:
             pkg_env: the environment to populate
         """
 
-        for env in (os.environ, pkg_env):
-            if pkg.prefix is not None:
-                env['PREFIX'] = pkg.prefix # will override existing prefix
+        pkg_keys = [
+            'NJOBS',
+            'NJOBSCONF',
+            'PREFIX',
+        ]
 
-            if pkg.fixed_jobs:
-                env['NJOBS'] = str(pkg.fixed_jobs)
-                env['NJOBSCONF'] = str(pkg.fixed_jobs)
+        saved_env = {}
+        for key in pkg_keys:
+            saved_env[key] = os.environ.get(key, None)
+
+        # apply package specific overrides into the OS environment and the
+        # package/script environment
+        try:
+            for env in (os.environ, pkg_env):
+                if pkg.prefix is not None:
+                    env['PREFIX'] = pkg.prefix # will override existing prefix
+
+                if pkg.fixed_jobs:
+                    env['NJOBS'] = str(pkg.fixed_jobs)
+                    env['NJOBSCONF'] = str(pkg.fixed_jobs)
+
+            yield
+        finally:
+            # restore any overrides that may have been set
+            for k, v in saved_env.items():
+                if v is not None:
+                    os.environ[k] = v
+                else:
+                    os.environ.pop(k, None)
 
     def _stage_license(self, pkg):
         """
