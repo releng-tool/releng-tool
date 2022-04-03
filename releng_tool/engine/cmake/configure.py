@@ -9,6 +9,8 @@ from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
 from os.path import join
+import os
+import posixpath
 
 #: default lib container directory
 DEFAULT_LIB_DIR = 'lib'
@@ -47,13 +49,21 @@ def configure(opts):
             join(opts.staging_dir + prefix) + ';' +
             join(opts.target_dir + prefix))
 
+    lib_dir = join(prefix, DEFAULT_LIB_DIR)
+
+    # ensure the non-full prefix options are passed in a posix style, or
+    # some versions of CMake/projects may treat the path separators as
+    # escape characters
+    posix_prefix = prefix.replace(os.sep, posixpath.sep)
+    posix_lib_dir = lib_dir.replace(os.sep, posixpath.sep)
+
     # definitions
     cmake_defs = {
         # configure as RelWithDebInfo (when using multi-configuration projects)
         'CMAKE_BUILD_TYPE': 'RelWithDebInfo',
         # common paths for releng-tool sysroots
         'CMAKE_INCLUDE_PATH': include_loc,
-        'CMAKE_INSTALL_PREFIX': prefix,
+        'CMAKE_INSTALL_PREFIX': posix_prefix,
         'CMAKE_LIBRARY_PATH': library_loc,
         'CMAKE_PREFIX_PATH': prefix_loc,
         # releng-tool's sysroot assumes a `lib` directory. CMake's
@@ -61,7 +71,7 @@ def configure(opts):
         # detected system name (as a project may not necessarily be
         # cross-compiling), which may implicitly set the library directory to
         # `lib64`.
-        'CMAKE_INSTALL_LIBDIR': join(prefix, DEFAULT_LIB_DIR),
+        'CMAKE_INSTALL_LIBDIR': posix_lib_dir,
     }
     if opts.conf_defs:
         cmake_defs.update(expand(opts.conf_defs))
