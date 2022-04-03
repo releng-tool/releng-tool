@@ -5,6 +5,7 @@ from __future__ import print_function
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
+from releng_tool.util.log import warn
 import contextlib
 import os
 import sys
@@ -35,6 +36,7 @@ def fetch(opts):
     cache_file = opts.cache_file
     name = opts.name
     site = opts.site
+    is_mirror_attempt = opts._mirror
     urlopen_context = opts._urlopen_context
 
     filename = os.path.basename(cache_file)
@@ -73,7 +75,8 @@ def fetch(opts):
 
                     f.write(buf)
     except Exception as e:
-        err('failed to download resource\n'
+        log_func = warn if is_mirror_attempt else err
+        log_func('failed to download resource\n'
             '    {}', e)
         return None
 

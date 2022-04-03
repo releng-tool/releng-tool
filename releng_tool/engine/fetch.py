@@ -80,6 +80,7 @@ local sources option to use the default process).
     fetch_opts.revision = pkg.revision
     fetch_opts.site = pkg.site
     fetch_opts.version = pkg.version
+    fetch_opts._mirror = False
     fetch_opts._quirks = engine.opts.quirks
     fetch_opts._urlopen_context = engine.opts.urlopen_context
 
@@ -220,9 +221,13 @@ file. Ensure that the package's public key has been registered into gpg.
                 original_site = fetch_opts.site
                 new_site = engine.opts.url_mirror + cache_filename
                 if original_site != new_site:
+                    fetch_opts._mirror = True
+
                     fetch_opts.site = new_site
                     fetched = fetcher(fetch_opts)
                     fetch_opts.site = original_site
+
+                    fetch_opts._mirror = False
 
             # perform the fetch request (if not already fetched)
             if not fetched:
