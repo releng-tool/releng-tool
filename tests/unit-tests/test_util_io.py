@@ -106,6 +106,20 @@ class TestUtilIo(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     path_copy(work_dir, work_dir)
 
+            # force a directory target with a non-trailing path separator
+            force_src = os.path.join(work_dir, 'test-file-a')
+            self.assertExists(force_src)
+
+            force1 = os.path.join(work_dir, 'force1')
+            result = path_copy(force_src, force1, critical=False)
+            self.assertTrue(result)
+            self.assertTrue(os.path.isfile(force1))
+
+            force2 = os.path.join(work_dir, 'force2')
+            result = path_copy(force_src, force2, critical=False, dst_dir=True)
+            self.assertTrue(result)
+            self.assertTrue(os.path.isdir(force2))
+
     def test_utilio_ensuredirexists(self):
         with prepare_workdir() as work_dir:
             result = ensure_dir_exists(work_dir)
