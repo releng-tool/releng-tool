@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+TEST1_PREFIX = '/my-custom-prefix'
+TEST1_FIXED_JOBS = 42
