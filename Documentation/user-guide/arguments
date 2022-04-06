@@ -1,9 +1,9 @@
 Arguments
 ---------
 
-The command line can be used to specify either a single action to perform and/or
+The command line can be used to specify a single action to perform or
 provide various options to configure the releng-tool process. Options
-can be provided before or after an action (if provided). By default, if a user
+can be provided before or after an action (if an explicit action is provided). By default, if a user
 does not specify an action, it is assumed that all steps are
 to be performed. An example of a user invoking a clean action is as follows:
 
@@ -77,7 +77,7 @@ The following outlines available actions:
     * - ``<pkg>-build``
 
       - Performs the build stage for the package. On success, the specified
-        package stage will have completed its build. If a package has any
+        package will have completed its build. If a package has any
         package dependencies, these dependencies will be processed before
         the specified package. If the provided package name does not
         exist, a notification will be generated.
@@ -92,7 +92,7 @@ The following outlines available actions:
     * - ``<pkg>-configure``
 
       - Performs the configure stage for the package. On success, the
-        specified package stage will have completed its configuration stage.
+        specified package will have completed its configuration stage.
         If a package has any package dependencies, these dependencies will
         be processed before the specified package. If the provided
         package name does not exist, a notification will be generated.
@@ -109,7 +109,7 @@ The following outlines available actions:
     * - ``<pkg>-extract``
 
       - Performs the extraction stage for the package. On success, the
-        specified package stage will have completed its extraction stage.
+        specified package will have completed its extraction stage.
         If the provided package name does not exist, a notification will
         be generated.
 
@@ -123,7 +123,7 @@ The following outlines available actions:
     * - ``<pkg>-install``
 
       - Performs the installation stage for the package. On success, the
-        specified package stage will have completed its installation
+        specified package will have completed its installation
         stage. If a package has any package dependencies, these
         dependencies will be processed before the specified package. If
         the provided package name does not exist, a notification will be
@@ -139,7 +139,7 @@ The following outlines available actions:
     * - ``<pkg>-patch``
 
       - Performs the patch stage for the package. On success, the specified
-        package stage will have completed its patch stage. If the provided
+        package will have completed its patch stage. If the provided
         package name does not exist, a notification will be generated.
 
     * - ``<pkg>-rebuild``

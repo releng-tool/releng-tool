@@ -16,6 +16,7 @@ author = 'releng-tool'
 
 # sphinx extensions
 extensions = [
+    'myst_parser',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx_inline_tabs',

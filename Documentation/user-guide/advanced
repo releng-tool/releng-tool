@@ -11,10 +11,10 @@ packages against a development version of sources rather than using fixed
 versions. Consider the following example: if a project has a package which
 sources are pulled from a Git repository, it is most likely the package
 definition will define the explicit tag to clone from (e.g. ``v1.0``). However,
-a package may define that the ``master`` branch of a repository is used for the
+a package may define that the ``main`` branch of a repository is used for the
 most recent development revision. If an environment is configured for
 development mode, the releng-tool process will instead pull sources from the
-``master`` branch instead of a release tag.
+``main`` branch instead of a release tag.
 
 To enable development mode, invoking ``releng-tool`` with the ``--development``
 argument will enable the mode. Future calls to releng-tool for the project will
@@ -43,7 +43,7 @@ Local-sources mode
    sources found alongside the output directory
 
 Local-sources mode provides a way for a developer to build internal-flagged
-packages using sources found alongside the root directory instead of having
+packages using sources found alongside the root directory, instead of having
 releng-tool attempt to fetch them from remote instances. This is primarily for
 developers who desire to manually manage source content outside the releng-tool
 environment. Local-sources mode only works for internally flagged packaged.
@@ -51,7 +51,7 @@ Consider the following example: a releng-tool project has a package called
 ``liba``. When releng-tool is invoked in normal configurations, the package will
 do fetching, extraction and patching to prepare the directory
 ``<root>/output/build/liba-<version>``. However, if a builder has configured the
-working root for local-sources mode, sources for ``liba`` will be checked at the
+working root for local-sources mode, sources for ``liba`` will be used from the
 folder ``<root>/../liba`` instead. Also, when in local-sources mode, an internal
 package will skip the fetching, extraction and patching stages in order to
 prevent undesired manipulation of developer-prepared sources. Another
@@ -82,10 +82,8 @@ directory. A user can either disable local sources mode by performing a
 Configuration overrides
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-While it is not recommended to have users manually modify a project's
-configuration, a series of override options exist to deal with unique build
-scenarios. If a builder needs to override a tool location or package site, a
-user and define either environment options or setup a configuration override
+If a builder needs to (for example) override a tool location or package site, a
+user can define either environment options or setup a configuration override
 script ``releng-overrides``. It is never recommended to persist a configuration
 overrides file into a project's source repository.
 

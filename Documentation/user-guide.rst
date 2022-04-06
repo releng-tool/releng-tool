@@ -2,7 +2,7 @@ User guide
 ==========
 
 The following will outline the capabilities on using releng-tool with an already
-defined project. For details on building a releng-tool project, consult the
+defined project. For details on building a releng-tool project, see the
 :doc:`developer's guide <developer-guide>`.
 
 .. include:: user-guide/getting-started
