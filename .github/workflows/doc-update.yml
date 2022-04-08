@@ -45,6 +45,7 @@ jobs:
         pip install --upgrade \
             "docutils<0.17" \
             furo \
+            myst-parser \
             sphinx \
             sphinx-inline-tabs \
             sphinx-intl
