@@ -1,23 +1,21 @@
-contributing
-============
+# Contributing
 
 Users can contribute to this project by reporting issues or submitting changes.
 Please follow the guidelines below to help assist maintainers for this project.
 
-reporting issues
-----------------
+## Reporting issues
 
 Bugs and enhancements for this project can be submitted to this project's issue
 tracker. Before submitting an issue, consider the following:
 
 - Check if the same or related issue exists. If so, feel free to add additional
-  information to enhancement the issue's content.
-- Including versions (such as this project, Python's version, etc.) helps.
+  information to enhance the issue's content.
+- Including versions helps (such as this project's version, Python's version,
+  etc.).
 - For more long and detailed logging information, it is better to attach the
   information opposed to dumping the entire contents into the issue's body.
 
-submitting changes
-------------------
+## Submitting changes
 
 Contributions can be provided in the form of Git-formatted patches by Email or
 submitted through this project's pull request system. Before submitting changes,
@@ -28,15 +26,14 @@ consider the following:
   change is being made along with any other additional information) and
   metadata. It is a requirement that any submitted changes provided follow the
   Developer Certificate of Origin. This is indicated with the inclusion of the
-  ``Signed-off-by`` tag in the metadata. Commit messages with only "bug fix" or
+  `Signed-off-by` tag in the metadata. Commit messages with only "bug fix" or
   "addressing comments in review" are not helpful when reflecting on the history
   of changes for this project.
 - A patch should attempt to have a narrow scope as well as be complete.
 - Be aware that while maintainers will help introduce changes into this project,
   the process may take some time. Please be patient.
 
-quirks
-------
+## Quirks
 
 The following outlines a series of quirks when contributing:
 
@@ -58,18 +55,6 @@ The following outlines a series of quirks when contributing:
   Changes submitted with two blank lines may be accepted, but may also be
   "cleaned up" in future changes.
 
-maintainer notes
-----------------
-
-Packages for PyPI are generated and submitted with the following commands:
-
-.. code-block:: shell
-
-    $ python setup.py clean --all
-    $ python setup.py sdist bdist_wheel
-    $ python -m twine upload dist/*
-
-outro
------
+## Outro
 
 Thanks for considering to be a participant to this project.
