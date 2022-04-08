@@ -119,7 +119,7 @@ local sources option to use the default process).
                     if not path_remove(pkg.cache_file):
                         return False
 
-            # force explicit ignore cache when not in development mode
+            # force explicit ignore cache (to off) when not in development mode
             elif not engine.opts.devmode and ignore_cache is None:
                 fetch_opts.ignore_cache = False
 
