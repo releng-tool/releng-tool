@@ -78,6 +78,7 @@ def main():
                 enable_ansi_win32()
 
         verbose('releng-tool {}', releng_version)
+        debug('({})', __file__)
 
         # extract key-value entries to be injected into the running
         # script/working environment
