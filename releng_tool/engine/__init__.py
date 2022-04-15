@@ -268,9 +268,10 @@ class RelengEngine:
                 if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                     continue
 
-                # in the event that we not not explicit fetching and the package
+                # in the event that we are not explicit fetching and the package
                 # has already been extracted, completely skip the fetching stage
-                if not requested_fetch:
+                is_local_pkg = pkg.is_internal and opts.local_srcs
+                if not requested_fetch and not is_local_pkg:
                     flag = pkg._ff_extract
                     if check_file_flag(flag) == FileFlag.EXISTS:
                         continue
