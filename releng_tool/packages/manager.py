@@ -37,6 +37,7 @@ from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from releng_tool.util.string import interpret_zero_to_one_strings
 import pickle
+import pprint
 import os
 import traceback
 
@@ -696,6 +697,18 @@ class RelengPackageManager:
         pkg._ff_license = os.path.join(outdir, prefix + 'license')
         pkg._ff_patch = os.path.join(outdir, prefix + 'patch')
         pkg._ff_post = os.path.join(outdir, prefix + 'post')
+
+        # dump package attributes if running in a debug mode
+        if opts.debug:
+            info = {}
+            for key, value in pkg.__dict__.items():
+                if not key.startswith('_'):
+                    info[key] = value
+
+            debug('''package-data: {}
+==============================
+{}
+==============================''', name, pprint.pformat(info))
 
         return pkg, env, deps
 
