@@ -291,11 +291,25 @@ class RelengEngine:
             # process each package (configuring, building, etc.)
             if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
 
-                # ensure the symbols directory exists, as a package may wish to
-                # populate it anytime between a configuration stage to a
-                # post-package stage
-                if not ensure_dir_exists(opts.symbols_dir):
-                    return False
+                # pre-populate "common" directories
+                #
+                # The following will attempt to pre-populate common directories
+                # before attempting to process a package pipeline. A package
+                # configured in this pipeline may wish to populate any one of
+                # these directories anytime between a configuration stage to a
+                # post-package stage. Ensuring these directories exist ahead of
+                # time can help prevent scenarios where developers try to file
+                # a file into a directory, but instead create a file as the
+                # common directory name (e.g. `TARGET_DIR` points to a file).
+                common_dirs = [
+                    opts.host_dir,
+                    opts.staging_dir,
+                    opts.symbols_dir,
+                    opts.target_dir,
+                ]
+                for common_dir in common_dirs:
+                    if not ensure_dir_exists(common_dir):
+                        return False
 
                 pipeline = RelengPackagePipeline(self, opts, script_env)
                 for pkg in pkgs:

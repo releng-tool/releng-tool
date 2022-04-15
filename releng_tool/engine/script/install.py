@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2022 releng-tool
 
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import opt_file
 from releng_tool.util.io import run_script
 from releng_tool.util.log import verbose
@@ -42,12 +41,6 @@ def install(opts):
         install_script, install_script_exists = opt_file(install_script)
         if not install_script_exists:
             return True
-
-    # ensure the target directory exists before invoking a custom install
-    # script as it may have never been created, and there is most likely
-    # the chance that the script will want to output content into the target
-    # directory
-    ensure_dir_exists(opts.target_dir)
 
     if not run_script(install_script, env, subject='install'):
         return False
