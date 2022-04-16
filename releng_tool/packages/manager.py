@@ -571,8 +571,21 @@ class RelengPackageManager:
                     __, cache_ext = interpret_stem_extension(basename)
 
         # prepare package container and directory locations
+        #
+        # The container folder for a package will typically be a combination of
+        # a package's name plus version. If no version is set, the container
+        # will be only use the package's name. We try to use the version entry
+        # when possible to help manage multiple versions of output (e.g. to
+        # avoid conflicts when bumping versions).
+        #
+        # When the version value is used, we will attempt to cleanup/minimize
+        # the version to help provide the container a more "sane" path. For
+        # instance, if a version references a path-styled branch names (e.g.
+        # `bugfix/my-bug`, we want to avoid promoting a container name which
+        # can result in a sub-directory being made (e.g. `pkg-bugfix/my-bug/`).
         if pkg_version:
-            pkg_nv = '{}-{}'.format(name, pkg_version)
+            pkg_nv = '{}-{}'.format(name, ''.join(
+                x if (x.isalnum() or x in '-._') else '_' for x in pkg_version))
         else:
             pkg_nv = name
 
