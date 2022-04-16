@@ -143,7 +143,7 @@ following repositories:
 
 [api-init]: https://github.com/releng-tool/releng-tool/blob/master/releng_tool/api/__init__.py
 [api]: https://github.com/releng-tool/releng-tool/blob/master/releng_tool/api/__init__.py
-[contributing]: https://github.com/releng-tool/releng-tool/blob/master/CONTRIBUTING.rst
+[contributing]: https://github.com/releng-tool/releng-tool/blob/master/CONTRIBUTING.md
 [dco]: https://developercertificate.org/
 [git-dir]: https://git-scm.com/docs/git#git---git-dirltpathgt
 [git]: https://git-scm.com/
