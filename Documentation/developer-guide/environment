@@ -69,13 +69,25 @@ releng-tool, the following environment variables are available:
 
       - The output directory.
 
+    * - .. _CONF_PKG_BUILD_BASE_DIR:
+
+        ``PKG_BUILD_BASE_DIR``
+
+      - The directory for a specific package's base directory for buildable
+        content. In most cases, this value will be the same as
+        |CONF_PKG_BUILD_DIR|_; however, if |LIBFOO_BUILD_SUBDIR|_ is
+        configured, |CONF_PKG_BUILD_DIR|_ will include the configured
+        sub-directory, where this base directory will not.
+
+        See also |CONF_PKG_BUILD_DIR|_.
+
     * - .. _CONF_PKG_BUILD_DIR:
 
         ``PKG_BUILD_DIR``
 
       - The directory for a specific package's buildable content.
 
-        See also |CONF_PKG_BUILD_ODIR|_.
+        See also |CONF_PKG_BUILD_BASE_DIR|_ and  |CONF_PKG_BUILD_ODIR|_.
 
     * - .. _CONF_PKG_BUILD_ODIR:
 
@@ -209,6 +221,7 @@ releng-tool, the following environment variables are available:
 
 .. |CONF_NJOBSCONF| replace:: ``NJOBSCONF``
 .. |CONF_NJOBS| replace:: ``NJOBS``
+.. |CONF_PKG_BUILD_BASE_DIR| replace:: ``PKG_BUILD_BASE_DIR``
 .. |CONF_PKG_BUILD_DIR| replace:: ``PKG_BUILD_DIR``
 .. |CONF_PKG_BUILD_ODIR| replace:: ``PKG_BUILD_OUTPUT_DIR``
 

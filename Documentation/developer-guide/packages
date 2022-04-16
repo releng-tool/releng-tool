@@ -231,6 +231,7 @@ packages.
 
 LIBFOO_BUILD_SUBDIR
 ^^^^^^^^^^^^^^^^^^^
+.. |LIBFOO_BUILD_SUBDIR| replace:: ``LIBFOO_BUILD_SUBDIR``
 
 Sub-directory where a package's extracted sources holds its buildable content.
 Sources for a package may be nested inside one or more directories. A package
