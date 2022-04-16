@@ -263,6 +263,7 @@ class RelengPackagePipeline:
 
         # package variables
         for env in (os.environ, pkg_env):
+            env['PKG_BUILD_BASE_DIR'] = pkg.build_dir
             env['PKG_BUILD_DIR'] = build_dir
             env['PKG_BUILD_OUTPUT_DIR'] = pkg.build_output_dir
             env['PKG_CACHE_DIR'] = pkg.cache_dir
