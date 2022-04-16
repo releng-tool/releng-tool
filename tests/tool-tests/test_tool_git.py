@@ -38,6 +38,17 @@ class TestToolGit(TestSiteToolBase):
         rv = self.engine.run()
         self.assertTrue(rv)
 
+    def test_tool_git_branch_forward_slash(self):
+        # create a commit on a new branch with a forward slash
+        TMP_BRANCH = 'container/test'
+        self._git_repo('checkout', '-b', TMP_BRANCH)
+        self._create_commit()
+        self._git_repo('checkout', DEFAULT_BRANCH)
+
+        self.defconfig_add('VERSION', TMP_BRANCH)
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
     def test_tool_git_changing_revision(self):
         # verify pulling from an original tag
         first_hash = self._create_commit('first commit')
