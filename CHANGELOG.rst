@@ -1,3 +1,13 @@
+Development
+-----------
+
+- adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
+- fixed where package-specific prefixes/njobs would leak to other projects
+- introduce ``releng_include`` helper script function
+- introduce the ``PKG_BUILD_BASE_DIR`` environment/script variable
+- support make-styled environment injections via command line
+- support package variable overrides via command line
+
 0.11 (2022-02-26)
 -----------------
 
