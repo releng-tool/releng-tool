@@ -7,6 +7,7 @@ __releng_tool_has_action()
         '-clean'
         '-configure'
         '-distclean'
+        '-exec'
         '-extract'
         '-fetch'
         '-install'
@@ -71,6 +72,7 @@ _releng_tool_module()
         COMPREPLY=($(compgen -A directory -- $cur))
         return 0
         ;;
+    *-exec | \
     '--help' | '-h' | \
     '--help-quirks' | \
     '--jobs' | '-j' | \
@@ -113,6 +115,7 @@ _releng_tool_module()
             '${pkg}-clean'
             '${pkg}-configure'
             '${pkg}-distclean'
+            '${pkg}-exec'
             '${pkg}-extract'
             '${pkg}-fetch'
             '${pkg}-install'
