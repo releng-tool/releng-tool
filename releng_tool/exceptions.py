@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2021 releng-tool
+# Copyright 2021-2022 releng-tool
 
 """
 base exception for all custom releng-tool exceptions
