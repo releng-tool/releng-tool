@@ -106,6 +106,25 @@ The following outlines available actions:
         directory associated with the package. See also the
         |ACTION_PKG_CLEAN|_ action.
 
+    * - ``<pkg>-exec "<cmd>"``
+
+      - Invokes a provided command in the package's build output directory.
+        This package action can be useful for developers attempting to
+        develop/debug a specific package, allowing an easy way to issue
+        commands in a package's directory without having to manually
+        venture to a package's output directory. Packages will need to
+        be processed to at least the patch stage before a provided
+        command is issued.
+        
+        An example is as follows:
+
+        .. code-block:: shell
+
+            releng-tool libfoo-exec "bash example-script"
+
+        Package environment variables will be available for the invoked
+        command.
+
     * - ``<pkg>-extract``
 
       - Performs the extraction stage for the package. On success, the
