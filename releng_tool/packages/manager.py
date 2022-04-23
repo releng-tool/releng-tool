@@ -620,6 +620,24 @@ class RelengPackageManager:
             pkg_build_output_dir = os.path.join(
                 pkg_build_output_dir, 'releng-output')
 
+        # determine the build tree for a package
+        #
+        # A build tree (introduced for the libfoo-exec action), tracks the
+        # directory where build commands would typically be executed for a
+        # package on a host system. In most cases, this will be set to the
+        # same path as `pkg_build_dir` (or the sub-directory, if provided);
+        # however, some package types may have a better working directory
+        # for build commands. For example, CMake projects will generate a
+        # build package in an out-of-source directory (e.g.
+        # `pkg_build_output_dir`), which is a better make to issue commands
+        # such as "cmake --build .".
+        if pkg_type == PackageType.CMAKE:
+            pkg_build_tree = pkg_build_output_dir
+        elif pkg_build_subdir:
+            pkg_build_tree = pkg_build_subdir
+        else:
+            pkg_build_tree = pkg_build_dir
+
         # determine the package directory for this package
         #
         # Typically, a package's "cache directory" will be stored in the output
@@ -666,6 +684,7 @@ class RelengPackageManager:
         pkg.build_dir = pkg_build_dir
         pkg.build_output_dir = pkg_build_output_dir
         pkg.build_subdir = pkg_build_subdir
+        pkg.build_tree = pkg_build_tree
         pkg.cache_dir = pkg_cache_dir
         pkg.cache_file = pkg_cache_file
         pkg.def_dir = pkg_def_dir

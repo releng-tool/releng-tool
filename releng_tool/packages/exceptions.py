@@ -162,6 +162,11 @@ class RelengToolConfigurationStageFailure(RelengToolStageFailure):
     exception thrown when a configuration stage event has an issue
     """
 
+class RelengToolExecStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when an execute-request event has an issue
+    """
+
 class RelengToolExtractionStageFailure(RelengToolStageFailure):
     """
     exception thrown when an extraction stage event has an issue

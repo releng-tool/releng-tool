@@ -187,6 +187,7 @@ class PkgAction(Enum):
         CLEAN: process a package till end of the clean stage
         CONFIGURE: process a package till end of the configure stage
         DISTCLEAN: pristine state clean state of the package with cache/dl clear
+        EXEC: perform an action in the package's directory
         EXTRACT: process a package till end of the extraction stage
         FETCH: process a package till end of the fetch stage
         INSTALL: process a package till end of the install stage
@@ -202,6 +203,7 @@ class PkgAction(Enum):
     CLEAN = 'clean'
     CONFIGURE = 'configure'
     DISTCLEAN = 'distclean'
+    EXEC = 'exec'
     EXTRACT = 'extract'
     FETCH = 'fetch'
     INSTALL = 'install'

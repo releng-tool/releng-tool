@@ -80,14 +80,18 @@ def main():
         verbose('releng-tool {}', releng_version)
         debug('({})', __file__)
 
-        # extract key-value entries to be injected into the running
-        # script/working environment
-        action, injected_kv, unknown_args = process_action_kvargs(unknown_args)
-        args.action = action
-        args.injected_kv = injected_kv
+        # extract additional argument information:
+        #  - pull the action value
+        #  - pull "exec" command (if applicable)
+        #  - key-value entries to be injected into the running
+        #     script/working environment
+        new_args, unknown_args = process_args(unknown_args)
+        args.action = new_args['action']
+        args.action_exec = new_args['exec']
+        args.injected_kv = new_args['entries']
 
         # register any injected entry into the working environment right away
-        for k, v in injected_kv.items():
+        for k, v in args.injected_kv.items():
             os.environ[k] = v
 
         if unknown_args:
@@ -118,7 +122,7 @@ def main():
 
     return retval
 
-def process_action_kvargs(args):
+def process_args(args):
     """
     process arguments for an action and key-value entries for environments
 
@@ -132,17 +136,25 @@ def process_action_kvargs(args):
         args: the arguments to check for entries
 
     Returns:
-        the action, key-value entries and the remaining/unknown arguments
+        parsed argument options and the remaining/unknown arguments
     """
 
     action = None
     entries = {}
+    exec_ = None
+    needs_exec = False
     unknown_args = list(args)
 
     for arg in args:
         # always ignore option entries
         if arg.startswith('-'):
             continue
+
+        if needs_exec:
+            exec_ = arg.strip()
+            unknown_args.remove(arg)
+            debug('detected package-exec call: {}', exec_)
+            needs_exec = False
 
         is_entry = False
         if '=' in arg:
@@ -161,7 +173,17 @@ def process_action_kvargs(args):
             unknown_args.remove(arg)
             debug('detected action: {}', action)
 
-    return action, entries, unknown_args
+            # if this is assumed to be an `exec`-based package action, consume
+            # the next non-kv entry as the expected command to invoke
+            if action.endswith('-exec'):
+                debug('assuming action is an exec call')
+                needs_exec = True
+
+    return {
+        'action': action,
+        'entries': entries,
+        'exec': exec_,
+    }, unknown_args
 
 def type_nonnegativeint(value):
     """
@@ -209,6 +231,7 @@ def usage():
  <pkg>-clean               clean build directory for package
  <pkg>-configure           perform configure stage for the package
  <pkg>-distclean           pristine clean for package
+ <pkg>-exec <cmd>          invoke a command in the package's directory
  <pkg>-extract             perform extract stage for the package
  <pkg>-fetch               perform fetch stage for the package
  <pkg>-install             perform install stage for the package

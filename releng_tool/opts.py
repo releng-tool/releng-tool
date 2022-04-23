@@ -83,6 +83,7 @@ class RelengEngineOptions:
         symbols_dir: directory container for symbols content
         sysroot_prefix: system root prefix
         target_action: the specific package to work on (if any)
+        target_action_exec: package-specific executable command (if any)
         target_dir: directory container for target content
         url_mirror: mirror base site for url fetches
         urlopen_context: context to apply for all url open calls
@@ -128,6 +129,7 @@ class RelengEngineOptions:
         self.symbols_dir = None
         self.sysroot_prefix = DEFAULT_SYSROOT_PREFIX
         self.target_action = None
+        self.target_action_exec = None
         self.target_dir = None
         self.url_mirror = None
         self.urlopen_context = None
@@ -186,7 +188,9 @@ class RelengEngineOptions:
                         self.target_action = args.action[:idx]
                         break
 
-                if not self.pkg_action:
+                if subaction_val == PkgAction.EXEC:
+                    self.target_action_exec = args.action_exec
+                elif not self.pkg_action:
                     self.target_action = args.action
 
     def _handle_environment_opts(self):

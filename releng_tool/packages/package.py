@@ -16,6 +16,7 @@ class RelengPackage:
         build_dir: directory for a package's buildable content
         build_output_dir: build output directory for the package process
         build_subdir: override for a package's buildable content (if applicable)
+        build_tree: the build tree directory for a package
         cache_dir: cache directory for the package (if applicable)
         cache_file: cache file for the package (if applicable)
         def_dir: directory for the package definition
@@ -77,6 +78,7 @@ class RelengPackage:
         self.build_dir = None
         self.build_subdir = None
         self.build_output_dir = None
+        self.build_tree = None
         self.cache_dir = None
         self.cache_file = None
         self.def_dir = None

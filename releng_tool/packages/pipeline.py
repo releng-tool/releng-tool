@@ -12,9 +12,11 @@ from releng_tool.engine.extract import stage as extract_stage
 from releng_tool.engine.install import stage as install_stage
 from releng_tool.engine.patch import stage as patch_stage
 from releng_tool.engine.post import stage as post_stage
+from releng_tool.exceptions import RelengToolMissingExecCommand
 from releng_tool.packages.exceptions import RelengToolBootstrapStageFailure
 from releng_tool.packages.exceptions import RelengToolBuildStageFailure
 from releng_tool.packages.exceptions import RelengToolConfigurationStageFailure
+from releng_tool.packages.exceptions import RelengToolExecStageFailure
 from releng_tool.packages.exceptions import RelengToolExtractionStageFailure
 from releng_tool.packages.exceptions import RelengToolInstallStageFailure
 from releng_tool.packages.exceptions import RelengToolLicenseStageFailure
@@ -25,9 +27,13 @@ from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_copy
+from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import note
 from releng_tool.util.log import warn
 import os
+import subprocess
+import sys
 
 class RelengPackagePipeline:
     """
@@ -166,6 +172,11 @@ class RelengPackagePipeline:
 
         # finalize package environment
         with self._stage_env_finalize(pkg, pkg_env):
+
+            # custom execution command
+            if paction == PkgAction.EXEC and pkg.name == target:
+                self._stage_exec(pkg)
+                return False
 
             # bootstrapping
             flag = pkg._ff_bootstrap
@@ -323,6 +334,43 @@ class RelengPackagePipeline:
                     os.environ[k] = v
                 else:
                     os.environ.pop(k, None)
+
+    def _stage_exec(self, pkg):
+        """
+        execute a command for a specific package
+
+        Provides a user the ability to invoke a command in a package's
+        extracted directory. This is a helper if a user wishes to invoke/test
+        commands for a package without needing to navigate to the package's
+        build directory and invoking them their.
+
+        Args:
+            pkg: the package being processed
+
+        Raises:
+            RelengToolExecStageFailure: when the command returns non-zero value
+            RelengToolMissingExecCommand: when no command is provided
+        """
+
+        exec_cmd = self.opts.target_action_exec
+        if not exec_cmd:
+            raise RelengToolMissingExecCommand(pkg.name)
+
+        note('execution for {}...', pkg.name)
+        debug('dir: {}', pkg.build_tree)
+        debug('cmd: {}', exec_cmd)
+        sys.stdout.flush()
+
+        proc = subprocess.Popen(
+            exec_cmd,
+            cwd=pkg.build_tree,
+            shell=True,
+        )
+        proc.communicate()
+        sys.stdout.flush()
+
+        if proc.returncode != 0:
+            raise RelengToolExecStageFailure
 
     def _stage_license(self, pkg):
         """
