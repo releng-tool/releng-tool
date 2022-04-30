@@ -120,7 +120,7 @@ The following outlines available actions:
 
         .. code-block:: shell
 
-            releng-tool libfoo-exec "bash example-script"
+            releng-tool libfoo-exec "mycmd arg1 arg2"
 
         Package environment variables will be available for the invoked
         command.
