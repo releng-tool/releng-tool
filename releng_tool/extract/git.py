@@ -163,6 +163,7 @@ def _workdir_extract(cache_dir, work_dir, revision):
                         git_dir,
                         work_tree,
                         'reset',
+                        '--hard',
                         origin_revision,
                     ], cwd=work_dir):
                 err('unable to checkout revision')
