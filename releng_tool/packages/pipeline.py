@@ -306,9 +306,18 @@ class RelengPackagePipeline:
         """
 
         pkg_keys = [
+            'HOST_INCLUDE_DIR',
+            'HOST_LIB_DIR',
             'NJOBS',
             'NJOBSCONF',
             'PREFIX',
+            'PREFIXED_HOST_DIR',
+            'PREFIXED_STAGING_DIR',
+            'PREFIXED_TARGET_DIR',
+            'STAGING_INCLUDE_DIR',
+            'STAGING_LIB_DIR',
+            'TARGET_INCLUDE_DIR',
+            'TARGET_LIB_DIR',
         ]
 
         saved_env = {}
