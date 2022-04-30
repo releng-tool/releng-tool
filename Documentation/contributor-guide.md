@@ -9,7 +9,7 @@ The following outlines common directory locations:
 - `releng_tool/extract/` - Translate fetched content to a build's working area
 - `releng_tool/fetch/` - Support for fetching content from package sites
 - `releng_tool/tool/` - Definitions for host tools used by tool features
-- `test/` - Testing-related content for this project's implementation
+- `tests/` - Testing-related content for this project's implementation
 
 releng-tool is built on the Python language and aims to have no required
 dependencies. Specific features enabled by a developer's
