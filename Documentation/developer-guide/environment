@@ -30,6 +30,14 @@ releng-tool, the following environment variables are available:
 
       - The host directory.
 
+    * - ``HOST_INCLUDE_DIR``
+
+      - The host directory's prefixed include directory.
+
+    * - ``HOST_LIB_DIR``
+
+      - The host directory's prefixed library directory.
+
     * - ``IMAGES_DIR``
 
       - The images directory.
@@ -155,6 +163,18 @@ releng-tool, the following environment variables are available:
 
       - The sysroot prefix for the package.
 
+    * - ``PREFIXED_HOST_DIR``
+
+      - The host directory with the prefix applied.
+
+    * - ``PREFIXED_STAGING_DIR``
+
+      - The staging area directory with the prefix applied.
+
+    * - ``PREFIXED_TARGET_DIR``
+
+      - The target area directory with the prefix applied.
+
     * - ``RELENG_CLEAN``
 
       - Flag set if performing a clean request.
@@ -211,6 +231,14 @@ releng-tool, the following environment variables are available:
 
       - The staging area directory.
 
+    * - ``STAGING_INCLUDE_DIR``
+
+      - The staging area directory's prefixed include directory.
+
+    * - ``STAGING_LIB_DIR``
+
+      - The staging area directory's prefixed library directory.
+
     * - ``SYMBOLS_DIR``
 
       - The symbols area directory.
@@ -218,6 +246,14 @@ releng-tool, the following environment variables are available:
     * - ``TARGET_DIR``
 
       - The target area directory.
+
+    * - ``TARGET_INCLUDE_DIR``
+
+      - The target area directory's prefixed include directory.
+
+    * - ``TARGET_LIB_DIR``
+
+      - The target area directory's prefixed library directory.
 
 .. |CONF_NJOBSCONF| replace:: ``NJOBSCONF``
 .. |CONF_NJOBS| replace:: ``NJOBS``
