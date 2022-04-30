@@ -2,9 +2,13 @@ Development
 -----------
 
 - adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
+- fixed an issue where forced git-fetches with branch revisions may have stale
+  content on first extract
 - fixed where package-specific prefixes/njobs would leak to other projects
 - introduce ``releng_include`` helper script function
+- introduce the ``*_[INCLUDE,LIB]_DIR`` environment/script variables
 - introduce the ``PKG_BUILD_BASE_DIR`` environment/script variable
+- introduce the ``PREFIXED_*_DIR`` environment/script variables
 - support make-styled environment injections via command line
 - support package variable overrides via command line
 
@@ -16,7 +20,7 @@ Development
 - introduce ``releng_cat`` helper script function
 - introduce ``releng_ls`` helper script function
 - introduce ``releng_require_version`` helper script function
-- no longer extract with non-local-supported tar command if host format detected 
+- no longer extract with non-local-supported tar command if host format detected
 - no longer warn if hash file is empty for extracted contents check
 - support removing cached assets through a forced fetch argument
 - support triggering a reconfiguration of all packages through a force argument
