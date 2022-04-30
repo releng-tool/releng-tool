@@ -320,7 +320,29 @@ class RelengPackagePipeline:
         try:
             for env in (os.environ, pkg_env):
                 if pkg.prefix is not None:
-                    env['PREFIX'] = pkg.prefix # will override existing prefix
+                    nprefix = os.path.normpath(pkg.prefix)
+                    host_pdir = self.opts.host_dir + nprefix
+                    staging_pdir = self.opts.staging_dir + nprefix
+                    target_pdir = self.opts.target_dir + nprefix
+
+                    host_include_dir = os.path.join(host_pdir, 'include')
+                    host_lib_dir = os.path.join(host_pdir, 'lib')
+                    staging_include_dir = os.path.join(staging_pdir, 'include')
+                    staging_lib_dir = os.path.join(staging_pdir, 'lib')
+                    target_include_dir = os.path.join(target_pdir, 'include')
+                    target_lib_dir = os.path.join(target_pdir, 'lib')
+
+                    # will override existing prefix related variables
+                    env['HOST_INCLUDE_DIR'] = host_include_dir
+                    env['HOST_LIB_DIR'] = host_lib_dir
+                    env['PREFIX'] = pkg.prefix
+                    env['PREFIXED_HOST_DIR'] = host_pdir
+                    env['PREFIXED_STAGING_DIR'] = staging_pdir
+                    env['PREFIXED_TARGET_DIR'] = target_pdir
+                    env['STAGING_INCLUDE_DIR'] = staging_include_dir
+                    env['STAGING_LIB_DIR'] = staging_lib_dir
+                    env['TARGET_INCLUDE_DIR'] = target_include_dir
+                    env['TARGET_LIB_DIR'] = target_lib_dir
 
                 if pkg.fixed_jobs:
                     env['NJOBS'] = str(pkg.fixed_jobs)

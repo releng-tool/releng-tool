@@ -634,23 +634,44 @@ of the releng process:
         script_env['RELENG_REINSTALL'] = None
         script_env['RELENG_VERBOSE'] = None
 
+        #: default lib container directory
+        sysroot_nprefix = os.path.normpath(self.opts.sysroot_prefix)
+        host_pdir = self.opts.host_dir + sysroot_nprefix
+        staging_pdir = self.opts.staging_dir + sysroot_nprefix
+        target_pdir = self.opts.target_dir + sysroot_nprefix
+        host_include_dir = os.path.join(host_pdir, 'include')
+        host_lib_dir = os.path.join(host_pdir, 'lib')
+        staging_include_dir = os.path.join(staging_pdir, 'include')
+        staging_lib_dir = os.path.join(staging_pdir, 'lib')
+        target_include_dir = os.path.join(target_pdir, 'include')
+        target_lib_dir = os.path.join(target_pdir, 'lib')
+
         # global variables
         for env in (os.environ, script_env):
             env['BUILD_DIR'] = self.opts.build_dir
             env['CACHE_DIR'] = self.opts.cache_dir
             env['DL_DIR'] = self.opts.dl_dir
             env['HOST_DIR'] = self.opts.host_dir
+            env['HOST_INCLUDE_DIR'] = host_include_dir
+            env['HOST_LIB_DIR'] = host_lib_dir
             env['IMAGES_DIR'] = self.opts.images_dir
             env['LICENSE_DIR'] = self.opts.license_dir
             env['NJOBS'] = str(self.opts.jobs)
             env['NJOBSCONF'] = str(self.opts.jobsconf)
             env['OUTPUT_DIR'] = self.opts.out_dir
             env['PREFIX'] = self.opts.sysroot_prefix
+            env['PREFIXED_HOST_DIR'] = host_pdir
+            env['PREFIXED_STAGING_DIR'] = staging_pdir
+            env['PREFIXED_TARGET_DIR'] = target_pdir
             env['RELENG_VERSION'] = releng_version
             env['ROOT_DIR'] = self.opts.root_dir
             env['STAGING_DIR'] = self.opts.staging_dir
+            env['STAGING_INCLUDE_DIR'] = staging_include_dir
+            env['STAGING_LIB_DIR'] = staging_lib_dir
             env['SYMBOLS_DIR'] = self.opts.symbols_dir
             env['TARGET_DIR'] = self.opts.target_dir
+            env['TARGET_INCLUDE_DIR'] = target_include_dir
+            env['TARGET_LIB_DIR'] = target_lib_dir
 
             if gaction == GlobalAction.CLEAN:
                 env['RELENG_CLEAN'] = '1'
