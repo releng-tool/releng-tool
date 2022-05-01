@@ -53,10 +53,9 @@ def build(opts):
     #
     # https://cmake.org/cmake/help/v3.12/manual/cmake.1.html#build-tool-mode
     if 'releng.cmake.disable_parallel_option' not in opts._quirks:
-        if opts.jobsconf != 1:
+        if opts.jobsconf != 1 and opts.jobs > 1:
             cmake_args.append('--parallel')
-            if opts.jobsconf > 0:
-                cmake_args.append(str(opts.jobs))
+            cmake_args.append(str(opts.jobs))
     else:
         verbose('cmake parallel jobs disabled by quirk')
 
