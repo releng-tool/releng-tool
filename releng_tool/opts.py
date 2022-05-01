@@ -275,4 +275,14 @@ class RelengEngineOptions:
         # non-zero, or the value will be a non-zero value matching the CPU count
         # of the running system.
         if not self.jobs:
-            self.jobs = multiprocessing.cpu_count()
+            try:
+                # if `sched_getaffinity` is available, use the call the acquire
+                # the number of physical cores on the system
+                self.jobs = len(os.sched_getaffinity(0))
+            except AttributeError:
+                # if we cannot guarantee the number of physical cores, make an
+                # assumption that the physical core count is half of the
+                # (possible logical) core count provided by `cpu_count`
+                cpu_count = multiprocessing.cpu_count()
+                fuzzy_phy_cores = max(int(cpu_count / 2), 1)
+                self.jobs = fuzzy_phy_cores
