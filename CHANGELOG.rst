@@ -1,5 +1,5 @@
-Development
------------
+0.12 (2022-05-02)
+-----------------
 
 - Adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
 - Adjust automatic job detection to use physical cores instead of logical cores.
