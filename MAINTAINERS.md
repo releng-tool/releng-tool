@@ -16,7 +16,7 @@ Sign the packages:
 
 ```shell-session
 gpg --detach-sign -a dist/releng-tool-*.gz
-gpg --detach-sign -a dist/releng-tool-*.whl
+gpg --detach-sign -a dist/releng_tool-*.whl
 ```
 
 Publish the packages:
