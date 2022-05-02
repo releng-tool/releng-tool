@@ -3,7 +3,20 @@ Release notes
 
 The following provides the notable features, bug fixes and more for each release
 of releng-tool. For a complete list of detailed changes to releng-tool, please
-consult the project's `repository commits`_.
+see the project's `repository commits`_.
+
+News
+~~~~
+
+.. toctree::
+    :glob:
+    :maxdepth: 1
+    :reversed:
+
+    news/*
+
+Summary
+~~~~~~~
 
 .. include:: ../CHANGELOG.rst
 
