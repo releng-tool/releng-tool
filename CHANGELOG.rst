@@ -2,12 +2,14 @@ Development
 -----------
 
 - Adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
+- Adjust automatic job detection to use physical cores instead of logical cores.
 - Fixed an issue where forced git-fetches with branch revisions may have stale
   content on first extract
 - Fixed where package-specific prefixes/njobs would leak to other projects
 - Introduce ``*_[INCLUDE,LIB]_DIR`` environment/script variables
 - Introduce ``PKG_BUILD_BASE_DIR`` environment/script variable
 - Introduce ``PREFIXED_*_DIR`` environment/script variables
+- Introduce ``libfoo-exec`` action
 - Introduce ``releng_include`` helper script function
 - Support make-styled environment injections via command line
 - Support package variable overrides via command line
