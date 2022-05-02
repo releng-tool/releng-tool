@@ -1,157 +1,157 @@
 Development
 -----------
 
-- adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
-- fixed an issue where forced git-fetches with branch revisions may have stale
+- Adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
+- Fixed an issue where forced git-fetches with branch revisions may have stale
   content on first extract
-- fixed where package-specific prefixes/njobs would leak to other projects
-- introduce ``releng_include`` helper script function
-- introduce the ``*_[INCLUDE,LIB]_DIR`` environment/script variables
-- introduce the ``PKG_BUILD_BASE_DIR`` environment/script variable
-- introduce the ``PREFIXED_*_DIR`` environment/script variables
-- support make-styled environment injections via command line
-- support package variable overrides via command line
+- Fixed where package-specific prefixes/njobs would leak to other projects
+- Introduce ``*_[INCLUDE,LIB]_DIR`` environment/script variables
+- Introduce ``PKG_BUILD_BASE_DIR`` environment/script variable
+- Introduce ``PREFIXED_*_DIR`` environment/script variables
+- Introduce ``releng_include`` helper script function
+- Support make-styled environment injections via command line
+- Support package variable overrides via command line
 
 0.11 (2022-02-26)
 -----------------
 
-- always pre-create install directory before package install scripts are invoked
-- fixed an issue where nested zip files could not extract
-- introduce ``releng_cat`` helper script function
-- introduce ``releng_ls`` helper script function
-- introduce ``releng_require_version`` helper script function
-- no longer extract with non-local-supported tar command if host format detected
-- no longer warn if hash file is empty for extracted contents check
-- support removing cached assets through a forced fetch argument
-- support triggering a reconfiguration of all packages through a force argument
+- Always pre-create install directory before package install scripts are invoked
+- Fixed an issue where nested zip files could not extract
+- Introduce ``releng_cat`` helper script function
+- Introduce ``releng_ls`` helper script function
+- Introduce ``releng_require_version`` helper script function
+- No longer extract with non-local-supported tar command if host format detected
+- No longer warn if hash file is empty for extracted contents check
+- Support removing cached assets through a forced fetch argument
+- Support triggering a reconfiguration of all packages through a force argument
 
 0.10 (2021-12-31)
 -----------------
 
-- fixed an issue where a configured ``sysroot_prefix`` bin path would not be
+- Fixed an issue where a configured ``sysroot_prefix`` bin path would not be
   registered in the script environment's path
-- fixed an issue where ``releng_mkdir`` reports success if the target path is a
+- Fixed an issue where ``releng_mkdir`` reports success if the target path is a
   file that already exists
-- fixed an issue where extensions may not load on python 2.7
-- fixed an issue where post-processing may be invoked even if a package's stage
+- Fixed an issue where extensions may not load on python 2.7
+- Fixed an issue where post-processing may be invoked even if a package's stage
   would fail
-- introduce ``LIBFOO_CMAKE_NOINSTALL`` for cmake packages with no install rule
-- introduce support for rsync sites
-- introduce the ``<PKG_NAME>_DEFDIR`` environment/script variable
-- provide an option to suppress root warning (for zero-uid containers)
-- remove the requirement to have a package version entry
-- support configuring cache/download directories using environment variables
-- support custom ssl context overrides via ``urlopen_context``
-- support providing an assets container directory (for cache/download folders)
+- Introduce ``<PKG_NAME>_DEFDIR`` environment/script variable
+- Introduce ``LIBFOO_CMAKE_NOINSTALL`` for cmake packages with no install rule
+- Introduce support for rsync sites
+- Provide an option to suppress root warning (for zero-uid containers)
+- Remove the requirement to have a package version entry
+- Support configuring cache/download directories using environment variables
+- Support custom ssl context overrides via ``urlopen_context``
+- Support providing an assets container directory (for cache/download folders)
 
 0.9 (2021-10-02)
 ----------------
 
-- fixed an import issue when running with python 3.10
-- fixed an issue where a cyclic package check provided a bad message
-- fixed an issue where a git submodule with a target branch may fail to extract
-- post-processing script renamed to ``releng-post-build``
-- support development mode relaxed branch fetching for git sites
-- support requiring a git source's revision to be gpg-signed
-- support using ascii-armor (asc) files to package integrity checks
+- Fixed an import issue when running with python 3.10
+- Fixed an issue where a cyclic package check provided a bad message
+- Fixed an issue where a git submodule with a target branch may fail to extract
+- Post-processing script renamed to ``releng-post-build``
+- Support development mode relaxed branch fetching for git sites
+- Support requiring a git source's revision to be gpg-signed
+- Support using ascii-armor (asc) files to package integrity checks
 
 0.8 (2021-08-28)
 ----------------
 
-- allow dvcs packages to share caches (to minimize space/time fetching)
-- fixed an issue where tools/``releng_execute`` requests would fail on python
+- Allow dvcs packages to share caches (to minimize space/time fetching)
+- Fixed an issue where tools/``releng_execute`` requests would fail on python
   2.7 with unicode-defined environment variables
-- fixed an issue where a diverged revision in git would incorrectly populate a
+- Fixed an issue where a diverged revision in git would incorrectly populate a
   package's build directory with the cached revision instead of the remote
   revision
-- introduce ``LIBFOO_GIT_SUBMODULES`` for package git-specific configurations
-- introduce ``releng_execute_rv`` helper script function
-- introduce statistic tracking (stage durations) which generate to into the
+- Introduce ``LIBFOO_GIT_SUBMODULES`` for package git-specific configurations
+- Introduce ``releng_execute_rv`` helper script function
+- Introduce statistic tracking (stage durations) which generate to into the
   output folder after execution
-- introduce support for package-specific distclean
-- introduce support for package-specific license processing
-- rework ``LIBTOOL_GIT_REFSPECS`` to provide more control over custom revisions
+- Introduce support for package-specific distclean
+- Introduce support for package-specific license processing
+- Package-specific extraction/patching no longer requires dependency processing
+- Rework ``LIBTOOL_GIT_REFSPECS`` to provide more control over custom revisions
   that can be fixed (i.e. no longer fixed on ``<target>/*/head``; instead, a
   configured value-wildcard string should be used)
-- support auto-detecting python interpreter path overrides in windows
-- support faster git fetching
-- support pruning any remote-tracked references in a git-cached project when a
+- Support auto-detecting python interpreter path overrides in windows
+- Support faster git fetching
+- Support pruning any remote-tracked references in a git-cached project when a
   forced fetch request is made
-- package-specific extraction/patching no longer requires dependency processing
 
 0.7 (2021-08-08)
 ----------------
 
-- fetch from an already cached package's site if the fetch is explicitly
+- Fetch from an already cached package's site if the fetch is explicitly
   requested
-- fixed an issue with registry failing to import on python 2.7
-- fixed issue where build/install definitions where not used in in their
+- Fixed an issue with registry failing to import on python 2.7
+- Fixed issue where build/install definitions where not used in in their
   respective stages
-- fixed issue where mercurial packages fetched using the version option instead
+- Fixed issue where mercurial packages fetched using the version option instead
   of the revision option
-- fixed issue where the host directory was not registered in a stage's path
-- introduce clean, logging flags and releng-version into the script environments
-- only fetch a single package if only said package is requested to be fetched
-- package without a site will throw an error when vcs-type is set
-- reconfigure/rebuild requests will now perform all trailing stages for the
+- Fixed issue where the host directory was not registered in a stage's path
+- Introduce clean, logging flags and releng-version into the script environments
+- Only fetch a single package if only said package is requested to be fetched
+- Package without a site will throw an error when vcs-type is set
+- Reconfigure/rebuild requests will now perform all trailing stages for the
   package(s) being redone; rebuild/reconfigure-only actions have been introduced
   to force re-invoking a specific stage
+- Support loading remote package configuration
+- Support loading remote package scripts
 - releng-tool will now full stop if external package definition fails to load
-- support loading remote package configuration
-- support loading remote package scripts
 
 0.6 (2020-10-10)
 ----------------
 
-- always register optional flags inside scripts (allowing developers to use
+- Always register optional flags inside scripts (allowing developers to use
   flags like ``RELENG_RECONFIGURE`` without needing to check environment
   variables)
-- fixed issued when capturing with ``releng_execute`` which did not suppress
+- Fixed issued when capturing with ``releng_execute`` which did not suppress
   output by default
-- introduce ``LIBTOOL_GIT_CONFIG`` for package git-specific configurations
-- introduce a ``releng-tool init`` action for a quick-sample project
-- introduce support for distclean
-- introduce support for prerequisites
-- namespace moved from ``releng`` to ``releng_tool`` (``releng`` deprecated for
+- Introduce ``LIBTOOL_GIT_CONFIG`` for package git-specific configurations
+- Introduce a ``releng-tool init`` action for a quick-sample project
+- Introduce support for distclean
+- Introduce support for prerequisites
+- Namespace moved from ``releng`` to ``releng_tool`` (``releng`` deprecated for
   an interim)
 
 0.5 (2020-09-07)
 ----------------
 
-- fixed false error when verifying cached git reference
+- Fixed false error when verifying cached git reference
 
 0.4 (2020-09-07)
 ----------------
 
-- allow developers to fetch from addition git refspecs (e.g. pull requests)
-- allow setting quirks in command line
-- fixed a scenario where a git extraction stage could fetch sources
-- fixed git fetch/extraction if package is cached and site has changed
-- improved handling of output files which may set the readonly attribute
-- introduce support for local interim-development package content
-- introduce support for shallow git fetching
+- Allow developers to fetch from addition git refspecs (e.g. pull requests)
+- Allow setting quirks in command line
+- Fixed a scenario where a git extraction stage could fetch sources
+- Fixed git fetch/extraction if package is cached and site has changed
+- Improved handling of output files which may set the readonly attribute
+- Introduce support for local interim-development package content
+- Introduce support for shallow git fetching
 
 0.3 (2019-10-19)
 ----------------
 
-- allow packages to configure to ignore cache while in development mode
-- allow packages to configure for no-extraction for sources
-- fixed default interpreter detection for python packages
-- fixed fetching from mercurial sources
-- fixed fetching from newer git hashes if repository was already cached
-- introduce ``releng_env`` and ``releng_mkdir`` helper script functions
-- introduce support for package-specific bootstrapping stage
+- Allow packages to configure to ignore cache while in development mode
+- Allow packages to configure for no-extraction for sources
+- Fixed default interpreter detection for python packages
+- Fixed fetching from mercurial sources
+- Fixed fetching from newer git hashes if repository was already cached
+- Introduce ``releng_env`` and ``releng_mkdir`` helper script functions
+- Introduce support for package-specific bootstrapping stage
 
 0.2 (2019-03-15)
 ----------------
 
-- a project's host directory will now be registered in the system's path during
+- A project's host directory will now be registered in the system's path during
   execution
-- allow tracking project's license files when found in multiple directories
-- fixed loading configuration overrides script if one actually exists
-- re-work various script names (e.g. ``releng.py`` -> ``releng``)
+- Allow tracking project's license files when found in multiple directories
+- Fixed loading configuration overrides script if one actually exists
+- Re-work various script names (e.g. ``releng.py`` -> ``releng``)
 
 0.1 (2019-02-24)
 ----------------
 
-- hello world
+- Hello world
