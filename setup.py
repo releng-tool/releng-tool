@@ -40,6 +40,6 @@ setup(
     },
     packages=find_packages(exclude=["tests*"]),
     test_suite='tests',
-    version='0.12.0',
+    version='0.13.0.dev0',
     zip_safe=False,
 )
