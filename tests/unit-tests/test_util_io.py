@@ -6,8 +6,6 @@ from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension as ise
 from releng_tool.util.io import opt_file
-from releng_tool.util.io import path_copy
-from releng_tool.util.io import path_exists
 from releng_tool.util.io import path_move
 from releng_tool.util.io import path_remove
 from releng_tool.util.io import prepare_arguments
@@ -16,110 +14,15 @@ from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import run_script
 from releng_tool.util.io import touch
 from releng_tool.util.log import is_verbose
-from tests import compare_contents
 from tests import prepare_workdir
 from tests import redirect_stdout
+from tests.support import fetch_unittest_assets_dir
 import os
 import sys
 import unittest
 
-ASSETS_DIR = 'assets'
 
 class TestUtilIo(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        base_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.assets_dir = os.path.join(base_dir, ASSETS_DIR)
-
-        def assertExists(cls, path, *args):
-            cls.assertTrue(path_exists(path, *args),
-                'missing file: ' + os.path.join(path, *args))
-        cls.assertExists = assertExists
-
-    def test_utilio_copy(self):
-        check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
-        check_dir_02 = os.path.join(self.assets_dir, 'copy-check-02')
-
-        with prepare_workdir() as work_dir:
-            # (directories)
-
-            # copy the first batch of assets into the working directory
-            result = path_copy(check_dir_01, work_dir, critical=False)
-            self.assertTrue(result)
-            self.assertExists(work_dir, 'test-file-a')
-            self.assertExists(work_dir, 'test-file-b')
-            self.assertExists(work_dir, 'test-file-x')
-            cc1 = compare_contents(
-                os.path.join(check_dir_01, 'test-file-b'),
-                os.path.join(work_dir, 'test-file-b'))
-            self.assertIsNone(cc1, cc1)
-
-            # override the working directory with the second batch
-            result = path_copy(check_dir_02, work_dir, critical=False)
-            self.assertTrue(result)
-            self.assertExists(work_dir, 'test-file-a')
-            self.assertExists(work_dir, 'test-file-b')
-            self.assertExists(work_dir, 'test-file-c')
-            self.assertExists(work_dir, 'test-file-x')
-            cc2 = compare_contents(
-                os.path.join(check_dir_02, 'test-file-b'),
-                os.path.join(work_dir, 'test-file-b'))
-            self.assertIsNone(cc2, cc2)
-
-            # (files)
-            sub_dir = os.path.join(work_dir, 'sub', 'dir', 'xyz', '')
-            copied_file_a = os.path.join(work_dir, 'test-file-a')
-            copied_file_b = os.path.join(work_dir, 'test-file-b')
-            target_ow = os.path.join(sub_dir, 'test-file-a')
-
-            # copy individual files (file to new directory)
-            result = path_copy(copied_file_a, sub_dir, critical=False)
-            self.assertTrue(result)
-            self.assertExists(target_ow)
-            cc3 = compare_contents(copied_file_a, target_ow)
-            self.assertIsNone(cc3, cc3)
-
-            # copy individual files (overwrite)
-            result = path_copy(copied_file_b, target_ow, critical=False)
-            self.assertTrue(result)
-            cc4 = compare_contents(copied_file_b, target_ow)
-            self.assertIsNone(cc4, cc4)
-
-            # attempt to copy a missing file
-            missing_file = os.path.join(work_dir, 'test-file-missing')
-            target = os.path.join(work_dir, 'container')
-            result = path_copy(missing_file, target, critical=False)
-            self.assertFalse(result)
-
-            # attempt to copy a missing file (critical)
-            with self.assertRaises(SystemExit):
-                path_copy(missing_file, target)
-
-            # attempt to copy a file to itself
-            src = copied_file_a
-            with self.assertRaises(SystemExit):
-                path_copy(src, src)
-
-            # attempt to copy a directory to itself in legacy python, to ensure
-            # `DistutilsFileError` is handled properly (windows only)
-            if sys.version_info < (3, 0) and sys.platform == 'win32':
-                with self.assertRaises(SystemExit):
-                    path_copy(work_dir, work_dir)
-
-            # force a directory target with a non-trailing path separator
-            force_src = os.path.join(work_dir, 'test-file-a')
-            self.assertExists(force_src)
-
-            force1 = os.path.join(work_dir, 'force1')
-            result = path_copy(force_src, force1, critical=False)
-            self.assertTrue(result)
-            self.assertTrue(os.path.isfile(force1))
-
-            force2 = os.path.join(work_dir, 'force2')
-            result = path_copy(force_src, force2, critical=False, dst_dir=True)
-            self.assertTrue(result)
-            self.assertTrue(os.path.isdir(force2))
-
     def test_utilio_ensuredirexists(self):
         with prepare_workdir() as work_dir:
             result = ensure_dir_exists(work_dir)
@@ -494,7 +397,7 @@ class TestUtilIo(unittest.TestCase):
                 run_script(invalid_script, {}, catch=False)
 
     def test_utilio_shebang_interpreter(self):
-        si_dir = os.path.join(self.assets_dir, 'shebang-interpreter')
+        si_dir = fetch_unittest_assets_dir('shebang-interpreter')
         si01 = [os.path.join(si_dir, 'interpreter')]
         si02 = [os.path.join(si_dir, 'interpreter-arg')]
         si03 = [os.path.join(si_dir, 'interpreter-args-multiple')]
