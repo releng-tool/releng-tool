@@ -208,6 +208,12 @@ listed below:
             :members: releng_copy
             :noindex:
 
+    * - ``releng_copy_into``
+
+      - .. automodule:: releng_tool
+            :members: releng_copy_into
+            :noindex:
+
     * - ``releng_env``
 
       - .. automodule:: releng_tool
