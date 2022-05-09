@@ -2,6 +2,7 @@
 # Copyright 2022 releng-tool
 
 from releng_tool.util.io import path_copy
+from releng_tool.util.io import path_copy_into
 from tests import compare_contents
 from tests import prepare_workdir
 from tests.support import fetch_unittest_assets_dir
@@ -103,3 +104,48 @@ class TestUtilIoCopy(unittest.TestCase):
             result = path_copy(force_src, force2, critical=False, dst_dir=True)
             self.assertTrue(result)
             self.assertTrue(os.path.isdir(force2))
+
+    def test_utilio_copyinto(self):
+        check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
+        check_dir_02 = os.path.join(self.assets_dir, 'copy-check-02')
+
+        with prepare_workdir() as work_dir:
+            # (directories)
+
+            # copy the first batch of assets into the working directory
+            single_file = os.path.join(check_dir_01, 'test-file-a')
+
+            result = path_copy_into(single_file, work_dir, critical=False)
+            self.assertTrue(result)
+            self.assertExists(work_dir, 'test-file-a')
+
+            # copy the first batch of assets into the working directory
+            result = path_copy_into(check_dir_01, work_dir, critical=False)
+            self.assertTrue(result)
+            self.assertExists(work_dir, 'test-file-a')
+            self.assertExists(work_dir, 'test-file-b')
+            self.assertExists(work_dir, 'test-file-x')
+            cc1 = compare_contents(
+                os.path.join(check_dir_01, 'test-file-b'),
+                os.path.join(work_dir, 'test-file-b'))
+            self.assertIsNone(cc1, cc1)
+
+            # override the working directory with the second batch
+            result = path_copy_into(check_dir_02, work_dir, critical=False)
+            self.assertTrue(result)
+            self.assertExists(work_dir, 'test-file-a')
+            self.assertExists(work_dir, 'test-file-b')
+            self.assertExists(work_dir, 'test-file-c')
+            self.assertExists(work_dir, 'test-file-x')
+            cc2 = compare_contents(
+                os.path.join(check_dir_02, 'test-file-b'),
+                os.path.join(work_dir, 'test-file-b'))
+            self.assertIsNone(cc2, cc2)
+
+            # attempt to copy to a file
+            bad_target = os.path.join(work_dir, 'test-file-a')
+            result = path_copy_into(check_dir_01, bad_target, critical=False)
+            self.assertFalse(result)
+
+            with self.assertRaises(SystemExit):
+                path_copy_into(check_dir_02, bad_target)
