@@ -1,3 +1,10 @@
+Development
+-----------
+
+- Avoid interaction with target area when using CMake projects that only
+  uses the staging area.
+- Introduce ``releng_copy_into`` helper script function
+
 0.12 (2022-05-02)
 -----------------
 
