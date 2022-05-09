@@ -646,7 +646,7 @@ def opt_file(file):
 
     return file, exists
 
-def path_copy(src, dst, quiet=False, critical=True, dst_dir=False):
+def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
     """
     copy a file or directory into a target file or directory
 
@@ -730,6 +730,51 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=False):
     if not success and critical:
         sys.exit(-1)
     return success
+
+def path_copy_into(src, dst, quiet=False, critical=True):
+    """
+    copy a file or directory into a target directory
+
+    This call will attempt to copy a provided file or directory, defined by
+    ``src`` into a destination directory defined by ``dst``. If a target
+    directory does not exist, it will be automatically created. In the event
+    that a file or directory could not be copied, an error message will be
+    output to standard error (unless ``quiet`` is set to ``True``). If
+    ``critical`` is set to ``True`` and the specified file/directory could
+    not be copied for any reason, this call will issue a system exit
+    (``SystemExit``).
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        # (stage)
+        # my-file
+        releng_copy_into('my-file', 'my-directory')
+        # (stage)
+        # my-directory/my-file
+        # my-file
+        releng_copy_into('my-directory', 'my-directory2')
+        # (stage)
+        # my-directory/my-file
+        # my-directory2/my-file
+        # my-file
+
+    Args:
+        src: the source directory or file
+        dst: the destination directory
+        quiet (optional): whether or not to suppress output
+        critical (optional): whether or not to stop execution on failure
+
+    Returns:
+        ``True`` if the copy has completed with no error; ``False`` if the copy
+        has failed
+
+    Raises:
+        SystemExit: if the copy operation fails with ``critical=True``
+    """
+
+    return path_copy(src, dst, quiet=quiet, critical=critical, dst_dir=True)
 
 def path_exists(path, *args):
     """

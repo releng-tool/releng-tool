@@ -36,6 +36,7 @@ from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import ls
 from releng_tool.util.io import opt_file
 from releng_tool.util.io import path_copy
+from releng_tool.util.io import path_copy_into
 from releng_tool.util.io import path_exists
 from releng_tool.util.io import path_move
 from releng_tool.util.io import path_remove
@@ -708,6 +709,7 @@ of the releng process:
         script_env['note'] = note
         script_env['releng_cat'] = cat
         script_env['releng_copy'] = path_copy
+        script_env['releng_copy_into'] = path_copy_into
         script_env['releng_env'] = env_value
         script_env['releng_execute'] = execute
         script_env['releng_execute_rv'] = execute_rv
