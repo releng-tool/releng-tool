@@ -40,7 +40,15 @@ def configure(opts):
         base_locs.append(opts.host_dir)
     else:
         base_locs.append(opts.staging_dir)
-        base_locs.append(opts.target_dir)
+
+        # only reference/pre-create the target directory if this package is
+        # aimed to use the target directory
+        target_area_types = [
+            PackageInstallType.STAGING_AND_TARGET,
+            PackageInstallType.TARGET,
+        ]
+        if opts._install_type in target_area_types:
+            base_locs.append(opts.target_dir)
 
     include_locs = []
     library_locs = []
