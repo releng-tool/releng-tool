@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2021 releng-tool
+# Copyright 2021-2022 releng-tool
 
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
