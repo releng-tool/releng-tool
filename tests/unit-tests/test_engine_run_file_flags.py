@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021 releng-tool
 
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
-import unittest
 
-class TestEngineRunFileFlags(unittest.TestCase):
+
+class TestEngineRunFileFlags(RelengToolTestCase):
     def test_engine_run_file_flag_devmode(self):
         config = {
             'development': True,

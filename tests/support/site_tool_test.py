@@ -7,16 +7,18 @@ from releng_tool.defs import GlobalAction
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import path_remove
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
-import unittest
+
 
 PKG_NAME = 'test'
 PKG_DEFINITION = os.path.join('package', PKG_NAME, PKG_NAME)
 PKG_CFG_PREFIX = 'TEST_'
 DEFAULT_TEMPLATE = 'site-tool'
 
-class TestSiteToolBase(unittest.TestCase):
+
+class TestSiteToolBase(RelengToolTestCase):
     """
     site tool testing unit test base
 

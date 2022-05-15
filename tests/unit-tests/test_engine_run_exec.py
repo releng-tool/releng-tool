@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # Copyright 2022 releng-tool
 
+from releng_tool.exceptions import RelengToolMissingExecCommand
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
-import unittest
-from releng_tool.exceptions import RelengToolMissingExecCommand
 
 
-class TestEngineExec(unittest.TestCase):
+class TestEngineExec(RelengToolTestCase):
     def test_engine_run_exec_arg_missing(self):
         config = {
             'action': 'test-exec',

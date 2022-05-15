@@ -2,12 +2,13 @@
 # Copyright 2021 releng-tool
 
 from releng_tool.util.io import run_script
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
 import sys
-import unittest
 
-class TestEngineRunBinPaths(unittest.TestCase):
+
+class TestEngineRunBinPaths(RelengToolTestCase):
     def test_engine_run_bin_paths_host_output_custom_prefix(self):
         with prepare_testenv(template='hosts-check-prefix') as engine:
             engine.run()

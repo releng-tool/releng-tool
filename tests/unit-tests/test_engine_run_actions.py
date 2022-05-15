@@ -2,12 +2,13 @@
 # Copyright 2021 releng-tool
 
 from releng_tool.packages.exceptions import RelengToolMissingPackageScript
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import run_testenv
 import os
-import unittest
 
-class TestEngineRunActions(unittest.TestCase):
+
+class TestEngineRunActions(RelengToolTestCase):
     def test_engine_run_actions_invalid_init(self):
         config = {
             'action': 'init',

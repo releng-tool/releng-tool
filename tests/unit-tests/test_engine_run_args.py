@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021-2022 releng-tool
 
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import prepare_workdir
 import os
-import unittest
 
-class TestEngineRunArgs(unittest.TestCase):
+
+class TestEngineRunArgs(RelengToolTestCase):
     def test_engine_run_args_assets_dir(self):
         with prepare_workdir() as assets_dir:
             config = {

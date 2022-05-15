@@ -2,11 +2,12 @@
 # Copyright 2021 releng-tool
 
 from releng_tool.packages.pipeline import RelengPackagePipeline
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
-import unittest
 
-class TestPkgPipelineLicenses(unittest.TestCase):
+
+class TestPkgPipelineLicenses(RelengToolTestCase):
     def test_pkg_pipeline_licenses_multiple(self):
         pkg_names = [
             'test-a',

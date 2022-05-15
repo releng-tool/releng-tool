@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Copyright 2022 releng-tool
 
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
-import unittest
 
-class TestCliOverrides(unittest.TestCase):
+
+class TestCliOverrides(RelengToolTestCase):
 
     def test_cli_overrides(self):
         cfg = {

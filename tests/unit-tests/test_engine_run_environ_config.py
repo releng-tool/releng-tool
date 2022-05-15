@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021-2022 releng-tool
 
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import prepare_workdir
-from tests.support.env_test import EnvironmentTestCase
 import os
 
 
-class TestEngineRunEnvironConfig(EnvironmentTestCase):
+class TestEngineRunEnvironConfig(RelengToolTestCase):
     def test_engine_run_environ_cfg_assets_dir(self):
         with prepare_workdir() as assets_dir:
             os.environ['RELENG_ASSETS_DIR'] = assets_dir

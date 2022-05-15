@@ -10,6 +10,7 @@ from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import path_copy
 import os
+import pprint
 import sys
 import unittest
 
@@ -249,3 +250,45 @@ class RelengToolTestSuite(unittest.TestSuite):
         rv = unittest.TestSuite.run(self, result, debug)
         sys.stdout.flush()
         return rv
+
+
+class RelengToolTestCase(unittest.TestCase):
+    """
+    a releng-tool unit test case
+
+    Provides a `unittest.TestCase` implementation that releng-tool unit
+    tests should inherit from. This test class provides the following
+    capabilities:
+
+    - Clears the running environment back to its original state after
+       each test run. releng-tool events will populate the running environment
+       for project scripts to use. Ensuring the environment is clean after
+       each run prevents tests to conflicting with each other's state.
+    """
+
+    def run(self, result=None):
+        """
+        run the test
+
+        Run the test, collecting the result into the TestResult object passed as
+        result. See `unittest.TestCase.run()` for more details.
+
+        Args:
+            result (optional): the test result to populate
+        """
+
+        old_env = dict(os.environ)
+        try:
+            super(RelengToolTestCase, self).run(result)
+        finally:
+            os.environ.clear()
+            os.environ.update(old_env)
+
+    def dumpenv(self):
+        """
+        dump the active environment to the standard output stream
+        """
+
+        print('-------------------------------')
+        pprint.pprint(dict(os.environ))
+        print('-------------------------------')

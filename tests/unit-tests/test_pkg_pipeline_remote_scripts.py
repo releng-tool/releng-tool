@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021 releng-tool
 
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
-import unittest
 
-class TestPkgPipelineRemoteScripts(unittest.TestCase):
+
+class TestPkgPipelineRemoteScripts(RelengToolTestCase):
     def test_pkg_pipeline_remote_scripts_disabled_option(self):
         with prepare_testenv(template='remote-scripts-disabled') as engine:
             engine.run()

@@ -3,12 +3,13 @@
 
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import run_testenv
 import os
-import unittest
 
-class TestEngineRunDefaults(unittest.TestCase):
+
+class TestEngineRunDefaults(RelengToolTestCase):
     def test_engine_run_defaults_dirs(self):
         with prepare_testenv(template='minimal') as engine:
             # check if root directory is tracked

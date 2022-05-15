@@ -2,12 +2,13 @@
 # Copyright 2022 releng-tool
 
 from releng_tool.packages.pipeline import RelengPackagePipeline
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 import json
 import os
-import unittest
 
-class TestPkgPipelineContainedEnvironment(unittest.TestCase):
+
+class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
     def test_pkg_pipeline_containedenv(self):
         pkg_names = [
             'test1',

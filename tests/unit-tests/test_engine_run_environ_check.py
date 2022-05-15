@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # Copyright 2022 releng-tool
 
+from tests import RelengToolTestCase
 from tests import run_testenv
-from tests.support.env_test import EnvironmentTestCase
 import os
 
 
-class TestEngineRunEnvironCheck(EnvironmentTestCase):
+class TestEngineRunEnvironCheck(RelengToolTestCase):
     def test_engine_run_environ_check_defaults(self):
         rv = run_testenv(template='env-defaults')
         self.assertTrue(rv)

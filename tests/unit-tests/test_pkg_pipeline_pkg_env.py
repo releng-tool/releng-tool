@@ -2,13 +2,13 @@
 # Copyright 2022 releng-tool
 
 from releng_tool.packages.pipeline import RelengPackagePipeline
+from tests import RelengToolTestCase
 from tests import prepare_testenv
-from tests.support.env_test import EnvironmentTestCase
 import json
 import os
 
 
-class TestPkgPipelinePackageEnvironment(EnvironmentTestCase):
+class TestPkgPipelinePackageEnvironment(RelengToolTestCase):
     def test_pkg_pipeline_pkgenv_empty(self):
         pkg_name = 'test-empty'
         with prepare_testenv(template='pkg-env') as engine:

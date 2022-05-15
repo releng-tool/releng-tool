@@ -4,6 +4,7 @@
 from releng_tool.tool import RelengTool
 from releng_tool.tool.tar import TAR
 from releng_tool.tool.tar import TAR_COMMAND
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests.support import fetch_unittest_assets_dir
 from tests.support.http_daemon import httpd_context
@@ -11,7 +12,7 @@ import os
 import sys
 import unittest
 
-class TestSiteUrl(unittest.TestCase):
+class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_tar_bz2_valid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021-2022 releng-tool
 
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import run_testenv
 import os
-import unittest
 
-class TestEngineRunScripts(unittest.TestCase):
+
+class TestEngineRunScripts(RelengToolTestCase):
     def test_engine_run_scripts_include(self):
         with prepare_testenv(template='scripts-include') as engine:
             rv = engine.run()

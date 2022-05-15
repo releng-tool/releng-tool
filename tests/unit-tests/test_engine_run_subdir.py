@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # Copyright 2022 releng-tool
 
+from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests.support import fetch_unittest_assets_dir
 import os
-import unittest
 
 
-class TestEngineSubdir(unittest.TestCase):
+class TestEngineSubdir(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
         cls.template_base = 'subdir'
