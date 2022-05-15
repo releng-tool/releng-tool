@@ -3,7 +3,13 @@ Development
 
 - Avoid interaction with target area when using CMake projects that only
   uses the staging area
+- Ensure clean-related environment/script variables are set for
+  package-specific clean requests
+- Fixed a rare chance that an explicit package run provided via command line
+  may be ignored
+- Introduce ``RELENG_TARGET_PKG`` environment/script variable
 - Introduce ``releng_copy_into`` helper script function
+- Support users overriding a project's configuration path from command line
 
 0.12 (2022-05-02)
 -----------------
