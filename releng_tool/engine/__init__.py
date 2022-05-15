@@ -674,9 +674,10 @@ of the releng process:
             env['TARGET_INCLUDE_DIR'] = target_include_dir
             env['TARGET_LIB_DIR'] = target_lib_dir
 
-            if gaction == GlobalAction.CLEAN:
+            if gaction == GlobalAction.CLEAN or paction == PkgAction.CLEAN:
                 env['RELENG_CLEAN'] = '1'
-            elif gaction == GlobalAction.DISTCLEAN:
+            elif gaction == GlobalAction.DISTCLEAN or \
+                    paction == PkgAction.DISTCLEAN:
                 env['RELENG_CLEAN'] = '1' # also set clean flag
                 env['RELENG_DISTCLEAN'] = '1'
                 env['RELENG_MRPROPER'] = '1' # also set mrproper flag
