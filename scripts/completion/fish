@@ -69,6 +69,9 @@ complete --command releng-tool --arguments 'patch' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'process all packages up to the patch phase'
 
+complete --command releng-tool --long-option='assets-dir' \
+    --require-parameter \
+    --description 'container directory for assets (cache-dir/dl-dir)'
 complete --command releng-tool --long-option='cache-dir' \
     --require-parameter \
     --description 'directory for distributed version control cache'
