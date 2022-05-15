@@ -28,6 +28,31 @@ class TestEngineRunArgs(unittest.TestCase):
             with prepare_testenv(config=config) as engine:
                 self.assertEqual(engine.opts.cache_dir, cache_dir)
 
+    def test_engine_run_args_config_file(self):
+        test_filename = 'test-config'
+
+        # test full configuration path
+        with prepare_workdir() as misc_dir:
+            mock_config = os.path.join(misc_dir, test_filename)
+
+            config = {
+                'config': mock_config,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.conf_point, mock_config)
+
+        # test relative to working directory path
+        with prepare_workdir() as root_dir:
+            config = {
+                'config': test_filename,
+                'root_dir': root_dir,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                mock_config = os.path.join(os.getcwd(), test_filename)
+                self.assertEqual(engine.opts.conf_point, mock_config)
+
     def test_engine_run_args_debug(self):
         config = {
             'debug': True,
