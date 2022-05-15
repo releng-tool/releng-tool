@@ -189,7 +189,7 @@ class RelengEngineOptions:
                         self.target_action = args.action[:idx]
                         break
 
-                if subaction_val == PkgAction.EXEC:
+                if self.pkg_action == PkgAction.EXEC:
                     self.target_action_exec = args.action_exec
                 elif not self.pkg_action:
                     self.target_action = args.action
