@@ -215,6 +215,10 @@ releng-tool, the following environment variables are available:
 
       - Flag set if performing a re-install request.
 
+    * - ``RELENG_TARGET_PKG``
+
+      - The name of the target package (if any) provided by the command line.
+
     * - ``RELENG_VERBOSE``
 
       - Flag set if verbose-related information should be shown.
