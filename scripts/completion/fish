@@ -72,6 +72,9 @@ complete --command releng-tool --arguments 'patch' \
 complete --command releng-tool --long-option='cache-dir' \
     --require-parameter \
     --description 'directory for distributed version control cache'
+complete --command releng-tool --long-option='config' \
+    --require-parameter \
+    --description 'configuration file to load'
 complete --command releng-tool --long-option='debug' \
     --no-files \
     --description 'show debug-related messages'

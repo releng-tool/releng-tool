@@ -72,6 +72,12 @@ _releng_tool_module()
         COMPREPLY=($(compgen -A directory -- $cur))
         return 0
         ;;
+    '--config')
+        local IFS=$'\n'
+        compopt -o filenames
+        COMPREPLY=($(compgen -A file -- $cur))
+        return 0
+        ;;
     *-exec | \
     '--help' | '-h' | \
     '--help-quirks' | \
@@ -86,6 +92,7 @@ _releng_tool_module()
         opts=(
             '--assets-dir'
             '--cache-dir'
+            '--config'
             '--debug'
             '--development'
             '--dl-dir'
