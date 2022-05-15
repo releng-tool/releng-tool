@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# sanity check key variables always exist, and are empty by default
+assert not RELENG_CLEAN
+assert not RELENG_DEBUG
+assert not RELENG_DEVMODE
+assert not RELENG_DISTCLEAN
+assert not RELENG_FORCE
+assert not RELENG_LOCALSRCS
+assert not RELENG_MRPROPER
+assert not RELENG_REBUILD
+assert not RELENG_RECONFIGURE
+assert not RELENG_REINSTALL
+assert not RELENG_TARGET_PKG
+assert not RELENG_VERBOSE
