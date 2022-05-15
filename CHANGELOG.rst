@@ -2,14 +2,14 @@ Development
 -----------
 
 - Avoid interaction with target area when using CMake projects that only
-  uses the staging area.
+  uses the staging area
 - Introduce ``releng_copy_into`` helper script function
 
 0.12 (2022-05-02)
 -----------------
 
 - Adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
-- Adjust automatic job detection to use physical cores instead of logical cores.
+- Adjust automatic job detection to use physical cores instead of logical cores
 - Fixed an issue where forced git-fetches with branch revisions may have stale
   content on first extract
 - Fixed where package-specific prefixes/njobs would leak to other projects
