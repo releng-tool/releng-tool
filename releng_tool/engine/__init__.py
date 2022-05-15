@@ -633,6 +633,7 @@ of the releng process:
         script_env['RELENG_REBUILD'] = None
         script_env['RELENG_RECONFIGURE'] = None
         script_env['RELENG_REINSTALL'] = None
+        script_env['RELENG_TARGET_PKG'] = None
         script_env['RELENG_VERBOSE'] = None
 
         #: default lib container directory
@@ -673,6 +674,9 @@ of the releng process:
             env['TARGET_DIR'] = self.opts.target_dir
             env['TARGET_INCLUDE_DIR'] = target_include_dir
             env['TARGET_LIB_DIR'] = target_lib_dir
+
+            if self.opts.target_action:
+                env['RELENG_TARGET_PKG'] = self.opts.target_action
 
             if gaction == GlobalAction.CLEAN or paction == PkgAction.CLEAN:
                 env['RELENG_CLEAN'] = '1'
