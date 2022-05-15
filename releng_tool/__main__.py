@@ -32,6 +32,7 @@ def main():
 
         parser.add_argument('--assets-dir')
         parser.add_argument('--cache-dir')
+        parser.add_argument('--config')
         parser.add_argument('--debug', action='store_true')
         parser.add_argument('--development', '-D', action='store_true')
         parser.add_argument('--dl-dir')
@@ -259,6 +260,7 @@ def usage():
  --local-sources           use development sources from a local path
 
 (other)
+ --config <file>           configuration file to load (default: <ROOT>/releng)
  --debug                   show debug-related messages
  -F, --force               trigger a forced request
  -h, --help                show this help

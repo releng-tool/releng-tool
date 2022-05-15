@@ -161,6 +161,7 @@ class RelengEngineOptions:
         if args.root_dir:
             self.root_dir = os.path.abspath(args.root_dir)
 
+        self.conf_point = args.config
         self.debug = args.debug
         self.force = args.force
         self.jobs = self.jobsconf = (args.jobs or 0)
@@ -255,6 +256,8 @@ class RelengEngineOptions:
         # files
         if not self.conf_point:
             self.conf_point = join(root, RELENG_CONF_NAME)
+        elif not os.path.isabs(self.conf_point):
+            self.conf_point = join(os.getcwd(), self.conf_point)
         if not self.conf_point_overrides:
             self.conf_point_overrides = join(root, RELENG_CONF_OVERRIDES_NAME)
         if not self.ff_devmode:
