@@ -146,5 +146,5 @@ def httpd_context(secure=None):
         if httpd_thread:
             httpd.shutdown()
             httpd_thread.join()
-        elif httpd:
-            httpd.socket.close()
+
+        httpd.server_close()
