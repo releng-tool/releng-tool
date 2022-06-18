@@ -98,6 +98,19 @@ def load(hash_file):
             raise BadFormatHashLoadError(
                 'too few values for entry {}'.format(idx + 1))
 
+        # a hash entry may also include an associated key length (e.g. SHAKE);
+        # if a key length is provided, ensure it is sane value
+        if ':' in entry[0]:
+            hash_type, _, hash_len = entry[0].partition(':')
+            if hash_len:
+                try:
+                    if int(hash_len) <= 0:
+                        raise BadFormatHashLoadError(
+                            'invalid has keylen for entry {}'.format(idx + 1))
+                except ValueError:
+                    raise BadFormatHashLoadError(
+                        'invalid has keylen type for entry {}'.format(idx + 1))
+
     # compile a list of tuples with no empty entries
     return [tuple(x) for x in data if x]
 
@@ -182,22 +195,26 @@ Please correct the following hash file:
 
     for asset, type_hashes in hash_catalog.items():
         hashers = {}
-        for hash_type in type_hashes.keys():
-            hashers[hash_type] = _get_hasher(hash_type)
-            if not hashers[hash_type]:
+        for hash_entry in type_hashes.keys():
+            # extract the specific hash type, if the entry includes a key length
+            hash_type, _, _ = hash_entry.partition(':')
+
+            hashers[hash_entry] = _get_hasher(hash_type)
+            if not hashers[hash_entry]:
                 if not quiet:
                     err('''\
 unsupported hash type
 
 The hash file defines a hash type not supported by the releng-tool. Officially
-supported hash types are FIPS-180 algorithms (sha1, sha224, sha256, sha384 and
-sha512) as well as (but not recommended) RSA'S MD5 algorithm. Other algorithms,
+supported hash types are FIPS supported algorithms provided by the Python
+interpreter (e.g. sha1, sha224, sha256, sha384, sha512). Other algorithms,
 while unofficially supported, can be used if provided by the system's OpenSSL
 library.
 
      Hash File: {}
  Provided Type: {}''', hash_file, hash_type)
 
+                debug('unsupported hash type: {}', hash_type)
                 return HashResult.UNSUPPORTED
 
         target_file = os.path.join(path, asset)
@@ -224,10 +241,15 @@ Ensure the hash file correctly names an expected file.
 
             return HashResult.MISSING_LISTED
 
-        for hash_type, hasher in hashers.items():
-            digest = hasher.hexdigest()
-            debug('calculated-hash: {} {}:{}', asset, hash_type, digest)
-            hashes = type_hashes[hash_type]
+        for hash_entry, hasher in hashers.items():
+            _, _, hash_len = hash_entry.partition(':')
+            if hash_len:
+                digest = hasher.hexdigest(int(hash_len))
+            else:
+                digest = hasher.hexdigest()
+
+            debug('calculated-hash: {} {}:{}', asset, hash_entry, digest)
+            hashes = type_hashes[hash_entry]
             if digest not in hashes:
                 if not quiet:
                     if relaxed:
@@ -248,7 +270,7 @@ hash mismatch detected
 
     return HashResult.VERIFIED
 
-def _get_hasher(type_):
+def _get_hasher(hash_type):
     """
     obtain a hasher instance from the provided type
 
@@ -257,13 +279,14 @@ def _get_hasher(type_):
     that a hasher cannot be found, this method will return ``None``.
 
     Args:
-        type_: the type of hash
+        hash_type: the type of hash
 
     Returns:
         the hasher instance; ``None`` if the hash type is not supported
     """
-    type_ = type_.lower()
-    func = getattr(hashlib, type_, None)
+
+    hash_type = hash_type.lower()
+    func = getattr(hashlib, hash_type, None)
     if func:
         return func()
     return None
