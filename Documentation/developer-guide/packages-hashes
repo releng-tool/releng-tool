@@ -39,10 +39,13 @@ whitespace characters. For example:
 Comments are permitted in the file. Lines leading with a ``#`` character or
 inlined leading ``#`` character after a whitespace character will be ignored.
 
-Officially supported hash types are FIPS-180 algorithms (``sha1``, ``sha224``,
-``sha256``, ``sha384`` and ``sha512``) as well as (but not recommended) RSA'S
-MD5 algorithm. Other algorithms, while unofficially supported, can be used if
-provided by the system's OpenSSL library.
+Supported hash types will vary on the Python interpreter [#hashlib]_ used.
+Typically, this include FIPS secure hash algorithms (e.g. ``sha1``,
+``sha224``, ``sha256``, ``sha384`` and ``sha512``) as well as (but not
+recommended) RSA'S MD5 algorithm. For hash algorithms requiring a key length,
+a user can define a hash entry using the format ``<hash-type>:<key-length>``.
+For example, ``shake_128:32``. Other algorithms may be used if provided by
+the system's OpenSSL library.
 
 Multiple hash entries can be provided for the same file if desired. This is to
 assist in scenarios where a checked out asset's content changes based on the

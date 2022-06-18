@@ -19,6 +19,7 @@ the :doc:`user's guide <user-guide>`.
 .. [#cvsmodule] https://www.gnu.org/software/trans-coord/manual/cvs/html_node/checkout.html#checkout
 .. [#cvsroot] https://www.gnu.org/software/trans-coord/manual/cvs/html_node/Specifying-a-repository.html
 .. [#gitremote] https://git-scm.com/docs/git-remote
+.. [#hashlib] https://docs.python.org/library/hashlib.html
 .. [#hgclone] https://www.selenic.com/mercurial/hg.1.html#clone
 .. [#rsynccommand] https://linux.die.net/man/1/rsync
 .. [#scpcommand] https://linux.die.net/man/1/scp
