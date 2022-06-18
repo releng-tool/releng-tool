@@ -196,7 +196,7 @@ while unofficially supported, can be used if provided by the system's OpenSSL
 library.
 
      Hash File: {}
- Provided Type: {}''', hash_file, type)
+ Provided Type: {}''', hash_file, hash_type)
 
                 return HashResult.UNSUPPORTED
 
