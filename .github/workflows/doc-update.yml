@@ -45,6 +45,7 @@ jobs:
         pip install --upgrade \
             furo \
             myst-parser \
+            pygments \
             sphinx \
             sphinx-inline-tabs \
             sphinx-intl
