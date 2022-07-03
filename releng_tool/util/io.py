@@ -89,7 +89,7 @@ def cat(file, *args):
     except OSError:
         return False
 
-def ensure_dir_exists(dir_, quiet=False):
+def ensure_dir_exists(dir_, quiet=False, critical=False):
     """
     ensure the provided directory exists
 
@@ -112,6 +112,8 @@ def ensure_dir_exists(dir_, quiet=False):
         dir_: the directory
         quiet (optional): whether or not to suppress output (defaults to
             ``False``)
+        critical (optional): whether or not to stop execution on failure
+            (defaults to ``False``)
 
     Returns:
         ``True`` if the directory exists; ``False`` if the directory could not
@@ -124,6 +126,8 @@ def ensure_dir_exists(dir_, quiet=False):
             if not quiet:
                 err('unable to create directory: {}\n'
                     '    {}', dir_, e)
+            if critical:
+                sys.exit(-1)
             return False
     return True
 
