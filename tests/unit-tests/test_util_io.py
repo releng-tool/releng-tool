@@ -44,6 +44,10 @@ class TestUtilIo(unittest.TestCase):
             self.assertFalse(result)
             self.assertTrue(os.path.isfile(new_file))
 
+            with self.assertRaises(SystemExit):
+                ensure_dir_exists(new_file, critical=True)
+            self.assertTrue(os.path.isfile(new_file))
+
     def test_utilio_execution(self):
         result = execute(None, quiet=True, critical=False)
         self.assertFalse(result)
