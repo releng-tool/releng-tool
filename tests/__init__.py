@@ -8,7 +8,7 @@ from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
-from releng_tool.util.io import path_copy
+from releng_tool.util.io_copy import path_copy
 import os
 import pprint
 import sys

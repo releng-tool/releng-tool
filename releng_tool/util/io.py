@@ -3,16 +3,12 @@
 
 from __future__ import unicode_literals
 from contextlib import contextmanager
-from releng_tool.util.compat import CopyTreeError
-from releng_tool.util.compat import copy_tree
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_verbose
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from runpy import run_path
-from shutil import Error as ShutilError
-from shutil import copy2
 from shutil import copyfileobj
 from shutil import move
 import errno
@@ -649,136 +645,6 @@ def opt_file(file):
             return flex_file, True
 
     return file, exists
-
-def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
-    """
-    copy a file or directory into a target file or directory
-
-    This call will attempt to copy a provided file or directory, defined by
-    ``src`` into a destination file or directory defined by ``dst``. If ``src``
-    is a file, then ``dst`` is considered to be a file or directory; if ``src``
-    is a directory, ``dst`` is considered a target directory. If a target
-    directory or target file's directory does not exist, it will be
-    automatically created. In the event that a file or directory could not be
-    copied, an error message will be output to standard error (unless ``quiet``
-    is set to ``True``). If ``critical`` is set to ``True`` and the specified
-    file/directory could not be copied for any reason, this call will issue a
-    system exit (``SystemExit``).
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        # (stage)
-        # my-file
-        releng_copy('my-file', 'my-file2')
-        # (stage)
-        # my-file
-        # my-file2
-        releng_copy('my-file', 'my-directory/')
-        # (stage)
-        # my-directory/my-file
-        # my-file
-        # my-file2
-        releng_copy('my-directory/', 'my-directory2/')
-        # (stage)
-        # my-directory/my-file
-        # my-directory2/my-file
-        # my-file
-        # my-file2
-
-    Args:
-        src: the source directory or file
-        dst: the destination directory or file\\* (\\*if ``src`` is a file)
-        quiet (optional): whether or not to suppress output
-        critical (optional): whether or not to stop execution on failure
-        dst_dir (optional): force hint that the destination is a directory
-
-    Returns:
-        ``True`` if the copy has completed with no error; ``False`` if the copy
-        has failed
-
-    Raises:
-        SystemExit: if the copy operation fails with ``critical=True``
-    """
-    success = False
-    errmsg = None
-
-    try:
-        if os.path.isfile(src):
-            attempt_copy = True
-
-            if dst_dir:
-                base_dir = dst
-            else:
-                base_dir = os.path.dirname(dst)
-
-            if base_dir and not os.path.isdir(base_dir):
-                attempt_copy = ensure_dir_exists(base_dir, quiet=quiet)
-
-            if attempt_copy:
-                copy2(src, dst)
-                success = True
-        elif os.path.exists(src):
-            copy_tree(src, dst)
-            success = True
-        else:
-            errmsg = 'source does not exist: {}'.format(src)
-    except (CopyTreeError, IOError, ShutilError) as e:
-        errmsg = str(e)
-
-    if not quiet and errmsg:
-        err('unable to copy source contents to target location\n'
-            '    {}', errmsg)
-
-    if not success and critical:
-        sys.exit(-1)
-    return success
-
-def path_copy_into(src, dst, quiet=False, critical=True):
-    """
-    copy a file or directory into a target directory
-
-    This call will attempt to copy a provided file or directory, defined by
-    ``src`` into a destination directory defined by ``dst``. If a target
-    directory does not exist, it will be automatically created. In the event
-    that a file or directory could not be copied, an error message will be
-    output to standard error (unless ``quiet`` is set to ``True``). If
-    ``critical`` is set to ``True`` and the specified file/directory could
-    not be copied for any reason, this call will issue a system exit
-    (``SystemExit``).
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        # (stage)
-        # my-file
-        releng_copy_into('my-file', 'my-directory')
-        # (stage)
-        # my-directory/my-file
-        # my-file
-        releng_copy_into('my-directory', 'my-directory2')
-        # (stage)
-        # my-directory/my-file
-        # my-directory2/my-file
-        # my-file
-
-    Args:
-        src: the source directory or file
-        dst: the destination directory
-        quiet (optional): whether or not to suppress output
-        critical (optional): whether or not to stop execution on failure
-
-    Returns:
-        ``True`` if the copy has completed with no error; ``False`` if the copy
-        has failed
-
-    Raises:
-        SystemExit: if the copy operation fails with ``critical=True``
-    """
-
-    return path_copy(src, dst, quiet=quiet, critical=critical, dst_dir=True)
 
 def path_exists(path, *args):
     """

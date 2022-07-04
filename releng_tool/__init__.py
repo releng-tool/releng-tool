@@ -32,12 +32,12 @@ from releng_tool.util.io import execute_rv as releng_execute_rv
 from releng_tool.util.io import generate_temp_dir as releng_tmpdir
 from releng_tool.util.io import interim_working_dir as releng_wd
 from releng_tool.util.io import ls as releng_ls
-from releng_tool.util.io import path_copy as releng_copy
-from releng_tool.util.io import path_copy_into as releng_copy_into
 from releng_tool.util.io import path_exists as releng_exists
 from releng_tool.util.io import path_move as releng_move
 from releng_tool.util.io import path_remove as releng_remove
 from releng_tool.util.io import touch as releng_touch
+from releng_tool.util.io_copy import path_copy as releng_copy
+from releng_tool.util.io_copy import path_copy_into as releng_copy_into
 from releng_tool.util.log import debug as debug
 from releng_tool.util.log import err as err
 from releng_tool.util.log import log as log

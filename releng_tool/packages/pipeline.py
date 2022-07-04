@@ -26,7 +26,7 @@ from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import ensure_dir_exists
-from releng_tool.util.io import path_copy
+from releng_tool.util.io_copy import path_copy
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
