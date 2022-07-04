@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 # Copyright 2022 releng-tool
 
-from releng_tool.util.io import path_copy
-from releng_tool.util.io import path_copy_into
+from releng_tool.util.io_copy import path_copy
+from releng_tool.util.io_copy import path_copy_into
 from tests import compare_contents
 from tests import prepare_workdir
 from tests.support import fetch_unittest_assets_dir
 import os
+import platform
+import shutil
 import sys
 import unittest
 
@@ -70,27 +72,6 @@ class TestUtilIoCopy(unittest.TestCase):
             cc4 = compare_contents(copied_file_b, target_ow)
             self.assertIsNone(cc4, cc4)
 
-            # attempt to copy a missing file
-            missing_file = os.path.join(work_dir, 'test-file-missing')
-            target = os.path.join(work_dir, 'container')
-            result = path_copy(missing_file, target, critical=False)
-            self.assertFalse(result)
-
-            # attempt to copy a missing file (critical)
-            with self.assertRaises(SystemExit):
-                path_copy(missing_file, target)
-
-            # attempt to copy a file to itself
-            src = copied_file_a
-            with self.assertRaises(SystemExit):
-                path_copy(src, src)
-
-            # attempt to copy a directory to itself in legacy python, to ensure
-            # `DistutilsFileError` is handled properly (windows only)
-            if sys.version_info < (3, 0) and sys.platform == 'win32':
-                with self.assertRaises(SystemExit):
-                    path_copy(work_dir, work_dir)
-
             # force a directory target with a non-trailing path separator
             force_src = os.path.join(work_dir, 'test-file-a')
             self.assertExists(force_src)
@@ -104,6 +85,78 @@ class TestUtilIoCopy(unittest.TestCase):
             result = path_copy(force_src, force2, critical=False, dst_dir=True)
             self.assertTrue(result)
             self.assertTrue(os.path.isdir(force2))
+
+    def test_utilio_copy_missing(self):
+        with prepare_workdir() as work_dir:
+            # attempt to copy a missing path
+            missing_path = os.path.join(work_dir, 'test-path-missing')
+            target = os.path.join(work_dir, 'container')
+            result = path_copy(missing_path, target, critical=False)
+            self.assertFalse(result)
+
+            # attempt to copy a missing path (critical)
+            with self.assertRaises(SystemExit):
+                path_copy(missing_path, target)
+
+    def test_utilio_copy_self(self):
+        src_dir = os.path.join(self.assets_dir, 'copy-check-01')
+        src_file = os.path.join(src_dir, 'test-file-a')
+
+        with prepare_workdir() as work_dir:
+            dst_file = os.path.join(work_dir, 'test-file')
+            shutil.copyfile(src_file, dst_file)
+
+            # attempt to copy a directory to itself
+            with self.assertRaises(SystemExit):
+                path_copy(work_dir, work_dir)
+
+            # attempt to copy a file to itself
+            with self.assertRaises(SystemExit):
+                path_copy(dst_file, dst_file)
+
+    def test_utilio_copy_symlink_directory(self):
+        if platform.system() != 'Linux':
+            raise unittest.SkipTest('symlink test skipped for non-Linux')
+
+        src_dir = os.path.join(self.assets_dir, 'copy-check-01')
+        src_file = os.path.join(src_dir, 'test-file-a')
+
+        with prepare_workdir() as work_dir:
+            subdir = os.path.join(work_dir, 'subdir')
+            os.mkdir(subdir)
+
+            dst_file = os.path.join(subdir, 'test-file')
+            shutil.copyfile(src_file, dst_file)
+
+            lnka_file = os.path.join(subdir, 'test-file-link-a')
+            os.symlink(dst_file, lnka_file)
+
+            subdir2 = os.path.join(work_dir, 'subdir2')
+            path_copy(subdir, subdir2)
+
+            lnkb_file = os.path.join(subdir2, 'test-file-link-a')
+            read_lnk = os.readlink(lnkb_file)
+            self.assertEqual(read_lnk, dst_file)
+
+    def test_utilio_copy_symlink_file(self):
+        if sys.platform == 'win32':
+            raise unittest.SkipTest('symlink test skipped for win32')
+
+        src_dir = os.path.join(self.assets_dir, 'copy-check-01')
+        src_file = os.path.join(src_dir, 'test-file-a')
+
+        with prepare_workdir() as work_dir:
+            dst_file = os.path.join(work_dir, 'test-file')
+            shutil.copyfile(src_file, dst_file)
+
+            lnka_file = os.path.join(work_dir, 'test-file-link-a')
+            os.symlink(dst_file, lnka_file)
+
+            lnkb_file = os.path.join(work_dir, 'test-file-link-b')
+            path_copy(lnka_file, lnkb_file)
+
+            read_lnk = os.readlink(lnkb_file)
+            self.assertEqual(read_lnk, dst_file)
 
     def test_utilio_copyinto(self):
         check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
