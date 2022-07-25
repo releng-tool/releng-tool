@@ -7,8 +7,16 @@ Development
   package-specific clean requests
 - Fixed a rare chance that an explicit package run provided via command line
   may be ignored
+- Fixed issue in older Python interpreters where the executed package order may
+  not be consistent
+- Fixed issue where select package-specific environment variables may leak into
+  other packages
+- Improve handling of ``file://`` sites in Windows
 - Introduce ``RELENG_TARGET_PKG`` environment/script variable
 - Introduce ``releng_copy_into`` helper script function
+- Introduce support global and package-specific path overrides when operating in
+  local-sources mode
+- Support ``PKG_DEFDIR`` usage inside a package's definition
 - Support users overriding a project's configuration path from command line
 
 0.12 (2022-05-02)
