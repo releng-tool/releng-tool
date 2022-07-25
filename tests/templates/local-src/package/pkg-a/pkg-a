@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+test_srcs = releng_join(PKG_DEFDIR, 'srcs.tar')
+
+PKG_A_INTERNAL = True
+PKG_A_SITE = 'file://' + test_srcs
+PKG_A_STRIP_COUNT = 0

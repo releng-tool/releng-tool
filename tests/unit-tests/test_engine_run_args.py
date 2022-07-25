@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021-2022 releng-tool
 
+from releng_tool.defs import GBL_LSRCS
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import prepare_workdir
@@ -96,13 +97,108 @@ class TestEngineRunArgs(RelengToolTestCase):
         with prepare_testenv(config=config) as engine:
             self.assertTrue(engine.opts.force)
 
-    def test_engine_run_args_mode_localsrcs(self):
+    def test_engine_run_args_mode_localsrcs_default(self):
         config = {
-            'local_sources': True,
+            'local_sources': [
+                # --local-sources set with no paths
+                None,
+            ],
         }
 
-        with prepare_testenv(config=config) as engine:
-            self.assertTrue(engine.opts.local_srcs)
+        with prepare_testenv(config=config, template='minimal') as engine:
+            self.assertTrue(isinstance(engine.opts.local_srcs, dict))
+            self.assertTrue(GBL_LSRCS in engine.opts.local_srcs)
+            self.assertIsNone(engine.opts.local_srcs[GBL_LSRCS])
+
+    def test_engine_run_args_mode_localsrcs_not_configured(self):
+        with prepare_testenv(template='minimal') as engine:
+            self.assertFalse(engine.opts.local_srcs)
+
+    def test_engine_run_args_mode_localsrcs_overload_package(self):
+        with prepare_workdir() as dir_a, prepare_workdir() as dir_b:
+            config = {
+                'local_sources': [
+                    # --local-sources set to a specific path
+                    dir_a,
+                    # overriding path for the `multiple-b` package
+                    'multiple-b@{}'.format(dir_b),
+                ],
+            }
+
+            with prepare_testenv(config=config, template='multiple') as engine:
+                self.assertTrue(isinstance(engine.opts.local_srcs, dict))
+                self.assertTrue(GBL_LSRCS in engine.opts.local_srcs)
+                self.assertEqual(engine.opts.local_srcs[GBL_LSRCS], dir_a)
+                self.assertTrue('multiple-b' in engine.opts.local_srcs)
+                self.assertEqual(engine.opts.local_srcs['multiple-b'], dir_b)
+
+    def test_engine_run_args_mode_localsrcs_per_package(self):
+        with prepare_workdir() as dir_a, prepare_workdir() as dir_b:
+            config = {
+                'local_sources': [
+                    # explicit path set for `multiple-a` package
+                    'multiple-a@{}'.format(dir_a),
+                    # explicit path set for `multiple-b` package
+                    'multiple-b@{}'.format(dir_b),
+                ],
+            }
+
+            with prepare_testenv(config=config, template='multiple') as engine:
+                self.assertTrue(isinstance(engine.opts.local_srcs, dict))
+                self.assertFalse(GBL_LSRCS in engine.opts.local_srcs)
+                self.assertTrue('multiple-a' in engine.opts.local_srcs)
+                self.assertEqual(engine.opts.local_srcs['multiple-a'], dir_a)
+                self.assertTrue(engine.opts.local_srcs)
+                self.assertTrue('multiple-b' in engine.opts.local_srcs)
+                self.assertEqual(engine.opts.local_srcs['multiple-b'], dir_b)
+                self.assertTrue(engine.opts.local_srcs)
+
+    def test_engine_run_args_mode_localsrcs_single_path(self):
+        with prepare_workdir() as test_dir:
+            config = {
+                'local_sources': [
+                    # explicit path set
+                    test_dir,
+                ],
+            }
+
+            with prepare_testenv(config=config, template='multiple') as engine:
+                self.assertTrue(isinstance(engine.opts.local_srcs, dict))
+                self.assertTrue(GBL_LSRCS in engine.opts.local_srcs)
+                self.assertEqual(engine.opts.local_srcs[GBL_LSRCS], test_dir)
+
+    def test_engine_run_args_mode_localsrcs_specific_package(self):
+        with prepare_workdir() as test_dir:
+            config = {
+                'local_sources': [
+                    # explicit path set for a single package
+                    'multiple-b@{}'.format(test_dir),
+                ],
+            }
+
+            with prepare_testenv(config=config, template='multiple') as engine:
+                self.assertTrue(isinstance(engine.opts.local_srcs, dict))
+                self.assertFalse(GBL_LSRCS in engine.opts.local_srcs)
+                self.assertTrue('multiple-b' in engine.opts.local_srcs)
+                self.assertEqual(engine.opts.local_srcs['multiple-b'], test_dir)
+                self.assertTrue(engine.opts.local_srcs)
+
+    def test_engine_run_args_mode_localsrcs_unset_package(self):
+        config = {
+            'local_sources': [
+                # --local-sources set to a specific path
+                None,
+                # clearing path for the `multiple-b` package
+                'multiple-b@',
+            ],
+        }
+
+        with prepare_testenv(config=config, template='multiple') as engine:
+            self.assertTrue(isinstance(engine.opts.local_srcs, dict))
+            self.assertTrue(GBL_LSRCS in engine.opts.local_srcs)
+            self.assertIsNone(engine.opts.local_srcs[GBL_LSRCS])
+            self.assertTrue('multiple-b' in engine.opts.local_srcs)
+            self.assertIsNone(engine.opts.local_srcs['multiple-b'])
 
     def test_engine_run_args_nocolorout(self):
         config = {

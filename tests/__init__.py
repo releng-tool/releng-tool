@@ -58,6 +58,27 @@ def compare_contents(first, second):
 
     return None
 
+def copy_template(template, target):
+    """
+    copy a unit testing template in to a provided target directory
+
+    This utility method can be used to help copy the contents of a
+    template (found under `tests/templates`) into a target directory.
+    While this is typically managed through the various `*_testenv` calls,
+    select tests may wish to manually prepare a working directory if running
+    an engine multiple times.
+
+    Args:
+        template: the folder holding a template project to copy into the
+                   prepared working directory
+        target: the target directory
+    """
+
+    templates_dir = os.path.join(find_test_base(), 'templates')
+    template_dir = os.path.join(templates_dir, template)
+    if not path_copy(template_dir, target, critical=False):
+        assert False, 'failed to setup template into directory'
+
 @contextmanager
 def prepare_testenv(config=None, template=None, args=None):
     """
@@ -97,10 +118,7 @@ def prepare_testenv(config=None, template=None, args=None):
                 config['out_dir'] = os.path.join(work_dir, 'out')
 
         if template:
-            templates_dir = os.path.join(find_test_base(), 'templates')
-            template_dir = os.path.join(templates_dir, template)
-            if not path_copy(template_dir, work_dir, critical=False):
-                assert False, 'failed to setup template into workdir'
+            copy_template(template, work_dir)
 
         # build arguments instance
         test_args = MockArgs()
