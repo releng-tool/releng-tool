@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2022 releng-tool
 
 from sphinx.ext.autodoc import cut_lines
 import os
@@ -11,7 +11,7 @@ master_doc = 'index'
 
 # meta
 project = 'releng-tool'
-copyright = '2021 releng-tool'
+copyright = '2022 releng-tool'
 author = 'releng-tool'
 
 # sphinx extensions
