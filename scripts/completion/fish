@@ -99,6 +99,9 @@ complete --command releng-tool --long-option='help-quirks' \
 complete --command releng-tool --long-option='jobs' --short-option=j \
     --no-files --require-parameter \
     --description 'numbers of jobs to handle'
+complete --command releng-tool --long-option='images-dir' \
+    --require-parameter \
+    --description 'directory for generated images'
 complete --command releng-tool --long-option='local-sources' \
     --no-files \
     --description 'enables local-sources mode'

@@ -69,6 +69,7 @@ _releng_tool_module()
     '--assets-dir' | \
     '--cache-dir' | \
     '--dl-dir' | \
+    '--images-dir' | \
     '--out-dir' | \
     '--root-dir' )
         local IFS=$'\n'
@@ -104,6 +105,7 @@ _releng_tool_module()
             '--help'
             '--help-quirks'
             '--jobs'
+            '--images-dir'
             '--local-sources'
             '--nocolorout'
             '--out-dir'

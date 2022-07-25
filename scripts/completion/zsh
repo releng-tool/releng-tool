@@ -22,6 +22,7 @@ function _releng_tool {
         {--force,-F}'[trigger a forced request]' \
         {--help,-h}'[show help]' \
         '--help-quirks[show available quirks]' \
+        '--images-dir[directory for generated images]: :_files' \
         {--jobs,-j}'[numbers of jobs to handle]: ' \
         '--local-sources[enables local-sources mode]' \
         '--nocolorout[explicitly disable colorized output]' \
