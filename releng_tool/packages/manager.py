@@ -261,6 +261,9 @@ class RelengPackageManager:
                 'script': script,
             })
 
+        pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
+        self.script_env['PKG_DEFDIR'] = pkg_def_dir
+
         try:
             env = run_script(script, self.script_env, catch=False)
         except Exception as e:
@@ -605,7 +608,7 @@ class RelengPackageManager:
             pkg_nv = name
 
         pkg_build_output_dir = os.path.join(opts.build_dir, pkg_nv)
-        pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
+
         if pkg_vcs_type == VcsType.LOCAL:
             pkg_build_dir = pkg_def_dir
         else:
