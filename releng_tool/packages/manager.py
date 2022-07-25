@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2022 releng-tool
 
+from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
 from releng_tool.defs import Rpk
@@ -607,9 +608,32 @@ class RelengPackageManager:
         pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
         if pkg_vcs_type == VcsType.LOCAL:
             pkg_build_dir = pkg_def_dir
-        elif opts.local_srcs and pkg_is_internal:
-            container_dir = os.path.dirname(opts.root_dir)
-            pkg_build_dir = os.path.join(container_dir, name)
+        else:
+            pkg_build_dir = pkg_build_output_dir
+
+        # check if an internal package is configured to point to a local
+        # directory for sources
+        pkg_local_srcs = False
+        if pkg_is_internal and opts.local_srcs:
+            # specific package name reference in the local sources; either is
+            # set to the path to use, or is set to `None` to indicate at this
+            # package should not be retrieved locally
+            if name in opts.local_srcs:
+                if opts.local_srcs[name]:
+                    pkg_build_dir = opts.local_srcs[name]
+                    pkg_local_srcs = True
+
+            # check if the "global" local sources path exists; either set to
+            # a specific path, or set to `None` to indicate that it will use
+            # the parent path based off the root directory
+            elif GBL_LSRCS in opts.local_srcs:
+                if opts.local_srcs[GBL_LSRCS]:
+                    container_dir = opts.local_srcs[GBL_LSRCS]
+                else:
+                    container_dir = os.path.dirname(opts.root_dir)
+
+                pkg_build_dir = os.path.join(container_dir, name)
+                pkg_local_srcs = True
 
             if pkg_build_dir == opts.root_dir:
                 raise RelengToolConflictingLocalSrcsPath({
@@ -617,8 +641,7 @@ class RelengPackageManager:
                     'root': opts.root_dir,
                     'path': pkg_build_dir,
                 })
-        else:
-            pkg_build_dir = pkg_build_output_dir
+
         if pkg_build_subdir:
             pkg_build_subdir = os.path.join(pkg_build_dir, pkg_build_subdir)
         if cache_ext:
@@ -712,6 +735,7 @@ class RelengPackageManager:
         pkg.has_devmode_option = pkg_has_devmode_option
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
         pkg.is_internal = pkg_is_internal
+        pkg.local_srcs = pkg_local_srcs
         pkg.no_extraction = pkg_no_extraction
         pkg.revision = pkg_revision
         pkg.site = pkg_site

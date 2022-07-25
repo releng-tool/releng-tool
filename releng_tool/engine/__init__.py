@@ -5,6 +5,7 @@ from collections import OrderedDict
 from datetime import datetime
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import ConfKey
+from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import VcsType
@@ -55,6 +56,7 @@ from releng_tool.util.string import interpret_dictionary_strings
 from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from shutil import copyfileobj
+import json
 import os
 import ssl
 import sys
@@ -271,8 +273,7 @@ class RelengEngine:
 
                 # in the event that we are not explicit fetching and the package
                 # has already been extracted, completely skip the fetching stage
-                is_local_pkg = pkg.is_internal and opts.local_srcs
-                if not requested_fetch and not is_local_pkg:
+                if not requested_fetch and not pkg.local_srcs:
                     flag = pkg._ff_extract
                     if check_file_flag(flag) == FileFlag.EXISTS:
                         continue
@@ -763,15 +764,61 @@ of the releng process:
         if opts.devmode:
             verbose('development mode enabled')
 
-        state = process_file_flag(opts.local_srcs, opts.ff_local_srcs)
-        if state == FileFlag.CONFIGURED:
-            success('configured root for local-sources mode')
-            configured = True
-        elif state == FileFlag.NOT_CONFIGURED:
-            err_flag = True
-        opts.local_srcs = (state == FileFlag.EXISTS)
-        if opts.local_srcs:
-            verbose('local-sources mode enabled')
+        # parse and populate local sources configurations
+        local_srcs_changed = True if opts.local_srcs else False
+
+        if os.path.exists(opts.ff_local_srcs):
+            # if we have an empty file, assume this is an old "file flag"
+            # local sources configuration
+            if os.stat(opts.ff_local_srcs).st_size == 0:
+                if GBL_LSRCS not in opts.local_srcs:
+                    opts.local_srcs[GBL_LSRCS] = None
+            else:
+                with open(opts.ff_local_srcs, mode='r') as f:
+                    try:
+                        # cache any new local sources configurations, pull in
+                        # the configure local sources content and apply any new
+                        # configuration to the options
+                        new_local_srcs = opts.local_srcs
+                        opts.local_srcs = json.load(f)
+                        opts.local_srcs.update(new_local_srcs)
+
+                    # if we failed to load the file, assume this is an old
+                    # "file flag" local sources configuration
+                    except Exception as e:
+                        err_flag = True
+                        err('''\
+failed to parse local sources file
+
+The file used to track `--local-sources` options cannot be read. It is
+recommended to remove the file manually and reconfigure the environment
+for any desired locally sourced packages.
+
+     File: {}
+    Error: {}''', opts.ff_local_srcs, e)
+
+        if local_srcs_changed:
+            try:
+                with open(opts.ff_local_srcs, 'w') as f:
+                    json.dump(opts.local_srcs, f)
+
+                    log('[local sources configuration]')
+                    for key, val in sorted(opts.local_srcs.items()):
+                        if not val:
+                            val = '<parent>' if key == GBL_LSRCS else '<unset>'
+                        log('({}) {}', key, val)
+
+                    success('configured root for local-sources mode')
+                    configured = True
+            except Exception as e:
+                err_flag = True
+                err('''\
+failed to write local sources file
+
+The file used to track `--local-sources` options cannot be written to.
+
+     File: {}
+    Error: {}''', opts.ff_local_srcs, e)
 
         if err_flag:
             return False

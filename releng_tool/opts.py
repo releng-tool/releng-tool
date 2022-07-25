@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2022 releng-tool
 
+from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 import multiprocessing
@@ -69,7 +70,7 @@ class RelengEngineOptions:
         jobsconf: number of jobs to allow at a given time (0: auto)
         license_dir: directory container for license information
         license_header: header content for a generated license file (if any)
-        local_srcs: whether or not local sources are used
+        local_srcs: dictionary of local source configurations
         no_color_out: whether or not colored messages are shown
         out_dir: directory container for all output data
         pkg_action: the specific package-action to perform (if any)
@@ -115,7 +116,7 @@ class RelengEngineOptions:
         self.jobsconf = 0
         self.license_dir = None
         self.license_header = None
-        self.local_srcs = None
+        self.local_srcs = {}
         self.no_color_out = False
         self.out_dir = None
         self.pkg_action = None
@@ -174,10 +175,24 @@ class RelengEngineOptions:
             self.devmode = True
         if args.injected_kv:
             self.injected_kv = args.injected_kv
-        if args.local_sources:
-            self.local_srcs = True
         if args.quirk:
             self.quirks.extend(args.quirk)
+
+        # cycle through the provided local source arguments to configure
+        # global and package-specific local sources modes; we use the `@`
+        # character to indicate module-specific paths, which if the trailing
+        # portion is empty being an indicate to not fetch the specific
+        # package locally; not that `local_src_ref` may be set to `None,
+        # which is a special indication to activate for local sources mode,
+        # but we are targeting "default" paths found in the folder/container
+        # of the configured root path (the "original" local sources mode)
+        if args.local_sources:
+            for local_src_ref in args.local_sources:
+                if local_src_ref and '@' in local_src_ref:
+                    module, path = local_src_ref.split('@')
+                    self.local_srcs[module] = path if path else None
+                else:
+                    self.local_srcs[GBL_LSRCS] = local_src_ref
 
         if args.action:
             action_val = args.action.lower().replace('-', '_')

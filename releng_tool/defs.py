@@ -281,3 +281,6 @@ class VcsType(Enum):
     SCP = 'scp'
     SVN = 'svn'
     URL = 'url'
+
+# key used to track "global" local sources configuration
+GBL_LSRCS = '*'

@@ -46,8 +46,8 @@ def stage(engine, pkg, ignore_cache, extra_opts):
     name = pkg.name
     debug('process fetch stage: ' + name)
 
-    # local sources mode requires internal sources to be already checked out
-    if pkg.is_internal and engine.opts.local_srcs:
+    # packages flagged for local sources requires to be already checked out
+    if pkg.local_srcs:
         if os.path.isdir(pkg.build_dir):
             return True
 

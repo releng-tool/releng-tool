@@ -36,8 +36,8 @@ def stage(engine, pkg):
         ``True`` if the extraction stage is completed; ``False`` otherwise
     """
 
-    # internal packages in local sources mode do not have an extraction stage
-    if pkg.is_internal and engine.opts.local_srcs:
+    # packages flagged for local sources do not have an extraction stage
+    if pkg.local_srcs:
         return True
 
     # skip packages flagged not to extract

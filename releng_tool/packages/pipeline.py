@@ -301,6 +301,7 @@ class RelengPackagePipeline:
             'PKG_CACHE_FILE',
             'PKG_DEFDIR',
             'PKG_INTERNAL',
+            'PKG_LOCALSRCS',
             'PKG_NAME',
             'PKG_REVISION',
             'PKG_SITE',
@@ -321,6 +322,7 @@ class RelengPackagePipeline:
 
         # always register optional flags in script environment
         pkg_env['PKG_INTERNAL'] = None
+        pkg_env['PKG_LOCALSRCS'] = None
 
         try:
             for env in (os.environ, pkg_env):
@@ -337,6 +339,9 @@ class RelengPackagePipeline:
 
                 if pkg.is_internal:
                     env['PKG_INTERNAL'] = '1'
+
+                if pkg.local_srcs:
+                    env['PKG_LOCALSRCS'] = '1'
 
             yield pkg_env
         finally:

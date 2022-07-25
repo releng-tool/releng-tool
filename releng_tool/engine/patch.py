@@ -30,8 +30,8 @@ def stage(engine, pkg, script_env):
     """
 
     if pkg.is_internal:
-        # internal packages in local sources mode do not have a patch stage
-        if engine.opts.local_srcs:
+        # packages flagged for local sources do not have a patch stage
+        if pkg.local_srcs:
             return True
 
         # internal packages in development mode that specify a development

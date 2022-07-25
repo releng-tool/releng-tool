@@ -41,7 +41,7 @@ def main():
         parser.add_argument('--help-quirks', action='store_true')
         parser.add_argument('--images-dir')
         parser.add_argument('--jobs', '-j', default=0, type=type_nonnegativeint)
-        parser.add_argument('--local-sources', action='store_true')
+        parser.add_argument('--local-sources', '-L', nargs='?', action='append')
         parser.add_argument('--nocolorout', action='store_true')
         parser.add_argument('--out-dir')
         parser.add_argument('--root-dir')
@@ -258,7 +258,12 @@ def usage():
 
 (mode options)
  -D, --development         enable development mode
- --local-sources           use development sources from a local path
+ -L, --local-sources [[<pkg>@]<dir>]
+                           use development sources from a local path, defaults
+                            to the parent of the root directory; users can use
+                            the format "<pkg>@<path>" to set/override specific
+                            local paths per package; this argument can be
+                            provided multiple times
 
 (other)
  --config <file>           configuration file to load (default: <ROOT>/releng)

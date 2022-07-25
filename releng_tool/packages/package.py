@@ -37,6 +37,7 @@ class RelengPackage:
         is_internal: whether or not this package is an project internal package
         license: license(s) of the package
         license_files: list of files in sources holding license information
+        local_srcs: whether this package is acquired locally
         name: name of the package
         no_extraction: whether or not this package will extract
         nv: name-version value of the package
@@ -94,6 +95,7 @@ class RelengPackage:
         self.is_internal = None
         self.license = None
         self.license_files = None
+        self.local_srcs = False
         self.no_extraction = False
         self.prefix = None
         self.revision = None
