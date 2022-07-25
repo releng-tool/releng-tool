@@ -115,7 +115,7 @@ The following outlines available actions:
         venture to a package's output directory. Packages will need to
         be processed to at least the patch stage before a provided
         command is issued.
-        
+
         An example is as follows:
 
         .. code-block:: shell
