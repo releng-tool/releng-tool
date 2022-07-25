@@ -286,6 +286,10 @@ The following outlines available options:
 
       - Show this help.
 
+    * - ``--images-dir <dir>``
+
+      - Directory for image outputs (defaults to ``<root>/output/images``).
+
     * - ``-j``, ``--jobs <jobs>``
 
       - Numbers of jobs to handle (default to ``0``; automatic).
