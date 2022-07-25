@@ -43,22 +43,25 @@ Local-sources mode
    sources found alongside the output directory
 
 Local-sources mode provides a way for a developer to build internal-flagged
-packages using sources found alongside the root directory, instead of having
-releng-tool attempt to fetch them from remote instances. This is primarily for
-developers who desire to manually manage source content outside the releng-tool
-environment. Local-sources mode only works for internally flagged packaged.
-Consider the following example: a releng-tool project has a package called
-``liba``. When releng-tool is invoked in normal configurations, the package will
-do fetching, extraction and patching to prepare the directory
-``<root>/output/build/liba-<version>``. However, if a builder has configured the
-working root for local-sources mode, sources for ``liba`` will be used from the
-folder ``<root>/../liba`` instead. Also, when in local-sources mode, an internal
-package will skip the fetching, extraction and patching stages in order to
-prevent undesired manipulation of developer-prepared sources. Another
-consideration to note is the use of clean operators while in local-sources mode.
-Continuing with the above example, if a user invokes ``releng-tool liba-clean``,
-the operation will not remove the ``<root>/../liba`` folder. Responsibility to
-managing a clean ``liba`` package will be left with the user.
+packages using sources found alongside the root directory (or a specific
+provided directory), instead of having releng-tool attempt to fetch them
+from remote instances. This is primarily for developers who desire to
+manually manage source content outside the releng-tool environment.
+Local-sources mode only works for internally flagged packaged. Consider
+the following example: a releng-tool project has a package called
+``liba``. When releng-tool is invoked in normal configurations, the
+package will do fetching, extraction and patching to prepare the directory
+``<root>/output/build/liba-<version>``. However, if a builder has
+configured the working root for local-sources mode, sources for ``liba``
+will be used from the folder ``<root>/../liba`` instead.
+
+When in local-sources mode, an internal package will skip the fetching,
+extraction and patching stages in order to prevent undesired manipulation
+of developer-prepared sources. Another consideration to note is the use
+of clean operators while in local-sources mode. Continuing with the above
+example, if a user invokes ``releng-tool liba-clean``, the operation will
+not remove the ``<root>/../liba`` folder. Responsibility to managing a
+clean ``liba`` package will be left with the user.
 
 To enable local-sources mode, invoking ``releng-tool`` with the
 ``--local-sources`` argument will enable the mode. Future calls to releng-tool
@@ -68,13 +71,56 @@ packages. For example:
 .. code-block:: shell-session
 
    $ releng-tool --local-sources
+   (*) <parent>
    (success) configured root for local-sources mode
    $ releng-tool
    ~building against local sources~
    ...
 
 Local-sources mode is persisted through the use of a file flag in the root
-directory. A user can either disable local sources mode by performing a
+directory.
+
+If a user provides a directory for the ``--local-sources`` argument, packages
+will be looked for in the provided folder instead of the parent of the
+configured root directory. For example:
+
+.. code-block:: shell-session
+
+   $ releng-tool --local-sources ~/workdir
+   (*) ~/workdir
+   (success) configured root for local-sources mode
+   $ releng-tool
+   ~building against local sources~
+   ...
+
+In the above example, if a project had an internal package ``liba``,
+sources for ``liba`` will be used from the folder ``~/workdir/liba``.
+
+Users can also provide package-specific overrides. If a user provides a
+path which is prefixed with a package's name and at sign (``@``), the
+sources for the provided package will be used from the respective folder:
+
+.. code-block:: shell-session
+
+   $ releng-tool -L ~/workdir
+   $ releng-tool -L libb@/mnt/sources/libb
+   $ releng-tool -L libc@
+   (*) ~/workdir
+   (libb) /mnt/sources/libb
+   (libc) <unset>
+   (success) configured root for local-sources mode
+   $ releng-tool
+   ~building against local sources~
+   ...
+
+In the above example, if a project had internal packages ``liba``,
+``libb`` and ``libc``, the following paths will be used:
+
+- Sources for ``liba`` will be used from the folder ``~/workdir/liba``,
+- Sources for ``libb`` will be used from the folder ``/mnt/sources/libb``; and,
+- Sources for ``libc`` will not be fetched locally.
+
+A user can either disable local sources mode by performing a
 |ACTION_MRPROPER|_ or can manually remove the file flag.
 
 .. _conf_overrides:

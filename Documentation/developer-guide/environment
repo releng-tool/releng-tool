@@ -137,6 +137,14 @@ releng-tool, the following environment variables are available:
 
         See also `internal and external packages`_.
 
+    * - ``PKG_LOCALSRCS``
+
+      - Whether the package is configured for local-sources mode. If a
+        package is configured for local-sources, the environment variable
+        will be set to a value of one (i.e. ``PKG_LOCALSRCS=1``).
+
+        See also :ref:`local-sources mode`.
+
     * - ``PKG_NAME``
 
       - The name of the package.

@@ -294,9 +294,17 @@ The following outlines available options:
 
       - Numbers of jobs to handle (default to ``0``; automatic).
 
-    * - ``--local-sources``
+    * - ``-L``, ``--local-sources [[<pkg>@]<dir>]``
 
       - Enables `local-sources mode`_.
+
+        Without a directory provided, sources of internal packages will be
+        looked for in the parent directory of the configured root
+        directory. Users may use this argument multiple times to override
+        the local-sources configuration. If a package-specific override
+        is provided (a value prefixed with a package's name with an at
+        sign (``@``)), sources for that package will be looked for inside
+        the provided path.
 
     * - ``--nocolorout``
 

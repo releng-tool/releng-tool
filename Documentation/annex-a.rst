@@ -53,6 +53,7 @@ releng-tool (may vary per context):
    PKG_CACHE_FILE
    PKG_DEFDIR
    PKG_INTERNAL
+   PKG_LOCALSRCS
    PKG_NAME
    PKG_REVISION
    PKG_SITE
