@@ -288,6 +288,7 @@ def usage_quirks():
     """
     return """releng-tool quirks
 
+releng.bzr.certifi                     use certifi for bzr exports
 releng.cmake.disable_parallel_option   disable parallel cmake
 releng.disable_prerequisites_check     disable prerequisites check
 releng.disable_remote_configs          disable remote configurations
