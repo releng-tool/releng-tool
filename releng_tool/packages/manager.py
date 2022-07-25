@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018-2022 releng-tool
 
+from collections import OrderedDict
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
@@ -160,7 +161,7 @@ class RelengPackageManager:
             RelengToolInvalidPackageConfiguration: when an error has been
                                                     detected loading the package
         """
-        pkgs = {}
+        pkgs = OrderedDict()
         final_deps = {}
 
         # cycle through all pending packages until the complete list is known
