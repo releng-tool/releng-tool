@@ -17,6 +17,7 @@ Development
 - Introduce support global and package-specific path overrides when operating in
   local-sources mode
 - Support ``PKG_DEFDIR`` usage inside a package's definition
+- Support bzr quirk to utilize ``certifi`` certificates
 - Support users overriding a project's configuration path from command line
 
 0.12 (2022-05-02)
