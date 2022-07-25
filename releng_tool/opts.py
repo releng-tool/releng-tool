@@ -156,6 +156,8 @@ class RelengEngineOptions:
             self.cache_dir = os.path.abspath(args.cache_dir)
         if args.dl_dir:
             self.dl_dir = os.path.abspath(args.dl_dir)
+        if args.images_dir:
+            self.images_dir = os.path.abspath(args.images_dir)
         if args.out_dir:
             self.out_dir = os.path.abspath(args.out_dir)
         if args.root_dir:
@@ -208,6 +210,8 @@ class RelengEngineOptions:
             self.cache_dir = os.environ.get('RELENG_CACHE_DIR')
         if not self.dl_dir:
             self.dl_dir = os.environ.get('RELENG_DL_DIR')
+        if not self.images_dir:
+            self.images_dir = os.environ.get('RELENG_IMAGES_DIR')
 
     def _finalize_options(self):
         """
