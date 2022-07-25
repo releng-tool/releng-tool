@@ -172,7 +172,6 @@ def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
     for entry in os.listdir(src_folder):
         src = os.path.join(src_folder, entry)
         dst = os.path.join(dst_folder, entry)
-        print('] ', src, '->', dst)
 
         if os.path.islink(src):
             target = os.readlink(src)
