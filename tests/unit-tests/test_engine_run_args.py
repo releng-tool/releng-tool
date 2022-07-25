@@ -71,6 +71,15 @@ class TestEngineRunArgs(RelengToolTestCase):
             with prepare_testenv(config=config) as engine:
                 self.assertEqual(engine.opts.dl_dir, dl_dir)
 
+    def test_engine_run_args_images_dir(self):
+        with prepare_workdir() as images_dir:
+            config = {
+                'images_dir': images_dir,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.images_dir, images_dir)
+
     def test_engine_run_args_mode_devmode(self):
         config = {
             'development': True,
