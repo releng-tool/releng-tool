@@ -83,6 +83,7 @@ class RelengPackagePipeline:
         Returns:
             returns whether or not the pipeline should continue processing
         """
+
         gaction = self.opts.gbl_action
         paction = self.opts.pkg_action
         target = self.opts.target_action
@@ -91,9 +92,6 @@ class RelengPackagePipeline:
         # files exist for this package
         if gaction == GlobalAction.LICENSES and not pkg.license_files:
             return True
-
-        # prepare environment
-        pkg_env = self._stage_env(pkg)
 
         # extracting
         flag = pkg._ff_extract
@@ -116,6 +114,39 @@ class RelengPackagePipeline:
             return True
         if paction == PkgAction.EXTRACT and pkg.name == target:
             return False
+
+        # process the package data with a package-specific environment
+        with self._stage_env(pkg) as pkg_env:
+            return self._process_data(pkg, pkg_env)
+
+    def _process_data(self, pkg, pkg_env):
+        """
+        process a provided package (data)
+
+        This request will process a package through the various stages (if these
+        stages are applicable to the current run state and have yet been
+        executed from a previous run). A package-specific script environment
+        will be prepared and a package will go through the process of:
+
+        - Patching
+        - License management (if needed)
+        - Bootstrapping
+        - Configuration
+        - Building
+        - Installing
+        - Post-processing
+
+        Args:
+            pkg: the package to process
+            pkg_env: the package environment
+
+        Returns:
+            returns whether or not the pipeline should continue processing
+        """
+
+        gaction = self.opts.gbl_action
+        paction = self.opts.pkg_action
+        target = self.opts.target_action
 
         # patching
         flag = pkg._ff_patch
@@ -245,6 +276,7 @@ class RelengPackagePipeline:
 
         return True
 
+    @contextmanager
     def _stage_env(self, pkg):
         """
         prepare environment variables for a specific package processing
@@ -257,9 +289,27 @@ class RelengPackagePipeline:
         Args:
             pkg: the package being processed
 
-        Returns:
+        Yields:
             the prepared package-enhanced environment variables
         """
+
+        pkg_keys = [
+            'PKG_BUILD_BASE_DIR',
+            'PKG_BUILD_DIR',
+            'PKG_BUILD_OUTPUT_DIR',
+            'PKG_CACHE_DIR',
+            'PKG_CACHE_FILE',
+            'PKG_DEFDIR',
+            'PKG_INTERNAL',
+            'PKG_NAME',
+            'PKG_REVISION',
+            'PKG_SITE',
+            'PKG_VERSION',
+        ]
+
+        saved_env = {}
+        for key in pkg_keys:
+            saved_env[key] = os.environ.get(key, None)
 
         # copy environment since packages do not share values
         pkg_env = self.script_env.copy()
@@ -272,23 +322,30 @@ class RelengPackagePipeline:
         # always register optional flags in script environment
         pkg_env['PKG_INTERNAL'] = None
 
-        # package variables
-        for env in (os.environ, pkg_env):
-            env['PKG_BUILD_BASE_DIR'] = pkg.build_dir
-            env['PKG_BUILD_DIR'] = build_dir
-            env['PKG_BUILD_OUTPUT_DIR'] = pkg.build_output_dir
-            env['PKG_CACHE_DIR'] = pkg.cache_dir
-            env['PKG_CACHE_FILE'] = pkg.cache_file
-            env['PKG_DEFDIR'] = pkg.def_dir
-            env['PKG_NAME'] = pkg.name
-            env['PKG_SITE'] = pkg.site if pkg.site else ''
-            env['PKG_REVISION'] = pkg.revision
-            env['PKG_VERSION'] = pkg.version
+        try:
+            for env in (os.environ, pkg_env):
+                env['PKG_BUILD_BASE_DIR'] = pkg.build_dir
+                env['PKG_BUILD_DIR'] = build_dir
+                env['PKG_BUILD_OUTPUT_DIR'] = pkg.build_output_dir
+                env['PKG_CACHE_DIR'] = pkg.cache_dir
+                env['PKG_CACHE_FILE'] = pkg.cache_file
+                env['PKG_DEFDIR'] = pkg.def_dir
+                env['PKG_NAME'] = pkg.name
+                env['PKG_SITE'] = pkg.site if pkg.site else ''
+                env['PKG_REVISION'] = pkg.revision
+                env['PKG_VERSION'] = pkg.version
 
-            if pkg.is_internal:
-                env['PKG_INTERNAL'] = '1'
+                if pkg.is_internal:
+                    env['PKG_INTERNAL'] = '1'
 
-        return pkg_env
+            yield pkg_env
+        finally:
+            # restore any overrides that may have been set
+            for k, v in saved_env.items():
+                if v is not None:
+                    os.environ[k] = v
+                else:
+                    os.environ.pop(k, None)
 
     @contextmanager
     def _stage_env_finalize(self, pkg, pkg_env):
@@ -303,6 +360,9 @@ class RelengPackagePipeline:
         Args:
             pkg: the package being processed
             pkg_env: the environment to populate
+
+        Yields:
+            the prepared package-enhanced environment variables
         """
 
         pkg_keys = [
