@@ -37,9 +37,11 @@ from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from releng_tool.util.string import interpret_zero_to_one_strings
 import pickle
+import posixpath
 import pprint
 import os
 import traceback
+import sys
 
 try:
     from urllib.parse import urlparse
@@ -340,6 +342,18 @@ class RelengPackageManager:
         else:
             pkg_site = self._fetch(Rpk.SITE,
                 allow_expand=True, expand_extra=expand_extra)
+
+        # On Windows, if a file site is provided, ensure the path value is
+        # converted to a posix-styled path, to prevent issues with `urlopen`
+        # being provided an unescaped path string
+        if sys.platform == 'win32' and \
+                pkg_site and pkg_site.startswith('file://'):
+            pkg_site = pkg_site[len('file://'):]
+            abs_site = os.path.isabs(pkg_site)
+            pkg_site = pkg_site.replace(os.sep, posixpath.sep)
+            if abs_site:
+                pkg_site = '/' + pkg_site
+            pkg_site = 'file://' + pkg_site
 
         # vcs-type
         pkg_vcs_type = None
