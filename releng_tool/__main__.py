@@ -107,7 +107,21 @@ def main():
         if sys.platform != 'win32':
             if os.geteuid() == 0: # pylint: disable=E1101
                 if 'RELENG_IGNORE_RUNNING_AS_ROOT' not in os.environ:
-                    warn('running as root; this may be unsafe')
+                    # attempt to check if we are in a container; if so, ignore
+                    # generating a warning -- we will check if kernel threads
+                    # are running on pid2; if not, it is most likely that we
+                    # are in a container environment; checks for a container
+                    # do not have to be perfect here, only to try to help
+                    # improve a user's experience (suppressing this warning
+                    # when not running on a typical host setup)
+                    try:
+                        with open('/proc/2/status') as f:
+                            inside_container = 'kthreadd' not in f.read()
+                    except IOError:
+                        inside_container = True
+
+                    if not inside_container:
+                        warn('running as root; this may be unsafe')
 
         # prepare engine options
         opts = RelengEngineOptions(args=args, forward_args=forward_args)
