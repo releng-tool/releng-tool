@@ -286,8 +286,9 @@ file. Ensure that the package's public key has been registered into gpg.
 
                 debug('fetch successful; moving cache file')
 
-                # ensure the download directory exists
-                if not ensure_dir_exists(engine.opts.dl_dir):
+                # ensure the cache container/directory exists
+                cache_dir = os.path.dirname(pkg.cache_file)
+                if not ensure_dir_exists(cache_dir):
                     return False
 
                 try:

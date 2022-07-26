@@ -648,10 +648,12 @@ class RelengPackageManager:
 
         if pkg_build_subdir:
             pkg_build_subdir = os.path.join(pkg_build_dir, pkg_build_subdir)
+
+        cache_dir = os.path.join(opts.dl_dir, name)
         if cache_ext:
-            pkg_cache_file = os.path.join(opts.dl_dir, pkg_nv + '.' + cache_ext)
+            pkg_cache_file = os.path.join(cache_dir, pkg_nv + '.' + cache_ext)
         else:
-            pkg_cache_file = os.path.join(opts.dl_dir, pkg_nv)
+            pkg_cache_file = os.path.join(cache_dir, pkg_nv)
 
         # Select sources (like CMake-based projects) may wish to be using
         # out-of-source tree builds. For supported project types, adjust the
