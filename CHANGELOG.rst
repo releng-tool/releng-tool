@@ -3,6 +3,7 @@ Development
 
 - Avoid interaction with target area when using CMake projects that only
   uses the staging area
+- Downloaded files will now be stored in sub-directories under ``dl/``
 - Ensure clean-related environment/script variables are set for
   package-specific clean requests
 - Fixed a rare chance that an explicit package run provided via command line
