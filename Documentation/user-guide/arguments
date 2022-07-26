@@ -260,6 +260,10 @@ The following outlines available options:
       - Directory for distributed version control cache information
         (defaults to ``<root>/cache``).
 
+    * - ``--config <file>``
+
+      - Configuration file to load (default: ``<root>/releng``).
+
     * - ``--debug``
 
       - Show debug-related messages.
