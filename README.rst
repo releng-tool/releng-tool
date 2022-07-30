@@ -5,7 +5,7 @@ releng-tool
     :target: https://pypi.python.org/pypi/releng-tool
     :alt: pip Version
 
-.. image:: https://github.com/releng-tool/releng-tool/workflows/build/badge.svg?branch=master
+.. image:: https://github.com/releng-tool/releng-tool/workflows/build/badge.svg?branch=main
     :target: https://github.com/releng-tool/releng-tool/actions?query=workflow%3Abuild
     :alt: Build Status
 
