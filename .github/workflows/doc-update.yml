@@ -3,7 +3,7 @@ name: doc-update
 on:
   push:
     branches:
-    - master
+    - main
     paths:
       - '.github/workflows/doc-update.yml'
       - 'Documentation/**'

@@ -3,7 +3,7 @@ name: build
 on:
   push:
     branches:
-    - master
+    - main
     paths:
       - '.github/workflows/build.yml'
       - 'releng/**'
@@ -14,7 +14,7 @@ on:
       - 'tox.ini'
   pull_request:
     branches:
-    - master
+    - main
     paths:
       - '.github/workflows/build.yml'
       - 'releng/**'
