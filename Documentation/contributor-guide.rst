@@ -155,9 +155,9 @@ following repositories:
    | https://github.com/releng-tool/releng-tool-doc-translations-builder
 
 .. _--git-dir: https://git-scm.com/docs/git#git---git-dirltpathgt
-.. _API implementation: https://github.com/releng-tool/releng-tool/blob/master/releng_tool/api/__init__.py
-.. _CONTRIBUTING: https://github.com/releng-tool/releng-tool/blob/master/CONTRIBUTING.md
+.. _API implementation: https://github.com/releng-tool/releng-tool/blob/main/releng_tool/api/__init__.py
+.. _CONTRIBUTING: https://github.com/releng-tool/releng-tool/blob/main/CONTRIBUTING.md
 .. _Developer Certificate of Origin: https://developercertificate.org/
 .. _Git: https://git-scm.com/
 .. _Mercurial: https://www.mercurial-scm.org/
-.. _releng_tool/api/__init__.py: https://github.com/releng-tool/releng-tool/blob/master/releng_tool/api/__init__.py
+.. _releng_tool/api/__init__.py: https://github.com/releng-tool/releng-tool/blob/main/releng_tool/api/__init__.py
