@@ -22,6 +22,7 @@ from releng_tool.registry import RelengRegistry
 from releng_tool.stats import RelengStats
 from releng_tool.support import releng_include
 from releng_tool.support import require_version
+from releng_tool.tool.python import PYTHON
 from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
@@ -206,9 +207,29 @@ class RelengEngine:
         # register the project's host-bin directory as a system path; lazily
         # permits loading host tools built by a project over the system
         debug('registering host bin directory in path...')
-        host_bin_dir = os.path.join(opts.host_dir + opts.sysroot_prefix, 'bin')
+        host_sysroot_dir = os.path.join(opts.host_dir + opts.sysroot_prefix)
+        host_bin_dir = os.path.join(host_sysroot_dir, 'bin')
         sys.path.insert(0, host_bin_dir)
         os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
+
+        # register additional host directories, if python is installed;
+        # although this does not cover a varity of use cases such as custom
+        # interpreter overrides for specific Python package
+        if PYTHON.exists():
+            # include the host environment's site-package folder (if any)
+            host_python_path = PYTHON.path(
+                sysroot=opts.host_dir, prefix=opts.sysroot_prefix)
+            if 'PYTHONPATH' in os.environ:
+                host_python_path += os.pathsep + os.environ['PYTHONPATH']
+            os.environ['PYTHONPATH'] = host_python_path
+            print('host_python_path', host_python_path)
+
+            # if Windows, also register a path to a common scripts folder for
+            # Python installation (if host-based Python packages are built)
+            if sys.platform == 'win32':
+                sdir = os.path.join(host_sysroot_dir, 'Scripts')
+                sys.path.insert(0, sdir)
+                os.environ['PATH'] = sdir + os.pathsep + os.environ['PATH']
 
         # load and process packages
         pkgs = self.pkgman.load(pkg_names)

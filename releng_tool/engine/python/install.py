@@ -50,6 +50,17 @@ def install(opts):
     if opts.install_defs:
         python_defs.update(expand(opts.install_defs))
 
+    # default environment
+    path0 = python_tool.path(sysroot=opts.host_dir, prefix=opts.prefix)
+    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
+    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
+    env = {
+        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2
+    }
+
+    # apply package-specific environment options
+    if opts.install_env:
+        env.update(expand(opts.install_env))
 
     # default options
     python_opts = {
@@ -74,7 +85,6 @@ def install(opts):
     #
     # If the package already defines a root path, use it over any other
     # configured destination directories.
-    env = expand(opts.install_env)
     if '--root' in python_opts:
         if not python_tool.execute(python_args, env=env):
             err('failed to install python project: {}', opts.name)
