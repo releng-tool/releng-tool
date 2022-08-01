@@ -6,9 +6,6 @@ from sphinx.ext.autodoc import cut_lines
 import os
 import sys
 
-# common
-master_doc = 'index'
-
 # meta
 project = 'releng-tool'
 copyright = '2022 releng-tool'
