@@ -65,6 +65,11 @@ def install(opts):
     # default options
     python_opts = {
     }
+
+    # avoid building pyc files for non-host packages
+    if opts.install_type != 'host':
+        python_opts['--no-compile'] = ''
+
     if opts.install_opts:
         python_opts.update(expand(opts.install_opts))
 
@@ -75,9 +80,8 @@ def install(opts):
         '--no-user-cfg',
         # invoke the install operation
         'install',
-        # avoid building pyc files
-        '--no-compile',
     ]
+
     python_args.extend(prepare_definitions(python_defs))
     python_args.extend(prepare_arguments(python_opts))
 
