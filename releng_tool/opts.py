@@ -6,6 +6,7 @@ from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 import multiprocessing
 import os
+import sys
 
 # default directory/file paths
 DEFAULT_BUILD_DIR    = 'build'     #: default build container directory
@@ -29,8 +30,11 @@ FF_PREFIX = '.releng-flag-' #: prefix for all file flags
 FF_DEVMODE_NAME = 'devmode' #: postfix for development mode file flag
 FF_LOCALSRCS_NAME = 'local-sources' #: postfix for local sources mode file flag
 
-# default other
-DEFAULT_SYSROOT_PREFIX = os.sep + 'usr' #: default system root prefix
+# default sysroot prefix
+if sys.platform == 'win32':
+    DEFAULT_SYSROOT_PREFIX = ''
+else:
+    DEFAULT_SYSROOT_PREFIX = os.sep + 'usr'
 
 class RelengEngineOptions:
     """
