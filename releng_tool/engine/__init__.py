@@ -222,7 +222,6 @@ class RelengEngine:
             if 'PYTHONPATH' in os.environ:
                 host_python_path += os.pathsep + os.environ['PYTHONPATH']
             os.environ['PYTHONPATH'] = host_python_path
-            print('host_python_path', host_python_path)
 
             # if Windows, also register a path to a common scripts folder for
             # Python installation (if host-based Python packages are built)
