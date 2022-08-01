@@ -21,6 +21,7 @@ class RelengPackage:
         cache_file: cache file for the package (if applicable)
         def_dir: directory for the package definition
         deps: list of dependencies for this package
+        devmode: whether the package has a devmode revision
         devmode_ignore_cache: whether or not cache files should be ignored
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
@@ -31,7 +32,6 @@ class RelengPackage:
         git_refspecs: additional git refspecs to fetch (if applicable)
         git_submodules: fetch any git submodules (if applicable)
         git_verify_revision: verify signed git revisions
-        has_devmode_option: whether or not the package has a devmode revision
         hash_file: file containing hashes to validate this package
         install_type: install container for the package (target, staged, etc.)
         is_internal: whether or not this package is an project internal package
@@ -84,10 +84,10 @@ class RelengPackage:
         self.cache_file = None
         self.def_dir = None
         self.deps = []
+        self.devmode = None
         self.devmode_ignore_cache = None
         self.fetch_opts = None
         self.fixed_jobs = None
-        self.has_devmode_option = None
         self.hash_file = None
         self.ext_modifiers = None
         self.extract_type = None

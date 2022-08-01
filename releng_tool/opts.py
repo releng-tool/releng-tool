@@ -172,7 +172,7 @@ class RelengEngineOptions:
         self.verbose = args.verbose
 
         if args.development:
-            self.devmode = True
+            self.devmode = args.development
         if args.injected_kv:
             self.injected_kv = args.injected_kv
         if args.quirk:

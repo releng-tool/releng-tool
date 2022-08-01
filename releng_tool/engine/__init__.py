@@ -26,7 +26,6 @@ from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
-from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import FailedToPrepareWorkingDirectoryError
 from releng_tool.util.io import cat
 from releng_tool.util.io import ensure_dir_exists
@@ -700,7 +699,10 @@ of the releng process:
             if self.opts.debug:
                 env['RELENG_DEBUG'] = '1'
             if self.opts.devmode:
-                env['RELENG_DEVMODE'] = '1'
+                if self.opts.devmode is True:
+                    env['RELENG_DEVMODE'] = '1'
+                else:
+                    env['RELENG_DEVMODE'] = self.opts.devmode
             if self.opts.force:
                 env['RELENG_FORCE'] = '1'
             if self.opts.local_srcs:
@@ -754,15 +756,55 @@ of the releng process:
         configured = False
         err_flag = False
 
-        state = process_file_flag(opts.devmode, opts.ff_devmode)
-        if state == FileFlag.CONFIGURED:
-            success('configured root for development mode')
-            configured = True
-        elif state == FileFlag.NOT_CONFIGURED:
-            err_flag = True
-        opts.devmode = (state == FileFlag.EXISTS)
-        if opts.devmode:
-            verbose('development mode enabled')
+        # parse and populate development mode configuration
+        devmode_changed = True if opts.devmode else False
+
+        devmode_cfg = {}
+        if os.path.exists(opts.ff_devmode):
+            # if we have an empty file, assume this is an old "file flag"
+            # for development mode -- if we are not in a configured
+            # development mode, enable it now
+            if os.stat(opts.ff_devmode).st_size == 0:
+                if not devmode_changed:
+                    opts.devmode = True
+            else:
+                with open(opts.ff_devmode, mode='r') as f:
+                    try:
+                        devmode_cfg = json.load(f)
+                        if not devmode_changed:
+                            opts.devmode = devmode_cfg['mode']
+                    except Exception as e:
+                        # inform user of error, unless we are overwriting
+                        if not devmode_changed:
+                            err_flag = True
+                            err('''\
+failed to parse development mode file
+
+The file used to track `--development` options cannot be read. It is
+recommended to remove the file manually and reconfigure the environment
+for any desired locally sourced packages.
+
+     File: {}
+    Error: {}''', opts.ff_devmode, e)
+
+        if devmode_changed:
+            devmode_cfg['mode'] = opts.devmode
+
+            try:
+                with open(opts.ff_devmode, 'w') as f:
+                    json.dump(devmode_cfg, f)
+
+                    success('configured root for development mode')
+                    configured = True
+            except Exception as e:
+                err_flag = True
+                err('''\
+failed to write development mode file
+
+The file used to track `--development` options cannot be written to.
+
+     File: {}
+    Error: {}''', opts.ff_devmode, e)
 
         # parse and populate local sources configurations
         local_srcs_changed = True if opts.local_srcs else False

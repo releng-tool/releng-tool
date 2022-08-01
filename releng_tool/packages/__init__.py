@@ -15,6 +15,7 @@ class PkgKeyType(Enum):
         BOOL: boolean value
         DICT: dictionary value
         DICT_STR_STR: dictionary of string pairs value
+        DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
         DICT_STR_STR_OR_STRS: dictionary of string pairs or strings value
         STR: single string value
         STRS: one or more strings value
@@ -24,6 +25,7 @@ class PkgKeyType(Enum):
     BOOL = 'bool'
     DICT = 'dict'
     DICT_STR_STR = 'dict_str_str'
+    DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
     DICT_STR_STR_OR_STRS = 'dict_str_str_or_strs'
     STR = 'str'
     STRS = 'strs'

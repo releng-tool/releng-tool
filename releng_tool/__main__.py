@@ -34,7 +34,7 @@ def main():
         parser.add_argument('--cache-dir')
         parser.add_argument('--config')
         parser.add_argument('--debug', action='store_true')
-        parser.add_argument('--development', '-D', action='store_true')
+        parser.add_argument('--development', '-D', nargs='?', default=False)
         parser.add_argument('--dl-dir')
         parser.add_argument('--force', '-F', action='store_true')
         parser.add_argument('--help', '-h', action='store_true')
@@ -64,6 +64,13 @@ def main():
         if args.help_quirks:
             print(usage_quirks())
             sys.exit(0)
+
+        # handle a `None` value being a "True" state; and a (default) `False`
+        # value being an unset (`None`) state
+        if args.development is not False:
+            args.development = args.development if args.development else True
+        else:
+            args.development = None
 
         # force verbose messages if debugging is enabled
         if args.debug:

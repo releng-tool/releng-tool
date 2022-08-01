@@ -29,15 +29,14 @@ def stage(engine, pkg, script_env):
         ``True`` if the patching stage is completed; ``False`` otherwise
     """
 
-    if pkg.is_internal:
-        # packages flagged for local sources do not have a patch stage
-        if pkg.local_srcs:
-            return True
+    # internal packages flagged for local sources do not have a patch stage
+    if pkg.is_internal and pkg.local_srcs:
+        return True
 
-        # internal packages in development mode that specify a development
-        # revision will not perform the patch stage
-        if engine.opts.devmode and pkg.has_devmode_option:
-            return True
+    # packages which have a custom revision while in development mode will
+    # not perform the patch stage
+    if pkg.devmode:
+        return True
 
     note('patching {}...', pkg.name)
     sys.stdout.flush()

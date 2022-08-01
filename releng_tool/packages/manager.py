@@ -50,6 +50,9 @@ try:
 except ImportError:
     from urlparse import urlparse
 
+# special value for a "default" entry in a dictionary
+DEFAULT_ENTRY = '*'
+
 #: default strip-count value for packages
 DEFAULT_STRIP_COUNT = 1
 
@@ -123,13 +126,13 @@ class RelengPackageManager:
         self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
-        self._register_conf(Rpk.REVISION, PkgKeyType.STR)
-        self._register_conf(Rpk.SITE, PkgKeyType.STR)
+        self._register_conf(Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR)
+        self._register_conf(Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR)
         self._register_conf(Rpk.SKIP_REMOTE_CONFIG, PkgKeyType.BOOL)
         self._register_conf(Rpk.SKIP_REMOTE_SCRIPTS, PkgKeyType.BOOL)
         self._register_conf(Rpk.STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE)
         self._register_conf(Rpk.TYPE, PkgKeyType.STR)
-        self._register_conf(Rpk.VCS_TYPE, PkgKeyType.STR)
+        self._register_conf(Rpk.VCS_TYPE, PkgKeyType.DICT_STR_STR_OR_STR)
         self._register_conf(Rpk.VERSION, PkgKeyType.STR)
 
         # sanity check that check option is properly registered
@@ -263,6 +266,8 @@ class RelengPackageManager:
             })
 
         pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
+        self.script_env['DEFAULT_REVISION'] = DEFAULT_ENTRY
+        self.script_env['DEFAULT_SITE'] = DEFAULT_ENTRY
         self.script_env['PKG_DEFDIR'] = pkg_def_dir
 
         try:
@@ -283,52 +288,104 @@ class RelengPackageManager:
 
         # version/revision extraction first
         #
-        # Attempt to check the version first since it will be the most commonly
-        # used package field -- rather initially fail on a simple field first
-        # (for new packages and/or developers) than breaking on a possibly more
-        # complex field below. Note that the version field is optional, in cases
-        # where a package type does not need a version entry (e.g. sites which
-        # do not require a version value for fetching or there is not revision
-        # value to use instead).
+        # Pull the version/revision(s) information first. This information can
+        # be used for pulling specific revisions for sources and other minor
+        # things such where projects may be extracted to, etc. The "version"
+        # value is typically used for naming output folders, display, etc.;
+        # where as a "revision" value is typically for identify what sources
+        # to clone from (for DVCS). If a revision value is not specified, it
+        # will be populated with the same value as the version value.
         #
-        # Note that when in development mode, the development-mode revision
-        # (if any is set) needs to be checked as well. This value may override
-        # the package's version value.
+        # A package may have multiple revisions. Typically a "default" (`*`)
+        # revision or other revisions which may be triggered based of a user
+        # configuring for "development mode". At the end of parsing, the
+        # `pkg_revision` value should be a single string value (even empty).
+        #
+        # Support still exists for a development revision (`DEVMODE_REVISION`)
+        # value (although deprecated). The package's revision may be overriden
+        # with this value based on various scenarios.
 
         # version
-        pkg_version = self._fetch(Rpk.VERSION)
-
-        if not pkg_version:
-            pkg_version = ''
+        pkg_version = self._fetch(Rpk.VERSION, default='')
 
         pkg_version_key = pkg_key(name, Rpk.VERSION)
         expand_extra[pkg_version_key] = pkg_version
 
-        # development mode revision
-        pkg_has_devmode_option = False
+        # development mode revision (may deprecate)
         pkg_devmode_revision = self._fetch(Rpk.DEVMODE_REVISION,
             allow_expand=True, expand_extra=expand_extra)
 
-        if pkg_devmode_revision:
-            pkg_has_devmode_option = True
+        # revisions
+        pkg_devmode = False
+        pkg_revision = None
 
-            if opts.revision_override and name in opts.revision_override:
-                pkg_devmode_revision = opts.revision_override[name]
+        if opts.revision_override:
+            pkg_revision = opts.revision_override.get(name)
+            pkg_devmode = True if pkg_revision else False
 
-            if opts.devmode:
-                pkg_version = pkg_devmode_revision
-                expand_extra[pkg_version_key] = pkg_version
-
-        # revision
-        if opts.revision_override and name in opts.revision_override:
-            pkg_revision = opts.revision_override[name]
-        else:
-            pkg_revision = self._fetch(Rpk.REVISION,
+        if not pkg_revision:
+            pkg_revision_raw = self._fetch(Rpk.REVISION,
                 allow_expand=True, expand_extra=expand_extra)
-        if opts.devmode and pkg_devmode_revision:
-            pkg_revision = pkg_devmode_revision
-        elif not pkg_revision:
+            if pkg_revision_raw:
+                # user has a defined a series of revision entries -- find the
+                # revision value based off out current mode (i.e. if in
+                # development mode, use the approriate key; otherwise default
+                # to a `*` key, if it exists)
+                if isinstance(pkg_revision_raw, dict):
+                    pkg_revision = pkg_revision_raw.get(opts.devmode)
+                    pkg_devmode = True if pkg_revision else False
+
+                    # no explicit revision, check the "default/any" revision
+                    if not pkg_revision:
+                        pkg_revision = pkg_revision_raw.get(DEFAULT_ENTRY)
+
+                    # no default revision to use for this mode, check if the
+                    # deprecated devmode-revision value is set
+                    if not pkg_revision and \
+                            opts.devmode and pkg_devmode_revision:
+                        pkg_revision = pkg_devmode_revision
+                        pkg_devmode = True if pkg_revision else False
+
+                    # lastly, if no revision has been found, default to the
+                    # package's version
+                    if not pkg_revision:
+                        pkg_revision = pkg_version
+
+                # if this is a single revision string, use this value for
+                # the revision; with the exception if we are in development
+                # mode and the deprecated devmode-revision value is set
+                else:
+                    if opts.devmode and pkg_devmode_revision:
+                        pkg_revision = pkg_devmode_revision
+                        pkg_devmode = True
+                    else:
+                        pkg_revision = pkg_revision_raw
+
+            # if we do not have package revision information provided, we
+            # will default to the using the package's version; with the
+            # exception if we are in development mode and the deprecated
+            # devmode-revision value is set
+            else:
+                if opts.devmode and pkg_devmode_revision:
+                    pkg_revision = pkg_devmode_revision
+                    pkg_devmode = True
+                else:
+                    pkg_revision = pkg_version
+
+        # always ensure a revision is set; use the version value if no
+        # explicit revision is provided
+        if not pkg_revision:
             pkg_revision = pkg_version
+
+        pkg_revision_key = pkg_key(name, Rpk.REVISION)
+        expand_extra[pkg_revision_key] = pkg_revision
+
+        # if we have replaced the revision with a development-specific value,
+        # also replace the package's version to better reflect the version of
+        # the package is not expected
+        if pkg_devmode:
+            pkg_version = pkg_revision
+            expand_extra[pkg_version_key] = pkg_version
 
         # site / vcs-site detection
         #
@@ -345,8 +402,23 @@ class RelengPackageManager:
             # source when experiencing network connectivity issues.
             pkg_site = opts.sites_override[name]
         else:
-            pkg_site = self._fetch(Rpk.SITE,
+            pkg_site = None
+            pkg_site_raw = self._fetch(Rpk.SITE,
                 allow_expand=True, expand_extra=expand_extra)
+
+            if pkg_site_raw:
+                # user has a defined a series of site entries -- find the
+                # site value based off out current mode (i.e. if in
+                # development mode, use the approriate key; otherwise default
+                # to a `*` key, if it exists)
+                if isinstance(pkg_site_raw, dict):
+                    pkg_site = pkg_site_raw.get(opts.devmode)
+
+                    # no explicit site, check the "default/any" site
+                    if not pkg_site:
+                        pkg_site = pkg_site_raw.get(DEFAULT_ENTRY)
+                else:
+                    pkg_site = pkg_site_raw
 
         # On Windows, if a file site is provided, ensure the path value is
         # converted to a posix-styled path, to prevent issues with `urlopen`
@@ -364,16 +436,28 @@ class RelengPackageManager:
         pkg_vcs_type = None
         pkg_vcs_type_raw = self._fetch(Rpk.VCS_TYPE)
         if pkg_vcs_type_raw:
-            pkg_vcs_type_raw = pkg_vcs_type_raw.lower()
-            if pkg_vcs_type_raw in VcsType:
-                pkg_vcs_type = pkg_vcs_type_raw
-            elif pkg_vcs_type_raw in self.registry.fetch_types:
-                pkg_vcs_type = pkg_vcs_type_raw
-            else:
-                raise RelengToolUnknownVcsType({
-                    'pkg_name': name,
-                    'pkg_key': pkg_key(name, Rpk.VCS_TYPE),
-                })
+            # user has a defined a series of vcs-type entries -- find the
+            # vcs-type value based off out current mode (i.e. if in
+            # development mode, use the approriate key; otherwise default
+            # to a `*` key, if it exists)
+            if isinstance(pkg_vcs_type_raw, dict):
+                if pkg_vcs_type_raw.get(opts.devmode):
+                    pkg_vcs_type_raw = pkg_vcs_type_raw.get(opts.devmode)
+                # no explicit site, check the "default/any" site
+                else:
+                    pkg_vcs_type_raw = pkg_vcs_type_raw.get(DEFAULT_ENTRY)
+
+            if pkg_vcs_type_raw:
+                pkg_vcs_type_raw = pkg_vcs_type_raw.lower()
+                if pkg_vcs_type_raw in VcsType:
+                    pkg_vcs_type = pkg_vcs_type_raw
+                elif pkg_vcs_type_raw in self.registry.fetch_types:
+                    pkg_vcs_type = pkg_vcs_type_raw
+                else:
+                    raise RelengToolUnknownVcsType({
+                        'pkg_name': name,
+                        'pkg_key': pkg_key(name, Rpk.VCS_TYPE),
+                    })
 
         if not pkg_vcs_type:
             if pkg_site:
@@ -731,6 +815,7 @@ class RelengPackageManager:
         pkg.cache_dir = pkg_cache_dir
         pkg.cache_file = pkg_cache_file
         pkg.def_dir = pkg_def_dir
+        pkg.devmode = pkg_devmode
         pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
         pkg.extract_type = pkg_extract_type
         pkg.git_config = pkg_git_config
@@ -738,7 +823,6 @@ class RelengPackageManager:
         pkg.git_refspecs = pkg_git_refspecs
         pkg.git_submodules = pkg_git_submodules
         pkg.git_verify_revision = pkg_git_verify_revision
-        pkg.has_devmode_option = pkg_has_devmode_option
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
         pkg.is_internal = pkg_is_internal
         pkg.local_srcs = pkg_local_srcs
@@ -1063,6 +1147,14 @@ class RelengPackageManager:
                     value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('dict(str,str)')
+            elif type_ == PkgKeyType.DICT_STR_STR_OR_STR:
+                value = interpret_string(raw_value)
+                if not value:
+                    value = raw_value
+                    if not isinstance(value, dict):
+                        raise_kv_exception('dict(str,str) or string')
+                if allow_expand:
+                    value = expand(value, expand_extra)
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
                 value = interpret_zero_to_one_strings(raw_value)
                 if allow_expand:
