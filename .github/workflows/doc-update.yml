@@ -1,4 +1,4 @@
-name: doc-update
+name: Documentation synchronization
 
 on:
   push:
@@ -16,24 +16,24 @@ jobs:
 
     steps:
     - name: Checkout releng-tool
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: releng-tool
 
     - name: Checkout releng-tool-doc-translations
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: releng-tool/releng-tool-doc-translations
         path: releng-tool-doc-translations
 
     - name: Checkout releng-tool-doc-translations-builder
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: releng-tool/releng-tool-doc-translations-builder
         path: releng-tool-doc-translations-builder
 
     - name: Checkout releng-tool-www-docs
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: releng-tool/releng-tool-www-docs
         path: releng-tool-www-docs
