@@ -98,15 +98,15 @@ def expand(obj, kv=None):
     elif isinstance(obj, dict):
         rv = {}
         for key, value in obj.items():
-            rv[expand(key)] = expand(value)
+            rv[expand(key, kv=kv)] = expand(value, kv=kv)
     elif isinstance(obj, list):
         rv = []
         for value in obj:
-            rv.append(expand(value))
+            rv.append(expand(value, kv=kv))
     elif isinstance(obj, set):
         rv = set()
         for value in obj:
-            rv.add(expand(value))
+            rv.add(expand(value, kv=kv))
     else:
         rv = obj
 
