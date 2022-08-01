@@ -1,0 +1,11 @@
+TEST_REVISION = {
+    DEFAULT_REVISION: 'revision',
+    '${TEST_VERSION}-lts': '${TEST_VERSION}-lts',
+}
+
+TEST_SITE = {
+    DEFAULT_SITE: 'site-${TEST_REVISION}',
+    '${TEST_REVISION}': 'site-${TEST_REVISION}-archive',
+}
+
+TEST_VERSION = 'version'
