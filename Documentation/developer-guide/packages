@@ -152,11 +152,17 @@ Examples include:
    LIBFOO_SITE = 'cvs+:pserver:anonymous@cvs.example.com:/var/lib/cvsroot mymodule'
    LIBFOO_SITE = 'svn+\https://svn.example.com/repos/libfoo/c/branches/libfoo-1.2'
    LIBFOO_SITE = '\https://www.example.com/files/libfoo.tar.gz'
+   LIBFOO_SITE = {
+       DEFAULT_SITE: '\https://pkgs.example.com/releases/libfoo-${LIBFOO_VERSION}.tar.gz',
+       '<mode>': '\https://git.example.com/libfoo.git',
+   }
 
 A developer can also use |LIBFOO_VCS_TYPE|_ to explicitly define the version
-control system type without the need for a prefix/postfix entry.
+control system type without the need for a prefix/postfix entry. The use of
+a dictionary value is only useful when operating in
+:ref:`development mode <development mode>`.
 
-For more information on each type's formatting, consult
+For more information on each type's formatting, see
 :ref:`site definitions <site_definitions>`.
 
 Using a specific type will create a dependency for a project that the respective
@@ -246,14 +252,16 @@ LIBFOO_DEVMODE_IGNORE_CACHE
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Flag value to explicitly indicate that a package should ignore any generated
-cache file when operating in development mode. In most cases, users want to take
-advantage of cached sources to prevent having to re-fetch the same content again
-between builds. However, some packages may be configured in a way where their
-request for a package's contents varies from a fresh stage. For example, when
-pulling from a branch, releng-tool will not attempt to re-fetch from a site
-since a cached content has already been fetched. If a developer configures a
-package to use a revision value with dynamic content, they may wish to use this
-option to have a user always force fetching new content from a clean state.
+cache file when operating in :ref:`development mode <development mode>`.
+In most cases, users want to take advantage of cached sources to prevent
+having to re-fetch the same content again between builds. However, some
+packages may be configured in a way where their request for a package's
+contents varies from a fresh stage. For example, when pulling from a
+branch, releng-tool will not attempt to re-fetch from a site since a
+cached content has already been fetched. If a developer configures a
+package to use a revision value with dynamic content, they may wish to use
+this option to have a user always force fetching new content from a
+clean state.
 
 .. code-block:: python
 
@@ -268,11 +276,11 @@ LIBFOO_DEVMODE_REVISION
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. |LIBFOO_DEVMODE_REVISION| replace:: ``LIBFOO_DEVMODE_REVISION``
 
-Specifies a development revision for a package. When a project is being built in
-:ref:`development mode`, the development revision is used over the configured
-|LIBFOO_REVISION|_ value. If a development revision is not defined for a
-project, a package will still use the configured |LIBFOO_REVISION|_ while in
-development mode.
+Specifies a development revision for a package. When a project is being
+built in :ref:`development mode <development mode>`, the development
+revision is used over the configured |LIBFOO_REVISION|_ value. If a
+development revision is not defined for a project, a package will still
+use the configured |LIBFOO_REVISION|_ while in development mode.
 
 .. code-block:: python
 
@@ -523,6 +531,17 @@ will use the configured |LIBFOO_VERSION|_.
 
    LIBFOO_REVISION = 'libfoo-v2.1'
 
+For users planning to take advantage of
+:ref:`development mode <development mode>` capabilities, multiple revisions
+can be configured based off the mode:
+
+.. code-block:: python
+
+   LIBFOO_REVISION = {
+       DEFAULT_REVISION: 'libfoo-v2.1',
+       'develop': 'main',
+   }
+
 See also |LIBFOO_DEVMODE_REVISION|_ and |LIBFOO_VERSION|_.
 
 LIBFOO_SKIP_REMOTE_CONFIG
@@ -603,6 +622,17 @@ Supported types are as follows:
 
 If a project registers a custom extension which provides a custom VCS type, the
 extension type can be set in this option.
+
+For users planning to take advantage of
+:ref:`development mode <development mode>` capabilities with mode-specific
+sites, users can provide an explicit VCS type based off a configured mode:
+
+.. code-block:: python
+
+   LIBFOO_VCS_TYPE = {
+       DEFAULT_REVISION: 'git',
+       'legacy': 'cvs',
+   }
 
 Using a specific type will create a dependency for a project that the respective
 host tool is installed on the host system. For example, if a Git VCS-type is

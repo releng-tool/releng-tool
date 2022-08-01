@@ -193,7 +193,7 @@ releng-tool, the following environment variables are available:
 
     * - ``RELENG_DEVMODE``
 
-      - Flag set if in :ref:`development mode`.
+      - The development mode or flag set if in :ref:`development mode`.
 
     * - ``RELENG_DISTCLEAN``
 

@@ -268,7 +268,7 @@ The following outlines available options:
 
       - Show debug-related messages.
 
-    * - ``-D``, ``--development``
+    * - ``-D``, ``--development [<mode>]``
 
       - Enables `development mode`_.
 
