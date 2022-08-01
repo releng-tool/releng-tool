@@ -13,6 +13,7 @@ Development
 - Fixed issue where select package-specific environment variables may leak into
   other packages
 - Improve handling of ``file://`` sites in Windows
+- Improve support for host-built Python packages
 - Introduce ``RELENG_TARGET_PKG`` environment/script variable
 - Introduce ``releng_copy_into`` helper script function
 - Introduce support for development mode configurations, allowing users
