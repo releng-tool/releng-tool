@@ -1,0 +1,2 @@
+TEST_DEVMODE_REVISION = 'my-devmode-revision'
+TEST_VERSION = 'dummy'

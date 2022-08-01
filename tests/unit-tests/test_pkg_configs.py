@@ -269,18 +269,6 @@ class TestPkgConfigs(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('revision-valid-implicit')
         self.assertEqual(pkg.revision, 'myversion')
 
-    def test_pkgconfig_site_invalid(self):
-        with self.assertRaises(RelengToolInvalidPackageKeyValue):
-            self.LOAD('site-invalid-type')
-
-    def test_pkgconfig_site_missing(self):
-        pkg, _, _ = self.LOAD('missing')
-        self.assertIsNone(pkg.site)
-
-    def test_pkgconfig_site_valid(self):
-        pkg, _, _ = self.LOAD('site-valid')
-        self.assertEqual(pkg.site, 'https://example.com/file.tgz')
-
     def test_pkgconfig_skip_remote_config_disabled(self):
         pkg, _, _ = self.LOAD('skip-remote-config-disabled')
         self.assertFalse(pkg.skip_remote_config)

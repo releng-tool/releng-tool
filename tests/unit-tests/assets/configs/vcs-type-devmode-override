@@ -1,0 +1,13 @@
+TEST_SITE = {
+    DEFAULT_SITE: 'site1',
+    'override': 'site2',
+    'z': 'site3',
+}
+
+TEST_VCS_TYPE = {
+    DEFAULT_REVISION: 'git',
+    'override': 'bzr',
+    'z': 'cvs',
+}
+
+TEST_VERSION = 'dummy'

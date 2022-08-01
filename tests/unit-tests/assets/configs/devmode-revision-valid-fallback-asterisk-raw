@@ -1,4 +1,5 @@
 TEST_REVISION = {
+    '*': 'my-fallback-asterisk-raw',
     'custom1': 'my-devmode-revision1',
     'custom2': 'my-devmode-revision2',
     'custom3': 'my-devmode-revision3',

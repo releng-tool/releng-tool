@@ -2,13 +2,26 @@
 # Copyright 2021 releng-tool
 
 from releng_tool.defs import VcsType
+from releng_tool.opts import RelengEngineOptions
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from releng_tool.packages.exceptions import RelengToolMissingPackageRevision
 from releng_tool.packages.exceptions import RelengToolMissingPackageSite
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
+from releng_tool.packages.manager import RelengPackageManager
+from releng_tool.registry import RelengRegistry
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
 class TestPkgConfigsVcsType(TestPkgConfigsBase):
+    def test_pkgconfig_vcs_type_devmode_override(self):
+        opts = RelengEngineOptions()
+        opts.devmode = 'override'
+
+        registry = RelengRegistry()
+        manager = RelengPackageManager(opts, registry)
+
+        pkg, _, _ = self.LOAD('vcs-type-devmode-override', manager=manager)
+        self.assertEqual(pkg.vcs_type, VcsType.BZR)
+
     def test_pkgconfig_vcs_type_invalid_bzr(self):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-bzr-nosite')

@@ -1,0 +1,10 @@
+TEST_SITE = {
+    DEFAULT_SITE: 'https://example.org/file.tgz',
+    'build-a': 'git@git.example.org:my-group/my-prj.git',
+    'build-b': 'https://example.com/my-group/my-prj.git',
+}
+
+TEST_REVISION = {
+    'build-a': 'tag-a',
+    'build-b': 'tag-b',
+}
