@@ -828,8 +828,10 @@ The file used to track `--development` options cannot be written to.
                     # if we failed to load the file, assume this is an old
                     # "file flag" local sources configuration
                     except Exception as e:
-                        err_flag = True
-                        err('''\
+                        # inform user of error, unless we are overwriting
+                        if not local_srcs_changed:
+                            err_flag = True
+                            err('''\
 failed to parse local sources file
 
 The file used to track `--local-sources` options cannot be read. It is
