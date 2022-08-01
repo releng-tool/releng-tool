@@ -3,6 +3,10 @@ Python Package
 
 A Python package provides support for processing a `Python`_ supported module.
 
+.. code-block:: python
+
+   LIBFOO_TYPE = 'python'
+
 Only the build and installation phases are used when processing the sources for
 a Python package (i.e. no configuration stage is invoked). The build phase will
 invoke ``setup.py build`` while the installation stage will invoke

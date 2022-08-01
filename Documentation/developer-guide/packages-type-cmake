@@ -3,6 +3,10 @@ CMake Package
 
 A CMake package provides support for processing a `CMake`_ supported module.
 
+.. code-block:: python
+
+   LIBFOO_TYPE = 'cmake'
+
 During the configuration stage of a CMake package, ``cmake`` will be invoked to
 generate build files for the module. For the build stage, ``cmake --build`` will
 be invoked to generated build files. Similar approach for the installation stage
