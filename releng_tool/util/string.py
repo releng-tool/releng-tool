@@ -74,6 +74,7 @@ def expand(obj, kv=None):
                     try:
                         eidx = obj.index('}', idx + 1)
                         var = obj[idx + 2:eidx]
+
                         if var in final_kv:
                             rv += final_kv[var]
                         idx = eidx
