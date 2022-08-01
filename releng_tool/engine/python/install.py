@@ -4,11 +4,14 @@
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PYTHON_EXTEND_ENV
 from releng_tool.tool.python import PythonTool
+from releng_tool.util.io import generate_temp_dir
+from releng_tool.util.io import path_move
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
-import sys
+import os
+
 
 def install(opts):
     """
@@ -36,16 +39,17 @@ def install(opts):
 
     # definitions
     python_defs = {
-        '--prefix': opts.prefix,
     }
+
+    # do not apply a prefix if the value is "empty"/(root path) since a
+    # setup.py invoke may ignore provided `--root` value or `--prefix` value;
+    # apply if it is set; otherwise flag for manipulation
+    if opts.prefix and opts.prefix != os.sep:
+        python_defs['--prefix'] = opts.prefix
+
     if opts.install_defs:
         python_defs.update(expand(opts.install_defs))
 
-    # always remove the prefix value if:
-    #  - *nix: setup.py may ignore provided `--root` value with an "/" prefix
-    #  - win32: does not use the prefix value
-    if python_defs['--prefix'] == '/' or sys.platform == 'win32':
-        del python_defs['--prefix']
 
     # default options
     python_opts = {
@@ -78,8 +82,29 @@ def install(opts):
     else:
         # install to each destination
         for dest_dir in opts.dest_dirs:
-            if not python_tool.execute(python_args + ['--root', dest_dir],
-                    env=env):
+            if '--prefix' not in python_defs:
+                # for empty prefixes, we will need to install the package into
+                # an interim container folder (temporary prefix) of distutils
+                # will apply a default prefix for a desired empty prefix -- we
+                # set a temporary prefix, install the package in that folder,
+                # then move it into the desired destination folder
+                with generate_temp_dir() as tmp_dir:
+                    container = 'releng-tool-container'
+
+                    python_args_tmp = python_args
+                    python_args_tmp.extend(['--prefix', container])
+
+                    rv = python_tool.execute(
+                        python_args_tmp + ['--root', tmp_dir], env=env)
+
+                    if rv:
+                        src_dir = os.path.join(tmp_dir, container) + os.sep
+                        path_move(src_dir, dest_dir)
+            else:
+                rv = python_tool.execute(
+                    python_args + ['--root', dest_dir], env=env)
+
+            if not rv:
                 err('failed to install python project: {}', opts.name)
                 return False
 

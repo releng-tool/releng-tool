@@ -83,10 +83,13 @@ class PythonTool(RelengTool):
             the python path
         """
 
-        if not sysroot:
+        if not self.exists():
+            return None
+
+        if sysroot is None:
             sysroot = ''
 
-        if not prefix:
+        if prefix is None:
             prefix = ''
 
         # determine interpreter's major/minor version for determined path
@@ -105,8 +108,7 @@ class PythonTool(RelengTool):
             base_path = os.path.join(sysroot + prefix,
                 'lib', 'python' + self._version_cache)
         else:
-            base_path = os.path.join(sysroot,
-                'Python' + self._version_cache, 'Lib')
+            base_path = os.path.join(sysroot + prefix, 'Lib')
         return os.path.join(base_path, 'site-packages')
 
 #: python host tool helper
