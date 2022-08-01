@@ -12,8 +12,6 @@ class TestToolCmake(TestSiteToolBase):
         if sys.platform == 'win32':
             cls.filename += '.exe'
 
-        cls.prefix = os.path.join('usr', 'bin')
-
     def prepare_global_action(self):
         return None # use releng-tool default
 
@@ -24,11 +22,11 @@ class TestToolCmake(TestSiteToolBase):
         rv = self.engine.run()
         self.assertTrue(rv)
 
-        bin_dir = os.path.join(self.engine.opts.staging_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.staging_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertFalse(os.path.exists(executable))
 
-        bin_dir = os.path.join(self.engine.opts.target_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.target_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
@@ -38,7 +36,7 @@ class TestToolCmake(TestSiteToolBase):
         rv = self.engine.run()
         self.assertTrue(rv)
 
-        bin_dir = os.path.join(self.engine.opts.host_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.host_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
@@ -48,11 +46,11 @@ class TestToolCmake(TestSiteToolBase):
         rv = self.engine.run()
         self.assertTrue(rv)
 
-        bin_dir = os.path.join(self.engine.opts.staging_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.staging_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
-        bin_dir = os.path.join(self.engine.opts.target_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.target_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertFalse(os.path.exists(executable))
 
@@ -62,11 +60,11 @@ class TestToolCmake(TestSiteToolBase):
         rv = self.engine.run()
         self.assertTrue(rv)
 
-        bin_dir = os.path.join(self.engine.opts.staging_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.staging_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
-        bin_dir = os.path.join(self.engine.opts.target_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.target_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
@@ -76,6 +74,12 @@ class TestToolCmake(TestSiteToolBase):
         rv = self.engine.run()
         self.assertTrue(rv)
 
-        bin_dir = os.path.join(self.engine.opts.target_dir, self.prefix)
+        bin_dir = os.path.join(self.engine.opts.target_dir + self._prefix())
         executable = os.path.join(bin_dir, self.filename)
         self.assertFalse(os.path.exists(executable))
+
+    def _prefix(self):
+        prefix = os.path.join(self.engine.opts.sysroot_prefix, 'bin')
+        if not prefix.startswith(os.sep):
+            prefix = os.sep + prefix
+        return prefix
