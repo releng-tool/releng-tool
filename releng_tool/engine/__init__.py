@@ -168,8 +168,13 @@ class RelengEngine:
             verbose('configuration overrides file loaded')
 
         # handle cleaning requests
-        if (gaction == GlobalAction.CLEAN or gaction == GlobalAction.MRPROPER
-                or gaction == GlobalAction.DISTCLEAN):
+        clean_actions = [
+            GlobalAction.CLEAN,
+            GlobalAction.DISTCLEAN,
+            GlobalAction.MRPROPER,
+        ]
+
+        if gaction in clean_actions:
             self._handle_clean_request(gaction)
             return True
 
