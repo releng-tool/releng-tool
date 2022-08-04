@@ -129,6 +129,14 @@ releng-tool, the following environment variables are available:
       - The package's definition directory. For example, for a package
         ``test``. the definition directory would be ``<root>/package/test``.
 
+    * - ``PKG_DEVMODE``
+
+      - Whether the package is configured for development mode. If a
+        package is configured for development mode, the environment variable
+        will be set to a value of one (i.e. ``PKG_DEVMODE=1``).
+
+        See also :ref:`development mode`.
+
     * - ``PKG_INTERNAL``
 
       - Whether or not the package is considered "internal". If internal,
