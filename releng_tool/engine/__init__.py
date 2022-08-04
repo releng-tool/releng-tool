@@ -217,6 +217,7 @@ class RelengEngine:
         # interpreter overrides for specific Python package
         if PYTHON.exists():
             # include the host environment's site-package folder (if any)
+            debug('registering PYTHONPATH host path...')
             host_python_path = PYTHON.path(
                 sysroot=opts.host_dir, prefix=opts.sysroot_prefix)
             if 'PYTHONPATH' in os.environ:
@@ -226,6 +227,7 @@ class RelengEngine:
             # if Windows, also register a path to a common scripts folder for
             # Python installation (if host-based Python packages are built)
             if sys.platform == 'win32':
+                debug('registering Python-Scripts path...')
                 sdir = os.path.join(host_sysroot_dir, 'Scripts')
                 sys.path.insert(0, sdir)
                 os.environ['PATH'] = sdir + os.pathsep + os.environ['PATH']
