@@ -13,7 +13,8 @@ import os
 
 
 PKG_NAME = 'test'
-PKG_DEFINITION = os.path.join('package', PKG_NAME, PKG_NAME)
+PKG_DEFDIR = os.path.join('package', PKG_NAME)
+PKG_DEFINITION = os.path.join(PKG_DEFDIR, PKG_NAME)
 PKG_CFG_PREFIX = 'TEST_'
 DEFAULT_TEMPLATE = 'site-tool'
 
@@ -54,8 +55,10 @@ class TestSiteToolBase(RelengToolTestCase):
                 opts.gbl_action = self.prepare_global_action()
 
                 self.cache_dir = os.path.join(opts.cache_dir, PKG_NAME)
+                self.def_dir = os.path.join(opts.root_dir, PKG_DEFDIR)
                 self.defconfig = os.path.join(opts.root_dir, PKG_DEFINITION)
                 self.engine = engine
+                self.pkg_name = PKG_NAME
 
                 self.defconfig_add('SITE', self.repo_dir)
                 self.prepare_defconfig(self.defconfig)
@@ -155,7 +158,7 @@ class TestSiteToolBase(RelengToolTestCase):
         print(''.join(content).strip())
         print('-------------------------------')
 
-    def dir_dump(self, dir_):
+    def dir_dump(self, dir_=None):
         """
         dump a test folders's file list to standard out
 
@@ -163,8 +166,12 @@ class TestSiteToolBase(RelengToolTestCase):
         file list will be dumped to the configured standard output stream.
 
         Args:
-            dir_: the directory to search
+            dir_ (optional): the directory to search (defaults to
+                              generated repository)
         """
+
+        if not dir_:
+            dir_ = self.repo_dir
 
         files = self._dir_fetch(dir_)
 
