@@ -129,6 +129,7 @@ class RelengEngine:
         # project to import locally created modules in their build/etc. scripts
         debug('registering root directory in path...')
         sys.path.append(opts.root_dir)
+        os.environ['PATH'] = os.environ['PATH'] + os.pathsep + opts.root_dir
 
         # prepare script environment to make helpers available to configuration
         # script(s)
