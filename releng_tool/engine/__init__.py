@@ -130,13 +130,6 @@ class RelengEngine:
         debug('registering root directory in path...')
         sys.path.append(opts.root_dir)
 
-        # register the project's host directory as a system path; lazily permits
-        # loading host tools (not following prefix or bin container) built by a
-        # project over the system
-        debug('registering host directory in path...')
-        sys.path.insert(0, opts.host_dir)
-        os.environ['PATH'] = opts.host_dir + os.pathsep + os.environ['PATH']
-
         # prepare script environment to make helpers available to configuration
         # script(s)
         #
@@ -203,6 +196,13 @@ class RelengEngine:
         # processing additional settings
         if not self._process_settings(settings):
             return False
+
+        # register the project's host directory as a system path; lazily permits
+        # loading host tools (not following prefix or bin container) built by a
+        # project over the system
+        debug('registering host directory in path...')
+        sys.path.insert(0, opts.host_dir)
+        os.environ['PATH'] = opts.host_dir + os.pathsep + os.environ['PATH']
 
         # register the project's host-bin directory as a system path; lazily
         # permits loading host tools built by a project over the system
