@@ -118,6 +118,19 @@ class RelengEngine:
         debug('loading statistics...')
         self.stats.load()
 
+        # verify the project's configuration exists before performing any
+        # actions
+        verbose('detecting project configuration...')
+        conf_point, conf_point_exists = opt_file(opts.conf_point)
+        if not conf_point_exists:
+            raise RelengToolMissingConfigurationError(conf_point)
+
+        # file flag processing
+        state = self._process_file_flags()
+        if state is not None:
+            debug('file-flag processing has triggered closure')
+            return state
+
         # inform the user of any active running modes
         if self.opts.devmode:
             verbose('running in development mode')
@@ -140,11 +153,7 @@ class RelengEngine:
         # was configured). This is peformed later in the engine run call.
         self._prepare_script_environment(gbls, gaction, opts.pkg_action)
 
-        verbose("loading user's configuration...")
-        conf_point, conf_point_exists = opt_file(opts.conf_point)
-        if not conf_point_exists:
-            raise RelengToolMissingConfigurationError(conf_point)
-
+        verbose('loading project configuration...')
         settings = run_script(conf_point, gbls, subject='configuration')
         if not settings:
             return False
@@ -177,12 +186,6 @@ class RelengEngine:
         if gaction in clean_actions:
             self._handle_clean_request(gaction)
             return True
-
-        # file flag processing
-        state = self._process_file_flags()
-        if state is not None:
-            debug('file-flag processing has triggered closure')
-            return state
 
         # determine package name(s) extraction
         #
