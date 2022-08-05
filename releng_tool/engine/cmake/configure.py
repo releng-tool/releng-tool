@@ -67,11 +67,6 @@ def configure(opts):
     posix_prefix = prefix.replace(os.sep, posixpath.sep)
     posix_lib_dir = lib_dir.replace(os.sep, posixpath.sep)
 
-    # if not prefix is provided, ensure we configure an "empty" prefix by
-    # placing just a posix path separator
-    if not posix_prefix:
-        posix_prefix = posixpath.sep
-
     # definitions
     cmake_defs = {
         # configure as RelWithDebInfo (when using multi-configuration projects)
