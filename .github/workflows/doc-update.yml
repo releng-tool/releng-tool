@@ -1,4 +1,4 @@
-name: Documentation synchronization
+name: Documentation
 
 on:
   push:
