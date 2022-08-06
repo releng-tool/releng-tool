@@ -268,8 +268,13 @@ class RelengEngine:
 
         # ensure any of required host tools do exist
         if 'releng.disable_prerequisites_check' not in opts.quirks:
+            exclude_host_check = set()
+            for pkg in pkgs:
+                if pkg.host_provides:
+                    exclude_host_check.update(pkg.host_provides)
+
             prerequisites = RelengPrerequisites(pkgs, opts.prerequisites)
-            if not prerequisites.check():
+            if not prerequisites.check(exclude=exclude_host_check):
                 return False
 
         # track if this action is "pre-configuration", where a package

@@ -116,6 +116,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.GIT_REFSPECS, PkgKeyType.STRS)
         self._register_conf(Rpk.GIT_SUBMODULES, PkgKeyType.BOOL)
         self._register_conf(Rpk.GIT_VERIFY_REVISION, PkgKeyType.BOOL)
+        self._register_conf(Rpk.HOST_PROVIDES, PkgKeyType.STRS)
         self._register_conf(Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_STR)
         self._register_conf(Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(Rpk.INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
@@ -546,6 +547,9 @@ class RelengPackageManager:
                     'pkg_key': pkg_key(name, Rpk.EXTRACT_TYPE),
                 })
 
+        # host tools provided
+        pkg_host_provides = self._fetch(Rpk.HOST_PROVIDES)
+
         # is-external
         pkg_is_external = self._fetch(Rpk.EXTERNAL)
 
@@ -825,6 +829,7 @@ class RelengPackageManager:
         pkg.git_submodules = pkg_git_submodules
         pkg.git_verify_revision = pkg_git_verify_revision
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
+        pkg.host_provides = pkg_host_provides
         pkg.is_internal = pkg_is_internal
         pkg.local_srcs = pkg_local_srcs
         pkg.no_extraction = pkg_no_extraction
@@ -999,6 +1004,14 @@ class RelengPackageManager:
         if pkg.python_interpreter is None:
             pkg_python_interpreter = self._fetch(Rpk.PYTHON_INTERPRETER)
             pkg.python_interpreter = pkg_python_interpreter
+
+        # ######################################################################
+        # (post checks)
+        # ######################################################################
+
+        if pkg.host_provides and pkg.install_type != PackageInstallType.HOST:
+            warn('non-host package providing host package: {}', pkg.name)
+            pkg.host_provides = None
 
     def load_remote_configuration(self, pkg):
         """

@@ -66,6 +66,7 @@ class Rpk(Enum):
         GIT_REFSPECS: additional git refspecs to fetch (if any)
         GIT_SUBMODULES: fetch any submodules (if any)
         GIT_VERIFY_REVISION: verify signed revisions
+        HOST_PROVIDES: host tools the package will provide
         INSTALL_TYPE: install container target for the package
         INTERNAL: whether or not package is considered "internal"
         LICENSE: license information for the package
@@ -112,6 +113,7 @@ class Rpk(Enum):
     GIT_REFSPECS = 'GIT_REFSPECS'
     GIT_SUBMODULES = 'GIT_SUBMODULES'
     GIT_VERIFY_REVISION = 'GIT_VERIFY_REVISION'
+    HOST_PROVIDES = 'HOST_PROVIDES'
     INSTALL_TYPE = 'INSTALL_TYPE'
     INTERNAL = 'INTERNAL'
     LICENSE = 'LICENSE'
