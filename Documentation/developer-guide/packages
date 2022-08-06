@@ -58,6 +58,7 @@ processed first:
 
 LIBFOO_INSTALL_TYPE
 ^^^^^^^^^^^^^^^^^^^
+.. |LIBFOO_INSTALL_TYPE| replace:: ``LIBFOO_INSTALL_TYPE``
 
 Defines the installation type of this package. A package may be designed to be
 built and installed for just the target area, the stage area, both or maybe in
@@ -79,6 +80,8 @@ The default installation type is ``target``.
 .. code-block:: python
 
    LIBFOO_INSTALL_TYPE = 'target'
+
+See also |LIBFOO_HOST_PROVIDES|_.
 
 LIBFOO_LICENSE
 ^^^^^^^^^^^^^^
@@ -456,6 +459,35 @@ target revision is not signed.
 .. code-block:: python
 
    LIBFOO_GIT_VERIFY_REVISION = True
+
+LIBFOO_HOST_PROVIDES
+^^^^^^^^^^^^^^^^^^^^
+.. |LIBFOO_HOST_PROVIDES| replace:: ``LIBFOO_HOST_PROVIDES``
+
+Hints at what host tools this package may be providing. A project may have a
+series of prerequisites, which are checked at the start of a run. This is to
+help ensure required host tools are available before attempting to build a
+project. If a package is designed to provide a host package (e.g. when using
+|LIBFOO_INSTALL_TYPE|_ with the ``host`` option), these packages can provide
+tools other packages may rely on. However, prerequisites checks will occur
+before these packages may be built, preventing a build from running. This
+option allows a developer to hint at what tools a host package may provide.
+By specifying the name of a tool in this option, an initial prerequisites
+check will not fail if a tool is not available at the start of a run.
+
+.. code-block:: python
+
+   LIBFOO_HOST_PROVIDES = 'some-tool'
+
+   # (or)
+
+   LIBFOO_HOST_PROVIDES = [
+       'tool-a',
+       'tool-b',
+       'tool-c',
+   ]
+
+See also |LIBFOO_INSTALL_TYPE|_.
 
 LIBFOO_INTERNAL
 ^^^^^^^^^^^^^^^
