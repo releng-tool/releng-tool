@@ -36,6 +36,10 @@ def stage(engine, pkg):
         ``True`` if the extraction stage is completed; ``False`` otherwise
     """
 
+    # none/local-vcs-type packages do not need to fetch
+    if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
+        return True
+
     # packages flagged for local sources do not have an extraction stage
     if pkg.local_srcs:
         return True

@@ -4,7 +4,6 @@
 from contextlib import contextmanager
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
-from releng_tool.defs import VcsType
 from releng_tool.engine.bootstrap import stage as bootstrap_stage
 from releng_tool.engine.build import stage as build_stage
 from releng_tool.engine.configure import stage as configure_stage
@@ -97,10 +96,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_extract
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             self.engine.stats.track_duration_start(pkg.name, 'extract')
-            # none/local-vcs-type packages do not need to fetch
-            if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
-                pass
-            elif not extract_stage(self.engine, pkg):
+            if not extract_stage(self.engine, pkg):
                 raise RelengToolExtractionStageFailure
             # now that the extraction stage has (most likely)
             # created a build directory, ensure the output directory
@@ -152,10 +148,7 @@ class RelengPackagePipeline:
         flag = pkg._ff_patch
         if check_file_flag(flag) == FileFlag.NO_EXIST:
             self.engine.stats.track_duration_start(pkg.name, 'patch')
-            # local-vcs-type packages do not need to patch
-            if pkg.vcs_type is VcsType.LOCAL:
-                pass
-            elif not patch_stage(self.engine, pkg, pkg_env):
+            if not patch_stage(self.engine, pkg, pkg_env):
                 raise RelengToolPatchStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'patch')
             if process_file_flag(True, flag) != FileFlag.CONFIGURED:

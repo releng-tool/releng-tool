@@ -2,6 +2,7 @@
 # Copyright 2018-2022 releng-tool
 
 from glob import glob
+from releng_tool.defs import VcsType
 from releng_tool.tool.patch import PATCH
 from releng_tool.util.log import err
 from releng_tool.util.log import note
@@ -28,6 +29,10 @@ def stage(engine, pkg, script_env):
     Returns:
         ``True`` if the patching stage is completed; ``False`` otherwise
     """
+
+    # local-vcs-type packages do not need to patch
+    if pkg.vcs_type is VcsType.LOCAL:
+        return True
 
     # internal packages flagged for local sources do not have a patch stage
     if pkg.is_internal and pkg.local_srcs:
