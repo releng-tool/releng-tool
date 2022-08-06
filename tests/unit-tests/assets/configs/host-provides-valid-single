@@ -1,0 +1,2 @@
+TEST_INSTALL_TYPE = 'host'
+TEST_HOST_PROVIDES = 'test-tool'
