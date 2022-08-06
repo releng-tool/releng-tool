@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020-2021 releng-tool
+# Copyright 2020-2022 releng-tool
 
 from releng_tool.defs import PackageType
 from releng_tool.defs import VcsType
