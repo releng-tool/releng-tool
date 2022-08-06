@@ -694,7 +694,8 @@ class RelengPackageManager:
 
         pkg_build_output_dir = os.path.join(opts.build_dir, pkg_nv)
 
-        if pkg_vcs_type == VcsType.LOCAL:
+        pkg_is_local = pkg_vcs_type == VcsType.LOCAL
+        if pkg_is_local:
             pkg_build_dir = pkg_def_dir
         else:
             pkg_build_dir = pkg_build_output_dir
@@ -702,7 +703,7 @@ class RelengPackageManager:
         # check if an internal package is configured to point to a local
         # directory for sources
         pkg_local_srcs = False
-        if pkg_is_internal and opts.local_srcs:
+        if pkg_is_internal and not pkg_is_local and opts.local_srcs:
             # specific package name reference in the local sources; either is
             # set to the path to use, or is set to `None` to indicate at this
             # package should not be retrieved locally
