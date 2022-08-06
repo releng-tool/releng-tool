@@ -306,7 +306,7 @@ class TestUtilIo(unittest.TestCase):
         args['foo'] = 'bar'
         args['xyz'] = ''
         prepared = prepare_definitions(args)
-        expected = ['foo=bar', 'xyz']
+        expected = ['foo=bar', 'xyz=']
         self.assertEqual(prepared, expected)
 
         args = OrderedDict()
