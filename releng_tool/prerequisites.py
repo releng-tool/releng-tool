@@ -4,6 +4,7 @@
 from releng_tool.defs import PackageType
 from releng_tool.defs import VcsType
 from releng_tool.tool.autoreconf import AUTORECONF
+from releng_tool.tool.autoreconf import AUTORECONF_COMMAND
 from releng_tool.tool.bzr import BZR
 from releng_tool.tool.cmake import CMAKE
 from releng_tool.tool.cvs import CVS
@@ -42,7 +43,7 @@ class RelengPrerequisites:
         self.pkgs = pkgs
         self.tools = tools
 
-    def check(self, quiet=False):
+    def check(self, quiet=False, exclude=None):
         """
         check for the existence of required tools for the loaded package set
 
@@ -52,11 +53,13 @@ class RelengPrerequisites:
         Args:
             quiet (optional): whether or not to suppress output (defaults to
                 ``False``)
+            exclude (optional): which tools to exclude from this check
 
         Returns:
             ``True`` is all known required tools exists; ``False`` otherwise
         """
 
+        exclude = exclude if exclude else []
         missing = set()
         pkg_types = set()
         python_interpreters = set()
@@ -64,22 +67,26 @@ class RelengPrerequisites:
 
         # package-defined requirements check
         for pkg in self.pkgs:
-            pkg_types.add(pkg.type)
-            vcs_types.add(pkg.vcs_type)
+            if pkg.type not in exclude:
+                pkg_types.add(pkg.type)
+            if pkg.vcs_type not in exclude:
+                vcs_types.add(pkg.vcs_type)
 
             if pkg.type == PackageType.AUTOTOOLS:
                 if pkg.autotools_autoreconf:
-                    if AUTORECONF.exists():
-                        self._verbose_exists(AUTORECONF)
-                    else:
-                        missing.add(AUTORECONF.tool)
+                    if AUTORECONF_COMMAND not in exclude:
+                        if AUTORECONF.exists():
+                            self._verbose_exists(AUTORECONF)
+                        else:
+                            missing.add(AUTORECONF.tool)
 
             elif pkg.type == PackageType.PYTHON:
                 if pkg.python_interpreter:
-                    python_tool = PythonTool(pkg.python_interpreter)
+                    if pkg.python_interpreter not in exclude:
+                        python_tool = PythonTool(pkg.python_interpreter)
+                        python_interpreters.add(python_tool)
                 else:
-                    python_tool = PYTHON
-                python_interpreters.add(python_tool)
+                    python_interpreters.add(PYTHON)
 
         if PackageType.AUTOTOOLS in pkg_types:
             if MAKE.exists():
@@ -144,10 +151,11 @@ class RelengPrerequisites:
 
         # project-provided tools check
         for tool in self.tools:
-            if which(tool):
-                verbose('prerequisite exists: ' + tool)
-            else:
-                missing.add(tool)
+            if tool not in exclude:
+                if which(tool):
+                    verbose('prerequisite exists: ' + tool)
+                else:
+                    missing.add(tool)
 
         if missing and not quiet:
             sorted_missing = list(missing)
