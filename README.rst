@@ -1,37 +1,46 @@
 releng-tool
 ===========
 
-.. image:: https://img.shields.io/pypi/v/releng-tool.svg
+.. image:: https://badgen.net/pypi/v/releng-tool?label=PyPI
     :target: https://pypi.python.org/pypi/releng-tool
     :alt: pip Version
 
-.. image:: https://github.com/releng-tool/releng-tool/workflows/build/badge.svg?branch=main
-    :target: https://github.com/releng-tool/releng-tool/actions?query=workflow%3Abuild
-    :alt: Build Status
+.. image:: https://badgen.net/pypi/python/releng-tool?label=Python
+    :target: https://pypi.python.org/pypi/releng-tool
+    :alt: Supports all Python versions
 
-.. image:: https://img.shields.io/badge/docs-releng.io-333.svg
+.. image:: https://badgen.net/badge/Documentation/releng.io/333333
     :target: https://docs.releng.io
     :alt: Documentation
 
-.. image:: https://img.shields.io/pypi/dm/releng-tool.svg
-    :target: https://pypi.python.org/pypi/releng-tool
-    :alt: PyPI download month
+.. raw:: html
 
-releng-tool aims to provide a way to prepare a structured environment to
-assist in the building of a project.
+   <br/>
+
+.. image:: https://github.com/releng-tool/releng-tool/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/releng-tool/releng-tool/actions/workflows/build.yml
+    :alt: Build Status
+
+.. image:: https://github.com/releng-tool/releng-tool/actions/workflows/check-tools.yml/badge.svg
+    :target: https://github.com/releng-tool/releng-tool/actions/workflows/check-tools.yml
+    :alt: Tools Status
+
+.. image:: https://github.com/releng-tool/releng-tool/actions/workflows/doc-update.yml/badge.svg
+    :target: https://github.com/releng-tool/releng-tool/actions/workflows/doc-update.yml
+    :alt: Documentation Status
 
 Overview
 --------
 
-When dealing with the release engineering of a project, assets may be found in
-multiple locations and may require various methods to extract, build and more.
-releng-tool can be used to process a defined set of projects/packages which
-identify where resources can be fetched, how packages can be extracted and
-methods to patch, configure, build and install each individual package for a
-target root.
+When dealing with a project that depends on multiple packages, assets may be
+found in multiple locations and may require various methods to extract, build
+and more. releng-tool can be used to process a defined set of
+projects/packages which identify where resources can be fetched, how packages
+can be extracted and methods to patch, configure, build and install each
+individual package for a target root.
 
-For detailed documentation on the releng-tool project, please consult the
-`releng-tool documentation`_.
+For detailed documentation on the releng-tool project, see
+`releng-tool's documentation`_.
 
 Requirements
 ------------
@@ -78,5 +87,5 @@ Examples of releng-tool projects can be found in
 .. _Git: https://git-scm.com/
 .. _Python: https://www.python.org/
 .. _pip: https://pip.pypa.io/
-.. _releng-tool documentation: https://docs.releng.io/
+.. _releng-tool's documentation: https://docs.releng.io/
 .. _releng-tool's examples repository: https://github.com/releng-tool/releng-tool-examples
