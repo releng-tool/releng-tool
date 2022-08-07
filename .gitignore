@@ -3,6 +3,7 @@
 /.eggs/
 /build/
 /dist/
+/pip-wheel-metadata/
 
 # documentation
 /Documentation/_build/
