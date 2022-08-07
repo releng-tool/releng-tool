@@ -46,6 +46,7 @@ class SconsTool(RelengTool):
         # fallback at looking for the SCons module in the running interpreter
         if not super(SconsTool, self).exists():
             debug('attempting to find {} in the running interpreter', self.tool)
+            self._scons_interpreter = None
 
             try:
                 import SCons  # noqa: F401  pylint: disable=E0401
@@ -55,10 +56,10 @@ class SconsTool(RelengTool):
             except RelengModuleNotFoundError:
                 debug('{} tool is not detected in the interpreter', self.tool)
 
-            # on python 2.7, the SCons module is found inside a `scons`
-            # directory; append this folder into the system path, import
-            # it and invoke the module's mainline script
-            if sys.version_info[0] < 3:
+            # older versions of SCons will have its module found inside
+            # a `scons` directory; append this folder into the system path,
+            # import it and invoke the module's mainline script
+            if not self._scons_interpreter:
                 try:
                     alt_dir = os.path.join(site.getsitepackages()[-1], 'scons')
                     sys.path.append(alt_dir)
