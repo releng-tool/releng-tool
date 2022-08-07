@@ -129,6 +129,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
         self._register_conf(Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR)
+        self._register_conf(Rpk.SCONS_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR)
         self._register_conf(Rpk.SKIP_REMOTE_CONFIG, PkgKeyType.BOOL)
         self._register_conf(Rpk.SKIP_REMOTE_SCRIPTS, PkgKeyType.BOOL)
@@ -1013,6 +1014,14 @@ class RelengPackageManager:
         if pkg.python_interpreter is None:
             pkg_python_interpreter = self._fetch(Rpk.PYTHON_INTERPRETER)
             pkg.python_interpreter = pkg_python_interpreter
+
+        # ######################################################################
+        # (package type - scons)
+        # ######################################################################
+
+        # scons noinstall flag
+        if pkg.scons_noinstall is None:
+            pkg.scons_noinstall = self._fetch(Rpk.SCONS_NOINSTALL)
 
         # ######################################################################
         # (post checks)

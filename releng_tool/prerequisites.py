@@ -14,6 +14,7 @@ from releng_tool.tool.make import MAKE
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
 from releng_tool.tool.rsync import RSYNC
+from releng_tool.tool.scons import SCONS
 from releng_tool.tool.scp import SCP
 from releng_tool.tool.svn import SVN
 from releng_tool.util.compat import which
@@ -106,6 +107,12 @@ class RelengPrerequisites:
                     self._verbose_exists(interpreter)
                 else:
                     missing.add(interpreter.tool)
+
+        if PackageType.SCONS in pkg_types:
+            if SCONS.exists():
+                self._verbose_exists(SCONS)
+            else:
+                missing.add(SCONS.tool)
 
         if VcsType.BZR in vcs_types:
             if BZR.exists():

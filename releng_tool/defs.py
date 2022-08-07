@@ -99,6 +99,8 @@ class Rpk(Enum):
         MAKE_NOINSTALL: skip make install stage
         # (package type - python)
         PYTHON_INTERPRETER: python interpreter
+        # (package type - scons)
+        SCONS_NOINSTALL: skip scons install stage
     """
     BUILD_SUBDIR = 'BUILD_SUBDIR'
     DEPS = 'DEPENDENCIES'
@@ -148,6 +150,8 @@ class Rpk(Enum):
     MAKE_NOINSTALL = 'MAKE_NOINSTALL'
     # (package type - python)
     PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
+    # (package type - scons)
+    SCONS_NOINSTALL = 'SCONS_NOINSTALL'
 
 class GlobalAction(Enum):
     """
@@ -233,12 +237,14 @@ class PackageType(Enum):
         CMAKE: cmake-based package
         MAKE: make-based package
         PYTHON: python-based package
+        SCONS: scons-based package
         SCRIPT: releng script-based package
     """
     AUTOTOOLS = 'autotools'
     CMAKE = 'cmake'
     MAKE = 'make'
     PYTHON = 'python'
+    SCONS = 'scons'
     SCRIPT = 'script'
 
 class PackageInstallType(Enum):

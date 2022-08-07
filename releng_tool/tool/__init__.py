@@ -9,7 +9,7 @@ from releng_tool.util.string import is_sequence_not_string
 import os
 import re
 
-class RelengTool:
+class RelengTool(object):
     """
     a host tool
 
@@ -127,12 +127,25 @@ class RelengTool:
             if env:
                 final_env.update(env)
 
-        final_args = [self.tool]
+        final_args = self._invoked_tool()
         if args:
             final_args.extend(args)
 
         return _execute(final_args, cwd=cwd, env=final_env, quiet=quiet,
             critical=False, poll=poll, capture=capture)
+
+    def _invoked_tool(self):
+        """
+        returns the tool arguments to be invoked
+
+        Provides the arguments used to invoke the tool for an execution
+        request. This is typically the executable's name/path; however,
+        in some scenarios, a tool may override how a tool is invoked.
+
+        Returns:
+            tool arguments to invoke
+        """
+        return [self.tool]
 
     def exists(self):
         """

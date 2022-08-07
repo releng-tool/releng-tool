@@ -7,6 +7,7 @@ from releng_tool.engine.autotools.build import build as build_autotools
 from releng_tool.engine.cmake.build import build as build_cmake
 from releng_tool.engine.make.build import build as build_make
 from releng_tool.engine.python.build import build as build_python
+from releng_tool.engine.scons.build import build as build_scons
 from releng_tool.engine.script.build import build as build_script
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
@@ -79,6 +80,8 @@ def stage(engine, pkg, script_env):
         builder = build_make
     elif pkg.type == PackageType.PYTHON:
         builder = build_python
+    elif pkg.type == PackageType.SCONS:
+        builder = build_scons
     elif pkg.type == PackageType.SCRIPT:
         builder = build_script
 

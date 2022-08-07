@@ -8,6 +8,7 @@ from releng_tool.engine.autotools.install import install as install_autotools
 from releng_tool.engine.cmake.install import install as install_cmake
 from releng_tool.engine.make.install import install as install_make
 from releng_tool.engine.python.install import install as install_python
+from releng_tool.engine.scons.install import install as install_scons
 from releng_tool.engine.script.install import install as install_script
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
@@ -40,6 +41,8 @@ def stage(engine, pkg, script_env):
         skip_install = pkg.cmake_noinstall
     elif pkg.type == PackageType.MAKE:
         skip_install = pkg.make_noinstall
+    elif pkg.type == PackageType.SCONS:
+        skip_install = pkg.scons_noinstall
 
     if skip_install:
         verbose('skipping installation stage for {}', pkg.name)
@@ -104,6 +107,8 @@ def stage(engine, pkg, script_env):
         installer = install_make
     elif pkg.type == PackageType.PYTHON:
         installer = install_python
+    elif pkg.type == PackageType.SCONS:
+        installer = install_scons
     elif pkg.type == PackageType.SCRIPT:
         installer = install_script
 

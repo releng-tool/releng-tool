@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+# Copyright 2022 releng-tool
+
+from releng_tool.tool import RelengTool
+from releng_tool.util.log import debug
+import os
+import site
+import sys
+
+try:
+    RelengModuleNotFoundError = ModuleNotFoundError
+except NameError:
+    RelengModuleNotFoundError = ImportError
+
+
+#: executable used to run scons commands
+SCONS_COMMAND = 'scons'
+
+#: list of environment keys to filter from a environment dictionary
+SCONS_SANITIZE_ENV_KEYS = [
+    'SCONSFLAGS',
+    'SCONS_LIB_DIR',
+]
+
+
+class SconsTool(RelengTool):
+    """
+    scons host tool
+
+    Provides addition helper methods for scons-based tool interaction.
+    """
+
+    def exists(self):
+        """
+        return whether or not the host tool exists
+
+        Returns whether or not the tool is available on the host for use.
+
+        Returns:
+            ``True``, if the tool exists; ``False`` otherwise
+        """
+        if self.tool in RelengTool.detected:
+            return RelengTool.detected[self.tool]
+
+        # try to find scons using a standard check; if not, we will try to
+        # fallback at looking for the SCons module in the running interpreter
+        if not super(SconsTool, self).exists():
+            debug('attempting to find {} in the running interpreter', self.tool)
+
+            try:
+                import SCons  # noqa: F401  pylint: disable=E0401
+                debug('{} tool is detected in the interpreter', self.tool)
+                RelengTool.detected[self.tool] = True
+                self._scons_interpreter = 'SCons'
+            except RelengModuleNotFoundError:
+                debug('{} tool is not detected in the interpreter', self.tool)
+
+            # on python 2.7, the SCons module is found inside a `scons`
+            # directory; append this folder into the system path, import
+            # it and invoke the module's mainline script
+            if sys.version_info[0] < 3:
+                try:
+                    alt_dir = os.path.join(site.getsitepackages()[-1], 'scons')
+                    sys.path.append(alt_dir)
+
+                    import SCons  # noqa: F401,F811  pylint: disable=E0401
+                    debug('{} tool is detected in the interpreter', self.tool)
+                    RelengTool.detected[self.tool] = True
+                    self._scons_interpreter = 'releng_tool.tool.scons_proxy'
+                except RelengModuleNotFoundError:
+                    pass
+
+        return RelengTool.detected[self.tool]
+
+    def _invoked_tool(self):
+        """
+        returns the tool arguments to be invoked
+
+        Provides the arguments used to invoke the tool for an execution
+        request. This is typically the executable's name/path; however,
+        in some scenarios, a tool may override how a tool is invoked.
+
+        Returns:
+            tool arguments to invoke
+        """
+
+        # If scons is being run using the module found inside the running
+        # interpreter, invoke the SCons module instead.
+        module = getattr(self, '_scons_interpreter', None)
+        if module:
+            interpreter = sys.executable if sys.executable else 'python'
+            return [interpreter, '-m', module]
+
+        return super(SconsTool, self)._invoked_tool()
+
+#: scons host tool helper
+SCONS = SconsTool(SCONS_COMMAND, env_sanitize=SCONS_SANITIZE_ENV_KEYS)
