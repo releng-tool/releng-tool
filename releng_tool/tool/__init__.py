@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2022 releng-tool
 
 from releng_tool.util.io import _execute
 from releng_tool.util.io import execute
