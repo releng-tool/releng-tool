@@ -27,6 +27,10 @@ class TestPkgConfigsPkgType(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('pkg-type-valid-cmake')
         self.assertEqual(pkg.type, PackageType.CMAKE)
 
+    def test_pkgconfig_type_valid_make(self):
+        pkg, _, _ = self.LOAD('pkg-type-valid-make')
+        self.assertEqual(pkg.type, PackageType.MAKE)
+
     def test_pkgconfig_type_valid_python(self):
         pkg, _, _ = self.LOAD('pkg-type-valid-python')
         self.assertEqual(pkg.type, PackageType.PYTHON)
