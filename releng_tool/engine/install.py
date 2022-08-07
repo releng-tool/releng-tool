@@ -13,6 +13,7 @@ from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.log import err
 from releng_tool.util.log import note
+from releng_tool.util.log import verbose
 import sys
 
 def stage(engine, pkg, script_env):
@@ -30,6 +31,16 @@ def stage(engine, pkg, script_env):
     Returns:
         ``True`` if the installation stage is completed; ``False`` otherwise
     """
+
+    # check if a package is not using the installation stage
+    skip_install = False
+
+    if pkg.type == PackageType.CMAKE:
+        skip_install = pkg.cmake_noinstall
+
+    if skip_install:
+        verbose('skipping installation stage for {}', pkg.name)
+        return True
 
     note('installing {}...', pkg.name)
     sys.stdout.flush()
