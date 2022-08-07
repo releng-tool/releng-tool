@@ -32,6 +32,7 @@ the :doc:`user's guide <user-guide>`.
 .. _CMake: https://cmake.org/
 .. _CVS: http://cvs.nongnu.org/
 .. _GNU Build System: https://www.gnu.org/software/automake/manual/html_node/index.html
+.. _GNU Make: https://www.gnu.org/software/make/manual/html_node/index.html
 .. _Git: https://git-scm.com/
 .. _Mercurial: https://www.mercurial-scm.org/
 .. _Python: https://www.python.org/
