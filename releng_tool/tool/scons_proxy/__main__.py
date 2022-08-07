@@ -14,7 +14,10 @@ import sys
 
 
 # inject the scons container folder in the site path
-sys.path.append(os.path.join(site.getsitepackages()[-1], 'scons'))
+for site_base in site.getsitepackages():
+    scons_container = os.path.join(site_base, 'scons')
+    if os.path.exists(scons_container):
+        sys.path.append(scons_container)
 
 if sys.version_info < (3, 5):
     # Scons' `_load_dotted_module_py2` implementation used in Python 3.4 does

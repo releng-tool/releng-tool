@@ -60,16 +60,23 @@ class SconsTool(RelengTool):
             # a `scons` directory; append this folder into the system path,
             # import it and invoke the module's mainline script
             if not self._scons_interpreter:
-                try:
-                    alt_dir = os.path.join(site.getsitepackages()[-1], 'scons')
-                    sys.path.append(alt_dir)
+                for site_base in site.getsitepackages():
+                    scons_container = os.path.join(site_base, 'scons')
+                    if not os.path.exists(scons_container):
+                        continue
 
-                    import SCons  # noqa: F401,F811  pylint: disable=E0401
-                    debug('{} tool is detected in the interpreter', self.tool)
-                    RelengTool.detected[self.tool] = True
-                    self._scons_interpreter = 'releng_tool.tool.scons_proxy'
-                except RelengModuleNotFoundError:
-                    pass
+                    debug('searching for {} tool inside container: {}',
+                        self.tool, scons_container)
+                    sys.path.append(scons_container)
+
+                    try:
+                        import SCons  # noqa: F401,F811  pylint: disable=E0401
+                        debug('{} tool is detected in container', self.tool)
+                        RelengTool.detected[self.tool] = True
+                        self._scons_interpreter = 'releng_tool.tool.scons_proxy'
+                        break
+                    except RelengModuleNotFoundError:
+                        debug('{} tool is not detected in container', self.tool)
 
         return RelengTool.detected[self.tool]
 
