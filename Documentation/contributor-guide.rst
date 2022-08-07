@@ -22,7 +22,7 @@ Contributing
 ------------
 
 Developers are free to submit contributions for this project. Developers wishing
-to contribute should consult this project's `CONTRIBUTING`_ document. A reminder
+to contribute should read this project's `CONTRIBUTING`_ document. A reminder
 that any contributions must be signed off with the
 `Developer Certificate of Origin`_.
 
@@ -86,7 +86,7 @@ tokens.
 Extensions
 ----------
 
-Developers wishing to provide extensions to releng-tool should consult the API
+Developers wishing to provide extensions to releng-tool should read the API
 implementation found in this tool's repository (|releng_tool/api/__init__.py|_).
 Implementation in the API folder aims to be "API safe" -- there is a strong
 attempt to prevent the changing of classes, methods, etc. to prevent
@@ -145,7 +145,7 @@ Improvements to this project's documentation (found inside ``Documentation``)
 are always welcome -- not only for adding/updating documentation for releng-tool
 features but also translations.
 
-For users interested in translations for this project, please consult the
+For users interested in translations for this project, please see the
 following repositories:
 
    | releng-tool - Translations

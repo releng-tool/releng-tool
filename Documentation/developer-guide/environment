@@ -3,10 +3,10 @@ Environment variables
 
 .. tip::
 
-    Avoid using environment variables to configure package options such as
-    compiler flags or interpreters. Managing these options inside a releng-tool
-    project configuration or package definitions can improve configuration
-    management.
+    Avoid using external environment variables for a project to configure
+    package options such as compiler flags or interpreters. Managing these
+    options inside a releng-tool project configuration or package
+    definitions can improve configuration management.
 
 When configuration, package definitions or various scripts are invoked by
 releng-tool, the following environment variables are available:
@@ -135,7 +135,7 @@ releng-tool, the following environment variables are available:
         package is configured for development mode, the environment variable
         will be set to a value of one (i.e. ``PKG_DEVMODE=1``).
 
-        See also :ref:`development mode`.
+        See also :ref:`development mode <development mode>`.
 
     * - ``PKG_INTERNAL``
 
@@ -151,7 +151,7 @@ releng-tool, the following environment variables are available:
         package is configured for local-sources, the environment variable
         will be set to a value of one (i.e. ``PKG_LOCALSRCS=1``).
 
-        See also :ref:`local-sources mode`.
+        See also :ref:`local-sources mode <local-sources mode>`.
 
     * - ``PKG_NAME``
 
@@ -201,7 +201,8 @@ releng-tool, the following environment variables are available:
 
     * - ``RELENG_DEVMODE``
 
-      - The development mode or flag set if in :ref:`development mode`.
+      - The development mode or flag set if in
+        :ref:`development mode <development mode>`.
 
     * - ``RELENG_DISTCLEAN``
 
@@ -213,7 +214,7 @@ releng-tool, the following environment variables are available:
 
     * - ``RELENG_LOCALSRCS``
 
-      - Flag set if in :ref:`local-sources mode`.
+      - Flag set if in :ref:`local-sources mode <local-sources mode>`.
 
     * - ``RELENG_MRPROPER``
 

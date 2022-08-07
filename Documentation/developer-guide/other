@@ -90,7 +90,7 @@ Patching
 .. note::
 
    Patches are ignored when in :ref:`development mode <development mode>` for
-   packages with a development revision or when in
+   packages with a development revision, for ``local`` VCS packages or when in
    :ref:`local-sources mode <local-sources mode>` for internal packages.
 
 The patching stage for a package provides the ability for a developer to apply
@@ -426,7 +426,7 @@ detailed error message will be presented to the user.
 
 While the ability to load extensions is supported, capabilities provided by
 extensions are not officially supported by releng-tool. For issues related to
-specific extension use, it is recommended to consult the documentation provided
+specific extension use, it is recommended to see the documentation provided
 by the providers of said extensions.
 
 
