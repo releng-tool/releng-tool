@@ -189,14 +189,17 @@ The package type. The default package type is a (Python) script-based package;
 however, releng-tool also provides a series of helper package types for common
 frameworks. The following outline a series of supported site definitions:
 
-========= ===
-Type      Value
-========= ===
-Autotools ``autotools``
-CMake     ``cmake``
-Python    ``python``
-Script    ``script``
-========= ===
+.. table::
+    :widths: 50 50
+
+    ================================ ===
+    Type                             Value
+    ================================ ===
+    :ref:`Autotools <autotools-pkg>` ``autotools``
+    :ref:`CMake <cmake-pkg>`         ``cmake``
+    :ref:`Python <python-pkg>`       ``python``
+    :ref:`Script <script-pkg>`       ``script``
+    ================================ ===
 
 For example:
 

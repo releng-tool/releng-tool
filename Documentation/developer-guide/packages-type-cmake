@@ -1,3 +1,5 @@
+.. _cmake-pkg:
+
 CMake Package
 ~~~~~~~~~~~~~
 
@@ -53,8 +55,8 @@ rule configured to define how a project will install files into a target (or
 staging) environment. Not all CMake projects may have this rule defined, which
 can cause the installation stage for a package to fail. A developer can
 specify this no-install flag to skip a CMake-driven install request and
-managing installation actions through other means (such as post-processing).
-By default, the installation stage is invoked with a value of ``True``.
+manage installation actions through other means (such as post-processing).
+By default, the installation stage is invoked with a value of ``False``.
 
 .. code-block:: python
 
