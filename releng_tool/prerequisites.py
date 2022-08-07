@@ -88,7 +88,7 @@ class RelengPrerequisites:
                 else:
                     python_interpreters.add(PYTHON)
 
-        if PackageType.AUTOTOOLS in pkg_types:
+        if PackageType.AUTOTOOLS in pkg_types or PackageType.MAKE in pkg_types:
             if MAKE.exists():
                 self._verbose_exists(MAKE)
             else:

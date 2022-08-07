@@ -124,6 +124,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.INTERNAL, PkgKeyType.BOOL)
         self._register_conf(Rpk.LICENSE, PkgKeyType.STRS)
         self._register_conf(Rpk.LICENSE_FILES, PkgKeyType.STRS)
+        self._register_conf(Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
@@ -995,6 +996,14 @@ class RelengPackageManager:
         # cmake noinstall flag
         if pkg.cmake_noinstall is None:
             pkg.cmake_noinstall = self._fetch(Rpk.CMAKE_NOINSTALL)
+
+        # ######################################################################
+        # (package type - make)
+        # ######################################################################
+
+        # make noinstall flag
+        if pkg.make_noinstall is None:
+            pkg.make_noinstall = self._fetch(Rpk.MAKE_NOINSTALL)
 
         # ######################################################################
         # (package type - python)

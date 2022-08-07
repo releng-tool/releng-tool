@@ -95,6 +95,8 @@ class Rpk(Enum):
         AUTOTOOLS_AUTORECONF: autotools /w autoreconf
         # (package type - cmake)
         CMAKE_NOINSTALL: skip cmake install stage
+        # (package type - make)
+        MAKE_NOINSTALL: skip make install stage
         # (package type - python)
         PYTHON_INTERPRETER: python interpreter
     """
@@ -142,6 +144,8 @@ class Rpk(Enum):
     AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF'
     # (package type - cmake)
     CMAKE_NOINSTALL = 'CMAKE_NOINSTALL'
+    # (package type - make)
+    MAKE_NOINSTALL = 'MAKE_NOINSTALL'
     # (package type - python)
     PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
 
@@ -227,11 +231,13 @@ class PackageType(Enum):
     Attributes:
         AUTOTOOLS: autotools-based package
         CMAKE: cmake-based package
+        MAKE: make-based package
         PYTHON: python-based package
         SCRIPT: releng script-based package
     """
     AUTOTOOLS = 'autotools'
     CMAKE = 'cmake'
+    MAKE = 'make'
     PYTHON = 'python'
     SCRIPT = 'script'
 

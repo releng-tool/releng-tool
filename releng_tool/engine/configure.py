@@ -6,6 +6,7 @@ from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
 from releng_tool.engine.autotools.configure import configure as conf_autotools
 from releng_tool.engine.cmake.configure import configure as conf_cmake
+from releng_tool.engine.make.configure import configure as conf_make
 from releng_tool.engine.script.configure import configure as conf_script
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
@@ -82,6 +83,8 @@ def stage(engine, pkg, script_env):
         configurer = conf_autotools
     elif pkg.type == PackageType.CMAKE:
         configurer = conf_cmake
+    elif pkg.type == PackageType.MAKE:
+        configurer = conf_make
     elif pkg.type == PackageType.SCRIPT:
         configurer = conf_script
 
