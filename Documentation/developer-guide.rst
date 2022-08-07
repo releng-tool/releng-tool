@@ -36,4 +36,5 @@ the :doc:`user's guide <user-guide>`.
 .. _Git: https://git-scm.com/
 .. _Mercurial: https://www.mercurial-scm.org/
 .. _Python: https://www.python.org/
+.. _SCons: https://scons.org/
 .. _Subversion: https://subversion.apache.org/

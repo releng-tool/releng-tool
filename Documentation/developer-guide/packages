@@ -199,6 +199,7 @@ frameworks. The following outline a series of supported site definitions:
     :ref:`CMake <cmake-pkg>`         ``cmake``
     :ref:`Make <make-pkg>`           ``make``
     :ref:`Python <python-pkg>`       ``python``
+    :ref:`SCons <scons-pkg>`         ``scons``
     :ref:`Script <script-pkg>`       ``script``
     ================================ ===
 
@@ -729,6 +730,7 @@ See also `script helpers`_ for helper functions/variables available for use.
 .. include:: developer-guide/packages-type-cmake
 .. include:: developer-guide/packages-type-make
 .. include:: developer-guide/packages-type-python
+.. include:: developer-guide/packages-type-scons
 
 .. _--depth: https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---depthltdepthgt
 .. _git-config: https://git-scm.com/docs/git-config

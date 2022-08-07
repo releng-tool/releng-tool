@@ -136,7 +136,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_SKIP_REMOTE_SCRIPTS = bool
    LIBFOO_SITE = '<site>'
    LIBFOO_STRIP_COUNT = int # >= 0
-   LIBFOO_TYPE = '<type>' # autotools, cmake, make, python, script, ext-<extension>
+   LIBFOO_TYPE = '<type>' # autotools, cmake, make, python, scons, script, ext-<extension>
    LIBFOO_VCS_TYPE = '<vcs-type>' # bzr, cvs, git, hg, local, none, rsync, scp, svn, url
    LIBFOO_VERSION = '<version>'
 
