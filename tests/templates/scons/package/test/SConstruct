@@ -1,0 +1,23 @@
+import os
+
+evars = Variables(
+    args=ARGUMENTS,
+)
+
+evars.Add(
+    'DESTDIR',
+    default='output',
+)
+
+evars.Add(
+    'PREFIX',
+    default='',
+)
+
+env = Environment(variables=evars)
+hello = Program(['main.cpp'])
+Default(hello)
+
+bin_dir = os.path.join(env['DESTDIR'] + env['PREFIX'], 'bin')
+env.Install(bin_dir, hello)
+env.Alias('install', bin_dir)

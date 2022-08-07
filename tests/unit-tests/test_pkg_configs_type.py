@@ -35,6 +35,10 @@ class TestPkgConfigsPkgType(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('pkg-type-valid-python')
         self.assertEqual(pkg.type, PackageType.PYTHON)
 
+    def test_pkgconfig_type_valid_scons(self):
+        pkg, _, _ = self.LOAD('pkg-type-valid-scons')
+        self.assertEqual(pkg.type, PackageType.SCONS)
+
     def test_pkgconfig_type_valid_script(self):
         pkg, _, _ = self.LOAD('pkg-type-valid-script')
         self.assertEqual(pkg.type, PackageType.SCRIPT)
