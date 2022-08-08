@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2022 releng-tool
 
+from releng_tool.engine.script.configure import configure as configure_script
 from releng_tool.tool.scons import SCONS
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
@@ -31,7 +32,9 @@ def configure(opts):
     # assume that the scons project does not have a configuration event.
     if not opts.conf_opts:
         verbose('no configuration options provided: {}', opts.name)
-        return True
+
+        # fallback to invoking a configuration script
+        return configure_script(opts)
 
     # definitions
     scons_defs = {
