@@ -48,6 +48,9 @@ during the configuration stage, the following can be used:
        'prework',
    ]
 
+Alternatively, if no configuration options are specified, a
+``<package>-configure`` :ref:`script <script-pkg>` can be invoked if available.
+
 The following sections outline configuration options are available for a SCons
 package.
 
