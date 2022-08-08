@@ -18,13 +18,14 @@ Development
 - Introduce ``PKG_DEVMODE`` environment/script variable
 - Introduce ``RELENG_TARGET_PKG`` environment/script variable
 - Introduce ``releng_copy_into`` helper script function
+- Introduce support for Python setup types
+- Introduce support for SCons-based packages
 - Introduce support for development mode configurations, allowing users
   to target specific revisions or sites for packages supporting alternative
   source revisions
 - Introduce support for global and package-specific path overrides when
   operating in local-sources mode
 - Introduce support for make-based packages
-- Introduce support for SCons-based packages
 - Support ``PKG_DEFDIR`` usage inside a package's definition
 - Support bzr quirk to utilize ``certifi`` certificates
 - Support users overriding a project's configuration path from command line
