@@ -1,0 +1,8 @@
+[build-system]
+requires = ['hatchling']
+build-backend = 'hatchling.build'
+
+[project]
+name = 'hello_module'
+description = 'hello world description'
+version = '1.0'

@@ -1,0 +1,8 @@
+[build-system]
+requires = ['pdm-pep517']
+build-backend = 'pdm.pep517.api'
+
+[project]
+name = 'hello_module'
+description = 'hello world description'
+version = '1.0'

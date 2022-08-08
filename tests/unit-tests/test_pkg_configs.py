@@ -245,18 +245,6 @@ class TestPkgConfigs(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('prefix-valid')
         self.assertEqual(pkg.prefix, 'myprefix')
 
-    def test_pkgconfig_python_interpreter_invalid(self):
-        with self.assertRaises(RelengToolInvalidPackageKeyValue):
-            self.LOAD('python-interpreter-invalid-type')
-
-    def test_pkgconfig_python_interpreter_missing(self):
-        pkg, _, _ = self.LOAD('missing')
-        self.assertIsNone(pkg.python_interpreter)
-
-    def test_pkgconfig_python_interpreter_valid(self):
-        pkg, _, _ = self.LOAD('python-interpreter-valid')
-        self.assertEqual(pkg.python_interpreter, 'mypython')
-
     def test_pkgconfig_revision_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('revision-invalid-type')
