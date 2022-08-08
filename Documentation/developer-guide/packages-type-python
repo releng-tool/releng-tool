@@ -53,3 +53,48 @@ interpreter will be used. This field is optional.
 .. code-block:: python
 
    LIBFOO_PYTHON_INTERPRETER = '<path>'
+
+LIBFOO_PYTHON_SETUP_TYPE
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The setup type will configure how a Python package is built and installed.
+The default setup type used for a Python package is a distutils package. It
+is recommended to always configure a setup type for a Python package.
+The following outlines the available setup types in releng-tool:
+
+.. table::
+    :widths: 50 50
+
+    ============================== ===
+    Type                           Value
+    ============================== ===
+    `Flit`_                        ``flit``
+    `Hatch`_                       ``hatch``
+    `PDM`_                         ``pdm``
+    `PEP 517 build <pypa-build_>`_ ``pep517``
+    `Setuptools`_                  ``setuptools``
+    `distutils`_                   ``distutils``
+    ============================== ===
+
+For example:
+
+.. code-block:: python
+
+   LIBFOO_PYTHON_SETUP_TYPE = 'setuptools'
+
+For setup types other than Setuptools/distutils, the `installer`_ module will
+be used to install packages to their destination folders.
+
+Host environments are required to pre-install needed packages in their
+running Python environment to support setup types not available in a
+standard Python distribution. For example, if a PDM setup type is set,
+the host system will need to have ``pdm`` Python module installed on
+the system.
+
+.. _Flit: https://flit.pypa.io
+.. _Hatch: https://hatch.pypa.io
+.. _PDM: https://pdm.fming.dev
+.. _Setuptools: https://setuptools.pypa.io
+.. _distutils: https://docs.python.org/library/distutils.html
+.. _installer: https://installer.readthedocs.io
+.. _pypa-build: https://pypa-build.readthedocs.io
