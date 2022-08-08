@@ -69,6 +69,7 @@ class RelengPackage:
         make_noinstall: flag to disable the install stage for a make project
         (other - python)
         python_interpreter: python interpreter to invoke stages with
+        python_setup_type: setup type to build/install with
         (package type - scons)
         scons_noinstall: flag to disable the install stage for a scons project
     """
@@ -135,5 +136,6 @@ class RelengPackage:
         self.git_verify_revision = None
         # (other - python)
         self.python_interpreter = None
+        self.python_setup_type = None
         # (package type - scons)
         self.scons_noinstall = None

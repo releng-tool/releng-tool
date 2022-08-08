@@ -131,6 +131,17 @@ unknown package type value provided
  (package: {pkg_name}, key: {pkg_key})
 '''.strip().format(**args))
 
+class RelengToolUnknownPythonSetupType(RelengToolInvalidPackageConfiguration):
+    """
+    raised when a package defined an unknown python setup type
+    """
+    def __init__(self, args):
+        RelengToolInvalidPackageConfiguration.__init__(self,
+'''
+unknown python setup type value provided
+ (package: {pkg_name}, key: {pkg_key})
+'''.strip().format(**args))
+
 class RelengToolUnknownVcsType(RelengToolInvalidPackageConfiguration):
     """
     raised when a package defined an unknown vcs type

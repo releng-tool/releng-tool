@@ -99,6 +99,7 @@ class Rpk(Enum):
         MAKE_NOINSTALL: skip make install stage
         # (package type - python)
         PYTHON_INTERPRETER: python interpreter
+        PYTHON_SETUP_TYPE: python setup type to build/install with
         # (package type - scons)
         SCONS_NOINSTALL: skip scons install stage
     """
@@ -150,6 +151,7 @@ class Rpk(Enum):
     MAKE_NOINSTALL = 'MAKE_NOINSTALL'
     # (package type - python)
     PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
+    PYTHON_SETUP_TYPE = 'PYTHON_SETUP_TYPE'
     # (package type - scons)
     SCONS_NOINSTALL = 'SCONS_NOINSTALL'
 
@@ -266,6 +268,28 @@ class PackageInstallType(Enum):
     STAGING = 'staging'
     STAGING_AND_TARGET = 'staging_and_target'
     TARGET = 'target'
+
+class PythonSetupType(Enum):
+    """
+    python setup types
+
+    Defines supported Python seutp types for deciding which method build and
+    install commands/arguments are utilized.
+
+    Attributes:
+        DISTUTILS: distutils build packager
+        FLIT: Flit build packager
+        HATCH: Hatch build packager
+        PDM: PDM build packager
+        PEP517: pep517 build packager
+        SETUPTOOLS: setuptools build packager
+    """
+    DISTUTILS = 'distutils'
+    FLIT = 'flit'
+    HATCH = 'hatch'
+    PDM = 'pdm'
+    PEP517 = 'pep517'
+    SETUPTOOLS = 'setuptools'
 
 class VcsType(Enum):
     """

@@ -5,6 +5,7 @@ from collections import OrderedDict
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
+from releng_tool.defs import PythonSetupType
 from releng_tool.defs import Rpk
 from releng_tool.defs import VcsType
 from releng_tool.packages import PkgKeyType
@@ -21,6 +22,7 @@ from releng_tool.packages.exceptions import RelengToolMissingPackageSite
 from releng_tool.packages.exceptions import RelengToolUnknownExtractType
 from releng_tool.packages.exceptions import RelengToolUnknownInstallType
 from releng_tool.packages.exceptions import RelengToolUnknownPackageType
+from releng_tool.packages.exceptions import RelengToolUnknownPythonSetupType
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
 from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
@@ -128,6 +130,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
+        self._register_conf(Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR)
         self._register_conf(Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR)
         self._register_conf(Rpk.SCONS_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR)
@@ -1012,8 +1015,20 @@ class RelengPackageManager:
 
         # python interpreter
         if pkg.python_interpreter is None:
-            pkg_python_interpreter = self._fetch(Rpk.PYTHON_INTERPRETER)
-            pkg.python_interpreter = pkg_python_interpreter
+            pkg.python_interpreter = self._fetch(Rpk.PYTHON_INTERPRETER)
+
+        # python setup type
+        if pkg.python_setup_type is None:
+            python_setup_type_raw = self._fetch(Rpk.PYTHON_SETUP_TYPE)
+            if python_setup_type_raw:
+                python_setup_type_raw = python_setup_type_raw.lower()
+                if python_setup_type_raw in PythonSetupType:
+                    pkg.python_setup_type = python_setup_type_raw
+                else:
+                    raise RelengToolUnknownPythonSetupType({
+                        'pkg_name': pkg.name,
+                        'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
+                    })
 
         # ######################################################################
         # (package type - scons)
