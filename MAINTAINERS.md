@@ -8,8 +8,7 @@ to this repository, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 Perform a clean build:
 
 ```shell-session
-python setup.py clean --all
-python setup.py sdist bdist_wheel
+python -m build
 ```
 
 Sign the packages:
