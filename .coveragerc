@@ -1,0 +1,17 @@
+[coverage:run]
+parallel = 1
+source = releng_tool
+
+[coverage:report]
+ignore_errors = 1
+omit =
+    # ignore tox
+    .tox/*
+    # ignore api interface
+    releng_tool/api/__init__.py
+    # ignore deprecated namespace
+    releng/*
+    # ignore mainlines
+    *__main__.py*
+show_missing = 1
+skip_covered = 1

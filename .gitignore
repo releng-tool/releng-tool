@@ -20,6 +20,7 @@ __pycache__/
 /htmlcov*/
 /.tox/
 .coverage*
+!.coveragerc
 
 # other
 /.idea/
