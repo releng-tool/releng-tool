@@ -32,6 +32,7 @@ classifiers = [
     'Topic :: Software Development :: Build Tools',
 ]
 dynamic = [
+    'entry-points',
     'version',
 ]
 
