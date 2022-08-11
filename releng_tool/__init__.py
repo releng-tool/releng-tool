@@ -40,6 +40,7 @@ from releng_tool.util.io_copy import path_copy as releng_copy
 from releng_tool.util.io_copy import path_copy_into as releng_copy_into
 from releng_tool.util.log import debug as debug
 from releng_tool.util.log import err as err
+from releng_tool.util.log import hint as hint
 from releng_tool.util.log import log as log
 from releng_tool.util.log import note as note
 from releng_tool.util.log import success as success

@@ -71,6 +71,24 @@ def err(msg, *args):
     __log('(error) ', '\033[1;31m', msg, sys.stderr, *args)
     sys.stderr.flush()
 
+def hint(msg, *args):
+    """
+    log a hint message
+
+    Logs a hint message to standard out with a trailing new line and (if
+    enabled) a cyan colorization.
+
+    .. code-block:: python
+
+        hint('this is a hint message')
+
+    Args:
+        msg: the message
+        *args: an arbitrary set of positional and keyword arguments used when
+            generating a formatted message
+    """
+    __log('', '\033[1;36m', msg, sys.stdout, *args)
+
 def is_verbose():
     """
     report if the instance is configured with verbose messaging
