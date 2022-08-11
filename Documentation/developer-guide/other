@@ -184,6 +184,12 @@ listed below:
             :members: err
             :noindex:
 
+    * - ``hint``
+
+      - .. automodule:: releng_tool
+            :members: hint
+            :noindex:
+
     * - ``log``
 
       - .. automodule:: releng_tool

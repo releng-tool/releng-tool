@@ -151,6 +151,7 @@ Functions available to scripts invoked by releng-tool or importable via
 
    debug(msg, *args)
    err(msg, *args)
+   hint(msg, *args)
    log(msg, *args)
    note(msg, *args)
    releng_cat(file, *args)
