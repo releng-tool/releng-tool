@@ -45,6 +45,7 @@ from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import hint
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import success
@@ -133,10 +134,14 @@ class RelengEngine:
 
         # inform the user of any active running modes
         if self.opts.devmode:
-            verbose('running in development mode')
+            if self.opts.devmode is True:
+                postfix = ''
+            else:
+                postfix = ' ({})'.format(self.opts.devmode)
+            hint('running in development mode' + postfix)
 
         if self.opts.local_srcs:
-            verbose('running in local-sources mode')
+            hint('running in local-sources mode')
 
         # register the project's root directory as a system path; permits a
         # project to import locally created modules in their build/etc. scripts
