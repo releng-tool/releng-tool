@@ -1,5 +1,5 @@
-Development
------------
+0.13 (2022-08-10)
+-----------------
 
 - Avoid interaction with target area when using CMake projects that only
   uses the staging area
