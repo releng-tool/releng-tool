@@ -11,6 +11,12 @@ Perform a clean build:
 python -m build
 ```
 
+Verify packages can be published:
+
+```shell-session
+twine check dist/*
+```
+
 Sign the packages:
 
 ```shell-session
