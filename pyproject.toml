@@ -11,7 +11,7 @@ authors = [
     {name = 'releng-tool', email = 'releng@releng.io'},
 ]
 requires-python = '>=2.7'
-readme = 'README.rst'
+readme = 'README.md'
 license = {text = 'BSD-2-Clause'}
 classifiers = [
     'Development Status :: 4 - Beta',
