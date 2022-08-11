@@ -80,5 +80,5 @@ jobs:
         git config --global user.email 'noreply@releng.io'
         git add .
         if git commit -am "automated development update"; then
-          git push origin master
+          git push origin main
         fi
