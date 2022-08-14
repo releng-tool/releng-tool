@@ -1,6 +1,7 @@
 Development
 -----------
 
+* **(note)** The deprecated ``releng`` namespace has been removed.
 - Support treating releng-tool warnings as errors with ``--werror`` argument
 
 0.13 (2022-08-10)
