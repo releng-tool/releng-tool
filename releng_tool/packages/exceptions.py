@@ -15,7 +15,7 @@ class RelengToolConflictingConfiguration(RelengToolInvalidPackageConfiguration):
     raised when two package configuration values conflict with each other
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolConflictingConfiguration, self).__init__(self,
 '''
 package has conflicting configuration values: {pkg_name}
  ({desc})
@@ -28,7 +28,7 @@ class RelengToolConflictingLocalSrcsPath(RelengToolInvalidPackageConfiguration):
     raised when a detected local sourced package path matches the root directory
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolConflictingLocalSrcsPath, self).__init__(self,
 '''
 conflicting local-sources package path and root directory: {pkg_name}
  (root: {root})
@@ -41,7 +41,7 @@ class RelengToolCyclicPackageDependency(RelengToolInvalidPackageConfiguration):
     raised when a cyclic package dependency is detected
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolCyclicPackageDependency, self).__init__(self,
 '''
 cyclic package dependency detected: {pkg_name}
 '''.strip().format(**args))
@@ -52,7 +52,7 @@ class RelengToolInvalidPackageKeyValue(RelengToolInvalidPackageConfiguration):
     raised when a package key is using an unsupported value
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolInvalidPackageKeyValue, self).__init__(self,
 '''
 package configuration has an invalid value: {pkg_name}
  (key: {pkg_key}, expects: {expected_type})
@@ -64,7 +64,7 @@ class RelengToolMissingPackageRevision(RelengToolInvalidPackageConfiguration):
     raised when a required package revision has not been defined
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolMissingPackageRevision, self).__init__(self,
 '''
 package defines vcs-type ({vcs_type}) but no version/revision: {pkg_name}
  (missing either key: {pkg_key1}, {pkg_key2})
@@ -76,7 +76,7 @@ class RelengToolInvalidPackageScript(RelengToolInvalidPackageConfiguration):
     raised when a package script has an issue loading (e.g. syntax error)
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolInvalidPackageScript, self).__init__(self,
 '''
 {traceback}
 unable to load package script: {script}
@@ -89,7 +89,7 @@ class RelengToolMissingPackageScript(RelengToolInvalidPackageConfiguration):
     raised when a package script cannot be found
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolMissingPackageScript, self).__init__(self,
 '''
 unknown package provided: {pkg_name}
  (script) {script}
@@ -101,7 +101,7 @@ class RelengToolMissingPackageSite(RelengToolInvalidPackageConfiguration):
     raised when a package site has not been defined with a vcs-type set
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolMissingPackageSite, self).__init__(self,
 '''
 package defines vcs-type ({vcs_type}) but no site: {pkg_name}
  (key: {pkg_key})
@@ -113,7 +113,7 @@ class RelengToolUnknownExtractType(RelengToolInvalidPackageConfiguration):
     raised when a package defined an unknown extract type
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolUnknownExtractType, self).__init__(self,
 '''
 unknown extract type value provided
  (package: {pkg_name}, key: {pkg_key})
@@ -125,7 +125,7 @@ class RelengToolUnknownInstallType(RelengToolInvalidPackageConfiguration):
     raised when a package defined an unknown install type
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolUnknownInstallType, self).__init__(self,
 '''
 unknown install type value provided
  (package: {pkg_name}, key: {pkg_key})
@@ -137,7 +137,7 @@ class RelengToolUnknownPackageType(RelengToolInvalidPackageConfiguration):
     raised when a package defined an unknown package type
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolUnknownPackageType, self).__init__(self,
 '''
 unknown package type value provided
  (package: {pkg_name}, key: {pkg_key})
@@ -149,7 +149,7 @@ class RelengToolUnknownPythonSetupType(RelengToolInvalidPackageConfiguration):
     raised when a package defined an unknown python setup type
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolUnknownPythonSetupType, self).__init__(self,
 '''
 unknown python setup type value provided
  (package: {pkg_name}, key: {pkg_key})
@@ -161,7 +161,7 @@ class RelengToolUnknownVcsType(RelengToolInvalidPackageConfiguration):
     raised when a package defined an unknown vcs type
     """
     def __init__(self, args):
-        RelengToolInvalidPackageConfiguration.__init__(self,
+        super(RelengToolUnknownVcsType, self).__init__(self,
 '''
 unknown vcs type value provided
  (package: {pkg_name}, key: {pkg_key})

@@ -13,7 +13,7 @@ class RelengToolMissingConfigurationError(RelengToolException):
     exception thrown when missing a project's configuration file
     """
     def __init__(self, path):
-        RelengToolException.__init__(self, '''\
+        super(RelengToolMissingConfigurationError, self).__init__(self, '''\
 missing configuration file
 
 The configuration file cannot be found. Ensure the configuration file exists
@@ -28,7 +28,7 @@ class RelengToolMissingExecCommand(RelengToolException):
     exception thrown when a missing a command for a package's exec call
     """
     def __init__(self, pkg):
-        RelengToolException.__init__(self, '''\
+        super(RelengToolMissingExecCommand, self).__init__(self, '''\
 missing package command
 
 A request has been made to execute a command for a package; however, no command
@@ -44,7 +44,7 @@ class RelengToolMissingPackagesError(RelengToolException):
     exception thrown when a project's configuration does not provide any pkgs
     """
     def __init__(self, path, key):
-        RelengToolException.__init__(self, '''\
+        super(RelengToolMissingPackagesError, self).__init__(self, '''\
 no defined packages
 
 The configuration file does not have any defined packages. Ensure a package
