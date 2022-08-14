@@ -31,6 +31,7 @@ function _releng_tool {
         '--quirk[quirk to apply to a run]: ' \
         {--verbose,-V}'[show additional messages]' \
         '--version[print the version and exit]' \
+        '--werror[treat warnings as errors]' \
         "1: :($opts)"
 }
 
