@@ -49,6 +49,7 @@ def main():
         parser.add_argument('--verbose', '-V', action='store_true')
         parser.add_argument('--version', action='version',
             version='%(prog)s ' + releng_version)
+        parser.add_argument('--werror', '-Werror', action='store_true')
 
         known_args = sys.argv[1:]
         forward_args = []
@@ -76,7 +77,10 @@ def main():
         if args.debug:
             args.verbose = True
 
-        releng_log_configuration(args.debug, args.nocolorout, args.verbose)
+        releng_log_configuration(
+            args.debug, args.nocolorout, args.verbose, args.werror)
+
+        warnerr = err if args.werror else warn
 
         # toggle on ansi colors by default for commands
         if not args.nocolorout:
@@ -104,7 +108,9 @@ def main():
             os.environ[k] = v
 
         if unknown_args:
-            warn('unknown arguments: {}', ' '.join(unknown_args))
+            warnerr('unknown arguments: {}', ' '.join(unknown_args))
+            if args.werror:
+                return retval
 
         if forward_args:
             debug('forwarded arguments: {}', ' '.join(forward_args))
@@ -128,7 +134,9 @@ def main():
                         inside_container = True
 
                     if not inside_container:
-                        warn('running as root; this may be unsafe')
+                        warnerr('running as root; this may be unsafe')
+                        if args.werror:
+                            return retval
 
         # prepare engine options
         opts = RelengEngineOptions(args=args, forward_args=forward_args)
@@ -296,6 +304,7 @@ def usage():
  --quirk <value>           inject in quirk into this run
  -V, --verbose             show additional messages
  --version                 show the version
+ --werror, -Werror         treat warnings as errors
 """
 
 def usage_quirks():

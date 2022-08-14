@@ -50,3 +50,8 @@ list exists with the name of packages to be part of the releng process:
     {}
         {} = ['liba', 'libb', 'libc']
 '''.format(path, key))
+
+class RelengToolWarningAsError(RelengToolException):
+    """
+    exception thrown for a warning being triggered as an error
+    """

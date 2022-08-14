@@ -2,6 +2,7 @@
 # Copyright 2018-2022 releng-tool
 
 from __future__ import print_function
+from releng_tool.exceptions import RelengToolWarningAsError
 import sys
 
 #: flag to track the enablement of debug messages
@@ -12,6 +13,9 @@ RELENG_LOG_NOCOLOR_FLAG = False
 
 #: flag to track the enablement of verbose messages
 RELENG_LOG_VERBOSE_FLAG = False
+
+#: flag to track if warnings should be treated as errors
+RELENG_LOG_WERROR_FLAG = False
 
 def log(msg, *args):
     """
@@ -182,8 +186,17 @@ def warn(msg, *args):
         msg: the message
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
+
+    Raises:
+        RelengToolWarningAsError: when warnings-are-errors is configured
     """
+    global RELENG_LOG_WERROR_FLAG
+
     sys.stdout.flush()
+
+    if RELENG_LOG_WERROR_FLAG:
+        raise RelengToolWarningAsError(msg.format(*args))
+
     __log('(warn) ', '\033[1;35m', msg, sys.stderr, *args)
     sys.stderr.flush()
 
@@ -212,7 +225,7 @@ def __log(prefix, color, msg, file, *args):
         msg = msg.format(*args)
     print('{}{}{}{}'.format(color, prefix, msg, post), file=file)
 
-def releng_log_configuration(debug_, nocolor, verbose_):
+def releng_log_configuration(debug_, nocolor, verbose_, werror):
     """
     configure the global logging state of the running instance
 
@@ -225,10 +238,13 @@ def releng_log_configuration(debug_, nocolor, verbose_):
         debug_: toggle the enablement of debug messages
         nocolor: toggle the disablement of colorized messages
         verbose_: toggle the enablement of verbose messages
+        werror: toggle the enablement of warnings-are-errors
     """
     global RELENG_LOG_DEBUG_FLAG
     global RELENG_LOG_NOCOLOR_FLAG
     global RELENG_LOG_VERBOSE_FLAG
+    global RELENG_LOG_WERROR_FLAG
     RELENG_LOG_DEBUG_FLAG = debug_
     RELENG_LOG_NOCOLOR_FLAG = nocolor
     RELENG_LOG_VERBOSE_FLAG = verbose_
+    RELENG_LOG_WERROR_FLAG = werror

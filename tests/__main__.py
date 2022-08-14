@@ -54,7 +54,7 @@ def main():
         if not verbosity:
             verbosity = 1
 
-    releng_log_configuration(args.debug, False, verbosity)
+    releng_log_configuration(args.debug, False, verbosity, False)
 
     # disable short descriptions
     unittest.TestCase.shortDescription = lambda x: None
