@@ -66,7 +66,7 @@ environment to use this package.
 
         .. code-block:: shell-session
 
-            $ pip install releng-tool
+            $ pip install -U releng-tool
             $ releng-tool --version
             releng-tool <version>
 

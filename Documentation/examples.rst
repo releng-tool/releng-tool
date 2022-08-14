@@ -4,7 +4,7 @@ Examples
 .. tip::
 
     Developers wishing to quickly generate an initial project skeleton in
-    their working directory can use the `init` action:
+    their working directory can use the ``init`` action:
 
     .. code-block:: shell
 

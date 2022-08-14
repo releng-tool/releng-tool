@@ -35,7 +35,7 @@ Root directory
 A user invoking releng-tool will attempt to operate in a project root directory.
 Any content managed by this tool (e.g. creating directories, downloading
 sources, etc.) should all be performed inside the root directory. Some
-exceptions exist where a user requests to adjust the download directory (i.e.
+exceptions exist where a user requests to adjust the download directory (e.g.
 providing the ``--dl-dir`` argument).
 
 Fetching design
