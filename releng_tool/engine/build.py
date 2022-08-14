@@ -16,6 +16,7 @@ from releng_tool.util.log import err
 from releng_tool.util.log import note
 import sys
 
+
 def stage(engine, pkg, script_env):
     """
     handles the build stage for a package

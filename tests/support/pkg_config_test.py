@@ -8,8 +8,10 @@ from tests.support import fetch_unittest_assets_dir
 import os
 import unittest
 
+
 # base directory in the unit test folder which holds configurations
 CONFIGS_DIR = 'configs'
+
 
 class TestPkgConfigsBase(unittest.TestCase):
     """

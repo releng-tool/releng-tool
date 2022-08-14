@@ -13,6 +13,7 @@ try:
 except ImportError:
     from collections import Sequence  # pylint: disable=W1512
 
+
 def expand(obj, kv=None):
     """
     perform variable expansion on strings
@@ -113,6 +114,7 @@ def expand(obj, kv=None):
 
     return rv
 
+
 def interpret_dictionary_strings(obj):
     """
     interpret a dictionary of key-value strings from the provided object
@@ -142,6 +144,7 @@ def interpret_dictionary_strings(obj):
 
     return rv
 
+
 def interpret_string(obj):
     """
     interpret a string, if any, from the provided object
@@ -162,6 +165,7 @@ def interpret_string(obj):
         rv = obj
 
     return rv
+
 
 def interpret_strings(obj):
     """
@@ -192,6 +196,7 @@ def interpret_strings(obj):
                     break
 
     return rv
+
 
 def interpret_zero_to_one_strings(obj):
     """
@@ -234,6 +239,7 @@ def interpret_zero_to_one_strings(obj):
                 rv[child] = ''
 
     return rv
+
 
 def is_sequence_not_string(obj):
     """

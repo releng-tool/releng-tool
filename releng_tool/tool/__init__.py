@@ -9,6 +9,7 @@ from releng_tool.util.string import is_sequence_not_string
 import os
 import re
 
+
 class RelengTool(object):
     """
     a host tool

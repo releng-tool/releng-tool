@@ -6,6 +6,7 @@ from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.registry import RelengRegistry
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsOverride(TestPkgConfigsBase):
     def test_pkgconfig_override_configured(self):
         # provide an override for the package's revision

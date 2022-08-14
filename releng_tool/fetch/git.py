@@ -15,6 +15,7 @@ from releng_tool.util.log import verbose
 import os
 import sys
 
+
 class GitExistsType(Enum):
     """
     git exists type
@@ -41,6 +42,7 @@ REVISION_EXISTS = [
     GitExistsType.EXISTS_HASH,
     GitExistsType.EXISTS_TAG,
 ]
+
 
 def fetch(opts):
     """
@@ -128,6 +130,7 @@ is signed and that the package's public key has been registered in the system.
             return None
 
     return cache_dir
+
 
 def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
     """
@@ -261,6 +264,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
 
     return True
 
+
 def revision_exists(git_dir, revision):
     """
     check if the provided revision exists
@@ -302,6 +306,7 @@ def revision_exists(git_dir, revision):
 
     return GitExistsType.EXISTS_BRANCH
 
+
 def _create_bare_git_repo(cache_dir):
     """
     create a bare git repository
@@ -324,6 +329,7 @@ def _create_bare_git_repo(cache_dir):
 
     err('unable to initialize bare git repository')
     return False
+
 
 def _sync_git_configuration(opts):
     """
@@ -362,6 +368,7 @@ def _sync_git_configuration(opts):
 
     return True
 
+
 def _sync_git_origin(cache_dir, site):
     """
     synchronize an origin site to a git configuration
@@ -390,6 +397,7 @@ def _sync_git_origin(cache_dir, site):
         return False
 
     return True
+
 
 def _fetch_submodules(opts, cache_dir, revision):
     """
@@ -481,6 +489,7 @@ def _fetch_submodules(opts, cache_dir, revision):
 
     return True
 
+
 def _fetch_submodule(opts, name, cache_dir, revision, site):
     """
     fetch a submodule into a provided cache/bar repository
@@ -535,6 +544,7 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
     desc = 'submodule ({}): {}'.format(opts.name, name)
     return _fetch_srcs(opts, cache_dir, revision, desc=desc)
 
+
 def _validate_cache(cache_dir):
     """
     validate an existing cache directory to fetch on
@@ -568,6 +578,7 @@ def _validate_cache(cache_dir):
                 bad_validation = True
 
     return has_cache, bad_validation
+
 
 def _verify_revision(git_dir, revision, quiet=False):
     """

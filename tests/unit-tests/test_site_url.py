@@ -12,6 +12,7 @@ import os
 import sys
 import unittest
 
+
 class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_tar_bz2_valid(self):
         with httpd_context() as httpd:

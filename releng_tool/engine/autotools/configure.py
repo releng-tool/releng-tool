@@ -9,6 +9,7 @@ from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 from releng_tool.util.string import expand
 
+
 def configure(opts):
     """
     support configuration for autotools projects

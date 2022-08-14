@@ -15,6 +15,7 @@ import argparse
 import os
 import sys
 
+
 def main():
     """
     mainline
@@ -153,6 +154,7 @@ def main():
 
     return retval
 
+
 def process_args(args):
     """
     process arguments for an action and key-value entries for environments
@@ -216,6 +218,7 @@ def process_args(args):
         'exec': exec_,
     }, unknown_args
 
+
 def type_nonnegativeint(value):
     """
     argparse type check for a non-negative integer
@@ -236,6 +239,7 @@ def type_nonnegativeint(value):
     if val < 0:
         raise argparse.ArgumentTypeError('invalid non-negative value')
     return val
+
 
 def usage():
     """
@@ -307,6 +311,7 @@ def usage():
  --werror, -Werror         treat warnings as errors
 """
 
+
 def usage_quirks():
     """
     display the available quirks in this tool
@@ -326,6 +331,7 @@ releng.disable_remote_scripts          disable remote scripts
 releng.git.no_depth                    disable depth-limits for git calls
 releng.git.no_quick_fetch              disable quick-fetching for git calls
 """
+
 
 if __name__ == '__main__':
     sys.exit(main())

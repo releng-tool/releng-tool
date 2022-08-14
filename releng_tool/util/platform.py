@@ -4,6 +4,7 @@
 from releng_tool.util.log import err
 import sys
 
+
 def platform_exit(msg=None, code=None):
     """
     exit out of the releng-tool process

@@ -9,6 +9,7 @@ from releng_tool.util.log import note
 import os
 import sys
 
+
 def fetch(opts):
     """
     support fetching from mercurial sources

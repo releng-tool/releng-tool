@@ -15,6 +15,7 @@ import posixpath
 #: default lib container directory
 DEFAULT_LIB_DIR = 'lib'
 
+
 def configure(opts):
     """
     support configuration for cmake projects

@@ -13,6 +13,7 @@ TAR_SANITIZE_ENV_KEYS = [
     'TAR_OPTIONS',
 ]
 
+
 class TarTool(RelengTool):
     """
     tar host tool

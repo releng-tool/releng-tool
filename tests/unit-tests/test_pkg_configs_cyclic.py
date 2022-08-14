@@ -5,6 +5,7 @@ from releng_tool.packages.exceptions import RelengToolCyclicPackageDependency
 from tests import prepare_testenv
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsCyclic(TestPkgConfigsBase):
     def test_pkgconfig_cyclic_explicit_loading(self):
         pkg_names = [

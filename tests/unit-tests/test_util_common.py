@@ -4,6 +4,7 @@
 from releng_tool.util import nullish_coalescing
 import unittest
 
+
 class TestUtilCommon(unittest.TestCase):
     def test_util_nullish_coalescing(self):
         # using provided value

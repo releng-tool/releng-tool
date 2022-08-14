@@ -8,6 +8,7 @@ import inspect
 import os
 import sys
 
+
 def releng_include(file_path):
     """
     include/execute a script
@@ -39,6 +40,7 @@ def releng_include(file_path):
 
     globals = caller_stack[0].f_globals
     run_path(target_script, init_globals=globals)
+
 
 def require_version(version, quiet=False, critical=True):
     """

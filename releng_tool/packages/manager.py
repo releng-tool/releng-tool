@@ -61,6 +61,7 @@ DEFAULT_STRIP_COUNT = 1
 # cache name for dvcs database
 DVCS_CACHE_FNAME = '.dvcsdb'
 
+
 class RelengPackageManager:
     """
     a releng package manager

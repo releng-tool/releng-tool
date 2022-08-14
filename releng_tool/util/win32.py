@@ -16,6 +16,7 @@ try:
 except Exception:
     pass
 
+
 def enable_ansi():
     """
     enable ansi in a windows command window
@@ -37,6 +38,7 @@ def enable_ansi():
     ENABLE_VIRTUAL_TERMINAL_PROCESSING = 7
     mode = mode.value | ENABLE_VIRTUAL_TERMINAL_PROCESSING
     kern32.SetConsoleMode(handle, mode)
+
 
 def find_win32_python_interpreter(target):
     """
@@ -167,6 +169,7 @@ def find_win32_python_interpreter(target):
         return found_interpreters[installed_vers[0]]
 
     return None
+
 
 def _sort_interpreters(o):
     """

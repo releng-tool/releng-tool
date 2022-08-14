@@ -11,11 +11,13 @@ import os
 import sys
 import unittest
 
+
 #: default verbosity for unit tests
 DEFAULT_VERBOSITY = 2
 
 #: directory name for the standard unit tests
 UNIT_TESTS_DIRNAME = 'unit-tests'
+
 
 def main():
     """
@@ -101,6 +103,7 @@ def main():
         verbosity=DEFAULT_VERBOSITY)
     return 0 if runner.run(suite).wasSuccessful() else 1
 
+
 def find_tests(entity, pattern):
     """
     search for a unit tests with a matching wildcard pattern
@@ -132,6 +135,7 @@ def find_tests(entity, pattern):
                 module_load_failure = True
 
     return found, module_load_failure
+
 
 if __name__ == '__main__':
     sys.exit(main())

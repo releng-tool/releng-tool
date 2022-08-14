@@ -4,6 +4,7 @@
 import os
 import types
 
+
 def extend_script_env(env, extra):
     """
     extend a partially filtered environment (globals) for a run_path event
@@ -47,8 +48,10 @@ def extend_script_env(env, extra):
     env.update(extra_copy)
     return env
 
+
 # unique default helper for env_value
 __ENV_VALUE_DEFAULT = object()
+
 
 def env_value(key, value=__ENV_VALUE_DEFAULT):
     """

@@ -18,6 +18,7 @@ from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 import sys
 
+
 def stage(engine, pkg, script_env):
     """
     handles the installation stage for a package

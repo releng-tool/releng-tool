@@ -5,6 +5,7 @@ from releng_tool.tool.hg import HG
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 
+
 def extract(opts):
     """
     support extraction (checkout) of a mercurial cache into a build directory

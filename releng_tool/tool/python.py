@@ -17,6 +17,7 @@ PYTHON_EXTEND_ENV = {
     'PYTHONNOUSERSITE': '1',
 }
 
+
 class PythonTool(RelengTool):
     """
     python host tool

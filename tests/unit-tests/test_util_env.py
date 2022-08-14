@@ -6,6 +6,7 @@ from releng_tool.util.env import extend_script_env
 import os
 import unittest
 
+
 class TestUtilEnv(unittest.TestCase):
     def test_utilenv_extendscriptenv(self):
         env = {'a': 1}

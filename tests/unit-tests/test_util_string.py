@@ -6,6 +6,7 @@ from releng_tool.util.string import interpret_strings
 import os
 import unittest
 
+
 class TestUtilStrings(unittest.TestCase):
     def test_utilstr_expand(self):
         def assertExpand(self, obj, result, kv=None):

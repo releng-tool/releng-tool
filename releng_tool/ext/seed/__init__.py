@@ -7,6 +7,7 @@ def releng_setup(app):
     app.add_extract_type('ext-seed', seed_ext_type)
     app.add_package_type('ext-seed', seed_ext_type)
 
+
 class RelengSeedExtension:
     def fetch(self, name, opts):
         print('(seed) package', opts.name, 'has been fetched')

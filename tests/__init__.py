@@ -19,6 +19,7 @@ try:
 except ImportError:
     from io import StringIO
 
+
 def compare_contents(first, second):
     """
     compare the contents of two files
@@ -58,6 +59,7 @@ def compare_contents(first, second):
 
     return None
 
+
 def copy_template(template, target):
     """
     copy a unit testing template in to a provided target directory
@@ -78,6 +80,7 @@ def copy_template(template, target):
     template_dir = os.path.join(templates_dir, template)
     if not path_copy(template_dir, target, critical=False):
         assert False, 'failed to setup template into directory'
+
 
 @contextmanager
 def prepare_testenv(config=None, template=None, args=None):
@@ -131,6 +134,7 @@ def prepare_testenv(config=None, template=None, args=None):
 
         yield engine
 
+
 @contextmanager
 def prepare_workdir():
     """
@@ -146,6 +150,7 @@ def prepare_workdir():
 
     with generate_temp_dir() as work_dir:
         yield work_dir
+
 
 @contextmanager
 def redirect_stderr(new_target=None):
@@ -170,6 +175,7 @@ def redirect_stderr(new_target=None):
     finally:
         sys.stderr = _
 
+
 @contextmanager
 def redirect_stdout(new_target=None):
     """
@@ -193,6 +199,7 @@ def redirect_stdout(new_target=None):
     finally:
         sys.stdout = _
 
+
 def run_testenv(config=None, template=None, args=None):
     """
     execute an engine instance with provide environment options for a test
@@ -213,6 +220,7 @@ def run_testenv(config=None, template=None, args=None):
 
     with prepare_testenv(config=config, template=template, args=args) as engine:
         return engine.run()
+
 
 def find_test_base():
     """
@@ -245,6 +253,7 @@ def find_test_base():
                 raise RuntimeError('unable to find test base directory')
 
     return test_base
+
 
 class RelengToolTestSuite(unittest.TestSuite):
     def run(self, result, debug=False):

@@ -9,7 +9,9 @@ from releng_tool.util.io import touch
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 
+
 DEFAULT_BRANCH = 'test'
+
 
 class TestToolGit(TestSiteToolBase):
     def prepare_defconfig(self, defconfig):

@@ -39,6 +39,7 @@ GIT_EXTEND_ENV = {
     'GIT_TERMINAL_PROMPT': '0',
 }
 
+
 class GitTool(RelengTool):
     """
     git host tool

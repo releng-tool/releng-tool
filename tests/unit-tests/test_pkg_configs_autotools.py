@@ -4,6 +4,7 @@
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsAutotools(TestPkgConfigsBase):
     def test_pkgconfig_autotools_autoreconf_disabled(self):
         pkg, _, _ = self.LOAD('autotools-autoreconf-disabled')

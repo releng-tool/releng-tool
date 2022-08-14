@@ -4,6 +4,7 @@
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsGit(TestPkgConfigsBase):
     def test_pkgconfig_git_config_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):

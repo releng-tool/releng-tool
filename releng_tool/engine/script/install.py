@@ -9,6 +9,7 @@ import os
 #: filename of the script to execute the installation operation (if any)
 INSTALL_SCRIPT = 'install'
 
+
 def install(opts):
     """
     support installation project-defined scripts

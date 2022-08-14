@@ -8,7 +8,9 @@ from tests.support.site_tool_test import TestSiteToolBase
 import os
 import time
 
+
 DEFAULT_MODULE = 'test'
+
 
 class TestToolCvs(TestSiteToolBase):
     def prepare_defconfig(self, defconfig):

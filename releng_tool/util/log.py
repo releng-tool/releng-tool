@@ -17,6 +17,7 @@ RELENG_LOG_VERBOSE_FLAG = False
 #: flag to track if warnings should be treated as errors
 RELENG_LOG_WERROR_FLAG = False
 
+
 def log(msg, *args):
     """
     log a message
@@ -33,6 +34,7 @@ def log(msg, *args):
             generating a formatted message
     """
     __log('', '', msg, sys.stdout, *args)
+
 
 def debug(msg, *args):
     """
@@ -55,6 +57,7 @@ def debug(msg, *args):
     if RELENG_LOG_DEBUG_FLAG:
         __log('(debug) ', '\033[2m', msg, sys.stdout, *args)
 
+
 def err(msg, *args):
     """
     log an error message
@@ -75,6 +78,7 @@ def err(msg, *args):
     __log('(error) ', '\033[1;31m', msg, sys.stderr, *args)
     sys.stderr.flush()
 
+
 def hint(msg, *args):
     """
     log a hint message
@@ -92,6 +96,7 @@ def hint(msg, *args):
             generating a formatted message
     """
     __log('', '\033[1;36m', msg, sys.stdout, *args)
+
 
 def is_verbose():
     """
@@ -114,6 +119,7 @@ def is_verbose():
     global RELENG_LOG_VERBOSE_FLAG
     return RELENG_LOG_VERBOSE_FLAG
 
+
 def note(msg, *args):
     """
     log a notification message
@@ -132,6 +138,7 @@ def note(msg, *args):
     """
     __log('', '\033[7m', msg, sys.stdout, *args)
 
+
 def success(msg, *args):
     """
     log a success message
@@ -149,6 +156,7 @@ def success(msg, *args):
             generating a formatted message
     """
     __log('(success) ', '\033[1;32m', msg, sys.stdout, *args)
+
 
 def verbose(msg, *args):
     """
@@ -170,6 +178,7 @@ def verbose(msg, *args):
     global RELENG_LOG_VERBOSE_FLAG
     if RELENG_LOG_VERBOSE_FLAG:
         __log('(verbose) ', '\033[2m', msg, sys.stdout, *args)
+
 
 def warn(msg, *args):
     """
@@ -200,6 +209,7 @@ def warn(msg, *args):
     __log('(warn) ', '\033[1;35m', msg, sys.stderr, *args)
     sys.stderr.flush()
 
+
 def __log(prefix, color, msg, file, *args):
     """
     utility logging method
@@ -224,6 +234,7 @@ def __log(prefix, color, msg, file, *args):
     if args:
         msg = msg.format(*args)
     print('{}{}{}{}'.format(color, prefix, msg, post), file=file)
+
 
 def releng_log_configuration(debug_, nocolor, verbose_, werror):
     """

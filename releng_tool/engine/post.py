@@ -11,6 +11,7 @@ import sys
 #: filename of the script to execute the post-processing operation (if any)
 POST_SCRIPT = 'post'
 
+
 def stage(engine, pkg, script_env):
     """
     handles the post-processing stage for a package

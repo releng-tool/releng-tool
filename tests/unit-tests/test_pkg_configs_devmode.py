@@ -7,6 +7,7 @@ from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.registry import RelengRegistry
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsDevmode(TestPkgConfigsBase):
     def test_pkgconfig_devmode_ignore_cache_disabled(self):
         pkg, _, _ = self.LOAD('devmode-ignore-cache-disabled')

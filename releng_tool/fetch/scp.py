@@ -7,6 +7,7 @@ from releng_tool.util.log import log
 from releng_tool.util.log import note
 import sys
 
+
 def fetch(opts):
     """
     support fetching from scp sources

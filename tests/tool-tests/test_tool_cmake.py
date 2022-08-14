@@ -5,6 +5,7 @@ from tests.support.site_tool_test import TestSiteToolBase
 import os
 import sys
 
+
 class TestToolCmake(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):

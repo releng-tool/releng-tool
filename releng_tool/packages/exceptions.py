@@ -3,10 +3,12 @@
 
 from releng_tool.exceptions import RelengToolException
 
+
 class RelengToolInvalidPackageConfiguration(RelengToolException):
     """
     exception thrown when a package configuration has an issue
     """
+
 
 class RelengToolConflictingConfiguration(RelengToolInvalidPackageConfiguration):
     """
@@ -20,6 +22,7 @@ package has conflicting configuration values: {pkg_name}
  (keys: {pkg_key1}, {pkg_key2})
 '''.strip().format(**args))
 
+
 class RelengToolConflictingLocalSrcsPath(RelengToolInvalidPackageConfiguration):
     """
     raised when a detected local sourced package path matches the root directory
@@ -32,6 +35,7 @@ conflicting local-sources package path and root directory: {pkg_name}
  (path: {path})
 '''.strip().format(**args))
 
+
 class RelengToolCyclicPackageDependency(RelengToolInvalidPackageConfiguration):
     """
     raised when a cyclic package dependency is detected
@@ -41,6 +45,7 @@ class RelengToolCyclicPackageDependency(RelengToolInvalidPackageConfiguration):
 '''
 cyclic package dependency detected: {pkg_name}
 '''.strip().format(**args))
+
 
 class RelengToolInvalidPackageKeyValue(RelengToolInvalidPackageConfiguration):
     """
@@ -53,6 +58,7 @@ package configuration has an invalid value: {pkg_name}
  (key: {pkg_key}, expects: {expected_type})
 '''.strip().format(**args))
 
+
 class RelengToolMissingPackageRevision(RelengToolInvalidPackageConfiguration):
     """
     raised when a required package revision has not been defined
@@ -63,6 +69,7 @@ class RelengToolMissingPackageRevision(RelengToolInvalidPackageConfiguration):
 package defines vcs-type ({vcs_type}) but no version/revision: {pkg_name}
  (missing either key: {pkg_key1}, {pkg_key2})
 '''.strip().format(**args))
+
 
 class RelengToolInvalidPackageScript(RelengToolInvalidPackageConfiguration):
     """
@@ -76,6 +83,7 @@ unable to load package script: {script}
     {description}
 '''.strip().format(**args))
 
+
 class RelengToolMissingPackageScript(RelengToolInvalidPackageConfiguration):
     """
     raised when a package script cannot be found
@@ -86,6 +94,7 @@ class RelengToolMissingPackageScript(RelengToolInvalidPackageConfiguration):
 unknown package provided: {pkg_name}
  (script) {script}
 '''.strip().format(**args))
+
 
 class RelengToolMissingPackageSite(RelengToolInvalidPackageConfiguration):
     """
@@ -98,6 +107,7 @@ package defines vcs-type ({vcs_type}) but no site: {pkg_name}
  (key: {pkg_key})
 '''.strip().format(**args))
 
+
 class RelengToolUnknownExtractType(RelengToolInvalidPackageConfiguration):
     """
     raised when a package defined an unknown extract type
@@ -108,6 +118,7 @@ class RelengToolUnknownExtractType(RelengToolInvalidPackageConfiguration):
 unknown extract type value provided
  (package: {pkg_name}, key: {pkg_key})
 '''.strip().format(**args))
+
 
 class RelengToolUnknownInstallType(RelengToolInvalidPackageConfiguration):
     """
@@ -120,6 +131,7 @@ unknown install type value provided
  (package: {pkg_name}, key: {pkg_key})
 '''.strip().format(**args))
 
+
 class RelengToolUnknownPackageType(RelengToolInvalidPackageConfiguration):
     """
     raised when a package defined an unknown package type
@@ -130,6 +142,7 @@ class RelengToolUnknownPackageType(RelengToolInvalidPackageConfiguration):
 unknown package type value provided
  (package: {pkg_name}, key: {pkg_key})
 '''.strip().format(**args))
+
 
 class RelengToolUnknownPythonSetupType(RelengToolInvalidPackageConfiguration):
     """
@@ -142,6 +155,7 @@ unknown python setup type value provided
  (package: {pkg_name}, key: {pkg_key})
 '''.strip().format(**args))
 
+
 class RelengToolUnknownVcsType(RelengToolInvalidPackageConfiguration):
     """
     raised when a package defined an unknown vcs type
@@ -153,50 +167,60 @@ unknown vcs type value provided
  (package: {pkg_name}, key: {pkg_key})
 '''.strip().format(**args))
 
+
 class RelengToolStageFailure(RelengToolException):
     """
     exception thrown when a stage event has an issue
     """
+
 
 class RelengToolBootstrapStageFailure(RelengToolStageFailure):
     """
     exception thrown when a boostrap stage event has an issue
     """
 
+
 class RelengToolBuildStageFailure(RelengToolStageFailure):
     """
     exception thrown when a build stage event has an issue
     """
+
 
 class RelengToolConfigurationStageFailure(RelengToolStageFailure):
     """
     exception thrown when a configuration stage event has an issue
     """
 
+
 class RelengToolExecStageFailure(RelengToolStageFailure):
     """
     exception thrown when an execute-request event has an issue
     """
+
 
 class RelengToolExtractionStageFailure(RelengToolStageFailure):
     """
     exception thrown when an extraction stage event has an issue
     """
 
+
 class RelengToolInstallStageFailure(RelengToolStageFailure):
     """
     exception thrown when an install stage event has an issue
     """
+
 
 class RelengToolLicenseStageFailure(RelengToolStageFailure):
     """
     exception thrown when a license stage event has an issue
     """
 
+
 class RelengToolPatchStageFailure(RelengToolStageFailure):
     """
     exception thrown when a patch stage event has an issue
     """
+
 
 class RelengToolPostStageFailure(RelengToolStageFailure):
     """

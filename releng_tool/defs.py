@@ -3,6 +3,7 @@
 
 from releng_tool.util.enum import Enum
 
+
 class ConfKey(Enum):
     """
     configuration file keys
@@ -41,6 +42,7 @@ class ConfKey(Enum):
     SYSROOT_PREFIX = 'sysroot_prefix'
     URL_MIRROR = 'url_mirror'
     URLOPEN_CONTEXT = 'urlopen_context'
+
 
 class Rpk(Enum):
     """
@@ -155,6 +157,7 @@ class Rpk(Enum):
     # (package type - scons)
     SCONS_NOINSTALL = 'SCONS_NOINSTALL'
 
+
 class GlobalAction(Enum):
     """
     specific stage action to perform
@@ -181,6 +184,7 @@ class GlobalAction(Enum):
     LICENSES = 'licenses'
     MRPROPER = 'mrproper'
     PATCH = 'patch'
+
 
 class PkgAction(Enum):
     """
@@ -227,6 +231,7 @@ class PkgAction(Enum):
     RECONFIGURE_ONLY = 'reconfigure_only'
     REINSTALL = 'reinstall'
 
+
 class PackageType(Enum):
     """
     package types
@@ -249,6 +254,7 @@ class PackageType(Enum):
     SCONS = 'scons'
     SCRIPT = 'script'
 
+
 class PackageInstallType(Enum):
     """
     package install types
@@ -268,6 +274,7 @@ class PackageInstallType(Enum):
     STAGING = 'staging'
     STAGING_AND_TARGET = 'staging_and_target'
     TARGET = 'target'
+
 
 class PythonSetupType(Enum):
     """
@@ -290,6 +297,7 @@ class PythonSetupType(Enum):
     PDM = 'pdm'
     PEP517 = 'pep517'
     SETUPTOOLS = 'setuptools'
+
 
 class VcsType(Enum):
     """
@@ -319,6 +327,7 @@ class VcsType(Enum):
     SCP = 'scp'
     SVN = 'svn'
     URL = 'url'
+
 
 # key used to track "global" local sources configuration
 GBL_LSRCS = '*'

@@ -12,6 +12,7 @@ from releng_tool.util.log import warn
 from releng_tool.util.string import expand
 import os
 
+
 def build(opts):
     """
     support building python projects

@@ -9,6 +9,7 @@ from releng_tool.util.log import log
 from releng_tool.util.log import warn
 import os
 
+
 def extract(opts):
     """
     support extraction (checkout) of a git cache into a build directory
@@ -43,6 +44,7 @@ def extract(opts):
             return False
 
     return True
+
 
 def _process_submodules(opts, work_dir):
     """
@@ -105,6 +107,7 @@ def _process_submodules(opts, work_dir):
             return False
 
     return True
+
 
 def _workdir_extract(cache_dir, work_dir, revision):
     """

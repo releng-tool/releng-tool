@@ -35,15 +35,18 @@ MULTIPART_EXTENSIONS = [
     'tar.z',
 ]
 
+
 class FailedToPrepareBaseDirectoryError(Exception):
     """
     raised when a base directory could not be prepared
     """
 
+
 class FailedToPrepareWorkingDirectoryError(Exception):
     """
     raised when a working directory could not be prepared
     """
+
 
 def cat(file, *args):
     """
@@ -84,6 +87,7 @@ def cat(file, *args):
         return True
     except OSError:
         return False
+
 
 def ensure_dir_exists(dir_, quiet=False, critical=False):
     """
@@ -126,6 +130,7 @@ def ensure_dir_exists(dir_, quiet=False, critical=False):
                 sys.exit(-1)
             return False
     return True
+
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         critical=True, poll=False, capture=None):
@@ -207,6 +212,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
     )
     return rv == 0
 
+
 def execute_rv(command, *args, **kwargs):
     """
     execute the provided command/arguments
@@ -258,6 +264,7 @@ def execute_rv(command, *args, **kwargs):
         quiet=True,
     )
     return rv, '\n'.join(out)
+
 
 def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         critical=True, poll=False, capture=None):
@@ -433,6 +440,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
 
     return rv
 
+
 def _cmd_args_to_str(args):
     """
     convert an argument list to a platform escaped string
@@ -459,6 +467,7 @@ def _cmd_args_to_str(args):
         cmd_str = cmd_str.strip()
 
     return cmd_str
+
 
 @contextmanager
 def generate_temp_dir(dir_=None):
@@ -498,6 +507,7 @@ def generate_temp_dir(dir_=None):
             if e.errno != errno.ENOENT:
                 warn('unable to cleanup temporary directory: {}\n'
                      '    {}', dir_, e)
+
 
 @contextmanager
 def interim_working_dir(dir_):
@@ -540,6 +550,7 @@ def interim_working_dir(dir_):
         except IOError:
             warn('unable to restore original working directory: ' + owd)
 
+
 def interpret_stem_extension(basename):
     """
     interpret the stem and extension from a provided basename
@@ -580,6 +591,7 @@ def interpret_stem_extension(basename):
 
     return stem, ext
 
+
 def ls(dir_):
     """
     list a directory's contents
@@ -616,6 +628,7 @@ def ls(dir_):
     except OSError:
         return False
 
+
 def opt_file(file):
     """
     return a file (and existence) to opt for based a given file path
@@ -646,6 +659,7 @@ def opt_file(file):
 
     return file, exists
 
+
 def path_exists(path, *args):
     """
     return whether or not the path exists
@@ -670,6 +684,7 @@ def path_exists(path, *args):
         ``True`` if the path exists; ``False`` otherwise
     """
     return os.path.exists(os.path.join(path, *args))
+
 
 def path_move(src, dst, quiet=False, critical=True):
     """
@@ -761,6 +776,7 @@ def path_move(src, dst, quiet=False, critical=True):
         sys.exit(-1)
     return success
 
+
 def _path_move(src, dst):
     """
     move the provided directory into the target directory (recursive)
@@ -816,6 +832,7 @@ def _path_move(src, dst):
     # remove directory
     os.rmdir(src)
 
+
 def path_remove(path, quiet=False):
     """
     remove the provided path
@@ -860,6 +877,7 @@ def path_remove(path, quiet=False):
 
     return True
 
+
 def _path_remove_dir(dir_):
     """
     remove the provided directory (recursive)
@@ -901,6 +919,7 @@ def _path_remove_dir(dir_):
     # remove directory
     os.rmdir(dir_)
 
+
 def _path_remove_file(path):
     """
     remove the provided file
@@ -939,6 +958,7 @@ def _path_remove_file(path):
         except OSError:
             raise e
 
+
 def prepare_arguments(args):
     """
     prepares arguments from a dictionary
@@ -967,6 +987,7 @@ def prepare_arguments(args):
                 final.append(val)
 
     return final
+
 
 def prepare_definitions(defs, prefix=None):
     """
@@ -1001,6 +1022,7 @@ def prepare_definitions(defs, prefix=None):
 
     return final
 
+
 def prepend_shebang_interpreter(args):
     """
     prepend interpreter program (if any) to argument list
@@ -1030,6 +1052,7 @@ def prepend_shebang_interpreter(args):
     except (IOError, UnicodeError):
         pass
     return args
+
 
 def run_script(script, globals_, subject=None, catch=True):
     """
@@ -1070,6 +1093,7 @@ def run_script(script, globals_, subject=None, catch=True):
             return None
 
     return result
+
 
 def touch(file):
     """

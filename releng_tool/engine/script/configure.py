@@ -9,6 +9,7 @@ import os
 #: filename of the script to execute the configuration operation (if any)
 CONFIGURE_SCRIPT = 'configure'
 
+
 def configure(opts):
     """
     support configuration project-defined scripts

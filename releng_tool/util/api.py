@@ -3,6 +3,7 @@
 
 from copy import deepcopy
 
+
 def replicate_package_attribs(opts, pkg):
     """
     replicate package attributes into an engine options entity

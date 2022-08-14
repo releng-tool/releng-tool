@@ -8,6 +8,7 @@ from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 import os
 
+
 def initialize_sample(opts):
     """
     initialize a sample project

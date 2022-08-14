@@ -13,6 +13,7 @@ import os
 #: size of blocks read when calculating the hash for a file
 HASH_READ_BLOCKSIZE = 1048576
 
+
 class HashResult(Enum):
     """
     result of a hash verification check
@@ -36,15 +37,18 @@ class HashResult(Enum):
     UNSUPPORTED = 'unsupported'
     VERIFIED = 'verified'
 
+
 class BadFileHashLoadError(Exception):
     """
     raised when a file could not be loaded for hash information
     """
 
+
 class BadFormatHashLoadError(Exception):
     """
     raised when invalid format/contents is detected in a hash file
     """
+
 
 def load(hash_file):
     """
@@ -113,6 +117,7 @@ def load(hash_file):
 
     # compile a list of tuples with no empty entries
     return [tuple(x) for x in data if x]
+
 
 def verify(hash_file, path, exclude=None, relaxed=False, quiet=False):
     """
@@ -269,6 +274,7 @@ hash mismatch detected
                 return HashResult.MISMATCH
 
     return HashResult.VERIFIED
+
 
 def _get_hasher(hash_type):
     """

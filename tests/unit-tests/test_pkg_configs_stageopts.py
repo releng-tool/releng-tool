@@ -4,6 +4,7 @@
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsStageOpts(TestPkgConfigsBase):
     def test_pkgconfig_build_defs_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):

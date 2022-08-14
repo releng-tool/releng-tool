@@ -4,6 +4,7 @@
 from releng_tool.util.enum import Enum
 import hashlib
 
+
 class PkgKeyType(Enum):
     """
     package key type
@@ -32,6 +33,7 @@ class PkgKeyType(Enum):
     INT_NONNEGATIVE = 'int_nonnegative'
     INT_POSITIVE = 'int_positive'
 
+
 def pkg_cache_key(site):
     """
     generate a cache key for a provided package's site
@@ -43,6 +45,7 @@ def pkg_cache_key(site):
         the cache key
     """
     return hashlib.sha1(site.encode('utf_8')).hexdigest()
+
 
 def pkg_key(pkg, type_):
     """

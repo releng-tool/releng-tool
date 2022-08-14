@@ -7,6 +7,7 @@ from tests import prepare_workdir
 import os
 import unittest
 
+
 class TestFileFlags(unittest.TestCase):
     def test_ff_create(self):
         with prepare_workdir() as work_dir:

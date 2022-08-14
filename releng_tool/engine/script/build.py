@@ -9,6 +9,7 @@ import os
 #: filename of the script to execute the building operation (if any)
 BUILD_SCRIPT = 'build'
 
+
 def build(opts):
     """
     support building project-defined scripts

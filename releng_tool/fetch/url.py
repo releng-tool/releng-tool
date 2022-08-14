@@ -18,6 +18,7 @@ except ImportError:
 #: size of blocks read when downloading a resource
 REQUEST_READ_BLOCKSIZE = 8192
 
+
 def fetch(opts):
     """
     support fetching from url sources
@@ -86,6 +87,7 @@ def fetch(opts):
 
     log('completed download ({})', display_size(read))
     return cache_file
+
 
 def display_size(val):
     """

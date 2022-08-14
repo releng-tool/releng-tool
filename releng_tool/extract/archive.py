@@ -21,6 +21,7 @@ TAR_SUPPORTED = (
     'tgz',
 )
 
+
 def extract(opts):
     """
     support extraction of an archive into a build directory

@@ -21,6 +21,7 @@ import os
 import shutil
 import sys
 
+
 def stage(engine, pkg):
     """
     handles the extraction stage for a package

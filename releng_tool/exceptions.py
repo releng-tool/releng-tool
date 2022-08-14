@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021-2022 releng-tool
 
-"""
-base exception for all custom releng-tool exceptions
-"""
-class RelengToolException(Exception):
-    pass
 
-"""
-exception thrown when missing a project's configuration file
-"""
+class RelengToolException(Exception):
+    """
+    base exception for all custom releng-tool exceptions
+    """
+
+
 class RelengToolMissingConfigurationError(RelengToolException):
+    """
+    exception thrown when missing a project's configuration file
+    """
     def __init__(self, path):
         RelengToolException.__init__(self, '''\
 missing configuration file
@@ -21,10 +22,11 @@ in the working directory or the provided root directory:
     {}
 '''.format(path))
 
-"""
-exception thrown when a missing a command for a package's exec call
-"""
+
 class RelengToolMissingExecCommand(RelengToolException):
+    """
+    exception thrown when a missing a command for a package's exec call
+    """
     def __init__(self, pkg):
         RelengToolException.__init__(self, '''\
 missing package command
@@ -36,10 +38,11 @@ argument defines the command to be executed.
     releng-tool {}-exec "mycmd arg1 arg2"
 '''.format(pkg))
 
-"""
-exception thrown when a project's configuration does not provide any packages
-"""
+
 class RelengToolMissingPackagesError(RelengToolException):
+    """
+    exception thrown when a project's configuration does not provide any pkgs
+    """
     def __init__(self, path, key):
         RelengToolException.__init__(self, '''\
 no defined packages
@@ -50,6 +53,7 @@ list exists with the name of packages to be part of the releng process:
     {}
         {} = ['liba', 'libb', 'libc']
 '''.format(path, key))
+
 
 class RelengToolWarningAsError(RelengToolException):
     """

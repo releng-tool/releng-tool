@@ -11,6 +11,7 @@ import os
 import sys
 import tarfile
 
+
 def fetch(opts):
     """
     support fetching from cvs sources

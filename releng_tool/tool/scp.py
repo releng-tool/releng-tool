@@ -14,6 +14,7 @@ SCP_SANITIZE_ENV_KEYS = [
     'SSH_ASKPASS',
 ]
 
+
 class ScpTool(RelengTool):
     """
     scp host tool

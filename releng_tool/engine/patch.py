@@ -14,6 +14,7 @@ import sys
 #: filename of the script to execute custom patching operations (if any)
 PATCH_SCRIPT = 'patch'
 
+
 def stage(engine, pkg, script_env):
     """
     handles the patching stage for a package

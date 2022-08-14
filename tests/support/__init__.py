@@ -4,6 +4,7 @@
 from tests import find_test_base
 import os
 
+
 def fetch_unittest_assets_dir(*args):
     """
     fetch the unit tests assets directory

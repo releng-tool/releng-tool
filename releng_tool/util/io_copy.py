@@ -120,6 +120,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
         sys.exit(-1)
     return success
 
+
 def path_copy_into(src, dst, quiet=False, critical=True):
     """
     copy a file or directory into a target directory
@@ -164,6 +165,7 @@ def path_copy_into(src, dst, quiet=False, critical=True):
     """
 
     return path_copy(src, dst, quiet=quiet, critical=critical, dst_dir=True)
+
 
 def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
     if not ensure_dir_exists(dst_folder, quiet=quiet, critical=critical):

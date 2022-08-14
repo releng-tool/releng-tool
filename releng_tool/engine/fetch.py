@@ -26,6 +26,7 @@ from releng_tool.util.log import warn
 import os
 import shutil
 
+
 def stage(engine, pkg, ignore_cache, extra_opts):
     """
     handles the fetching stage for a package

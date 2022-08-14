@@ -149,7 +149,9 @@ class RelengRegistryInterface(object):
                 for this extension is not met
         """
 
+
 # ##############################################################################
+
 
 class RelengPackageOptions(object):
     """
@@ -172,6 +174,7 @@ class RelengPackageOptions(object):
         self.ext = {}
         self.name = None
         self.version = None
+
 
 class RelengConfigureOptions(RelengPackageOptions):
     """
@@ -212,6 +215,7 @@ class RelengConfigureOptions(RelengPackageOptions):
         self.symbols_dir = None
         self.target_dir = None
 
+
 class RelengBuildOptions(RelengPackageOptions):
     """
     releng build-type options
@@ -248,6 +252,7 @@ class RelengBuildOptions(RelengPackageOptions):
         self.symbols_dir = None
         self.target_dir = None
 
+
 class RelengExtractOptions(RelengPackageOptions):
     """
     releng extract-type options
@@ -269,6 +274,7 @@ class RelengExtractOptions(RelengPackageOptions):
         self.revision = None
         self.strip_count = 1
         self.work_dir = None
+
 
 class RelengFetchOptions(RelengPackageOptions):
     """
@@ -293,6 +299,7 @@ class RelengFetchOptions(RelengPackageOptions):
         self.ignore_cache = None
         self.revision = None
         self.site = None
+
 
 class RelengInstallOptions(RelengPackageOptions):
     """
@@ -335,7 +342,9 @@ class RelengInstallOptions(RelengPackageOptions):
         self.symbols_dir = None
         self.target_dir = None
 
+
 # ##############################################################################
+
 
 class RelengExtensionInterface(object):
     """
@@ -346,6 +355,7 @@ class RelengExtensionInterface(object):
     setup stage. This will allow an project support custom VCS-types defined in
     package definitions (for example "<PKG>_VCS_TYPE='ext-myawesomefetchtype'").
     """
+
 
 class RelengExtractExtensionInterface(RelengExtensionInterface):
     """
@@ -383,6 +393,7 @@ class RelengExtractExtensionInterface(RelengExtensionInterface):
             ``True`` on successful extraction; otherwise ``False``
         """
         return False
+
 
 class RelengFetchExtensionInterface(RelengExtensionInterface):
     """
@@ -425,6 +436,7 @@ class RelengFetchExtensionInterface(RelengExtensionInterface):
             ``True`` on successful fetch; otherwise ``False``
         """
         return False
+
 
 class RelengPackageExtensionInterface(RelengExtensionInterface):
     """
@@ -525,12 +537,15 @@ class RelengPackageExtensionInterface(RelengExtensionInterface):
         """
         return False
 
+
 # ##############################################################################
+
 
 class RelengInvalidSetupException(Exception):
     """
     exception raised when a loading extension has a setup issue
     """
+
 
 class RelengVersionNotSupportedException(Exception):
     """

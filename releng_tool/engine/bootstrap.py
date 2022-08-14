@@ -11,6 +11,7 @@ import sys
 #: filename of the script to execute the bootstrapping operation (if any)
 BOOTSTRAP_SCRIPT = 'bootstrap'
 
+
 def stage(engine, pkg, script_env):
     """
     handles the bootstrapping stage for a package

@@ -21,6 +21,7 @@ from releng_tool.util.compat import which
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 
+
 class RelengPrerequisites:
     """
     releng tool's prerequisites check helper

@@ -15,6 +15,7 @@ class MetaEnum(type):
         return iter(
             [getattr(cls, a) for a in vars(cls) if not a.startswith('_')])
 
+
 """
 basic enum class
 """

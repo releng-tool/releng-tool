@@ -6,6 +6,7 @@ from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from releng_tool.packages.exceptions import RelengToolUnknownPackageType
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsPkgType(TestPkgConfigsBase):
     def test_pkgconfig_type_invalid_type(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):

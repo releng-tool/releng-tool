@@ -15,6 +15,7 @@ from releng_tool.util.io import touch
 from releng_tool.util.log import err
 import os
 
+
 class FileFlag(Enum):
     """
     file flag result states
@@ -30,6 +31,7 @@ class FileFlag(Enum):
     NOT_CONFIGURED = 'not_configured'
     NO_EXIST = 'no_exist'
 
+
 def check_file_flag(file):
     """
     check a file flag
@@ -44,6 +46,7 @@ def check_file_flag(file):
             flag is not enabled
     """
     return process_file_flag(None, file)
+
 
 def process_file_flag(flag, file, quiet=False):
     """

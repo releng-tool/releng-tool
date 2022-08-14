@@ -7,6 +7,7 @@ from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
 
+
 def install(opts):
     """
     support installation autotools projects

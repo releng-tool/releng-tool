@@ -7,6 +7,7 @@ from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.registry import RelengRegistry
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsSite(TestPkgConfigsBase):
     def test_pkgconfig_site_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):

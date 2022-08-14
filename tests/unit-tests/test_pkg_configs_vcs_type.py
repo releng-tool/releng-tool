@@ -11,6 +11,7 @@ from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.registry import RelengRegistry
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
+
 class TestPkgConfigsVcsType(TestPkgConfigsBase):
     def test_pkgconfig_vcs_type_devmode_override(self):
         opts = RelengEngineOptions()

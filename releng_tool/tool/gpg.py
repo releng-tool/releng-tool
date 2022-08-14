@@ -8,6 +8,7 @@ from releng_tool.util.log import verbose
 #: executable used to run gpg commands
 GPG_COMMAND = 'gpg'
 
+
 class GpgTool(RelengTool):
     """
     gpg host tool

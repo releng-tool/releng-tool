@@ -4,6 +4,7 @@
 from releng_tool.util.sort import TopologicalSorter
 import unittest
 
+
 class TestObj:
     def __init__(self, name):
         self.children = []
@@ -11,6 +12,7 @@ class TestObj:
 
     def __repr__(self):
         return self.name
+
 
 class TestUtilSort(unittest.TestCase):
     @classmethod
