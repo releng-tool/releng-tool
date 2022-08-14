@@ -14,7 +14,7 @@ class TestToolScons(TestSiteToolBase):
             cls.filename += '.exe'
 
     def prepare_global_action(self):
-        return None # use releng-tool default
+        return None  # use releng-tool default
 
     def tool_template(self):
         return 'scons'

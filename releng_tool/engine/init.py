@@ -62,7 +62,7 @@ SAMPLE_VERSION = '<package-version>'
 
     # .gitignore
     try:
-        project_gitignore = os.path.join(root_dir, '.gitignore') # (assumption)
+        project_gitignore = os.path.join(root_dir, '.gitignore')  # (assumption)
         with open(project_gitignore, 'w') as f:
             f.write('''\
 # releng-tool

@@ -118,7 +118,7 @@ def main():
         # warn if the *nix-based system is running as root; ill-formed projects
         # may attempt to modify the local system's root
         if sys.platform != 'win32':
-            if os.geteuid() == 0: # pylint: disable=E1101
+            if os.geteuid() == 0:  # pylint: disable=E1101
                 if 'RELENG_IGNORE_RUNNING_AS_ROOT' not in os.environ:
                     # attempt to check if we are in a container; if so, ignore
                     # generating a warning -- we will check if kernel threads

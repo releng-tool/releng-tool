@@ -134,11 +134,11 @@ local sources option to use the default process).
                     elif hr == HashResult.BAD_PATH:
                         if not perform_file_asc_check and not pkg.is_internal:
                             warn('missing hash file for package: ' + name)
-                        rv = True # no hash file to compare with; assuming ok
+                        rv = True  # no hash file to compare with; assuming ok
                     elif hr == HashResult.EMPTY:
                         if not pkg.is_internal:
                             warn('hash file for package is empty: ' + name)
-                        rv = True # empty hash file; assuming ok
+                        rv = True  # empty hash file; assuming ok
                     elif hr == HashResult.MISMATCH:
                         if not path_remove(pkg.cache_file):
                             rv = False

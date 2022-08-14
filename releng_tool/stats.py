@@ -100,7 +100,7 @@ class RelengStats:
 
         try:
             with open(self.dat_file, 'wb') as f:
-                pickle.dump(self.data, f, protocol=2) # 2 for py2/py3 support
+                pickle.dump(self.data, f, protocol=2)  # 2 for py2/py3 support
             debug('saved statistics' + desc)
         except IOError:
             verbose('failed to save statistics' + desc)

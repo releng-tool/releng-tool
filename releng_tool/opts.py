@@ -9,26 +9,26 @@ import os
 import sys
 
 # default directory/file paths
-DEFAULT_BUILD_DIR    = 'build'     #: default build container directory
-DEFAULT_CACHE_DIR    = 'cache'     #: default cache container directory
-DEFAULT_DL_DIR       = 'dl'        #: default download container directory
-DEFAULT_HOST_DIR     = 'host'      #: default host container directory
-DEFAULT_IMAGES_DIR   = 'images'    #: default images container directory
-DEFAULT_LICENSE_DIR  = 'licenses'  #: default licenses container directory
-DEFAULT_OUTPUT_DIR   = 'output'    #: default output container directory
-DEFAULT_PKG_DIR      = 'package'   #: default package container directory
-DEFAULT_STAGING_DIR  = 'staging'   #: default staging container directory
-DEFAULT_SYMBOLS_DIR  = 'symbols'   #: default symbols container directory
-DEFAULT_TARGET_DIR   = 'target'    #: default target container directory
+DEFAULT_BUILD_DIR = 'build'       # default build container directory
+DEFAULT_CACHE_DIR = 'cache'       # default cache container directory
+DEFAULT_DL_DIR = 'dl'             # default download container directory
+DEFAULT_HOST_DIR = 'host'         # default host container directory
+DEFAULT_IMAGES_DIR = 'images'     # default images container directory
+DEFAULT_LICENSE_DIR = 'licenses'  # default licenses container directory
+DEFAULT_OUTPUT_DIR = 'output'     # default output container directory
+DEFAULT_PKG_DIR = 'package'       # default package container directory
+DEFAULT_STAGING_DIR = 'staging'   # default staging container directory
+DEFAULT_SYMBOLS_DIR = 'symbols'   # default symbols container directory
+DEFAULT_TARGET_DIR = 'target'     # default target container directory
 
 # default directory/file paths
-RELENG_CONF_EXTENDED_NAME = '.releng-tool' #: extended configuration script
-RELENG_CONF_NAME = 'releng' #: configuration script filename
-RELENG_CONF_OVERRIDES_NAME = 'releng-overrides' #: conf. overrides filename
-RELENG_POST_BUILD_NAME = 'releng-post-build' #: post build script filename
-FF_PREFIX = '.releng-flag-' #: prefix for all file flags
-FF_DEVMODE_NAME = 'devmode' #: postfix for development mode file flag
-FF_LOCALSRCS_NAME = 'local-sources' #: postfix for local sources mode file flag
+RELENG_CONF_EXTENDED_NAME = '.releng-tool'       # extended conf. script
+RELENG_CONF_NAME = 'releng'                      # conf. script filename
+RELENG_CONF_OVERRIDES_NAME = 'releng-overrides'  # conf. overrides filename
+RELENG_POST_BUILD_NAME = 'releng-post-build'     # post build script filename
+FF_PREFIX = '.releng-flag-'          # prefix for all file flags
+FF_DEVMODE_NAME = 'devmode'          # postfix for development mode file flag
+FF_LOCALSRCS_NAME = 'local-sources'  # postfix for local sources mode file flag
 
 # default sysroot prefix
 if sys.platform == 'win32':

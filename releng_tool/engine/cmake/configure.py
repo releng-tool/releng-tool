@@ -94,7 +94,7 @@ def configure(opts):
 
     # argument building
     cmake_args = [
-        '--no-warn-unused-cli', # suppress common options if not used in project
+        '--no-warn-unused-cli',  # suppress common opts if not used in project
     ]
     cmake_args.extend(prepare_definitions(cmake_defs, '-D'))
     cmake_args.extend(prepare_arguments(cmake_opts))

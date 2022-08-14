@@ -14,7 +14,7 @@ class TestToolMake(TestSiteToolBase):
             raise unittest.SkipTest('make tool test skipped for non-Linux')
 
     def prepare_global_action(self):
-        return None # use releng-tool default
+        return None  # use releng-tool default
 
     def tool_template(self):
         return 'make'

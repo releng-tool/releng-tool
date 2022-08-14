@@ -269,7 +269,7 @@ class RelengEngine:
                             path_remove(pkg.cache_dir)
 
                     return True
-            assert False # should not reach here
+            assert False  # should not reach here
 
         # ensure any of required host tools do exist
         if 'releng.disable_prerequisites_check' not in opts.quirks:
@@ -723,11 +723,11 @@ of the releng process:
                 env['RELENG_CLEAN'] = '1'
             elif gaction == GlobalAction.DISTCLEAN or \
                     paction == PkgAction.DISTCLEAN:
-                env['RELENG_CLEAN'] = '1' # also set clean flag
+                env['RELENG_CLEAN'] = '1'  # also set clean flag
                 env['RELENG_DISTCLEAN'] = '1'
-                env['RELENG_MRPROPER'] = '1' # also set mrproper flag
+                env['RELENG_MRPROPER'] = '1'  # also set mrproper flag
             elif gaction == GlobalAction.MRPROPER:
-                env['RELENG_CLEAN'] = '1' # also set clean flag
+                env['RELENG_CLEAN'] = '1'  # also set clean flag
                 env['RELENG_MRPROPER'] = '1'
 
             if paction in (PkgAction.REBUILD, PkgAction.REBUILD_ONLY):

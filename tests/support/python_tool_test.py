@@ -15,7 +15,7 @@ class PythonSiteToolBase(TestSiteToolBase):
     """
 
     def prepare_global_action(self):
-        return None # use releng-tool default
+        return None  # use releng-tool default
 
     def find_site_packages(self, dir_):
         """

@@ -1273,7 +1273,7 @@ class RelengPackageManager:
         try:
             with open(self._dvcs_cache_fname, 'wb') as f:
                 pickle.dump(self._dvcs_cache, f,
-                    protocol=2) # 2 for py2/py3 support
+                    protocol=2)  # 2 for py2/py3 support
             debug('saved dvcs cache')
         except IOError:
             verbose('failed to save dvcs cache')

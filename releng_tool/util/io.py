@@ -350,7 +350,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         if final_env and sys.version_info[0] < 3:
             debug('detected python 2.7; sanity checking environment variables')
             for k, v in final_env.items():
-                if isinstance(v, unicode): # pylint: disable=E0602 # noqa: F821
+                if isinstance(v, unicode):  # pylint: disable=E0602 # noqa: F821
                     final_env[k] = v.encode('ascii', 'replace')
 
         if is_verbose():

@@ -298,7 +298,7 @@ class TestPkgConfigs(TestPkgConfigsBase):
 
     def test_pkgconfig_strip_count_missing(self):
         pkg, _, _ = self.LOAD('missing')
-        self.assertEqual(pkg.strip_count, 1) # default
+        self.assertEqual(pkg.strip_count, 1)  # default
 
     def test_pkgconfig_strip_count_valid(self):
         pkg, _, _ = self.LOAD('strip-count-valid-zero')

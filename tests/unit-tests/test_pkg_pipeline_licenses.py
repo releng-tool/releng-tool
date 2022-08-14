@@ -16,9 +16,9 @@ class TestPkgPipelineLicenses(RelengToolTestCase):
         ]
 
         expected_licenses = [
-            2, # mocked BSD + MIT
+            2,  # mocked BSD + MIT
             None,
-            1, # mocked GPL
+            1,  # mocked GPL
         ]
 
         with prepare_testenv(template='licenses') as engine:
