@@ -337,3 +337,7 @@ The following outlines available options:
     * - ``--version``
 
       - Show releng-tool's version.
+
+    * - ``--werror``, ``-Werror``
+
+      - Treat warnings from releng-tool as errors.
