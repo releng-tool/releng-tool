@@ -68,14 +68,15 @@ module to checkout. For example:
         return None
 
     log('caching sources')
-    def cvs_filter(info):
-        if info.name.endswith('CVS'):
-            return None
-        return info
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
     if not ensure_dir_exists(cache_dir):
         return None
+
+    def cvs_filter(info):
+        if info.name.endswith('CVS'):
+            return None
+        return info
 
     with tarfile.open(cache_file, 'w:gz') as tar:
         tar.add(cvs_module_dir, arcname=cache_stem, filter=cvs_filter)
