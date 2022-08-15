@@ -280,7 +280,7 @@ class PythonSetupType(Enum):
     """
     python setup types
 
-    Defines supported Python seutp types for deciding which method build and
+    Defines supported Python setup types for deciding which method build and
     install commands/arguments are utilized.
 
     Attributes:
