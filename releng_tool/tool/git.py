@@ -4,6 +4,7 @@
 from io import open
 from releng_tool.tool import RelengTool
 from releng_tool.util.log import err
+import sys
 
 try:
     import configparser
@@ -114,7 +115,7 @@ class GitTool(RelengTool):
 
         cfg = configparser.ConfigParser(allow_no_value=True)
         try:
-            if hasattr(cfg, 'read_string'):
+            if sys.version_info >= (3, 0):
                 cfg.read_string(value)
             else:
                 # strip whitespaces from lines for python 2.7
