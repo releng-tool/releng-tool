@@ -3,4 +3,5 @@ flit; python_version >= '3.6'
 hatch; python_version >= '3.7'
 installer; python_version >= '3.7'
 pdm; python_version >= '3.7'
+poetry >= '3.7'
 scons

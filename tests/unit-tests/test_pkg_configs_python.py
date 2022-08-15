@@ -52,6 +52,10 @@ class TestPkgPythonConfigs(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('python-setup-type-valid-pep517')
         self.assertEqual(pkg.python_setup_type, PythonSetupType.PEP517)
 
+    def test_pkgconfig_python_setup_type_valid_poetry(self):
+        pkg, _, _ = self.LOAD('python-setup-type-valid-poetry')
+        self.assertEqual(pkg.python_setup_type, PythonSetupType.POETRY)
+
     def test_pkgconfig_python_setup_type_valid_setuptools(self):
         pkg, _, _ = self.LOAD('python-setup-type-valid-setuptools')
         self.assertEqual(pkg.python_setup_type, PythonSetupType.SETUPTOOLS)
