@@ -72,6 +72,7 @@ The following outlines the available setup types in releng-tool:
     `Hatch`_                       ``hatch``
     `PDM`_                         ``pdm``
     `PEP 517 build <pypa-build_>`_ ``pep517``
+    `Poetry`_                      ``poetry``
     `Setuptools`_                  ``setuptools``
     `distutils`_                   ``distutils``
     ============================== ===
@@ -94,6 +95,7 @@ the system.
 .. _Flit: https://flit.pypa.io
 .. _Hatch: https://hatch.pypa.io
 .. _PDM: https://pdm.fming.dev
+.. _Poetry: https://python-poetry.org/
 .. _Setuptools: https://setuptools.pypa.io
 .. _distutils: https://docs.python.org/library/distutils.html
 .. _installer: https://installer.readthedocs.io

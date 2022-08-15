@@ -131,7 +131,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_LICENSE_FILES = '<file>' or ['<file>', '<file>']
    LIBFOO_PREFIX = '<path>' # '/usr'
    LIBFOO_PYTHON_INTERPRETER = '<path>'
-   LIBFOO_PYTHON_SETUP_TYPE = '<setup-type>' # distutils, setuptools, flit, hatch, pdm, pep517
+   LIBFOO_PYTHON_SETUP_TYPE = '<setup-type>' # distutils, setuptools, flit, hatch, pdm, pep517, poetry
    LIBFOO_REVISION = '<revision>'
    LIBFOO_SKIP_REMOTE_CONFIG = bool
    LIBFOO_SKIP_REMOTE_SCRIPTS = bool
