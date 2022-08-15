@@ -84,6 +84,16 @@ def build(opts):
             # build a wheel
             '--wheel',
         ])
+    elif setup_type == PythonSetupType.POETRY:
+        # https://python-poetry.org/docs/cli/#build
+        python_args.extend([
+            # poetry module
+            '-m', 'poetry',
+            # build action
+            'build',
+            # no interaction
+            '--no-interaction',
+        ])
     else:
         if setup_type == PythonSetupType.SETUPTOOLS:
             # check if a project has a `setup.py` helper script; if not,

@@ -289,6 +289,7 @@ class PythonSetupType(Enum):
         HATCH: Hatch build packager
         PDM: PDM build packager
         PEP517: pep517 build packager
+        POETRY: Poetry build packager
         SETUPTOOLS: setuptools build packager
     """
     DISTUTILS = 'distutils'
@@ -296,6 +297,7 @@ class PythonSetupType(Enum):
     HATCH = 'hatch'
     PDM = 'pdm'
     PEP517 = 'pep517'
+    POETRY = 'poetry'
     SETUPTOOLS = 'setuptools'
 
 

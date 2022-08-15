@@ -56,6 +56,7 @@ def install(opts):
         PythonSetupType.HATCH,
         PythonSetupType.PDM,
         PythonSetupType.PEP517,
+        PythonSetupType.POETRY,
     ]
 
     if setup_type in installer_types:
