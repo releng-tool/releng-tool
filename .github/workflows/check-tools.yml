@@ -43,12 +43,13 @@ jobs:
             - { os: ubuntu-latest, python:  "3.8", cache: ~/.cache/pip }
             - { os: ubuntu-latest, python:  "3.9", cache: ~/.cache/pip }
             - { os: ubuntu-latest, python: "3.10", cache: ~/.cache/pip }
+            - { os: ubuntu-latest, python: "3.11", cache: ~/.cache/pip }
 
             # additional operating systems
             - { os:   macos-latest, python:  "2.7", cache: ~/Library/Caches/pip }
-            - { os:   macos-latest, python: "3.10", cache: ~/Library/Caches/pip }
+            - { os:   macos-latest, python: "3.11", cache: ~/Library/Caches/pip }
             - { os: windows-latest, python:  "2.7", cache: ~\AppData\Local\pip\Cache }
-            - { os: windows-latest, python: "3.10", cache: ~\AppData\Local\pip\Cache }
+            - { os: windows-latest, python: "3.11", cache: ~\AppData\Local\pip\Cache }
 
     steps:
     - uses: actions/checkout@v3

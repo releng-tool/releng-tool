@@ -50,12 +50,13 @@ jobs:
             - { os:  ubuntu-latest, python:  "3.8", toxenv:   py38, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.9", toxenv:   py39, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv:  py310, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv:  py311, cache: ~/.cache/pip }
             - { os:   macos-latest, python:  "2.7", toxenv:   py27, cache: ~/Library/Caches/pip }
-            - { os:   macos-latest, python: "3.10", toxenv:  py310, cache: ~/Library/Caches/pip }
+            - { os:   macos-latest, python: "3.11", toxenv:  py311, cache: ~/Library/Caches/pip }
             - { os: windows-latest, python:  "2.7", toxenv:   py27, cache: ~\AppData\Local\pip\Cache }
-            - { os: windows-latest, python: "3.10", toxenv:  py310, cache: ~\AppData\Local\pip\Cache }
-            - { os:  ubuntu-latest, python: "3.10", toxenv: flake8, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python: "3.10", toxenv: pylint, cache: ~/.cache/pip }
+            - { os: windows-latest, python: "3.11", toxenv:  py311, cache: ~\AppData\Local\pip\Cache }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: flake8, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: pylint, cache: ~/.cache/pip }
 
     steps:
     - uses: actions/checkout@v3
