@@ -372,7 +372,8 @@ class TestToolGit(TestSiteToolBase):
             self._create_commit('add file', repo=repo2, add=True)
 
             # add a submodule repo2 to repo1
-            self._git_repo('submodule', 'add', repo2, 'repo2', repo=repo1)
+            self._git_repo('-c', 'protocol.file.allow=always',
+                'submodule', 'add', repo2, 'repo2', repo=repo1)
             self._create_commit('add module', repo=repo1, add=True)
 
             # extract package but not submodules (by default)
@@ -411,11 +412,13 @@ class TestToolGit(TestSiteToolBase):
             self._create_commit('add file', repo=repo3, add=True)
 
             # add a submodule repo2 to repo1
-            self._git_repo('submodule', 'add', repo2, 'repo2', repo=repo1)
+            self._git_repo('-c', 'protocol.file.allow=always',
+                'submodule', 'add', repo2, 'repo2', repo=repo1)
             self._create_commit('add module', repo=repo1, add=True)
 
             # add a submodule repo3 to repo2
-            self._git_repo('submodule', 'add', repo3, 'repo3', repo=repo2)
+            self._git_repo('-c', 'protocol.file.allow=always',
+                'submodule', 'add', repo3, 'repo3', repo=repo2)
             self._create_commit('add module', repo=repo2, add=True)
 
             # extract package and submodules
@@ -460,7 +463,8 @@ class TestToolGit(TestSiteToolBase):
             self._git_repo('checkout', DEFAULT_BRANCH, repo=repo2)
 
             # add a submodule repo2 to repo1
-            self._git_repo('submodule', 'add', repo2, 'repo2', repo=repo1)
+            self._git_repo('-c', 'protocol.file.allow=always',
+                'submodule', 'add', repo2, 'repo2', repo=repo1)
             self._create_commit('add module', repo=repo1, add=True)
 
             # extract package but not submodules (by default)
