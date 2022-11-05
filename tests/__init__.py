@@ -83,6 +83,37 @@ def copy_template(template, target):
 
 
 @contextmanager
+def mock_os_remove_permission_denied(f=None):
+    """
+    mock a system that emulates denying permissions to remove files/folders
+
+    This context method provides a way to emulate failure cases when a request
+    to remove a file or folder is made. This can be used to help sanity check
+    implementation that attempts to cleanup paths and sanity check failure
+    cases when a path cannot be cleaned up.
+
+    Args:
+        f (optional): the mock method to use; otherwise defaults to OSError
+    """
+
+    def _(path):
+        raise OSError('Mocked permission denied')
+
+    try:
+        original_remove = os.remove
+        original_rmdir = os.rmdir
+        try:
+            os.remove = f if f else _
+            os.rmdir = f if f else _
+            yield
+        finally:
+            os.remove = original_remove
+            os.rmdir = original_rmdir
+    finally:
+        pass
+
+
+@contextmanager
 def prepare_testenv(config=None, template=None, args=None):
     """
     prepare an engine-ready environment for a test
