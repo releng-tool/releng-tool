@@ -4,6 +4,7 @@
 from releng_tool import __version__ as releng_version
 from releng_tool.engine import RelengEngine
 from releng_tool.exceptions import RelengToolException
+from releng_tool.exceptions import RelengToolSilentException
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
@@ -147,6 +148,8 @@ def main():
         try:
             if engine.run():
                 retval = 0
+        except RelengToolSilentException:
+            pass
         except RelengToolException as e:
             err(e)
     except KeyboardInterrupt:

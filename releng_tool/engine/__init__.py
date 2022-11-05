@@ -11,6 +11,9 @@ from releng_tool.defs import PkgAction
 from releng_tool.defs import VcsType
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
+from releng_tool.exceptions import RelengToolInvalidConfigurationScript
+from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
+from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.opts import RELENG_POST_BUILD_NAME
@@ -162,7 +165,7 @@ class RelengEngine:
         verbose('loading project configuration...')
         settings = run_script(conf_point, gbls, subject='configuration')
         if not settings:
-            return False
+            raise RelengToolInvalidConfigurationScript
 
         script_env = gbls.copy()
         extend_script_env(script_env, settings)
@@ -176,7 +179,7 @@ class RelengEngine:
             overrides = run_script(opts.conf_point_overrides, gbls,
                 subject='configuration overrides')
             if not overrides:
-                return False
+                raise RelengToolInvalidOverrideConfigurationScript
 
             extend_script_env(script_env, overrides)
             extend_script_env(settings, overrides)
@@ -210,7 +213,7 @@ class RelengEngine:
 
         # processing additional settings
         if not self._process_settings(settings):
-            return False
+            raise RelengToolInvalidConfigurationSettings
 
         # register the project's host directory as a system path; lazily permits
         # loading host tools (not following prefix or bin container) built by a

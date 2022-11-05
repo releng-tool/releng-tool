@@ -8,6 +8,31 @@ class RelengToolException(Exception):
     """
 
 
+class RelengToolSilentException(RelengToolException):
+    """
+    exception to trigger a stop with an error message already printed
+    """
+
+
+class RelengToolInvalidConfigurationScript(RelengToolSilentException):
+    """
+    exception thrown when a project's configuration file could not be loaded
+    """
+
+
+class RelengToolInvalidConfigurationSettings(RelengToolSilentException):
+    """
+    exception thrown when a project's configuration file has invalid settings
+    """
+
+
+class RelengToolInvalidOverrideConfigurationScript(RelengToolSilentException):
+    """
+    exception thrown when a project's override configuration file could
+    not be loaded
+    """
+
+
 class RelengToolMissingConfigurationError(RelengToolException):
     """
     exception thrown when missing a project's configuration file
