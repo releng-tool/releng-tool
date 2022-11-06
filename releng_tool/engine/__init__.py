@@ -193,8 +193,7 @@ class RelengEngine:
         ]
 
         if gaction in clean_actions:
-            self._handle_clean_request(gaction)
-            return True
+            return self._handle_clean_request(gaction)
 
         # determine package name(s) extraction
         #
@@ -262,17 +261,17 @@ class RelengEngine:
                     def pkg_verbose_clean(desc):
                         verbose('{} for package: {}', desc, pkg.name)
                     pkg_verbose_clean('removing output directory')
-                    path_remove(pkg.build_output_dir)
+                    rv = path_remove(pkg.build_output_dir)
 
                     if pa == PkgAction.DISTCLEAN:
                         if os.path.exists(pkg.cache_file):
                             pkg_verbose_clean('removing cache file')
-                            path_remove(pkg.cache_file)
+                            rv &= path_remove(pkg.cache_file)
                         if os.path.isdir(pkg.cache_dir):
                             pkg_verbose_clean('removing cache directory')
-                            path_remove(pkg.cache_dir)
+                            rv &= path_remove(pkg.cache_dir)
 
-                    return True
+                    return rv
             assert False  # should not reach here
 
         # ensure any of required host tools do exist
@@ -422,16 +421,18 @@ has failed. Ensure the following path is accessible for this user:
             otherwise
         """
 
+        rv = True
+
         # forced request
         #
         # When a forced request is made, clear all file flags so these stages
         # can be invoked again.
         if self.opts.force:
-            path_remove(pkg._ff_bootstrap)
-            path_remove(pkg._ff_configure)
-            path_remove(pkg._ff_build)
-            path_remove(pkg._ff_install)
-            path_remove(pkg._ff_post)
+            rv &= path_remove(pkg._ff_bootstrap)
+            rv &= path_remove(pkg._ff_configure)
+            rv &= path_remove(pkg._ff_build)
+            rv &= path_remove(pkg._ff_install)
+            rv &= path_remove(pkg._ff_post)
 
         # user invoking a package-specific override
         #
@@ -441,21 +442,21 @@ has failed. Ensure the following path is accessible for this user:
         elif pkg.name == self.opts.target_action:
             if (self.opts.pkg_action in
                     (PkgAction.REBUILD, PkgAction.REBUILD_ONLY)):
-                path_remove(pkg._ff_build)
-                path_remove(pkg._ff_install)
-                path_remove(pkg._ff_post)
+                rv &= path_remove(pkg._ff_build)
+                rv &= path_remove(pkg._ff_install)
+                rv &= path_remove(pkg._ff_post)
             elif (self.opts.pkg_action in
                     (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY)):
-                path_remove(pkg._ff_bootstrap)
-                path_remove(pkg._ff_configure)
-                path_remove(pkg._ff_build)
-                path_remove(pkg._ff_install)
-                path_remove(pkg._ff_post)
+                rv &= path_remove(pkg._ff_bootstrap)
+                rv &= path_remove(pkg._ff_configure)
+                rv &= path_remove(pkg._ff_build)
+                rv &= path_remove(pkg._ff_install)
+                rv &= path_remove(pkg._ff_post)
             elif self.opts.pkg_action == PkgAction.REINSTALL:
-                path_remove(pkg._ff_install)
-                path_remove(pkg._ff_post)
+                rv &= path_remove(pkg._ff_install)
+                rv &= path_remove(pkg._ff_post)
 
-        return True
+        return rv
 
     def _get_package_names(self, settings):
         """
@@ -517,36 +518,44 @@ of the releng process:
             gaction: the specific clean action being requested
         """
 
+        rv = True
+
         if gaction == GlobalAction.DISTCLEAN:
             verbose('removing cache directory')
-            path_remove(self.opts.cache_dir)
+            rv &= path_remove(self.opts.cache_dir)
             verbose('removing download directory')
-            path_remove(self.opts.dl_dir)
+            rv &= path_remove(self.opts.dl_dir)
 
         if gaction in (GlobalAction.MRPROPER, GlobalAction.DISTCLEAN):
             verbose('removing output directory')
-            path_remove(self.opts.out_dir)
+            rv &= path_remove(self.opts.out_dir)
 
             verbose('removing file flags')
             if os.path.exists(self.opts.ff_devmode):
                 if path_remove(self.opts.ff_devmode):
                     warn('development mode has been unconfigured')
+                else:
+                    rv = False
             if os.path.exists(self.opts.ff_local_srcs):
                 if path_remove(self.opts.ff_local_srcs):
                     warn('local-sources mode has been unconfigured')
+                else:
+                    rv = False
         else:
             verbose('removing build directory')
-            path_remove(self.opts.build_dir)
+            rv &= path_remove(self.opts.build_dir)
             verbose('removing host directory')
-            path_remove(self.opts.host_dir)
+            rv &= path_remove(self.opts.host_dir)
             verbose('removing license directory')
-            path_remove(self.opts.license_dir)
+            rv &= path_remove(self.opts.license_dir)
             verbose('removing staging directory')
-            path_remove(self.opts.staging_dir)
+            rv &= path_remove(self.opts.staging_dir)
             verbose('removing symbols directory')
-            path_remove(self.opts.symbols_dir)
+            rv &= path_remove(self.opts.symbols_dir)
             verbose('removing target directory')
-            path_remove(self.opts.target_dir)
+            rv &= path_remove(self.opts.target_dir)
+
+        return rv
 
     def _perform_license_generation(self, license_files):
         """
