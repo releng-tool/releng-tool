@@ -135,8 +135,7 @@ def prepare_testenv(config=None, template=None, args=None):
         def __getattr__(self, name):
             return self.name if name in self.__dict__ else None
 
-    if config is None:
-        config = {}
+    config = {} if config is None else dict(config)
 
     with generate_temp_dir() as work_dir, interim_working_dir(work_dir):
         # force root directory to temporary directory; or configure all working
