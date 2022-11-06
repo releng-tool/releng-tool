@@ -334,12 +334,8 @@ class RelengToolTestCase(unittest.TestCase):
             result (optional): the test result to populate
         """
 
-        old_env = dict(os.environ)
-        try:
+        with self.env_wrap():
             super(RelengToolTestCase, self).run(result)
-        finally:
-            os.environ.clear()
-            os.environ.update(old_env)
 
     def dumpenv(self):
         """
@@ -349,3 +345,19 @@ class RelengToolTestCase(unittest.TestCase):
         print('-------------------------------')
         pprint.pprint(dict(os.environ))
         print('-------------------------------')
+
+    @contextmanager
+    def env_wrap(self):
+        """
+        wrap the context's environment
+
+        This context method provides a way restrict environment changes to the
+        context.
+        """
+
+        old_env = dict(os.environ)
+        try:
+            yield
+        finally:
+            os.environ.clear()
+            os.environ.update(old_env)
