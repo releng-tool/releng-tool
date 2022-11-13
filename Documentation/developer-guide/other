@@ -289,6 +289,12 @@ listed below:
             :members: releng_move
             :noindex:
 
+    * - ``releng_move_into``
+
+      - .. automodule:: releng_tool
+            :members: releng_move_into
+            :noindex:
+
     * - ``releng_remove``
 
       - .. automodule:: releng_tool
