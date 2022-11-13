@@ -2,6 +2,7 @@ Development
 -----------
 
 - **(note)** The deprecated ``releng`` namespace has been removed
+- Introduce ``releng_move_into`` helper script function
 - Support for Poetry Python setup type
 - Support treating releng-tool warnings as errors with ``--werror`` argument
 
