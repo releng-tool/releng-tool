@@ -31,6 +31,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--relaxed', action='store_true')
     parser.add_argument('--test-dir', default=UNIT_TESTS_DIRNAME)
     parser.add_argument('--unbuffered', '-U', action='store_true')
     parser.add_argument('--verbose', '-V', action='count', default=0)
@@ -91,7 +92,7 @@ def main():
             print('ERROR: unable to find test with pattern: '
                 '{}'.format(target_test_name_pattern))
             if not module_load_failure:
-                sys.exit(1)
+                sys.exit(0 if args.relaxed else 1)
 
     if target_unit_tests:
         suite.addTests(target_unit_tests)
