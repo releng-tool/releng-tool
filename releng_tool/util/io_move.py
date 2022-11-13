@@ -104,6 +104,53 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None):
     return success
 
 
+def path_move_into(src, dst, quiet=False, critical=True):
+    """
+    move a file or directory into a target directory
+
+    This call will attempt to move a provided file or directory's contents,
+    defined by ``src`` into a destination directory defined by ``dst``. If a
+    target directory directory does not exist, it will be automatically created.
+
+    In the event that a file or directory could not be moved, an error message
+    will be output to standard error (unless ``quiet`` is set to ``True``). If
+    ``critical`` is set to ``True`` and the specified file/directory could not
+    be moved for any reason, this call will issue a system exit
+    (``SystemExit``).
+
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        # (input)
+        # my-directory/another-file
+        # my-file
+        # my-file2
+        releng_move('my-file', 'my-file3')
+        releng_move('my-directory', 'my-directory2')
+        releng_move('my-file2', 'my-directory2')
+        # (output)
+        # my-directory2/another-file
+        # my-directory2/my-file2
+        # my-file3
+
+    Args:
+        src: the source directory or file
+        dst: the destination directory
+        quiet (optional): whether or not to suppress output
+        critical (optional): whether or not to stop execution on failure
+
+    Returns:
+        ``True`` if the move has completed with no error; ``False`` if the move
+        has failed
+
+    Raises:
+        SystemExit: if the copy operation fails with ``critical=True``
+    """
+
+    return path_move(src, dst, quiet=quiet, critical=critical, dst_dir=True)
+
+
 def _path_move(src, dst):
     """
     move the provided directory into the target directory (recursive)
