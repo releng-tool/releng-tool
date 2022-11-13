@@ -11,7 +11,6 @@ from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import run_script
 from releng_tool.util.io import touch
-from releng_tool.util.io_move import path_move
 from releng_tool.util.log import is_verbose
 from tests import prepare_workdir
 from tests import redirect_stdout
@@ -126,111 +125,6 @@ class TestUtilIo(unittest.TestCase):
         provided = None
         expected = (None, None)
         self.assertEqual(ise(provided), expected)
-
-    def test_utilio_move(self):
-        with prepare_workdir() as work_dir:
-            def _(*args):
-                return os.path.join(work_dir, *args)
-
-            # setup
-            directories = [
-                _('dir1'),
-                _('dir2', 'dir3'),
-                _('dir4', 'dir5', 'dir6'),
-            ]
-            for dir_ in directories:
-                os.makedirs(dir_)
-
-            files = [
-                _('file1'),
-                _('dir2', 'file2'),
-                _('dir2', 'dir3', 'file3'),
-                _('dir4', 'file4'),
-                _('dir4', 'dir5', 'file5'),
-                _('dir4', 'dir5', 'dir6', 'file6'),
-            ]
-            for file in files:
-                with open(file, 'a') as f:
-                    f.write(file)
-
-            # (simple file move)
-            src = _('file1')
-            dst = _('file7')
-            moved = path_move(src, dst, critical=False)
-            self.assertTrue(moved)
-            self.assertFalse(os.path.isfile(src))
-            self.assertTrue(os.path.isfile(dst))
-
-            # (another file move)
-            src = _('dir4', 'dir5', 'dir6', 'file6')
-            dst = _('dir9', 'dir10', 'file8')
-            moved = path_move(src, dst, critical=False)
-            self.assertTrue(moved)
-            self.assertFalse(os.path.isfile(src))
-            self.assertTrue(os.path.isfile(dst))
-
-            # (another file move)
-            src = _('dir9', 'dir10', 'file8')
-            dst = _('dir9', 'dir11', '')
-            moved = path_move(src, dst, critical=False)
-            self.assertTrue(moved)
-            self.assertFalse(os.path.isfile(src))
-            self.assertTrue(os.path.isfile(_('dir9', 'dir11', 'file8')))
-
-            # (overwriting file move)
-            src = _('dir2', 'file2')
-            dst = _('file7')
-            moved = path_move(src, dst, critical=False)
-            self.assertTrue(moved)
-            self.assertFalse(os.path.isfile(src))
-            self.assertTrue(os.path.isfile(dst))
-
-            # (bad file move attempt)
-            src = _('file7')
-            dst_part = _('dir4', 'file4')
-            dst = _(dst_part, 'bad')
-            moved = path_move(src, dst, quiet=True, critical=False)
-            self.assertFalse(moved)
-            self.assertTrue(os.path.isfile(src))
-            self.assertTrue(os.path.isfile(dst_part))
-
-            # (bad directory move self container)
-            src = _('dir2')
-            dst = _('dir2', 'dir3')
-            moved = path_move(src, dst, quiet=True, critical=False)
-            self.assertFalse(moved)
-            self.assertTrue(os.path.isdir(src))
-            self.assertTrue(os.path.isdir(dst))
-
-            # (simple directory move)
-            src = _('dir2', 'dir3')
-            dst = _('dir4')
-            moved = path_move(src, dst, critical=False)
-            self.assertTrue(moved)
-            self.assertFalse(os.path.isdir(src))
-            self.assertFalse(os.path.isdir(_(dst, 'dir3')))
-            self.assertTrue(os.path.isfile(_(dst, 'file3')))
-
-            # (another directory move)
-            src = _('dir4')
-            dst = _('dir9', 'dir10')
-            moved = path_move(src, dst, critical=False)
-            self.assertTrue(moved)
-            self.assertFalse(os.path.isdir(src))
-            self.assertTrue(os.path.isdir(dst))
-            self.assertTrue(os.path.isfile(_(dst, 'file3')))
-            self.assertTrue(os.path.isfile(_(dst, 'file4')))
-            self.assertTrue(os.path.isdir(_(dst, 'dir5')))
-
-            # (check directory replacing a file)
-            src = _('dir9')
-            dst = _('file7')
-            self.assertTrue(os.path.isdir(src))
-            self.assertTrue(os.path.isfile(dst))
-            moved = path_move(src, dst, quiet=True, critical=False)
-            self.assertTrue(moved)
-            self.assertFalse(os.path.isdir(src))
-            self.assertTrue(os.path.isdir(dst))
 
     def test_utilio_optfile(self):
         with prepare_workdir() as work_dir:
