@@ -6,9 +6,9 @@ from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PYTHON_EXTEND_ENV
 from releng_tool.tool.python import PythonTool
 from releng_tool.util.io import generate_temp_dir
-from releng_tool.util.io import path_move
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
+from releng_tool.util.io_move import path_move
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.string import expand

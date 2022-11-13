@@ -6,12 +6,12 @@ from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension as ise
 from releng_tool.util.io import opt_file
-from releng_tool.util.io import path_move
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import run_script
 from releng_tool.util.io import touch
+from releng_tool.util.io_move import path_move
 from releng_tool.util.log import is_verbose
 from tests import prepare_workdir
 from tests import redirect_stdout
