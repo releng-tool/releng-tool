@@ -11,7 +11,7 @@ import stat
 import sys
 
 
-def path_move(src, dst, quiet=False, critical=True):
+def path_move(src, dst, quiet=False, critical=True, dst_dir=None):
     """
     move a file or directory into a target file or directory
 
@@ -49,6 +49,7 @@ def path_move(src, dst, quiet=False, critical=True):
         dst: the destination directory or file\\* (\\*if ``src`` is a file)
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
+        dst_dir (optional): force hint that the destination is a directory
 
     Returns:
         ``True`` if the move has completed with no error; ``False`` if the move
@@ -63,7 +64,7 @@ def path_move(src, dst, quiet=False, critical=True):
     if src == dst:
         return True
 
-    if os.path.isfile(src):
+    if os.path.isfile(src) and not dst_dir:
         parent_dir = os.path.dirname(dst)
         if parent_dir and not os.path.isdir(parent_dir):
             success = ensure_dir_exists(parent_dir, quiet=quiet)
