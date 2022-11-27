@@ -191,6 +191,7 @@ def process_args(args):
             unknown_args.remove(arg)
             debug('detected package-exec call: {}', exec_)
             needs_exec = False
+            continue
 
         is_entry = False
         if '=' in arg:
