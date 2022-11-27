@@ -2,6 +2,8 @@ Development
 -----------
 
 - **(note)** The deprecated ``releng`` namespace has been removed
+- Fixed issue where ``libfoo-exec`` action with an ``=`` character would crash
+- Introduce ``*_BIN_DIR`` environment/script variables
 - Introduce ``releng_move_into`` helper script function
 - Support for Poetry Python setup type
 - Support treating releng-tool warnings as errors with ``--werror`` argument
