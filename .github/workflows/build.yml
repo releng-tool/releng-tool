@@ -43,11 +43,11 @@ jobs:
     strategy:
       matrix:
         include:
-            - { os:  ubuntu-latest, python:  "2.7", toxenv:   py27, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python:  "3.5", toxenv:   py35, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python:  "3.6", toxenv:   py36, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python:  "3.7", toxenv:   py37, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python:  "3.8", toxenv:   py38, cache: ~/.cache/pip }
+            - { os:   ubuntu-20.04, python:  "2.7", toxenv:   py27, cache: ~/.cache/pip }
+            - { os:   ubuntu-20.04, python:  "3.5", toxenv:   py35, cache: ~/.cache/pip }
+            - { os:   ubuntu-20.04, python:  "3.6", toxenv:   py36, cache: ~/.cache/pip }
+            - { os:   ubuntu-20.04, python:  "3.7", toxenv:   py37, cache: ~/.cache/pip }
+            - { os:   ubuntu-20.04, python:  "3.8", toxenv:   py38, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.9", toxenv:   py39, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv:  py310, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv:  py311, cache: ~/.cache/pip }
