@@ -54,6 +54,7 @@ class TestSiteToolBase(RelengToolTestCase):
 
                 opts.gbl_action = self.prepare_global_action()
 
+                self.build_dir_prefix = os.path.join(opts.build_dir, PKG_NAME)
                 self.cache_dir = os.path.join(opts.cache_dir, PKG_NAME)
                 self.def_dir = os.path.join(opts.root_dir, PKG_DEFDIR)
                 self.defconfig = os.path.join(opts.root_dir, PKG_DEFINITION)
