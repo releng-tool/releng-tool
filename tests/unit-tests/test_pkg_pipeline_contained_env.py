@@ -35,6 +35,7 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 data = json.load(f)
 
             pkg_keys = [
+                'HOST_BIN_DIR',
                 'HOST_INCLUDE_DIR',
                 'HOST_LIB_DIR',
                 'NJOBS',
@@ -43,8 +44,10 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 'PREFIXED_HOST_DIR',
                 'PREFIXED_STAGING_DIR',
                 'PREFIXED_TARGET_DIR',
+                'STAGING_BIN_DIR',
                 'STAGING_INCLUDE_DIR',
                 'STAGING_LIB_DIR',
+                'TARGET_BIN_DIR',
                 'TARGET_INCLUDE_DIR',
                 'TARGET_LIB_DIR',
             ]
@@ -60,13 +63,18 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
             expected_target_pdir = opts.target_dir + nprefix
 
             J = os.path.join
+            expected_host_bin_dir = J(expected_host_pdir, 'bin')
             expected_host_include_dir = J(expected_host_pdir, 'include')
             expected_host_lib_dir = J(expected_host_pdir, 'lib')
+            expected_staging_bin_dir = J(expected_staging_pdir, 'bin')
             expected_staging_include_dir = J(expected_staging_pdir, 'include')
             expected_staging_lib_dir = J(expected_staging_pdir, 'lib')
+            expected_target_bin_dir = J(expected_target_pdir, 'bin')
             expected_target_include_dir = J(expected_target_pdir, 'include')
             expected_target_lib_dir = J(expected_target_pdir, 'lib')
 
+            self.assertEqual(
+                data['HOST_BIN_DIR'], expected_host_bin_dir)
             self.assertEqual(
                 data['HOST_INCLUDE_DIR'], expected_host_include_dir)
             self.assertEqual(
@@ -78,9 +86,13 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
             self.assertEqual(
                 data['PREFIXED_TARGET_DIR'], expected_target_pdir)
             self.assertEqual(
+                data['STAGING_BIN_DIR'], expected_staging_bin_dir)
+            self.assertEqual(
                 data['STAGING_INCLUDE_DIR'], expected_staging_include_dir)
             self.assertEqual(
                 data['STAGING_LIB_DIR'], expected_staging_lib_dir)
+            self.assertEqual(
+                data['TARGET_BIN_DIR'], expected_target_bin_dir)
             self.assertEqual(
                 data['TARGET_INCLUDE_DIR'], expected_target_include_dir)
             self.assertEqual(
@@ -103,6 +115,10 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
             if 'PREFIX' in data:
                 self.assertNotEqual(data['PREFIX'], '/my-custom-prefix')
                 self.assertNotEqual(
+                    data['HOST_BIN_DIR'], expected_host_bin_dir)
+                self.assertNotEqual(
+                    data['HOST_INCLUDE_DIR'], expected_host_include_dir)
+                self.assertNotEqual(
                     data['HOST_INCLUDE_DIR'], expected_host_include_dir)
                 self.assertNotEqual(
                     data['HOST_LIB_DIR'], expected_host_lib_dir)
@@ -113,9 +129,13 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 self.assertNotEqual(
                     data['PREFIXED_TARGET_DIR'], expected_target_pdir)
                 self.assertNotEqual(
+                    data['STAGING_BIN_DIR'], expected_staging_bin_dir)
+                self.assertNotEqual(
                     data['STAGING_INCLUDE_DIR'], expected_staging_include_dir)
                 self.assertNotEqual(
                     data['STAGING_LIB_DIR'], expected_staging_lib_dir)
+                self.assertNotEqual(
+                    data['TARGET_BIN_DIR'], expected_target_bin_dir)
                 self.assertNotEqual(
                     data['TARGET_INCLUDE_DIR'], expected_target_include_dir)
                 self.assertNotEqual(
