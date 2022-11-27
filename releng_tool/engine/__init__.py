@@ -696,10 +696,13 @@ of the releng process:
         host_pdir = self.opts.host_dir + sysroot_nprefix
         staging_pdir = self.opts.staging_dir + sysroot_nprefix
         target_pdir = self.opts.target_dir + sysroot_nprefix
+        host_bin_dir = os.path.join(host_pdir, 'bin')
         host_include_dir = os.path.join(host_pdir, 'include')
         host_lib_dir = os.path.join(host_pdir, 'lib')
+        staging_bin_dir = os.path.join(staging_pdir, 'bin')
         staging_include_dir = os.path.join(staging_pdir, 'include')
         staging_lib_dir = os.path.join(staging_pdir, 'lib')
+        target_bin_dir = os.path.join(target_pdir, 'bin')
         target_include_dir = os.path.join(target_pdir, 'include')
         target_lib_dir = os.path.join(target_pdir, 'lib')
 
@@ -708,6 +711,7 @@ of the releng process:
             env['BUILD_DIR'] = self.opts.build_dir
             env['CACHE_DIR'] = self.opts.cache_dir
             env['DL_DIR'] = self.opts.dl_dir
+            env['HOST_BIN_DIR'] = host_bin_dir
             env['HOST_DIR'] = self.opts.host_dir
             env['HOST_INCLUDE_DIR'] = host_include_dir
             env['HOST_LIB_DIR'] = host_lib_dir
@@ -722,10 +726,12 @@ of the releng process:
             env['PREFIXED_TARGET_DIR'] = target_pdir
             env['RELENG_VERSION'] = releng_version
             env['ROOT_DIR'] = self.opts.root_dir
+            env['STAGING_BIN_DIR'] = staging_bin_dir
             env['STAGING_DIR'] = self.opts.staging_dir
             env['STAGING_INCLUDE_DIR'] = staging_include_dir
             env['STAGING_LIB_DIR'] = staging_lib_dir
             env['SYMBOLS_DIR'] = self.opts.symbols_dir
+            env['TARGET_BIN_DIR'] = target_bin_dir
             env['TARGET_DIR'] = self.opts.target_dir
             env['TARGET_INCLUDE_DIR'] = target_include_dir
             env['TARGET_LIB_DIR'] = target_lib_dir
