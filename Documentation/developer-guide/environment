@@ -26,6 +26,10 @@ releng-tool, the following environment variables are available:
 
       - The download directory.
 
+    * - ``HOST_BIN_DIR``
+
+      - The host directory's prefixed bin directory.
+
     * - ``HOST_DIR``
 
       - The host directory.
@@ -248,6 +252,10 @@ releng-tool, the following environment variables are available:
 
       - The root directory.
 
+    * - ``STAGING_BIN_DIR``
+
+      - The staging area directory's prefixed bin directory.
+
     * - ``STAGING_DIR``
 
       - The staging area directory.
@@ -263,6 +271,10 @@ releng-tool, the following environment variables are available:
     * - ``SYMBOLS_DIR``
 
       - The symbols area directory.
+
+    * - ``TARGET_BIN_DIR``
+
+      - The target area directory's prefixed bin directory.
 
     * - ``TARGET_DIR``
 
