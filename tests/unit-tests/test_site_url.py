@@ -8,8 +8,10 @@ from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests.support import fetch_unittest_assets_dir
 from tests.support.http_daemon import httpd_context
+import io
 import os
 import sys
+import tarfile
 import unittest
 
 
@@ -49,6 +51,33 @@ class TestSiteUrl(RelengToolTestCase):
             site = 'http://{}:{}/test.tgz'.format(host, port)
 
             httpd.rsp.append((200, b'not-an-archive'))
+
+            with prepare_testenv(template='minimal') as engine:
+                root_dir = engine.opts.root_dir
+                pkg_script = os.path.join(root_dir,
+                    'package', 'minimal', 'minimal')
+
+                with open(pkg_script, 'a') as f:
+                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+
+                rv = engine.run()
+                self.assertFalse(rv)
+
+    def test_site_url_fetch_archive_tar_path_traversal(self):
+        with httpd_context() as httpd:
+            host, port = httpd.server_address
+            site = 'http://{}:{}/traversal.tar'.format(host, port)
+
+            dummy_file_data = io.BytesIO(b'test')
+            dummy_file_sz = len(dummy_file_data.getvalue())
+
+            data = io.BytesIO()
+            with tarfile.open(fileobj=data, mode='w') as tar:
+                test = tarfile.TarInfo('../test')
+                test.size = dummy_file_sz
+                tar.addfile(test, dummy_file_data)
+
+            httpd.rsp.append((200, data.getvalue()))
 
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
