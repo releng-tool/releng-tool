@@ -104,6 +104,15 @@ def extract(opts):
                 try:
                     def tar_extract(members, strip_count):
                         for member in members:
+                            # do not process a tar that has a member which
+                            # extracts outside of the work directory
+                            target_path = os.path.join(work_dir, member.name)
+                            target_path = os.path.abspath(target_path)
+                            common_prefix = os.path.commonprefix(
+                                [work_dir, target_path])
+                            if common_prefix != work_dir:
+                                raise Exception('path traversal detected')
+
                             # strip members from package defined count
                             if strip_count > 0:
                                 np = os.path.normpath(member.name)
