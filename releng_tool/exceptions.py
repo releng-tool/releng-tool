@@ -45,7 +45,7 @@ The configuration file cannot be found. Ensure the configuration file exists
 in the working directory or the provided root directory:
 
     {}
-'''.format(path))
+'''.strip().format(path))
 
 
 class RelengToolMissingExecCommand(RelengToolException):
@@ -61,7 +61,7 @@ has been provided. Ensure after specifying an exec call that the following
 argument defines the command to be executed.
 
     releng-tool {}-exec "mycmd arg1 arg2"
-'''.format(pkg))
+'''.strip().format(pkg))
 
 
 class RelengToolMissingPackagesError(RelengToolException):
@@ -77,7 +77,7 @@ list exists with the name of packages to be part of the releng process:
 
     {}
         {} = ['liba', 'libb', 'libc']
-'''.format(path, key))
+'''.strip().format(path, key))
 
 
 class RelengToolWarningAsError(RelengToolException):
