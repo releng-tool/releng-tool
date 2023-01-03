@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2021-2022 releng-tool
+# Copyright 2021-2023 releng-tool
 
 from releng_tool.tool import RelengTool
 from releng_tool.tool.tar import TAR
