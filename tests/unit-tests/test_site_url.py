@@ -87,7 +87,15 @@ class TestSiteUrl(RelengToolTestCase):
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
 
-                rv = engine.run()
+                otes = TAR.exists()
+                try:
+                    # temporarily force the internal tar processing
+                    RelengTool.detected[TAR_COMMAND] = False
+
+                    rv = engine.run()
+                finally:
+                    RelengTool.detected[TAR_COMMAND] = otes
+
                 self.assertFalse(rv)
 
     def test_site_url_fetch_archive_tar_valid_external_extract(self):
