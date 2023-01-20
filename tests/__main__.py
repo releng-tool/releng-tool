@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.util.log import releng_log_configuration
 from releng_tool.util.win32 import enable_ansi as enable_ansi_win32

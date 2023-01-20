@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.tool.scp import SCP
 from releng_tool.util.log import err

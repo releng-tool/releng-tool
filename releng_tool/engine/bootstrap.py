@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2019-2021 releng-tool
+# Copyright 2019-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import opt_file

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 releng-tool
+# Copyright 2022-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.tool.gpg import GPG
 from releng_tool.util.io import generate_temp_dir

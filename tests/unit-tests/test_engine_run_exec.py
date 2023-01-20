@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 releng-tool
+# Copyright 2022-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.exceptions import RelengToolMissingExecCommand
 from tests import RelengToolTestCase

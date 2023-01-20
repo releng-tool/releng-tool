@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2022 releng-tool
+# Copyright 2022-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 #
 # Provides an invoke testing executable, which will capture arguments and the
 # working directory of a call and output it into a JSON file. Unit tests may

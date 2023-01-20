@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2019 releng-tool
+# Copyright 2018-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause OR BSD Zero Clause License
 
 # Implementation in this file is considered "API safe". There is a strong
 # attempt to prevent the changing of the following classes, methods, etc. to

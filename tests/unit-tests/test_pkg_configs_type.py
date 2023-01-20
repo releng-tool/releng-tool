@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2021-2022 releng-tool
+# Copyright 2021-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.defs import PackageType
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue

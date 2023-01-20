@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright 2021-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.tool import RelengTool
 from releng_tool.tool.tar import TAR

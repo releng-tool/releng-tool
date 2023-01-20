@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2021 releng-tool
+# Copyright 2018-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 # A flag (or option) can be driven by the existence of a file (i.e. a file
 # flag). When an instance operates with file flags, two modes are approached in

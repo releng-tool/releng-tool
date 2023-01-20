@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 releng-tool
+# Copyright 2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 #
 # This is a utility module to help load a legacy version of SCons. typically
 # found in older Python interpreters (i.e. Python 2.7 and Python 3.4). For

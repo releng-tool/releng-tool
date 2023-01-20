@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 releng-tool
+# Copyright 2022-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool import __version__ as releng_version
 from releng_tool.support import require_version

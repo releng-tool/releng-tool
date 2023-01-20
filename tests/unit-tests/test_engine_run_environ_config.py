@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2021-2022 releng-tool
+# Copyright 2021-2023 releng-tool
+# SPDX-License-Identifier: BSD-2-Clause
 
 from tests import RelengToolTestCase
 from tests import prepare_testenv
