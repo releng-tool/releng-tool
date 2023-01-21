@@ -1,0 +1,72 @@
+select = [
+    'ALL',
+]
+
+ignore = [
+    # ignore flake8-annotations since python 2.7 is supported
+    'ANN',
+    # exception chaining not supported in python 2.7
+    'B904',
+    # zip does not have a strict option in python 2.7
+    'B905',
+    # various cases in the code where catching all exceptions is desired
+    'BLE',
+    # we are a bit complex for now
+    'C90',
+    # ignore pydocstyle (interim)
+    'D',
+    # ignore eradicate since spdx ids and parenthesis are false flagged
+    'ERA001',
+    # ignore the use of string literals for exceptions
+    'EM',
+    # imports are sorted lexicographically in this project
+    'FBT002',
+    # imports are sorted lexicographically in this project
+    'I001',
+    # suppress no-pep420 checks for valid support and test scripts
+    'INP',
+    # permit implicitly concatenated string literals over continuation line
+    'ISC002',
+    # multiple cases of constants and unittest-variant method styles
+    'N802',
+    'N806',
+    # permit import aliases with case changes
+    'N812',
+    'N813',
+    # happy with our exception naming
+    'N818',
+    # project uses unittest module
+    'PT',
+    # single quotes are preferred in this project
+    'Q000',
+    'Q001',
+    # suppress what appears to be false-positives with these checks
+    'RET504',
+    'RET505',
+    'RET506',
+    'RET507',
+    'RET508',
+    # unpacking a collection literal not supported pre-python 3.5
+    'RUF005',
+    # use of asserts are acceptable for this tool
+    'S101',
+    # nested statements are sometimes preferred for code readability
+    'SIM102',
+    'SIM117',
+    # in various places in the code, a ternary operator is not preferred
+    'SIM108',
+    # ignore flake8-print since we support/expect printing
+    'T20',
+    # ignore pyupgrade since python 2.7 is supported
+    'UP',
+]
+
+[per-file-ignores]
+'releng_tool\api\__init__.py' = [
+    'ARG002',
+    'N818',
+]
+
+'releng_tool\ext\seed\__init__.py' = [
+    'ARG002',
+]
