@@ -23,8 +23,8 @@ class TestUtilCommon(unittest.TestCase):
         checks = [
             '',
             0,
-            dict(),
-            list(),
+            dict(),  # noqa: C408
+            list(),  # noqa: C408
             set(),
         ]
         for check in checks:
