@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# bad license and exception values
+SPDX_EXTRAS_LICENSE = 'A WITH B'

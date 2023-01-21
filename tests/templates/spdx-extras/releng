@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+packages = [
+    'spdx-extras',
+]
+
+extra_licenses = {
+    'PERMIT_LICENSE': 'Permitted license',
+}
+
+extra_license_exceptions = {
+    'PERMIT_EXCEPTION': 'Permitted exception',
+}
