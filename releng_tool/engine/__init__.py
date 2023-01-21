@@ -279,7 +279,8 @@ class RelengEngine:
             for pkg in pkgs:
                 if pkg.name == opts.target_action:
                     def pkg_verbose_clean(desc):
-                        verbose('{} for package: {}', desc, pkg.name)
+                        pkg_name = pkg.name  # noqa: B023
+                        verbose('{} for package: {}', desc, pkg_name)
                     pkg_verbose_clean('removing output directory')
                     rv = path_remove(pkg.build_output_dir)
 

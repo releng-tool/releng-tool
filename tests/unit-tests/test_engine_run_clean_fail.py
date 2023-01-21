@@ -118,7 +118,7 @@ class TestEngineRunCleanFail(RelengToolTestCase):
 
         for target_file in file_flags:
             def rmcmd(path):
-                if path == target_file:
+                if path == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
@@ -215,7 +215,7 @@ class TestEngineRunCleanFail(RelengToolTestCase):
 
         for target_file in file_flags:
             def rmcmd(path):
-                if path == target_file:
+                if path == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
@@ -234,7 +234,7 @@ class TestEngineRunCleanFail(RelengToolTestCase):
 
         for target_file in file_flags:
             def rmcmd(path):
-                if path == target_file:
+                if path == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
@@ -250,7 +250,7 @@ class TestEngineRunCleanFail(RelengToolTestCase):
 
         for target_file in file_flags:
             def rmcmd(path):
-                if path == target_file:
+                if path == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
