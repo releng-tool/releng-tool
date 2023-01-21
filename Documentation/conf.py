@@ -9,7 +9,7 @@ import sys
 
 # meta
 project = 'releng-tool'
-copyright = '2022 releng-tool'
+copyright = '2023 releng-tool'
 author = 'releng-tool'
 
 # sphinx extensions
