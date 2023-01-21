@@ -333,6 +333,7 @@ releng.cmake.disable_parallel_option   disable parallel cmake
 releng.disable_prerequisites_check     disable prerequisites check
 releng.disable_remote_configs          disable remote configurations
 releng.disable_remote_scripts          disable remote scripts
+releng.disable_spdx_check              disable spdx license checks
 releng.git.no_depth                    disable depth-limits for git calls
 releng.git.no_quick_fetch              disable quick-fetching for git calls
 """

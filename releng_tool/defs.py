@@ -18,6 +18,8 @@ class ConfKey(Enum):
         DEFINTERN: packages are internal (implicitly)
         EXTENSIONS: project releng-extension list
         EXTEN_PKGS: project external packages list
+        EXTRA_LEXCEPTS: project-permitted spdx exceptions
+        EXTRA_LICENSES: project-permitted spdx licenses
         LICENSE_HEADER: license header information
         OVERRIDE_REV: revision overriding dictionary
         OVERRIDE_SITES: site overriding dictionary
@@ -33,6 +35,8 @@ class ConfKey(Enum):
     DEFINTERN = 'default_internal'
     EXTENSIONS = 'extensions'
     EXTEN_PKGS = 'external_packages'
+    EXTRA_LEXCEPTS = 'extra_license_exceptions'
+    EXTRA_LICENSES = 'extra_licenses'
     LICENSE_HEADER = 'license_header'
     OVERRIDE_REV = 'override_revisions'
     OVERRIDE_SITES = 'override_sites'

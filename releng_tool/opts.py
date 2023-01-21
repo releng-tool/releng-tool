@@ -86,6 +86,7 @@ class RelengEngineOptions:
         revision_override: dictionary to override revision values
         root_dir: directory container for all (configuration, output, etc.)
         sites_override: dictionary to override site values
+        spdx: spdx license database
         staging_dir: directory container for staged content
         symbols_dir: directory container for symbols content
         sysroot_prefix: system root prefix
@@ -132,6 +133,7 @@ class RelengEngineOptions:
         self.revision_override = None
         self.root_dir = None
         self.sites_override = None
+        self.spdx = {}
         self.staging_dir = None
         self.symbols_dir = None
         self.sysroot_prefix = DEFAULT_SYSROOT_PREFIX
@@ -141,6 +143,11 @@ class RelengEngineOptions:
         self.url_mirror = None
         self.urlopen_context = None
         self.verbose = False
+
+        # default have an empty license/exception entries, until SPDX data
+        # is loaded into the options
+        self.spdx['exceptions'] = {}
+        self.spdx['licenses'] = {}
 
         if args:
             self._handle_arguments(args)

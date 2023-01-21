@@ -64,6 +64,7 @@ from releng_tool.util.string import interpret_strings
 from shutil import copyfileobj
 import json
 import os
+import releng_tool
 import ssl
 import sys
 
@@ -88,6 +89,14 @@ class RelengEngine:
         self.opts = opts
         self.pkgman = RelengPackageManager(opts, self.registry, dvcs_cache=True)
         self.stats = RelengStats(opts)
+
+        # load spdx license data
+        base_dir = os.path.dirname(releng_tool.__file__)
+        data_dir = os.path.join(base_dir, 'data')
+        licenses_file = os.path.join(data_dir, 'licenses', 'data.json')
+
+        with open(licenses_file, mode='r') as f:
+            self.opts.spdx = json.load(f)
 
     def run(self):
         """
@@ -976,6 +985,30 @@ following key entry and re-try again.
                 notify_invalid_value(ConfKey.DEFINTERN, 'bool')
                 return False
             self.opts.default_internal_pkgs = is_default_internal
+
+        if ConfKey.EXTRA_LEXCEPTS in settings:
+            d = interpret_dictionary_strings(settings[ConfKey.EXTRA_LEXCEPTS])
+            if d is None:
+                notify_invalid_value(ConfKey.EXTRA_LEXCEPTS, 'dict(str,str)')
+                return False
+
+            for key, val in d.items():
+                self.opts.spdx['exceptions'][key] = {
+                    'name': val,
+                    'deprecated': False,
+                }
+
+        if ConfKey.EXTRA_LICENSES in settings:
+            d = interpret_dictionary_strings(settings[ConfKey.EXTRA_LICENSES])
+            if d is None:
+                notify_invalid_value(ConfKey.EXTRA_LICENSES, 'dict(str,str)')
+                return False
+
+            for key, val in d.items():
+                self.opts.spdx['licenses'][key] = {
+                    'name': val,
+                    'deprecated': False,
+                }
 
         if ConfKey.LICENSE_HEADER in settings:
             license_header = interpret_string(settings[ConfKey.LICENSE_HEADER])

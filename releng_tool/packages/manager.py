@@ -36,6 +36,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.sort import TopologicalSorter
+from releng_tool.util.spdx import spdx_extract
 from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_dictionary_strings
 from releng_tool.util.string import interpret_string
@@ -906,6 +907,8 @@ class RelengPackageManager:
                                                     option
         """
 
+        opts = self.opts
+
         # ######################################################################
         # (common)
         # ######################################################################
@@ -938,6 +941,34 @@ class RelengPackageManager:
         # license
         if pkg.license is None:
             pkg.license = self._fetch(Rpk.LICENSE)
+
+        if pkg.license and 'releng.disable_spdx_check' not in opts.quirks:
+            for license in pkg.license:
+                parsed, licenses, exceptions = spdx_extract(license)
+
+                for nested_license in licenses:
+                    entry = opts.spdx['licenses'].get(nested_license, None)
+                    if entry:
+                        if entry['deprecated']:
+                            warn('deprecated spdx license detected ({}): {}',
+                                nested_license, pkg.name)
+                    else:
+                        warn('unknown spdx license detected ({}): {}',
+                            nested_license, pkg.name)
+
+                for exception in exceptions:
+                    entry = opts.spdx['exceptions'].get(exception, None)
+                    if entry:
+                        if entry['deprecated']:
+                            warn('deprecated spdx license exception detected '
+                                 '({}): {}', exception, pkg.name)
+                    else:
+                        warn('unknown spdx license exception detected ({}): {}',
+                            exception, pkg.name)
+
+                if not parsed:
+                    warn('unexpected spdx license format detected: {}',
+                        pkg.name)
 
         # license files
         if pkg.license_files is None:
