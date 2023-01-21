@@ -425,10 +425,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
 
     if rv != 0:
         if critical:
-            if args:
-                cmd_str = _cmd_args_to_str(args)
-            else:
-                cmd_str = '<empty>'
+            cmd_str = _cmd_args_to_str(args) if args else '<empty>'
             err('failed to issue command: ' + cmd_str)
 
             # trigger a hard stop
