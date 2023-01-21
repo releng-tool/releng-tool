@@ -103,9 +103,11 @@ def display_size(val):
     Returns:
         the human-readable size
     """
+
+    SZ = 1024.
     for unit in ['B', 'KiB', 'MiB', 'GiB']:
-        if abs(val) < 1024.:
+        if abs(val) < SZ:
             return '{:3.1f} {}'.format(val, unit)
-        val /= 1024.
+        val /= SZ
 
     return '{:.1f} TiB'.format(val)

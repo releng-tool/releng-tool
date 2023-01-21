@@ -13,7 +13,7 @@ from shutil import copystat as shutil_copystat
 import os
 import sys
 
-if sys.version_info[0] >= 3:
+if sys.version_info[0] >= 3:  # noqa: PLR2004
     _copyfile = partial(shutil_copyfile, follow_symlinks=False)
     _copystat = partial(shutil_copystat, follow_symlinks=False)
 else:

@@ -14,6 +14,9 @@ import os
 #: size of blocks read when calculating the hash for a file
 HASH_READ_BLOCKSIZE = 1048576
 
+#: number of expected parts for a hash entry
+HASH_ENTRY_PARTS = 3
+
 
 class HashResult(Enum):
     """
@@ -96,10 +99,10 @@ def load(hash_file):
             continue
 
         entry_len = len(entry)
-        if entry_len > 3:
+        if entry_len > HASH_ENTRY_PARTS:
             raise BadFormatHashLoadError(
                 'too many values for entry {}'.format(idx + 1))
-        if entry_len < 3:
+        if entry_len < HASH_ENTRY_PARTS:
             raise BadFormatHashLoadError(
                 'too few values for entry {}'.format(idx + 1))
 

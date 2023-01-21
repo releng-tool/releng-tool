@@ -354,7 +354,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
 
         # python 2.7 can have trouble with unicode environment variables;
         # forcing all values to an ascii type
-        if final_env and sys.version_info[0] < 3:
+        if final_env and sys.version_info[0] < 3:  # noqa: PLR2004
             debug('detected python 2.7; sanity checking environment variables')
             for k, v in final_env.items():
                 if isinstance(v, unicode):  # pylint: disable=E0602 # noqa: F821
@@ -395,9 +395,9 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                     if not c and proc.poll() is not None:
                         break
                     line += c
-                    if c == b'\r' or c == b'\n':
+                    if c == b'\r' or c == b'\n':  # noqa: PLR2004
                         decoded_line = line.decode('utf_8')
-                        if c == b'\n' and capture is not None:
+                        if c == b'\n' and capture is not None:  # noqa: PLR2004
                             capture.append(decoded_line)
                         if not quiet:
                             sys.stdout.write(decoded_line)
@@ -895,7 +895,7 @@ def prepend_shebang_interpreter(args):
     """
     try:
         with open(args[0], 'rb') as f:
-            if f.read(1) == b'#' and f.read(1) == b'!':
+            if f.read(1) == b'#' and f.read(1) == b'!':  # noqa: PLR2004
                 MAXINTERP = 2048
                 interp = f.readline(MAXINTERP + 1).rstrip()
                 if len(interp) > MAXINTERP:
