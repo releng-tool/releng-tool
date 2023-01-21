@@ -54,7 +54,6 @@ def debug(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    global RELENG_LOG_DEBUG_FLAG
     if RELENG_LOG_DEBUG_FLAG:
         __log('(debug) ', '\033[2m', msg, sys.stdout, *args)
 
@@ -117,7 +116,6 @@ def is_verbose():
     Returns:
         whether or not the instance is configured with verbose messaging
     """
-    global RELENG_LOG_VERBOSE_FLAG
     return RELENG_LOG_VERBOSE_FLAG
 
 
@@ -176,7 +174,6 @@ def verbose(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    global RELENG_LOG_VERBOSE_FLAG
     if RELENG_LOG_VERBOSE_FLAG:
         __log('(verbose) ', '\033[2m', msg, sys.stdout, *args)
 
@@ -200,8 +197,6 @@ def warn(msg, *args):
     Raises:
         RelengToolWarningAsError: when warnings-are-errors is configured
     """
-    global RELENG_LOG_WERROR_FLAG
-
     sys.stdout.flush()
 
     if RELENG_LOG_WERROR_FLAG:
@@ -225,7 +220,6 @@ def __log(prefix, color, msg, file, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    global RELENG_LOG_NOCOLOR_FLAG
     if RELENG_LOG_NOCOLOR_FLAG:
         color = ''
         post = ''
