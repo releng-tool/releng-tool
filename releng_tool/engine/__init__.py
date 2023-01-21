@@ -128,7 +128,7 @@ class RelengEngine:
         if gaction == GlobalAction.INIT:
             return initialize_sample(opts)
 
-        start_time = datetime.now().replace(microsecond=0)
+        start_time = datetime.now().replace(microsecond=0)  # noqa: DTZ005
         gbls = {
             'releng_args': opts.forward_args,
             'releng_version': releng_version,
@@ -418,7 +418,7 @@ has failed. Ensure the following path is accessible for this user:
                 err('failed to perform post-processing')
                 return False
 
-            end_time = datetime.now().replace(microsecond=0)
+            end_time = datetime.now().replace(microsecond=0)  # noqa: DTZ005
             success('completed ({})', end_time - start_time)
 
         # attempt to generate a report at the end of a run
