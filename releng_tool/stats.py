@@ -23,7 +23,7 @@ try:
     matplotlib.use('Agg')
 
     import matplotlib.pyplot as plt
-    import numpy
+    import numpy as np
     has_matplotlib = True
 except ImportError:
     has_matplotlib = False
@@ -271,8 +271,8 @@ class RelengStats:
                     left=offset, label=category)
                 ax_total.barh(pkgs_total, width_total, height=BAR_HEIGHT,
                     left=offset_total, label=category)
-                offset = numpy.add(offset, width)
-                offset_total = numpy.add(offset_total, width_total)
+                offset = np.add(offset, width)
+                offset_total = np.add(offset_total, width_total)
 
             # provide some spacing near the right
             xlim = int(math.ceil(max(offset) / 10.)) * 10
