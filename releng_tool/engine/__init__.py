@@ -64,9 +64,11 @@ from releng_tool.util.string import interpret_strings
 from shutil import copyfileobj
 import json
 import os
-import releng_tool
 import ssl
 import sys
+
+if sys.version_info < (3, 0):
+    import imp
 
 
 class RelengEngine:
@@ -92,10 +94,16 @@ class RelengEngine:
         self.stats = RelengStats(opts)
 
         # load spdx license data
-        base_dir = os.path.dirname(releng_tool.__file__)
+        if sys.version_info < (3, 0) and not os.path.isabs(__file__):
+            _, base_dir, _ = imp.find_module('releng_tool')
+        else:
+            engine_dir = os.path.dirname(__file__)
+            base_dir = os.path.dirname(engine_dir)
+
         data_dir = os.path.join(base_dir, 'data')
         licenses_file = os.path.join(data_dir, 'licenses', 'data.json')
 
+        debug('loading spdx license database: {}', licenses_file)
         with open(licenses_file, mode='r') as f:
             self.opts.spdx = json.load(f)
 
