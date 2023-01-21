@@ -839,7 +839,7 @@ of the releng process:
         err_flag = False
 
         # parse and populate development mode configuration
-        devmode_changed = True if opts.devmode else False
+        devmode_changed = bool(opts.devmode)
 
         devmode_cfg = {}
         if os.path.exists(opts.ff_devmode):
@@ -889,7 +889,7 @@ The file used to track `--development` options cannot be written to.
     Error: {}''', opts.ff_devmode, e)
 
         # parse and populate local sources configurations
-        local_srcs_changed = True if opts.local_srcs else False
+        local_srcs_changed = bool(opts.local_srcs)
 
         if os.path.exists(opts.ff_local_srcs):
             # if we have an empty file, assume this is an old "file flag"

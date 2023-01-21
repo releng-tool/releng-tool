@@ -330,7 +330,7 @@ class RelengPackageManager:
 
         if opts.revision_override:
             pkg_revision = opts.revision_override.get(name)
-            pkg_devmode = True if pkg_revision else False
+            pkg_devmode = bool(pkg_revision)
 
         if not pkg_revision:
             pkg_revision_raw = self._fetch(Rpk.REVISION,
@@ -342,7 +342,7 @@ class RelengPackageManager:
                 # to a `*` key, if it exists)
                 if isinstance(pkg_revision_raw, dict):
                     pkg_revision = pkg_revision_raw.get(opts.devmode)
-                    pkg_devmode = True if pkg_revision else False
+                    pkg_devmode = bool(pkg_revision)
 
                     # no explicit revision, check the "default/any" revision
                     if not pkg_revision:
@@ -353,7 +353,7 @@ class RelengPackageManager:
                     if not pkg_revision and \
                             opts.devmode and pkg_devmode_revision:
                         pkg_revision = pkg_devmode_revision
-                        pkg_devmode = True if pkg_revision else False
+                        pkg_devmode = bool(pkg_revision)
 
                     # lastly, if no revision has been found, default to the
                     # package's version
