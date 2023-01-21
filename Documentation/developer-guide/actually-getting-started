@@ -42,12 +42,12 @@ structure for the definition file is as follows:
    #!/usr/bin/env python
    # -*- coding: utf-8 -*-
 
-   MY_PACKAGE_DEPENDENCIES=[]
-   MY_PACKAGE_LICENSE=['<license name>']
-   MY_PACKAGE_LICENSE_FILES=['<license file>']
-   MY_PACKAGE_SITE='<location for sources>'
-   MY_PACKAGE_TYPE='<package-type>'
-   MY_PACKAGE_VERSION='<package-version>'
+   MY_PACKAGE_DEPENDENCIES = []
+   MY_PACKAGE_LICENSE = ['<license name>']
+   MY_PACKAGE_LICENSE_FILES = ['<license file>']
+   MY_PACKAGE_SITE = '<location for sources>'
+   MY_PACKAGE_TYPE = '<package-type>'
+   MY_PACKAGE_VERSION = '<package-version>'
 
 Initial changes to note:
 

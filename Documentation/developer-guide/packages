@@ -34,7 +34,7 @@ the following can be defined (``PACKAGE_A_VERSION``):
    #!/usr/bin/env python
    # -*- coding: utf-8 -*-
 
-   PACKAGE_A_VERSION='1.0.0'
+   PACKAGE_A_VERSION = '1.0.0'
 
 More details on available configuration options are as follows.
 

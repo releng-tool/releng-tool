@@ -31,7 +31,7 @@ the following content:
    #!/usr/bin/env python
    # -*- coding: utf-8 -*-
 
-   LIBX_VERSION='1.0.0'
+   LIBX_VERSION = '1.0.0'
 
 Next, create a build script for the ``libx`` project
 ``my-project/libx/libx-build`` with the following content:
@@ -52,8 +52,8 @@ in this document). Repeat the same steps for the ``liby`` package with the file
    #!/usr/bin/env python
    # -*- coding: utf-8 -*-
 
-   LIBY_DEPENDENCIES=['libx']
-   LIBY_VERSION='2.1.0'
+   LIBY_DEPENDENCIES = ['libx']
+   LIBY_VERSION = '2.1.0'
 
 And ``my-project/liby/libx-build`` containing:
 
