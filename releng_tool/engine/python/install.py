@@ -134,7 +134,7 @@ def install(opts):
     path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
     path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
     env = {
-        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2
+        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2,
     }
 
     # apply package-specific overrides

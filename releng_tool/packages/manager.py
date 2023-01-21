@@ -1097,7 +1097,7 @@ class RelengPackageManager:
         """
 
         target_remote_configurations = [
-            os.path.join(pkg.build_dir, RELENG_CONF_EXTENDED_NAME)
+            os.path.join(pkg.build_dir, RELENG_CONF_EXTENDED_NAME),
         ]
 
         if pkg.build_subdir:

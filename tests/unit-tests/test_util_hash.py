@@ -43,7 +43,7 @@ class TestUtilHash(unittest.TestCase):
         file = os.path.join(samples, 'valid-hash-sample-a')
         data = load_hashes(file)
         self.assertEqual(data, [
-            ('type', 'hash', 'file')
+            ('type', 'hash', 'file'),
         ])
 
         # test
