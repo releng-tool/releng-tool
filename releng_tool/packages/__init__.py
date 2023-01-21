@@ -45,7 +45,7 @@ def pkg_cache_key(site):
     Returns:
         the cache key
     """
-    return hashlib.sha1(site.encode('utf_8')).hexdigest()
+    return hashlib.sha1(site.encode('utf_8')).hexdigest()  # noqa: S324
 
 
 def pkg_key(pkg, type_):
