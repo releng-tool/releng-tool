@@ -92,7 +92,7 @@ class RelengStats:
 
         if not ensure_dir_exists(self.out_dir):
             verbose('unable to generate output directory for statistics')
-            return None
+            return
 
         if desc:
             desc = ' ({})'.format(desc)
@@ -158,7 +158,7 @@ class RelengStats:
         """
         if not ensure_dir_exists(self.out_dir):
             verbose('unable to generate output directory for statistics')
-            return None
+            return
 
         self._generate_duration()
 
