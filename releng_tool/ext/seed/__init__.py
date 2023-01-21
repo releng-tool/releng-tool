@@ -14,7 +14,9 @@ class RelengSeedExtension:
         print('(seed) package', opts.name, 'has been fetched')
 
         try:
-            open(opts.cache_file, 'w').close()
+            with open(opts.cache_file, 'w'):
+                pass
+
             return opts.cache_file
         except IOError:
             return None
