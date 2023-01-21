@@ -83,6 +83,7 @@ class RelengEngine:
         opts: options used to configure the engine
         pkgman: manager for package-related tasks
         registry: extension registry
+        stats: statistics tracker
     """
     def __init__(self, opts):
         self.registry = RelengRegistry()
