@@ -53,17 +53,17 @@ class TestSpdxLicenses(RelengToolTestCase):
         stderr = self._process_license('DUMMY')
         self.assertIn('unknown spdx license detected', stderr)
 
-    def _process_license(self, license, config=None, template='minimal'):
+    def _process_license(self, lid, config=None, template='minimal'):
         with redirect_stderr() as stream:
             with prepare_testenv(config=config, template=template) as engine:
-                if license:
+                if lid:
                     root_dir = engine.opts.root_dir
                     pkg_script = os.path.join(root_dir,
                         'package', template, template)
 
                     with open(pkg_script, 'a') as f:
                         f.write('{}="{}"\n'.format(
-                            pkg_key(template, 'LICENSE'), license))
+                            pkg_key(template, 'LICENSE'), lid))
 
                 rv = engine.run()
                 self.assertTrue(rv)

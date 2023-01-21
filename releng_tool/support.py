@@ -39,8 +39,8 @@ def releng_include(file_path):
         invoked_script_base = os.path.dirname(invoked_script)
         target_script = os.path.join(invoked_script_base, file_path)
 
-    globals = caller_stack[0].f_globals
-    run_path(target_script, init_globals=globals)
+    ctx_globals = caller_stack[0].f_globals
+    run_path(target_script, init_globals=ctx_globals)
 
 
 def require_version(version, quiet=False, critical=True):

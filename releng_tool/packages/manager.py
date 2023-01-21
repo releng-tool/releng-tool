@@ -852,12 +852,12 @@ class RelengPackageManager:
         self._apply_postinit_options(pkg)
 
         # (additional environment helpers)
-        for env in (os.environ, env):
-            env[pkg_key(name, 'BUILD_DIR')] = pkg_build_dir
-            env[pkg_key(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
-            env[pkg_key(name, 'DEFDIR')] = pkg_def_dir
-            env[pkg_key(name, 'NAME')] = name
-            env[pkg_key(name, 'REVISION')] = pkg_revision
+        for ctx in (os.environ, env):
+            ctx[pkg_key(name, 'BUILD_DIR')] = pkg_build_dir
+            ctx[pkg_key(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
+            ctx[pkg_key(name, 'DEFDIR')] = pkg_def_dir
+            ctx[pkg_key(name, 'NAME')] = name
+            ctx[pkg_key(name, 'REVISION')] = pkg_revision
         os.environ[pkg_key(name, Rpk.VERSION)] = pkg_version
 
         # (internals)
@@ -943,8 +943,8 @@ class RelengPackageManager:
             pkg.license = self._fetch(Rpk.LICENSE)
 
         if pkg.license and 'releng.disable_spdx_check' not in opts.quirks:
-            for license in pkg.license:
-                parsed, licenses, exceptions = spdx_extract(license)
+            for license_entry in pkg.license:
+                parsed, licenses, exceptions = spdx_extract(license_entry)
 
                 for nested_license in licenses:
                     entry = opts.spdx['licenses'].get(nested_license, None)

@@ -31,16 +31,16 @@ def main():
         'exceptions': {},
     }
 
-    for license in license_data['licenses']:
-        data['licenses'][license['licenseId'].lower()] = {
-            'name': license['name'],
-            'deprecated': license['isDeprecatedLicenseId'],
+    for entry in license_data['licenses']:
+        data['licenses'][entry['licenseId'].lower()] = {
+            'name': entry['name'],
+            'deprecated': entry['isDeprecatedLicenseId'],
         }
 
-    for exception in exception_data['exceptions']:
-        data['exceptions'][exception['licenseExceptionId'].lower()] = {
-            'name': exception['name'],
-            'deprecated': exception['isDeprecatedLicenseId'],
+    for entry in exception_data['exceptions']:
+        data['exceptions'][entry['licenseExceptionId'].lower()] = {
+            'name': entry['name'],
+            'deprecated': entry['isDeprecatedLicenseId'],
         }
 
     # inject a non-license "Proprietary" string for convenience, since we aim

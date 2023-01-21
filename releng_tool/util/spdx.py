@@ -46,8 +46,8 @@ def spdx_extract(raw):
                 exceptions.add(part)
                 next_exception = False
             else:
-                license = part.rstrip('+')
-                licenses.add(license)
+                license_id = part.rstrip('+')
+                licenses.add(license_id)
                 needs_license = False
 
         if needs_license or next_exception:
