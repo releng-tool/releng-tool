@@ -204,7 +204,7 @@ Please correct the following hash file:
 
     for asset, type_hashes in hash_catalog.items():
         hashers = {}
-        for hash_entry in type_hashes.keys():
+        for hash_entry in type_hashes:
             # extract the specific hash type, if the entry includes a key length
             hash_type, _, _ = hash_entry.partition(':')
 
