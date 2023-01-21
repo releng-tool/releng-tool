@@ -16,6 +16,8 @@ Options which are read by releng-tool from a project's configuration script:
    default_internal = bool
    extensions = ['<extension>', '<extension>']
    external_packages = ['<path>', '<path>']
+   extra_license_exceptions = {'<short-exception-id>': '<exception-name>'}
+   extra_licenses = {'<short-license-id>': '<license-name>'}
    license_header = '<data>'
    override_extract_tools = {'<tool>': '<tool-path>'}
    override_revisions = {'<pkg>': '<revision>'}
@@ -193,5 +195,6 @@ Quirk options used by releng-tool:
    releng.disable_prerequisites_check
    releng.disable_remote_configs
    releng.disable_remote_scripts
+   releng.disable_spdx_check
    releng.git.no_depth
    releng.git.no_quick_fetch

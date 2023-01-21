@@ -37,4 +37,6 @@ the :doc:`user's guide <user-guide>`.
 .. _Mercurial: https://www.mercurial-scm.org/
 .. _Python: https://www.python.org/
 .. _SCons: https://scons.org/
+.. _SPDX License Exceptions: https://spdx.org/licenses/exceptions-index.html
+.. _SPDX License List: https://spdx.org/licenses/
 .. _Subversion: https://subversion.apache.org/

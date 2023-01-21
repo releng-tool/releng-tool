@@ -89,10 +89,17 @@ LIBFOO_LICENSE
 
 A string or list of strings outlining the license information for a package.
 Outlining the license of a package is always recommended (but not required).
+It is recommended to use `SPDX registered licenses <SPDX License List>`_.
 
 .. code-block:: python
 
-   LIBFOO_LICENSE = ['GPLv2', 'MIT']
+   LIBFOO_LICENSE = ['GPL-2.0-only', 'MIT']
+
+or
+
+.. code-block:: python
+
+   LIBFOO_LICENSE = 'GPL-2.0-or-later WITH Bison-exception-2.2'
 
 or
 
