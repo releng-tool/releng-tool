@@ -98,7 +98,7 @@ class PythonTool(RelengTool):
         if not hasattr(self, '_version_cache'):
             output = []
             version = ''
-            if self.execute(['-c', "import sys; " +
+            if self.execute(['-c', 'import sys; '
                     "print('.'.join(map(str, sys.version_info[:2])))"],
                     capture=output, quiet=True):
                 version = ''.join(output)
