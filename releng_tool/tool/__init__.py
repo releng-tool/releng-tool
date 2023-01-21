@@ -36,10 +36,7 @@ class RelengTool(object):
 
         # allow a system to override a host tool path
         override_tool_key = 'RELENG_' + re.sub(r'[^A-Z0-9]', '', tool.upper())
-        if override_tool_key in os.environ:
-            self.tool = os.environ[override_tool_key]
-        else:
-            self.tool = tool
+        self.tool = os.environ.get(override_tool_key, tool)
 
         if exists_args is not None:
             self.exists_args = exists_args

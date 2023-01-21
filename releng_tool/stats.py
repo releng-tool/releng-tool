@@ -218,10 +218,7 @@ class RelengStats:
                     f.write(pkg)
 
                     for category in categories:
-                        if category in durations[pkg]:
-                            value = durations[pkg][category]
-                        else:
-                            value = 0
+                        value = durations[pkg].get(category, 0)
                         f.write(',' + str(int(value)))
                     f.write('\n')
         except IOError as e:
