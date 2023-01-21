@@ -14,6 +14,9 @@ try:
 except ImportError:
     import BaseHTTPServer as http_server
 
+# http server endpoint to use a local/free random port
+LOCAL_RANDOM_PORT = ('127.0.0.1', 0)
+
 
 class MockServerRequestHandler(http_server.BaseHTTPRequestHandler):
     """
@@ -72,7 +75,6 @@ def build_httpd(secure=None):
         the http server
     """
 
-    LOCAL_RANDOM_PORT = ('127.0.0.1', 0)
     httpd = http_server.HTTPServer(LOCAL_RANDOM_PORT, MockServerRequestHandler)
     httpd.req = {}
     httpd.rsp = []
