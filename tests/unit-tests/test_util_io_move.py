@@ -133,7 +133,7 @@ class TestUtilIoMove(unittest.TestCase):
     def test_utilio_move_into(self):
         # setup
         directories = [
-            self._('dir1', 'dir2',),
+            self._('dir1', 'dir2'),
             self._('dir3'),
             self._('dir4', 'dir5', 'dir6'),
         ]
