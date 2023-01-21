@@ -519,7 +519,7 @@ class TestToolGit(TestSiteToolBase):
             if not execute(['git'] + list(args), capture=out, critical=False):
                 print(['git'] + list(args))
                 print('\n'.join(out))
-                assert False, 'failed to issue git command'
+                raise AssertionError('failed to issue git command')
             return '\n'.join(out)
 
     def _git_cache(self, *args):

@@ -119,7 +119,7 @@ class TestToolMercurial(TestSiteToolBase):
                     capture=out, critical=False):
                 print(['hg'] + list(args))
                 print('\n'.join(out))
-                assert False, 'failed to issue hg command'
+                raise AssertionError('failed to issue hg command')
             return '\n'.join(out)
 
     def _hg_repo(self, *args, **kwargs):

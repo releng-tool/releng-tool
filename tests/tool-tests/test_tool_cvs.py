@@ -88,7 +88,7 @@ class TestToolCvs(TestSiteToolBase):
         if not execute(['cvs'] + list(args), capture=out, critical=False):
             print(['cvs'] + list(args))
             print('\n'.join(out))
-            assert False, 'failed to issue cvs command'
+            raise AssertionError('failed to issue cvs command')
         return '\n'.join(out)
 
     def _cvs_repo(self, *args, **kwargs):

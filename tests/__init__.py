@@ -80,7 +80,7 @@ def copy_template(template, target):
     templates_dir = os.path.join(find_test_base(), 'templates')
     template_dir = os.path.join(templates_dir, template)
     if not path_copy(template_dir, target, critical=False):
-        assert False, 'failed to setup template into directory'
+        raise AssertionError('failed to setup template into directory')
 
 
 @contextmanager

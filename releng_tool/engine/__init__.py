@@ -293,7 +293,7 @@ class RelengEngine:
                             rv &= path_remove(pkg.cache_dir)
 
                     return rv
-            assert False  # should not reach here
+            raise AssertionError('unexpected package clean handling')
 
         # ensure any of required host tools do exist
         if 'releng.disable_prerequisites_check' not in opts.quirks:
