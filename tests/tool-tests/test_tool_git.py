@@ -252,7 +252,7 @@ class TestToolGit(TestSiteToolBase):
         third_hash = self._create_commit('third')
 
         # explicitly indicate that cache-ignoring should not happen
-        self.defconfig_add('DEVMODE_IGNORE_CACHE', False)
+        self.defconfig_add('DEVMODE_IGNORE_CACHE', value=False)
         self.defconfig_dump()
 
         # extract; should be the second commit
@@ -267,7 +267,7 @@ class TestToolGit(TestSiteToolBase):
         self.engine.opts.devmode = None
 
         # explicitly indicate that cache-ignoring can happen
-        self.defconfig_add('DEVMODE_IGNORE_CACHE', True)
+        self.defconfig_add('DEVMODE_IGNORE_CACHE', value=True)
 
         # extract; should be the third commit
         rv = self.engine.run()
@@ -391,7 +391,7 @@ class TestToolGit(TestSiteToolBase):
             self.assertFalse(os.path.exists(repo2_file))
 
     def test_tool_git_submodules_enabled(self):
-        self.defconfig_add('GIT_SUBMODULES', True)
+        self.defconfig_add('GIT_SUBMODULES', value=True)
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
 
         with generate_temp_dir() as repo2, generate_temp_dir() as repo3:
@@ -438,7 +438,7 @@ class TestToolGit(TestSiteToolBase):
             self.assertTrue(os.path.exists(repo3_file))
 
     def test_tool_git_submodules_branch_revision(self):
-        self.defconfig_add('GIT_SUBMODULES', True)
+        self.defconfig_add('GIT_SUBMODULES', value=True)
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
 
         with generate_temp_dir() as repo2:

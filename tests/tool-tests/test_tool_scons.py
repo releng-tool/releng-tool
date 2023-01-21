@@ -71,7 +71,7 @@ class TestToolScons(TestSiteToolBase):
         self.assertTrue(os.path.exists(executable))
 
     def test_tool_scons_noinstall(self):
-        self.defconfig_add('SCONS_NOINSTALL', True)
+        self.defconfig_add('SCONS_NOINSTALL', value=True)
 
         rv = self.engine.run()
         self.assertTrue(rv)

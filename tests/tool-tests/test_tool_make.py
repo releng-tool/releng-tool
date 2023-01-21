@@ -248,7 +248,7 @@ class TestToolMake(TestSiteToolBase):
 
     def test_tool_make_noinstall_configure(self):
         self.defconfig_add('CONF_OPTS', ['configure'])
-        self.defconfig_add('MAKE_NOINSTALL', True)
+        self.defconfig_add('MAKE_NOINSTALL', value=True)
 
         rv = self.engine.run()
         self.assertTrue(rv)
@@ -276,7 +276,7 @@ class TestToolMake(TestSiteToolBase):
             self.assertFalse(os.path.exists(expected), expected)
 
     def test_tool_make_noinstall_default(self):
-        self.defconfig_add('MAKE_NOINSTALL', True)
+        self.defconfig_add('MAKE_NOINSTALL', value=True)
 
         rv = self.engine.run()
         self.assertTrue(rv)

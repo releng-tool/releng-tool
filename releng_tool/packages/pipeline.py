@@ -95,8 +95,8 @@ class RelengPackagePipeline:
             return True
 
         # extracting
-        flag = pkg._ff_extract
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
+        fflag = pkg._ff_extract
+        if check_file_flag(fflag) == FileFlag.NO_EXIST:
             self.engine.stats.track_duration_start(pkg.name, 'extract')
             if not extract_stage(self.engine, pkg):
                 raise RelengToolExtractionStageFailure
@@ -106,7 +106,7 @@ class RelengPackagePipeline:
             if not ensure_dir_exists(pkg.build_output_dir):
                 raise RelengToolExtractionStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'extract')
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+            if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return False
         if gaction == GlobalAction.EXTRACT:
             return True
@@ -147,13 +147,13 @@ class RelengPackagePipeline:
         target = self.opts.target_action
 
         # patching
-        flag = pkg._ff_patch
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
+        fflag = pkg._ff_patch
+        if check_file_flag(fflag) == FileFlag.NO_EXIST:
             self.engine.stats.track_duration_start(pkg.name, 'patch')
             if not patch_stage(self.engine, pkg, pkg_env):
                 raise RelengToolPatchStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'patch')
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+            if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return False
         if gaction == GlobalAction.PATCH:
             return True
@@ -165,11 +165,11 @@ class RelengPackagePipeline:
         # If the user has requested to generate license information,
         # pull license assets from the extract package content.
         # license(s)
-        flag = pkg._ff_license
-        if check_file_flag(flag) == FileFlag.NO_EXIST:
+        fflag = pkg._ff_license
+        if check_file_flag(fflag) == FileFlag.NO_EXIST:
             if not self._stage_license(pkg):
                 raise RelengToolLicenseStageFailure
-            if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+            if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return False
 
         if pkg.license_files:
@@ -205,61 +205,61 @@ class RelengPackagePipeline:
                 return False
 
             # bootstrapping
-            flag = pkg._ff_bootstrap
-            if check_file_flag(flag) == FileFlag.NO_EXIST:
+            fflag = pkg._ff_bootstrap
+            if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'boot')
                 if not bootstrap_stage(self.engine, pkg, pkg_env):
                     raise RelengToolBootstrapStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'boot')
-                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return False
 
             # configuring
-            flag = pkg._ff_configure
-            if check_file_flag(flag) == FileFlag.NO_EXIST:
+            fflag = pkg._ff_configure
+            if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'configure')
                 if not configure_stage(self.engine, pkg, pkg_env):
                     raise RelengToolConfigurationStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'configure')
-                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return False
             if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
                 if pkg.name == target:
                     return False
 
             # building
-            flag = pkg._ff_build
-            if check_file_flag(flag) == FileFlag.NO_EXIST:
+            fflag = pkg._ff_build
+            if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'build')
                 if not build_stage(self.engine, pkg, pkg_env):
                     raise RelengToolBuildStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'build')
-                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return False
             if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
                 if pkg.name == target:
                     return False
 
             # installing
-            flag = pkg._ff_install
-            if check_file_flag(flag) == FileFlag.NO_EXIST:
+            fflag = pkg._ff_install
+            if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'install')
                 if not install_stage(self.engine, pkg, pkg_env):
                     raise RelengToolInstallStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'install')
-                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return False
             # (note: re-install requests will re-invoke package-specific
             # post-processing)
 
             # package-specific post-processing
-            flag = pkg._ff_post
-            if check_file_flag(flag) == FileFlag.NO_EXIST:
+            fflag = pkg._ff_post
+            if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'post')
                 if not post_stage(self.engine, pkg, pkg_env):
                     raise RelengToolPostStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'post')
-                if process_file_flag(True, flag) != FileFlag.CONFIGURED:
+                if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return False
             if paction in (
                     PkgAction.INSTALL,

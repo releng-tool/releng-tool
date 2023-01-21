@@ -15,7 +15,7 @@ class TestFileFlags(unittest.TestCase):
             file = os.path.join(work_dir, 'flag-create')
             self.assertTrue(not os.path.exists(file))
 
-            state = process_file_flag(True, file)
+            state = process_file_flag(file, flag=True)
             self.assertEqual(state, FileFlag.CONFIGURED)
             self.assertTrue(os.path.exists(file))
 
@@ -24,13 +24,13 @@ class TestFileFlags(unittest.TestCase):
             file = os.path.join(work_dir, 'flag-forced')
             self.assertTrue(not os.path.exists(file))
 
-            state = process_file_flag(False, file)
+            state = process_file_flag(file, flag=False)
             self.assertEqual(state, FileFlag.NO_EXIST)
             self.assertTrue(not os.path.exists(file))
 
             open(file, 'ab').close()
             self.assertTrue(os.path.exists(file))
-            state = process_file_flag(False, file)
+            state = process_file_flag(file, flag=False)
             self.assertEqual(state, FileFlag.NO_EXIST)
             self.assertTrue(os.path.exists(file))
 
@@ -39,7 +39,7 @@ class TestFileFlags(unittest.TestCase):
             file = os.path.join(work_dir, 'flag-exists')
             open(file, 'ab').close()
 
-            state = process_file_flag(None, file)
+            state = process_file_flag(file, flag=None)
             self.assertEqual(state, FileFlag.EXISTS)
             self.assertTrue(os.path.exists(file))
 
@@ -48,6 +48,6 @@ class TestFileFlags(unittest.TestCase):
             file = os.path.join(work_dir, 'flag-no-exist')
             self.assertTrue(not os.path.exists(file))
 
-            state = process_file_flag(None, file)
+            state = process_file_flag(file, flag=None)
             self.assertEqual(state, FileFlag.NO_EXIST)
             self.assertTrue(not os.path.exists(file))

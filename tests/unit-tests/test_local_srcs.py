@@ -63,9 +63,9 @@ class TestLocalSources(RelengToolTestCase):
                 self.assertTrue(os.path.exists(env_b))
                 self.assertTrue(os.path.exists(env_c))
 
-                self._assertEnvLocalSrcs(env_a, True)
-                self._assertEnvLocalSrcs(env_b, True)
-                self._assertEnvLocalSrcs(env_c, False)
+                self._assertEnvLocalSrcs(env_a, expected=True)
+                self._assertEnvLocalSrcs(env_b, expected=True)
+                self._assertEnvLocalSrcs(env_c, expected=False)
 
     def test_localsrcs_not_configured(self):
         with prepare_testenv(template='local-src') as engine:
@@ -93,9 +93,9 @@ class TestLocalSources(RelengToolTestCase):
             self.assertTrue(os.path.exists(env_b))
             self.assertTrue(os.path.exists(env_c))
 
-            self._assertEnvLocalSrcs(env_a, False)
-            self._assertEnvLocalSrcs(env_b, False)
-            self._assertEnvLocalSrcs(env_c, False)
+            self._assertEnvLocalSrcs(env_a, expected=False)
+            self._assertEnvLocalSrcs(env_b, expected=False)
+            self._assertEnvLocalSrcs(env_c, expected=False)
 
     def test_localsrcs_overload_package(self):
         with workdir() as root_dir, workdir() as dir_a, workdir() as dir_b:
@@ -147,9 +147,9 @@ class TestLocalSources(RelengToolTestCase):
                 self.assertTrue(os.path.exists(env_b))
                 self.assertTrue(os.path.exists(env_c))
 
-                self._assertEnvLocalSrcs(env_a, True)
-                self._assertEnvLocalSrcs(env_b, True)
-                self._assertEnvLocalSrcs(env_c, False)
+                self._assertEnvLocalSrcs(env_a, expected=True)
+                self._assertEnvLocalSrcs(env_b, expected=True)
+                self._assertEnvLocalSrcs(env_c, expected=False)
 
     def test_localsrcs_per_package(self):
         with workdir() as root_dir, workdir() as dir_a, workdir() as dir_b:
@@ -201,9 +201,9 @@ class TestLocalSources(RelengToolTestCase):
                 self.assertTrue(os.path.exists(env_b))
                 self.assertTrue(os.path.exists(env_c))
 
-                self._assertEnvLocalSrcs(env_a, True)
-                self._assertEnvLocalSrcs(env_b, True)
-                self._assertEnvLocalSrcs(env_c, False)
+                self._assertEnvLocalSrcs(env_a, expected=True)
+                self._assertEnvLocalSrcs(env_b, expected=True)
+                self._assertEnvLocalSrcs(env_c, expected=False)
 
     def test_localsrcs_single_path(self):
         with workdir() as root_dir, workdir() as test_dir:
@@ -253,9 +253,9 @@ class TestLocalSources(RelengToolTestCase):
                 self.assertTrue(os.path.exists(env_b))
                 self.assertTrue(os.path.exists(env_c))
 
-                self._assertEnvLocalSrcs(env_a, True)
-                self._assertEnvLocalSrcs(env_b, True)
-                self._assertEnvLocalSrcs(env_c, False)
+                self._assertEnvLocalSrcs(env_a, expected=True)
+                self._assertEnvLocalSrcs(env_b, expected=True)
+                self._assertEnvLocalSrcs(env_c, expected=False)
 
     def test_localsrcs_specific_package(self):
         with workdir() as root_dir, workdir() as test_dir:
@@ -304,9 +304,9 @@ class TestLocalSources(RelengToolTestCase):
                 self.assertTrue(os.path.exists(env_b))
                 self.assertTrue(os.path.exists(env_c))
 
-                self._assertEnvLocalSrcs(env_a, False)
-                self._assertEnvLocalSrcs(env_b, True)
-                self._assertEnvLocalSrcs(env_c, False)
+                self._assertEnvLocalSrcs(env_a, expected=False)
+                self._assertEnvLocalSrcs(env_b, expected=True)
+                self._assertEnvLocalSrcs(env_c, expected=False)
 
     def test_localsrcs_unset_package(self):
         with workdir() as test_dir:
@@ -359,9 +359,9 @@ class TestLocalSources(RelengToolTestCase):
                 self.assertTrue(os.path.exists(env_b))
                 self.assertTrue(os.path.exists(env_c))
 
-                self._assertEnvLocalSrcs(env_a, True)
-                self._assertEnvLocalSrcs(env_b, False)
-                self._assertEnvLocalSrcs(env_c, False)
+                self._assertEnvLocalSrcs(env_a, expected=True)
+                self._assertEnvLocalSrcs(env_b, expected=False)
+                self._assertEnvLocalSrcs(env_c, expected=False)
 
     def _dummy_pkg(self, container, pkg=None):
         uid = uuid.uuid4().hex

@@ -46,10 +46,10 @@ def check_file_flag(file):
         ``FileFlag.EXISTS`` if the flag is enabled; ``FileFlag.NO_EXIST`` if the
             flag is not enabled
     """
-    return process_file_flag(None, file)
+    return process_file_flag(file, None)
 
 
-def process_file_flag(flag, file, quiet=False):
+def process_file_flag(file, flag, quiet=False):
     """
     process a file flag event
 
@@ -61,8 +61,8 @@ def process_file_flag(flag, file, quiet=False):
     not the flag is considered enabled.
 
     Args:
-        flag: the flag option to used; ``None`` to check flag state
         file: the filename
+        flag: the flag option to used; ``None`` to check flag state
         quiet: suppression of any error messages to standard out
 
     Returns:

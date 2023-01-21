@@ -71,7 +71,7 @@ class TestToolCmake(TestSiteToolBase):
         self.assertTrue(os.path.exists(executable))
 
     def test_tool_cmake_noinstall(self):
-        self.defconfig_add('CMAKE_NOINSTALL', True)
+        self.defconfig_add('CMAKE_NOINSTALL', value=True)
 
         rv = self.engine.run()
         self.assertTrue(rv)
