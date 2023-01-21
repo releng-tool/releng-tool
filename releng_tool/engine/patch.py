@@ -16,7 +16,7 @@ import sys
 PATCH_SCRIPT = 'patch'
 
 
-def stage(engine, pkg, script_env):
+def stage(engine, pkg, script_env):  # noqa: ARG001
     """
     handles the patching stage for a package
 

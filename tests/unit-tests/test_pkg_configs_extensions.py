@@ -48,7 +48,7 @@ class TestPkgConfigsExtensions(TestPkgConfigsBase):
 
         # register the custom extraction type
         class MockExtract(RelengExtractExtensionInterface):
-            def extract(self, name, opts):
+            def extract(self, name, opts):  # noqa: ARG002
                 return False
 
         CUSTOM_EXTRACT_NAME = 'ext-my-custom-extract-type'

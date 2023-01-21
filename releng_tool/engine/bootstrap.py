@@ -13,7 +13,7 @@ import sys
 BOOTSTRAP_SCRIPT = 'bootstrap'
 
 
-def stage(engine, pkg, script_env):
+def stage(engine, pkg, script_env):  # noqa: ARG001
     """
     handles the bootstrapping stage for a package
 

@@ -31,7 +31,7 @@ class PythonSiteToolBase(TestSiteToolBase):
             dir_: the directory to search
         """
 
-        for root, dirs, files in os.walk(dir_):
+        for root, dirs, _ in os.walk(dir_):
             if 'site-packages' in dirs:
                 return os.path.join(root, 'site-packages')
 

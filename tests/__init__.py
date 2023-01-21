@@ -97,7 +97,7 @@ def mock_os_remove_permission_denied(f=None):
         f (optional): the mock method to use; otherwise defaults to OSError
     """
 
-    def _(path):
+    def _(path):  # noqa: ARG001
         raise OSError('Mocked permission denied')
 
     try:

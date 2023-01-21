@@ -13,7 +13,7 @@ import sys
 POST_SCRIPT = 'post'
 
 
-def stage(engine, pkg, script_env):
+def stage(engine, pkg, script_env):  # noqa: ARG001
     """
     handles the post-processing stage for a package
 
