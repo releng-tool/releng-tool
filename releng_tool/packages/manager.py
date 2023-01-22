@@ -708,7 +708,13 @@ class RelengPackageManager:
 
         pkg_is_local = pkg_vcs_type == VcsType.LOCAL
         if pkg_is_local:
-            pkg_build_dir = pkg_def_dir
+            new_local_dir = os.path.join(pkg_def_dir, 'local')
+            if os.path.isdir(new_local_dir):
+                pkg_build_dir = new_local_dir
+            else:
+                # deprecated local directory working inside definition folder
+                warn('local-defined package missing local folder: {}', name)
+                pkg_build_dir = pkg_def_dir
         else:
             pkg_build_dir = pkg_build_output_dir
 
