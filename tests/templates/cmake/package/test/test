@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+TEST_DEPENDENCIES = [
+    'lib',
+]
 TEST_TYPE = 'cmake'
 TEST_VCS_TYPE = 'local'
