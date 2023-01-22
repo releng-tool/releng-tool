@@ -67,6 +67,22 @@ cached Git file system. If a desired revision exists, content will be acquired
 from the cache location. If a desired revision does not exist, the origin remote
 will be fetched for the new revision (if it exists).
 
+.. _local_site:
+
+Local Site
+^^^^^^^^^^
+
+To define a package to use local site/sources, the site value can be set
+to ``local``. A local site can be defined as follows:
+
+.. code-block:: python
+
+   LIBFOO_SITE = 'local'
+
+This is equivalent to configuring |LIBFOO_VCS_TYPE|_ to a ``local`` VCS type
+as well. Note that a local package is intended for development/testing/training
+purposes. See |LIBFOO_VCS_TYPE|_ for more information.
+
 Mercurial Site
 ^^^^^^^^^^^^^^
 
