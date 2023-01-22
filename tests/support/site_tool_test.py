@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 from io import open
 from releng_tool.defs import GlobalAction
+from releng_tool.packages import pkg_key
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import path_remove
@@ -16,7 +17,6 @@ import os
 PKG_NAME = 'test'
 PKG_DEFDIR = os.path.join('package', PKG_NAME)
 PKG_DEFINITION = os.path.join(PKG_DEFDIR, PKG_NAME)
-PKG_CFG_PREFIX = 'TEST_'
 DEFAULT_TEMPLATE = 'site-tool'
 
 
@@ -130,7 +130,7 @@ class TestSiteToolBase(RelengToolTestCase):
         """
         path_remove(self.engine.opts.out_dir)
 
-    def defconfig_add(self, key, value):
+    def defconfig_add(self, key, value, defconfig=None, pkg_name=None):
         """
         inject a configuration into the test package's definition
 
@@ -141,21 +141,37 @@ class TestSiteToolBase(RelengToolTestCase):
         Args:
             key: the key to use for the configuration entry
             value: the value to use for the configuration entry
+            defconfig (optional): the configuration file to edit
+            pkg_name (optional): the package name
         """
 
-        with open(self.defconfig, mode='a', encoding='utf_8') as file_def:
-            file_def.write('{}{} = {}\n'.format(
-                PKG_CFG_PREFIX, key, repr(value)))
+        if not defconfig:
+            defconfig = self.defconfig
 
-    def defconfig_dump(self):
+        if not pkg_name:
+            pkg_name = PKG_NAME
+
+        with open(defconfig, mode='a', encoding='utf_8') as file_def:
+            file_def.write('{} = {}\n'.format(
+                pkg_key(pkg_name, key), repr(value)))
+
+    def defconfig_dump(self, defconfig=None):
         """
         dump the test package's definition contents to standard out
 
         When requested, the test package's definition file will be read and
         dumped to the configured standard output stream.
+
+        Args:
+            defconfig (optional): the configuration file to dump
         """
-        with open(self.defconfig, mode='r', encoding='utf_8') as f:
+
+        if not defconfig:
+            defconfig = self.defconfig
+
+        with open(defconfig, mode='r', encoding='utf_8') as f:
             content = f.readlines()
+
         print('-------------------------------')
         print(''.join(content).strip())
         print('-------------------------------')
