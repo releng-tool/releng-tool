@@ -388,6 +388,11 @@ The following outlines a series of configuration |CONF_QUIRKS|_ that can be
 applied to deal with rare host environment scenarios.
 
 - ``releng.bzr.certifi`` -- Use |certifi|_ certificates for ``bzr`` exports.
+- ``releng.cmake.disable_direct_includes`` -- Disables injecting include
+  directories into CMake configuration stages for host, staging and target
+  include directories (when applicable). This can be used to prevent possible
+  issues when building a CMake project with a toolchain file which has issues
+  with standard include overrides from releng-tool.
 - ``releng.cmake.disable_parallel_option`` -- Disables the ``--parallel`` option
   from being injected when a CMake-package is performing a build stage. This is
   to help support host systems running variants of CMake which do not explicitly

@@ -191,6 +191,7 @@ Quirk options used by releng-tool:
 .. code-block:: none
 
    releng.bzr.certifi
+   releng.cmake.disable_direct_includes
    releng.cmake.disable_parallel_option
    releng.disable_prerequisites_check
    releng.disable_remote_configs
