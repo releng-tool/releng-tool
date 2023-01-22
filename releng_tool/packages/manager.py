@@ -1193,7 +1193,6 @@ class RelengPackageManager:
             RelengToolInvalidPackageKeyValue: value type is invalid for the key
         """
 
-        self._active_key = key
         type_ = self._key_types[key]
         value = default
 
