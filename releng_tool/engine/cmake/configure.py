@@ -9,12 +9,23 @@ from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
+from releng_tool.util.log import verbose
 from releng_tool.util.string import expand
 import os
 import posixpath
 
 #: default lib container directory
 DEFAULT_LIB_DIR = 'lib'
+
+# cmake system include directories for various language types
+CMAKE_INCLUDE_INJECT_OPTIONS = [
+    'CMAKE_CUDA_STANDARD_INCLUDE_DIRECTORIES',
+    'CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES',
+    'CMAKE_C_STANDARD_INCLUDE_DIRECTORIES',
+    'CMAKE_HIP_STANDARD_INCLUDE_DIRECTORIES',
+    'CMAKE_OBJCXX_STANDARD_INCLUDE_DIRECTORIES',
+    'CMAKE_OBJC_STANDARD_INCLUDE_DIRECTORIES',
+]
 
 
 def configure(opts):
@@ -70,11 +81,12 @@ def configure(opts):
     posix_lib_dir = lib_dir.replace(os.sep, posixpath.sep)
 
     # definitions
+    compiled_include_locs = ';'.join(include_locs)
     cmake_defs = {
         # configure as RelWithDebInfo (when using multi-configuration projects)
         'CMAKE_BUILD_TYPE': 'RelWithDebInfo',
         # common paths for releng-tool sysroots
-        'CMAKE_INCLUDE_PATH': ';'.join(include_locs),
+        'CMAKE_INCLUDE_PATH': compiled_include_locs,
         'CMAKE_INSTALL_PREFIX': posix_prefix,
         'CMAKE_LIBRARY_PATH': ';'.join(library_locs),
         'CMAKE_PREFIX_PATH': ';'.join(prefix_locs),
@@ -85,6 +97,13 @@ def configure(opts):
         # `lib64`.
         'CMAKE_INSTALL_LIBDIR': posix_lib_dir,
     }
+
+    if 'releng.cmake.disable_direct_includes' not in opts._quirks:
+        for option in CMAKE_INCLUDE_INJECT_OPTIONS:
+            cmake_defs[option] = compiled_include_locs
+    else:
+        verbose('cmake direct includes disabled by quirk')
+
     if opts.conf_defs:
         cmake_defs.update(expand(opts.conf_defs))
 
