@@ -27,6 +27,7 @@ def main():
     assert license_data[lv_key] == exception_data[lv_key]
 
     data = {
+        'licenseListVersion': license_data[lv_key],
         'licenses': {},
         'exceptions': {},
     }
