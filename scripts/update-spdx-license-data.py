@@ -33,20 +33,20 @@ def main():
     }
 
     for entry in license_data['licenses']:
-        data['licenses'][entry['licenseId'].lower()] = {
+        data['licenses'][entry['licenseId']] = {
             'name': entry['name'],
             'deprecated': entry['isDeprecatedLicenseId'],
         }
 
     for entry in exception_data['exceptions']:
-        data['exceptions'][entry['licenseExceptionId'].lower()] = {
+        data['exceptions'][entry['licenseExceptionId']] = {
             'name': entry['name'],
             'deprecated': entry['isDeprecatedLicenseId'],
         }
 
     # inject a non-license "Proprietary" string for convenience, since we aim
     # to promote either SPDX licenses or users proprietary packages
-    data['licenses']['Proprietary'.lower()] = {
+    data['licenses']['Proprietary'] = {
         'name': 'Proprietary',
         'deprecated': False,
     }
