@@ -38,7 +38,7 @@ def configure(opts):
     prefix = opts.prefix
 
     base_locs = []
-    if opts._install_type == PackageInstallType.HOST:
+    if opts.install_type == PackageInstallType.HOST:
         base_locs.append(opts.host_dir)
     else:
         base_locs.append(opts.staging_dir)
@@ -49,7 +49,7 @@ def configure(opts):
             PackageInstallType.STAGING_AND_TARGET,
             PackageInstallType.TARGET,
         ]
-        if opts._install_type in target_area_types:
+        if opts.install_type in target_area_types:
             base_locs.append(opts.target_dir)
 
     include_locs = []
