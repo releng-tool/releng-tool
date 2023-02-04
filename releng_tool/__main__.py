@@ -259,61 +259,61 @@ def usage():
     return """releng-tool <options> [action]
 
 (actions)
- clean                     clean the output directory
- distclean                 pristine clean including cache/download content
- extract                   extract all packages
- fetch                     fetch all packages
- init                      initialize a root with an example structure
- licenses                  generate license information for a project
- mrproper                  pristine clean of the releng project
- patch                     ensure all packages have done a patch stage
- <pkg>-build               perform build stage for the package
- <pkg>-clean               clean build directory for package
- <pkg>-configure           perform configure stage for the package
- <pkg>-distclean           pristine clean for package
- <pkg>-exec <cmd>          invoke a command in the package's directory
- <pkg>-extract             perform extract stage for the package
- <pkg>-fetch               perform fetch stage for the package
- <pkg>-install             perform install stage for the package
- <pkg>-license             generate license information for the package
- <pkg>-patch               perform patch stage for the package
- <pkg>-rebuild             force a re-build of a specific package
- <pkg>-rebuild-only        force a re-build of a specific package and stop
- <pkg>-reconfigure         force a re-configure of a specific package
- <pkg>-reconfigure-only    force a re-configure of a specific package and stop
- <pkg>-reinstall           force a re-install of a specific package
+ clean                     Clean the output directory
+ distclean                 Pristine clean including cache/download content
+ extract                   Extract all packages
+ fetch                     Fetch all packages
+ init                      Initialize a root with an example structure
+ licenses                  Generate license information for a project
+ mrproper                  Pristine clean of the releng project
+ patch                     Ensure all packages have done a patch stage
+ <pkg>-build               Perform build stage for the package
+ <pkg>-clean               Clean build directory for package
+ <pkg>-configure           Perform configure stage for the package
+ <pkg>-distclean           Pristine clean for package
+ <pkg>-exec <cmd>          Invoke a command in the package's directory
+ <pkg>-extract             Perform extract stage for the package
+ <pkg>-fetch               Perform fetch stage for the package
+ <pkg>-install             Perform install stage for the package
+ <pkg>-license             Generate license information for the package
+ <pkg>-patch               Perform patch stage for the package
+ <pkg>-rebuild             Force a re-build of a specific package
+ <pkg>-rebuild-only        Force a re-build of a specific package and stop
+ <pkg>-reconfigure         Force a re-configure of a specific package
+ <pkg>-reconfigure-only    Force a re-configure of a specific package and stop
+ <pkg>-reinstall           Force a re-install of a specific package
 
 (common options)
- --assets-dir <dir>        container directory for download and vcs-cache
+ --assets-dir <dir>        Container directory for download and VCS-cache
                             directories (e.g. <ASSETS_DIR>/cache)
- --cache-dir <dir>         directory for vcs-cache (default: <ROOT>/cache)
- --dl-dir <dir>            directory for download archives (default: <ROOT>/dl)
+ --cache-dir <dir>         Directory for VCS-cache (default: <ROOT>/cache)
+ --dl-dir <dir>            Directory for download archives (default: <ROOT>/dl)
  -j, --jobs <jobs>         numbers of jobs to handle (default: 0; automatic)
- --out-dir <dir>           directory for output (builds, images, etc.)
+ --out-dir <dir>           Directory for output (builds, images, etc.)
                             (default: <ROOT>/output)
- --root-dir <dir>          directory to process a releng project
+ --root-dir <dir>          Directory to process a releng project
                             (default: working directory)
 
 (mode options)
- -D, --development         enable development mode
+ -D, --development         Enable development mode
  -L, --local-sources [[<pkg>@]<dir>]
-                           use development sources from a local path, defaults
+                           Use development sources from a local path, defaults
                             to the parent of the root directory; users can use
                             the format "<pkg>@<path>" to set/override specific
                             local paths per package; this argument can be
                             provided multiple times
 
 (other)
- --config <file>           configuration file to load (default: <ROOT>/releng)
- --debug                   show debug-related messages
- -F, --force               trigger a forced request
- -h, --help                show this help
- --help-quirks             show available quirks
- --nocolorout              explicitly disable colorized output
- --quirk <value>           inject in quirk into this run
- -V, --verbose             show additional messages
- --version                 show the version
- --werror, -Werror         treat warnings as errors
+ --config <file>           Configuration file to load (default: <ROOT>/releng)
+ --debug                   Show debug-related messages
+ -F, --force               Trigger a forced request
+ -h, --help                Show this help
+ --help-quirks             Show available quirks
+ --nocolorout              Explicitly disable colorized output
+ --quirk <value>           Inject in quirk into this run
+ -V, --verbose             Show additional messages
+ --version                 Show the version
+ --werror, -Werror         Treat warnings as errors
 """
 
 
@@ -328,15 +328,15 @@ def usage_quirks():
     """
     return """releng-tool quirks
 
-releng.bzr.certifi                     use certifi for bzr exports
-releng.cmake.disable_direct_includes   disable include-injection with cmake
-releng.cmake.disable_parallel_option   disable parallel cmake
-releng.disable_prerequisites_check     disable prerequisites check
-releng.disable_remote_configs          disable remote configurations
-releng.disable_remote_scripts          disable remote scripts
-releng.disable_spdx_check              disable spdx license checks
-releng.git.no_depth                    disable depth-limits for git calls
-releng.git.no_quick_fetch              disable quick-fetching for git calls
+releng.bzr.certifi                     Use certifi for bzr exports
+releng.cmake.disable_direct_includes   Disable include-injection with CMake
+releng.cmake.disable_parallel_option   Disable parallel CMake
+releng.disable_prerequisites_check     Disable prerequisites check
+releng.disable_remote_configs          Disable remote configurations
+releng.disable_remote_scripts          Disable remote scripts
+releng.disable_spdx_check              Disable spdx license checks
+releng.git.no_depth                    Disable depth-limits for Git calls
+releng.git.no_quick_fetch              Disable quick-fetching for Git calls
 """
 
 
