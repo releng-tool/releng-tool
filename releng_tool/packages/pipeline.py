@@ -22,6 +22,7 @@ from releng_tool.packages.exceptions import RelengToolInstallStageFailure
 from releng_tool.packages.exceptions import RelengToolLicenseStageFailure
 from releng_tool.packages.exceptions import RelengToolPatchStageFailure
 from releng_tool.packages.exceptions import RelengToolPostStageFailure
+from releng_tool.util.enum import Enum
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
@@ -34,6 +35,24 @@ from releng_tool.util.log import warn
 import os
 import subprocess
 import sys
+
+
+class PipelineResult(Enum):
+    """
+    pipeline process result
+
+    The result state from processing a pipeline stage. This enumeration is
+    primarily used to flag if a pipeline to continue processing stages
+    until completion, or if the pipeline should stop processing. Note
+    that a stopped pipeline does not indicate there was an error running
+    the pipeline.
+
+    Attributes:
+        CONTINUE: pipeline should continue processing
+        STOP: pipeline should stop processing
+    """
+    CONTINUE = 'continue'
+    STOP = 'stop'
 
 
 class RelengPackagePipeline:
@@ -92,7 +111,7 @@ class RelengPackagePipeline:
         # skip if generating license information and no license
         # files exist for this package
         if gaction == GlobalAction.LICENSES and not pkg.license_files:
-            return True
+            return PipelineResult.CONTINUE
 
         # extracting
         fflag = pkg._ff_extract
@@ -107,11 +126,11 @@ class RelengPackagePipeline:
                 raise RelengToolExtractionStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'extract')
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                return False
+                return PipelineResult.STOP
         if gaction == GlobalAction.EXTRACT:
-            return True
+            return PipelineResult.CONTINUE
         if paction == PkgAction.EXTRACT and pkg.name == target:
-            return False
+            return PipelineResult.STOP
 
         # process the package data with a package-specific environment
         with self._stage_env(pkg) as pkg_env:
@@ -154,11 +173,11 @@ class RelengPackagePipeline:
                 raise RelengToolPatchStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'patch')
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                return False
+                return PipelineResult.STOP
         if gaction == GlobalAction.PATCH:
-            return True
+            return PipelineResult.CONTINUE
         if paction == PkgAction.PATCH and pkg.name == target:
-            return False
+            return PipelineResult.STOP
 
         # handle license generation request
         #
@@ -170,7 +189,7 @@ class RelengPackagePipeline:
             if not self._stage_license(pkg):
                 raise RelengToolLicenseStageFailure
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                return False
+                return PipelineResult.STOP
 
         if pkg.license_files:
             version_desc = pkg.version
@@ -186,9 +205,9 @@ class RelengPackagePipeline:
                 self.license_files[pkg.name]['files'].append(file)
 
         if gaction == GlobalAction.LICENSES:
-            return True
+            return PipelineResult.CONTINUE
         if paction == PkgAction.LICENSE and pkg.name == target:
-            return False
+            return PipelineResult.STOP
 
         # load any late-stage configuration options from the remote
         # sources
@@ -202,7 +221,7 @@ class RelengPackagePipeline:
             # custom execution command
             if paction == PkgAction.EXEC and pkg.name == target:
                 self._stage_exec(pkg)
-                return False
+                return PipelineResult.STOP
 
             # bootstrapping
             fflag = pkg._ff_bootstrap
@@ -212,7 +231,7 @@ class RelengPackagePipeline:
                     raise RelengToolBootstrapStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'boot')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return False
+                    return PipelineResult.STOP
 
             # configuring
             fflag = pkg._ff_configure
@@ -222,10 +241,10 @@ class RelengPackagePipeline:
                     raise RelengToolConfigurationStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'configure')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return False
+                    return PipelineResult.STOP
             if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
                 if pkg.name == target:
-                    return False
+                    return PipelineResult.STOP
 
             # building
             fflag = pkg._ff_build
@@ -235,10 +254,10 @@ class RelengPackagePipeline:
                     raise RelengToolBuildStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'build')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return False
+                    return PipelineResult.STOP
             if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
                 if pkg.name == target:
-                    return False
+                    return PipelineResult.STOP
 
             # installing
             fflag = pkg._ff_install
@@ -248,7 +267,7 @@ class RelengPackagePipeline:
                     raise RelengToolInstallStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'install')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return False
+                    return PipelineResult.STOP
             # (note: re-install requests will re-invoke package-specific
             # post-processing)
 
@@ -260,16 +279,16 @@ class RelengPackagePipeline:
                     raise RelengToolPostStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'post')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return False
+                    return PipelineResult.STOP
             if paction in (
                     PkgAction.INSTALL,
                     PkgAction.REBUILD_ONLY,
                     PkgAction.RECONFIGURE_ONLY,
                     PkgAction.REINSTALL):
                 if pkg.name == target:
-                    return False
+                    return PipelineResult.STOP
 
-        return True
+        return PipelineResult.CONTINUE
 
     @contextmanager
     def _stage_env(self, pkg):

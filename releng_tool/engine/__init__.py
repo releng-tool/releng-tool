@@ -20,6 +20,7 @@ from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.opts import RELENG_POST_BUILD_NAME
 from releng_tool.packages.exceptions import RelengToolStageFailure
 from releng_tool.packages.manager import RelengPackageManager
+from releng_tool.packages.pipeline import PipelineResult
 from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
@@ -386,7 +387,7 @@ class RelengEngine:
                         continue
 
                     verbose('processing package: {}', pkg.name)
-                    if not pipeline.process(pkg):
+                    if pipeline.process(pkg) == PipelineResult.STOP:
                         return True
                 license_files = pipeline.license_files
 
