@@ -202,7 +202,7 @@ class RelengEngineOptions:
         if args.local_sources:
             for local_src_ref in args.local_sources:
                 if local_src_ref and '@' in local_src_ref:
-                    module, path = local_src_ref.split('@')
+                    module, path = local_src_ref.split('@', 1)
 
                     # path provided in a shell environment may not resolve
                     # `~` when prefixed with the leading `<pkg>@` hint;
