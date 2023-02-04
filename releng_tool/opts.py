@@ -203,6 +203,12 @@ class RelengEngineOptions:
             for local_src_ref in args.local_sources:
                 if local_src_ref and '@' in local_src_ref:
                     module, path = local_src_ref.split('@')
+
+                    # path provided in a shell environment may not resolve
+                    # `~` when prefixed with the leading `<pkg>@` hint;
+                    # attempt to expand a user hint after extracting the path
+                    path = os.path.expanduser(path)
+
                     self.local_srcs[module] = path if path else None
                 else:
                     self.local_srcs[GBL_LSRCS] = local_src_ref
