@@ -68,14 +68,11 @@ class RelengPackagePipeline:
         script_env: the script environment to load
 
     Attributes:
-        license_files: dictionary of package-to-license entities found when
-                        processing packages
         opts: options used to configure the engine
         script_env: the script environment to load
     """
     def __init__(self, engine, opts, script_env):
         self.engine = engine
-        self.license_files = {}
         self.opts = opts
         self.script_env = script_env
 
@@ -190,20 +187,6 @@ class RelengPackagePipeline:
                 raise RelengToolLicenseStageFailure
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return PipelineResult.STOP
-
-        if pkg.license_files:
-            version_desc = pkg.version
-            if not version_desc and pkg.revision:
-                version_desc = pkg.revision
-
-            self.license_files[pkg.name] = {
-                'files': [],
-                'version': version_desc,
-            }
-            for file in pkg.license_files:
-                file = os.path.join(pkg.build_dir, file)
-                self.license_files[pkg.name]['files'].append(file)
-
         if gaction == GlobalAction.LICENSES:
             return PipelineResult.CONTINUE
         if paction == PkgAction.LICENSE and pkg.name == target:

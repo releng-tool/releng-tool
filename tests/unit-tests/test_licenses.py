@@ -2,14 +2,14 @@
 # Copyright 2021-2023 releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
-from releng_tool.packages.pipeline import RelengPackagePipeline
+from releng_tool.engine.license import LicenseManager
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
 
 
-class TestPkgPipelineLicenses(RelengToolTestCase):
-    def test_pkg_pipeline_licenses_multiple(self):
+class TestLicenses(RelengToolTestCase):
+    def test_licenses_multiple(self):
         pkg_names = [
             'test-a',
             'test-b',
@@ -25,18 +25,16 @@ class TestPkgPipelineLicenses(RelengToolTestCase):
         with prepare_testenv(template='licenses') as engine:
             pkgs = engine.pkgman.load(pkg_names)
 
-            pipeline = RelengPackagePipeline(engine, engine.opts, {})
-            for pkg in pkgs:
-                if not pipeline.process(pkg):
-                    break
+            license_manager = LicenseManager(engine.opts)
+            license_cache = license_manager.build_cache(pkgs)
 
             for pkg, expected in zip(pkg_names, expected_licenses):
                 if expected is not None:
                     # a package with license information should be tracked
-                    self.assertTrue(pkg in pipeline.license_files)
+                    self.assertTrue(pkg in license_cache)
 
                     # verify we have expected license counts
-                    licenses = pipeline.license_files[pkg]['files']
+                    licenses = license_cache[pkg]['files']
                     self.assertEqual(len(licenses), expected)
 
                     # verify that the license reference maps to a real file
@@ -45,17 +43,15 @@ class TestPkgPipelineLicenses(RelengToolTestCase):
                 else:
                     # packages without license data should not provide any
                     # information
-                    self.assertFalse(pkg in pipeline.license_files)
+                    self.assertFalse(pkg in license_cache)
 
-    def test_pkg_pipeline_licenses_none(self):
+    def test_licenses_none(self):
         with prepare_testenv(template='licenses') as engine:
             pkgs = engine.pkgman.load(['test-b'])
 
-            pipeline = RelengPackagePipeline(engine, engine.opts, {})
-            for pkg in pkgs:
-                if not pipeline.process(pkg):
-                    break
+            license_manager = LicenseManager(engine.opts)
+            license_cache = license_manager.build_cache(pkgs)
 
             # verify we have no license information if packages have no license
             # information to provide
-            self.assertFalse(pipeline.license_files)
+            self.assertFalse(license_cache)

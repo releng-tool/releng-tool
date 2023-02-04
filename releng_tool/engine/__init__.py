@@ -12,6 +12,7 @@ from releng_tool.defs import PkgAction
 from releng_tool.defs import VcsType
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
+from releng_tool.engine.license import LicenseManager
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
@@ -62,7 +63,6 @@ from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_dictionary_strings
 from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
-from shutil import copyfileobj
 import json
 import os
 import ssl
@@ -123,7 +123,6 @@ class RelengEngine:
 
         opts = self.opts
         gaction = opts.gbl_action
-        license_files = {}
         pa = opts.pkg_action
 
         if gaction == GlobalAction.INIT:
@@ -389,7 +388,6 @@ class RelengEngine:
                     verbose('processing package: {}', pkg.name)
                     if pipeline.process(pkg) == PipelineResult.STOP:
                         return True
-                license_files = pipeline.license_files
 
         except RelengToolStageFailure:
             return False
@@ -409,8 +407,9 @@ has failed. Ensure the following path is accessible for this user:
         if gaction == GlobalAction.LICENSES or pa == PkgAction.LICENSE \
                 or not is_action:
             note('generating license information...')
-
-            if not self._perform_license_generation(license_files):
+            license_manager = LicenseManager(opts)
+            license_cache = license_manager.build_cache(pkgs)
+            if not license_manager.generate(license_cache):
                 return False
 
         # perform post-processing and completion message if not performing a
@@ -578,61 +577,6 @@ of the releng process:
             rv &= path_remove(self.opts.target_dir)
 
         return rv
-
-    def _perform_license_generation(self, license_files):
-        """
-        generate a license file for the project
-
-        Compiles a document containing all the license information for a
-        configured project. License information defined by each package will be
-        populated into a single file after each package is examined. Returned
-        will be a dictionary where keys are the package names and the values are
-        the list of one or more license files for the package.
-
-        Args:
-            license_files: dictionary of each package's license files
-
-        Returns:
-            ``True`` if the license file was generated; ``False`` if the license
-            file could not be generated
-        """
-        if not ensure_dir_exists(self.opts.license_dir):
-            return False
-
-        license_file = os.path.join(self.opts.license_dir, 'licenses')
-        try:
-            with open(license_file, 'w') as dst:
-                license_header = expand(self.opts.license_header)
-                if not license_header:
-                    license_header = 'license(s)'
-
-                # output license header
-                dst.write('''{}
-################################################################################
-'''.format(license_header))
-
-                # output license header
-                for license_name, license_data in sorted(license_files.items()):
-                    license_files = license_data['files']
-                    license_version = license_data['version']
-                    dst.write('''
-{}-{}
---------------------------------------------------------------------------------
-'''.format(license_name, license_version))
-                    for pkg_license_file in sorted(license_files):
-                        verbose('writing license file ({}): {}',
-                            license_name, pkg_license_file)
-                        with open(pkg_license_file, 'r') as f:
-                            copyfileobj(f, dst)
-                        dst.write('')
-
-            verbose('license file has been written')
-        except IOError as e:
-            err('unable to populate license information\n'
-                '    {}', e)
-            return False
-
-        return True
 
     def _post_processing(self, env):
         """
