@@ -100,9 +100,11 @@ class LicenseManager:
 '''.format(license_header))
 
                 # output license header
+                has_pkg_info = False
                 for license_name, license_data in sorted(cache.items()):
                     license_files = license_data['files']
                     license_version = license_data['version']
+                    has_pkg_info = True
                     dst.write('''
 {}-{}
 --------------------------------------------------------------------------------
@@ -113,6 +115,9 @@ class LicenseManager:
                         with open(pkg_license_file, 'r') as f:
                             copyfileobj(f, dst)
                         dst.write('')
+
+                if not has_pkg_info:
+                    dst.write('\nNo package license information available.')
 
             verbose('license file has been written')
         except IOError as e:
