@@ -51,11 +51,17 @@ def install(opts):
     cmake_args.extend(prepare_definitions(cmake_defs, '-D'))
     cmake_args.extend(prepare_arguments(cmake_opts))
 
-    # prepare environment for installation request; an environment dictionary is
-    # always needed to apply a custom DESTDIR during each install request
-    env = expand(opts.install_env)
-    if not env:
-        env = {}
+    # default environment
+    env = {
+        # always force an install to avoid possible issues with file time
+        # installation checks; releng-tool already wraps the installation
+        # event with its own control flags, so forcing an install should
+        # not cause any major issues
+        'CMAKE_INSTALL_ALWAYS': '1',
+    }
+
+    if opts.install_env:
+        env.update(expand(opts.install_env))
 
     # install to each destination
     for dest_dir in opts.dest_dirs:
