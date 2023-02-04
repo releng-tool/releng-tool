@@ -9,6 +9,27 @@ import os
 
 
 class TestLicenses(RelengToolTestCase):
+    def test_licenses_header_injection(self):
+        with prepare_testenv(template='licenses') as engine:
+            opts = engine.opts
+
+            # create a license header file
+            HEADER_STR = 'verify-header-add'
+            opts.license_header = HEADER_STR
+
+            # generate a license file
+            license_manager = LicenseManager(opts)
+            generated = license_manager.generate({})
+            self.assertTrue(generated)
+
+            # read the license file to ensure the header data is there
+            license_file = os.path.join(opts.license_dir, 'licenses')
+            with open(license_file, 'r') as f:
+                raw_data = f.read().strip()
+
+            self.assertIn(HEADER_STR, raw_data)
+            self.assertTrue(raw_data.startswith(HEADER_STR))
+
     def test_licenses_multiple(self):
         pkg_names = [
             'test-a',
