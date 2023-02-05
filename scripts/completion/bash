@@ -26,6 +26,7 @@ __releng_tool_has_action()
         'licenses'
         'mrproper'
         'patch'
+        'sbom'
     )
 
     local o w
@@ -49,6 +50,7 @@ __releng_tool_is_reserved()
         'licenses'
         'mrproper'
         'patch'
+        'sbom'
     )
 
     local o
@@ -87,6 +89,7 @@ _releng_tool_module()
     '--help' | '-h' | \
     '--help-quirks' | \
     '--jobs' | '-j' | \
+    '--sbom-format' | \
     '--quirk' | \
     '--version' )
         return 0
@@ -110,6 +113,7 @@ _releng_tool_module()
             '--nocolorout'
             '--out-dir'
             '--root-dir'
+            '--sbom-format'
             '--quirk'
             '--verbose'
             '--version'
@@ -155,6 +159,7 @@ _releng_tool_module()
             'licenses'
             'mrproper'
             'patch'
+            'sbom'
         )
         ;;
     esac

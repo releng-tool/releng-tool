@@ -10,6 +10,7 @@ function _releng_tool {
         'licenses'
         'mrproper'
         'patch'
+        'sbom'
     )
 
     _arguments -C \
@@ -28,6 +29,7 @@ function _releng_tool {
         '--nocolorout[explicitly disable colorized output]' \
         '--out-dir[directory for output]: :_files' \
         '--root-dir[directory of the project to process]: :_files' \
+        '--sbom-format[format to generate sbom files]: ' \
         '--quirk[quirk to apply to a run]: ' \
         {--verbose,-V}'[show additional messages]' \
         '--version[print the version and exit]' \

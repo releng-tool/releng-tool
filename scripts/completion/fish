@@ -24,7 +24,8 @@ function __fish__releng_tool_has_action
         init \
         licenses \
         mrproper \
-        patch
+        patch \
+        sbom
 
     set cmd (commandline -poc)
     set -e cmd[1]
@@ -114,6 +115,10 @@ complete --command releng-tool --long-option='out-dir' \
 complete --command releng-tool --long-option='root-dir' \
     --require-parameter \
     --description 'directory of the project to process'
+complete --command releng-tool --long-option='sbom-format' \
+    --no-files \
+    --require-parameter \
+    --description 'format to generate sbom files'
 complete --command releng-tool --long-option='quirk' \
     --no-files \
     --require-parameter \
