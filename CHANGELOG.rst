@@ -11,6 +11,7 @@ Development
 - Promote the use of SPDX license identifiers in package license options
 - Support automatic include injection for CMake staging/target/host areas
 - Support for Poetry Python setup type
+- Support generating a software build of materials
 - Support treating releng-tool warnings as errors with ``--werror`` argument
 
 0.13 (2022-08-10)
