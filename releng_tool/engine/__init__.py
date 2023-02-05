@@ -13,6 +13,7 @@ from releng_tool.defs import VcsType
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
+from releng_tool.engine.sbom import SbomManager
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
@@ -402,6 +403,14 @@ has failed. Ensure the following path is accessible for this user:
             return False
 
         is_action = (gaction or pa or opts.target_action is not None)
+
+        # perform sbom generation
+        if gaction == GlobalAction.SBOM or not is_action:
+            note('generating sbom information...')
+            sbom_manager = SbomManager(opts)
+            sbom_cache = sbom_manager.build_cache(pkgs)
+            if not sbom_manager.generate(sbom_cache):
+                return False
 
         # perform license generation
         if gaction == GlobalAction.LICENSES or pa == PkgAction.LICENSE \

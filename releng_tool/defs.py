@@ -189,6 +189,7 @@ class GlobalAction(Enum):
     LICENSES = 'licenses'
     MRPROPER = 'mrproper'
     PATCH = 'patch'
+    SBOM = 'sbom'
 
 
 class PkgAction(Enum):
@@ -304,6 +305,28 @@ class PythonSetupType(Enum):
     PEP517 = 'pep517'
     POETRY = 'poetry'
     SETUPTOOLS = 'setuptools'
+
+
+class SbomFormatType(Enum):
+    """
+    sbom format types
+
+    Defines supported output formats for a generated SBOM file.
+
+    Attributes:
+        ALL: all supported format types
+        CSV: a CSV file
+        HTML: an HTML file
+        JSON: a JSON file
+        TEXT: a plain text file
+        XML: an XML file
+    """
+    ALL = 'all'
+    CSV = 'csv'
+    HTML = 'html'
+    JSON = 'json'
+    TEXT = 'text'
+    XML = 'xml'
 
 
 class VcsType(Enum):

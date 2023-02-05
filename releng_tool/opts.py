@@ -85,6 +85,7 @@ class RelengEngineOptions:
         quirks: advanced configuration quirks for the running instance
         revision_override: dictionary to override revision values
         root_dir: directory container for all (configuration, output, etc.)
+        sbom_format: format(s) to use for sbom generation
         sites_override: dictionary to override site values
         spdx: spdx license database
         staging_dir: directory container for staged content
@@ -132,6 +133,7 @@ class RelengEngineOptions:
         self.quirks = []
         self.revision_override = None
         self.root_dir = None
+        self.sbom_format = []
         self.sites_override = None
         self.spdx = {}
         self.staging_dir = None
@@ -190,6 +192,8 @@ class RelengEngineOptions:
             self.injected_kv = args.injected_kv
         if args.quirk:
             self.quirks.extend(args.quirk)
+        if args.sbom_format:
+            self.sbom_format = args.sbom_format
 
         # cycle through the provided local source arguments to configure
         # global and package-specific local sources modes; we use the `@`

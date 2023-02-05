@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool import __version__ as releng_version
+from releng_tool.defs import SbomFormatType
 from releng_tool.engine import RelengEngine
 from releng_tool.exceptions import RelengToolException
 from releng_tool.exceptions import RelengToolSilentException
@@ -48,6 +49,7 @@ def main():
         parser.add_argument('--nocolorout', action='store_true')
         parser.add_argument('--out-dir')
         parser.add_argument('--root-dir')
+        parser.add_argument('--sbom-format', type=type_sbom_format)
         parser.add_argument('--quirk', action='append')
         parser.add_argument('--verbose', '-V', action='store_true')
         parser.add_argument('--version', action='version',
@@ -246,6 +248,32 @@ def type_nonnegativeint(value):
     return val
 
 
+def type_sbom_format(value):
+    """
+    argparse type check for sbom format types
+
+    Provides a type check for an argparse-provided argument value to ensure the
+    value is accept SBOM formats.
+
+    Args:
+        value: the value to check
+
+    Returns:
+        the sbom format(s)
+
+    Raises:
+        argparse.ArgumentTypeError: detected an invalid sbom format is provided
+    """
+
+    values = list(set(value.split(',')))
+
+    for entry in values:
+        if entry not in SbomFormatType:
+            raise argparse.ArgumentTypeError('invalid format provided')
+
+    return values
+
+
 def usage():
     """
     display the usage for this tool
@@ -267,6 +295,7 @@ def usage():
  licenses                  Generate license information for a project
  mrproper                  Pristine clean of the releng project
  patch                     Ensure all packages have done a patch stage
+ sbom                      Generate a software bill of materials
  <pkg>-build               Perform build stage for the package
  <pkg>-clean               Clean build directory for package
  <pkg>-configure           Perform configure stage for the package
@@ -302,6 +331,10 @@ def usage():
                             the format "<pkg>@<path>" to set/override specific
                             local paths per package; this argument can be
                             provided multiple times
+
+(sbom options)
+ --sbom-format <format>    Specify the output format for a software build of
+                            materials (e.g. csv, json)
 
 (other)
  --config <file>           Configuration file to load (default: <ROOT>/releng)
