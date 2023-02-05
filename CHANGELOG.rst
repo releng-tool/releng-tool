@@ -2,6 +2,7 @@ Development
 -----------
 
 - **(note)** The deprecated ``releng`` namespace has been removed
+- CMake install events will now always force installs by default
 - Fixed issue where CMake projects with implicit target area installs have
   issues finding includes/libraries with ``find_<x>`` calls
 - Fixed issue where ``libfoo-exec`` action with an ``=`` character would crash
@@ -9,10 +10,12 @@ Development
 - Introduce ``releng_move_into`` helper script function
 - Local VCS-type packages should now place sources inside a ``local`` folder
 - Promote the use of SPDX license identifiers in package license options
+- Support ``.releng`` extensions for scripts
 - Support automatic include injection for CMake staging/target/host areas
 - Support for Poetry Python setup type
 - Support generating a software build of materials
 - Support treating releng-tool warnings as errors with ``--werror`` argument
+- Support user paths in package-specific local-sources overrides
 
 0.13 (2022-08-10)
 -----------------
