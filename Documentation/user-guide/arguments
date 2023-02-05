@@ -74,6 +74,15 @@ The following outlines available actions:
 
       - All packages will be processed up to the patch phase (inclusive).
 
+    * - .. _ACTION_SBOM:
+
+        ``sbom``
+
+      - A request to generate a software build of materials (SBOM) for
+        the project. By default, a releng-tool run will generate an
+        SBOM file at the end of a run. This action can be used to
+        generate an SBOM without requiring a build.
+
     * - ``<pkg>-build``
 
       - Performs the build stage for the package. On success, the specified
@@ -241,6 +250,7 @@ The following outlines available actions:
 .. |ACTION_MRPROPER| replace:: ``mrproper``
 .. |ACTION_PKG_CLEAN| replace:: ``<pkg>-clean``
 .. |ACTION_PKG_DISTCLEAN| replace:: ``<pkg>-distclean``
+.. |ACTION_SBOM| replace:: ``sbom``
 
 The following outlines available options:
 
@@ -323,6 +333,26 @@ The following outlines available options:
 
       - Directory to process a releng-tool project (defaults to the
         working directory).
+
+    * - ``--sbom-format <fmt>``
+
+      - The format to use when generating a software build of materials
+        (SBOM). Multiple formats can be provided (comma-separated).
+
+        .. table::
+            :widths: 50 50
+
+            ==== ===
+            Type Value
+            ==== ===
+            CSV  ``csv``
+            HTML ``html``
+            JSON ``json``
+            Text ``text`` (default)
+            XML  ``xml``
+            ==== ===
+
+        See also |ACTION_SBOM|_.
 
     * - ``--quirk <quirk-id>``
 
