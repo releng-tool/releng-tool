@@ -22,7 +22,7 @@ class RelengRegistryInterface(object):
         """
         register extraction support with a given name for this extension
 
-        An extension will invoke this method will attempting to support a custom
+        An extension will invoke this method when attempting to support a custom
         extraction method for a release engineering process. The extraction
         type is identified by the provided ``name`` value. Packages being
         processed with VCS type paired with a extension-defined fetch type or a
@@ -60,7 +60,7 @@ class RelengRegistryInterface(object):
         """
         register fetch support with a given name for this extension
 
-        An extension will invoke this method will attempting to support a custom
+        An extension will invoke this method when attempting to support a custom
         fetch method for a release engineering process. The fetch type is
         identified by the provided ``name`` value. Packages being processed with
         a matching VCS type will be processed through the provided ``handler``.
@@ -96,7 +96,7 @@ class RelengRegistryInterface(object):
         """
         register package support with a given name for this extension
 
-        An extension will invoke this method will attempting to support a custom
+        An extension will invoke this method when attempting to support a custom
         package methods for a release engineering process. The package type is
         identified by the provided ``name`` value. Packages being processed with
         a matching type will be processed through the provided ``handler`` for
