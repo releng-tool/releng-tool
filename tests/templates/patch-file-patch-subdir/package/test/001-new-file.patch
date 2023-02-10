@@ -1,0 +1,5 @@
+diff -Nur a/new-file.txt b/new-file.txt
+--- a/new-file.txt	1969-12-31 19:00:00.000000000 -0500
++++ b/new-file.txt	2023-02-09 21:58:10.952129800 -0500
+@@ -0,0 +1 @@
++Sample file.
