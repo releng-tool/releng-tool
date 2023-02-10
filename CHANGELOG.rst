@@ -1,3 +1,10 @@
+Development
+-----------
+
+- CMake install events will now always skip dependency checks
+- Fixed issue where extension loading may cause issues in Python 2.7
+- Improve support for patching a root build directory and sub-directories
+
 0.14 (2023-02-05)
 -----------------
 
