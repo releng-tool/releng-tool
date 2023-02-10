@@ -96,6 +96,11 @@ def configure(opts):
         # cross-compiling), which may implicitly set the library directory to
         # `lib64`.
         'CMAKE_INSTALL_LIBDIR': posix_lib_dir,
+        # disable a dependency in the installation stage to the build stage;
+        # this is to prevent environments re-triggering the building of
+        # sources during the installation stage due to an assumed detection
+        # that compiled sources are stale
+        'CMAKE_SKIP_INSTALL_ALL_DEPENDENCY': 'ON',
     }
 
     if 'releng.cmake.disable_direct_includes' not in opts._quirks:
