@@ -43,6 +43,7 @@ class RelengPackage:
         name: name of the package
         no_extraction: whether or not this package will extract
         nv: name-version value of the package
+        patch_subdir: override for a package's patch base (if applicable)
         prefix: system root prefix override (if applicable)
         revision: revision to use to fetch from vcs (if applicable)
         site: site to acquire package assets
@@ -105,6 +106,7 @@ class RelengPackage:
         self.license_files = None
         self.local_srcs = False
         self.no_extraction = False
+        self.patch_subdir = None
         self.prefix = None
         self.revision = None
         self.site = None

@@ -131,6 +131,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.LICENSE_FILES, PkgKeyType.STRS)
         self._register_conf(Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
+        self._register_conf(Rpk.PATCH_SUBDIR, PkgKeyType.STR)
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR)
@@ -567,6 +568,9 @@ class RelengPackageManager:
         # no extraction
         pkg_no_extraction = self._fetch(Rpk.NO_EXTRACTION)
 
+        # patch subdirectory
+        pkg_patch_subdir = self._fetch(Rpk.PATCH_SUBDIR)
+
         # skip any remote configuration
         pkg_skip_remote_config = self._fetch(Rpk.SKIP_REMOTE_CONFIG)
 
@@ -752,6 +756,9 @@ class RelengPackageManager:
         if pkg_build_subdir:
             pkg_build_subdir = os.path.join(pkg_build_dir, pkg_build_subdir)
 
+        if pkg_patch_subdir:
+            pkg_patch_subdir = os.path.join(pkg_build_dir, pkg_patch_subdir)
+
         cache_dir = os.path.join(opts.dl_dir, name)
         if cache_ext:
             pkg_cache_file = os.path.join(cache_dir, pkg_nv + '.' + cache_ext)
@@ -847,6 +854,7 @@ class RelengPackageManager:
         pkg.is_internal = pkg_is_internal
         pkg.local_srcs = pkg_local_srcs
         pkg.no_extraction = pkg_no_extraction
+        pkg.patch_subdir = pkg_patch_subdir
         pkg.revision = pkg_revision
         pkg.site = pkg_site
         pkg.skip_remote_config = pkg_skip_remote_config

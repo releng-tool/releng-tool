@@ -79,6 +79,7 @@ class Rpk(Enum):
         LICENSE: license information for the package
         LICENSE_FILES: source file(s) with license information
         NO_EXTRACTION: whether or not package extraction is done
+        PATCH_SUBDIR: sub-directory in fetched to apply patches
         PREFIX: system root prefix override (if needed)
         REVISION: revision to acquire from sources (if any)
         SITE: site where to fetch package sources
@@ -131,6 +132,7 @@ class Rpk(Enum):
     LICENSE = 'LICENSE'
     LICENSE_FILES = 'LICENSE_FILES'
     NO_EXTRACTION = 'NO_EXTRACTION'
+    PATCH_SUBDIR = 'PATCH_SUBDIR'
     PREFIX = 'PREFIX'
     REVISION = 'REVISION'
     SITE = 'SITE'

@@ -68,10 +68,10 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     note('patching {}...', pkg.name)
     sys.stdout.flush()
 
-    if pkg.build_subdir:
-        build_dir = pkg.build_subdir
+    if pkg.patch_subdir:
+        patch_dir = pkg.patch_subdir
     else:
-        build_dir = pkg.build_dir
+        patch_dir = pkg.build_dir
 
     # if we have a patch script, run it
     if has_patch_script:
@@ -101,7 +101,7 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
                 '--ignore-whitespace',
                 '--input={}'.format(patch),
                 '--strip=1',
-                ], cwd=build_dir):
+                ], cwd=patch_dir):
             err('failed to apply patch')
             return False
 
