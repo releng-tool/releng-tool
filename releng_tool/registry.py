@@ -111,12 +111,15 @@ class RelengRegistry(RelengRegistryInterface):
                 # namespace package
                 ext_parts = name.split('.')
                 path = None
+                last_part = ''
                 for part in ext_parts[:-1]:
                     file, pathname, desc = imp.find_module(part, path)
 
                     if desc[-1] != imp.PKG_DIRECTORY:
                         raise ImportError(name)
 
+                    part = last_part + part
+                    last_part = part + '.'
 
                     try:
                         pkg = imp.load_module(part, file, pathname, desc)
@@ -131,7 +134,7 @@ class RelengRegistry(RelengRegistryInterface):
                 file, pathname, desc = imp.find_module(last_part, path)
 
                 try:
-                    plugin = imp.load_module(last_part, file, pathname, desc)
+                    plugin = imp.load_module(name, file, pathname, desc)
                 finally:
                     if file:
                         file.close()
