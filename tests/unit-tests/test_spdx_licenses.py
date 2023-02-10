@@ -10,8 +10,12 @@ import os
 
 
 class TestSpdxLicenses(RelengToolTestCase):
-    def test_spdx_licenses_broken_spdx_license_value(self):
+    def test_spdx_licenses_broken_spdx_license_value01(self):
         stderr = self._process_license('MIT AND')
+        self.assertIn('unexpected spdx license format detected', stderr)
+
+    def test_spdx_licenses_broken_spdx_license_value02(self):
+        stderr = self._process_license('BSD AND OR MIT')
         self.assertIn('unexpected spdx license format detected', stderr)
 
     def test_spdx_licenses_deprecated_spdx_exception(self):
