@@ -227,6 +227,15 @@ class TestEngineRunArgs(RelengToolTestCase):
             with prepare_testenv(config=config) as engine:
                 self.assertEqual(engine.opts.out_dir, out_dir)
 
+    def test_engine_run_args_sbom_format(self):
+        config = {
+            'sbom_format': 'html,json',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertTrue('html' in engine.opts.sbom_format)
+            self.assertTrue('json' in engine.opts.sbom_format)
+
     def test_engine_run_args_quirks(self):
         quirks = [
             '--quirk1',
