@@ -46,7 +46,7 @@
   operating in local-sources mode
 - Introduce support for make-based packages
 - Support ``PKG_DEFDIR`` usage inside a package's definition
-- Support bzr quirk to utilize ``certifi`` certificates
+- Support Bazaar quirk to utilize ``certifi`` certificates
 - Support users overriding a project's configuration path from command line
 
 0.12 (2022-05-02)
@@ -54,7 +54,7 @@
 
 - Adding ``dst_dir`` to ``releng_copy`` for explicit copies to directories
 - Adjust automatic job detection to use physical cores instead of logical cores
-- Fixed an issue where forced git-fetches with branch revisions may have stale
+- Fixed an issue where forced Git-fetches with branch revisions may have stale
   content on first extract
 - Fixed where package-specific prefixes/njobs would leak to other projects
 - Introduce ``*_[INCLUDE,LIB]_DIR`` environment/script variables
@@ -62,7 +62,7 @@
 - Introduce ``PREFIXED_*_DIR`` environment/script variables
 - Introduce ``libfoo-exec`` action
 - Introduce ``releng_include`` helper script function
-- Support make-styled environment injections via command line
+- Support Make-styled environment injections via command line
 - Support package variable overrides via command line
 
 0.11 (2022-02-26)
@@ -85,39 +85,39 @@
   registered in the script environment's path
 - Fixed an issue where ``releng_mkdir`` reports success if the target path is a
   file that already exists
-- Fixed an issue where extensions may not load on python 2.7
+- Fixed an issue where extensions may not load on Python 2.7
 - Fixed an issue where post-processing may be invoked even if a package's stage
   would fail
 - Introduce ``<PKG_NAME>_DEFDIR`` environment/script variable
-- Introduce ``LIBFOO_CMAKE_NOINSTALL`` for cmake packages with no install rule
+- Introduce ``LIBFOO_CMAKE_NOINSTALL`` for CMake packages with no install rule
 - Introduce support for rsync sites
 - Provide an option to suppress root warning (for zero-uid containers)
 - Remove the requirement to have a package version entry
 - Support configuring cache/download directories using environment variables
-- Support custom ssl context overrides via ``urlopen_context``
+- Support custom SSL context overrides via ``urlopen_context``
 - Support providing an assets container directory (for cache/download folders)
 
 0.9 (2021-10-02)
 ----------------
 
-- Fixed an import issue when running with python 3.10
+- Fixed an import issue when running with Python 3.10
 - Fixed an issue where a cyclic package check provided a bad message
-- Fixed an issue where a git submodule with a target branch may fail to extract
+- Fixed an issue where a Git submodule with a target branch may fail to extract
 - Post-processing script renamed to ``releng-post-build``
-- Support development mode relaxed branch fetching for git sites
-- Support requiring a git source's revision to be gpg-signed
-- Support using ascii-armor (asc) files to package integrity checks
+- Support development mode relaxed branch fetching for Git sites
+- Support requiring a Git source's revision to be GnuPG-signed (GPG)
+- Support using ASCII-armor (asc) files to package integrity checks
 
 0.8 (2021-08-28)
 ----------------
 
 - Allow dvcs packages to share caches (to minimize space/time fetching)
-- Fixed an issue where tools/``releng_execute`` requests would fail on python
-  2.7 with unicode-defined environment variables
-- Fixed an issue where a diverged revision in git would incorrectly populate a
+- Fixed an issue where tools/``releng_execute`` requests would fail on Python
+  2.7 with Unicode-defined environment variables
+- Fixed an issue where a diverged revision in Git would incorrectly populate a
   package's build directory with the cached revision instead of the remote
   revision
-- Introduce ``LIBFOO_GIT_SUBMODULES`` for package git-specific configurations
+- Introduce ``LIBFOO_GIT_SUBMODULES`` for package Git-specific configurations
 - Introduce ``releng_execute_rv`` helper script function
 - Introduce statistic tracking (stage durations) which generate to into the
   output folder after execution
@@ -127,9 +127,9 @@
 - Rework ``LIBTOOL_GIT_REFSPECS`` to provide more control over custom revisions
   that can be fixed (i.e. no longer fixed on ``<target>/*/head``; instead, a
   configured value-wildcard string should be used)
-- Support auto-detecting python interpreter path overrides in windows
-- Support faster git fetching
-- Support pruning any remote-tracked references in a git-cached project when a
+- Support auto-detecting Python interpreter path overrides in windows
+- Support faster Git fetching
+- Support pruning any remote-tracked references in a Git-cached project when a
   forced fetch request is made
 
 0.7 (2021-08-08)
@@ -137,7 +137,7 @@
 
 - Fetch from an already cached package's site if the fetch is explicitly
   requested
-- Fixed an issue with registry failing to import on python 2.7
+- Fixed an issue with registry failing to import on Python 2.7
 - Fixed issue where build/install definitions where not used in in their
   respective stages
 - Fixed issue where mercurial packages fetched using the version option instead
@@ -145,7 +145,7 @@
 - Fixed issue where the host directory was not registered in a stage's path
 - Introduce clean, logging flags and releng-version into the script environments
 - Only fetch a single package if only said package is requested to be fetched
-- Package without a site will throw an error when vcs-type is set
+- Package without a site will throw an error when VCS-type is set
 - Reconfigure/rebuild requests will now perform all trailing stages for the
   package(s) being redone; rebuild/reconfigure-only actions have been introduced
   to force re-invoking a specific stage
@@ -171,27 +171,27 @@
 0.5 (2020-09-07)
 ----------------
 
-- Fixed false error when verifying cached git reference
+- Fixed false error when verifying cached Git reference
 
 0.4 (2020-09-07)
 ----------------
 
-- Allow developers to fetch from addition git refspecs (e.g. pull requests)
+- Allow developers to fetch from addition Git refspecs (e.g. pull requests)
 - Allow setting quirks in command line
-- Fixed a scenario where a git extraction stage could fetch sources
-- Fixed git fetch/extraction if package is cached and site has changed
+- Fixed a scenario where a Git extraction stage could fetch sources
+- Fixed Git fetch/extraction if package is cached and site has changed
 - Improved handling of output files which may set the readonly attribute
 - Introduce support for local interim-development package content
-- Introduce support for shallow git fetching
+- Introduce support for shallow Git fetching
 
 0.3 (2019-10-19)
 ----------------
 
 - Allow packages to configure to ignore cache while in development mode
 - Allow packages to configure for no-extraction for sources
-- Fixed default interpreter detection for python packages
-- Fixed fetching from mercurial sources
-- Fixed fetching from newer git hashes if repository was already cached
+- Fixed default interpreter detection for Python packages
+- Fixed fetching from Mercurial sources
+- Fixed fetching from newer Git hashes if repository was already cached
 - Introduce ``releng_env`` and ``releng_mkdir`` helper script functions
 - Introduce support for package-specific bootstrapping stage
 
