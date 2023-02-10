@@ -117,14 +117,24 @@ class RelengRegistry(RelengRegistryInterface):
                     if desc[-1] != imp.PKG_DIRECTORY:
                         raise ImportError(name)
 
-                    pkg = imp.load_module(part, file, pathname, desc)
+
+                    try:
+                        pkg = imp.load_module(part, file, pathname, desc)
+                    finally:
+                        if file:
+                            file.close()
                     path = pkg.__path__
 
                 # with the path of the last namespace package found, find the
                 # desired module in this path
                 last_part = ext_parts[-1]
                 file, pathname, desc = imp.find_module(last_part, path)
-                plugin = imp.load_module(last_part, file, pathname, desc)
+
+                try:
+                    plugin = imp.load_module(last_part, file, pathname, desc)
+                finally:
+                    if file:
+                        file.close()
 
             if hasattr(plugin, 'releng_setup'):
                 if not ignore:
