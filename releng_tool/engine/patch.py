@@ -45,6 +45,26 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     if pkg.devmode:
         return True
 
+    verbose('patching {} (pre-check)...', pkg.name)
+    sys.stdout.flush()
+
+    # check if we have a patch script override to process (instead of
+    # patch files)
+    patch_script_filename = '{}-{}'.format(pkg.name, PATCH_SCRIPT)
+    patch_script = os.path.join(pkg.def_dir, patch_script_filename)
+    has_patch_script = os.path.isfile(patch_script)
+
+    # if not patch script, check if we detect any patch files in the
+    # package's folder
+    patches = None
+    if not has_patch_script:
+        patch_glob = os.path.join(pkg.def_dir, '*.patch')
+        patches = glob(patch_glob)
+
+        # no patch script or patches, no-op patch stage -- return
+        if not patches:
+            return True
+
     note('patching {}...', pkg.name)
     sys.stdout.flush()
 
@@ -53,9 +73,8 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     else:
         build_dir = pkg.build_dir
 
-    patch_script_filename = '{}-{}'.format(pkg.name, PATCH_SCRIPT)
-    patch_script = os.path.join(pkg.def_dir, patch_script_filename)
-    if os.path.isfile(patch_script):
+    # if we have a patch script, run it
+    if has_patch_script:
         try:
             run_path(patch_script, init_globals=script_env)
 
@@ -65,26 +84,25 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
                 '    {}', patch_script, e)
             return False
 
-    # find all patches in the package's folder, sort and apply each
-    patch_glob = os.path.join(pkg.def_dir, '*.patch')
-    patches = glob(patch_glob)
-    if patches:
-        patches = sorted(patches)
-        if not PATCH.exists():
-            err('unable to apply patches; patch is not installed')
+        return True
+
+    # for the found patches, sort and apply each
+    patches = sorted(patches)
+    if not PATCH.exists():
+        err('unable to apply patches; patch is not installed')
+        return False
+
+    for patch in patches:
+        print('({})'.format(os.path.basename(patch)))
+
+        if not PATCH.execute([
+                '--batch',
+                '--forward',
+                '--ignore-whitespace',
+                '--input={}'.format(patch),
+                '--strip=1',
+                ], cwd=build_dir):
+            err('failed to apply patch')
             return False
-
-        for patch in patches:
-            print('({})'.format(os.path.basename(patch)))
-
-            if not PATCH.execute([
-                    '--batch',
-                    '--forward',
-                    '--ignore-whitespace',
-                    '--input={}'.format(patch),
-                    '--strip=1',
-                    ], cwd=build_dir):
-                err('failed to apply patch')
-                return False
 
     return True
