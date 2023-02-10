@@ -121,23 +121,29 @@ class RelengRegistry(RelengRegistryInterface):
                     part = last_part + part
                     last_part = part + '.'
 
-                    try:
-                        pkg = imp.load_module(part, file, pathname, desc)
-                    finally:
-                        if file:
-                            file.close()
-                    path = pkg.__path__
+                    pkg = sys.modules.get(part, None)
+                    if not pkg:
+                        try:
+                            pkg = imp.load_module(part, file, pathname, desc)
+                        finally:
+                            if file:
+                                file.close()
+                        path = pkg.__path__
+                    else:
+                        path = [pathname]
 
                 # with the path of the last namespace package found, find the
                 # desired module in this path
                 last_part = ext_parts[-1]
                 file, pathname, desc = imp.find_module(last_part, path)
 
-                try:
-                    plugin = imp.load_module(name, file, pathname, desc)
-                finally:
-                    if file:
-                        file.close()
+                plugin = sys.modules.get(name, None)
+                if not plugin:
+                    try:
+                        plugin = imp.load_module(name, file, pathname, desc)
+                    finally:
+                        if file:
+                            file.close()
 
             if hasattr(plugin, 'releng_setup'):
                 if not ignore:
