@@ -134,6 +134,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_NO_EXTRACTION = bool
    LIBFOO_LICENSE = '<license>'  or ['<license>', '<license>']
    LIBFOO_LICENSE_FILES = '<file>' or ['<file>', '<file>']
+   LIBFOO_PATCH_SUBDIR = '<subdir>'
    LIBFOO_PREFIX = '<path>' # '/usr'
    LIBFOO_PYTHON_INTERPRETER = '<path>'
    LIBFOO_PYTHON_SETUP_TYPE = '<setup-type>' # distutils, setuptools, flit, hatch, pdm, pep517, poetry

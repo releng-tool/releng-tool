@@ -549,6 +549,21 @@ project's license file. Specifying ``LIBFOO_LICENSE_FILES`` for projects with
 the no-extraction flag enabled will result in a warning. By default, this option
 is disabled with a value of ``False``.
 
+LIBFOO_PATCH_SUBDIR
+^^^^^^^^^^^^^^^^^^^
+
+Sub-directory where any package patches should be applied to. By default,
+patches are applied to the root of the extracted sources for a package. This
+option can be useful for packages which utilize |LIBFOO_BUILD_SUBDIR|_ to
+work in a container directory for sources which contain multiple modules, but
+has prepared patches tailored for the specific module being targeted.
+
+.. code-block:: python
+
+   LIBFOO_PATCH_SUBDIR = 'subdir'
+
+See also |LIBFOO_BUILD_SUBDIR|_.
+
 LIBFOO_PREFIX
 ^^^^^^^^^^^^^
 .. |LIBFOO_PREFIX| replace:: ``LIBFOO_PREFIX``
