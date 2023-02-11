@@ -27,6 +27,7 @@ class ConfKey(Enum):
         PKGS: project's package (name) list
         PREREQUISITES: project's host-tool prerequisites
         QUIRKS: configure quirks to apply
+        SBOM_FORMAT: project's default sbom format to generate
         SYSROOT_PREFIX: project's default sys-root prefix
         URL_MIRROR: mirror base site for url fetches
         URLOPEN_CONTEXT: context to use for urlopen
@@ -44,6 +45,7 @@ class ConfKey(Enum):
     PKGS = 'packages'
     PREREQUISITES = 'prerequisites'
     QUIRKS = 'quirks'
+    SBOM_FORMAT = 'sbom_format'
     SYSROOT_PREFIX = 'sysroot_prefix'
     URL_MIRROR = 'url_mirror'
     URLOPEN_CONTEXT = 'urlopen_context'

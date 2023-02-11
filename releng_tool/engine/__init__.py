@@ -1031,6 +1031,14 @@ following key entry and re-try again.
             for quirk in quirks:
                 verbose('configuration quirk applied: ' + quirk)
 
+        if ConfKey.SBOM_FORMAT in settings:
+            sbom_format = interpret_strings(settings[ConfKey.SBOM_FORMAT])
+            if sbom_format is None:
+                notify_invalid_value(ConfKey.SBOM_FORMAT, 'str or list(str)')
+                return False
+            if not self.opts.sbom_format:
+                self.opts.sbom_format = sbom_format
+
         if ConfKey.SYSROOT_PREFIX in settings:
             sysroot_prefix = interpret_string(settings[ConfKey.SYSROOT_PREFIX])
             if sysroot_prefix is None:
