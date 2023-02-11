@@ -29,6 +29,7 @@ def install(opts):
 
     # definitions
     make_defs = {
+        'PREFIX': opts.prefix,
     }
     if opts.install_defs:
         make_defs.update(expand(opts.install_defs))
