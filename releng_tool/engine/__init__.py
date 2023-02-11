@@ -737,11 +737,13 @@ of the releng process:
                 env['RELENG_CLEAN'] = '1'  # also set clean flag
                 env['RELENG_MRPROPER'] = '1'
 
-            if paction in (PkgAction.REBUILD, PkgAction.REBUILD_ONLY):
+            if paction in (PkgAction.RECONFIGURE, PkgAction.REBUILD,
+                    PkgAction.REBUILD_ONLY):
                 env['RELENG_REBUILD'] = '1'
-            elif paction in (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY):
+            if paction in (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY):
                 env['RELENG_RECONFIGURE'] = '1'
-            elif paction == PkgAction.REINSTALL:
+            if paction in (PkgAction.RECONFIGURE, PkgAction.REBUILD,
+                    PkgAction.REINSTALL):
                 env['RELENG_REINSTALL'] = '1'
 
             if self.opts.debug:
