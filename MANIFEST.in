@@ -1,1 +1,6 @@
 recursive-include releng_tool/data *
+graft tests
+global-exclude *.py[cod]
+global-exclude .gitattributes
+global-exclude .gitignore
+global-exclude __pycache__
