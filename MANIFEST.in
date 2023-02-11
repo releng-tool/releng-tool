@@ -1,4 +1,1 @@
-include .coveragerc
-include .flake8
-include .pylintrc
 recursive-include releng_tool/data *
