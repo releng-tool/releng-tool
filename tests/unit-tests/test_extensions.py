@@ -12,6 +12,25 @@ EXT_PREFIX = 'tests.unit-tests.assets.extensions.'
 
 
 class TestExtensions(unittest.TestCase):
+    def test_extension_events(self):
+        registry = RelengRegistry()
+        loaded = registry.load(EXT_PREFIX + 'events')
+        self.assertTrue(loaded)
+
+        dummy_env = {}
+
+        registry.emit('config-loaded', env=dummy_env)
+        last_event = dummy_env.get('last-event', None)
+        self.assertEqual(last_event, 'config-loaded')
+
+        registry.emit('post-build-started', env=dummy_env)
+        last_event = dummy_env.get('last-event', None)
+        self.assertEqual(last_event, 'post-build-started')
+
+        registry.emit('post-build-finished', env=dummy_env)
+        last_event = dummy_env.get('last-event', None)
+        self.assertEqual(last_event, 'post-build-finished')
+
     def test_extension_requires_new(self):
         registry = RelengRegistry()
         with self.assertRaises(RelengVersionNotSupportedException):
