@@ -129,6 +129,52 @@ class RelengRegistryInterface(object):
                 ``handler`` values are not supported by the releng-tool process
         """
 
+    def connect(self, name, handler, priority=100):
+        """
+        register a handler for a specific releng-tool event
+
+        For the lifecycle of a releng-tool run, a series of events may be
+        triggered. An extension will invoke this method when attempting to
+        have a callback triggered when a given event occurs.
+
+        An extension must provide a supported ``name`` for an event type:
+
+         - ``config-loaded``: trigger after a configuration is processed
+         - ``post-build-started``: triggered before a post-build event starts
+         - ``post-build-finished``: triggered after a post-build event ends
+
+        The ``handler`` shall be able to accept an ``env`` keyword argument,
+        representing the active script environment for the given stage of a
+        releng-tool process. An extension may attempt to override or inject
+        changes to this environment. A priority value can be set to order when
+        an extension is notified for a given even (over other extensions).
+
+        Args:
+            name: the name of the event to listen for
+            handler: the event handler
+            priority (optional): the priority of the event handler
+
+        Returns:
+            the identifier for this connect request
+
+        Raises:
+            RelengInvalidSetupException: raised when the provided ``name``,
+                ``handler`` or ``priority`` values are not supported by
+                the releng-tool process
+        """
+
+    def disconnect(self, listener_id):
+        """
+        unregister an event handler previously configured in releng-tool
+
+        An extension may use ``connect`` to register for specific events that
+        can be triggered in releng-tool. This call can be used to unregister
+        a previously made registration request.
+
+        Args:
+            listener_id: the listener identifier to unregister
+        """
+
     def require_version(self, version):
         """
         perform a required-version check

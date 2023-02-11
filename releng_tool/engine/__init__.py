@@ -235,6 +235,10 @@ class RelengEngine:
         if not self._process_settings(settings):
             raise RelengToolInvalidConfigurationSettings
 
+        # notify extensions that configuration options have been processed
+        with interim_working_dir(opts.root_dir):
+            self.registry.emit('config-loaded', env=script_env)
+
         # register the project's host directory as a system path; lazily permits
         # loading host tools (not following prefix or bin container) built by a
         # project over the system
@@ -604,6 +608,11 @@ of the releng process:
             post-processing script exists; ``False`` if an error has occurred
             when processing the post-processing script
         """
+
+        # notify extensions that a post-build event has started
+        with interim_working_dir(self.opts.target_dir):
+            self.registry.emit('post-build-started', env=env)
+
         build_script, postbuild_exists = opt_file(self.opts.post_build_point)
 
         # TODO remove deprecated configuration load in (at maximum) v1.0
@@ -634,6 +643,10 @@ of the releng process:
                 return False
 
             verbose('post-processing (build) completed')
+
+        # notify extensions that a post-build event has completed
+        with interim_working_dir(self.opts.target_dir):
+            self.registry.emit('post-build-finished', env=env)
 
         return True
 

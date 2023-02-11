@@ -49,6 +49,23 @@ class ConfKey(Enum):
     URLOPEN_CONTEXT = 'urlopen_context'
 
 
+class ListenerEvent(Enum):
+    """
+    releng listener event types
+
+    Defines a series of event types that are supported for an extension to
+    listen on.
+
+    Attributes:
+        CONFIG_LOADED: event after a configuration is processed
+        POST_BUILD_STARTED: event before a post-build event starts
+        POST_BUILD_FINISHED: event after a post-build event ends
+    """
+    CONFIG_LOADED = 'config-loaded'
+    POST_BUILD_STARTED = 'post-build-started'
+    POST_BUILD_FINISHED = 'post-build-finished'
+
+
 class Rpk(Enum):
     """
     releng package keys (postfixes)

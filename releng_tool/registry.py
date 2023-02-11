@@ -7,6 +7,7 @@ from releng_tool import __version__ as releng_version
 from releng_tool.api import RelengInvalidSetupException
 from releng_tool.api import RelengRegistryInterface
 from releng_tool.api import RelengVersionNotSupportedException
+from releng_tool.defs import ListenerEvent
 from releng_tool.support import require_version
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
@@ -45,6 +46,8 @@ class RelengRegistry(RelengRegistryInterface):
         self.extract_types = {}
         self.fetch_types = {}
         self.package_types = {}
+        self._listeners = {}
+        self._listener_id = 0
 
         # always load base/example extension
         self.load('releng_tool.ext.seed')
@@ -332,6 +335,89 @@ class RelengRegistry(RelengRegistryInterface):
                 'required method(s)')
         self.package_types[name_key] = package_type
 
+    def connect(self, name, handler, priority=100):
+        """
+        register a handler for a specific releng-tool event
+
+        For the lifecycle of a releng-tool run, a series of events may be
+        triggered. An extension will invoke this method when attempting to
+        have a callback triggered when a given event occurs.
+
+        An extension must provide a supported ``name`` for an event type:
+
+         - ``config-loaded``: trigger after a configuration is processed
+         - ``post-build-started``: triggered before a post-build event starts
+         - ``post-build-finished``: triggered after a post-build event ends
+
+        The ``handler`` shall be able to accept an ``env`` keyword argument,
+        representing the active script environment for the given stage of a
+        releng-tool process. An extension may attempt to override or inject
+        changes to this environment. A priority value can be set to order when
+        an extension is notified for a given even (over other extensions).
+
+        Args:
+            name: the name of the event to listen for
+            handler: the event handler
+            priority (optional): the priority of the event handler
+
+        Returns:
+            the identifier for this connect request
+
+        Raises:
+            RelengInvalidSetupException: raised when the provided ``name``,
+                ``handler`` or ``priority`` values are not supported by
+                the releng-tool process
+        """
+
+        if not callable(handler):
+            raise RelengInvalidSetupException('handler is not callable')
+
+        if name not in ListenerEvent:
+            raise RelengInvalidSetupException('invalid event name')
+
+        elisteners = self._listeners.setdefault(name, [])
+        elistener = EventListener(self._listener_id, handler, priority)
+        elisteners.append(elistener)
+        self._listener_id += 1
+        return elistener.id
+
+    def disconnect(self, listener_id):
+        """
+        unregister an event handler previously configured in releng-tool
+
+        An extension may use ``connect`` to register for specific events that
+        can be triggered in releng-tool. This call can be used to unregister
+        a previously made registration request.
+
+        Args:
+            listener_id: the listener identifier to unregister
+        """
+
+        for event_listeners in self._listeners.values():
+            for listener in event_listeners:
+                if listener.id == listener_id:
+                    event_listeners.remove(listener)
+                    break
+
+    def emit(self, name, **kwargs):
+        """
+        emit a releng-tool event
+
+        Invoking this call will notify each extension who has registered
+        to listen for the provided event type.
+
+        Args:
+            name: the name of the event
+            **kwargs: key-value arguments
+        """
+
+        event_listeners = self._listeners.get(name, None)
+        if event_listeners:
+            debug('trigger event: {}', name)
+            event_listeners.sort(key=lambda x: x.priority)
+            for listener in event_listeners:
+                listener.handler(**kwargs)
+
     def require_version(self, version):
         """
         perform a required-version check
@@ -356,3 +442,18 @@ class RelengRegistry(RelengRegistryInterface):
         if not require_version(version, quiet=True, critical=False):
             raise RelengVersionNotSupportedException(
                 'requires {}, has {}'.format(version, releng_version))
+
+
+class EventListener:
+    """
+    an event listener
+
+    Attributes:
+        id_: identifier for this registered listener
+        handler: the handler to invoke
+        priority: the priority of this listener
+    """
+    def __init__(self, id_, handler, priority):
+        self.id = id_
+        self.handler = handler
+        self.priority = priority
