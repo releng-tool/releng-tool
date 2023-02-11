@@ -25,6 +25,7 @@ Options which are read by releng-tool from a project's configuration script:
    packages = ['<pkg>', '<pkg>', '<pkg>']
    prerequisites = ['<tool>', '<tool>', '<tool>']
    quirks = ['<quirk-id>']
+   sbom_format = '<format>' # csv, html, json, text, xml
    sysroot_prefix = '<path>' # '/usr'
    url_mirror = '<mirror-url>'
    urlopen_context = <ssl.SSLContext>
