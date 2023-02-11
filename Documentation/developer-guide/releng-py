@@ -113,6 +113,40 @@ follows:
                 'tool-c',
             ]
 
+    * - ``sbom_format``
+
+      - Configures the default format to use when generating a software
+        build of materials (SBOM). By default, ``text`` format SBOMs are
+        generated for a project.
+
+        .. code-block:: python
+
+            sbom_format = 'xml'
+
+        The following lists the available formats supported:
+
+        .. table::
+            :widths: 50 50
+
+            ==== ===
+            Type Value
+            ==== ===
+            CSV  ``csv``
+            HTML ``html``
+            JSON ``json``
+            Text ``text`` (default)
+            XML  ``xml``
+            ==== ===
+
+        Multiple formats can be provided. For example:
+
+        .. code-block:: python
+
+            sbom_format = [
+                'html',
+                'json',
+            ]
+
     * - .. _CONF_SYSROOT_PREFIX:
 
         ``sysroot_prefix``
