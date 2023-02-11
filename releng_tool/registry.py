@@ -13,6 +13,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.string import interpret_string
+import inspect
 import sys
 
 if sys.version_info < (3, 0):
@@ -222,6 +223,8 @@ class RelengRegistry(RelengRegistryInterface):
         if name_key in self.extract_types:
             raise RelengInvalidSetupException('extension extract type {} is '
                 'already defined by another extension'.format(name))
+        if not inspect.isclass(handler):
+            raise RelengInvalidSetupException('handler is not a class')
         extract_type = handler()
         extract_op = getattr(extract_type, 'extract', None)
         if not callable(extract_op):
@@ -273,6 +276,8 @@ class RelengRegistry(RelengRegistryInterface):
         if name_key in self.fetch_types:
             raise RelengInvalidSetupException('extension fetch type {} is '
                 'already defined by another extension'.format(name))
+        if not inspect.isclass(handler):
+            raise RelengInvalidSetupException('handler is not a class')
         fetch_type = handler()
         fetch_op = getattr(fetch_type, 'fetch', None)
         if not callable(fetch_op):
@@ -325,6 +330,8 @@ class RelengRegistry(RelengRegistryInterface):
         if name_key in self.package_types:
             raise RelengInvalidSetupException('extension package type {} '
                 'is already defined by another extension'.format(name))
+        if not inspect.isclass(handler):
+            raise RelengInvalidSetupException('handler is not a class')
         package_type = handler()
         build_op = getattr(package_type, 'build', None)
         configure_op = getattr(package_type, 'configure', None)
