@@ -15,7 +15,7 @@ To verify the package has been installed the following command can be used:
 
    releng-tool --version
     (or)
-   python -m releng_tool --version
+   python -m releng-tool --version
 
 Quick-start
 -----------
@@ -108,7 +108,7 @@ environment to use this package.
     .. code-block:: doscon
 
         > python -m pip install -U releng-tool
-        > python -m releng_tool --version
+        > python -m releng-tool --version
         releng-tool ~version~
 
 Development

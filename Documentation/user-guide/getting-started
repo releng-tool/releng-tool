@@ -3,7 +3,7 @@ Getting started
 
 Depending on the host and how releng-tool has been :doc:`installed <install>`,
 the tool can be either executed using the call ``releng-tool`` (if supported) or
-explicitly through a Python invoke ``python -m releng_tool``. This guide will
+explicitly through a Python invoke ``python -m releng-tool``. This guide will
 assume the former option is available for use. If the alias command is not
 available on the host system, the latter call can be used instead.
 

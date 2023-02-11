@@ -49,7 +49,7 @@ This tool can be invoked from a command line using:
 ```shell
 releng-tool --help
  (or)
-python -m releng_tool --help
+python -m releng-tool --help
 ```
 
 ## Examples
