@@ -1,4 +1,5 @@
 recursive-include releng_tool/data *
+recursive-include scripts/completion *
 graft tests
 global-exclude *.py[cod]
 global-exclude .gitattributes
