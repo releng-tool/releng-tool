@@ -51,10 +51,17 @@ def install(opts):
     make_args.extend(prepare_definitions(make_defs))
     make_args.extend(prepare_arguments(make_opts))
 
-    # install to each destination
+    # prepare environment for installation request; an environment dictionary is
+    # always needed to apply a custom DESTDIR during each install request
     env = expand(opts.install_env)
+    if not nev:
+        env = {}
+
+    # install to each destination
     for dest_dir in opts.dest_dirs:
-        if not MAKE.execute(['DESTDIR=' + dest_dir] + make_args, env=env):
+        env['DESTDIR'] = dest_dir
+        make_args_tmp = ['DESTDIR=' + dest_dir] + make_args
+        if not MAKE.execute(make_args_tmp, env=env):
             err('failed to install make project: {}', opts.name)
             return False
 
