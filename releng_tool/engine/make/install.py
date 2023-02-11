@@ -55,7 +55,7 @@ def install(opts):
     # prepare environment for installation request; an environment dictionary is
     # always needed to apply a custom DESTDIR during each install request
     env = expand(opts.install_env)
-    if not nev:
+    if not env:
         env = {}
 
     # install to each destination
