@@ -19,6 +19,8 @@ ignore = [
     'ERA001',
     # ignore the use of string literals for exceptions
     'EM',
+    # flexible file system usage (suppress execute flag check)
+    'EXE002',
     # imports are sorted lexicographically in this project
     'FBT002',
     # imports are sorted lexicographically in this project
@@ -35,8 +37,15 @@ ignore = [
     'N813',
     # happy with our exception naming
     'N818',
+    # ignore "too many" warnings
+    'PLR0911',
+    'PLR0912',
+    'PLR0913',
+    'PLR0915',
     # project uses unittest module
     'PT',
+    # pathlib not supported in python 2.7
+    'PTH',
     # single quotes are preferred in this project
     'Q000',
     'Q001',
@@ -55,8 +64,16 @@ ignore = [
     'SIM117',
     # in various places in the code, a ternary operator is not preferred
     'SIM108',
+    # expected (interim) uses of private vars within the implementation
+    'SLF001',
     # ignore flake8-print since we support/expect printing
     'T20',
+    # purposely used long exception messages
+    'TRY003',
+    # ignore `raise from` suggestion since python 2.7 is supported
+    'TRY200',
+    # ignore desired usages of raise calls within trys
+    'TRY301',
     # ignore pyupgrade since python 2.7 is supported
     'UP',
 ]
