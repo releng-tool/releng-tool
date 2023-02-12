@@ -89,10 +89,10 @@ def cat(file, *args):
         for filename in files:
             with open(filename, 'r') as f:
                 copyfileobj(f, sys.stdout)
-
-        return True
     except OSError:
         return False
+    else:
+        return True
 
 
 def ensure_dir_exists(dir_, quiet=False, critical=False):
@@ -626,10 +626,10 @@ def ls(dir_):
                 print(entry + '/')
             else:
                 print(entry)
-
-        return True
     except OSError:
         return False
+    else:
+        return True
 
 
 def opt_file(file):
@@ -983,6 +983,7 @@ def touch(file):
 
         with open(file, 'ab'):
             os.utime(file, None)
-        return True
     except OSError:
         return False
+    else:
+        return True

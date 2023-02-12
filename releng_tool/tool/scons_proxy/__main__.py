@@ -46,11 +46,11 @@ if sys.version_info < (3, 5):
                 target_full_name = prefix + full_name
 
             plugin = import_module(target_full_name)
-            return plugin, None
         except RelengModuleNotFoundError:
-            pass
-
-        return orig_load(self, short_name, full_name, searchpaths=searchpaths)
+            return orig_load(self, short_name, full_name,
+                searchpaths=searchpaths)
+        else:
+            return plugin, None
 
     SCons.Tool.Tool._load_dotted_module_py2 = load_override
 

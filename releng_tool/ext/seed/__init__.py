@@ -16,10 +16,10 @@ class RelengSeedExtension:
         try:
             with open(opts.cache_file, 'w'):
                 pass
-
-            return opts.cache_file
         except IOError:
             return None
+        else:
+            return opts.cache_file
 
     def extract(self, name, opts):
         print('(seed) package', opts.name, 'has been extracted')
