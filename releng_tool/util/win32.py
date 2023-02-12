@@ -14,7 +14,7 @@ try:
         import winreg as reg
     except ImportError:
         import _winreg as reg
-except Exception:
+except Exception:  # noqa: S110
     pass
 
 
