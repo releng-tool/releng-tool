@@ -13,7 +13,7 @@ DEFAULT_BRANCH = 'default'
 
 
 class TestToolMercurial(TestSiteToolBase):
-    def prepare_defconfig(self, defconfig):  # noqa: ARG002
+    def prepare_defconfig(self, defconfig):
         self.defconfig_add('VCS_TYPE', 'hg')
 
     def prepare_repo_dir(self, repo_dir):

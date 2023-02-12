@@ -17,7 +17,7 @@ class TestToolGpg(TestSiteToolBase):
         sample_files = fetch_unittest_assets_dir('sample-files')
         cls.archive = os.path.join(sample_files, 'sample-files.tar')
 
-    def prepare_defconfig(self, defconfig):  # noqa: ARG002
+    def prepare_defconfig(self, defconfig):
         self.defconfig_add('SITE', 'file://{}'.format(self.archive))
         self.asc_file = os.path.join(self.def_dir, self.pkg_name + '.asc')
 

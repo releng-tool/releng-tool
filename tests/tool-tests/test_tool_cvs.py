@@ -14,12 +14,12 @@ DEFAULT_MODULE = 'test'
 
 
 class TestToolCvs(TestSiteToolBase):
-    def prepare_defconfig(self, defconfig):  # noqa: ARG002
+    def prepare_defconfig(self, defconfig):
         self.defconfig_add('VCS_TYPE', 'cvs')
         self.defconfig_add('REVISION', 'HEAD')
         self.defconfig_add('SITE', self.repo_dir + ' ' + DEFAULT_MODULE)
 
-    def prepare_repo_dir(self, repo_dir):  # noqa: ARG002
+    def prepare_repo_dir(self, repo_dir):
         self._cvs_repo('init')
 
     def test_tool_cvs_basic_default(self):
