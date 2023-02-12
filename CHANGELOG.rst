@@ -6,7 +6,7 @@ Development
 - Fixed issue where reconfiguration may not flag rebuild flags (and related)
 - Improve support for patching a root build directory and sub-directories
 - Introduce extension support for event listeners
-- Make projects will now be provided a `PREFIX` override
+- Make projects will now be provided a ``PREFIX`` override
 - Support setting software build of materials format in project configuration
 
 0.14 (2023-02-05)
