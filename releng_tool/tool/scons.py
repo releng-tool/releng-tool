@@ -50,7 +50,7 @@ class SconsTool(RelengTool):
             self._scons_interpreter = None
 
             try:
-                import SCons  # noqa: F401  pylint: disable=E0401
+                import SCons  # pylint: disable=E0401
                 debug('{} tool is detected in the interpreter', self.tool)
                 RelengTool.detected[self.tool] = True
                 self._scons_interpreter = 'SCons'

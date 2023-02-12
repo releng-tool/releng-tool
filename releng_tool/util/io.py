@@ -401,9 +401,9 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                     if not c and proc.poll() is not None:
                         break
                     line += c
-                    if c == b'\r' or c == b'\n':  # noqa: PLR2004
+                    if c == b'\r' or c == b'\n':
                         decoded_line = line.decode('utf_8')
-                        if c == b'\n' and capture is not None:  # noqa: PLR2004
+                        if c == b'\n' and capture is not None:
                             capture.append(decoded_line)
                         if not quiet:
                             sys.stdout.write(decoded_line)
@@ -899,7 +899,7 @@ def prepend_shebang_interpreter(args):
     """
     try:
         with open(args[0], 'rb') as f:
-            if f.read(1) == b'#' and f.read(1) == b'!':  # noqa: PLR2004
+            if f.read(1) == b'#' and f.read(1) == b'!':
                 MAXINTERP = 2048
                 interp = f.readline(MAXINTERP + 1).rstrip()
                 if len(interp) > MAXINTERP:
