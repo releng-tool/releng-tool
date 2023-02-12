@@ -4,9 +4,11 @@ Development
 - CMake install events will now always skip dependency checks
 - Fixed issue where extension loading may cause issues in Python 2.7
 - Fixed issue where reconfiguration may not flag rebuild flags (and related)
+- Fixed issue where statistics (PDF) may fail on legacy matplotlib environments
 - Improve support for patching a root build directory and sub-directories
 - Introduce extension support for event listeners
 - Make projects will now be provided a ``PREFIX`` override
+- Source distribution now includes completion scripts and tests
 - Support setting software build of materials format in project configuration
 
 0.14 (2023-02-05)
