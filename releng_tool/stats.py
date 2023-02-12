@@ -225,7 +225,13 @@ class RelengStats:
             verbose('failed to write duration statistics: {}', e)
 
         # duration statistics to plot (if available)
-        if has_matplotlib:
+        generate_pdf = True
+
+        if not has_matplotlib:
+            generate_pdf = False
+            debug('duration statistics plot not supported (no matplotlib)')
+
+        if generate_pdf:
             verbose('generating duration statistics (pdf)...')
 
             BAR_HEIGHT = 0.4
@@ -304,5 +310,3 @@ class RelengStats:
 
             # close/cleanup figures
             plt.close()
-        else:
-            debug('duration statistics plot not supported')
