@@ -268,6 +268,7 @@ listed below:
             :noindex:
 
             .. method:: releng_join(path, *paths)
+                :noindex:
 
                 An alias for |os.path.join|_.
 
