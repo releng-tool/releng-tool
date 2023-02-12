@@ -410,6 +410,8 @@ applied to deal with rare host environment scenarios.
   when a Git-site-defined package is performing a fetch stage.
 - ``releng.git.no_quick_fetch`` -- Disables quick fetching (a specific reference
   fetch) for any Git-site-defined package.
+- ``releng.stats.no_pdf`` -- Never attempt to generate a PDF-format statistics
+  output (for matplotlib-enabled environments).
 
 Quirks are enabled through a configuration (override) script such as follows:
 

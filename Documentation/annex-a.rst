@@ -201,3 +201,4 @@ Quirk options used by releng-tool:
    releng.disable_spdx_check
    releng.git.no_depth
    releng.git.no_quick_fetch
+   releng.stats.no_pdf
