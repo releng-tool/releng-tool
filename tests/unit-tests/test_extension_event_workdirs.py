@@ -27,4 +27,5 @@ class TestExtensionEventWorkingDirectories(RelengToolTestCase):
                 with open(state, 'r') as f:
                     data = json.load(f)
                     self.assertTrue('wd' in data)
-                    self.assertEqual(data['wd'], expected_dir)
+                    self.assertEqual(os.path.realpath(data['wd']),
+                        os.path.realpath(expected_dir))
