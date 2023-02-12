@@ -80,6 +80,12 @@ list exists with the name of packages to be part of the releng process:
 '''.strip().format(path, key))
 
 
+class RelengToolOutsidePathError(RelengToolException):
+    """
+    exception thrown when unexpectedly interacting outside of a path
+    """
+
+
 class RelengToolWarningAsError(RelengToolException):
     """
     exception thrown for a warning being triggered as an error

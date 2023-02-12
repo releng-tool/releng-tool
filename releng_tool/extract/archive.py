@@ -2,6 +2,7 @@
 # Copyright 2018-2023 releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+from releng_tool.exceptions import RelengToolOutsidePathError
 from releng_tool.tool.tar import TAR
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
@@ -112,7 +113,8 @@ def extract(opts):
                             common_prefix = os.path.commonprefix(
                                 [work_dir, target_path])
                             if common_prefix != work_dir:
-                                raise Exception('path traversal detected')
+                                raise RelengToolOutsidePathError(
+                                    'path traversal detected')
 
                             # strip members from package defined count
                             if strip_count > 0:
