@@ -84,7 +84,7 @@ def load(hash_file):
         with open(hash_file, mode='r', encoding='utf_8') as f:
             data = f.readlines()
     except IOError:
-        raise BadFileHashLoadError()
+        raise BadFileHashLoadError
 
     # strip and split into chunks
     data = [x.split() for x in data if x.strip()]
