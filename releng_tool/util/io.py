@@ -801,14 +801,14 @@ def _path_remove_file(path):
         os.remove(path)
     except OSError as e:
         if e.errno != errno.EACCES:
-            raise e
+            raise
 
         # if a file could not be removed, try adding write permissions
         # and retry removal
         try:
             st = os.stat(path)
             if (st.st_mode & stat.S_IWUSR):
-                raise e
+                raise
 
             os.chmod(path, st.st_mode | stat.S_IWUSR)
             os.remove(path)
