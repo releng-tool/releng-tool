@@ -1,5 +1,5 @@
-Development
------------
+0.15 (2023-02-12)
+-----------------
 
 - CMake install events will now always skip dependency checks
 - Fixed issue where extension loading may cause issues in Python 2.7
