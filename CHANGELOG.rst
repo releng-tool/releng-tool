@@ -122,7 +122,7 @@ Development
 0.8 (2021-08-28)
 ----------------
 
-- Allow dvcs packages to share caches (to minimize space/time fetching)
+- Allow DVCS packages to share caches (to minimize space/time fetching)
 - Fixed an issue where tools/``releng_execute`` requests would fail on Python
   2.7 with Unicode-defined environment variables
 - Fixed an issue where a diverged revision in Git would incorrectly populate a
