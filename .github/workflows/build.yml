@@ -57,6 +57,7 @@ jobs:
             - { os: windows-latest, python: "3.11", toxenv:  py311, cache: ~\AppData\Local\pip\Cache }
             - { os:  ubuntu-latest, python: "3.11", toxenv: flake8, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: pylint, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv:   ruff, cache: ~/.cache/pip }
 
     steps:
     - uses: actions/checkout@v3
