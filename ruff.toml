@@ -5,6 +5,8 @@ select = [
 ignore = [
     # ignore flake8-annotations since python 2.7 is supported
     'ANN',
+    # ignore various unused arguments in api definitions
+    'ARG002',
     # exception chaining not supported in python 2.7
     'B904',
     # zip does not have a strict option in python 2.7
@@ -19,6 +21,8 @@ ignore = [
     'ERA001',
     # ignore the use of string literals for exceptions
     'EM',
+    # ignore samples with shebang that are not executable
+    'EXE001',
     # flexible file system usage (suppress execute flag check)
     'EXE002',
     # imports are sorted lexicographically in this project
