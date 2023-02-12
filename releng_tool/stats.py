@@ -230,6 +230,9 @@ class RelengStats:
         if not has_matplotlib:
             generate_pdf = False
             debug('duration statistics plot not supported (no matplotlib)')
+        elif isinstance(mpl.__version__, tuple) and mpl.__version__ < (2, 1):
+            generate_pdf = False
+            debug('duration statistics plot not supported (old matplotlib)')
 
         if generate_pdf:
             verbose('generating duration statistics (pdf)...')
