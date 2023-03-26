@@ -41,11 +41,17 @@ ignore = [
     'N813',
     # happy with our exception naming
     'N818',
+    # ignore errors for python test scripts with dashes in their filenames
+    'N999',
     # ignore "too many" warnings
     'PLR0911',
     'PLR0912',
     'PLR0913',
     'PLR0915',
+    # ignore loop variable overrides
+    'PLW2901',
+    # we have some desired usages of global variables
+    'PLW0603',
     # project uses unittest module
     'PT',
     # pathlib not supported in python 2.7
@@ -63,8 +69,15 @@ ignore = [
     'RUF005',
     # use of asserts are acceptable for this tool
     'S101',
-    # nested statements are sometimes preferred for code readability
+    # pickled data should only be using our local/"controlled" data
+    'S301',
+    # using urllib to open different schemas (like `file`) is a desired use case
+    'S310',
+    # local xml parsing is only using local/"controlled" data
+    'S318',
+    # some formats are preferred for code readability
     'SIM102',
+    'SIM114',
     'SIM117',
     # in various places in the code, a ternary operator is not preferred
     'SIM108',
