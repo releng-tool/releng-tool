@@ -7,6 +7,7 @@ from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 import multiprocessing
 import os
+import re
 import sys
 
 # default directory/file paths
@@ -196,26 +197,29 @@ class RelengEngineOptions:
             self.sbom_format = args.sbom_format
 
         # cycle through the provided local source arguments to configure
-        # global and package-specific local sources modes; we use the `@`
+        # global and package-specific local sources modes; we use the `:`/`@`
         # character to indicate module-specific paths, which if the trailing
         # portion is empty being an indicate to not fetch the specific
-        # package locally; not that `local_src_ref` may be set to `None,
+        # package locally; note that `local_src_ref` may be set to `None`,
         # which is a special indication to activate for local sources mode,
         # but we are targeting "default" paths found in the folder/container
         # of the configured root path (the "original" local sources mode)
         if args.local_sources:
             for local_src_ref in args.local_sources:
-                if local_src_ref and '@' in local_src_ref:
-                    module, path = local_src_ref.split('@', 1)
+                module = GBL_LSRCS
+                path = local_src_ref
+
+                if path and os.path.isabs(path):
+                    pass
+                elif path and any(sep in path for sep in [':', '@']):
+                    module, path = re.split(':|@', path, 1)
 
                     # path provided in a shell environment may not resolve
                     # `~` when prefixed with the leading `<pkg>@` hint;
                     # attempt to expand a user hint after extracting the path
                     path = os.path.expanduser(path)
 
-                    self.local_srcs[module] = path if path else None
-                else:
-                    self.local_srcs[GBL_LSRCS] = local_src_ref
+                self.local_srcs[module] = path if path else None
 
         if args.action:
             action_val = args.action.lower().replace('-', '_')
