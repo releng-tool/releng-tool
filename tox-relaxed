@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+#
+# This is a helper script used to only invoke a subset of default test
+# environments, for developer environments which may only have newer
+# versions of tox/pip/virtualenv (where compatibility with older
+# interpreters have been dropped or have issues). Note that this is just
+# an aid for quick testing; releng-tool is expected to still support all
+# the default-enabled tox environments.
+
+TOX_SKIP_ENV="py27|py34|py35|py36|pypy2"
+export TOX_SKIP_ENV
+tox
