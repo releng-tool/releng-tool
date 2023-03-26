@@ -1,3 +1,13 @@
+Development
+-----------
+
+- Enforce strict hash checking in development mode for external packages which
+  define a development revision
+- Fixed issue where ``releng_copy`` may fail when provided a single part
+  relative destination
+- Support module-specific local-sources to accept ``:`` instead of ``@``,
+  allowing certain shells to take advantage of path auto-completion
+
 0.15 (2023-02-12)
 -----------------
 
