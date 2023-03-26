@@ -155,14 +155,15 @@ In the above example, if a project had an internal package ``liba``,
 sources for ``liba`` will be used from the folder ``~/workdir/liba``.
 
 Users can also provide package-specific overrides. If a user provides a
-path which is prefixed with a package's name and at sign (``@``), the
-sources for the provided package will be used from the respective folder:
+path which is prefixed with a package's name with either a colon (``:``) or
+at sign (``@``), the sources for the provided package will be used from
+the respective folder:
 
 .. code-block:: shell-session
 
    $ releng-tool -L ~/workdir
-   $ releng-tool -L libb@/mnt/sources/libb
-   $ releng-tool -L libc@
+   $ releng-tool -L libb:/mnt/sources/libb
+   $ releng-tool -L libc:
    (*) ~/workdir
    (libb) /mnt/sources/libb
    (libc) <unset>
