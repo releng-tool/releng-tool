@@ -115,7 +115,7 @@ def find_win32_python_interpreter(target):
                 if target in installed_vers:
                     target_ver = target
                 # first available version?
-                elif target == '':
+                elif not target:
                     target_ver = installed_vers[0]
                 # if we do have an explicit match and only a major version is
                 # provided, attempt to find a first available (most recent)
