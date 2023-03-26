@@ -84,8 +84,10 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
             else:
                 base_dir = os.path.dirname(dst)
 
-            if not os.path.isdir(base_dir):
+            if base_dir and not os.path.isdir(base_dir):
                 attempt_copy = ensure_dir_exists(base_dir, quiet=quiet)
+            else:
+                attempt_copy = True
 
             if attempt_copy:
                 if os.path.isdir(dst):
