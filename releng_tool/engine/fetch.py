@@ -168,9 +168,8 @@ verified. Ensure the hash file defines an entry for the expected cache file:
                         os.path.exists(pkg.cache_file):
                     if GPG.validate(pkg.asc_file, pkg.cache_file):
                         rv = True
-                    else:
-                        if not path_remove(pkg.cache_file):
-                            err('''\
+                    elif not path_remove(pkg.cache_file):
+                        err('''\
 failed to validate against ascii-armor
 
 Validation of a package resource failed to verify against a provided ASCII-armor
@@ -178,9 +177,9 @@ file. Ensure that the package's public key has been registered into gpg.
 
  ASC File: {}
      File: {}''', pkg.asc_file, cache_filename)
-                            rv = False
-                        else:
-                            rv = None
+                        rv = False
+                    else:
+                        rv = None
 
                 if rv is not None:
                     if ignore_cache:

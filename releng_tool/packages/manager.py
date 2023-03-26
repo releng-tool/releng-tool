@@ -364,23 +364,21 @@ class RelengPackageManager:
                 # if this is a single revision string, use this value for
                 # the revision; with the exception if we are in development
                 # mode and the deprecated devmode-revision value is set
+                elif opts.devmode and pkg_devmode_revision:
+                    pkg_revision = pkg_devmode_revision
+                    pkg_devmode = True
                 else:
-                    if opts.devmode and pkg_devmode_revision:
-                        pkg_revision = pkg_devmode_revision
-                        pkg_devmode = True
-                    else:
-                        pkg_revision = pkg_revision_raw
+                    pkg_revision = pkg_revision_raw
 
             # if we do not have package revision information provided, we
             # will default to the using the package's version; with the
             # exception if we are in development mode and the deprecated
             # devmode-revision value is set
+            elif opts.devmode and pkg_devmode_revision:
+                pkg_revision = pkg_devmode_revision
+                pkg_devmode = True
             else:
-                if opts.devmode and pkg_devmode_revision:
-                    pkg_revision = pkg_devmode_revision
-                    pkg_devmode = True
-                else:
-                    pkg_revision = pkg_version
+                pkg_revision = pkg_version
 
         # always ensure a revision is set; use the version value if no
         # explicit revision is provided
