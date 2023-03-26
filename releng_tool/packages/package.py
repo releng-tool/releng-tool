@@ -34,6 +34,7 @@ class RelengPackage:
         git_submodules: fetch any git submodules (if applicable)
         git_verify_revision: verify signed git revisions
         hash_file: file containing hashes to validate this package
+        hash_relaxed: whether hash checks can be relaxed
         host_provides: host tools the package will provide
         install_type: install container for the package (target, staged, etc.)
         is_internal: whether or not this package is an project internal package
@@ -97,6 +98,7 @@ class RelengPackage:
         self.fetch_opts = None
         self.fixed_jobs = None
         self.hash_file = None
+        self.hash_relaxed = None
         self.host_provides = None
         self.ext_modifiers = None
         self.extract_type = None

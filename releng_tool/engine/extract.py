@@ -111,12 +111,8 @@ def stage(engine, pkg):
             if not extracted:
                 return False
 
-            # relax hash check if a both operating in a development mode and
-            # this package has development mode sources
-            hash_relaxed = engine.opts.devmode and pkg.devmode
-
             result = verify_hashes(pkg.hash_file, work_dir,
-                exclude=hash_exclude, relaxed=hash_relaxed)
+                exclude=hash_exclude, relaxed=pkg.hash_relaxed)
             if result == HashResult.VERIFIED:
                 pass
             elif result == HashResult.BAD_PATH:
@@ -126,7 +122,7 @@ def stage(engine, pkg):
                 if not pkg.is_internal:
                     verbose('hash file for package is empty: ' + pkg.name)
             elif result in (HashResult.MISMATCH, HashResult.MISSING_LISTED):
-                if not hash_relaxed:
+                if not pkg.hash_relaxed:
                     return False
             elif result in (HashResult.BAD_FORMAT, HashResult.UNSUPPORTED):
                 return False

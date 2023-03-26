@@ -829,6 +829,10 @@ class RelengPackageManager:
             pkg_cache_dir = os.path.join(opts.cache_dir, pkg_cache_dirname)
             self._save_dvcs_cache()
 
+        # relax hash check if a both operating in a development mode, this
+        # package has development mode sources and is an internal package
+        pkg_hash_relaxed = opts.devmode and pkg_devmode and pkg_is_internal
+
         # (commons)
         pkg = RelengPackage(name, pkg_version)
         pkg.asc_file = os.path.join(pkg_def_dir, name + '.asc')
@@ -848,6 +852,7 @@ class RelengPackageManager:
         pkg.git_submodules = pkg_git_submodules
         pkg.git_verify_revision = pkg_git_verify_revision
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
+        pkg.hash_relaxed = pkg_hash_relaxed
         pkg.host_provides = pkg_host_provides
         pkg.is_internal = pkg_is_internal
         pkg.local_srcs = pkg_local_srcs
