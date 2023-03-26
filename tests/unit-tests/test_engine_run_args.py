@@ -140,7 +140,7 @@ class TestEngineRunArgs(RelengToolTestCase):
                     # explicit path set for `multiple-a` package
                     'multiple-a@{}'.format(dir_a),
                     # explicit path set for `multiple-b` package
-                    'multiple-b@{}'.format(dir_b),
+                    'multiple-b:{}'.format(dir_b),
                 ],
             }
 
@@ -173,7 +173,7 @@ class TestEngineRunArgs(RelengToolTestCase):
             config = {
                 'local_sources': [
                     # explicit path set for a single package
-                    'multiple-b@{}'.format(test_dir),
+                    'multiple-b:{}'.format(test_dir),
                 ],
             }
 
