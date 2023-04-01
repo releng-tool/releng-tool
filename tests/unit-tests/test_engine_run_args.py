@@ -265,6 +265,17 @@ class TestEngineRunArgs(RelengToolTestCase):
                 self.assertEqual(engine.opts.pkg_action, None)
                 self.assertEqual(engine.opts.target_action, 'example')
 
+    def test_engine_run_args_action_target_prefixed(self):
+        with prepare_workdir() as assets_dir:
+            config = {
+                'action': 'package/another',
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.gbl_action, None)
+                self.assertEqual(engine.opts.pkg_action, None)
+                self.assertEqual(engine.opts.target_action, 'another')
+
     def test_engine_run_args_assets_dir(self):
         with prepare_workdir() as assets_dir:
             config = {
