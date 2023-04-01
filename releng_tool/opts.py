@@ -226,17 +226,30 @@ class RelengEngineOptions:
             if action_val in GlobalAction:
                 self.gbl_action = action_val
             else:
+                target_action = None
+
                 for subaction_val in PkgAction:
                     if action_val.endswith('_' + subaction_val):
                         self.pkg_action = subaction_val
                         idx = action_val.rindex(subaction_val) - 1
-                        self.target_action = args.action[:idx]
+                        target_action = args.action[:idx]
                         break
 
                 if self.pkg_action == PkgAction.EXEC:
                     self.target_action_exec = args.action_exec
                 elif not self.pkg_action:
-                    self.target_action = args.action
+                    target_action = args.action
+
+                # if a provided action starts with a "package/" prefix
+                # (a result of shell completion of users looking for a
+                #  specific packaging in the file system), strip the
+                # package folder prefix and use the resulting value as
+                # the target
+                target_action = target_action.replace(os.sep, '/')
+                if target_action.startswith('package/'):
+                    target_action = target_action[len('package/'):]
+
+                self.target_action = target_action
 
     def _handle_environment_opts(self):
         """
