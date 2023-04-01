@@ -209,6 +209,10 @@ class RelengEngineOptions:
                 module = GBL_LSRCS
                 path = local_src_ref
 
+                # if an absolute path is provided, just use it for the path;
+                # avoiding the need to check/extract for a module-specific
+                # path, as well as preventing path extraction issues on win32
+                # with drive prefix values (that use `:`)
                 if path and os.path.isabs(path):
                     pass
                 elif path and any(sep in path for sep in [':', '@']):
