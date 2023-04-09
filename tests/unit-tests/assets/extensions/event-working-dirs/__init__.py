@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 releng-tool
+# Copyright releng-tool
 
 import json
 import os

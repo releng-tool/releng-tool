@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020-2023 releng-tool
+# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.util.io import ensure_dir_exists

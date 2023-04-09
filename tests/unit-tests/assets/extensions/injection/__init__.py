@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 releng-tool
+# Copyright releng-tool
 
 def releng_setup(app):
     app.connect('config-loaded', on_config_event)

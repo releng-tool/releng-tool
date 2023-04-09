@@ -1,4 +1,4 @@
-# Copyright 2023 releng-tool
+# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
 import json

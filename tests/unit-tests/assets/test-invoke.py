@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2022-2023 releng-tool
+# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 #
 # Provides an invoke testing executable, which will capture arguments and the

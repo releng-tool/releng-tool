@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018-2023 releng-tool
+# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
 # A flag (or option) can be driven by the existence of a file (i.e. a file
