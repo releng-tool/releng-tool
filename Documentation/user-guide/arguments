@@ -342,15 +342,17 @@ The following outlines available options:
         .. table::
             :widths: 50 50
 
-            ==== ===
-            Type Value
-            ==== ===
-            CSV  ``csv``
-            HTML ``html``
-            JSON ``json``
-            Text ``text`` (default)
-            XML  ``xml``
-            ==== ===
+            =========== ===
+            Type        Value
+            =========== ===
+            CSV         ``csv``
+            HTML        ``html``
+            JSON        ``json``
+            JSON (SPDX) ``json-spdx``
+            RDP (SPDX)  ``rdp-spdx``
+            Text        ``text`` (default)
+            XML         ``xml``
+            =========== ===
 
         See also |ACTION_SBOM|_.
 
