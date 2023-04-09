@@ -5,7 +5,7 @@
 import os
 
 try:
-    basestring  # pylint: disable=E0601
+    basestring  # noqa: B018  pylint: disable=E0601
 except NameError:
     basestring = str
 
