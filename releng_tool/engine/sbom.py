@@ -289,7 +289,6 @@ class SbomManager:
             data = cache.get(entry, None)
             if not data:
                 continue
-            continue
 
             has_pkg_data = True
             ET.SubElement(body, 'h2').text = desc
