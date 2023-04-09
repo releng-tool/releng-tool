@@ -180,7 +180,14 @@ class TestPkgConfigs(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('license-valid-empty')
         self.assertListEqual(pkg.license, [])
 
-        pkg, _, _ = self.LOAD('license-valid-multiple')
+        pkg, _, _ = self.LOAD('license-valid-multiple-conjunctive')
+        self.assertTupleEqual(pkg.license, (
+            'license1',
+            'license2',
+            'license3',
+        ))
+
+        pkg, _, _ = self.LOAD('license-valid-multiple-disjunctive')
         self.assertListEqual(pkg.license, [
             'license1',
             'license2',
