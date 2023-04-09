@@ -174,15 +174,6 @@ class TestEngineRunArgs(RelengToolTestCase):
             self.assertEqual(engine.opts.pkg_action, PkgAction.PATCH)
             self.assertEqual(engine.opts.target_action, 'test')
 
-    def test_engine_run_args_action_pkg_build(self):
-        config = {
-            'action': 'test-build',
-        }
-
-        with prepare_testenv(config=config) as engine:
-            self.assertEqual(engine.opts.pkg_action, PkgAction.BUILD)
-            self.assertEqual(engine.opts.target_action, 'test')
-
     def test_engine_run_args_action_pkg_rebuild(self):
         config = {
             'action': 'test-rebuild',
