@@ -13,268 +13,241 @@ import os
 
 class TestEngineRunArgs(RelengToolTestCase):
     def test_engine_run_args_action_global_clean(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'clean',
-            }
+        config = {
+            'action': 'clean',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.CLEAN)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.CLEAN)
 
     def test_engine_run_args_action_global_distclean(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'distclean',
-            }
+        config = {
+            'action': 'distclean',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.DISTCLEAN)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.DISTCLEAN)
 
     def test_engine_run_args_action_global_extract(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'extract',
-            }
+        config = {
+            'action': 'extract',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.EXTRACT)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.EXTRACT)
 
     def test_engine_run_args_action_global_fetch(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'fetch',
-            }
+        config = {
+            'action': 'fetch',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.FETCH)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.FETCH)
 
     def test_engine_run_args_action_global_init(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'init',
-            }
+        config = {
+            'action': 'init',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.INIT)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.INIT)
 
     def test_engine_run_args_action_global_licenses(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'licenses',
-            }
+        config = {
+            'action': 'licenses',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.LICENSES)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.LICENSES)
 
     def test_engine_run_args_action_global_mrproper(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'mrproper',
-            }
+        config = {
+            'action': 'mrproper',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.MRPROPER)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.MRPROPER)
 
     def test_engine_run_args_action_global_patch(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'patch',
-            }
+        config = {
+            'action': 'patch',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.PATCH)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.PATCH)
 
     def test_engine_run_args_action_global_sbom(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'sbom',
-            }
+        config = {
+            'action': 'sbom',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, GlobalAction.SBOM)
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.SBOM)
 
     def test_engine_run_args_action_pkg_build(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-build',
-            }
+        config = {
+            'action': 'test-build',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.BUILD)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.BUILD)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_clean(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-clean',
-            }
+        config = {
+            'action': 'test-clean',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.CLEAN)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.CLEAN)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_configure(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-configure',
-            }
+        config = {
+            'action': 'test-configure',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.CONFIGURE)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.CONFIGURE)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_distclean(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-distclean',
-            }
+        config = {
+            'action': 'test-distclean',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.DISTCLEAN)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.DISTCLEAN)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_exec(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-exec',
-            }
+        config = {
+            'action': 'test-exec',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.EXEC)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.EXEC)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_extract(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-extract',
-            }
+        config = {
+            'action': 'test-extract',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.EXTRACT)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.EXTRACT)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_fetch(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-fetch',
-            }
+        config = {
+            'action': 'test-fetch',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.FETCH)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.FETCH)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_install(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-install',
-            }
+        config = {
+            'action': 'test-install',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.INSTALL)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.INSTALL)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_license(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-license',
-            }
+        config = {
+            'action': 'test-license',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.LICENSE)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.LICENSE)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_patch(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-patch',
-            }
+        config = {
+            'action': 'test-patch',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.PATCH)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.PATCH)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_build(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-build',
-            }
+        config = {
+            'action': 'test-build',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.BUILD)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.BUILD)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_rebuild(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-rebuild',
-            }
+        config = {
+            'action': 'test-rebuild',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.REBUILD)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.REBUILD)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_rebuild_only(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-rebuild_only',
-            }
+        config = {
+            'action': 'test-rebuild_only',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.REBUILD_ONLY)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.REBUILD_ONLY)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_reconfigure(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-reconfigure',
-            }
+        config = {
+            'action': 'test-reconfigure',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.RECONFIGURE)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.RECONFIGURE)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_reconfigure_only(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-reconfigure_only',
-            }
+        config = {
+            'action': 'test-reconfigure_only',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(
-                    engine.opts.pkg_action, PkgAction.RECONFIGURE_ONLY)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(
+                engine.opts.pkg_action, PkgAction.RECONFIGURE_ONLY)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_reinstall(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'test-reinstall',
-            }
+        config = {
+            'action': 'test-reinstall',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.pkg_action, PkgAction.REINSTALL)
-                self.assertEqual(engine.opts.target_action, 'test')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.REINSTALL)
+            self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_target_default(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'example',
-            }
+        config = {
+            'action': 'example',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, None)
-                self.assertEqual(engine.opts.pkg_action, None)
-                self.assertEqual(engine.opts.target_action, 'example')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, None)
+            self.assertEqual(engine.opts.pkg_action, None)
+            self.assertEqual(engine.opts.target_action, 'example')
 
     def test_engine_run_args_action_target_prefixed(self):
-        with prepare_workdir() as assets_dir:
-            config = {
-                'action': 'package/another',
-            }
+        config = {
+            'action': 'package/another',
+        }
 
-            with prepare_testenv(config=config) as engine:
-                self.assertEqual(engine.opts.gbl_action, None)
-                self.assertEqual(engine.opts.pkg_action, None)
-                self.assertEqual(engine.opts.target_action, 'another')
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, None)
+            self.assertEqual(engine.opts.pkg_action, None)
+            self.assertEqual(engine.opts.target_action, 'another')
 
     def test_engine_run_args_assets_dir(self):
         with prepare_workdir() as assets_dir:
