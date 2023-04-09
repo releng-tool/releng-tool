@@ -361,8 +361,8 @@ class RelengEngine:
                 script_env, gaction, opts.pkg_action)
 
             # process each package (configuring, building, etc.)
-            if gaction != GlobalAction.FETCH and pa != PkgAction.FETCH:
-
+            requested_sbom = gaction == GlobalAction.SBOM
+            if not requested_fetch and not requested_sbom:
                 # pre-populate "common" directories
                 #
                 # The following will attempt to pre-populate common directories
