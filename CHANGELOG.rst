@@ -5,6 +5,9 @@ Development
   define a development revision
 - Fixed issue where ``releng_copy`` may fail when provided a single part
   relative destination
+- Fixed issue where HTML-based software build of materials would be empty
+- Prevent processing packages when SBOM generation is explicitly requested
+- Support SPDX-tailored software build of materials
 - Support module-specific local-sources to accept ``:`` instead of ``@``,
   allowing certain shells to take advantage of path auto-completion
 
