@@ -124,7 +124,8 @@ class SbomManager:
         # after processing all packages, now is a good time to timestamp the
         # cache of when this content was populated
         utc_now = datetime.now(tz=utc_timezone)
-        cache['datetime'] = str(utc_now.isoformat())
+        utc_now_str = utc_now.strftime("%Y-%m-%dT%H:%M:%S") + 'Z'
+        cache['datetime'] = utc_now_str
 
         return cache
 
