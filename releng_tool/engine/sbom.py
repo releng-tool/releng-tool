@@ -14,6 +14,9 @@ from releng_tool.util.hash import BadFormatHashLoadError
 from releng_tool.util.hash import load as load_hashes
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
+from releng_tool.util.spdx import ConjunctiveLicenses
+from releng_tool.util.spdx import LicenseEntries
+from releng_tool.util.spdx import spdx_parse
 import csv
 import hashlib
 import json
@@ -121,6 +124,15 @@ class SbomManager:
         if not cache['host-packages']:
             del cache['host-packages']
 
+        # if no project identifier is set, generate one
+        if 'releng-tool-pid' not in cache:
+            pid_tmp = 'releng-tool'
+            for pkg in pkgs:
+                pid_tmp += ';' + pkg.name
+            uid_data = pid_tmp.encode('utf_8')
+            pid = hashlib.sha1(uid_data).hexdigest()  # noqa: S324
+            cache['releng-tool-pid'] = 'releng-tool-' + pid[:8]
+
         # after processing all packages, now is a good time to timestamp the
         # cache of when this content was populated
         utc_now = datetime.now(tz=utc_timezone)
@@ -150,6 +162,8 @@ class SbomManager:
         sbom_cvs = all_fmt or SbomFormatType.CSV in fmt
         sbom_html = all_fmt or SbomFormatType.HTML in fmt
         sbom_json = all_fmt or SbomFormatType.JSON in fmt
+        sbom_json_spdx = all_fmt or SbomFormatType.JSON_SPDX in fmt
+        sbom_rdp_spdx = all_fmt or SbomFormatType.RDP_SPDX in fmt
         sbom_text = all_fmt or SbomFormatType.TEXT in fmt
         sbom_xml = all_fmt or SbomFormatType.XML in fmt
 
@@ -166,6 +180,12 @@ class SbomManager:
 
             if sbom_json:
                 self._generate_json(cache)
+
+            if sbom_json_spdx:
+                self._generate_json_spdx(cache)
+
+            if sbom_rdp_spdx:
+                self._generate_rdp_spdx(cache)
 
             if sbom_text:
                 self._generate_text(cache)
@@ -363,6 +383,225 @@ class SbomManager:
         with open(sbom_file, 'w') as f:
             json.dump(cache, f, indent=4)
 
+    def _generate_json_spdx(self, cache):
+        """
+        generate a SPDX compliant JSON format sbom file
+
+        Compiles a JSON-formatted software build-of-materials document based
+        on the cache information populated from a releng-tool project.
+
+        Args:
+            cache: the sbom cache
+        """
+
+        prj_name = cache['releng-tool-pid']
+        uid = cache['report-id']
+        doc_namespace = 'https://spdx.org/spdxdocs/{}-{}'.format(prj_name, uid)
+
+        spdx_cache = OrderedDict()
+        spdx_cache['SPDXID'] = 'SPDXRef-DOCUMENT'
+        spdx_cache['spdxVersion'] = 'SPDX-2.3'
+        spdx_cache['name'] = prj_name
+        spdx_cache['dataLicense'] = 'CC0-1.0'
+        spdx_cache['documentDescribes'] = []
+        spdx_cache['documentNamespace'] = doc_namespace
+        spdx_cache['creationInfo'] = OrderedDict()
+        spdx_cache['creationInfo']['created'] = cache['datetime']
+        spdx_cache['creationInfo']['creators'] = [
+            'Tool: releng-tool-' + cache['releng-tool-version'],
+        ]
+        spdx_cache['packages'] = []
+
+        # package entries
+        package_entries = [
+            'packages',
+            'host-packages',
+        ]
+
+        for entry in package_entries:
+            data = cache.get(entry, None)
+            if not data:
+                continue
+
+            for pkg_name, pkg in data.items():
+                # if we have no package licenses, claim as none
+                if not pkg['licenses']:
+                    pkg_license = 'NONE'
+                    pkg_license_final = 'NONE'
+                else:
+                    pkg_license_final = 'NOASSERTION'
+
+                license_data = spdx_parse(pkg['licenses'])
+                if license_data:
+                    pkg_license = str(license_data)
+                else:
+                    pkg_license = 'NOASSERTION'
+
+                package_entry = OrderedDict()
+                package_entry['SPDXID'] = 'SPDXRef-' + pkg_name
+                package_entry['name'] = pkg_name
+                package_entry['versionInfo'] = pkg.get('version', '')
+                package_entry['downloadLocation'] = pkg.get('site', 'NONE')
+                package_entry['filesAnalyzed'] = False
+                package_entry['licenseDeclared'] = pkg_license
+                package_entry['licenseConcluded'] = pkg_license_final
+
+                spdx_cache['packages'].append(package_entry)
+                spdx_cache['documentDescribes'].append(package_entry['SPDXID'])
+
+        verbose('writing sbom (json-spdx)')
+        sbom_file = os.path.join(self.opts.out_dir, 'sbom-spdx.json')
+        with open(sbom_file, 'w') as f:
+            json.dump(spdx_cache, f, indent=4)
+
+    def _generate_rdp_spdx(self, cache):
+        """
+        generate a SPDX compliant RDP (XML) format sbom file
+
+        Compiles an RDP-formatted software build-of-materials document based
+        on the cache information populated from a releng-tool project.
+
+        Args:
+            cache: the sbom cache
+        """
+
+        rdf_license_burl = 'http://spdx.org/licenses/'
+        rdf_term_na = 'http://spdx.org/rdf/terms#noassertion'
+        rdf_term_none = 'http://spdx.org/rdf/terms#none'
+        rdf_term_rdesc = 'http://spdx.org/rdf/terms#relationshipType_describes'
+
+        data_license_ref = 'http://spdx.org/licenses/CC0-1.0'
+        prj_name = cache['releng-tool-pid']
+        tool_ref = 'Tool: releng-tool-' + cache['releng-tool-version']
+        uid = cache['report-id']
+        base_namespace = 'https://spdx.org/spdxdocs/{}-{}'.format(prj_name, uid)
+        doc_namespace = '{}#{}'.format(base_namespace, 'SPDXRef-DOCUMENT')
+
+        # resource description root
+        rdf_root = ET.Element('rdf:RDF')
+        rdf_root.set('xmlns:rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+        rdf_root.set('xmlns:spdx', 'http://spdx.org/rdf/terms#')
+        rdf_root.set('xmlns:rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+
+        # spdx document root
+        root = ET.SubElement(rdf_root, 'spdx:SpdxDocument')
+        root.set('rdf:about', doc_namespace)
+
+        # common elements
+        XML_ELEMENT(root, 'spdx:spdxVersion', 'SPDX-2.3')
+        XML_ELEMENT(root, 'spdx:name', prj_name)
+        dle = ET.SubElement(root, 'spdx:dataLicense')
+        dle.set('rdf:resource', data_license_ref)
+        creation_info_container = ET.SubElement(root, 'spdx:creationInfo')
+
+        cinfo_root = ET.SubElement(creation_info_container, 'spdx:CreationInfo')
+        XML_ELEMENT(cinfo_root, 'spdx:created', cache['datetime'])
+        XML_ELEMENT(cinfo_root, 'spdx:creator', tool_ref)
+
+        # package entries
+        package_entries = [
+            'packages',
+            'host-packages',
+        ]
+
+        for entry in package_entries:
+            data = cache.get(entry, None)
+            if not data:
+                continue
+
+            for pkg_name, pkg in data.items():
+                pkg_dl_loc = pkg.get('site', 'NONE')
+
+                rcontainer = ET.SubElement(root, 'spdx:relationship')
+                rroot = ET.SubElement(rcontainer, 'spdx:Relationship')
+                rtype = ET.SubElement(rroot, 'spdx:relationshipType')
+                rtype.set('rdf:resource', rdf_term_rdesc)
+                relement = ET.SubElement(rroot, 'spdx:relatedSpdxElement')
+                proot = ET.SubElement(relement, 'spdx:Package')
+
+                pkg_namespace = '{}#SPDXRef-{}'.format(base_namespace, pkg_name)
+                proot.set('rdf:about', pkg_namespace)
+
+                XML_ELEMENT(proot, 'spdx:specVersion', 'SPDX-2.3')
+                XML_ELEMENT(proot, 'spdx:name', pkg_name)
+                XML_ELEMENT(proot, 'spdx:versionInfo', pkg.get('version', ''))
+                XML_ELEMENT(proot, 'spdx:downloadLocation', pkg_dl_loc)
+                XML_ELEMENT(proot, 'spdx:filesAnalyzed', 'false')
+
+                license_droot = ET.SubElement(proot, 'spdx:licenseDeclared')
+                license_croot = ET.SubElement(proot, 'spdx:licenseConcluded')
+                license_croot.set('rdf:resource', rdf_term_na)
+
+                # if we have a parsed SPDX license string, either assign the
+                # resource to the single license or prepare a list of license
+                # entries; if not parsable, claim no assertion; and no license
+                # information as none
+                pkg_licenses = spdx_parse(pkg['licenses'])
+                if pkg_licenses:
+                    def process_nested_licenses(base, licenses):
+                        if isinstance(licenses, ConjunctiveLicenses):
+                            root_entry_type = 'spdx:ConjunctiveLicenseSet'
+                        else:
+                            root_entry_type = 'spdx:DisjunctiveLicenseSet'
+
+                        root_entry = ET.SubElement(base, root_entry_type)
+                        for license_entry in licenses:
+                            res = ET.SubElement(root_entry, 'spdx:member')
+
+                            if isinstance(license_entry, LicenseEntries):
+                                process_nested_licenses(res, license_entry)
+                            else:
+                                process_license_withex(res, license_entry)
+
+                    def process_license_withex(root, license_entry):
+                        license_parts = license_entry.split(' WITH ')
+
+                        if len(license_parts) > 1:
+                            sroot = ET.SubElement(root,
+                                'spdx:WithExceptionOperator')
+
+                            res = ET.SubElement(sroot, 'spdx:member')
+                            process_license_orlater(res, license_parts[0])
+
+                            res = ET.SubElement(sroot, 'spdx:licenseException')
+                            exception = license_parts[1]
+                            evalue = rdf_license_burl + exception + '.html'
+                            res.set('rdf:resource', evalue)
+                        else:
+                            process_license_orlater(root, license_parts[0])
+
+                    def process_license_orlater(root, license_entry):
+                        resource = rdf_license_burl + license_entry.strip('+')
+
+                        if license_entry.endswith('+'):
+                            sroot = ET.SubElement(root, 'spdx:OrLaterOperator')
+                            res = ET.SubElement(sroot, 'spdx:member')
+                            res.set('rdf:resource', resource)
+                        else:
+                            root.set('rdf:resource', resource)
+
+                    if isinstance(pkg_licenses, LicenseEntries):
+                        process_nested_licenses(license_droot, pkg_licenses)
+                    else:
+                        process_license_withex(license_droot, pkg_licenses)
+
+                elif pkg['licenses']:
+                    license_droot.set('rdf:resource', rdf_term_na)
+                else:
+                    license_croot.set('rdf:resource', rdf_term_none)
+                    license_droot.set('rdf:resource', rdf_term_none)
+
+        # writing the processed cache data to a file
+        verbose('writing sbom (rdp-spdx)')
+        sbom_file = os.path.join(self.opts.out_dir, 'sbom-spdx.xml')
+        xml = ET.tostring(rdf_root, 'utf_8')
+        tree = xml_minidom.parseString(xml)
+
+        with open(sbom_file, 'w') as f:
+            rdf_tree = tree.childNodes[0]
+            data = rdf_tree.toprettyxml(indent=' ' * 4)
+            f.write(data)
+
     def _generate_text(self, cache):
         """
         generate a text format sbom file
@@ -489,6 +728,28 @@ class SbomManager:
         with open(sbom_file, 'w') as f:
             data = tree.toprettyxml(indent=' ' * 4)
             f.write(data)
+
+
+def XML_ELEMENT(root, name, text=None):
+    """
+    helper to build an xml element
+
+    Args:
+        root: the root element to create on
+        name: the name of the new element
+        text (optional): the text to apply to the new element
+
+    Returns:
+        the newly created element
+    """
+
+    element = ET.SubElement(root, name)
+
+    if text:
+        element.text = text
+
+    return element
+
 
 HTML_TEMPLATE_STYLE = '''
 body {

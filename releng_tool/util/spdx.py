@@ -2,6 +2,22 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+try:
+    basestring  # noqa: B018  pylint: disable=E0601
+except NameError:
+    basestring = str
+
+try:
+    from collections.abc import Sequence
+except ImportError:
+    from collections import Sequence  # pylint: disable=W1512
+
+try:
+    from queue import Queue
+except ImportError:
+    from Queue import Queue
+
+
 def spdx_extract(raw):
     """
     extract license/exception strings from a spdx string
@@ -54,3 +70,128 @@ def spdx_extract(raw):
             valid = False
 
     return valid, licenses, exceptions
+
+
+def spdx_parse(data):
+    if not data:
+        return None
+
+    if isinstance(data, Sequence) and not isinstance(data, basestring):
+        if isinstance(data, tuple):
+            data = ' AND '.join(data)
+        else:
+            data = ' OR '.join(data)
+
+    q = Queue()
+    s = []
+
+    tokens = data.replace('(', ' ( ').replace(')', ' ) ').split()
+    operators = ['AND', 'OR', 'WITH']
+
+    # shunting yard algorithm for a postfix notation of license sets
+    rejoin_license = False
+    for token in tokens:
+        if token == '(':
+            s.append(token)
+        elif token == ')':
+            while True:
+                if not s:
+                    return None
+
+                op = s.pop()
+                if op == '(':
+                    break
+                else:
+                    q.put(op)
+
+        elif token.upper() in operators:
+            token = token.upper()
+            if token == 'WITH':
+                rejoin_license = True
+                continue
+
+            while s and s[-1] == 'AND' and token == 'OR':
+                q.put(s.pop())
+            s.append(token)
+        elif rejoin_license:
+            # if we split on a `WITH` operator, rebuild it for this token
+            rejoin_license = False
+            q.queue[-1] += ' WITH ' + token
+        else:
+            q.put(token)
+
+        if rejoin_license:
+            return None
+
+    if rejoin_license:
+        return None
+
+    while s:
+        op = s.pop()
+        if op == '(':
+            return None
+        q.put(op)
+
+    # build license sets
+    MIN_STACK = 2
+    while not q.empty():
+        token = q.get()
+        if token in operators:
+            if len(s) < MIN_STACK:
+                return None
+
+            if token == 'AND':
+                target = ConjunctiveLicenses()
+            else:
+                target = DisjunctiveLicenses()
+
+            for node in reversed([s.pop(), s.pop()]):
+                if type(node) is type(target):
+                    target.extend(node)
+                else:
+                    target.append(node)
+
+            s.append(target)
+        else:
+            s.append(token)
+
+    # we should have a single license set/instance in the stack; return it
+    return s.pop()
+
+
+class LicenseEntries(list):
+    def __init__(self, *args, **kwargs):
+        super(LicenseEntries, self).__init__(*args, **kwargs)
+        self.conjunctive = None
+
+    def __str__(self):
+        parts = []
+
+        for entry in self:
+            if isinstance(entry, LicenseEntries):
+                parts.append('(' + str(entry) + ')')
+            else:
+                parts.append(entry)
+
+        return self._str_operator().join(parts)
+
+    def _str_operator(self):
+        raise NotImplementedError
+
+
+class ConjunctiveLicenses(LicenseEntries):
+    def __init__(self, *args, **kwargs):
+        super(ConjunctiveLicenses, self).__init__(*args, **kwargs)
+        self.conjunctive = True
+
+    def _str_operator(self):
+        return ' AND '
+
+
+class DisjunctiveLicenses(LicenseEntries):
+    def __init__(self, *args, **kwargs):
+        super(DisjunctiveLicenses, self).__init__(*args, **kwargs)
+        self.conjunctive = False
+
+    def _str_operator(self):
+        return ' OR '

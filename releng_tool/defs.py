@@ -339,6 +339,8 @@ class SbomFormatType(Enum):
         CSV: a CSV file
         HTML: an HTML file
         JSON: a JSON file
+        JSON_SPDX: a SPDX-compliant JSON file
+        RDP_SPDX: a SPDX-compliant RDP (XML) file
         TEXT: a plain text file
         XML: an XML file
     """
@@ -346,6 +348,8 @@ class SbomFormatType(Enum):
     CSV = 'csv'
     HTML = 'html'
     JSON = 'json'
+    JSON_SPDX = 'json-spdx'
+    RDP_SPDX = 'rdp-spdx'
     TEXT = 'text'
     XML = 'xml'
 
