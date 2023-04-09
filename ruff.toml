@@ -69,6 +69,8 @@ ignore = [
     'RUF005',
     # use of asserts are acceptable for this tool
     'S101',
+    # there is no internally managed password/authentication; hide false detects
+    'S105',
     # pickled data should only be using our local/"controlled" data
     'S301',
     # using urllib to open different schemas (like `file`) is a desired use case
