@@ -9,12 +9,14 @@ import os
 
 SBOM_FILENAME = 'sbom'
 
-SBOM_FILE_TYPES = [
-    'csv',
-    'html',
-    'json',
-    'txt',
-    'xml',
+SBOM_FILES = [
+    SBOM_FILENAME + '.csv',
+    SBOM_FILENAME + '.html',
+    SBOM_FILENAME + '.json',
+    SBOM_FILENAME + '-spdx.json',
+    SBOM_FILENAME + '.txt',
+    SBOM_FILENAME + '.xml',
+    SBOM_FILENAME + '-spdx.xml',
 ]
 
 
@@ -24,7 +26,7 @@ class TestEngineRunSbom(RelengToolTestCase):
             rv = engine.run()
             self.assertTrue(rv)
 
-            expected = SBOM_FILE_TYPES
+            expected = SBOM_FILES
 
             self._check_expected_files(engine.opts.out_dir, expected)
 
@@ -34,7 +36,7 @@ class TestEngineRunSbom(RelengToolTestCase):
             self.assertTrue(rv)
 
             expected = [
-                'csv',
+                SBOM_FILENAME + '.csv',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)
@@ -45,7 +47,7 @@ class TestEngineRunSbom(RelengToolTestCase):
             self.assertTrue(rv)
 
             expected = [
-                'txt',
+                SBOM_FILENAME + '.txt',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)
@@ -56,7 +58,7 @@ class TestEngineRunSbom(RelengToolTestCase):
             self.assertTrue(rv)
 
             expected = [
-                'html',
+                SBOM_FILENAME + '.html',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)
@@ -67,7 +69,18 @@ class TestEngineRunSbom(RelengToolTestCase):
             self.assertTrue(rv)
 
             expected = [
-                'json',
+                SBOM_FILENAME + '.json',
+            ]
+
+            self._check_expected_files(engine.opts.out_dir, expected)
+
+    def test_engine_run_sbom_json_spdx(self):
+        with prepare_testenv(template='sbom-json-spdx') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            expected = [
+                SBOM_FILENAME + '-spdx.json',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)
@@ -78,8 +91,19 @@ class TestEngineRunSbom(RelengToolTestCase):
             self.assertTrue(rv)
 
             expected = [
-                'html',
-                'json',
+                SBOM_FILENAME + '.html',
+                SBOM_FILENAME + '.json',
+            ]
+
+            self._check_expected_files(engine.opts.out_dir, expected)
+
+    def test_engine_run_sbom_rdp_spdx(self):
+        with prepare_testenv(template='sbom-rdp-spdx') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            expected = [
+                SBOM_FILENAME + '-spdx.xml',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)
@@ -90,7 +114,7 @@ class TestEngineRunSbom(RelengToolTestCase):
             self.assertTrue(rv)
 
             expected = [
-                'txt',
+                SBOM_FILENAME + '.txt',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)
@@ -101,20 +125,18 @@ class TestEngineRunSbom(RelengToolTestCase):
             self.assertTrue(rv)
 
             expected = [
-                'xml',
+                SBOM_FILENAME + '.xml',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)
 
     def _check_expected_files(self, out_dir, expected):
-        unexpected = [e for e in SBOM_FILE_TYPES if e not in expected]
+        unexpected = [e for e in SBOM_FILES if e not in expected]
 
-        for ext in expected:
-            fname = '{}.{}'.format(SBOM_FILENAME, ext)
+        for fname in expected:
             sbom_file = os.path.join(out_dir, fname)
             self.assertTrue(os.path.exists(sbom_file))
 
-        for ext in unexpected:
-            fname = '{}.{}'.format(SBOM_FILENAME, ext)
+        for fname in unexpected:
             sbom_file = os.path.join(out_dir, fname)
             self.assertFalse(os.path.exists(sbom_file))
