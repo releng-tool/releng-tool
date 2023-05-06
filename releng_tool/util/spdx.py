@@ -78,9 +78,10 @@ def spdx_parse(data):
 
     if isinstance(data, Sequence) and not isinstance(data, basestring):
         if isinstance(data, tuple):
-            data = ' AND '.join(data)
+            data = ') AND ('.join(data)
         else:
-            data = ' OR '.join(data)
+            data = ') OR ('.join(data)
+        data = '(' + data + ')'
 
     q = Queue()
     s = []
