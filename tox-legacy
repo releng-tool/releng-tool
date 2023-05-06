@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# This is a helper script used to only invoke a subset of default test
+# environments for legacy interpreters. This script is a complement of
+# `tox-relaxed`, allow invoking tox environments on systems which do not
+# gracefully execute.
+
+TOX_ENVS="py27,py34,py35,py36,pypy2"
+
+if [[ -n "$1" ]]; then
+    envs=$1
+else
+    envs=$TOX_ENVS
+fi
+
+if [[ "$(uname)" == "MINGW"*"_NT"* ]]; then
+    interpreter="/c/Program Files/Python37/python"
+else
+    interpreter="python3.7"
+fi
+
+"$interpreter" -m tox -e $envs
