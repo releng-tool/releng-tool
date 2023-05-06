@@ -9,7 +9,7 @@ from tests import redirect_stderr
 import os
 
 
-class TestSpdxLicenses(RelengToolTestCase):
+class TestSpdxLicenseWarnings(RelengToolTestCase):
     def test_spdx_licenses_broken_spdx_license_value01(self):
         stderr = self._process_license('MIT AND')
         self.assertIn('unexpected spdx license format detected', stderr)
