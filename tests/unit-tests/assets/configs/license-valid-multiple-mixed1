@@ -1,0 +1,5 @@
+TEST_LICENSE = [
+    'A OR B',
+    'C AND D',
+    'E OR F',
+]

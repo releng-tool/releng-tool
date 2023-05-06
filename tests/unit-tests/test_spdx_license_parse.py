@@ -74,47 +74,77 @@ class TestSpdxLicenseParse(RelengToolTestCase):
         self.assertIsNone(parts)
 
     def test_spdx_license_parse_mixed(self):
-        parts = spdx_parse('id1 AND id2 OR id3')
-        self.assertIsInstance(parts, DisjunctiveLicenses)
-        self.assertEqual(len(parts), 2)
-        self.assertIsInstance(parts[0], ConjunctiveLicenses)
-        self.assertListEqual(parts[0], ['id1', 'id2'])
-        self.assertEqual(parts[1], 'id3')
+        values = [
+            'id1 AND id2 OR id3',
+            ['id1 AND id2', 'id3'],
+        ]
+        for v in values:
+            parts = spdx_parse(v)
+            self.assertIsInstance(parts, DisjunctiveLicenses)
+            self.assertEqual(len(parts), 2)
+            self.assertIsInstance(parts[0], ConjunctiveLicenses)
+            self.assertListEqual(parts[0], ['id1', 'id2'])
+            self.assertEqual(parts[1], 'id3')
 
-        parts = spdx_parse('id4 OR id5 AND id6')
-        self.assertIsInstance(parts, DisjunctiveLicenses)
-        self.assertEqual(len(parts), 2)
-        self.assertEqual(parts[0], 'id4')
-        self.assertIsInstance(parts[1], ConjunctiveLicenses)
-        self.assertListEqual(parts[1], ['id5', 'id6'])
+        values = [
+            'id4 OR id5 AND id6',
+            ['id4', 'id5 AND id6'],
+        ]
+        for v in values:
+            parts = spdx_parse(v)
+            self.assertIsInstance(parts, DisjunctiveLicenses)
+            self.assertEqual(len(parts), 2)
+            self.assertEqual(parts[0], 'id4')
+            self.assertIsInstance(parts[1], ConjunctiveLicenses)
+            self.assertListEqual(parts[1], ['id5', 'id6'])
 
-        parts = spdx_parse('(id7 AND id8) OR id9')
-        self.assertIsInstance(parts, DisjunctiveLicenses)
-        self.assertEqual(len(parts), 2)
-        self.assertIsInstance(parts[0], ConjunctiveLicenses)
-        self.assertListEqual(parts[0], ['id7', 'id8'])
-        self.assertEqual(parts[1], 'id9')
+        values = [
+            '(id7 AND id8) OR id9',
+            ['(id7 AND id8)', 'id9'],
+        ]
+        for v in values:
+            parts = spdx_parse(v)
+            self.assertIsInstance(parts, DisjunctiveLicenses)
+            self.assertEqual(len(parts), 2)
+            self.assertIsInstance(parts[0], ConjunctiveLicenses)
+            self.assertListEqual(parts[0], ['id7', 'id8'])
+            self.assertEqual(parts[1], 'id9')
 
-        parts = spdx_parse('ida OR (idb AND idc)')
-        self.assertIsInstance(parts, DisjunctiveLicenses)
-        self.assertEqual(len(parts), 2)
-        self.assertEqual(parts[0], 'ida')
-        self.assertIsInstance(parts[1], ConjunctiveLicenses)
-        self.assertListEqual(parts[1], ['idb', 'idc'])
+        values = [
+            'ida OR (idb AND idc)',
+            ['ida', '(idb AND idc)'],
+        ]
+        for v in values:
+            parts = spdx_parse(v)
+            self.assertIsInstance(parts, DisjunctiveLicenses)
+            self.assertEqual(len(parts), 2)
+            self.assertEqual(parts[0], 'ida')
+            self.assertIsInstance(parts[1], ConjunctiveLicenses)
+            self.assertListEqual(parts[1], ['idb', 'idc'])
 
-        parts = spdx_parse('ide AND (idf OR idg)')
-        self.assertIsInstance(parts, ConjunctiveLicenses)
-        self.assertEqual(len(parts), 2)
-        self.assertEqual(parts[0], 'ide')
-        self.assertIsInstance(parts[1], DisjunctiveLicenses)
-        self.assertListEqual(parts[1], ['idf', 'idg'])
+        values = [
+            'ide AND (idf OR idg)',
+            ('ide', 'idf OR idg'),
+        ]
+        for v in values:
+            parts = spdx_parse(v)
+            self.assertIsInstance(parts, ConjunctiveLicenses)
+            self.assertEqual(len(parts), 2)
+            self.assertEqual(parts[0], 'ide')
+            self.assertIsInstance(parts[1], DisjunctiveLicenses)
+            self.assertListEqual(parts[1], ['idf', 'idg'])
 
-        parts = spdx_parse('(idh OR idi) AND idj')
-        self.assertIsInstance(parts, ConjunctiveLicenses)
-        self.assertEqual(len(parts), 2)
-        self.assertIsInstance(parts[0], DisjunctiveLicenses)
-        self.assertListEqual(parts[0], ['idh', 'idi'])
-        self.assertEqual(parts[1], 'idj')
+        values = [
+            '(idh OR idi) AND idj',
+            ('idh OR idi', 'idj'),
+        ]
+        for v in values:
+            parts = spdx_parse(v)
+            self.assertIsInstance(parts, ConjunctiveLicenses)
+            self.assertEqual(len(parts), 2)
+            self.assertIsInstance(parts[0], DisjunctiveLicenses)
+            self.assertListEqual(parts[0], ['idh', 'idi'])
+            self.assertEqual(parts[1], 'idj')
 
     def test_spdx_license_parse_single(self):
         parts = spdx_parse('id1')

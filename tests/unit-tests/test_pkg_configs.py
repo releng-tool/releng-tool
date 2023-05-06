@@ -199,6 +199,20 @@ class TestPkgConfigs(TestPkgConfigsBase):
             'license',
         ])
 
+        pkg, _, _ = self.LOAD('license-valid-multiple-mixed1')
+        self.assertListEqual(pkg.license, [
+            'A OR B',
+            'C AND D',
+            'E OR F',
+        ])
+
+        pkg, _, _ = self.LOAD('license-valid-multiple-mixed2')
+        self.assertTupleEqual(pkg.license, (
+            'A OR B',
+            'C AND D',
+            'E OR F',
+        ))
+
     def test_pkgconfig_license_files_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('license-files-invalid-type')
