@@ -301,7 +301,10 @@ class RelengEngine:
             raise AssertionError('unexpected package clean handling')
 
         # ensure any of required host tools do exist
-        if 'releng.disable_prerequisites_check' not in opts.quirks:
+        pcheck = 'releng.disable_prerequisites_check' not in opts.quirks
+        requested_sbom = gaction == GlobalAction.SBOM
+
+        if pcheck and not requested_sbom:
             exclude_host_check = set()
             for pkg in pkgs:
                 if pkg.host_provides:
@@ -361,7 +364,6 @@ class RelengEngine:
                 script_env, gaction, opts.pkg_action)
 
             # process each package (configuring, building, etc.)
-            requested_sbom = gaction == GlobalAction.SBOM
             if not requested_fetch and not requested_sbom:
                 # pre-populate "common" directories
                 #
