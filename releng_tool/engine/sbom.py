@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from collections import OrderedDict
+from copy import deepcopy
 from datetime import datetime
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import PackageInstallType
@@ -118,7 +119,7 @@ class SbomManager:
 
             # copy license entries (if any)
             if pkg.license:
-                cache_pkg['licenses'].extend(pkg.license)
+                cache_pkg['licenses'] = deepcopy(pkg.license)
 
         # remove host packages entry if we have no host packages
         if not cache['host-packages']:
