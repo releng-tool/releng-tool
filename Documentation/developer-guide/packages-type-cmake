@@ -11,7 +11,7 @@ A CMake package provides support for processing a `CMake`_ supported module.
 
 During the configuration stage of a CMake package, ``cmake`` will be invoked to
 generate build files for the module. For the build stage, ``cmake --build`` will
-be invoked to generated build files. Similar approach for the installation stage
+invoke the generated build files. Similar approach for the installation stage
 where the build option is invoked again but with the ``install`` target invoked:
 ``cmake --build --target install``. Each stage can be configured to manipulate
 environment variables and options used by the CMake executable.
