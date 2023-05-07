@@ -132,6 +132,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_INSTALL_OPTS = {'--option': 'value'} or ['--option', 'value']
    LIBFOO_INSTALL_TYPE = '<install-type>' # host, images, staging, staging_and_target, target
    LIBFOO_INTERNAL = bool
+   LIBFOO_MESON_NOINSTALL = bool
    LIBFOO_NO_EXTRACTION = bool
    LIBFOO_LICENSE = '<license>'  or ['<license>', '<license>']
    LIBFOO_LICENSE_FILES = '<file>' or ['<file>', '<file>']
@@ -144,7 +145,7 @@ Configuration options parsed by releng-tool for a package definition:
    LIBFOO_SKIP_REMOTE_SCRIPTS = bool
    LIBFOO_SITE = '<site>'
    LIBFOO_STRIP_COUNT = int # >= 0
-   LIBFOO_TYPE = '<type>' # autotools, cmake, make, python, scons, script, ext-<extension>
+   LIBFOO_TYPE = '<type>' # autotools, cmake, make, meson, python, scons, script, ext-<extension>
    LIBFOO_VCS_TYPE = '<vcs-type>' # bzr, cvs, git, hg, local, none, rsync, scp, svn, url
    LIBFOO_VERSION = '<version>'
 

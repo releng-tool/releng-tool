@@ -35,6 +35,7 @@ the :doc:`user's guide <user-guide>`.
 .. _GNU Make: https://www.gnu.org/software/make/manual/html_node/index.html
 .. _Git: https://git-scm.com/
 .. _Mercurial: https://www.mercurial-scm.org/
+.. _Meson: https://mesonbuild.com/
 .. _Python: https://www.python.org/
 .. _SCons: https://scons.org/
 .. _SPDX License Exceptions: https://spdx.org/licenses/exceptions-index.html
