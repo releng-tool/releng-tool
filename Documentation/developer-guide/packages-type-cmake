@@ -39,6 +39,7 @@ package.
 
 .. _cmake_build_defs:
 .. include:: developer-guide/packages-build-defs
+.. include:: developer-guide/packages-build-defs-example-dentry
 
 .. _cmake_build_env:
 .. include:: developer-guide/packages-build-env
@@ -64,6 +65,7 @@ By default, the installation stage is invoked with a value of ``False``.
 
 .. _cmake_conf_defs:
 .. include:: developer-guide/packages-conf-defs
+.. include:: developer-guide/packages-conf-defs-example-dentry
 
 .. _cmake_conf_env:
 .. include:: developer-guide/packages-conf-env
@@ -73,6 +75,7 @@ By default, the installation stage is invoked with a value of ``False``.
 
 .. _cmake_install_defs:
 .. include:: developer-guide/packages-install-defs
+.. include:: developer-guide/packages-install-defs-example-dentry
 
 .. _cmake_install_env:
 .. include:: developer-guide/packages-install-env

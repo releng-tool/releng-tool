@@ -33,6 +33,7 @@ invoked.
 
 .. _autotools_build_defs:
 .. include:: developer-guide/packages-build-defs
+.. include:: developer-guide/packages-build-defs-example-default
 
 .. _autotools_build_env:
 .. include:: developer-guide/packages-build-env
@@ -42,6 +43,7 @@ invoked.
 
 .. _autotools_conf_defs:
 .. include:: developer-guide/packages-conf-defs
+.. include:: developer-guide/packages-conf-defs-example-default
 
 .. _autotools_conf_env:
 .. include:: developer-guide/packages-conf-env
@@ -51,6 +53,7 @@ invoked.
 
 .. _autotools_install_defs:
 .. include:: developer-guide/packages-install-defs
+.. include:: developer-guide/packages-install-defs-example-default
 
 .. _autotools_install_env:
 .. include:: developer-guide/packages-install-env

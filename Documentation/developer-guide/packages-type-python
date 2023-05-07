@@ -25,6 +25,7 @@ package.
 
 .. _python_build_defs:
 .. include:: developer-guide/packages-build-defs
+.. include:: developer-guide/packages-build-defs-example-default
 
 .. _python_build_env:
 .. include:: developer-guide/packages-build-env
@@ -34,6 +35,7 @@ package.
 
 .. _python_install_defs:
 .. include:: developer-guide/packages-install-defs
+.. include:: developer-guide/packages-install-defs-example-default
 
 .. _python_install_env:
 .. include:: developer-guide/packages-install-env
