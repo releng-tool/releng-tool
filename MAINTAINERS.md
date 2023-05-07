@@ -44,3 +44,20 @@ git tag -s -a v<version> <hash> -m "releng-tool <version>"
 git verify-tag <tag>
 git push origin <tag>
 ```
+
+Generate hashes from the release:
+
+```shell-session
+cd dist
+sha256sum -b * >releng-tool-<version>.sha256sum
+```
+
+Create a new release entry on GitHub:
+
+```
+🛈 [View announcement][announcement] ෴ _https://github.com/releng-tool/releng-tool/compare/v<TAG>...v<TAG>_
+
+<bullet points from changelog>
+
+[announcement]: https://docs.releng.io/en/latest/news/<announcement-page>/
+```
