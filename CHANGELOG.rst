@@ -6,6 +6,7 @@ Development
 - Fixed issue where ``releng_copy`` may fail when provided a single part
   relative destination
 - Fixed issue where HTML-based software build of materials would be empty
+- Introduce support for Meson-based packages
 - Prevent processing packages when SBOM generation is explicitly requested
 - Support SPDX-tailored software build of materials
 - Support module-specific local-sources to accept ``:`` instead of ``@``,
