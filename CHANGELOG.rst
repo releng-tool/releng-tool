@@ -1,5 +1,5 @@
-Development
------------
+0.16 (2023-05-07)
+-----------------
 
 - Enforce strict hash checking in development mode for external packages which
   define a development revision
