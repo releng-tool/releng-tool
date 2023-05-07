@@ -24,6 +24,13 @@ gpg --detach-sign -a dist/releng-tool-*.gz
 gpg --detach-sign -a dist/releng_tool-*.whl
 ```
 
+Sanity check the signed packages:
+
+```shell-session
+gpg --verify dist/releng-tool-*.gz.asc
+gpg --verify dist/releng_tool-*.whl.asc
+```
+
 Publish the packages:
 
 ```shell-session
