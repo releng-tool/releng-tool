@@ -3,10 +3,12 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.api import RelengBuildOptions
+from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
 from releng_tool.engine.autotools.build import build as build_autotools
 from releng_tool.engine.cmake.build import build as build_cmake
 from releng_tool.engine.make.build import build as build_make
+from releng_tool.engine.meson.build import build as build_meson
 from releng_tool.engine.python.build import build as build_python
 from releng_tool.engine.scons.build import build as build_scons
 from releng_tool.engine.script.build import build as build_script
@@ -42,6 +44,8 @@ def stage(engine, pkg, script_env):
     else:
         build_dir = pkg.build_dir
 
+    pkg_install_type = NC(pkg.install_type, PackageInstallType.TARGET)
+
     build_opts = RelengBuildOptions()
     replicate_package_attribs(build_opts, pkg)
     build_opts.build_defs = pkg.build_defs
@@ -53,6 +57,7 @@ def stage(engine, pkg, script_env):
     build_opts.env = script_env
     build_opts.ext = pkg.ext_modifiers
     build_opts.host_dir = engine.opts.host_dir
+    build_opts.install_type = pkg_install_type
     build_opts.name = pkg.name
     build_opts.prefix = NC(pkg.prefix, engine.opts.sysroot_prefix)
     build_opts.staging_dir = engine.opts.staging_dir
@@ -80,6 +85,8 @@ def stage(engine, pkg, script_env):
         builder = build_cmake
     elif pkg.type == PackageType.MAKE:
         builder = build_make
+    elif pkg.type == PackageType.MESON:
+        builder = build_meson
     elif pkg.type == PackageType.PYTHON:
         builder = build_python
     elif pkg.type == PackageType.SCONS:

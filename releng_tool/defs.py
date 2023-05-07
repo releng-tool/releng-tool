@@ -124,6 +124,8 @@ class Rpk(Enum):
         CMAKE_NOINSTALL: skip cmake install stage
         # (package type - make)
         MAKE_NOINSTALL: skip make install stage
+        # (package type - meson)
+        MESON_NOINSTALL: skip meson install stage
         # (package type - python)
         PYTHON_INTERPRETER: python interpreter
         PYTHON_SETUP_TYPE: python setup type to build/install with
@@ -177,6 +179,8 @@ class Rpk(Enum):
     CMAKE_NOINSTALL = 'CMAKE_NOINSTALL'
     # (package type - make)
     MAKE_NOINSTALL = 'MAKE_NOINSTALL'
+    # (package type - meson)
+    MESON_NOINSTALL = 'MESON_NOINSTALL'
     # (package type - python)
     PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
     PYTHON_SETUP_TYPE = 'PYTHON_SETUP_TYPE'
@@ -270,6 +274,7 @@ class PackageType(Enum):
         AUTOTOOLS: autotools-based package
         CMAKE: cmake-based package
         MAKE: make-based package
+        MESON: meson-based package
         PYTHON: python-based package
         SCONS: scons-based package
         SCRIPT: releng script-based package
@@ -277,6 +282,7 @@ class PackageType(Enum):
     AUTOTOOLS = 'autotools'
     CMAKE = 'cmake'
     MAKE = 'make'
+    MESON = 'meson'
     PYTHON = 'python'
     SCONS = 'scons'
     SCRIPT = 'script'

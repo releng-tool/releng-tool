@@ -12,6 +12,7 @@ from releng_tool.tool.cvs import CVS
 from releng_tool.tool.git import GIT
 from releng_tool.tool.hg import HG
 from releng_tool.tool.make import MAKE
+from releng_tool.tool.meson import MESON
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
 from releng_tool.tool.rsync import RSYNC
@@ -102,6 +103,12 @@ class RelengPrerequisites:
                 self._verbose_exists(CMAKE)
             else:
                 missing.add(CMAKE.tool)
+
+        if PackageType.MESON in pkg_types:
+            if MESON.exists():
+                self._verbose_exists(MESON)
+            else:
+                missing.add(MESON.tool)
 
         if PackageType.PYTHON in pkg_types:
             for interpreter in python_interpreters:

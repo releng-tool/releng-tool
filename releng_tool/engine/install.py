@@ -8,6 +8,7 @@ from releng_tool.defs import PackageType
 from releng_tool.engine.autotools.install import install as install_autotools
 from releng_tool.engine.cmake.install import install as install_cmake
 from releng_tool.engine.make.install import install as install_make
+from releng_tool.engine.meson.install import install as install_meson
 from releng_tool.engine.python.install import install as install_python
 from releng_tool.engine.scons.install import install as install_scons
 from releng_tool.engine.script.install import install as install_script
@@ -43,6 +44,8 @@ def stage(engine, pkg, script_env):
         skip_install = pkg.cmake_noinstall
     elif pkg.type == PackageType.MAKE:
         skip_install = pkg.make_noinstall
+    elif pkg.type == PackageType.MESON:
+        skip_install = pkg.meson_noinstall
     elif pkg.type == PackageType.SCONS:
         skip_install = pkg.scons_noinstall
 
@@ -107,6 +110,8 @@ def stage(engine, pkg, script_env):
         installer = install_cmake
     elif pkg.type == PackageType.MAKE:
         installer = install_make
+    elif pkg.type == PackageType.MESON:
+        installer = install_meson
     elif pkg.type == PackageType.PYTHON:
         installer = install_python
     elif pkg.type == PackageType.SCONS:

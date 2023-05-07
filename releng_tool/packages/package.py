@@ -70,6 +70,8 @@ class RelengPackage:
         cmake_noinstall: flag to disable the install stage for a cmake project
         (package type - make)
         make_noinstall: flag to disable the install stage for a make project
+        (package type - meson)
+        meson_noinstall: flag to disable the install stage for a meson project
         (other - python)
         python_interpreter: python interpreter to invoke stages with
         python_setup_type: setup type to build/install with
@@ -133,6 +135,8 @@ class RelengPackage:
         self.cmake_noinstall = None
         # (package type - make)
         self.make_noinstall = None
+        # (package type - meson)
+        self.meson_noinstall = None
         # (other - git)
         self.git_config = None
         self.git_depth = None

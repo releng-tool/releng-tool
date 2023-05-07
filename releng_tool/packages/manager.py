@@ -130,6 +130,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.LICENSE, PkgKeyType.STRS)
         self._register_conf(Rpk.LICENSE_FILES, PkgKeyType.STRS)
         self._register_conf(Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL)
+        self._register_conf(Rpk.MESON_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
         self._register_conf(Rpk.PATCH_SUBDIR, PkgKeyType.STR)
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
@@ -767,7 +768,7 @@ class RelengPackageManager:
         # out-of-source tree builds. For supported project types, adjust the
         # build output directory to a sub-folder of the originally assumed
         # output folder.
-        if pkg_type == PackageType.CMAKE:
+        if pkg_type in [PackageType.CMAKE, PackageType.MESON]:
             pkg_build_output_dir = os.path.join(
                 pkg_build_output_dir, 'releng-output')
 
@@ -782,7 +783,7 @@ class RelengPackageManager:
         # build package in an out-of-source directory (e.g.
         # `pkg_build_output_dir`), which is a better make to issue commands
         # such as "cmake --build .".
-        if pkg_type == PackageType.CMAKE:
+        if pkg_type in [PackageType.CMAKE, PackageType.MESON]:
             pkg_build_tree = pkg_build_output_dir
         elif pkg_build_subdir:
             pkg_build_tree = pkg_build_subdir
@@ -1058,6 +1059,14 @@ class RelengPackageManager:
         # make noinstall flag
         if pkg.make_noinstall is None:
             pkg.make_noinstall = self._fetch(Rpk.MAKE_NOINSTALL)
+
+        # ######################################################################
+        # (package type - meson)
+        # ######################################################################
+
+        # meson noinstall flag
+        if pkg.meson_noinstall is None:
+            pkg.meson_noinstall = self._fetch(Rpk.MESON_NOINSTALL)
 
         # ######################################################################
         # (package type - python)
