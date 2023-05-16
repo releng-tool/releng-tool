@@ -82,6 +82,10 @@ def main():
         if args.debug:
             args.verbose = True
 
+        # force color off if `NO_COLOR` is configured
+        if 'NO_COLOR' in os.environ and os.environ['NO_COLOR']:
+            args.nocolorout = True
+
         releng_log_configuration(
             args.debug, args.nocolorout, args.verbose, args.werror)
 
