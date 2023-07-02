@@ -1,0 +1,15 @@
+TEST_ENV = {
+    'shared': 'shared',
+}
+
+TEST_BUILD_ENV = {
+    'build': 'build',
+}
+
+TEST_CONF_ENV = {
+    'configure': 'configure',
+}
+
+TEST_INSTALL_ENV = {
+    'install': 'install',
+}

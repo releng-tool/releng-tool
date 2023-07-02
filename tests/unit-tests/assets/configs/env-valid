@@ -1,0 +1,5 @@
+TEST_ENV = {
+    'key1': 'val1',
+    'key2': None,
+    'key3': 'val3',
+}

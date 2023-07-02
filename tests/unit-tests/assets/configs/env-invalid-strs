@@ -1,0 +1,5 @@
+TEST_ENV = [
+    'invalid-def',
+    'invalid-def',
+    'invalid-def',
+]

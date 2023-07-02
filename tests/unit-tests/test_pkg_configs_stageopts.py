@@ -235,6 +235,46 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'option3': '',
         })
 
+    def test_pkgconfig_env_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('env-invalid-base-type')
+
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('env-invalid-key-type')
+
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('env-invalid-strs')
+
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('env-invalid-value-type')
+
+    def test_pkgconfig_env_shared(self):
+        pkg, _, _ = self.LOAD('env-mixed-valid')
+        self.assertDictEqual(pkg.build_env, {
+            'build': 'build',
+            'shared': 'shared',
+        })
+        self.assertDictEqual(pkg.conf_env, {
+            'configure': 'configure',
+            'shared': 'shared',
+        })
+        self.assertDictEqual(pkg.install_env, {
+            'install': 'install',
+            'shared': 'shared',
+        })
+
+    def test_pkgconfig_env_valid(self):
+        expected = {
+            'key1': 'val1',
+            'key2': None,
+            'key3': 'val3',
+        }
+
+        pkg, _, _ = self.LOAD('env-valid')
+        self.assertDictEqual(pkg.build_env, expected)
+        self.assertDictEqual(pkg.conf_env, expected)
+        self.assertDictEqual(pkg.install_env, expected)
+
     def test_pkgconfig_install_defs_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('install-defs-invalid-base-type')
