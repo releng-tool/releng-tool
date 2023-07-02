@@ -56,6 +56,12 @@ def main():
             version='%(prog)s ' + releng_version)
         parser.add_argument('--werror', '-Werror', action='store_true')
 
+        # hidden convenience argument -- we officially promote the use of
+        # `--out-dir`, but to help a user who may accidentally use the
+        # argument `--output-dir`, we want to help avoid them from generating
+        # output into an root location
+        parser.add_argument('--output-dir')
+
         known_args = sys.argv[1:]
         forward_args = []
         idx = known_args.index('--') if '--' in known_args else -1

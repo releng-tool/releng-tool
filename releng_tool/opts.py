@@ -177,6 +177,8 @@ class RelengEngineOptions:
             self.images_dir = os.path.abspath(args.images_dir)
         if args.out_dir:
             self.out_dir = os.path.abspath(args.out_dir)
+        elif args.output_dir:
+            self.out_dir = os.path.abspath(args.output_dir)
         if args.root_dir:
             self.root_dir = os.path.abspath(args.root_dir)
 
