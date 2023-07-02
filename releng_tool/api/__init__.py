@@ -395,23 +395,20 @@ class RelengInstallOptions(RelengPackageOptions):
 
 class RelengExtensionInterface(object):
     """
-    interface to implement a custom fetch-type
+    base interface type
 
-    Extensions wishing to define a custom fetch type can implement this
-    interface and register it (see ``add_fetch_type``) during the extension's
-    setup stage. This will allow an project support custom VCS-types defined in
-    package definitions (for example "<PKG>_VCS_TYPE='ext-myawesomefetchtype'").
+    This is a base class for all releng-tool extension implementations.
     """
 
 
 class RelengExtractExtensionInterface(RelengExtensionInterface):
     """
-    interface to implement a custom fetch-type
+    interface to implement a custom extract-type
 
-    Extensions wishing to define a custom fetch type can implement this
-    interface and register it (see ``add_fetch_type``) during the extension's
-    setup stage. This will allow an project support custom VCS-types defined in
-    package definitions (for example "<PKG>_VCS_TYPE='ext-myawesomefetchtype'").
+    Extensions wishing to define a custom extract type can implement this
+    interface and register it (see ``add_extract_type``) during the extension's
+    setup stage. This will allow an project support custom DVCS-types defined in
+    package definitions (for example "<PKG>_VCS_TYPE='ext-myawesometype'").
     """
 
     def extract(self, name, opts):
@@ -487,12 +484,12 @@ class RelengFetchExtensionInterface(RelengExtensionInterface):
 
 class RelengPackageExtensionInterface(RelengExtensionInterface):
     """
-    interface to implement a custom fetch-type
+    interface to implement a custom package-type
 
-    Extensions wishing to define a custom fetch type can implement this
-    interface and register it (see ``add_fetch_type``) during the extension's
-    setup stage. This will allow an project support custom VCS-types defined in
-    package definitions (for example "<PKG>_VCS_TYPE='ext-myawesomefetchtype'").
+    Extensions wishing to define a custom package type can implement this
+    interface and register it (see ``add_package_type``) during the extension's
+    setup stage. This will allow an project support custom package types which
+    have custom steps to perform for configuring, building and installation.
     """
 
     def build(self, name, opts):
