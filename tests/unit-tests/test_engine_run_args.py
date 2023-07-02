@@ -457,6 +457,25 @@ class TestEngineRunArgs(RelengToolTestCase):
             with prepare_testenv(config=config) as engine:
                 self.assertEqual(engine.opts.out_dir, out_dir)
 
+    def test_engine_run_args_output_dir(self):
+        with prepare_workdir() as output_dir:
+            config = {
+                'output_dir': output_dir,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.out_dir, output_dir)
+
+    def test_engine_run_args_output_directory_priority(self):
+        with prepare_workdir() as out_dir, prepare_workdir() as output_dir:
+            config = {
+                'out_dir': out_dir,
+                'output_dir': output_dir,
+            }
+
+            with prepare_testenv(config=config) as engine:
+                self.assertEqual(engine.opts.out_dir, out_dir)
+
     def test_engine_run_args_sbom_format(self):
         config = {
             'sbom_format': 'html,json',
