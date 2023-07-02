@@ -375,7 +375,7 @@ class VcsType(Enum):
         HG: mercurial
         LOCAL: no version control (local interim-development package)
         NONE: no version control (placeholder package)
-        RSYNC: secure copy
+        RSYNC: rsync
         SCP: secure copy
         SVN: subversion
         URL: url (http, https, ftp, file, etc.)
