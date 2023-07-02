@@ -115,6 +115,7 @@ class Rpk(Enum):
         BUILD_DEFS: package-type build definitions
         BUILD_ENV: package-type build environment values
         BUILD_OPTS: package-type build options
+        ENV: package-type environment values (all stages)
         INSTALL_DEFS: package-type install definitions
         INSTALL_ENV: package-type install environment values
         INSTALL_OPTS: package-type install options
@@ -170,6 +171,7 @@ class Rpk(Enum):
     BUILD_DEFS = 'BUILD_DEFS'
     BUILD_ENV = 'BUILD_ENV'
     BUILD_OPTS = 'BUILD_OPTS'
+    ENV = 'ENV'
     INSTALL_DEFS = 'INSTALL_DEFS'
     INSTALL_ENV = 'INSTALL_ENV'
     INSTALL_OPTS = 'INSTALL_OPTS'

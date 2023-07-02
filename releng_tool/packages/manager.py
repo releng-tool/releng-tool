@@ -110,6 +110,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.DEPS, PkgKeyType.STRS)
         self._register_conf(Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL)
         self._register_conf(Rpk.DEVMODE_REVISION, PkgKeyType.STR)
+        self._register_conf(Rpk.ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(Rpk.EXTENSION, PkgKeyType.STR)
         self._register_conf(Rpk.EXTERNAL, PkgKeyType.BOOL)
         self._register_conf(Rpk.EXTOPT, PkgKeyType.DICT)
@@ -1000,13 +1001,21 @@ class RelengPackageManager:
         # (package type - shared)
         # ######################################################################
 
+        # package-type environment options (all stages)
+        pkg_env = self._fetch(Rpk.ENV)
+
         # package-type build definitions
         if pkg.build_defs is None:
             pkg.build_defs = self._fetch(Rpk.BUILD_DEFS)
 
         # package-type build environment options
         if pkg.build_env is None:
-            pkg.build_env = self._fetch(Rpk.BUILD_ENV)
+            pkg.build_env = dict(pkg_env) if pkg_env else None
+            build_env = self._fetch(Rpk.BUILD_ENV)
+            if build_env:
+                if pkg.build_env is None:
+                    pkg.build_env = {}
+                pkg.build_env.update(build_env)
 
         # package-type build options
         if pkg.build_opts is None:
@@ -1018,7 +1027,12 @@ class RelengPackageManager:
 
         # package-type configuration environment options
         if pkg.conf_env is None:
-            pkg.conf_env = self._fetch(Rpk.CONF_ENV)
+            pkg.conf_env = dict(pkg_env) if pkg_env else None
+            conf_env = self._fetch(Rpk.CONF_ENV)
+            if conf_env:
+                if pkg.conf_env is None:
+                    pkg.conf_env = {}
+                pkg.conf_env.update(conf_env)
 
         # package-type configuration options
         if pkg.conf_opts is None:
@@ -1030,7 +1044,12 @@ class RelengPackageManager:
 
         # package-type installation environment options
         if pkg.install_env is None:
-            pkg.install_env = self._fetch(Rpk.INSTALL_ENV)
+            pkg.install_env = dict(pkg_env) if pkg_env else None
+            install_env = self._fetch(Rpk.INSTALL_ENV)
+            if install_env:
+                if pkg.install_env is None:
+                    pkg.install_env = {}
+                pkg.install_env.update(install_env)
 
         # package-type installation options
         if pkg.install_opts is None:
