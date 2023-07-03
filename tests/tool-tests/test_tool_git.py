@@ -19,7 +19,8 @@ class TestToolGit(TestSiteToolBase):
         self.defconfig_add('VCS_TYPE', 'git')
 
     def prepare_repo_dir(self, repo_dir):
-        self._git_repo('init', repo_dir, '--initial-branch=' + DEFAULT_BRANCH)
+        self._git_repo('init', repo_dir)
+        self._git_repo('checkout', '-B', DEFAULT_BRANCH, repo=repo_dir)
         self._git_repo('config', 'user.email', 'test@releng.io', repo=repo_dir)
         self._git_repo('config', 'user.name', 'Unit Test', repo=repo_dir)
         self._create_commit('initial commit', repo=repo_dir)
