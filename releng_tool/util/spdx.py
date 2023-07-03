@@ -50,7 +50,7 @@ def spdx_extract(raw):
 
         # break out expressions into parts
         raw = raw.replace('(', ' ').replace(')', ' ')
-        parts = re.split(r'\s+(AND|OR|WITH)', raw)
+        parts = re.split(r'\s+(and|or|with|AND|OR|WITH)', raw)
         for part in parts:
             part = part.strip()
             if not part:
