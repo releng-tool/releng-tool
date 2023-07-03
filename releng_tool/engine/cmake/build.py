@@ -6,7 +6,6 @@ from releng_tool.tool.cmake import CMAKE
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
-from releng_tool.util.log import verbose
 from releng_tool.util.string import expand
 
 
@@ -50,17 +49,17 @@ def build(opts):
     cmake_args.extend(prepare_definitions(cmake_defs, '-D'))
     cmake_args.extend(prepare_arguments(cmake_opts))
 
-    # enable specific number of parallel jobs is set
-    #
-    # https://cmake.org/cmake/help/v3.12/manual/cmake.1.html#build-tool-mode
-    if 'releng.cmake.disable_parallel_option' not in opts._quirks:
-        if opts.jobsconf != 1 and opts.jobs > 1:
-            cmake_args.append('--parallel')
-            cmake_args.append(str(opts.jobs))
-    else:
-        verbose('cmake parallel jobs disabled by quirk')
+    # default environment
+    env = {
+    }
+    if opts.build_env:
+        env.update(expand(opts.build_env))
 
-    if not CMAKE.execute(cmake_args, env=expand(opts.build_env)):
+    # enable specific number of parallel jobs is set
+    if opts.jobsconf != 1 and opts.jobs > 1:
+        env['CMAKE_BUILD_PARALLEL_LEVEL'] = str(opts.jobs)
+
+    if not CMAKE.execute(cmake_args, env=env):
         err('failed to build cmake project: {}', opts.name)
         return False
 

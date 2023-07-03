@@ -373,7 +373,6 @@ def usage_quirks():
 
 releng.bzr.certifi                     Use certifi for bzr exports
 releng.cmake.disable_direct_includes   Disable include-injection with CMake
-releng.cmake.disable_parallel_option   Disable parallel CMake
 releng.disable_prerequisites_check     Disable prerequisites check
 releng.disable_remote_configs          Disable remote configurations
 releng.disable_remote_scripts          Disable remote scripts
