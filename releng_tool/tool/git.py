@@ -33,6 +33,13 @@ GIT_SANITIZE_ENV_KEYS = [
     'SSH_ASKPASS',
     # misc
     'GIT_FLUSH',
+    # perforce-related options
+    'P4AUDIT',
+    'P4CLIENT',
+    'P4CLIENTPATH',
+    'P4CONFIG',
+    'P4PORT',
+    'P4PASSWD',
 ]
 
 #: dictionary of environment entries append to the environment dictionary

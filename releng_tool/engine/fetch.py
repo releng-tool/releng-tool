@@ -8,6 +8,7 @@ from releng_tool.fetch.bzr import fetch as fetch_bzr
 from releng_tool.fetch.cvs import fetch as fetch_cvs
 from releng_tool.fetch.git import fetch as fetch_git
 from releng_tool.fetch.mercurial import fetch as fetch_mercurial
+from releng_tool.fetch.perforce import fetch as fetch_perforce
 from releng_tool.fetch.rsync import fetch as fetch_rsync
 from releng_tool.fetch.scp import fetch as fetch_scp
 from releng_tool.fetch.svn import fetch as fetch_svn
@@ -202,6 +203,8 @@ file. Ensure that the package's public key has been registered into gpg.
                 fetcher = fetch_git
             elif pkg.vcs_type == VcsType.HG:
                 fetcher = fetch_mercurial
+            elif pkg.vcs_type == VcsType.PERFORCE:
+                fetcher = fetch_perforce
             elif pkg.vcs_type == VcsType.RSYNC:
                 fetcher = fetch_rsync
             elif pkg.vcs_type == VcsType.SCP:

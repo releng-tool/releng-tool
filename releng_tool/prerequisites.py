@@ -147,6 +147,12 @@ class RelengPrerequisites:
             else:
                 missing.add(HG.tool)
 
+        if VcsType.PERFORCE in vcs_types:
+            if GIT.exists():
+                self._verbose_exists(GIT)
+            else:
+                missing.add(GIT.tool)
+
         if VcsType.RSYNC in vcs_types:
             if RSYNC.exists():
                 self._verbose_exists(RSYNC)

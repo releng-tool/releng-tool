@@ -375,6 +375,7 @@ class VcsType(Enum):
         HG: mercurial
         LOCAL: no version control (local interim-development package)
         NONE: no version control (placeholder package)
+        P4: perforce
         RSYNC: rsync
         SCP: secure copy
         SVN: subversion
@@ -386,6 +387,7 @@ class VcsType(Enum):
     HG = 'hg'
     LOCAL = 'local'
     NONE = 'none'
+    PERFORCE = 'perforce'
     RSYNC = 'rsync'
     SCP = 'scp'
     SVN = 'svn'

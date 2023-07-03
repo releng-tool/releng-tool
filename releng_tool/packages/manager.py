@@ -494,6 +494,12 @@ class RelengPackageManager:
                 elif site_lc.startswith('hg+'):
                     pkg_site = pkg_site[3:]
                     pkg_vcs_type = VcsType.HG
+                elif site_lc.startswith('p4+'):
+                    pkg_site = pkg_site[3:]
+                    pkg_vcs_type = VcsType.PERFORCE
+                elif site_lc.startswith('perforce+'):
+                    pkg_site = pkg_site[9:]
+                    pkg_vcs_type = VcsType.PERFORCE
                 elif site_lc.startswith('rsync+'):
                     pkg_site = pkg_site[6:]
                     pkg_vcs_type = VcsType.RSYNC
@@ -662,6 +668,7 @@ class RelengPackageManager:
         if pkg_vcs_type in (
                 VcsType.BZR,
                 VcsType.CVS,
+                VcsType.PERFORCE,
                 VcsType.RSYNC,
                 VcsType.SVN,
                 ):
