@@ -1,3 +1,12 @@
+Development
+-----------
+
+- Fixed issue with CMake-generated export targets missing prefix overrides
+- Introduce ``LIBFOO_CMAKE_BUILD_TYPE`` to override CMake build types
+- Introduce ``LIBFOO_ENV`` to apply environment variables on multiple stages
+- Introduce support for Perforce sites
+- Support the existence of a ``NO_COLOR`` environment variable
+
 0.16 (2023-05-07)
 -----------------
 
