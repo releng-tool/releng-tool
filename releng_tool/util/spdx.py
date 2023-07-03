@@ -2,6 +2,8 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+import re
+
 try:
     basestring  # noqa: B018  pylint: disable=E0601
 except NameError:
@@ -47,8 +49,13 @@ def spdx_extract(raw):
         next_exception = False
 
         # break out expressions into parts
-        parts = raw.replace('(', ' ').replace(')', ' ').split()
+        raw = raw.replace('(', ' ').replace(')', ' ')
+        parts = re.split(r'\s+(AND|OR|WITH)', raw)
         for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+
             # check if we need to process any operaters
             if part.lower() in ['and', 'or', 'with']:
                 if needs_license or next_exception:
