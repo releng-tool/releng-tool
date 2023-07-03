@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from collections import OrderedDict
+from releng_tool.defs import DEFAULT_CMAKE_BUILD_TYPE
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
@@ -103,6 +104,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.BUILD_ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(Rpk.BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
         self._register_conf(Rpk.BUILD_SUBDIR, PkgKeyType.STR)
+        self._register_conf(Rpk.CMAKE_BUILD_TYPE, PkgKeyType.STR)
         self._register_conf(Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.CONF_DEFS, PkgKeyType.DICT_STR_STR)
         self._register_conf(Rpk.CONF_ENV, PkgKeyType.DICT_STR_STR)
@@ -1073,6 +1075,13 @@ class RelengPackageManager:
         # ######################################################################
         # (package type - cmake)
         # ######################################################################
+
+        # cmake build type
+        if pkg.cmake_build_type is None:
+            pkg.cmake_build_type = self._fetch(Rpk.CMAKE_BUILD_TYPE)
+
+        if not pkg.cmake_build_type:
+            pkg.cmake_build_type = DEFAULT_CMAKE_BUILD_TYPE
 
         # cmake noinstall flag
         if pkg.cmake_noinstall is None:

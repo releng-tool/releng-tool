@@ -35,8 +35,7 @@ def install(opts):
 
     # default options
     cmake_opts = {
-        # build RelWithDebInfo (when using multi-configuration projects)
-        '--config': 'RelWithDebInfo',
+        '--config': opts._cmake_build_type,
         # default install using the install target
         '--target': 'install',
     }

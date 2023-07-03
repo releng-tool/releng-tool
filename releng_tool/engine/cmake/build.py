@@ -36,8 +36,7 @@ def build(opts):
 
     # options
     cmake_opts = {
-        # build RelWithDebInfo (when using multi-configuration projects)
-        '--config': 'RelWithDebInfo',
+        '--config': opts._cmake_build_type,
     }
     if opts.build_opts:
         cmake_opts.update(expand(opts.build_opts))

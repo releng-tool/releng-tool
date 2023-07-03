@@ -80,8 +80,7 @@ def configure(opts):
     # definitions
     compiled_include_locs = ';'.join(include_locs)
     cmake_defs = {
-        # configure as RelWithDebInfo (when using multi-configuration projects)
-        'CMAKE_BUILD_TYPE': 'RelWithDebInfo',
+        'CMAKE_BUILD_TYPE': opts._cmake_build_type,
         # common paths for releng-tool sysroots
         'CMAKE_INCLUDE_PATH': compiled_include_locs,
         'CMAKE_INSTALL_PREFIX': posix_prefix,

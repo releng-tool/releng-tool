@@ -122,6 +122,7 @@ class Rpk(Enum):
         # (package type - autotools)
         AUTOTOOLS_AUTORECONF: autotools /w autoreconf
         # (package type - cmake)
+        CMAKE_BUILD_TYPE: the cmake build type to use
         CMAKE_NOINSTALL: skip cmake install stage
         # (package type - make)
         MAKE_NOINSTALL: skip make install stage
@@ -178,6 +179,7 @@ class Rpk(Enum):
     # (package type - autotools)
     AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF'
     # (package type - cmake)
+    CMAKE_BUILD_TYPE = 'CMAKE_BUILD_TYPE'
     CMAKE_NOINSTALL = 'CMAKE_NOINSTALL'
     # (package type - make)
     MAKE_NOINSTALL = 'MAKE_NOINSTALL'
@@ -396,3 +398,6 @@ class VcsType(Enum):
 
 # key used to track "global" local sources configuration
 GBL_LSRCS = '*'
+
+# default CMake build type to use
+DEFAULT_CMAKE_BUILD_TYPE = 'RelWithDebInfo'

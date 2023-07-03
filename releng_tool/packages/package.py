@@ -67,6 +67,7 @@ class RelengPackage:
         (package type - autotools)
         autotools_autoreconf: flag to invoke autoreconf
         (package type - cmake)
+        cmake_build_type: cmake build type to use
         cmake_noinstall: flag to disable the install stage for a cmake project
         (package type - make)
         make_noinstall: flag to disable the install stage for a make project
@@ -132,6 +133,7 @@ class RelengPackage:
         # (package type - autotools)
         self.autotools_autoreconf = None
         # (package type - cmake)
+        self.cmake_build_type = None
         self.cmake_noinstall = None
         # (package type - make)
         self.make_noinstall = None
