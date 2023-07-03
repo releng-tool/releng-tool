@@ -52,3 +52,7 @@ class TestUtilSpdx(unittest.TestCase):
         self.assertEqual(
             spdx_extract('GPL-2.0-only WITH'),
             (False, {'GPL-2.0-only'}, set()))
+
+        self.assertEqual(
+            spdx_extract('My Custom License'),
+            (True, {'My Custom License'}, set()))
