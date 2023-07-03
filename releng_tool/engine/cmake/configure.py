@@ -72,13 +72,10 @@ def configure(opts):
         library_locs.append(os.path.join(prefixed_base, DEFAULT_LIB_DIR))
         prefix_locs.append(prefixed_base)
 
-    lib_dir = os.path.join(prefix, DEFAULT_LIB_DIR)
-
     # ensure the non-full prefix options are passed in a posix style, or
     # some versions of CMake/projects may treat the path separators as
     # escape characters
     posix_prefix = prefix.replace(os.sep, posixpath.sep)
-    posix_lib_dir = lib_dir.replace(os.sep, posixpath.sep)
 
     # definitions
     compiled_include_locs = ';'.join(include_locs)
@@ -94,8 +91,10 @@ def configure(opts):
         # GNUInstallDirs may adjust the expected lib directory based on the
         # detected system name (as a project may not necessarily be
         # cross-compiling), which may implicitly set the library directory to
-        # `lib64`.
-        'CMAKE_INSTALL_LIBDIR': posix_lib_dir,
+        # `lib64`. Note that is it important to avoid providing an absolute
+        # lib-directory, to allow CMake to inject a configurable
+        # `_IMPORT_PREFIX` variable in any generated targets.
+        'CMAKE_INSTALL_LIBDIR': DEFAULT_LIB_DIR,
         # disable a dependency in the installation stage to the build stage;
         # this is to prevent environments re-triggering the building of
         # sources during the installation stage due to an assumed detection
