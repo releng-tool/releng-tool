@@ -82,7 +82,12 @@ as the depot path to synchronize. For example:
     if not ensure_dir_exists(cache_dir):
         return None
 
+    def perforce_filter(info):
+        if info.name.endswith('.git'):
+            return None
+        return info
+
     with tarfile.open(cache_file, 'w:gz') as tar:
-        tar.add(work_dir, arcname=name)
+        tar.add(work_dir, arcname=name, filter=perforce_filter)
 
     return cache_file
