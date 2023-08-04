@@ -9,6 +9,7 @@ from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
+from releng_tool.defs import UNSET_VALUES
 from releng_tool.defs import VcsType
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
@@ -841,17 +842,30 @@ for any desired locally sourced packages.
     Error: {}''', opts.ff_devmode, e)
 
         if devmode_changed:
-            devmode_cfg['mode'] = opts.devmode
+            # check if the user is unconfiguring this mode
+            if opts.devmode in UNSET_VALUES:
+                if os.path.exists(self.opts.ff_devmode):
+                    path_remove(self.opts.ff_devmode)
 
-            try:
-                with open(opts.ff_devmode, 'w') as f:
-                    json.dump(devmode_cfg, f)
+                warn('development mode has been unconfigured')
+                configured = True
+            else:
+                devmode_cfg['mode'] = opts.devmode
 
-                    success('configured root for development mode')
-                    configured = True
-            except Exception as e:
-                err_flag = True
-                err('''\
+                try:
+                    with open(opts.ff_devmode, 'w') as f:
+                        json.dump(devmode_cfg, f)
+
+                        if opts.devmode is True:
+                            dms = ''
+                        else:
+                            dms = ' ({})'.format(opts.devmode)
+
+                        success('configured root for development mode' + dms)
+                        configured = True
+                except Exception as e:
+                    err_flag = True
+                    err('''\
 failed to write development mode file
 
 The file used to track `--development` options cannot be written to.
@@ -893,6 +907,23 @@ for any desired locally sourced packages.
 
      File: {}
     Error: {}''', opts.ff_local_srcs, e)
+
+        # check if the user is unconfiguring
+        if local_srcs_changed:
+            local_srcs_unconfigured = False
+
+            for key in list(opts.local_srcs.keys()):
+                if opts.local_srcs[key] in UNSET_VALUES:
+                    del opts.local_srcs[key]
+                    local_srcs_unconfigured = True
+
+            if local_srcs_unconfigured and not opts.local_srcs:
+                if os.path.exists(self.opts.ff_local_srcs):
+                    path_remove(self.opts.ff_local_srcs)
+
+                warn('local-sources mode has been unconfigured')
+                configured = True
+                local_srcs_changed = False
 
         if local_srcs_changed:
             try:
