@@ -854,7 +854,7 @@ for any desired locally sourced packages.
 
                 try:
                     with open(opts.ff_devmode, 'w') as f:
-                        json.dump(devmode_cfg, f)
+                        json.dump(devmode_cfg, f, indent=4)
 
                         if opts.devmode is True:
                             dms = ''
@@ -928,7 +928,7 @@ for any desired locally sourced packages.
         if local_srcs_changed:
             try:
                 with open(opts.ff_local_srcs, 'w') as f:
-                    json.dump(opts.local_srcs, f)
+                    json.dump(opts.local_srcs, f, indent=4)
 
                     log('[local sources configuration]')
                     for key, val in sorted(opts.local_srcs.items()):
