@@ -209,6 +209,7 @@ class GlobalAction(Enum):
         LICENSES: generate license information for a project
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
+        SBOM: generate sbom files for the project
     """
     CLEAN = 'clean'
     DISTCLEAN = 'distclean'
