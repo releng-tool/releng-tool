@@ -26,4 +26,4 @@ def on_post_build_finished(env):
 def capture_working_directory(env, name):
     state_file = os.path.join(env['ROOT_DIR'], name + '.json')
     with open(state_file, 'w') as f:
-        json.dump(dict({'wd': os.getcwd()}), f)
+        json.dump({'wd': os.getcwd()}, f)
