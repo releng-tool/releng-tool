@@ -5,6 +5,7 @@
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
+from releng_tool.defs import UNSET_VALUES
 import multiprocessing
 import os
 import re
@@ -224,6 +225,12 @@ class RelengEngineOptions:
                     # `~` when prefixed with the leading `<pkg>@` hint;
                     # attempt to expand a user hint after extracting the path
                     path = os.path.expanduser(path)
+
+                # acquire the absolute path for the part, to prevent
+                # issues associated with the path if the working directory
+                # changes (ignoring unset values)
+                if path and path not in UNSET_VALUES:
+                    path = os.path.abspath(path)
 
                 self.local_srcs[module] = path if path else None
 
