@@ -84,6 +84,14 @@ class TestEngineRunArgs(RelengToolTestCase):
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.gbl_action, GlobalAction.SBOM)
 
+    def test_engine_run_args_action_global_state(self):
+        config = {
+            'action': 'state',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.STATE)
+
     def test_engine_run_args_action_pkg_build(self):
         config = {
             'action': 'test-build',
