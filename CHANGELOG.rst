@@ -6,6 +6,10 @@ Development
 - Introduce ``LIBFOO_ENV`` to apply environment variables on multiple stages
 - Introduce support for Perforce sites
 - Support the existence of a ``NO_COLOR`` environment variable
+- Introduce ``state`` action for dumping configured releng-tool state
+- Fixed issue with local-source configurations when provided relative paths
+- Support ability to unconfigure development/local-sources mode
+- Support Git repository interaction in output directories for Git-based sources
 
 0.16 (2023-05-07)
 -----------------
