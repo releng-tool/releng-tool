@@ -56,23 +56,23 @@ class GitTool(RelengTool):
     Provides addition helper methods for git-based tool interaction.
     """
 
-    def extract_submodule_revision(self, bare_dir):
+    def extract_submodule_revision(self, git_dir):
         """
         extract a submodule revision
 
         Attempts to extract the HEAD reference of a submodule based off a
-        provided bare Git repository. This is to help support processing Git
+        provided git Git repository. This is to help support processing Git
         submodules which do not have a branch/version explicitly set for module,
         which is required for (at least) recursive submodule processing.
 
         Args:
-            bare_dir: the bare repository
+            git_dir: the git repository
 
         Returns:
             the revision; ``None`` when a revision cannot be extracted
         """
 
-        rv, ref = self.execute_rv('--git-dir=' + bare_dir, 'show-ref', '--head')
+        rv, ref = self.execute_rv('--git-dir=' + git_dir, 'show-ref', '--head')
         if rv != 0:
             err('failed to extract a submodule revision')
             return None

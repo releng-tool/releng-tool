@@ -326,6 +326,19 @@ def _create_bare_git_repo(cache_dir):
     git_dir = '--git-dir=' + cache_dir
 
     if GIT.execute([git_dir, 'init', '--bare', '--quiet'], cwd=cache_dir):
+        # After preparing the bare repository, remove the bare flag from the
+        # configuration. This is to later allow interaction with this cache
+        # for developers who may wish to interact with a Git file system
+        # inside the build directory. During the extraction stage, we setup
+        # a `.git` file with a reference to the cache directory. This should
+        # allow users to invoke Git operations from inside the build
+        # directory, but the Git client can complain that it is not a valid
+        # repository setup. The error goes away when the configured Git
+        # directory is not bare.
+        if not GIT.execute([git_dir, 'config', '--unset', 'core.bare'],
+                cwd=cache_dir):
+            verbose('unable to remove bare configuration on repository')
+
         return True
 
     err('unable to initialize bare git repository')

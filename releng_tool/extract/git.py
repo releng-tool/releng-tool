@@ -4,9 +4,11 @@
 
 from releng_tool.packages import pkg_cache_key
 from releng_tool.tool.git import GIT
+from releng_tool.util.io_copy import path_copy_into
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log
+from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 import os
 
@@ -36,7 +38,7 @@ def extract(opts):
         return None
 
     # extract the package
-    if not _workdir_extract(cache_dir, work_dir, revision):
+    if not _workdir_extract(opts, cache_dir, work_dir, revision):
         return False
 
     # extract submodules (if configured to do so)
@@ -100,7 +102,8 @@ def _process_submodules(opts, work_dir):
         postfix_path = os.path.split(submodule_path)
         sm_work_dir = os.path.join(work_dir, *postfix_path)
 
-        if not _workdir_extract(sm_cache_dir, sm_work_dir, submodule_revision):
+        if not _workdir_extract(
+                opts, sm_cache_dir, sm_work_dir, submodule_revision):
             return False
 
         # process nested submodules
@@ -110,17 +113,18 @@ def _process_submodules(opts, work_dir):
     return True
 
 
-def _workdir_extract(cache_dir, work_dir, revision):
+def _workdir_extract(opts, cache_dir, work_dir, revision):
     """
-    extract a provided revision from a cache (bare) repository to a work tree
+    extract a provided revision from a cached repository to a work tree
 
-    Using a provided bare repository (``cache_dir``) and a working tree
+    Using a provided cached repository (``cache_dir``) and a working tree
     (``work_dir``), extract the contents of the repository using the providing
     ``revision`` value. This call will force the working directory to match the
     target revision. In the case where the work tree is diverged, the contents
     will be replaced with the origin's revision.
 
     Args:
+        opts: the extraction options
         cache_dir: the cache repository
         work_dir: the working directory
         revision: the revision
@@ -172,5 +176,23 @@ def _workdir_extract(cache_dir, work_dir, revision):
                     ], cwd=work_dir):
                 err('unable to checkout revision')
                 return False
+
+    # Setup a `.git` file with a path to the cache directory. This should
+    # help provide a way for developers to interact with Git inside a
+    # package's build directory for development/testing purposes.
+    #
+    # Also, there is an alternative quirk which just performs a full copy
+    # of the cache into the output directory. This can be useful in mixed
+    # partition/permission environments, where the Git client may complain
+    # about the referenced cache directory not being a safe directory.
+    git_file = os.path.join(work_dir, '.git')
+    if not os.path.exists(git_file):
+        if 'releng.git.replicate_cache' in opts._quirks:
+            debug('attempting to replicate .git directory')
+            if not path_copy_into(cache_dir, git_file, critical=False):
+                verbose('failed to replicate .git directory')
+        else:
+            with open(git_file, 'w') as f:
+                f.write('gitdir: {}\n'.format(cache_dir))
 
     return True
