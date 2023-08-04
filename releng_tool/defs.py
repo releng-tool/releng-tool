@@ -210,6 +210,7 @@ class GlobalAction(Enum):
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
         SBOM: generate sbom files for the project
+        STATE: dump configuration state information
     """
     CLEAN = 'clean'
     DISTCLEAN = 'distclean'
@@ -220,6 +221,7 @@ class GlobalAction(Enum):
     MRPROPER = 'mrproper'
     PATCH = 'patch'
     SBOM = 'sbom'
+    STATE = 'state'
 
 
 class PkgAction(Enum):

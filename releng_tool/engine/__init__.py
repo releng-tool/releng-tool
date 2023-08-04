@@ -98,12 +98,12 @@ class RelengEngine:
 
         # load spdx license data
         if sys.version_info < (3, 0) and not os.path.isabs(__file__):
-            _, base_dir, _ = imp.find_module('releng_tool')
+            _, self._base_dir, _ = imp.find_module('releng_tool')
         else:
             engine_dir = os.path.dirname(__file__)
-            base_dir = os.path.dirname(engine_dir)
+            self._base_dir = os.path.dirname(engine_dir)
 
-        data_dir = os.path.join(base_dir, 'data')
+        data_dir = os.path.join(self._base_dir, 'data')
         licenses_file = os.path.join(data_dir, 'licenses', 'data.json')
 
         debug('loading spdx license database: {}', licenses_file)
@@ -157,6 +157,11 @@ class RelengEngine:
         if state is not None:
             debug('file-flag processing has triggered closure')
             return state
+
+        # dump state information to the standard output stream
+        if gaction == GlobalAction.STATE:
+            self._dump_state()
+            return True
 
         # inform the user of any active running modes
         if self.opts.devmode:
@@ -442,6 +447,36 @@ has failed. Ensure the following path is accessible for this user:
         self.stats.generate()
 
         return True
+
+    def _dump_state(self):
+        log('releng-tool {}', releng_version)
+        log('Python {}', sys.version)
+        log('Tool: {}', self._base_dir)
+        log('Root: {}', self.opts.root_dir)
+
+        if self.opts.devmode:
+            if self.opts.devmode is True:
+                postfix = ''
+            else:
+                postfix = ' ({})'.format(self.opts.devmode)
+            log('Development mode: Enabled' + postfix)
+        else:
+            log('Development mode: Disabled')
+
+        if self.opts.local_srcs:
+            log('Local-sources mode: Enabled')
+
+            for key, val in sorted(self.opts.local_srcs.items()):
+                if not val:
+                    val = '<parent>' if key == GBL_LSRCS else '<unset>'
+
+                entry = val
+                if not os.path.exists(val):
+                    entry += "  (does not exist)"
+
+                log(' {}: {}', key, entry)
+        else:
+            log('Local-sources mode: Disabled')
 
     def _stage_init(self, pkg):
         """
