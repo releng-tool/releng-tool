@@ -218,7 +218,7 @@ class RelengEngineOptions:
                 if path and os.path.isabs(path):
                     pass
                 elif path and any(sep in path for sep in [':', '@']):
-                    module, path = re.split(':|@', path, 1)
+                    module, path = re.split(':|@', path, maxsplit=1)
 
                     # path provided in a shell environment may not resolve
                     # `~` when prefixed with the leading `<pkg>@` hint;
