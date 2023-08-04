@@ -934,7 +934,12 @@ for any desired locally sourced packages.
                     for key, val in sorted(opts.local_srcs.items()):
                         if not val:
                             val = '<parent>' if key == GBL_LSRCS else '<unset>'
-                        log('({}) {}', key, val)
+
+                        entry = val
+                        if not os.path.exists(val):
+                            entry += "  (does not exist)"
+
+                        log(' {}: {}', key, entry)
 
                     success('configured root for local-sources mode')
                     configured = True
