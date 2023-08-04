@@ -27,6 +27,8 @@ ignore = [
     'EXE002',
     # imports are sorted lexicographically in this project
     'FBT002',
+    # ignore TODOs for generic linter check
+    'FIX',
     # imports are sorted lexicographically in this project
     'I001',
     # suppress no-pep420 checks for valid support and test scripts
@@ -43,6 +45,8 @@ ignore = [
     'N818',
     # ignore errors for python test scripts with dashes in their filenames
     'N999',
+    # avoid hints for list comprehension since they do not mix in some areas
+    'PERF401',
     # ignore "too many" warnings
     'PLR0911',
     'PLR0912',
@@ -67,6 +71,8 @@ ignore = [
     'RET508',
     # unpacking a collection literal not supported pre-python 3.5
     'RUF005',
+    # annotated class attributes not supported pre-python 3.5
+    'RUF012',
     # use of asserts are acceptable for this tool
     'S101',
     # there is no internally managed password/authentication; hide false detects
@@ -77,6 +83,9 @@ ignore = [
     'S310',
     # local xml parsing is only using local/"controlled" data
     'S318',
+    # flexible subprocess calls per design
+    'S602',
+    'S603',
     # some formats are preferred for code readability
     'SIM102',
     'SIM114',
@@ -87,6 +96,8 @@ ignore = [
     'SLF001',
     # ignore flake8-print since we support/expect printing
     'T20',
+    # ignore todo requirements
+    'TD',
     # purposely used long exception messages
     'TRY003',
     # ignore `raise from` suggestion since python 2.7 is supported
