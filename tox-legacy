@@ -19,4 +19,4 @@ else
     interpreter="python3.7"
 fi
 
-"$interpreter" -m tox -e $envs
+exec "$interpreter" -m tox -e $envs

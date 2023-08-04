@@ -9,4 +9,4 @@
 
 TOX_SKIP_ENV="py27|py34|py35|py36|pypy2"
 export TOX_SKIP_ENV
-tox
+exec tox
