@@ -78,8 +78,7 @@ def cat(file, *args):
 
     files = []
     files.append(file)
-    for arg in args:
-        files.append(arg)
+    files.extend(args)
 
     for f in files:
         if not os.path.isfile(f):
@@ -401,7 +400,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                     if not c and proc.poll() is not None:
                         break
                     line += c
-                    if c == b'\r' or c == b'\n':
+                    if c in (b'\r', b'\n'):
                         decoded_line = line.decode('utf_8')
                         if c == b'\n' and capture is not None:
                             capture.append(decoded_line)
