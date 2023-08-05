@@ -379,6 +379,7 @@ releng.disable_remote_scripts          Disable remote scripts
 releng.disable_spdx_check              Disable spdx license checks
 releng.git.no_depth                    Disable depth-limits for Git calls
 releng.git.no_quick_fetch              Disable quick-fetching for Git calls
+releng.git.replicate_cache             Copy Git repositories into build outputs
 releng.stats.no_pdf                    Never generate PDF statistics output
 """
 
