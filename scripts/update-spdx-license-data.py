@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
