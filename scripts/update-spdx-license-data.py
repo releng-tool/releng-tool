@@ -58,7 +58,7 @@ def main():
     licenses_file = os.path.join(licenses_dir, 'data.json')
 
     with open(licenses_file, 'w') as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=2)
 
 
 if __name__ == '__main__':
