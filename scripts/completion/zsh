@@ -11,6 +11,7 @@ function _releng_tool {
         'mrproper'
         'patch'
         'sbom'
+        'state'
     )
 
     _arguments -C \

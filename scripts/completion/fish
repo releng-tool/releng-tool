@@ -25,7 +25,8 @@ function __fish__releng_tool_has_action
         licenses \
         mrproper \
         patch \
-        sbom
+        sbom \
+        state
 
     set cmd (commandline -poc)
     set -e cmd[1]

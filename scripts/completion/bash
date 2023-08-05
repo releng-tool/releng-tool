@@ -27,6 +27,7 @@ __releng_tool_has_action()
         'mrproper'
         'patch'
         'sbom'
+        'state'
     )
 
     local o w
@@ -51,6 +52,7 @@ __releng_tool_is_reserved()
         'mrproper'
         'patch'
         'sbom'
+        'state'
     )
 
     local o
@@ -160,6 +162,7 @@ _releng_tool_module()
             'mrproper'
             'patch'
             'sbom'
+            'state'
         )
         ;;
     esac
