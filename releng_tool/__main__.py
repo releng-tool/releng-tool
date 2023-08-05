@@ -10,8 +10,8 @@ from releng_tool.exceptions import RelengToolSilentException
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import log
 from releng_tool.util.log import releng_log_configuration
-from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.win32 import enable_ansi as enable_ansi_win32
 import argparse
@@ -105,7 +105,7 @@ def main():
             if sys.platform == 'win32':
                 enable_ansi_win32()
 
-        verbose('releng-tool {}', releng_version)
+        log('releng-tool {}', releng_version)
         debug('({})', __file__)
 
         # extract additional argument information:
