@@ -1,5 +1,5 @@
-Development
------------
+0.17 (2023-08-06)
+-----------------
 
 - Fixed issue with CMake-generated export targets missing prefix overrides
 - Fixed issue with local-source configurations when provided relative paths
