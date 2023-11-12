@@ -47,10 +47,11 @@ jobs:
             - { os: ubuntu-latest, img:  "python:3.9", python:  "3.9", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img: "python:3.10", python: "3.10", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img: "python:3.11", python: "3.11", cache: ~/.cache/pip }
+            - { os: ubuntu-latest, img: "python:3.12", python: "3.12", cache: ~/.cache/pip }
 
             # additional operating systems
-            - { os:   macos-latest, python: "3.11", cache: ~/Library/Caches/pip }
-            - { os: windows-latest, python: "3.11", cache: ~\AppData\Local\pip\Cache }
+            - { os:   macos-latest, python: "3.12", cache: ~/Library/Caches/pip }
+            - { os: windows-latest, python: "3.12", cache: ~\AppData\Local\pip\Cache }
 
     steps:
     - uses: actions/checkout@v3
