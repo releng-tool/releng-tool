@@ -39,7 +39,7 @@ class TestEngineRunBinPaths(RelengToolTestCase):
             self._validate_test_script(expected)
 
     def _validate_test_script(self, name):
-        gbls = None
+        gbls = {}
 
         for path in sys.path:
             script = os.path.join(path, name)
