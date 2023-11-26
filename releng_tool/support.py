@@ -2,6 +2,7 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+from contextlib import contextmanager
 from releng_tool import __version__ as releng_version
 from releng_tool.util.log import err
 from runpy import run_path
@@ -40,7 +41,41 @@ def releng_include(file_path):
         target_script = os.path.join(invoked_script_base, file_path)
 
     ctx_globals = caller_stack[0].f_globals
-    run_path(target_script, init_globals=ctx_globals)
+
+    with releng_script_envs(target_script, ctx_globals) as script_env:
+        run_path(target_script, init_globals=script_env)
+
+
+@contextmanager
+def releng_script_envs(script, env):
+    script_dir = os.path.dirname(script)
+    script_env = env.copy()
+
+    # when invoking an include script, we will override the script
+    # environment hints based on the path of the included script; but
+    # restore back to the original variables once completed
+    restore_keys = [
+        'RELENG_SCRIPT',
+        'RELENG_SCRIPT_DIR',
+    ]
+
+    saved_env = {}
+    for key in restore_keys:
+        saved_env[key] = os.environ.get(key, None)
+
+    try:
+        for env in (os.environ, script_env):
+            env['RELENG_SCRIPT'] = script
+            env['RELENG_SCRIPT_DIR'] = script_dir
+
+        yield script_env
+    finally:
+        # restore any overrides that may have been set
+        for k, v in saved_env.items():
+            if v is not None:
+                os.environ[k] = v
+            else:
+                os.environ.pop(k, None)
 
 
 def require_version(version, quiet=False, critical=True):

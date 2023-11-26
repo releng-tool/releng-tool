@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals
 from contextlib import contextmanager
+from releng_tool.support import releng_script_envs
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_verbose
@@ -934,19 +935,21 @@ def run_script(script, globals_, subject=None, catch=True):
     Returns:
         resulting globals module; ``None`` if an execution error occurs
     """
-    if not catch:
-        result = run_path(script, init_globals=globals_)
-    else:
-        try:
-            result = run_path(script, init_globals=globals_)
-        except Exception as e:
-            err('{}\n'
-                'error running {}{}script: {}\n'
-                '    {}',
-                traceback.format_exc(),
-                subject, subject and ' ', script,
-                e)
-            return None
+
+    with releng_script_envs(script, globals_) as script_env:
+        if not catch:
+            result = run_path(script, init_globals=script_env)
+        else:
+            try:
+                result = run_path(script, init_globals=script_env)
+            except Exception as e:
+                err('{}\n'
+                    'error running {}{}script: {}\n'
+                    '    {}',
+                    traceback.format_exc(),
+                    subject, subject and ' ', script,
+                    e)
+                return None
 
     return result
 
