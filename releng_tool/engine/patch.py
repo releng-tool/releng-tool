@@ -5,10 +5,10 @@
 from glob import glob
 from releng_tool.defs import VcsType
 from releng_tool.tool.patch import PATCH
+from releng_tool.util.io import run_script
 from releng_tool.util.log import err
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
-from runpy import run_path
 import os
 import sys
 
@@ -75,15 +75,10 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
 
     # if we have a patch script, run it
     if has_patch_script:
-        try:
-            run_path(patch_script, init_globals=script_env)
-
-            verbose('patch script executed: ' + patch_script)
-        except Exception as e:
-            err('error running patch script: \n'
-                '    {}', patch_script, e)
+        if not run_script(patch_script, script_env, subject='patch'):
             return False
 
+        verbose('patch script executed: ' + patch_script)
         return True
 
     # for the found patches, sort and apply each
