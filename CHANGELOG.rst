@@ -1,3 +1,8 @@
+Development
+-----------
+
+- Introduce ``RELENG_SCRIPT`` and ``RELENG_SCRIPT_DIR`` hints
+
 0.17 (2023-08-06)
 -----------------
 
