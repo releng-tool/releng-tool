@@ -1,7 +1,8 @@
 Development
 -----------
 
-- Introduce ``RELENG_SCRIPT`` and ``RELENG_SCRIPT_DIR`` hints
+- Introduce ``RELENG_SCRIPT`` and ``RELENG_SCRIPT_DIR`` variables
+- Update SPDX license database to v3.22
 
 0.17 (2023-08-06)
 -----------------
