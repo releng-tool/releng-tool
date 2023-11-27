@@ -130,7 +130,7 @@ class GitTool(RelengTool):
                 value = '\n'.join([line.strip() for line in value.splitlines()])
 
                 fp = StringIO(value)
-                cfg.readfp(fp)  # pylint: disable=W1505
+                cfg.readfp(fp)  # pylint: disable=E1101
         except configparser.Error:
             return None
 
