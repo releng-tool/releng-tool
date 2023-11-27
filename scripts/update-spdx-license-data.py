@@ -7,7 +7,7 @@ import os
 import urllib.request
 
 
-license_tag = 'v3.21'
+license_tag = 'v3.22'
 license_host_url = 'https://raw.githubusercontent.com'
 license_base_url = '{}/spdx/license-list-data/{}/json/'.format(
     license_host_url, license_tag)
