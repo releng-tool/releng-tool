@@ -14,7 +14,7 @@ requires-python = '>=2.7'
 readme = 'README.md'
 license = {text = 'BSD-2-Clause'}
 classifiers = [
-    'Development Status :: 4 - Beta',
+    'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
     'License :: OSI Approved :: BSD License',
     'Operating System :: OS Independent',
