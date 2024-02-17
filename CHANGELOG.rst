@@ -1,3 +1,10 @@
+Development
+-----------
+
+- Support environment output directory override (``RELENG_OUTPUT_DIR``)
+- Support global output containers (``RELENG_GLOBAL_OUTPUT_CONTAINER_DIR``)
+- Update SPDX license database to v3.23
+
 1.0 (2023-12-22)
 ----------------
 
