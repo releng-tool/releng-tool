@@ -56,7 +56,7 @@ jobs:
             - { os: windows-latest, python: "3.12", cache: ~\AppData\Local\pip\Cache }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Set up Python ${{ matrix.python }}
       if: ${{ matrix.img == '' }}

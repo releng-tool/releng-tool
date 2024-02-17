@@ -64,7 +64,7 @@ jobs:
             - { os:  ubuntu-latest, img: "python:3.12-slim",         toxenv:   ruff, cache: ~/.cache/pip }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Set up Python ${{ matrix.python }}
       if: ${{ matrix.img == '' }}
