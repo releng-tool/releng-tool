@@ -32,3 +32,10 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
 
             with prepare_testenv() as engine:
                 self.assertEqual(engine.opts.dl_dir, dl_dir)
+
+    def test_engine_run_environ_cfg_out_dir(self):
+        with prepare_workdir() as out_dir:
+            os.environ['RELENG_OUTPUT_DIR'] = out_dir
+
+            with prepare_testenv() as engine:
+                self.assertEqual(engine.opts.out_dir, out_dir)
