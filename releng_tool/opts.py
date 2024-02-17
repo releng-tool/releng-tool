@@ -303,6 +303,7 @@ class RelengEngineOptions:
                 self.cache_dir = join(self.assets_dir, DEFAULT_CACHE_DIR)
             if not self.dl_dir:
                 self.dl_dir = join(self.assets_dir, DEFAULT_DL_DIR)
+
         # root container
         if not self.cache_dir:
             self.cache_dir = join(root, DEFAULT_CACHE_DIR)
@@ -312,6 +313,7 @@ class RelengEngineOptions:
             self.dl_dir = join(root, DEFAULT_DL_DIR)
         if not self.out_dir:
             self.out_dir = join(root, DEFAULT_OUTPUT_DIR)
+
         # output container
         if not self.build_dir:
             self.build_dir = join(self.out_dir, DEFAULT_BUILD_DIR)
@@ -327,6 +329,7 @@ class RelengEngineOptions:
             self.symbols_dir = join(self.out_dir, DEFAULT_SYMBOLS_DIR)
         if not self.target_dir:
             self.target_dir = join(self.out_dir, DEFAULT_TARGET_DIR)
+
         # files
         if not self.conf_point:
             self.conf_point = join(root, RELENG_CONF_NAME)
