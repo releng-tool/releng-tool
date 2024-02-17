@@ -64,7 +64,13 @@ jobs:
             - { os:  ubuntu-latest, img: "python:3.12-slim",         toxenv:   ruff, cache: ~/.cache/pip }
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v4
+      if: ${{ matrix.python != '3.4' }}
+
+    - name: Checkout (legacy)
+      uses: actions/checkout@v3
+      if: ${{ matrix.python == '3.4' }}
 
     - name: Set up Python ${{ matrix.python }}
       if: ${{ matrix.img == '' }}
@@ -74,6 +80,15 @@ jobs:
 
     - name: Cache pip
       uses: actions/cache@v4
+      if: ${{ matrix.python != '3.4' }}
+      id: cache-pip
+      with:
+        path: ${{ matrix.cache }}
+        key: ${{ matrix.os }}-${{ matrix.python }}-pip
+
+    - name: Cache pip (legacy)
+      uses: actions/cache@v3
+      if: ${{ matrix.python == '3.4' }}
       id: cache-pip
       with:
         path: ${{ matrix.cache }}
