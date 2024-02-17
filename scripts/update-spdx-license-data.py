@@ -2,18 +2,37 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+import configparser
 import json
 import os
 import urllib.request
 
 
-license_tag = 'v3.22'
-license_host_url = 'https://raw.githubusercontent.com'
-license_base_url = '{}/spdx/license-list-data/{}/json/'.format(
-    license_host_url, license_tag)
+CONFIG_FILE = 'spdx-license-data.ini'
 
 
 def main():
+    script_dir = os.path.dirname(__file__)
+    cfg_file = os.path.join(script_dir, CONFIG_FILE)
+
+    cfg = configparser.ConfigParser()
+    try:
+        # extract license version
+        cfg.read(cfg_file)
+        license_tag = cfg.get('spdx-license-data', 'version')
+
+        # determine url base for license file
+        license_host_url = 'https://raw.githubusercontent.com'
+        license_base_url = '{}/spdx/license-list-data/{}/json/'.format(
+            license_host_url, license_tag)
+
+        # update license data
+        update(license_base_url)
+    except configparser.Error as e:
+        raise SystemExit('failed to load configuration: ' + str(e))
+
+
+def update(license_base_url):
     # download and parse the license and exception data
     with urllib.request.urlopen(license_base_url + 'licenses.json') as f:
         license_data = json.loads(f.read().decode('utf-8'))
