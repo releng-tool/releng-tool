@@ -280,6 +280,8 @@ class RelengEngineOptions:
             self.dl_dir = os.environ.get('RELENG_DL_DIR')
         if not self.images_dir:
             self.images_dir = os.environ.get('RELENG_IMAGES_DIR')
+        if not self.out_dir:
+            self.out_dir = os.environ.get('RELENG_OUTPUT_DIR')
 
     def _finalize_options(self):
         """
