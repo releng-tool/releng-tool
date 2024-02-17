@@ -304,6 +304,13 @@ class RelengEngineOptions:
             if not self.dl_dir:
                 self.dl_dir = join(self.assets_dir, DEFAULT_DL_DIR)
 
+        # special output directory override
+        if not self.out_dir:
+            container_dir = os.environ.get('RELENG_GLOBAL_OUTPUT_CONTAINER_DIR')
+            if container_dir:
+                project_folder = os.path.basename(root)
+                self.out_dir = join(container_dir, project_folder)
+
         # root container
         if not self.cache_dir:
             self.cache_dir = join(root, DEFAULT_CACHE_DIR)
