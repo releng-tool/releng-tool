@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "3.22",
+  "licenseListVersion": "3.23",
   "licenses": {
     "0BSD": {
       "name": "BSD Zero Clause License",
@@ -19,6 +19,10 @@
     },
     "Adobe-2006": {
       "name": "Adobe Systems Incorporated Source Code License Agreement",
+      "deprecated": false
+    },
+    "Adobe-Display-PostScript": {
+      "name": "Adobe Display PostScript License",
       "deprecated": false
     },
     "Adobe-Glyph": {
@@ -91,6 +95,10 @@
     },
     "AML": {
       "name": "Apple MIT License",
+      "deprecated": false
+    },
+    "AML-glslang": {
+      "name": "AML glslang variant License",
       "deprecated": false
     },
     "AMPAS": {
@@ -185,6 +193,10 @@
       "name": "Barr License",
       "deprecated": false
     },
+    "bcrypt-Solar-Designer": {
+      "name": "bcrypt Solar Designer License",
+      "deprecated": false
+    },
     "Beerware": {
       "name": "Beerware License",
       "deprecated": false
@@ -221,6 +233,10 @@
       "name": "Borceux license",
       "deprecated": false
     },
+    "Brian-Gladman-2-Clause": {
+      "name": "Brian Gladman 2-Clause License",
+      "deprecated": false
+    },
     "Brian-Gladman-3-Clause": {
       "name": "Brian Gladman 3-Clause License",
       "deprecated": false
@@ -231,6 +247,10 @@
     },
     "BSD-2-Clause": {
       "name": "BSD 2-Clause \"Simplified\" License",
+      "deprecated": false
+    },
+    "BSD-2-Clause-Darwin": {
+      "name": "BSD 2-Clause - Ian Darwin variant",
       "deprecated": false
     },
     "BSD-2-Clause-FreeBSD": {
@@ -251,6 +271,10 @@
     },
     "BSD-3-Clause": {
       "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+      "deprecated": false
+    },
+    "BSD-3-Clause-acpica": {
+      "name": "BSD 3-Clause acpica variant",
       "deprecated": false
     },
     "BSD-3-Clause-Attribution": {
@@ -337,12 +361,20 @@
       "name": "BSD Protection License",
       "deprecated": false
     },
+    "BSD-Source-beginning-file": {
+      "name": "BSD Source Code Attribution - beginning of file variant",
+      "deprecated": false
+    },
     "BSD-Source-Code": {
       "name": "BSD Source Code Attribution",
       "deprecated": false
     },
     "BSD-Systemics": {
       "name": "Systemics BSD variant license",
+      "deprecated": false
+    },
+    "BSD-Systemics-W3Works": {
+      "name": "Systemics W3Works BSD variant license",
       "deprecated": false
     },
     "BSL-1.0": {
@@ -377,6 +409,10 @@
       "name": "Caldera License",
       "deprecated": false
     },
+    "Caldera-no-preamble": {
+      "name": "Caldera License (without preamble)",
+      "deprecated": false
+    },
     "CATOSL-1.1": {
       "name": "Computer Associates Trusted Open Source License 1.1",
       "deprecated": false
@@ -403,6 +439,10 @@
     },
     "CC-BY-3.0-AT": {
       "name": "Creative Commons Attribution 3.0 Austria",
+      "deprecated": false
+    },
+    "CC-BY-3.0-AU": {
+      "name": "Creative Commons Attribution 3.0 Australia",
       "deprecated": false
     },
     "CC-BY-3.0-DE": {
@@ -681,6 +721,10 @@
       "name": "CMU Mach License",
       "deprecated": false
     },
+    "CMU-Mach-nodoc": {
+      "name": "CMU    Mach - no notices-in-documentation variant",
+      "deprecated": false
+    },
     "CNRI-Jython": {
       "name": "CNRI Jython License",
       "deprecated": false
@@ -757,6 +801,10 @@
       "name": "Deutsche Freie Software Lizenz",
       "deprecated": false
     },
+    "DEC-3-Clause": {
+      "name": "DEC 3-Clause License",
+      "deprecated": false
+    },
     "diffmark": {
       "name": "diffmark license",
       "deprecated": false
@@ -779,6 +827,10 @@
     },
     "DRL-1.0": {
       "name": "Detection Rule License 1.0",
+      "deprecated": false
+    },
+    "DRL-1.1": {
+      "name": "Detection Rule License 1.1",
       "deprecated": false
     },
     "DSDP": {
@@ -897,6 +949,10 @@
       "name": "FSF All Permissive License",
       "deprecated": false
     },
+    "FSFAP-no-warranty-disclaimer": {
+      "name": "FSF All Permissive License (without Warranty)",
+      "deprecated": false
+    },
     "FSFUL": {
       "name": "FSF Unlimited License",
       "deprecated": false
@@ -919,6 +975,10 @@
     },
     "fwlw": {
       "name": "fwlw License",
+      "deprecated": false
+    },
+    "GCR-docs": {
+      "name": "Gnome GCR Documentation License",
       "deprecated": false
     },
     "GD": {
@@ -1117,8 +1177,16 @@
       "name": "gSOAP Public License v1.3b",
       "deprecated": false
     },
+    "gtkbook": {
+      "name": "gtkbook License",
+      "deprecated": false
+    },
     "HaskellReport": {
       "name": "Haskell Language Report License",
+      "deprecated": false
+    },
+    "hdparm": {
+      "name": "hdparm License",
       "deprecated": false
     },
     "Hippocratic-2.1": {
@@ -1157,12 +1225,32 @@
       "name": "HPND with US Government export control warning and modification rqmt",
       "deprecated": false
     },
+    "HPND-Fenneberg-Livingston": {
+      "name": "Historical Permission Notice and Disclaimer - Fenneberg-Livingston variant",
+      "deprecated": false
+    },
+    "HPND-INRIA-IMAG": {
+      "name": "Historical Permission Notice and Disclaimer    - INRIA-IMAG variant",
+      "deprecated": false
+    },
+    "HPND-Kevlin-Henney": {
+      "name": "Historical Permission Notice and Disclaimer - Kevlin Henney variant",
+      "deprecated": false
+    },
     "HPND-Markus-Kuhn": {
       "name": "Historical Permission Notice and Disclaimer - Markus Kuhn variant",
       "deprecated": false
     },
+    "HPND-MIT-disclaimer": {
+      "name": "Historical Permission Notice and Disclaimer with MIT disclaimer",
+      "deprecated": false
+    },
     "HPND-Pbmplus": {
       "name": "Historical Permission Notice and Disclaimer - Pbmplus variant",
+      "deprecated": false
+    },
+    "HPND-sell-MIT-disclaimer-xserver": {
+      "name": "Historical Permission Notice and Disclaimer - sell xserver variant with MIT disclaimer",
       "deprecated": false
     },
     "HPND-sell-regexpr": {
@@ -1247,6 +1335,10 @@
     },
     "ISC": {
       "name": "ISC License",
+      "deprecated": false
+    },
+    "ISC-Veillard": {
+      "name": "ISC Veillard variant",
       "deprecated": false
     },
     "Jam": {
@@ -1409,6 +1501,10 @@
       "name": "Common Lisp LOOP License",
       "deprecated": false
     },
+    "LPD-document": {
+      "name": "LPD Documentation License",
+      "deprecated": false
+    },
     "LPL-1.0": {
       "name": "Lucent Public License Version 1.0",
       "deprecated": false
@@ -1453,8 +1549,20 @@
       "name": "LZMA SDK License (versions 9.22 and beyond)",
       "deprecated": false
     },
+    "Mackerras-3-Clause": {
+      "name": "Mackerras 3-Clause License",
+      "deprecated": false
+    },
+    "Mackerras-3-Clause-acknowledgment": {
+      "name": "Mackerras 3-Clause - acknowledgment variant",
+      "deprecated": false
+    },
     "magaz": {
       "name": "magaz License",
+      "deprecated": false
+    },
+    "mailprio": {
+      "name": "mailprio License",
       "deprecated": false
     },
     "MakeIndex": {
@@ -1865,6 +1973,14 @@
       "name": "OpenSSL License",
       "deprecated": false
     },
+    "OpenSSL-standalone": {
+      "name": "OpenSSL License - standalone",
+      "deprecated": false
+    },
+    "OpenVision": {
+      "name": "OpenVision License",
+      "deprecated": false
+    },
     "OPL-1.0": {
       "name": "Open Public License v1.0",
       "deprecated": false
@@ -1925,6 +2041,10 @@
       "name": "PHP License v3.01",
       "deprecated": false
     },
+    "Pixar": {
+      "name": "Pixar License",
+      "deprecated": false
+    },
     "Plexus": {
       "name": "Plexus Classworlds License",
       "deprecated": false
@@ -1981,6 +2101,10 @@
       "name": "Q Public License 1.0 - INRIA 2004 variant",
       "deprecated": false
     },
+    "radvd": {
+      "name": "radvd License",
+      "deprecated": false
+    },
     "Rdisc": {
       "name": "Rdisc License",
       "deprecated": false
@@ -2015,6 +2139,10 @@
     },
     "SAX-PD": {
       "name": "Sax Public Domain Notice",
+      "deprecated": false
+    },
+    "SAX-PD-2.0": {
+      "name": "Sax Public Domain Notice 2.0",
       "deprecated": false
     },
     "Saxpath": {
@@ -2101,6 +2229,10 @@
       "name": "snprintf License",
       "deprecated": false
     },
+    "softSurfer": {
+      "name": "softSurfer License",
+      "deprecated": false
+    },
     "Soundex": {
       "name": "Soundex License",
       "deprecated": false
@@ -2133,6 +2265,10 @@
       "name": "SSH short notice",
       "deprecated": false
     },
+    "SSLeay-standalone": {
+      "name": "SSLeay License - standalone",
+      "deprecated": false
+    },
     "SSPL-1.0": {
       "name": "Server Side Public License, v 1",
       "deprecated": false
@@ -2143,6 +2279,10 @@
     },
     "SugarCRM-1.1.3": {
       "name": "SugarCRM Public License v1.1.3",
+      "deprecated": false
+    },
+    "Sun-PPP": {
+      "name": "Sun PPP License",
       "deprecated": false
     },
     "SunPro": {
@@ -2175,6 +2315,10 @@
     },
     "TermReadKey": {
       "name": "TermReadKey License",
+      "deprecated": false
+    },
+    "TGPPL-1.0": {
+      "name": "Transitive Grace Period Public Licence 1.0",
       "deprecated": false
     },
     "TMate": {
@@ -2223,6 +2367,14 @@
     },
     "ulem": {
       "name": "ulem License",
+      "deprecated": false
+    },
+    "UMich-Merit": {
+      "name": "Michigan/Merit Networks License",
+      "deprecated": false
+    },
+    "Unicode-3.0": {
+      "name": "Unicode License v3",
       "deprecated": false
     },
     "Unicode-DFS-2015": {
@@ -2329,6 +2481,10 @@
       "name": "xinetd License",
       "deprecated": false
     },
+    "xkeyboard-config-Zinoviev": {
+      "name": "xkeyboard-config Zinoviev License",
+      "deprecated": false
+    },
     "xlock": {
       "name": "xlock License",
       "deprecated": false
@@ -2427,6 +2583,10 @@
       "name": "Autoconf macro exception",
       "deprecated": false
     },
+    "Bison-exception-1.24": {
+      "name": "Bison exception 1.24",
+      "deprecated": false
+    },
     "Bison-exception-2.2": {
       "name": "Bison exception 2.2",
       "deprecated": false
@@ -2463,6 +2623,10 @@
       "name": "FLTK exception",
       "deprecated": false
     },
+    "fmt-exception": {
+      "name": "fmt exception",
+      "deprecated": false
+    },
     "Font-exception-2.0": {
       "name": "Font exception 2.0",
       "deprecated": false
@@ -2483,8 +2647,16 @@
       "name": "GCC Runtime Library exception 3.1",
       "deprecated": false
     },
+    "Gmsh-exception": {
+      "name": "Gmsh exception>",
+      "deprecated": false
+    },
     "GNAT-exception": {
       "name": "GNAT exception",
+      "deprecated": false
+    },
+    "GNOME-examples-exception": {
+      "name": "GNOME examples exception",
       "deprecated": false
     },
     "GNU-compiler-exception": {
