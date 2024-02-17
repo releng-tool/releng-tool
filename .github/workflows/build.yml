@@ -89,7 +89,7 @@ jobs:
     - name: Cache pip (legacy)
       uses: actions/cache@v3
       if: ${{ matrix.python == '3.4' }}
-      id: cache-pip
+      id: cache-pip-legacy
       with:
         path: ${{ matrix.cache }}
         key: ${{ matrix.os }}-${{ matrix.python }}-pip
