@@ -2,6 +2,8 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+from __future__ import unicode_literals
+from io import open
 from releng_tool.packages import pkg_key
 from tests import RelengToolTestCase
 from tests import prepare_testenv
@@ -57,6 +59,18 @@ class TestSpdxLicenseWarnings(RelengToolTestCase):
         stderr = self._process_license('DUMMY')
         self.assertIn('unknown spdx license detected', stderr)
 
+    def test_spdx_licenses_valid_spdx_license_common(self):
+        stderr = self._process_license('BSD-2-Clause')
+        self.assertEqual(stderr, '')  # no errors
+
+    def test_spdx_licenses_valid_spdx_license_custom_ascii(self):
+        stderr = self._process_license('LicenseRef-MyCompanyLicense')
+        self.assertEqual(stderr, '')  # no errors
+
+    def test_spdx_licenses_valid_spdx_license_custom_unicode(self):
+        stderr = self._process_license('LicenseRef-Prüfen')
+        self.assertEqual(stderr, '')  # no errors
+
     def _process_license(self, lid, config=None, template='minimal'):
         with redirect_stderr() as stream:
             with prepare_testenv(config=config, template=template) as engine:
@@ -65,7 +79,9 @@ class TestSpdxLicenseWarnings(RelengToolTestCase):
                     pkg_script = os.path.join(root_dir,
                         'package', template, template)
 
-                    with open(pkg_script, 'a') as f:
+                    with open(pkg_script, 'a', encoding='utf_8') as f:
+                        f.write('{key}={val}\n'.format(
+                            key=pkg_key(template, 'INTERNAL'), val=True))
                         f.write('{}="{}"\n'.format(
                             pkg_key(template, 'LICENSE'), lid))
 
