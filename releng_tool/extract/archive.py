@@ -129,7 +129,7 @@ def extract(opts):
                             yield member
 
                     with tarfile.open(cache_file, 'r') as tar:
-                        tar.extractall(path=work_dir,
+                        tar.extractall(path=work_dir,  # noqa: S202
                             members=tar_extract(tar, strip_count))
                 except Exception as e:
                     err('unable to extract tar file\n'
