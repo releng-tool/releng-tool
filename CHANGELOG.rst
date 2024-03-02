@@ -1,6 +1,8 @@
 Development
 -----------
 
+- Prevent SSH authentication prompts that may occur when using Git
+- Support SPDX license identifier field for custom licenses
 - Support environment output directory override (``RELENG_OUTPUT_DIR``)
 - Support global output containers (``RELENG_GLOBAL_OUTPUT_CONTAINER_DIR``)
 - Update SPDX license database to v3.23
