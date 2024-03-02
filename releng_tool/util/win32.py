@@ -160,7 +160,7 @@ def find_win32_python_interpreter(target):
                             pass
                 except OSError:
                     pass
-        except OSError:  # noqa: PERF203
+        except OSError:
             pass
 
     # sort by newest interpreter

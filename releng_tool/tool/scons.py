@@ -71,7 +71,7 @@ class SconsTool(RelengTool):
                     sys.path.append(scons_container)
 
                     try:
-                        import SCons  # noqa: F401,F811  pylint: disable=E0401
+                        import SCons  # noqa: F401  pylint: disable=E0401
                         debug('{} tool is detected in container', self.tool)
                         RelengTool.detected[self.tool] = True
                         self._scons_interpreter = 'releng_tool.tool.scons_proxy'
