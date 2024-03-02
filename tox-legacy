@@ -7,10 +7,9 @@
 
 TOX_ENVS="py27,py34,py35,py36,pypy2"
 
-if [[ -n "$1" ]]; then
-    envs=$1
-else
-    envs=$TOX_ENVS
+envs=
+if [ "$#" -eq 0 ]; then
+    envs="-e $TOX_ENVS"
 fi
 
 if [[ "$(uname)" == "MINGW"*"_NT"* ]]; then
@@ -19,4 +18,4 @@ else
     interpreter="python3.7"
 fi
 
-exec "$interpreter" -m tox -e $envs
+exec "$interpreter" -m tox $envs "$@"
