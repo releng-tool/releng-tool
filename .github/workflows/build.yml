@@ -9,7 +9,6 @@ on:
       - 'releng/**'
       - 'releng_tool/**'
       - 'tests/**'
-      - '.flake8'
       - '.pylintrc'
       - 'MANIFEST.in'
       - 'pyproject.toml'
@@ -25,7 +24,6 @@ on:
       - 'releng/**'
       - 'releng_tool/**'
       - 'tests/**'
-      - '.flake8'
       - '.pylintrc'
       - 'MANIFEST.in'
       - 'pyproject.toml'
@@ -60,7 +58,6 @@ jobs:
             - { os:  ubuntu-latest, img: "python:3.12-slim",         python: "3.12", toxenv:  py312, cache: ~/.cache/pip }
             - { os:   macos-latest,                                  python: "3.12", toxenv:  py312, cache: ~/Library/Caches/pip }
             - { os: windows-latest,                                  python: "3.12", toxenv:  py312, cache: ~\AppData\Local\pip\Cache }
-            - { os:  ubuntu-latest, img: "python:3.12-slim",                         toxenv: flake8, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.12-slim",                         toxenv: pylint, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.12-slim",                         toxenv:   ruff, cache: ~/.cache/pip }
 
