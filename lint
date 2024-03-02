@@ -3,7 +3,7 @@
 # This is a helper script used to only invoke a subset of test environments
 # associated to linting.
 
-TOX_ENVS="flake8,pylint,ruff"
+TOX_ENVS="pylint,ruff"
 
 if [[ -n "$1" ]]; then
     envs=$1
