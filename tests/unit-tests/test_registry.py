@@ -127,7 +127,7 @@ class TestRegistry(RelengToolTestCase):
         registry.connect('config-loaded', second_event)
 
         registry.emit('config-loaded', env=dummy_env)
-        last_event = dummy_env.get('last-event', None)
+        last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'second')
 
     def test_registry_priority_scenario01(self):
@@ -144,7 +144,7 @@ class TestRegistry(RelengToolTestCase):
         registry.connect('config-loaded', second_event, priority=50)
 
         registry.emit('config-loaded', env=dummy_env)
-        last_event = dummy_env.get('last-event', None)
+        last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'first')
 
     def test_registry_priority_scenario02(self):
@@ -165,7 +165,7 @@ class TestRegistry(RelengToolTestCase):
         registry.connect('config-loaded', third_event, priority=150)
 
         registry.emit('config-loaded', env=dummy_env)
-        last_event = dummy_env.get('last-event', None)
+        last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'third')
 
     def test_registry_priority_scenario03(self):
@@ -186,5 +186,5 @@ class TestRegistry(RelengToolTestCase):
         registry.connect('config-loaded', third_event, priority=2)
 
         registry.emit('config-loaded', env=dummy_env)
-        last_event = dummy_env.get('last-event', None)
+        last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'second')

@@ -20,15 +20,15 @@ class TestExtensions(unittest.TestCase):
         dummy_env = {}
 
         registry.emit('config-loaded', env=dummy_env)
-        last_event = dummy_env.get('last-event', None)
+        last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'config-loaded')
 
         registry.emit('post-build-started', env=dummy_env)
-        last_event = dummy_env.get('last-event', None)
+        last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'post-build-started')
 
         registry.emit('post-build-finished', env=dummy_env)
-        last_event = dummy_env.get('last-event', None)
+        last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'post-build-finished')
 
     def test_extension_requires_new(self):
