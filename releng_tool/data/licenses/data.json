@@ -2548,10 +2548,6 @@
     "ZPL-2.1": {
       "name": "Zope Public License 2.1",
       "deprecated": false
-    },
-    "Proprietary": {
-      "name": "Proprietary",
-      "deprecated": false
     }
   },
   "exceptions": {

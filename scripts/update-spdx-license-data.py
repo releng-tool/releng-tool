@@ -64,13 +64,6 @@ def update(license_base_url):
             'deprecated': entry['isDeprecatedLicenseId'],
         }
 
-    # inject a non-license "Proprietary" string for convenience, since we aim
-    # to promote either SPDX licenses or users proprietary packages
-    data['licenses']['Proprietary'] = {
-        'name': 'Proprietary',
-        'deprecated': False,
-    }
-
     scripts_dir = os.path.dirname(os.path.realpath(__file__))
     root_dir = os.path.dirname(scripts_dir)
     licenses_dir = os.path.join(root_dir, 'releng_tool', 'data', 'licenses')

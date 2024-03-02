@@ -38,6 +38,7 @@ from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.sort import TopologicalSorter
 from releng_tool.util.spdx import spdx_extract
+from releng_tool.util.spdx import spdx_license_identifier
 from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_dictionary_strings
 from releng_tool.util.string import interpret_string
@@ -975,6 +976,9 @@ class RelengPackageManager:
                 parsed, licenses, exceptions = spdx_extract(license_entry)
 
                 for nested_license in licenses:
+                    if spdx_license_identifier(nested_license):
+                        continue
+
                     entry = opts.spdx['licenses'].get(nested_license, None)
                     if entry:
                         if entry['deprecated']:

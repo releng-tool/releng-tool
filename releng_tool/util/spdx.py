@@ -79,6 +79,35 @@ def spdx_extract(raw):
     return valid, licenses, exceptions
 
 
+def spdx_license_identifier(license_value):
+    """
+    determine if a license is a (custom) license identifier
+
+    SPDX defines a license identifier field -- a locally unique identifier
+    for licenses not found on the SPDX license list. These must be
+    `LicenseRef-` prefixed strings followed by an identifier string containing
+    only letters, numbers, a `.` or `-`.
+
+    Args:
+        license_value: the license value to check
+
+    Returns:
+        whether this is a license identifier
+    """
+
+    if not license_value:
+        return False
+
+    # custom license identifiers must start with `LicenseRef` (spdx)
+    if not license_value.startswith('LicenseRef-'):
+        return False
+
+    id_str = license_value[len('LicenseRef-'):]
+    if isinstance(id_str, bytes):
+        id_str = id_str.decode('utf_8')
+    return id_str.replace('.', '').replace('-', '').isalpha()
+
+
 def spdx_parse(data):
     if not data:
         return None
