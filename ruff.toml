@@ -1,8 +1,8 @@
-select = [
+lint.select = [
     'ALL',
 ]
 
-ignore = [
+lint.ignore = [
     # ignore flake8-annotations since python 2.7 is supported
     'ANN',
     # ignore various unused arguments in api definitions
@@ -100,15 +100,13 @@ ignore = [
     'TD',
     # purposely used long exception messages
     'TRY003',
-    # ignore `raise from` suggestion since python 2.7 is supported
-    'TRY200',
     # ignore desired usages of raise calls within trys
     'TRY301',
     # ignore pyupgrade since python 2.7 is supported
     'UP',
 ]
 
-[per-file-ignores]
+[lint.per-file-ignores]
 'releng_tool\api\__init__.py' = [
     'ARG002',
     'N818',
