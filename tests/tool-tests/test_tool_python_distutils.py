@@ -3,9 +3,17 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from tests.support.python_tool_test import PythonSiteToolBase
+import sys
+import unittest
 
 
 class TestToolPythonDistutils(PythonSiteToolBase):
+    @classmethod
+    def setUpClass(cls):
+        # distutils is no longer available in Python 3.12+
+        if sys.version_info >= (3, 12):
+            raise unittest.SkipTest('skipping for unsupported interpreters')
+
     def tool_template(self):
         return 'python-distutils'
 
