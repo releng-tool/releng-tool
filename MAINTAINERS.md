@@ -34,7 +34,7 @@ gpg --verify dist/releng_tool-*.whl.asc
 Publish the packages:
 
 ```shell-session
-twine upload dist/*
+twine upload --repository releng-tool dist/*
 ```
 
 Tag/push the release tag:
