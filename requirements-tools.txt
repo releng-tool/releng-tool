@@ -6,4 +6,5 @@ meson; python_version>='3.7'
 pdm; python_version>='3.7'
 poetry>=0.8; python_version>='3.7'
 scons
+setuptools
 wheel; python_version>='3.7'
