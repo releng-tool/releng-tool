@@ -1,5 +1,5 @@
-Development
------------
+1.1 (2024-03-29)
+----------------
 
 - Prevent SSH authentication prompts that may occur when using Git
 - Support SPDX license identifier field for custom licenses
