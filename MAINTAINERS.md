@@ -59,5 +59,5 @@ Create a new release entry on GitHub:
 
 <bullet points from changelog>
 
-[announcement]: https://docs.releng.io/en/latest/news/<announcement-page>/
+[announcement]: https://docs.releng.io/news/<announcement-page>/
 ```
