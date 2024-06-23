@@ -346,6 +346,7 @@ def usage():
  licenses                  Generate license information for a project
  mrproper                  Pristine clean of the releng project
  patch                     Ensure all packages have done a patch stage
+ punch                     Full run with a forced re-configure on all packages
  sbom                      Generate a software bill of materials
  <pkg>-build               Perform build stage for the package
  <pkg>-clean               Clean build directory for package

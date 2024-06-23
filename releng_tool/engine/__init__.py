@@ -496,11 +496,11 @@ has failed. Ensure the following path is accessible for this user:
 
         rv = True
 
-        # forced request
+        # punch/forced request
         #
-        # When a forced request is made, clear all file flags so these stages
-        # can be invoked again.
-        if self.opts.force:
+        # When a punch/forced request is made, clear all file flags so these
+        # stages can be invoked again.
+        if self.opts.gbl_action == GlobalAction.PUNCH or self.opts.force:
             rv &= path_remove(pkg._ff_bootstrap)
             rv &= path_remove(pkg._ff_configure)
             rv &= path_remove(pkg._ff_build)

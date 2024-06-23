@@ -209,6 +209,7 @@ class GlobalAction(Enum):
         LICENSES: generate license information for a project
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
+        PUNCH: process all packages with a forced re-configuration
         SBOM: generate sbom files for the project
         STATE: dump configuration state information
     """
@@ -220,6 +221,7 @@ class GlobalAction(Enum):
     LICENSES = 'licenses'
     MRPROPER = 'mrproper'
     PATCH = 'patch'
+    PUNCH = 'punch'
     SBOM = 'sbom'
     STATE = 'state'
 
