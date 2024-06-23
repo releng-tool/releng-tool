@@ -1,8 +1,12 @@
 {
-  "licenseListVersion": "3.23",
+  "licenseListVersion": "3.24.0",
   "licenses": {
     "0BSD": {
       "name": "BSD Zero Clause License",
+      "deprecated": false
+    },
+    "3D-Slicer-1.0": {
+      "name": "3D Slicer License v1.0",
       "deprecated": false
     },
     "AAL": {
@@ -89,6 +93,10 @@
       "name": "Aladdin Free Public License",
       "deprecated": false
     },
+    "AMD-newlib": {
+      "name": "AMD newlib License",
+      "deprecated": false
+    },
     "AMDPLPA": {
       "name": "AMD's plpa_map.c License",
       "deprecated": false
@@ -111,6 +119,10 @@
     },
     "ANTLR-PD-fallback": {
       "name": "ANTLR Software Rights Notice with license fallback",
+      "deprecated": false
+    },
+    "any-OSI": {
+      "name": "Any OSI License",
       "deprecated": false
     },
     "Apache-1.0": {
@@ -251,6 +263,10 @@
     },
     "BSD-2-Clause-Darwin": {
       "name": "BSD 2-Clause - Ian Darwin variant",
+      "deprecated": false
+    },
+    "BSD-2-Clause-first-lines": {
+      "name": "BSD 2-Clause - first lines requirement",
       "deprecated": false
     },
     "BSD-2-Clause-FreeBSD": {
@@ -411,6 +427,10 @@
     },
     "Caldera-no-preamble": {
       "name": "Caldera License (without preamble)",
+      "deprecated": false
+    },
+    "Catharon": {
+      "name": "Catharon License",
       "deprecated": false
     },
     "CATOSL-1.1": {
@@ -797,6 +817,10 @@
       "name": "curl License",
       "deprecated": false
     },
+    "cve-tou": {
+      "name": "Common Vulnerability Enumeration ToU License",
+      "deprecated": false
+    },
     "D-FSL-1.0": {
       "name": "Deutsche Freie Software Lizenz",
       "deprecated": false
@@ -1181,6 +1205,10 @@
       "name": "gtkbook License",
       "deprecated": false
     },
+    "Gutmann": {
+      "name": "Gutmann License",
+      "deprecated": false
+    },
     "HaskellReport": {
       "name": "Haskell Language Report License",
       "deprecated": false
@@ -1221,8 +1249,16 @@
       "name": "HPND with US Government export control warning",
       "deprecated": false
     },
+    "HPND-export-US-acknowledgement": {
+      "name": "HPND with US Government export control warning and acknowledgment",
+      "deprecated": false
+    },
     "HPND-export-US-modify": {
       "name": "HPND with US Government export control warning and modification rqmt",
+      "deprecated": false
+    },
+    "HPND-export2-US": {
+      "name": "HPND with US Government export control and 2 disclaimers",
       "deprecated": false
     },
     "HPND-Fenneberg-Livingston": {
@@ -1233,12 +1269,20 @@
       "name": "Historical Permission Notice and Disclaimer    - INRIA-IMAG variant",
       "deprecated": false
     },
+    "HPND-Intel": {
+      "name": "Historical Permission Notice and Disclaimer - Intel variant",
+      "deprecated": false
+    },
     "HPND-Kevlin-Henney": {
       "name": "Historical Permission Notice and Disclaimer - Kevlin Henney variant",
       "deprecated": false
     },
     "HPND-Markus-Kuhn": {
       "name": "Historical Permission Notice and Disclaimer - Markus Kuhn variant",
+      "deprecated": false
+    },
+    "HPND-merchantability-variant": {
+      "name": "Historical Permission Notice and Disclaimer - merchantability variant",
       "deprecated": false
     },
     "HPND-MIT-disclaimer": {
@@ -1265,8 +1309,16 @@
       "name": "HPND sell variant with MIT disclaimer",
       "deprecated": false
     },
+    "HPND-sell-variant-MIT-disclaimer-rev": {
+      "name": "HPND sell variant with MIT disclaimer - reverse",
+      "deprecated": false
+    },
     "HPND-UC": {
       "name": "Historical Permission Notice and Disclaimer - University of California variant",
+      "deprecated": false
+    },
+    "HPND-UC-export-US": {
+      "name": "Historical Permission Notice and Disclaimer - University of California, US export warning",
       "deprecated": false
     },
     "HTMLTIDY": {
@@ -1617,6 +1669,10 @@
       "name": "MIT Festival Variant",
       "deprecated": false
     },
+    "MIT-Khronos-old": {
+      "name": "MIT Khronos - old variant",
+      "deprecated": false
+    },
     "MIT-Modern-Variant": {
       "name": "MIT License Modern Variant",
       "deprecated": false
@@ -1725,8 +1781,16 @@
       "name": "Net Boolean Public License v1",
       "deprecated": false
     },
+    "NCBI-PD": {
+      "name": "NCBI Public Domain Notice",
+      "deprecated": false
+    },
     "NCGL-UK-2.0": {
       "name": "Non-Commercial Government Licence",
+      "deprecated": false
+    },
+    "NCL": {
+      "name": "NCL Source Code License",
       "deprecated": false
     },
     "NCSA": {
@@ -1819,6 +1883,10 @@
     },
     "O-UDA-1.0": {
       "name": "Open Use of Data Agreement v1.0",
+      "deprecated": false
+    },
+    "OAR": {
+      "name": "OAR License",
       "deprecated": false
     },
     "OCCT-PL": {
@@ -2045,6 +2113,10 @@
       "name": "Pixar License",
       "deprecated": false
     },
+    "pkgconf": {
+      "name": "pkgconf License",
+      "deprecated": false
+    },
     "Plexus": {
       "name": "Plexus Classworlds License",
       "deprecated": false
@@ -2063,6 +2135,10 @@
     },
     "PostgreSQL": {
       "name": "PostgreSQL License",
+      "deprecated": false
+    },
+    "PPL": {
+      "name": "Peer Production License",
       "deprecated": false
     },
     "PSF-2.0": {
@@ -2285,6 +2361,10 @@
       "name": "Sun PPP License",
       "deprecated": false
     },
+    "Sun-PPP-2000": {
+      "name": "Sun PPP License (2000)",
+      "deprecated": false
+    },
     "SunPro": {
       "name": "SunPro License",
       "deprecated": false
@@ -2319,6 +2399,10 @@
     },
     "TGPPL-1.0": {
       "name": "Transitive Grace Period Public Licence 1.0",
+      "deprecated": false
+    },
+    "threeparttable": {
+      "name": "threeparttable License",
       "deprecated": false
     },
     "TMate": {
@@ -2501,6 +2585,10 @@
       "name": "XSkat License",
       "deprecated": false
     },
+    "xzoom": {
+      "name": "xzoom License",
+      "deprecated": false
+    },
     "YPL-1.0": {
       "name": "Yahoo! Public License v1.0",
       "deprecated": false
@@ -2557,6 +2645,10 @@
     },
     "Asterisk-exception": {
       "name": "Asterisk exception",
+      "deprecated": false
+    },
+    "Asterisk-linking-protocols-exception": {
+      "name": "Asterisk linking protocols exception",
       "deprecated": false
     },
     "Autoconf-exception-2.0": {
@@ -2747,6 +2839,10 @@
       "name": "OpenVPN OpenSSL Exception",
       "deprecated": false
     },
+    "PCRE2-exception": {
+      "name": "PCRE2 exception",
+      "deprecated": false
+    },
     "PS-or-PDF-font-exception-20170817": {
       "name": "PS/PDF font exception (2017-08-17)",
       "deprecated": false
@@ -2765,6 +2861,10 @@
     },
     "Qwt-exception-1.0": {
       "name": "Qwt exception 1.0",
+      "deprecated": false
+    },
+    "RRDtool-FLOSS-exception-2.0": {
+      "name": "RRDtool FLOSS exception 2.0",
       "deprecated": false
     },
     "SANE-exception": {
