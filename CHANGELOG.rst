@@ -1,3 +1,10 @@
+Development
+-----------
+
+- Introduce the ``punch`` action to support forced rebuild of packages
+- Support automatic package preparation for compatible local-sourced packages
+- Update SPDX license database to v3.24
+
 1.1 (2024-03-29)
 ----------------
 
