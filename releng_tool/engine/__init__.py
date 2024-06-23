@@ -472,7 +472,7 @@ has failed. Ensure the following path is accessible for this user:
                     val = '<parent>' if key == GBL_LSRCS else '<unset>'
 
                 entry = val
-                if not os.path.exists(val):
+                if key != GBL_LSRCS and not os.path.exists(val):
                     entry += "  (does not exist)"
 
                 log(' {}: {}', key, entry)
@@ -972,7 +972,7 @@ for any desired locally sourced packages.
                             val = '<parent>' if key == GBL_LSRCS else '<unset>'
 
                         entry = val
-                        if not os.path.exists(val):
+                        if key != GBL_LSRCS and not os.path.exists(val):
                             entry += "  (does not exist)"
 
                         log(' {}: {}', key, entry)
