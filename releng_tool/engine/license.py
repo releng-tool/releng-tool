@@ -5,6 +5,7 @@
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 from releng_tool.util.string import expand
 from shutil import copyfileobj
 import os
@@ -112,8 +113,14 @@ class LicenseManager:
                     for pkg_license_file in sorted(license_files):
                         verbose('writing license file ({}): {}',
                             license_name, pkg_license_file)
-                        with open(pkg_license_file, 'r') as f:
-                            copyfileobj(f, dst)
+
+                        if os.path.isfile(pkg_license_file):
+                            with open(pkg_license_file, 'r') as f:
+                                copyfileobj(f, dst)
+                        else:
+                            dst.write('(missing)\n')
+                            warn('license file missing: {}', pkg_license_file)
+
                         dst.write('')
 
                 if not has_pkg_info:

@@ -181,9 +181,11 @@ class RelengPackagePipeline:
         # If the user has requested to generate license information,
         # pull license assets from the extract package content.
         # license(s)
+        license_strict = (gaction == GlobalAction.LICENSES or
+            (paction == PkgAction.LICENSE and pkg.name == target))
         fflag = pkg._ff_license
         if check_file_flag(fflag) == FileFlag.NO_EXIST:
-            if not self._stage_license(pkg):
+            if not self._stage_license(pkg, license_strict):
                 raise RelengToolLicenseStageFailure
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return PipelineResult.STOP
@@ -479,7 +481,7 @@ class RelengPackagePipeline:
         if proc.returncode != 0:
             raise RelengToolExecStageFailure
 
-    def _stage_license(self, pkg):
+    def _stage_license(self, pkg, strict):
         """
         process license files for a specific package processing
 
@@ -488,6 +490,8 @@ class RelengPackagePipeline:
 
         Args:
             pkg: the package being processed
+            strict: whether there is a strict requirement the license file
+                    can be processed
 
         Returns:
             ``True`` if the license information was copied; ``False`` if these
@@ -510,8 +514,11 @@ class RelengPackagePipeline:
             src = os.path.join(pkg.build_dir, file)
             dst = os.path.join(pkg_license_dir, file)
 
-            if not path_copy(src, dst, critical=False):
-                err('unable to copy license information: ' + pkg.name)
-                return False
+            if not path_copy(src, dst, quiet=(not strict), critical=False):
+                if strict:
+                    err('unable to copy license information: ' + pkg.name)
+                else:
+                    warn('unable to copy license information: ' + pkg.name)
+                return not strict
 
         return True
