@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool import __version__ as releng_version
+from releng_tool.defs import GlobalAction
+from releng_tool.defs import PkgAction
 from releng_tool.defs import SbomFormatType
 from releng_tool.engine import RelengEngine
 from releng_tool.exceptions import RelengToolException
@@ -12,6 +14,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import releng_log_configuration
+from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.win32 import enable_ansi as enable_ansi_win32
 import argparse
@@ -105,7 +108,7 @@ def main():
             if sys.platform == 'win32':
                 enable_ansi_win32()
 
-        log('releng-tool {}', releng_version)
+        verbose('releng-tool {}', releng_version)
         debug('({})', __file__)
 
         # extract additional argument information:
@@ -117,6 +120,9 @@ def main():
         args.action = new_args['action']
         args.action_exec = new_args['exec']
         args.injected_kv = new_args['entries']
+
+        # show banner
+        show_banner(args)
 
         # register any injected entry into the working environment right away
         for k, v in args.injected_kv.items():
@@ -234,6 +240,41 @@ def process_args(args):
         'entries': entries,
         'exec': exec_,
     }, unknown_args
+
+
+def show_banner(args):
+    """
+    show the releng-tool banner on the command line
+
+    At the start of releng-tool, we dump the name/version of the tool on the
+    command line. This is primarily to help indicate/log what version of
+    releng-tool is running for a build. In the case for cleaning-related
+    actions, we want to avoid such a presentation -- a clean clean output,
+    only logging issues when a cleaning operation.
+
+    Args:
+        args: the prepared arguments for a releng-tool run
+    """
+
+    if args.action:
+        # ignore any global clean actions
+        clean_actions = (
+            GlobalAction.CLEAN,
+            GlobalAction.DISTCLEAN,
+            GlobalAction.MRPROPER,
+        )
+        if args.action in clean_actions:
+            return
+
+        # attempt to ignore a possible package-specific clean action
+        pkg_clean_actions = (
+            '-' + PkgAction.CLEAN,
+            '-' + PkgAction.DISTCLEAN,
+        )
+        if args.action.endswith(pkg_clean_actions):
+            return
+
+    log('releng-tool {}', releng_version)
 
 
 def type_nonnegativeint(value):
