@@ -368,7 +368,7 @@ def usage():
                             directories (e.g. <ASSETS_DIR>/cache)
  --cache-dir <dir>         Directory for VCS-cache (default: <ROOT>/cache)
  --dl-dir <dir>            Directory for download archives (default: <ROOT>/dl)
- -j, --jobs <jobs>         numbers of jobs to handle (default: 0; automatic)
+ -j, --jobs <jobs>         Numbers of jobs to handle (default: 0; automatic)
  --out-dir <dir>           Directory for output (builds, images, etc.)
                             (default: <ROOT>/output)
  --root-dir <dir>          Directory to process a releng project
