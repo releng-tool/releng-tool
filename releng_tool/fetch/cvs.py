@@ -163,7 +163,6 @@ def _extract_site(site):
 
     try:
         cvsroot, module = site.rsplit(' ', 1)
-        return cvsroot, module
     except ValueError:
         err('''\
 improper cvs site defined
@@ -175,3 +174,5 @@ module to checkout. For example:
 
  Site: {}''', site)
         return None, None
+    else:
+        return cvsroot, module
