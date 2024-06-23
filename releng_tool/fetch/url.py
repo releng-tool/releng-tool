@@ -50,6 +50,7 @@ def fetch(opts):
     try:
         with contextlib.closing(urlopen(site, context=urlopen_context)) as rsp:
             total = 0
+            total_str = ''
             if 'content-length' in rsp.headers:
                 try:
                     total = int(rsp.headers['content-length'])

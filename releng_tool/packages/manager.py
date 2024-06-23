@@ -187,8 +187,11 @@ class RelengPackageManager:
         while names_left:
             name = names_left.pop(0)
 
-            # attempt to load the package from a user defined external directory
             pkg = None
+            env = None
+            deps = []
+
+            # attempt to load the package from a user defined external directory
             for pkg_dir in self.opts.extern_pkg_dirs:
                 pkg_script = os.path.join(pkg_dir, name, name)
                 pkg_script, pkg_script_exists = opt_file(pkg_script)

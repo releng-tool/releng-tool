@@ -18,6 +18,8 @@ import sys
 
 if sys.version_info < (3, 0):
     import imp
+else:
+    imp = None  # added to suppress pylint warning
 
 try:
     RelengModuleNotFoundError = ModuleNotFoundError
