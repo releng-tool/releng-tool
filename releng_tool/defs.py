@@ -375,6 +375,7 @@ class VcsType(Enum):
     processing is used when acquiring resources.
 
     Attributes:
+        BZR: gnu bazaar
         CVS: concurrent versions system
         GIT: git
         HG: mercurial
