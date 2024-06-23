@@ -60,13 +60,34 @@ def fetch(opts):
     """
 
     assert opts
-    cache_dir = opts.cache_dir
-    name = opts.name
-    revision = opts.revision
 
     if not GIT.exists():
         err('unable to fetch package; git is not installed')
         return None
+
+    if opts._local_srcs:
+        return fetch_local_srcs(opts)
+    else:
+        return fetch_default(opts)
+
+
+def fetch_default(opts):
+    """
+    support fetching from git sources in a default operating mode
+
+    With provided fetch options (``RelengFetchOptions``), the fetch stage will
+    be processed.
+
+    Args:
+        opts: fetch options
+
+    Returns:
+        ``True`` if the fetch stage is completed; ``False`` otherwise
+    """
+
+    cache_dir = opts.cache_dir
+    name = opts.name
+    revision = opts.revision
 
     git_dir = '--git-dir=' + cache_dir
 
@@ -629,3 +650,34 @@ def _verify_revision(git_dir, revision, quiet=False):
             return False
 
     return GIT.execute([git_dir, verified_cmd, revision], quiet=quiet)
+
+
+def fetch_local_srcs(opts):
+    """
+    support fetching from git sources in a local-sources mode
+
+    With provided fetch options (``RelengFetchOptions``), the fetch stage will
+    be processed.
+
+    Args:
+        opts: fetch options
+
+    Returns:
+        ``True`` if the fetch stage is completed; ``False`` otherwise
+    """
+
+    assert opts._build_dir
+    assert opts._local_srcs
+
+    cache_dir = opts.cache_dir
+    name = opts.name
+    site = opts.site
+    target_dir = opts._build_dir
+
+    note('fetching {}...', name)
+
+    if not GIT.execute(['clone', site, '--progress', target_dir]):
+        err('unable to clone git repository')
+        return None
+
+    return cache_dir

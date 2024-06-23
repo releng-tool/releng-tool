@@ -27,15 +27,36 @@ def fetch(opts):
     """
 
     assert opts
+
+    if not SVN.exists():
+        err('unable to fetch package; svn is not installed')
+        return None
+
+    if opts._local_srcs:
+        return fetch_local_srcs(opts)
+    else:
+        return fetch_default(opts)
+
+
+def fetch_default(opts):
+    """
+    support fetching from svn sources in a default operating mode
+
+    With provided fetch options (``RelengFetchOptions``), the fetch stage will
+    be processed.
+
+    Args:
+        opts: fetch options
+
+    Returns:
+        ``True`` if the fetch stage is completed; ``False`` otherwise
+    """
+
     cache_file = opts.cache_file
     name = opts.name
     revision = opts.revision
     site = opts.site
     work_dir = opts.work_dir
-
-    if not SVN.exists():
-        err('unable to fetch package; svn is not installed')
-        return None
 
     note('fetching {}...'.format(name))
     sys.stdout.flush()
@@ -61,3 +82,34 @@ def fetch(opts):
         tar.add(work_dir, arcname=name, exclude=svn_exclude)
 
     return cache_file
+
+
+def fetch_local_srcs(opts):
+    """
+    support fetching from svn sources in a local-sources mode
+
+    With provided fetch options (``RelengFetchOptions``), the fetch stage will
+    be processed.
+
+    Args:
+        opts: fetch options
+
+    Returns:
+        ``True`` if the fetch stage is completed; ``False`` otherwise
+    """
+
+    assert opts._build_dir
+    assert opts._local_srcs
+
+    cache_dir = opts.cache_dir
+    name = opts.name
+    site = opts.site
+    target_dir = opts._build_dir
+
+    note('fetching {}...', name)
+
+    if not SVN.execute(['checkout', site, target_dir]):
+        err('unable to checkout module')
+        return None
+
+    return cache_dir

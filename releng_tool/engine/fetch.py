@@ -50,11 +50,57 @@ def stage(engine, pkg, ignore_cache, extra_opts):
     debug('process fetch stage: ' + name)
 
     # packages flagged for local sources requires to be already checked out
-    if pkg.local_srcs:
-        if os.path.isdir(pkg.build_dir):
-            return True
+    if pkg.local_srcs and os.path.isdir(pkg.build_dir):
+        return True
 
-        err('''\
+    # if the vcs-type is archive-based, flag that hash checks are needed
+    perform_file_asc_check = False
+    perform_file_hash_check = False
+    if pkg.vcs_type == VcsType.URL:
+        perform_file_asc_check = os.path.exists(pkg.asc_file)
+        perform_file_hash_check = True
+
+    # find fetching method for the target vcs-type
+    fetcher = None
+    if pkg.vcs_type in engine.registry.fetch_types:
+        def _(opts):
+            return engine.registry.fetch_types[pkg.vcs_type].fetch(
+                pkg.vcs_type, opts)
+        fetcher = _
+    elif pkg.vcs_type == VcsType.BZR:
+        fetcher = fetch_bzr
+    elif pkg.vcs_type == VcsType.CVS:
+        fetcher = fetch_cvs
+    elif pkg.vcs_type == VcsType.GIT:
+        fetcher = fetch_git
+    elif pkg.vcs_type == VcsType.HG:
+        fetcher = fetch_mercurial
+    elif pkg.vcs_type == VcsType.PERFORCE:
+        fetcher = fetch_perforce
+    elif pkg.vcs_type == VcsType.RSYNC:
+        fetcher = fetch_rsync
+    elif pkg.vcs_type == VcsType.SCP:
+        fetcher = fetch_scp
+    elif pkg.vcs_type == VcsType.SVN:
+        fetcher = fetch_svn
+    elif pkg.vcs_type == VcsType.URL:
+        fetcher = fetch_url
+
+    # if this package is a locally sources one and the fetcher type is not
+    # supported, clear it
+    if pkg.local_srcs:
+        supported_local_fetchers = [
+            VcsType.CVS,
+            VcsType.GIT,
+            VcsType.HG,
+            VcsType.SVN,
+        ]
+        if pkg.vcs_type not in supported_local_fetchers:
+            fetcher = None
+
+    if not fetcher:
+        if pkg.local_srcs:
+            err('''\
 missing local sources for internal package: {0}
 
 The active configuration is flagged for 'local sources' mode; however, an
@@ -64,15 +110,12 @@ local sources option to use the default process).
 
        Package: {0}
  Expected Path: {1}''', name, pkg.build_dir)
+        else:
+            err('fetch type is not implemented: {}', pkg.vcs_type)
+
         return False
 
-    # if the vcs-type is archive-based, flag that hash checks are needed
-    perform_file_asc_check = False
-    perform_file_hash_check = False
-    if pkg.vcs_type == VcsType.URL:
-        perform_file_asc_check = os.path.exists(pkg.asc_file)
-        perform_file_hash_check = True
-
+    # prepare fetch options
     fetch_opts = RelengFetchOptions()
     replicate_package_attribs(fetch_opts, pkg)
     fetch_opts.cache_dir = pkg.cache_dir
@@ -187,36 +230,6 @@ file. Ensure that the package's public key has been registered into gpg.
                         verbose('ignoring cache not supported for package: {}',
                             name)
                     return rv
-
-            # find fetching method for the target vcs-type
-            fetcher = None
-            if pkg.vcs_type in engine.registry.fetch_types:
-                def _(opts):
-                    return engine.registry.fetch_types[pkg.vcs_type].fetch(
-                        pkg.vcs_type, opts)
-                fetcher = _
-            elif pkg.vcs_type == VcsType.BZR:
-                fetcher = fetch_bzr
-            elif pkg.vcs_type == VcsType.CVS:
-                fetcher = fetch_cvs
-            elif pkg.vcs_type == VcsType.GIT:
-                fetcher = fetch_git
-            elif pkg.vcs_type == VcsType.HG:
-                fetcher = fetch_mercurial
-            elif pkg.vcs_type == VcsType.PERFORCE:
-                fetcher = fetch_perforce
-            elif pkg.vcs_type == VcsType.RSYNC:
-                fetcher = fetch_rsync
-            elif pkg.vcs_type == VcsType.SCP:
-                fetcher = fetch_scp
-            elif pkg.vcs_type == VcsType.SVN:
-                fetcher = fetch_svn
-            elif pkg.vcs_type == VcsType.URL:
-                fetcher = fetch_url
-
-            if not fetcher:
-                err('fetch type is not implemented: {}', pkg.vcs_type)
-                return False
 
             # if this is url-type location, attempt to search on the mirror
             # first (if configured)

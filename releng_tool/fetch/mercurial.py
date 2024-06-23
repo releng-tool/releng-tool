@@ -26,14 +26,35 @@ def fetch(opts):
     """
 
     assert opts
-    cache_dir = opts.cache_dir
-    name = opts.name
-    revision = opts.revision
-    site = opts.site
 
     if not HG.exists():
         err('unable to fetch package; hg (mercurial) is not installed')
         return None
+
+    if opts._local_srcs:
+        return fetch_local_srcs(opts)
+    else:
+        return fetch_default(opts)
+
+
+def fetch_default(opts):
+    """
+    support fetching from mercurial sources in a default operating mode
+
+    With provided fetch options (``RelengFetchOptions``), the fetch stage will
+    be processed.
+
+    Args:
+        opts: fetch options
+
+    Returns:
+        ``True`` if the fetch stage is completed; ``False`` otherwise
+    """
+
+    cache_dir = opts.cache_dir
+    name = opts.name
+    revision = opts.revision
+    site = opts.site
 
     hg_dir = ['--repository', cache_dir]
 
@@ -68,6 +89,37 @@ def fetch(opts):
             cwd=cache_dir, quiet=True):
         err('unable to find matching revision in repository: {}\n'
             ' (revision: {})', name, revision)
+        return None
+
+    return cache_dir
+
+
+def fetch_local_srcs(opts):
+    """
+    support fetching from mercurial sources in a local-sources mode
+
+    With provided fetch options (``RelengFetchOptions``), the fetch stage will
+    be processed.
+
+    Args:
+        opts: fetch options
+
+    Returns:
+        ``True`` if the fetch stage is completed; ``False`` otherwise
+    """
+
+    assert opts._build_dir
+    assert opts._local_srcs
+
+    cache_dir = opts.cache_dir
+    name = opts.name
+    site = opts.site
+    target_dir = opts._build_dir
+
+    note('fetching {}...', name)
+
+    if not HG.execute(['--verbose', 'clone', site, target_dir]):
+        err('unable to clone mercurial repository')
         return None
 
     return cache_dir
