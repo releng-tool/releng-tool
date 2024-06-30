@@ -28,9 +28,11 @@ a Git client tool is required to perform said fetch).
 
 ## Installation
 
-This tool can be installed using [pip][pip]:
+This tool can be installed using [pip][pip] or [pipx][pipx]:
 
 ```shell
+pipx install releng-tool
+ (or)
 pip install releng-tool
  (or)
 python -m pip install releng-tool
@@ -58,6 +60,7 @@ Examples of releng-tool projects can be found in
 
 [git]: https://git-scm.com/
 [pip]: https://pip.pypa.io/
+[pipx]: https://pipx.pypa.io/
 [python]: https://www.python.org/
 [releng-tool-doc]: https://docs.releng.io/
 [releng-tool-examples]: https://github.com/releng-tool/releng-tool-examples
