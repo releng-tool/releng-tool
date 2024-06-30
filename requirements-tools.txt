@@ -3,6 +3,8 @@ flit; python_version>='3.6'
 hatch; python_version>='3.7'
 installer; python_version>='3.7'
 meson; python_version>='3.7'
+pdm-backend; python_version>='3.8'
+pdm-pep517; python_version>='3.7'
 pdm; python_version>='3.7'
 poetry>=0.8; python_version>='3.7'
 scons

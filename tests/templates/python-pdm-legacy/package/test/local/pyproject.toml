@@ -1,6 +1,6 @@
 [build-system]
-requires = ['pdm-backend']
-build-backend = 'pdm.backend'
+requires = ['pdm-pep517']
+build-backend = 'pdm.pep517.api'
 
 [project]
 name = 'hello_module'
