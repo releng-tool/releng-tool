@@ -69,9 +69,7 @@ def fetch_default(opts):
 
     log('caching sources')
     def svn_exclude(file):
-        if file.endswith('.svn'):
-            return True
-        return False
+        return file.endswith('.svn')
 
     # ensure cache file's directory exists
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))

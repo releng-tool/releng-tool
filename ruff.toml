@@ -47,6 +47,8 @@ lint.ignore = [
     'N999',
     # avoid hints for list comprehension since they do not mix in some areas
     'PERF401',
+    # avoid dictionary comprehension over manual for readability
+    'PERF403',
     # ignore "too many" warnings
     'PLR0911',
     'PLR0912',

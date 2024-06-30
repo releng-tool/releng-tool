@@ -172,7 +172,7 @@ def main():
         except RelengToolException as e:
             err(e)
     except KeyboardInterrupt:
-        print('')
+        print()
 
     return retval
 

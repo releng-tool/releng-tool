@@ -47,9 +47,9 @@ def releng_include(file_path):
 
 
 @contextmanager
-def releng_script_envs(script, env):
+def releng_script_envs(script, ctxenv):
     script_dir = os.path.dirname(script)
-    script_env = env.copy()
+    script_env = ctxenv.copy()
 
     # when invoking an include script, we will override the script
     # environment hints based on the path of the included script; but

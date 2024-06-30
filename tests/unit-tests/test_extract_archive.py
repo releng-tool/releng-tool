@@ -140,18 +140,18 @@ class TestExtractArchive(unittest.TestCase):
         if missing or unknowns:
             print('failed to verify extracted contents for: {}'.format(
                 self.opts.cache_file))
-            print('')
+            print()
 
         if missing:
             print('missing entries]')
             for entry in missing:
                 print(entry)
-            print('')
+            print()
 
         if unknowns:
             print('unknown entries]')
             for entry in unknowns:
                 print(entry)
-            print('')
+            print()
 
         self.assertTrue(not missing and not unknowns)
