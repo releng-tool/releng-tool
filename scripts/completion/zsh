@@ -10,6 +10,7 @@ function _releng_tool {
         'licenses'
         'mrproper'
         'patch'
+        'punch'
         'sbom'
         'state'
     )

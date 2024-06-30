@@ -26,6 +26,7 @@ __releng_tool_has_action()
         'licenses'
         'mrproper'
         'patch'
+        'punch'
         'sbom'
         'state'
     )
@@ -51,6 +52,7 @@ __releng_tool_is_reserved()
         'licenses'
         'mrproper'
         'patch'
+        'punch'
         'sbom'
         'state'
     )
@@ -161,6 +163,7 @@ _releng_tool_module()
             'licenses'
             'mrproper'
             'patch'
+            'punch'
             'sbom'
             'state'
         )
