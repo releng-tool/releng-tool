@@ -1,5 +1,5 @@
-Development
------------
+1.2 (2024-07-01)
+----------------
 
 - Introduce the ``punch`` action to support forced rebuild of packages
 - Support automatic package preparation for compatible local-sourced packages
