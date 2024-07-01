@@ -39,4 +39,4 @@ done
 # trigger twine upload
 echo ""
 echo "Starting upload request..."
-echo python -m twine upload --repository releng-tool "${files[@]}"
+python -m twine upload --repository releng-tool "${files[@]}"
