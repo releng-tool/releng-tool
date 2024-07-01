@@ -5,51 +5,29 @@ to this repository, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Release commands
 
-Perform a clean build:
-
-```shell-session
-python -m build
-```
-
-Verify packages can be published:
-
-```shell-session
-twine check dist/*
-```
-
-Sign the packages:
-
-```shell-session
-gpg --detach-sign -a dist/releng-tool-*.gz
-gpg --detach-sign -a dist/releng_tool-*.whl
-```
-
-Sanity check the signed packages:
-
-```shell-session
-gpg --verify dist/releng-tool-*.gz.asc
-gpg --verify dist/releng_tool-*.whl.asc
-```
-
-Publish the packages:
-
-```shell-session
-twine upload --repository releng-tool dist/*
-```
-
-Tag/push the release tag:
+Prepare a release tag on the version bump commit:
 
 ```shell-session
 git tag -s -a v<version> <hash> -m "releng-tool <version>"
 git verify-tag <tag>
-git push origin <tag>
 ```
 
-Generate hashes from the release:
+Prepare a release by invoking the following script:
 
 ```shell-session
-cd dist
-sha256sum -b * >releng-tool-<version>.sha256sum
+./task-release-prepare
+```
+
+Publish the release:
+
+```shell-session
+./task-release-publish
+```
+
+Push up the release tag:
+
+```shell-session
+git push origin <tag>
 ```
 
 Create a new release entry on GitHub:
