@@ -51,6 +51,7 @@ def main():
         parser.add_argument('--local-sources', '-L', nargs='?', action='append')
         parser.add_argument('--nocolorout', action='store_true')
         parser.add_argument('--out-dir')
+        parser.add_argument('--relaxed-args', action='store_true')
         parser.add_argument('--root-dir')
         parser.add_argument('--sbom-format', type=type_sbom_format)
         parser.add_argument('--quirk', action='append')
@@ -128,9 +129,10 @@ def main():
         for k, v in args.injected_kv.items():
             os.environ[k] = v
 
-        if unknown_args:
-            warnerr('unknown arguments: {}', ' '.join(unknown_args))
-            if args.werror:
+        if 'RELENG_IGNORE_UNKNOWN_ARGS' not in os.environ and unknown_args:
+            unknown_msg = err if not args.relaxed_args else warnerr
+            unknown_msg('unknown arguments: {}', ' '.join(unknown_args))
+            if not args.relaxed_args or args.werror:
                 return retval
 
         if forward_args:
@@ -395,6 +397,7 @@ def usage():
  -h, --help                Show this help
  --help-quirks             Show available quirks
  --nocolorout              Explicitly disable colorized output
+ --relaxed-args            Permit the use of unknown arguments
  --quirk <value>           Inject in quirk into this run
  -V, --verbose             Show additional messages
  --version                 Show the version
