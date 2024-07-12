@@ -96,7 +96,7 @@ def cat(file, *args):
         return True
 
 
-def ensure_dir_exists(dir_, *args, quiet=False, critical=False):
+def ensure_dir_exists(dir_, *args, **kwargs):
     """
     ensure the provided directory exists
 
@@ -125,15 +125,18 @@ def ensure_dir_exists(dir_, *args, quiet=False, critical=False):
     Args:
         dir_: the directory
         *args (optional): additional components of the directory
-        quiet (optional): whether or not to suppress output (defaults to
-            ``False``)
-        critical (optional): whether or not to stop execution on failure
-            (defaults to ``False``)
+        **quiet (optional): whether or not to suppress output (defaults
+            to ``False``)
+        **critical (optional): whether or not to stop execution on
+            failure (defaults to ``False``)
 
     Returns:
         the directory that exists; ``None`` if the directory could not
         be created
     """
+    quiet = kwargs.get('quiet')
+    critical = kwargs.get('critical')
+
     final_dir = os.path.join(dir_, *args)
     try:
         os.makedirs(final_dir)
