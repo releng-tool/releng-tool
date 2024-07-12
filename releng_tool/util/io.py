@@ -102,7 +102,7 @@ def ensure_dir_exists(dir_, quiet=False, critical=False):
 
     Attempts to create the provided directory. If the directory already exists,
     this method has no effect. If the directory does not exist and could not be
-    created, this method will return ``False``. Also, if an error has been
+    created, this method will return ``None``. Also, if an error has been
     detected, an error message will be output to standard error (unless
     ``quiet`` is set to ``True``).
 
@@ -123,7 +123,7 @@ def ensure_dir_exists(dir_, quiet=False, critical=False):
             (defaults to ``False``)
 
     Returns:
-        ``True`` if the directory exists; ``False`` if the directory could not
+        the directory that exists; ``None`` if the directory could not
         be created
     """
     try:
@@ -135,8 +135,8 @@ def ensure_dir_exists(dir_, quiet=False, critical=False):
                     '    {}', dir_, e)
             if critical:
                 sys.exit(-1)
-            return False
-    return True
+            return None
+    return dir_
 
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
