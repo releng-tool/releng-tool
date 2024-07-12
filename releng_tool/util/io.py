@@ -96,7 +96,7 @@ def cat(file, *args):
         return True
 
 
-def ensure_dir_exists(dir_, quiet=False, critical=False):
+def ensure_dir_exists(dir_, *args, quiet=False, critical=False):
     """
     ensure the provided directory exists
 
@@ -115,8 +115,16 @@ def ensure_dir_exists(dir_, quiet=False, critical=False):
         else:
             print('directory was not created')
 
+        target_dir = releng_mkdir(TARGET_DIR, 'sub-folder')
+        if target_dir:
+            # output] target directory: <target>/sub-folder
+            print('target directory:', target_dir)
+        else:
+            print('directory was not created')
+
     Args:
         dir_: the directory
+        *args (optional): additional components of the directory
         quiet (optional): whether or not to suppress output (defaults to
             ``False``)
         critical (optional): whether or not to stop execution on failure
@@ -126,17 +134,18 @@ def ensure_dir_exists(dir_, quiet=False, critical=False):
         the directory that exists; ``None`` if the directory could not
         be created
     """
+    final_dir = os.path.join(dir_, *args)
     try:
-        os.makedirs(dir_)
+        os.makedirs(final_dir)
     except OSError as e:
-        if e.errno != errno.EEXIST or not os.path.isdir(dir_):
+        if e.errno != errno.EEXIST or not os.path.isdir(final_dir):
             if not quiet:
                 err('unable to create directory: {}\n'
-                    '    {}', dir_, e)
+                    '    {}', final_dir, e)
             if critical:
                 sys.exit(-1)
             return None
-    return dir_
+    return final_dir
 
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
