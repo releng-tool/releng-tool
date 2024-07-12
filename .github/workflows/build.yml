@@ -47,7 +47,6 @@ jobs:
       matrix:
         include:
             - { os:  ubuntu-latest, img: "python:2.7-slim",          python:  "2.7", toxenv:   py27, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, img: "python:3.4-slim",          python:  "3.4", toxenv:   py34, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.5-slim",          python:  "3.5", toxenv:   py35, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.6-slim",          python:  "3.6", toxenv:   py36, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.7-slim-bullseye", python:  "3.7", toxenv:   py37, cache: ~/.cache/pip }
@@ -64,11 +63,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      if: ${{ matrix.python != '3.4' }}
-
-    - name: Checkout (legacy)
-      uses: actions/checkout@v3
-      if: ${{ matrix.python == '3.4' }}
 
     - name: Set up Python ${{ matrix.python }}
       if: ${{ matrix.img == '' }}
@@ -78,16 +72,7 @@ jobs:
 
     - name: Cache pip
       uses: actions/cache@v4
-      if: ${{ matrix.python != '3.4' }}
       id: cache-pip
-      with:
-        path: ${{ matrix.cache }}
-        key: ${{ matrix.os }}-${{ matrix.python }}-pip
-
-    - name: Cache pip (legacy)
-      uses: actions/cache@v3
-      if: ${{ matrix.python == '3.4' }}
-      id: cache-pip-legacy
       with:
         path: ${{ matrix.cache }}
         key: ${{ matrix.os }}-${{ matrix.python }}-pip

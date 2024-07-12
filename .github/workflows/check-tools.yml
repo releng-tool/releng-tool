@@ -42,7 +42,6 @@ jobs:
         include:
             # supported interpreters
             - { os: ubuntu-latest, img:  "python:2.7", python:  "2.7", cache: ~/.cache/pip }
-            - { os: ubuntu-latest, img:  "python:3.4", python:  "3.4", cache: ~/.cache/pip, legacy: 1 }
             - { os: ubuntu-latest, img:  "python:3.5", python:  "3.5", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img:  "python:3.6", python:  "3.6", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img:  "python:3.7", python:  "3.7", cache: ~/.cache/pip }
@@ -59,11 +58,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      if: ${{ matrix.python != '3.4' }}
-
-    - name: Checkout (legacy)
-      uses: actions/checkout@v3
-      if: ${{ matrix.python == '3.4' }}
 
     - name: Set up Python ${{ matrix.python }}
       if: ${{ matrix.img == '' }}
@@ -73,16 +67,7 @@ jobs:
 
     - name: Cache pip
       uses: actions/cache@v4
-      if: ${{ matrix.python != '3.4' }}
       id: cache-pip
-      with:
-        path: ${{ matrix.cache }}
-        key: ${{ matrix.os }}-${{ matrix.python }}-pip
-
-    - name: Cache pip (legacy)
-      uses: actions/cache@v3
-      if: ${{ matrix.python == '3.4' }}
-      id: cache-pip-legacy
       with:
         path: ${{ matrix.cache }}
         key: ${{ matrix.os }}-${{ matrix.python }}-pip
@@ -94,13 +79,6 @@ jobs:
         chown -R $(id -u) ~/.cache
 
     # dependencies
-    - name: Install dependencies (apt-archive; ubuntu)
-      run: |
-        sed -i \
-        -e 's/deb.debian.org/archive.debian.org/g' \
-        -e 's|security.debian.org|archive.debian.org/|g' \
-        -e '/stretch-updates/d' /etc/apt/sources.list
-      if: matrix.legacy
     - name: Install dependencies (apt-sync; ubuntu)
       run: apt-get update
       if: matrix.os == 'ubuntu-latest'
