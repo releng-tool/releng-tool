@@ -73,6 +73,22 @@ class TestUtilIo(unittest.TestCase):
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), 'Hello')
 
+        # verify variable expansion
+        os.environ['VERIFY_EXPANSION'] = 'abc123'
+        with redirect_stdout() as stream:
+            test_cmd = [sys.executable, '-c', 'print("$VERIFY_EXPANSION")']
+            result = execute(test_cmd, critical=False)
+            self.assertTrue(result)
+        self.assertEqual(stream.getvalue().strip(), 'abc123')
+
+        # verify disabled variable expansion
+        os.environ['VERIFY_EXPANSION'] = 'abc123'
+        with redirect_stdout() as stream:
+            test_cmd = [sys.executable, '-c', 'print("$VERIFY_EXPANSION")']
+            result = execute(test_cmd, critical=False, expand=False)
+            self.assertTrue(result)
+        self.assertEqual(stream.getvalue().strip(), '$VERIFY_EXPANSION')
+
         # verify quiet mode
         with redirect_stdout() as stream:
             test_cmd = [sys.executable, '-c', 'print("Hello")']
