@@ -25,7 +25,7 @@ class TestUtilIo(unittest.TestCase):
     def test_utilio_ensuredirexists(self):
         with prepare_workdir() as work_dir:
             result = ensure_dir_exists(work_dir)
-            self.assertTrue(result)
+            self.assertEqual(result, work_dir)
 
             new_dir = os.path.join(work_dir, 'test1')
             self.assertFalse(os.path.exists(new_dir))
@@ -34,13 +34,20 @@ class TestUtilIo(unittest.TestCase):
             self.assertTrue(result)
             self.assertTrue(os.path.exists(new_dir))
 
-            new_file = os.path.join(work_dir, 'test2')
+            new_dir = os.path.join(work_dir, 'test2')
+            self.assertFalse(os.path.exists(new_dir))
+
+            result = ensure_dir_exists(work_dir, 'test2')
+            self.assertEqual(result, new_dir)
+            self.assertTrue(os.path.exists(new_dir))
+
+            new_file = os.path.join(work_dir, 'test3')
             with open(new_file, 'ab'):
                 pass
             self.assertTrue(os.path.isfile(new_file))
 
             result = ensure_dir_exists(new_file)
-            self.assertFalse(result)
+            self.assertIsNone(result)
             self.assertTrue(os.path.isfile(new_file))
 
             with self.assertRaises(SystemExit):
