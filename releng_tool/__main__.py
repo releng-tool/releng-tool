@@ -88,6 +88,12 @@ def main():
         else:
             args.development = None
 
+        # if a CI debug mode (e.g. GitHub "debug" runs) is detected,
+        # automatically enable debugging for releng-tool
+        ci_debug_mode = os.getenv('RUNNER_DEBUG')
+        if ci_debug_mode and not os.getenv('RELENG_IGNORE_RUNNER_DEBUG'):
+            args.debug = True
+
         # force verbose messages if debugging is enabled
         if args.debug:
             args.verbose = True
