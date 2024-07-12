@@ -10,6 +10,7 @@ from releng_tool.util.log import err
 from releng_tool.util.log import is_verbose
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
+from releng_tool.util.string import expand as expand_util
 from runpy import run_path
 from shutil import copyfileobj
 import errno
@@ -139,7 +140,7 @@ def ensure_dir_exists(dir_, quiet=False, critical=False):
 
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
-        critical=True, poll=False, capture=None):
+        critical=True, poll=False, capture=None, expand=True):
     """
     execute the provided command/arguments
 
@@ -197,6 +198,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         poll (optional): force polling stdin/stdout for output data (defaults to
             ``False``)
         capture (optional): list to capture output into
+        expand (optional): perform variable expansion on arguments
 
     Returns:
         ``True`` if the execution has completed with no error; ``False`` if the
@@ -213,6 +215,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         cwd=cwd,
         env=env,
         env_update=env_update,
+        expand=expand,
         poll=poll,
         quiet=quiet,
     )
@@ -254,6 +257,7 @@ def execute_rv(command, *args, **kwargs):
         **cwd: working directory to use
         **env: environment variables to use for the process
         **env_update: environment variables to append for the process
+        **expand: perform variable expansion on arguments
 
     Returns:
         the return code and output of the execution request
@@ -267,13 +271,14 @@ def execute_rv(command, *args, **kwargs):
         cwd=kwargs.get('cwd'),
         env=kwargs.get('env'),
         env_update=kwargs.get('env_update'),
+        expand=kwargs.get('expand'),
         quiet=True,
     )
     return rv, '\n'.join(out)
 
 
 def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
-        critical=True, poll=False, capture=None):
+        critical=True, poll=False, capture=None, expand=True):
     """
     execute the provided command/arguments
 
@@ -322,6 +327,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         poll (optional): force polling stdin/stdout for output data (defaults to
             ``False``)
         capture (optional): list to capture output into
+        expand (optional): perform variable expansion on arguments
 
     Returns:
         the return code of the execution request
@@ -352,6 +358,10 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         # will not accept it; ideally, a call should not be passing a `None`
         # entry, but providing flexibility when it has been done
         args = [arg if arg is not None else '' for arg in args]
+
+        # expand any variables
+        if expand:
+            args = expand_util(args)
 
         # attempt to always invoke using a script's interpreter (if any) to
         # help deal with long-path calls
