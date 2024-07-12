@@ -243,6 +243,10 @@ class RelengEngine:
         if not self._process_settings(settings):
             raise RelengToolInvalidConfigurationSettings
 
+        # load project-defined environment options
+        for key, val in opts.environment.items():
+            os.environ[key] = val
+
         # notify extensions that configuration options have been processed
         with interim_working_dir(opts.root_dir):
             self.registry.emit('config-loaded', env=script_env)
@@ -1038,6 +1042,13 @@ following key entry and re-try again.
                 notify_invalid_value(ConfKey.DEFINTERN, 'bool')
                 return False
             self.opts.default_internal_pkgs = is_default_internal
+
+        if ConfKey.ENVIRONMENT in settings:
+            env = interpret_dictionary_strings(settings[ConfKey.ENVIRONMENT])
+            if env is None:
+                notify_invalid_value(ConfKey.ENVIRONMENT, 'dict(str,str)')
+                return False
+            self.opts.environment.update(expand(env))
 
         if ConfKey.EXTRA_LEXCEPTS in settings:
             d = interpret_dictionary_strings(settings[ConfKey.EXTRA_LEXCEPTS])

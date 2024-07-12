@@ -64,6 +64,7 @@ class RelengEngineOptions:
         default_pkg_dir: default package directory
         devmode: whether or not development mode is enabled
         dl_dir: directory container for download (archives)
+        environment: environment options to apply
         extern_pkg_dirs: external package directories (if any)
         extract_override: dictionary to override extraction commands
         ff_devmode: the file flag path for development mode detection
@@ -112,6 +113,7 @@ class RelengEngineOptions:
         self.default_pkg_dir = None
         self.devmode = None
         self.dl_dir = None
+        self.environment = {}
         self.extern_pkg_dirs = []
         self.extract_override = None
         self.ff_devmode = None

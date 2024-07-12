@@ -16,6 +16,7 @@ class ConfKey(Enum):
     Attributes:
         CACHE_EXT_TRANSFORM: cache extension transform
         DEFINTERN: packages are internal (implicitly)
+        ENVIRONMENT: project environment options to apply
         EXTENSIONS: project releng-extension list
         EXTEN_PKGS: project external packages list
         EXTRA_LEXCEPTS: project-permitted spdx exceptions
@@ -34,6 +35,7 @@ class ConfKey(Enum):
     """
     CACHE_EXT_TRANSFORM = 'cache_ext'
     DEFINTERN = 'default_internal'
+    ENVIRONMENT = 'environment'
     EXTENSIONS = 'extensions'
     EXTEN_PKGS = 'external_packages'
     EXTRA_LEXCEPTS = 'extra_license_exceptions'
