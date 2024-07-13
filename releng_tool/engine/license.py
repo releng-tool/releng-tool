@@ -23,9 +23,11 @@ class LicenseManager:
         opts: options used to configure the engine
 
     Attributes:
+        generated: list of generated license files
         opts: options used to configure the engine
     """
     def __init__(self, opts):
+        self.generated = []
         self.opts = opts
 
     def build_cache(self, pkgs):
@@ -126,6 +128,7 @@ class LicenseManager:
                 if not has_pkg_info:
                     dst.write('\nNo package license information available.')
 
+            self.generated.append(license_file)
             verbose('license file has been written')
         except IOError as e:
             err('unable to populate license information\n'

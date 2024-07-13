@@ -431,6 +431,7 @@ has failed. Ensure the following path is accessible for this user:
                 return False
 
         # perform license generation
+        generated_licenses = None
         if gaction == GlobalAction.LICENSES or pa == PkgAction.LICENSE \
                 or not is_action:
             note('generating license information...')
@@ -438,6 +439,11 @@ has failed. Ensure the following path is accessible for this user:
             license_cache = license_manager.build_cache(pkgs)
             if not license_manager.generate(license_cache):
                 return False
+
+            generated_licenses = list(license_manager.generated)
+
+        # add extra script-env information before post-processing
+        script_env['RELENG_GENERATED_LICENSES'] = generated_licenses
 
         # perform post-processing and completion message if not performing a
         # specific action
