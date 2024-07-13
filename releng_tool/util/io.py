@@ -373,7 +373,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
 
         # expand any variables
         if expand:
-            args = expand_util(args)
+            args = expand_util(args, kv=final_env)
 
         # attempt to always invoke using a script's interpreter (if any) to
         # help deal with long-path calls
