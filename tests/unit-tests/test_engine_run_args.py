@@ -76,6 +76,14 @@ class TestEngineRunArgs(RelengToolTestCase):
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.gbl_action, GlobalAction.PATCH)
 
+    def test_engine_run_args_action_global_punch(self):
+        config = {
+            'action': 'punch',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.PUNCH)
+
     def test_engine_run_args_action_global_sbom(self):
         config = {
             'action': 'sbom',
