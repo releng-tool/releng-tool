@@ -423,12 +423,15 @@ has failed. Ensure the following path is accessible for this user:
         is_action = (gaction or pa or opts.target_action is not None)
 
         # perform sbom generation
+        generated_sboms = None
         if gaction == GlobalAction.SBOM or not is_action:
             note('generating sbom information...')
             sbom_manager = SbomManager(opts)
             sbom_cache = sbom_manager.build_cache(pkgs)
             if not sbom_manager.generate(sbom_cache):
                 return False
+
+            generated_sboms = list(sbom_manager.generated)
 
         # perform license generation
         generated_licenses = None
@@ -443,6 +446,7 @@ has failed. Ensure the following path is accessible for this user:
             generated_licenses = list(license_manager.generated)
 
         # add extra script-env information before post-processing
+        script_env['RELENG_GENERATED_SBOMS'] = generated_sboms
         script_env['RELENG_GENERATED_LICENSES'] = generated_licenses
 
         # perform post-processing and completion message if not performing a

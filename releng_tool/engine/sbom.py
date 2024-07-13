@@ -45,9 +45,11 @@ class SbomManager:
         opts: options used to configure the engine
 
     Attributes:
+        generated: list of generated sbom files
         opts: options used to configure the engine
     """
     def __init__(self, opts):
+        self.generated = []
         self.opts = opts
 
     def build_cache(self, pkgs):
@@ -259,6 +261,8 @@ class SbomManager:
                         ';'.join(flags),
                     ])
 
+        self.generated.append(sbom_file)
+
     def _generate_html(self, cache):
         """
         generate an html format sbom file
@@ -374,6 +378,8 @@ class SbomManager:
         with open(sbom_file, 'wb') as f:
             f.write(crude_html)
 
+        self.generated.append(sbom_file)
+
     def _generate_json(self, cache):
         """
         generate a JSON format sbom file
@@ -389,6 +395,8 @@ class SbomManager:
         sbom_file = os.path.join(self.opts.out_dir, 'sbom.json')
         with open(sbom_file, 'w') as f:
             json.dump(cache, f, indent=4)
+
+        self.generated.append(sbom_file)
 
     def _generate_json_spdx(self, cache):
         """
@@ -460,6 +468,8 @@ class SbomManager:
         sbom_file = os.path.join(self.opts.out_dir, 'sbom-spdx.json')
         with open(sbom_file, 'w') as f:
             json.dump(spdx_cache, f, indent=4)
+
+        self.generated.append(sbom_file)
 
     def _generate_rdp_spdx(self, cache):
         """
@@ -609,6 +619,8 @@ class SbomManager:
             data = rdf_tree.toprettyxml(indent=' ' * 4)
             f.write(data)
 
+        self.generated.append(sbom_file)
+
     def _generate_text(self, cache):
         """
         generate a text format sbom file
@@ -673,6 +685,8 @@ class SbomManager:
             if not has_pkg_data:
                 f.write('No package information provided.\n')
 
+        self.generated.append(sbom_file)
+
     def _generate_xml(self, cache):
         """
         generate an XML format sbom file
@@ -735,6 +749,8 @@ class SbomManager:
         with open(sbom_file, 'w') as f:
             data = tree.toprettyxml(indent=' ' * 4)
             f.write(data)
+
+        self.generated.append(sbom_file)
 
 
 def XML_ELEMENT(root, name, text=None):
