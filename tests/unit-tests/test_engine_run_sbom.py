@@ -4,6 +4,7 @@
 
 from tests import RelengToolTestCase
 from tests import prepare_testenv
+import json
 import os
 
 
@@ -23,12 +24,25 @@ SBOM_FILES = [
 class TestEngineRunSbom(RelengToolTestCase):
     def test_engine_run_sbom_all(self):
         with prepare_testenv(template='sbom-all') as engine:
+            out_dir = engine.opts.out_dir
+
             rv = engine.run()
             self.assertTrue(rv)
 
             expected = SBOM_FILES
 
-            self._check_expected_files(engine.opts.out_dir, expected)
+            self._check_expected_files(out_dir, expected)
+
+            results = os.path.join(out_dir, 'generated-sbom.json')
+            self.assertTrue(os.path.isfile(results))
+
+            with open(results, 'r') as f:
+                generated_sboms = json.load(f)
+
+            self.assertEqual(len(generated_sboms), len(expected))
+
+            for entry in generated_sboms:
+                self.assertTrue(os.path.isfile(entry))
 
     def test_engine_run_sbom_csv(self):
         with prepare_testenv(template='sbom-csv') as engine:
