@@ -90,9 +90,12 @@ def main():
 
         # if a CI debug mode (e.g. GitHub "debug" runs) is detected,
         # automatically enable debugging for releng-tool
-        ci_debug_mode = os.getenv('RUNNER_DEBUG')
-        if ci_debug_mode and not os.getenv('RELENG_IGNORE_RUNNER_DEBUG'):
-            args.debug = True
+        if not os.getenv('RELENG_IGNORE_RUNNER_DEBUG'):
+            debug_mode = False
+            debug_mode |= 'RUNNER_DEBUG' in os.environ  # github
+            debug_mode |= 'CI_DEBUG_TRACE' in os.environ  # gitlab
+            if debug_mode:
+                args.debug = True
 
         # force verbose messages if debugging is enabled
         if args.debug:
