@@ -1,3 +1,16 @@
+Development
+-----------
+
+- Automatic debugging mode when detecting CI debugging runs
+- Fixed issue where an aborted Mercurial fetch could require manual cleanup
+- Introduce ``RELENG_GENERATED_LICENSES`` script variable
+- Introduce ``RELENG_GENERATED_SBOMS`` script variable
+- Introduce ``environment`` project configuration
+- Script helper ``releng_mkdir`` will now return the path
+- Support multiple path components in ``releng_mkdir``
+- Support variable expansion for ``releng_execute`` arguments
+- Unknown arguments will now generate an error by default
+
 1.2 (2024-07-01)
 ----------------
 
