@@ -12,6 +12,9 @@ RELENG_LOG_DEBUG_FLAG = False
 #: flag to track the disablement of colorized messages
 RELENG_LOG_NOCOLOR_FLAG = False
 
+#: tracking logging tag/hints
+RELENG_LOG_TAGS = set()
+
 #: flag to track the enablement of verbose messages
 RELENG_LOG_VERBOSE_FLAG = False
 
@@ -98,7 +101,34 @@ def hint(msg, *args):
     __log('', '\033[1;36m', msg, sys.stdout, *args)
 
 
-def is_verbose():
+def is_debug(tag=None):
+    """
+    report if the instance is configured with debug messaging
+
+    Allows a caller to determine whether or not the instance is actively
+    configured with debug messaging. This allow a caller to have the option to
+    decide whether or not it needs to prepare a message for a ``debug`` call,
+    if the message to be built may include a performance cost.
+
+    .. code-block:: python
+
+        if is_debug():
+            msg = generate_info()
+            debug(msg)
+
+    Args:
+        tag (optional): check if a provided log tag is set
+
+    Returns:
+        whether or not the instance is configured with debug messaging
+    """
+    if tag and tag not in RELENG_LOG_TAGS:
+        return False
+
+    return RELENG_LOG_DEBUG_FLAG
+
+
+def is_verbose(tag=None):
     """
     report if the instance is configured with verbose messaging
 
@@ -113,9 +143,15 @@ def is_verbose():
             msg = generate_info()
             verbose(msg)
 
+    Args:
+        tag (optional): check if a provided log tag is set
+
     Returns:
         whether or not the instance is configured with verbose messaging
     """
+    if tag and tag not in RELENG_LOG_TAGS:
+        return False
+
     return RELENG_LOG_VERBOSE_FLAG
 
 
@@ -240,6 +276,8 @@ def releng_log_configuration(debug_, nocolor, verbose_, werror):
     process's life cycle to provide consistent logging output. This method does
     not required to be invoked to invoke provided logging methods.
 
+    Calling this configuration will clear any logging tags set.
+
     Args:
         debug_: toggle the enablement of debug messages
         nocolor: toggle the disablement of colorized messages
@@ -254,3 +292,22 @@ def releng_log_configuration(debug_, nocolor, verbose_, werror):
     RELENG_LOG_NOCOLOR_FLAG = nocolor
     RELENG_LOG_VERBOSE_FLAG = verbose_
     RELENG_LOG_WERROR_FLAG = werror
+    RELENG_LOG_TAGS.clear()
+
+
+def releng_log_tag(tag, remove=False):
+    """
+    configure a logging tag
+
+    Manages the ability to track "logging tags" in a running instance. This
+    is used to help track special logging scenarios that may be desired in
+    a releng-tool run.
+
+    Args:
+        tag: the tag to register
+        remove (optional): instead of adding a tag, remove it if set
+    """
+    if not remove:
+        RELENG_LOG_TAGS.add(tag)
+    else:
+        RELENG_LOG_TAGS.discard(tag)

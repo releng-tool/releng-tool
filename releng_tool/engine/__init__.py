@@ -57,6 +57,7 @@ from releng_tool.util.log import err
 from releng_tool.util.log import hint
 from releng_tool.util.log import log
 from releng_tool.util.log import note
+from releng_tool.util.log import releng_log_tag
 from releng_tool.util.log import success
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -111,6 +112,10 @@ class RelengEngine:
         debug('loading spdx license database: {}', licenses_file)
         with open(licenses_file, mode='r') as f:
             self.opts.spdx = json.load(f)
+
+        # enable execute environment logging if the quirk is set
+        if 'releng.log.execute_env' in opts.quirks:
+            releng_log_tag('execute-env')
 
     def run(self):
         """

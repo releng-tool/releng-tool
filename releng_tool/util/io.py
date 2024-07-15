@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from releng_tool.support import releng_script_envs
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import is_debug
 from releng_tool.util.log import is_verbose
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -392,6 +393,11 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             debug('(wd) {}', cwd if cwd else os.getcwd())
             cmd_str = _cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
+            if final_env and is_debug('execute-env'):
+                env_str = '(env)'
+                for k, v in sorted(final_env.items()):
+                    env_str += '\n  {}: {}'.format(k, v)
+                debug(env_str)
             sys.stdout.flush()
 
         try:
