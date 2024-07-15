@@ -6,6 +6,7 @@ from releng_tool.util.io import _execute
 from releng_tool.util.io import execute
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.string import expand
 from releng_tool.util.string import is_sequence_not_string
 import os
 import re
@@ -125,6 +126,8 @@ class RelengTool(object):
                 final_env.update(self.include)
             if env:
                 final_env.update(env)
+
+        final_env = expand(final_env)
 
         final_args = self._invoked_tool()
         if args:
