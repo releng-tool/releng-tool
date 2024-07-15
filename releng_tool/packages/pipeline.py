@@ -9,6 +9,7 @@ from releng_tool.engine.bootstrap import stage as bootstrap_stage
 from releng_tool.engine.build import stage as build_stage
 from releng_tool.engine.configure import stage as configure_stage
 from releng_tool.engine.extract import stage as extract_stage
+from releng_tool.engine.fetch_post import stage as fetch_post
 from releng_tool.engine.install import stage as install_stage
 from releng_tool.engine.patch import stage as patch_stage
 from releng_tool.engine.post import stage as post_stage
@@ -18,6 +19,7 @@ from releng_tool.packages.exceptions import RelengToolBuildStageFailure
 from releng_tool.packages.exceptions import RelengToolConfigurationStageFailure
 from releng_tool.packages.exceptions import RelengToolExecStageFailure
 from releng_tool.packages.exceptions import RelengToolExtractionStageFailure
+from releng_tool.packages.exceptions import RelengToolFetchPostStageFailure
 from releng_tool.packages.exceptions import RelengToolInstallStageFailure
 from releng_tool.packages.exceptions import RelengToolLicenseStageFailure
 from releng_tool.packages.exceptions import RelengToolPatchStageFailure
@@ -127,6 +129,22 @@ class RelengPackagePipeline:
         if gaction == GlobalAction.EXTRACT:
             return PipelineResult.CONTINUE
         if paction == PkgAction.EXTRACT and pkg.name == target:
+            return PipelineResult.STOP
+
+        # fetching (post)
+        fetch_paction = paction == PkgAction.FETCH_FULL and pkg.name == target
+        fflag = pkg._ff_fetch_post
+        if gaction == GlobalAction.FETCH_FULL or fetch_paction or \
+                check_file_flag(fflag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'fetch-post')
+            if not fetch_post(self.engine, pkg):
+                raise RelengToolFetchPostStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'fetch-post')
+            if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
+                return PipelineResult.STOP
+        if gaction == GlobalAction.FETCH_FULL:
+            return PipelineResult.CONTINUE
+        if fetch_paction:
             return PipelineResult.STOP
 
         # process the package data with a package-specific environment

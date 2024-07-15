@@ -6,6 +6,7 @@ function _releng_tool {
         'distclean'
         'extract'
         'fetch'
+        'fetch-full'
         'init'
         'licenses'
         'mrproper'

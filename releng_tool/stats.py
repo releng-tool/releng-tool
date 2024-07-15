@@ -187,6 +187,7 @@ class RelengStats:
             'boot',
             'fetch',
             'extract',
+            'fetch-post',
             'patch',
             'configure',
             'build',

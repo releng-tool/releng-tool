@@ -7,6 +7,7 @@ from releng_tool.defs import VcsType
 from releng_tool.tool.autoreconf import AUTORECONF
 from releng_tool.tool.autoreconf import AUTORECONF_COMMAND
 from releng_tool.tool.bzr import BZR
+from releng_tool.tool.cargo import CARGO
 from releng_tool.tool.cmake import CMAKE
 from releng_tool.tool.cvs import CVS
 from releng_tool.tool.git import GIT
@@ -97,6 +98,12 @@ class RelengPrerequisites:
                 self._verbose_exists(MAKE)
             else:
                 missing.add(MAKE.tool)
+
+        if PackageType.CARGO in pkg_types:
+            if CARGO.exists():
+                self._verbose_exists(CARGO)
+            else:
+                missing.add(CARGO.tool)
 
         if PackageType.CMAKE in pkg_types:
             if CMAKE.exists():

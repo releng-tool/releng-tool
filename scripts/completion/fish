@@ -9,6 +9,7 @@ function __fish__releng_tool_has_action
         -exec \
         -extract \
         -fetch \
+        -fetch-full \
         -install \
         -license \
         -patch \
@@ -21,6 +22,7 @@ function __fish__releng_tool_has_action
         distclean \
         extract \
         fetch \
+        fetch-full \
         init \
         licenses \
         mrproper \
@@ -59,6 +61,9 @@ complete --command releng-tool --arguments 'extract' \
 complete --command releng-tool --arguments 'fetch' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'ensure all packages have been fetched'
+complete --command releng-tool --arguments 'fetch-full' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'ensure all packages have been fetched (post-fetch)'
 complete --command releng-tool --arguments 'init' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'initialize a sample project'

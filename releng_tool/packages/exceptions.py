@@ -192,6 +192,12 @@ class RelengToolExtractionStageFailure(RelengToolStageFailure):
     """
 
 
+class RelengToolFetchPostStageFailure(RelengToolStageFailure):
+    """
+    exception thrown when an fetch (post) stage event has an issue
+    """
+
+
 class RelengToolInstallStageFailure(RelengToolStageFailure):
     """
     exception thrown when an install stage event has an issue

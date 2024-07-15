@@ -353,6 +353,7 @@ def usage():
  distclean                 Pristine clean including cache/download content
  extract                   Extract all packages
  fetch                     Fetch all packages
+ fetch-full                Fetch all packages including post-fetch dependencies
  init                      Initialize a root with an example structure
  licenses                  Generate license information for a project
  mrproper                  Pristine clean of the releng project
@@ -366,6 +367,7 @@ def usage():
  <pkg>-exec <cmd>          Invoke a command in the package's directory
  <pkg>-extract             Perform extract stage for the package
  <pkg>-fetch               Perform fetch stage for the package
+ <pkg>-fetch-full          Perform fetch stage for the package (with post-fetch)
  <pkg>-install             Perform install stage for the package
  <pkg>-license             Generate license information for the package
  <pkg>-patch               Perform patch stage for the package

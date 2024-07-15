@@ -39,7 +39,11 @@ def stage(engine, pkg, script_env):
     sys.stdout.flush()
 
     # ignore configuration step for types which do not have one
-    if pkg.type == PackageType.PYTHON:
+    ignored_types = [
+        PackageType.CARGO,
+        PackageType.PYTHON,
+    ]
+    if pkg.type in ignored_types:
         return True
 
     if pkg.build_subdir:

@@ -6,6 +6,7 @@ from releng_tool.api import RelengBuildOptions
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
 from releng_tool.engine.autotools.build import build as build_autotools
+from releng_tool.engine.cargo.build import build as build_cargo
 from releng_tool.engine.cmake.build import build as build_cmake
 from releng_tool.engine.make.build import build as build_make
 from releng_tool.engine.meson.build import build as build_meson
@@ -81,6 +82,8 @@ def stage(engine, pkg, script_env):
         builder = _
     elif pkg.type == PackageType.AUTOTOOLS:
         builder = build_autotools
+    elif pkg.type == PackageType.CARGO:
+        builder = build_cargo
     elif pkg.type == PackageType.CMAKE:
         builder = build_cmake
     elif pkg.type == PackageType.MAKE:

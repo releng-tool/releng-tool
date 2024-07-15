@@ -899,6 +899,7 @@ class RelengPackageManager:
         pkg._ff_build = os.path.join(outdir, prefix + 'build')
         pkg._ff_configure = os.path.join(outdir, prefix + 'configure')
         pkg._ff_extract = os.path.join(outdir, prefix + 'extract')
+        pkg._ff_fetch_post = os.path.join(outdir, prefix + 'fetch-post')
         pkg._ff_install = os.path.join(outdir, prefix + 'install')
         pkg._ff_license = os.path.join(outdir, prefix + 'license')
         pkg._ff_patch = os.path.join(outdir, prefix + 'patch')

@@ -341,9 +341,13 @@ class RelengEngine:
         ]
 
         # determine if an explicit fetch request has been made
-        requested_fetch = None
+        only_fetch = None
         if gaction == GlobalAction.FETCH or pa == PkgAction.FETCH:
-            requested_fetch = True
+            only_fetch = True
+
+        req_fetch = only_fetch
+        if gaction == GlobalAction.FETCH_FULL or pa == PkgAction.FETCH_FULL:
+            req_fetch = True
 
         try:
             # ensure all package sources are acquired first
@@ -362,14 +366,13 @@ class RelengEngine:
 
                 # in the event that we are not explicit fetching and the package
                 # has already been extracted, completely skip the fetching stage
-                if not requested_fetch and not pkg.local_srcs:
+                if not req_fetch and not pkg.local_srcs:
                     flag = pkg._ff_extract
                     if check_file_flag(flag) == FileFlag.EXISTS:
                         continue
 
                 self.stats.track_duration_start(pkg.name, 'fetch')
-                fetched = fetch_stage(
-                    self, pkg, requested_fetch, pkg.fetch_opts)
+                fetched = fetch_stage(self, pkg, req_fetch, pkg.fetch_opts)
                 self.stats.track_duration_end(pkg.name, 'fetch')
                 if not fetched:
                     return False
@@ -381,7 +384,7 @@ class RelengEngine:
                 script_env, gaction, opts.pkg_action)
 
             # process each package (configuring, building, etc.)
-            if not requested_fetch and not requested_sbom:
+            if not only_fetch and not requested_sbom:
                 # pre-populate "common" directories
                 #
                 # The following will attempt to pre-populate common directories

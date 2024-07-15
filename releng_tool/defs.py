@@ -207,6 +207,7 @@ class GlobalAction(Enum):
         DISTCLEAN: pristine state clean with cache/dl clear
         EXTRACT: process all packages through extraction stage
         FETCH: process all packages through fetch stage
+        FETCH_FULL: process all packages through fetch-post stage
         INIT: initialize example structure
         LICENSES: generate license information for a project
         MRPROPER: pristine state clean (e.g. configurations)
@@ -219,6 +220,7 @@ class GlobalAction(Enum):
     DISTCLEAN = 'distclean'
     EXTRACT = 'extract'
     FETCH = 'fetch'
+    FETCH_FULL = 'fetch_full'
     INIT = 'init'
     LICENSES = 'licenses'
     MRPROPER = 'mrproper'
@@ -248,6 +250,7 @@ class PkgAction(Enum):
         EXEC: perform an action in the package's directory
         EXTRACT: process a package till end of the extraction stage
         FETCH: process a package till end of the fetch stage
+        FETCH_FULL: process a package till end of the fetch-post stage
         INSTALL: process a package till end of the install stage
         LICENSE: generate license information for a package
         PATCH: process a package till end of the patch stage
@@ -264,6 +267,7 @@ class PkgAction(Enum):
     EXEC = 'exec'
     EXTRACT = 'extract'
     FETCH = 'fetch'
+    FETCH_FULL = 'fetch_full'
     INSTALL = 'install'
     LICENSE = 'license'
     PATCH = 'patch'
@@ -283,6 +287,7 @@ class PackageType(Enum):
 
     Attributes:
         AUTOTOOLS: autotools-based package
+        CARGO: cargo-based package
         CMAKE: cmake-based package
         MAKE: make-based package
         MESON: meson-based package
@@ -291,6 +296,7 @@ class PackageType(Enum):
         SCRIPT: releng script-based package
     """
     AUTOTOOLS = 'autotools'
+    CARGO = 'cargo'
     CMAKE = 'cmake'
     MAKE = 'make'
     MESON = 'meson'

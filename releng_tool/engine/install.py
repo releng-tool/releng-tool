@@ -6,6 +6,7 @@ from releng_tool.api import RelengInstallOptions
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
 from releng_tool.engine.autotools.install import install as install_autotools
+from releng_tool.engine.cargo.install import install as install_cargo
 from releng_tool.engine.cmake.install import install as install_cmake
 from releng_tool.engine.make.install import install as install_make
 from releng_tool.engine.meson.install import install as install_meson
@@ -106,6 +107,8 @@ def stage(engine, pkg, script_env):
         installer = _
     elif pkg.type == PackageType.AUTOTOOLS:
         installer = install_autotools
+    elif pkg.type == PackageType.CARGO:
+        installer = install_cargo
     elif pkg.type == PackageType.CMAKE:
         installer = install_cmake
     elif pkg.type == PackageType.MAKE:
