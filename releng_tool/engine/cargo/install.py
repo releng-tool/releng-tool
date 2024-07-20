@@ -78,9 +78,10 @@ def install(opts):
     else:
         # install to each destination
         for dest_dir in opts.dest_dirs:
+            prefixed_dest_dir = dest_dir + opts.prefix
             cargo_args_tmp = cargo_args + [
                 '--root',
-                dest_dir,
+                prefixed_dest_dir,
             ]
             if not CARGO.execute(cargo_args_tmp, env=env):
                 err('failed to install cargo project: {}', opts.name)
