@@ -2,7 +2,9 @@ Development
 -----------
 
 - Automatic debugging mode when detecting CI debugging runs
+- Fixed incorrect specification version tag in RDF/SPDX SBOM documents
 - Fixed issue where an aborted Mercurial fetch could require manual cleanup
+- Include license list version in SPDX SBOM documents
 - Introduce ``RELENG_GENERATED_LICENSES`` script variable
 - Introduce ``RELENG_GENERATED_SBOMS`` script variable
 - Introduce ``environment`` project configuration
