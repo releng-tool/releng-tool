@@ -119,6 +119,9 @@ jobs:
     - name: Install dependencies (ninja; windows)
       run: choco install ninja
       if: matrix.os == 'windows-latest'
+    # dependencies (rust; for Cargo)
+    - name: Install dependencies (rust)
+      uses: actions-rust-lang/setup-rust-toolchain@v1
 
     - name: Tools test
       run: tox -e tools
