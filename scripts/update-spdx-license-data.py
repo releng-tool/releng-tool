@@ -28,6 +28,23 @@ def main():
 
         # update license data
         update(license_base_url)
+
+        # update internally tracked license list version
+        llv = '.'.join(license_tag[1:].split('.', 2)[:2])
+        root_dir = os.path.dirname(script_dir)
+        engine_dir = os.path.join(root_dir, 'releng_tool', 'engine')
+        sbom_implementation = os.path.join(engine_dir, 'sbom.py')
+
+        with open(sbom_implementation, 'r') as f:
+            sbom_py_data = f.readlines()
+
+        with open(sbom_implementation, 'w') as f:
+            for line in sbom_py_data:
+                if 'SPDX_LLVERSION = ' in line:
+                    f.write(f"SPDX_LLVERSION = '{llv}'\n")
+                else:
+                    f.write(line)
+
     except configparser.Error as e:
         raise SystemExit('failed to load configuration: ' + str(e))
 
