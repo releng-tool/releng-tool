@@ -508,7 +508,7 @@ class SbomManager:
         root.set('rdf:about', doc_namespace)
 
         # common elements
-        XML_ELEMENT(root, 'spdx:spdxVersion', SPDX_SPEC)
+        XML_ELEMENT(root, 'spdx:specVersion', SPDX_SPEC)
         XML_ELEMENT(root, 'spdx:name', prj_name)
         dle = ET.SubElement(root, 'spdx:dataLicense')
         dle.set('rdf:resource', data_license_ref)
