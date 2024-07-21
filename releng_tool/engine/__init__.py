@@ -349,6 +349,8 @@ class RelengEngine:
         if gaction == GlobalAction.FETCH_FULL or pa == PkgAction.FETCH_FULL:
             req_fetch = True
 
+        is_action = (gaction or pa or opts.target_action is not None)
+
         try:
             # ensure all package sources are acquired first
             for pkg in pkgs:
@@ -416,6 +418,9 @@ class RelengEngine:
                     if pipeline.process(pkg) == PipelineResult.STOP:
                         return True
 
+                if not is_action:
+                    note('all packages have been processed')
+
         except RelengToolStageFailure:
             return False
         except FailedToPrepareWorkingDirectoryError as e:
@@ -427,8 +432,6 @@ has failed. Ensure the following path is accessible for this user:
 
     {}''', e)
             return False
-
-        is_action = (gaction or pa or opts.target_action is not None)
 
         # perform sbom generation
         generated_sboms = None
