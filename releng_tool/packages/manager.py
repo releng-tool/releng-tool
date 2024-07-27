@@ -136,6 +136,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.LICENSE_FILES, PkgKeyType.STRS)
         self._register_conf(Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.MESON_NOINSTALL, PkgKeyType.BOOL)
+        self._register_conf(Rpk.NEEDS, PkgKeyType.STRS)
         self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
         self._register_conf(Rpk.PATCH_SUBDIR, PkgKeyType.STR)
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
@@ -550,7 +551,16 @@ class RelengPackageManager:
         pkg_build_subdir = self._fetch(Rpk.BUILD_SUBDIR)
 
         # dependencies
-        deps = self._fetch(Rpk.DEPS, default=[])
+        # (use 'NEEDS' as the primary; fallback to 'DEPS')
+        deps = self._fetch(Rpk.NEEDS)
+        if deps is None:
+            deps = self._fetch(Rpk.DEPS, default=[])
+            if deps:
+                # TODO switch from verbose to warn in v1.4 or newer
+                verbose('''\
+using deprecated dependency configuration for package: {}
+ (update '{}' to '{}')\
+''', name, pkg_key(name, Rpk.DEPS), pkg_key(name, Rpk.NEEDS))
 
         # ignore cache
         pkg_devmode_ignore_cache = self._fetch(Rpk.DEVMODE_IGNORE_CACHE)

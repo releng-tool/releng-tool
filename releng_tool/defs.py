@@ -80,7 +80,7 @@ class Rpk(Enum):
 
     Attributes:
         BUILD_SUBDIR: sub-directory in fetched to find root src
-        DEPS: list of package dependencies
+        DEPS: list of package dependencies (deprecated; see NEEDS)
         DEVMODE_IGNORE_CACHE: whether or not ignore cache
         DEVMODE_REVISION: devmode-rev to acquire from srcs
         EXTENSION: filename extension for package (if needed)
@@ -99,6 +99,7 @@ class Rpk(Enum):
         INTERNAL: whether or not package is considered "internal"
         LICENSE: license information for the package
         LICENSE_FILES: source file(s) with license information
+        NEEDS: list of package dependencies
         NO_EXTRACTION: whether or not package extraction is done
         PATCH_SUBDIR: sub-directory in fetched to apply patches
         PREFIX: system root prefix override (if needed)
@@ -156,6 +157,7 @@ class Rpk(Enum):
     INTERNAL = 'INTERNAL'
     LICENSE = 'LICENSE'
     LICENSE_FILES = 'LICENSE_FILES'
+    NEEDS = 'NEEDS'
     NO_EXTRACTION = 'NO_EXTRACTION'
     PATCH_SUBDIR = 'PATCH_SUBDIR'
     PREFIX = 'PREFIX'

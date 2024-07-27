@@ -46,7 +46,7 @@ def initialize_sample(opts):
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-SAMPLE_DEPENDENCIES = []
+SAMPLE_NEEDS = []
 SAMPLE_LICENSE = ['<license name>']
 SAMPLE_LICENSE_FILES = ['<license file>']
 SAMPLE_SITE = '<location for sources>'
