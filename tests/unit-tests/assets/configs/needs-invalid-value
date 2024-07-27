@@ -1,0 +1,4 @@
+TEST_NEEDS = [
+    'valid',
+    123,
+]
