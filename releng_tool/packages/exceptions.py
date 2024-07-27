@@ -101,6 +101,17 @@ package defines vcs-type ({vcs_type}) but no site: {pkg_name}
 '''.strip().format(**args))
 
 
+class RelengToolPathPackageTraversal(RelengToolInvalidPackageConfiguration):
+    """
+    raised when a path traversal configuration is detected
+    """
+    def __init__(self, args):
+        super(RelengToolPathPackageTraversal, self).__init__('''\
+package defines a path traversal: {pkg_name}
+ (key: {pkg_key})
+'''.strip().format(**args))
+
+
 class RelengToolUnknownExtractType(RelengToolInvalidPackageConfiguration):
     """
     raised when a package defined an unknown extract type
