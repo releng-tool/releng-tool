@@ -743,10 +743,10 @@ of the releng process:
         script_env['RELENG_VERBOSE'] = None
 
         #: default lib container directory
-        sysroot_nprefix = os.path.normpath(self.opts.sysroot_prefix)
-        host_pdir = self.opts.host_dir + sysroot_nprefix
-        staging_pdir = self.opts.staging_dir + sysroot_nprefix
-        target_pdir = self.opts.target_dir + sysroot_nprefix
+        nprefix = os.path.normpath(self.opts.sysroot_prefix)
+        host_pdir = os.path.normpath(self.opts.host_dir + nprefix)
+        staging_pdir = os.path.normpath(self.opts.staging_dir + nprefix)
+        target_pdir = os.path.normpath(self.opts.target_dir + nprefix)
         host_bin_dir = os.path.join(host_pdir, 'bin')
         host_include_dir = os.path.join(host_pdir, 'include')
         host_lib_dir = os.path.join(host_pdir, 'lib')

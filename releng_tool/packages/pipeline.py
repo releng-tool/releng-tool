@@ -419,10 +419,11 @@ class RelengPackagePipeline:
         try:
             for env in (os.environ, pkg_env):
                 if pkg.prefix is not None:
-                    nprefix = os.path.normpath(pkg.prefix)
-                    host_pdir = self.opts.host_dir + nprefix
-                    staging_pdir = self.opts.staging_dir + nprefix
-                    target_pdir = self.opts.target_dir + nprefix
+                    opts = self.opts
+                    nprefix = pkg.prefix
+                    host_pdir = os.path.normpath(opts.host_dir + nprefix)
+                    staging_pdir = os.path.normpath(opts.staging_dir + nprefix)
+                    target_pdir = os.path.normpath(opts.target_dir + nprefix)
 
                     host_bin_dir = os.path.join(host_pdir, 'bin')
                     host_include_dir = os.path.join(host_pdir, 'include')
