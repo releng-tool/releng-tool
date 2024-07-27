@@ -2,6 +2,7 @@ Development
 -----------
 
 - Automatic debugging mode when detecting CI debugging runs
+- Correct unexpected dot in prefix path variables for empty prefixed builds
 - Fixed incorrect specification version tag in RDF/SPDX SBOM documents
 - Fixed issue where an aborted Mercurial fetch could require manual cleanup
 - Include license list version in SPDX SBOM documents
