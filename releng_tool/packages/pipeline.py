@@ -214,7 +214,7 @@ class RelengPackagePipeline:
 
         # load any late-stage configuration options from the remote
         # sources
-        if (not pkg.skip_remote_config and
+        if (pkg.remote_config and
                 'releng.disable_remote_configs' not in self.opts.quirks):
             self.engine.pkgman.load_remote_configuration(pkg)
 

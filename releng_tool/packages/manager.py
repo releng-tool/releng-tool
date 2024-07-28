@@ -142,6 +142,8 @@ class RelengPackageManager:
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR)
+        self._register_conf(Rpk.REMOTE_CONFIG, PkgKeyType.BOOL)
+        self._register_conf(Rpk.REMOTE_SCRIPTS, PkgKeyType.BOOL)
         self._register_conf(Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR)
         self._register_conf(Rpk.SCONS_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR)
@@ -594,11 +596,23 @@ using deprecated dependency configuration for package: {}
         # patch subdirectory
         pkg_patch_subdir = self._fetch(Rpk.PATCH_SUBDIR)
 
-        # skip any remote configuration
-        pkg_skip_remote_config = self._fetch(Rpk.SKIP_REMOTE_CONFIG)
+        # remote configuration
+        pkg_remote_config = self._fetch(Rpk.REMOTE_CONFIG)
+        if pkg_remote_config is None:
+            pkg_skip_remote_config = self._fetch(Rpk.SKIP_REMOTE_CONFIG)
+            if pkg_skip_remote_config is not None:
+                pkg_remote_config = not pkg_skip_remote_config
+                self._deprecated(name,
+                    Rpk.SKIP_REMOTE_CONFIG, Rpk.REMOTE_CONFIG)
 
-        # skip any remote scripts
-        pkg_skip_remote_scripts = self._fetch(Rpk.SKIP_REMOTE_SCRIPTS)
+        # remote scripts
+        pkg_remote_scripts = self._fetch(Rpk.REMOTE_SCRIPTS)
+        if pkg_remote_scripts is None:
+            pkg_skip_remote_scripts = self._fetch(Rpk.SKIP_REMOTE_SCRIPTS)
+            if pkg_skip_remote_scripts is not None:
+                pkg_remote_scripts = not pkg_skip_remote_scripts
+                self._deprecated(name,
+                    Rpk.SKIP_REMOTE_SCRIPTS, Rpk.REMOTE_SCRIPTS)
 
         # type
         pkg_type = None
@@ -896,10 +910,10 @@ using deprecated dependency configuration for package: {}
         pkg.local_srcs = pkg_local_srcs
         pkg.no_extraction = pkg_no_extraction
         pkg.patch_subdir = pkg_patch_subdir
+        pkg.remote_config = pkg_remote_config
+        pkg.remote_scripts = pkg_remote_scripts
         pkg.revision = pkg_revision
         pkg.site = pkg_site
-        pkg.skip_remote_config = pkg_skip_remote_config
-        pkg.skip_remote_scripts = pkg_skip_remote_scripts
         pkg.strip_count = pkg_strip_count
         pkg.type = pkg_type
         pkg.vcs_type = pkg_vcs_type
@@ -1427,3 +1441,17 @@ using deprecated dependency configuration for package: {}
 
         assert key not in self._key_types, 'key {} is registered'.format(key)
         self._key_types[key] = type_
+
+    def _deprecated(self, name, old_key, new_key):
+        """
+        warn about the use of a deprecated configuration key
+
+        Args:
+            name: the name of the package
+            old_key: the old configuration key
+            new_key: the new configuration key
+        """
+
+        warn('''\
+using deprecated dependency configuration for package: {}
+ (update '{}' to '{}')''', name, pkg_key(name, old_key), pkg_key(name, new_key))

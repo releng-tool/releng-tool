@@ -34,7 +34,7 @@ def build(opts):
     build_script = os.path.join(def_dir, build_script_filename)
     build_script, build_script_exists = opt_file(build_script)
     if not build_script_exists:
-        if (opts._skip_remote_scripts or
+        if (not opts._remote_scripts or
                 'releng.disable_remote_scripts' in opts._quirks):
             return True
 

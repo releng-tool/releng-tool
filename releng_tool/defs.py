@@ -103,10 +103,12 @@ class Rpk(Enum):
         NO_EXTRACTION: whether or not package extraction is done
         PATCH_SUBDIR: sub-directory in fetched to apply patches
         PREFIX: system root prefix override (if needed)
+        REMOTE_CONFIG: load any remote configuration
+        REMOTE_SCRIPTS: process any remote scripts
         REVISION: revision to acquire from sources (if any)
         SITE: site where to fetch package sources
-        SKIP_REMOTE_CONFIG: skip any remote configuration
-        SKIP_REMOTE_SCRIPTS: skip any remote scripts
+        SKIP_REMOTE_CONFIG: skip any remote configuration (deprecated)
+        SKIP_REMOTE_SCRIPTS: skip any remote scripts (deprecated)
         STRIP_COUNT: strip count for archive extract
         TYPE: type of project the package is
         VCS_TYPE: type of project the package's fetch source is
@@ -161,10 +163,12 @@ class Rpk(Enum):
     NO_EXTRACTION = 'NO_EXTRACTION'
     PATCH_SUBDIR = 'PATCH_SUBDIR'
     PREFIX = 'PREFIX'
+    REMOTE_CONFIG = 'REMOTE_CONFIG'
+    REMOTE_SCRIPTS = 'REMOTE_SCRIPTS'
     REVISION = 'REVISION'
     SITE = 'SITE'
-    SKIP_REMOTE_CONFIG = 'SKIP_REMOTE_CONFIG'
-    SKIP_REMOTE_SCRIPTS = 'SKIP_REMOTE_SCRIPTS'
+    SKIP_REMOTE_CONFIG = 'SKIP_REMOTE_CONFIG'  # deprecated
+    SKIP_REMOTE_SCRIPTS = 'SKIP_REMOTE_SCRIPTS'  # deprecated
     STRIP_COUNT = 'STRIP_COUNT'
     TYPE = 'TYPE'
     VCS_TYPE = 'VCS_TYPE'

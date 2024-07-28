@@ -46,10 +46,10 @@ class RelengPackage:
         nv: name-version value of the package
         patch_subdir: override for a package's patch base (if applicable)
         prefix: system root prefix override (if applicable)
+        remote_config: whether to load any remote configuration
+        remote_scripts: whether to process any remote scripts
         revision: revision to use to fetch from vcs (if applicable)
         site: site to acquire package assets
-        skip_remote_config: whether or not to skip any remote configuration
-        skip_remote_scripts: whether or not to skip any remote scripts
         strip_count: archive extraction strip count (if applicable)
         type: package type (script-based, cmake, etc.)
         vcs_type: vcs type of the package (git, file, etc.)
@@ -113,10 +113,10 @@ class RelengPackage:
         self.no_extraction = False
         self.patch_subdir = None
         self.prefix = None
+        self.remote_config = None
+        self.remote_scripts = None
         self.revision = None
         self.site = None
-        self.skip_remote_config = None
-        self.skip_remote_scripts = None
         self.strip_count = None
         self.type = None
         self.vcs_type = None
