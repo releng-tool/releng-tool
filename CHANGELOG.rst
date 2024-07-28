@@ -11,6 +11,7 @@ Development
 - Introduce ``RELENG_GENERATED_SBOMS`` script variable
 - Introduce ``environment`` project configuration
 - Introduce support for Cargo-based packages
+- Remote package configuration/scripting is now opt-in
 - Script helper ``releng_mkdir`` will now return the path
 - Support multiple path components in ``releng_mkdir``
 - Support variable expansion for ``releng_execute`` arguments
