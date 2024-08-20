@@ -1,5 +1,5 @@
-Development
------------
+1.3 (2024-08-19)
+----------------
 
 - Automatic debugging mode when detecting CI debugging runs
 - Correct unexpected dot in prefix path variables for empty prefixed builds
