@@ -16,6 +16,7 @@ Development
 - Support multiple path components in ``releng_mkdir``
 - Support variable expansion for ``releng_execute`` arguments
 - Unknown arguments will now generate an error by default
+- Update SPDX license database to v3.25
 
 1.2 (2024-07-01)
 ----------------
