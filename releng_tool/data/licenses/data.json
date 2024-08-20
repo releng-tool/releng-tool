@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "3.24.0",
+  "licenseListVersion": "3.25.0",
   "licenses": {
     "0BSD": {
       "name": "BSD Zero Clause License",
@@ -845,6 +845,14 @@
       "name": "DOC License",
       "deprecated": false
     },
+    "DocBook-Schema": {
+      "name": "DocBook Schema License",
+      "deprecated": false
+    },
+    "DocBook-XML": {
+      "name": "DocBook XML License",
+      "deprecated": false
+    },
     "Dotseqn": {
       "name": "Dotseqn License",
       "deprecated": false
@@ -1217,6 +1225,10 @@
       "name": "hdparm License",
       "deprecated": false
     },
+    "HIDAPI": {
+      "name": "HIDAPI License",
+      "deprecated": false
+    },
     "Hippocratic-2.1": {
       "name": "Hippocratic License 2.1",
       "deprecated": false
@@ -1287,6 +1299,10 @@
     },
     "HPND-MIT-disclaimer": {
       "name": "Historical Permission Notice and Disclaimer with MIT disclaimer",
+      "deprecated": false
+    },
+    "HPND-Netrek": {
+      "name": "Historical Permission Notice and Disclaimer - Netrek variant",
       "deprecated": false
     },
     "HPND-Pbmplus": {
@@ -1799,7 +1815,7 @@
     },
     "Net-SNMP": {
       "name": "Net-SNMP License",
-      "deprecated": false
+      "deprecated": true
     },
     "NetCDF": {
       "name": "NetCDF license",
@@ -2213,6 +2229,10 @@
       "name": "Ruby License",
       "deprecated": false
     },
+    "Ruby-pty": {
+      "name": "Ruby pty extension license",
+      "deprecated": false
+    },
     "SAX-PD": {
       "name": "Sax Public Domain Notice",
       "deprecated": false
@@ -2441,6 +2461,10 @@
       "name": "Technische Universitaet Berlin License 2.0",
       "deprecated": false
     },
+    "Ubuntu-font-1.0": {
+      "name": "Ubuntu Font Licence v1.0",
+      "deprecated": false
+    },
     "UCAR": {
       "name": "UCAR License",
       "deprecated": false
@@ -2543,6 +2567,10 @@
     },
     "X11-distribute-modifications-variant": {
       "name": "X11 License Distribution Modification Variant",
+      "deprecated": false
+    },
+    "X11-swapped": {
+      "name": "X11 swapped final paragraphs",
       "deprecated": false
     },
     "Xdebug-1.03": {
@@ -2703,6 +2731,10 @@
       "name": "eCos exception 2.0",
       "deprecated": false
     },
+    "erlang-otp-linking-exception": {
+      "name": "Erlang/OTP Linking Exception",
+      "deprecated": false
+    },
     "Fawkes-Runtime-exception": {
       "name": "Fawkes Runtime Exception",
       "deprecated": false
@@ -2861,6 +2893,10 @@
     },
     "Qwt-exception-1.0": {
       "name": "Qwt exception 1.0",
+      "deprecated": false
+    },
+    "romic-exception": {
+      "name": "Romic Exception",
       "deprecated": false
     },
     "RRDtool-FLOSS-exception-2.0": {
