@@ -581,9 +581,6 @@ has failed. Ensure the following path is accessible for this user:
             if pkg_names is None:
                 bad_pkgs_value = True
 
-        # remove duplicates (but maintain pre-sorted ordered)
-        pkg_names = OrderedDict.fromkeys(pkg_names)
-
         if bad_pkgs_value:
             err('''\
 bad package list definition
@@ -599,6 +596,9 @@ of the releng process:
         elif not pkg_names:
             raise RelengToolMissingPackagesError(
                 self.opts.conf_point, ConfKey.PKGS)
+        else:
+            # remove duplicates (but maintain pre-sorted ordered)
+            pkg_names = OrderedDict.fromkeys(pkg_names)
 
         return pkg_names
 
