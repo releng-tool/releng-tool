@@ -518,13 +518,14 @@ class TestToolGit(TestSiteToolBase):
         with interim_working_dir(workdir):
             out = []
             if not execute(['git'] + list(args), capture=out, critical=False):
-                print(['git'] + list(args))
+                print(['(TestToolGit) git'] + list(args))
                 print('\n'.join(out))
                 raise AssertionError('failed to issue git command')
             return '\n'.join(out)
 
     def _git_cache(self, *args):
-        return self._git(self.cache_dir, *args)
+        git_dir = '--git-dir=' + self.cache_dir
+        return self._git_repo(git_dir, *args)
 
     def _git_repo(self, *args, **kwargs):
         repo = kwargs.get('repo')
