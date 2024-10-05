@@ -91,7 +91,7 @@ class TestRegistry(RelengToolTestCase):
         invalid_event = 'random-text'
         valid_event = 'config-loaded'
 
-        def event_handler(**kwargs):  # noqa: ARG001
+        def event_handler(**kwargs):
             pass
 
         with self.assertRaises(RelengInvalidSetupException):
