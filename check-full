@@ -34,6 +34,7 @@ primary_envs=(
     py310-release
     py311-release
     py312-release
+    py313-release
 )
 
 envs=$(IFS=, ; echo "${primary_envs[*]}")
