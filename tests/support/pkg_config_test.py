@@ -30,12 +30,14 @@ class TestPkgConfigsBase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        opts = RelengEngineOptions()
-        registry = RelengRegistry()
-        cls.manager = RelengPackageManager(opts, registry)
+        cls.opts = RelengEngineOptions()
+        cls.registry = RelengRegistry()
 
         assets_dir = fetch_unittest_assets_dir()
         cls.configs_dir = os.path.join(assets_dir, CONFIGS_DIR)
+
+    def setUp(self):
+        self.manager = RelengPackageManager(self.opts, self.registry)
 
     def LOAD(self, script_name, manager=None):
         """
