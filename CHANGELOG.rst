@@ -3,6 +3,7 @@ Development
 
 - Ensure the ``punch`` action triggers the post-build stage
 - Introduce a ``nested`` option for I/O copy/move utility calls
+- Support injecting Visual Studio development environment variables
 - Support preallocated list/dictionary package configurations
 
 1.3 (2024-08-19)
