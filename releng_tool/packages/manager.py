@@ -292,14 +292,7 @@ class RelengPackageManager:
         self.script_env['DEFAULT_SITE'] = DEFAULT_ENTRY
         self.script_env['PKG_DEFDIR'] = pkg_def_dir
 
-        try:
-            env = run_script(script, self.script_env, catch=False)
-        except Exception as e:
-            raise RelengToolInvalidPackageScript({
-                'description': str(e),
-                'script': script,
-                'traceback': traceback.format_exc(),
-            })
+        env = self.load_package_script(name, script)
 
         self._active_package = name
         self._active_env = env
@@ -956,6 +949,73 @@ using deprecated dependency configuration for package: {}
 
         return pkg, env, deps
 
+    def load_package_script(self, name, script):
+        """
+        load a package script
+
+        Attempts to load a package definition script of a given ``name`` from
+        the provided ``script`` location. The target script will be run and
+        its environment will be returned on a successful execution. On failure,
+        an ``RelengToolInvalidPackageScript`` exception will be thrown.
+
+        Args:
+            name: the package name
+            script: the package script to load
+
+        Returns:
+            the extracted environment/globals from the package script
+
+        Raises:
+            RelengToolInvalidPackageScript: when an error has been detected
+                                            loading the package script
+        """
+
+        # preallocate empty iterable entries so that packages can append
+        # without needing to make sure the configuration dictionary already
+        # exists
+        interim_ids = set()
+        for k, v in self._key_types.items():
+            interim_obj = None
+
+            if v in (PkgKeyType.DICT_STR_STR, PkgKeyType.DICT_STR_STR_OR_STRS):
+                interim_obj = {}
+            elif v == PkgKeyType.STRS:
+                interim_obj = []
+
+            if interim_obj is not None:
+                pkg_cfg_key = pkg_key(name, k)
+                if pkg_cfg_key not in self.script_env:
+                    self.script_env[pkg_cfg_key] = interim_obj
+                    interim_ids.add(id(interim_obj))
+
+        # run the package script
+        try:
+            env = run_script(script, self.script_env, catch=False)
+        except Exception as e:
+            raise RelengToolInvalidPackageScript({
+                'description': str(e),
+                'script': script,
+                'traceback': traceback.format_exc(),
+            })
+
+        # if an interim configuration has not been used, automatically remove
+        # them from the environment as if it was ``None`` in the first place
+        for k, v in self._key_types.items():
+            if v in (PkgKeyType.DICT_STR_STR,
+                     PkgKeyType.DICT_STR_STR_OR_STRS,
+                     PkgKeyType.STRS):
+                pkg_cfg_key = pkg_key(name, k)
+                if env[pkg_cfg_key]:
+                    continue
+
+                ref_id = id(env[pkg_cfg_key])
+                if ref_id in interim_ids:
+                    env[pkg_cfg_key] = None
+                    self.script_env[pkg_cfg_key] = None
+                    interim_ids.remove(ref_id)
+
+        return env
+
     def _apply_postinit_options(self, pkg):
         """
         apply post-initialization package options
@@ -1260,14 +1320,7 @@ using deprecated dependency configuration for package: {}
                 'script': script,
             })
 
-        try:
-            env = run_script(script, self.script_env, catch=False)
-        except Exception as e:
-            raise RelengToolInvalidPackageScript({
-                'description': str(e),
-                'script': script,
-                'traceback': traceback.format_exc(),
-            })
+        env = self.load_package_script(pkg.name, script)
 
         # apply any options to unset configuration entries
         self._active_package = pkg.name
