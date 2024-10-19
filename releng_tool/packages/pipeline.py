@@ -13,6 +13,7 @@ from releng_tool.engine.fetch_post import stage as fetch_post
 from releng_tool.engine.install import stage as install_stage
 from releng_tool.engine.patch import stage as patch_stage
 from releng_tool.engine.post import stage as post_stage
+from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolMissingExecCommand
 from releng_tool.packages.exceptions import RelengToolBootstrapStageFailure
 from releng_tool.packages.exceptions import RelengToolBuildStageFailure
@@ -410,6 +411,13 @@ class RelengPackagePipeline:
             'TARGET_LIB_DIR',
         ]
 
+        # check if we should preload environment variables from vsdevcmd
+        extra_env = {}
+        if pkg.vsdevcmd and sys.platform == 'win32':
+            debug('attempting to load package-specific vsdevcmd variables')
+            extra_env = vsdevcmd_initialize(pkg.vsdevcmd)
+            pkg_keys.extend(extra_env)
+
         saved_env = {}
         for key in pkg_keys:
             saved_env[key] = os.environ.get(key, None)
@@ -417,6 +425,8 @@ class RelengPackagePipeline:
         # apply package specific overrides into the OS environment and the
         # package/script environment
         try:
+            os.environ.update(extra_env)
+
             for env in (os.environ, pkg_env):
                 if pkg.prefix is not None:
                     opts = self.opts

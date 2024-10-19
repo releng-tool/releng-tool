@@ -51,6 +51,7 @@ class ConfKey(Enum):
     SYSROOT_PREFIX = 'sysroot_prefix'
     URL_MIRROR = 'url_mirror'
     URLOPEN_CONTEXT = 'urlopen_context'
+    VSDEVCMD = 'vsdevcmd'
 
 
 class ListenerEvent(Enum):
@@ -113,6 +114,7 @@ class Rpk(Enum):
         TYPE: type of project the package is
         VCS_TYPE: type of project the package's fetch source is
         VERSION: the version of the package
+        VSDEVCMD: configuration for loading vsdevcmd environment variables
         # (package type - common)
         CONF_DEFS: package-type configuration definitions
         CONF_ENV: package-type configuration environment values
@@ -173,6 +175,7 @@ class Rpk(Enum):
     TYPE = 'TYPE'
     VCS_TYPE = 'VCS_TYPE'
     VERSION = 'VERSION'
+    VSDEVCMD = 'VSDEVCMD'
     # (package type - common)
     CONF_DEFS = 'CONF_DEFS'
     CONF_ENV = 'CONF_ENV'

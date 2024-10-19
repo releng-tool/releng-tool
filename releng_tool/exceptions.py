@@ -80,6 +80,21 @@ list exists with the name of packages to be part of the releng process:
 '''.strip().format(path, key))
 
 
+class RelengToolMissingVsDevCmdError(RelengToolException):
+    """
+    exception thrown when a project uses VsDevCmd.bat and it cannot be found
+    """
+    def __init__(self, status, output):
+        super(RelengToolMissingVsDevCmdError, self).__init__('''\
+{}
+
+The project configuration indicates a requirement for VsDevCmd.bat but the
+environment could not be prepared.
+
+    {}
+'''.strip().format(status, output))
+
+
 class RelengToolOutsidePathError(RelengToolException):
     """
     exception thrown when unexpectedly interacting outside of a path

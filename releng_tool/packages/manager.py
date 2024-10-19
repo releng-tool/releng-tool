@@ -153,6 +153,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.TYPE, PkgKeyType.STR)
         self._register_conf(Rpk.VCS_TYPE, PkgKeyType.DICT_STR_STR_OR_STR)
         self._register_conf(Rpk.VERSION, PkgKeyType.STR)
+        self._register_conf(Rpk.VSDEVCMD, PkgKeyType.BOOL_OR_STR)
 
         # sanity check that check option is properly registered
         for key in Rpk:
@@ -1120,6 +1121,10 @@ using deprecated dependency configuration for package: {}
                         'pkg_key': pkg_key(pkg.name, Rpk.PREFIX),
                     })
 
+        # vsdevcmd configuration
+        if pkg.vsdevcmd is None:
+            pkg.vsdevcmd = self._fetch(Rpk.VSDEVCMD)
+
         # ######################################################################
         # (package type - shared)
         # ######################################################################
@@ -1382,6 +1387,12 @@ using deprecated dependency configuration for package: {}
                 value = raw_value
                 if not isinstance(value, bool):
                     raise_kv_exception('bool')
+            elif type_ == PkgKeyType.BOOL_OR_STR:
+                value = raw_value
+                if not isinstance(value, bool):
+                    value = interpret_string(raw_value)
+                    if not value:
+                        raise_kv_exception('bool or string')
             elif type_ == PkgKeyType.DICT:
                 value = raw_value
                 if allow_expand:

@@ -15,6 +15,7 @@ from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
 from releng_tool.engine.sbom import SbomManager
+from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
@@ -247,6 +248,11 @@ class RelengEngine:
         # processing additional settings
         if not self._process_settings(settings):
             raise RelengToolInvalidConfigurationSettings
+
+        # check if we should preload environment variables from vsdevcmd
+        if opts.vsdevcmd and sys.platform == 'win32':
+            debug('attempting to load vsdevcmd variables')
+            vsdevcmd_initialize(opts.vsdevcmd, env=os.environ)
 
         # load project-defined environment options
         for key, val in opts.environment.items():
@@ -1171,6 +1177,15 @@ following key entry and re-try again.
                 notify_invalid_value(ConfKey.URLOPEN_CONTEXT, 'ssl.SSLContext')
                 return False
             self.opts.urlopen_context = urlopen_context
+
+        if ConfKey.VSDEVCMD in settings:
+            vsdevcmd = settings[ConfKey.VSDEVCMD]
+            if not isinstance(vsdevcmd, bool):
+                vsdevcmd = interpret_string(settings[ConfKey.VSDEVCMD])
+                if vsdevcmd is None:
+                    notify_invalid_value(ConfKey.VSDEVCMD, 'bool or str')
+                    return False
+            self.opts.vsdevcmd = vsdevcmd
 
         if ConfKey.EXTEN_PKGS in settings:
             epd = interpret_strings(settings[ConfKey.EXTEN_PKGS])
