@@ -38,7 +38,7 @@ primary_envs=(
 )
 
 envs=$(IFS=, ; echo "${primary_envs[*]}")
-$cmd_prefix tox -p -e $envs
+$cmd_prefix tox -p -e $envs $@
 
 # invoke legacy environments with an older version of tox
 legacy_envs=(
@@ -65,4 +65,4 @@ $cmd_prefix $SHELL \
 
 # invoke py27 manually, since running inside an environment set will cause
 # issues with loading extension tests in an older py27-venv setup
-$cmd_prefix $SHELL ./tox-legacy -p $(nproc) -e py27
+$cmd_prefix $SHELL ./tox-legacy -p $(nproc) -e py27 $@
