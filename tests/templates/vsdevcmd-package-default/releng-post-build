@@ -1,0 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+
+rv, _ = releng_execute_rv('cl')
+if rv != 0:
+    file_flag = releng_join(TARGET_DIR, 'post-build-failure')
+    releng_touch(file_flag)
