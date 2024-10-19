@@ -7,6 +7,12 @@ from tests.support.pkg_config_test import TestPkgConfigsBase
 
 
 class TestPkgConfigsStageOpts(TestPkgConfigsBase):
+    def test_pkgconfig_build_defs_append(self):
+        pkg, _, _ = self.LOAD('build-defs-append')
+        self.assertDictEqual(pkg.build_defs, {
+            'some-key': 'appended',
+        })
+
     def test_pkgconfig_build_defs_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('build-defs-invalid-base-type')
@@ -38,6 +44,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key3': 'val3',
         })
 
+    def test_pkgconfig_build_env_append(self):
+        pkg, _, _ = self.LOAD('build-env-append')
+        self.assertDictEqual(pkg.build_env, {
+            'some-key': 'appended',
+        })
+
     def test_pkgconfig_build_env_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('build-env-invalid-base-type')
@@ -67,6 +79,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key1': 'val1',
             'key2': None,
             'key3': 'val3',
+        })
+
+    def test_pkgconfig_build_opts_append(self):
+        pkg, _, _ = self.LOAD('build-opts-append')
+        self.assertDictEqual(pkg.build_opts, {
+            'some-key': 'appended',
         })
 
     def test_pkgconfig_build_opts_invalid(self):
@@ -121,6 +139,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'option3': '',
         })
 
+    def test_pkgconfig_conf_defs_append(self):
+        pkg, _, _ = self.LOAD('conf-defs-append')
+        self.assertDictEqual(pkg.conf_defs, {
+            'some-key': 'appended',
+        })
+
     def test_pkgconfig_conf_defs_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('conf-defs-invalid-base-type')
@@ -152,6 +176,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key3': 'val3',
         })
 
+    def test_pkgconfig_conf_env_append(self):
+        pkg, _, _ = self.LOAD('conf-env-append')
+        self.assertDictEqual(pkg.conf_env, {
+            'some-key': 'appended',
+        })
+
     def test_pkgconfig_conf_env_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('conf-env-invalid-base-type')
@@ -181,6 +211,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key1': 'val1',
             'key2': None,
             'key3': 'val3',
+        })
+
+    def test_pkgconfig_conf_opts_append(self):
+        pkg, _, _ = self.LOAD('conf-opts-append')
+        self.assertDictEqual(pkg.conf_opts, {
+            'some-key': 'appended',
         })
 
     def test_pkgconfig_conf_opts_invalid(self):
@@ -235,6 +271,16 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'option3': '',
         })
 
+    def test_pkgconfig_env_append(self):
+        expected = {
+            'some-key': 'appended',
+        }
+
+        pkg, _, _ = self.LOAD('env-append')
+        self.assertDictEqual(pkg.build_env, expected)
+        self.assertDictEqual(pkg.conf_env, expected)
+        self.assertDictEqual(pkg.install_env, expected)
+
     def test_pkgconfig_env_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('env-invalid-base-type')
@@ -275,6 +321,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
         self.assertDictEqual(pkg.conf_env, expected)
         self.assertDictEqual(pkg.install_env, expected)
 
+    def test_pkgconfig_install_defs_append(self):
+        pkg, _, _ = self.LOAD('install-defs-append')
+        self.assertDictEqual(pkg.install_defs, {
+            'some-key': 'appended',
+        })
+
     def test_pkgconfig_install_defs_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('install-defs-invalid-base-type')
@@ -306,6 +358,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key3': 'val3',
         })
 
+    def test_pkgconfig_install_env_append(self):
+        pkg, _, _ = self.LOAD('install-env-append')
+        self.assertDictEqual(pkg.install_env, {
+            'some-key': 'appended',
+        })
+
     def test_pkgconfig_install_env_invalid(self):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('install-env-invalid-base-type')
@@ -335,6 +393,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key1': 'val1',
             'key2': None,
             'key3': 'val3',
+        })
+
+    def test_pkgconfig_install_opts_append(self):
+        pkg, _, _ = self.LOAD('install-opts-append')
+        self.assertDictEqual(pkg.install_opts, {
+            'some-key': 'appended',
         })
 
     def test_pkgconfig_install_opts_invalid(self):

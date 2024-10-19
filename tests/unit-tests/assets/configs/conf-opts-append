@@ -1,0 +1,1 @@
+TEST_CONF_OPTS['some-key'] = 'appended'

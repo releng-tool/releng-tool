@@ -1,0 +1,1 @@
+TEST_CONF_ENV['some-key'] = 'appended'
