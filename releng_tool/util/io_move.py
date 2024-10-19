@@ -12,15 +12,16 @@ import stat
 import sys
 
 
-def path_move(src, dst, quiet=False, critical=True, dst_dir=None):
+def path_move(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     """
     move a file or directory into a target file or directory
 
-    This call will attempt to move a provided file or directory's contents,
-    defined by ``src`` into a destination file or directory defined by ``dst``.
-    If ``src`` is a file, then ``dst`` is considered to be a file or directory;
-    if ``src`` is a directory, ``dst`` is considered a target directory. If a
-    target directory or target file's directory does not exist, it will be
+    This call will attempt to move a provided file, directory's contents or
+    directory itself (if ``nested`` is ``True``); defined by ``src`` into a
+    destination file or directory defined by ``dst``. If ``src`` is a file,
+    then ``dst`` is considered to be a file or directory; if ``src`` is a
+    directory, ``dst`` is considered a target directory. If a target
+    directory or target file's directory does not exist, it will be
     automatically created.
 
     In the event that a file or directory could not be moved, an error message
@@ -51,6 +52,7 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None):
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
         dst_dir (optional): force hint that the destination is a directory
+        nested (optional): nest a source directory into the destination
 
     Returns:
         ``True`` if the move has completed with no error; ``False`` if the move
@@ -64,6 +66,9 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None):
 
     if src == dst:
         return True
+
+    if nested and os.path.isdir(src):
+        dst = os.path.join(dst, os.path.basename(src))
 
     if os.path.isfile(src) and not dst_dir:
         parent_dir = os.path.dirname(dst)
@@ -105,13 +110,14 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None):
     return success
 
 
-def path_move_into(src, dst, quiet=False, critical=True):
+def path_move_into(src, dst, quiet=False, critical=True, nested=False):
     """
     move a file or directory into a target directory
 
-    This call will attempt to move a provided file or directory's contents,
-    defined by ``src`` into a destination directory defined by ``dst``. If a
-    target directory directory does not exist, it will be automatically created.
+    This call will attempt to move a provided file, directory's contents or
+    directory itself (if ``nested`` is ``True``); defined by ``src`` into a
+    destination directory defined by ``dst``. If a target directory directory
+    does not exist, it will be automatically created.
 
     In the event that a file or directory could not be moved, an error message
     will be output to standard error (unless ``quiet`` is set to ``True``). If
@@ -125,14 +131,17 @@ def path_move_into(src, dst, quiet=False, critical=True):
 
         # (input)
         # my-directory/another-file
+        # my-directory2/another-file2
         # my-file
         # my-file2
         releng_move('my-file', 'my-file3')
-        releng_move('my-directory', 'my-directory2')
-        releng_move('my-file2', 'my-directory2')
+        releng_move('my-directory', 'my-directory3')
+        releng_move('my-file2', 'my-directory3')
+        releng_move('my-directory2', 'my-directory3', nested=True)
         # (output)
-        # my-directory2/another-file
-        # my-directory2/my-file2
+        # my-directory3/my-directory2/another-file2
+        # my-directory3/another-file
+        # my-directory3/my-file2
         # my-file3
 
     Args:
@@ -140,6 +149,7 @@ def path_move_into(src, dst, quiet=False, critical=True):
         dst: the destination directory
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
+        nested (optional): nest a source directory into the destination
 
     Returns:
         ``True`` if the move has completed with no error; ``False`` if the move
@@ -149,7 +159,8 @@ def path_move_into(src, dst, quiet=False, critical=True):
         SystemExit: if the copy operation fails with ``critical=True``
     """
 
-    return path_move(src, dst, quiet=quiet, critical=critical, dst_dir=True)
+    return path_move(src, dst, quiet=quiet, critical=critical, dst_dir=True,
+        nested=nested)
 
 
 def _path_move(src, dst):

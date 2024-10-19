@@ -21,14 +21,15 @@ else:
     _copystat = shutil_copystat
 
 
-def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
+def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     """
     copy a file or directory into a target file or directory
 
-    This call will attempt to copy a provided file or directory, defined by
-    ``src`` into a destination file or directory defined by ``dst``. If ``src``
-    is a file, then ``dst`` is considered to be a file or directory; if ``src``
-    is a directory, ``dst`` is considered a target directory. If a target
+    This call will attempt to copy a provided file, directory's contents or
+    directory itself (if ``nested`` is ``True``); defined by ``src`` into a
+    destination file or directory defined by ``dst``. If ``src`` is a file,
+    then ``dst`` is considered to be a file or directory; if ``src`` is a
+    directory, ``dst`` is considered a target directory. If a target
     directory or target file's directory does not exist, it will be
     automatically created. In the event that a file or directory could not be
     copied, an error message will be output to standard error (unless ``quiet``
@@ -64,6 +65,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
         dst_dir (optional): force hint that the destination is a directory
+        nested (optional): nest a source directory into the destination
 
     Returns:
         ``True`` if the copy has completed with no error; ``False`` if the copy
@@ -108,6 +110,10 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
             if src == dst:
                 errmsg = "'{!s}' and '{!s}' " \
                          "are the same folder".format(src, dst)
+            elif nested:
+                new_dst = os.path.join(dst, os.path.basename(src))
+                if _copy_tree(src, new_dst, quiet=quiet, critical=critical):
+                    success = True
             elif _copy_tree(src, dst, quiet=quiet, critical=critical):
                 success = True
         else:
@@ -124,18 +130,18 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None):
     return success
 
 
-def path_copy_into(src, dst, quiet=False, critical=True):
+def path_copy_into(src, dst, quiet=False, critical=True, nested=False):
     """
     copy a file or directory into a target directory
 
-    This call will attempt to copy a provided file or directory, defined by
-    ``src`` into a destination directory defined by ``dst``. If a target
-    directory does not exist, it will be automatically created. In the event
-    that a file or directory could not be copied, an error message will be
-    output to standard error (unless ``quiet`` is set to ``True``). If
-    ``critical`` is set to ``True`` and the specified file/directory could
-    not be copied for any reason, this call will issue a system exit
-    (``SystemExit``).
+    This call will attempt to copy a provided file, directory's contents or
+    directory itself (if ``nested`` is ``True``); defined by ``src`` into a
+    destination directory defined by ``dst``. If a target directory does not
+    exist, it will be automatically created. In the event that a file or
+    directory could not be copied, an error message will be output to
+    standard error (unless ``quiet`` is set to ``True``). If ``critical``
+    is set to ``True`` and the specified file/directory could not be copied
+    for any reason, this call will issue a system exit (``SystemExit``).
 
     An example when using in the context of script helpers is as follows:
 
@@ -152,12 +158,19 @@ def path_copy_into(src, dst, quiet=False, critical=True):
         # my-directory/my-file
         # my-directory2/my-file
         # my-file
+        releng_copy_into('my-directory', 'my-directory3', nested=True)
+        # (stage)
+        # my-directory/my-file
+        # my-directory2/my-file
+        # my-directory3/directory/my-file
+        # my-file
 
     Args:
         src: the source directory or file
         dst: the destination directory
         quiet (optional): whether or not to suppress output
         critical (optional): whether or not to stop execution on failure
+        nested (optional): nest a source directory into the destination
 
     Returns:
         ``True`` if the copy has completed with no error; ``False`` if the copy
@@ -167,7 +180,8 @@ def path_copy_into(src, dst, quiet=False, critical=True):
         SystemExit: if the copy operation fails with ``critical=True``
     """
 
-    return path_copy(src, dst, quiet=quiet, critical=critical, dst_dir=True)
+    return path_copy(src, dst, quiet=quiet, critical=critical, dst_dir=True,
+        nested=nested)
 
 
 def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
