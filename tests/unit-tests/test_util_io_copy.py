@@ -87,6 +87,13 @@ class TestUtilIoCopy(unittest.TestCase):
             self.assertTrue(result)
             self.assertTrue(os.path.isdir(force2))
 
+            # copy entire contents of copy-check-02 into work folder
+            result = path_copy(check_dir_02, work_dir, nested=True)
+            self.assertTrue(result)
+            self.assertExists(work_dir, 'copy-check-02')
+            self.assertExists(work_dir, 'copy-check-02', 'test-file-b')
+            self.assertExists(work_dir, 'copy-check-02', 'test-file-c')
+
     def test_utilio_copy_missing(self):
         with prepare_workdir() as work_dir:
             # attempt to copy a missing path
@@ -200,6 +207,14 @@ class TestUtilIoCopy(unittest.TestCase):
             bad_target = os.path.join(work_dir, 'test-file-a')
             result = path_copy_into(check_dir_01, bad_target, critical=False)
             self.assertFalse(result)
+
+            # copy entire contents of copy-check-01 into work folder
+            result = path_copy_into(check_dir_01, work_dir, nested=True)
+            self.assertTrue(result)
+            self.assertExists(work_dir, 'copy-check-01')
+            self.assertExists(work_dir, 'copy-check-01', 'test-file-a')
+            self.assertExists(work_dir, 'copy-check-01', 'test-file-b')
+            self.assertExists(work_dir, 'copy-check-01', 'test-file-x')
 
             with self.assertRaises(SystemExit):
                 path_copy_into(check_dir_02, bad_target)

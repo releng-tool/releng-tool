@@ -27,6 +27,8 @@ class TestUtilIoMove(unittest.TestCase):
             self._('dir1'),
             self._('dir2', 'dir3'),
             self._('dir4', 'dir5', 'dir6'),
+            self._('dir20'),
+            self._('dir22'),
         ]
         for dir_ in directories:
             os.makedirs(dir_)
@@ -38,6 +40,8 @@ class TestUtilIoMove(unittest.TestCase):
             self._('dir4', 'file4'),
             self._('dir4', 'dir5', 'file5'),
             self._('dir4', 'dir5', 'dir6', 'file6'),
+            self._('dir20', 'file30'),
+            self._('dir20', 'file31'),
         ]
         for file in files:
             with open(file, 'a') as f:
@@ -120,6 +124,28 @@ class TestUtilIoMove(unittest.TestCase):
         self._assertContents(self._(dst, 'file3'), 'file3')
         self._assertContents(self._(dst, 'file4'), 'file4')
 
+        # (nested directory move into non-existing directory)
+        src = self._('dir20')
+        dst = self._('dir21')
+        moved = path_move(src, dst, nested=True)
+        self.assertTrue(moved)
+        self.assertFalse(os.path.exists(src))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir20', 'file30')))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir20', 'file31')))
+        self._assertContents(self._(dst, 'dir20', 'file30'), 'file30')
+        self._assertContents(self._(dst, 'dir20', 'file31'), 'file31')
+
+        # (nested directory move into existing directory)
+        src = self._('dir21')
+        dst = self._('dir22')
+        moved = path_move(src, dst, nested=True)
+        self.assertTrue(moved)
+        self.assertFalse(os.path.exists(src))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir21', 'dir20', 'file30')))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir21', 'dir20', 'file31')))
+        self._assertContents(self._(dst, 'dir21', 'dir20', 'file30'), 'file30')
+        self._assertContents(self._(dst, 'dir21', 'dir20', 'file31'), 'file31')
+
         # (check directory replacing a file)
         src = self._('dir9')
         dst = self._('file7')
@@ -136,6 +162,8 @@ class TestUtilIoMove(unittest.TestCase):
             self._('dir1', 'dir2'),
             self._('dir3'),
             self._('dir4', 'dir5', 'dir6'),
+            self._('dir20'),
+            self._('dir22'),
         ]
         for dir_ in directories:
             os.makedirs(dir_)
@@ -147,6 +175,8 @@ class TestUtilIoMove(unittest.TestCase):
             self._('dir4', 'file4'),
             self._('dir4', 'dir5', 'file5'),
             self._('dir4', 'dir5', 'dir6', 'file6'),
+            self._('dir20', 'file30'),
+            self._('dir20', 'file31'),
         ]
         for file in files:
             with open(file, 'a') as f:
@@ -181,6 +211,28 @@ class TestUtilIoMove(unittest.TestCase):
         self.assertFalse(os.path.exists(src))
         self.assertTrue(os.path.isfile(self._('dir9', 'dir11', 'file3')))
         self._assertContents(self._('dir9', 'dir11', 'file3'), 'file3')
+
+        # (nested directory move into non-existing directory)
+        src = self._('dir20')
+        dst = self._('dir21')
+        moved = path_move_into(src, dst, nested=True)
+        self.assertTrue(moved)
+        self.assertFalse(os.path.exists(src))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir20', 'file30')))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir20', 'file31')))
+        self._assertContents(self._(dst, 'dir20', 'file30'), 'file30')
+        self._assertContents(self._(dst, 'dir20', 'file31'), 'file31')
+
+        # (nested directory move into existing directory)
+        src = self._('dir21')
+        dst = self._('dir22')
+        moved = path_move_into(src, dst, nested=True)
+        self.assertTrue(moved)
+        self.assertFalse(os.path.exists(src))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir21', 'dir20', 'file30')))
+        self.assertTrue(os.path.isfile(self._(dst, 'dir21', 'dir20', 'file31')))
+        self._assertContents(self._(dst, 'dir21', 'dir20', 'file30'), 'file30')
+        self._assertContents(self._(dst, 'dir21', 'dir20', 'file31'), 'file31')
 
     def test_utilio_move_invalid_nest(self):
         # setup
