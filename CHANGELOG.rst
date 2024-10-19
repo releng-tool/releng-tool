@@ -1,3 +1,8 @@
+Development
+-----------
+
+- Ensure the ``punch`` action triggers the post-build stage
+
 1.3 (2024-08-19)
 ----------------
 
