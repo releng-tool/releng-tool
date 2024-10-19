@@ -153,7 +153,8 @@ def ensure_dir_exists(dir_, *args, **kwargs):
 
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
-        critical=True, poll=False, capture=None, expand=True):
+        critical=True, poll=False, capture=None, expand=True,
+        args_str=False):
     """
     execute the provided command/arguments
 
@@ -212,6 +213,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
             ``False``)
         capture (optional): list to capture output into
         expand (optional): perform variable expansion on arguments
+        args_str (optional): invoke arguments as a single string
 
     Returns:
         ``True`` if the execution has completed with no error; ``False`` if the
@@ -231,6 +233,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         expand=expand,
         poll=poll,
         quiet=quiet,
+        args_str=args_str,
     )
     return rv == 0
 
@@ -271,6 +274,7 @@ def execute_rv(command, *args, **kwargs):
         **env: environment variables to use for the process
         **env_update: environment variables to append for the process
         **expand: perform variable expansion on arguments
+        **args_str: invoke arguments as a single string
 
     Returns:
         the return code and output of the execution request
@@ -285,13 +289,15 @@ def execute_rv(command, *args, **kwargs):
         env=kwargs.get('env'),
         env_update=kwargs.get('env_update'),
         expand=kwargs.get('expand'),
+        args_str=kwargs.get('args_str'),
         quiet=True,
     )
     return rv, '\n'.join(out)
 
 
 def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
-        critical=True, poll=False, capture=None, expand=True):
+        critical=True, poll=False, capture=None, expand=True,
+        args_str=False):
     """
     execute the provided command/arguments
 
@@ -341,6 +347,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             ``False``)
         capture (optional): list to capture output into
         expand (optional): perform variable expansion on arguments
+        args_str (optional): invoke arguments as a single string
 
     Returns:
         the return code of the execution request
@@ -412,8 +419,10 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                 bufsize = 1
                 universal_newlines = True
 
+            run_args = ' '.join(args) if args_str else args
+
             proc = subprocess.Popen(
-                args,
+                run_args,
                 bufsize=bufsize,
                 cwd=cwd,
                 env=final_env,
