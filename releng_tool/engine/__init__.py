@@ -462,7 +462,7 @@ has failed. Ensure the following path is accessible for this user:
 
         # perform post-processing and completion message if not performing a
         # specific action
-        if not is_action:
+        if not is_action or self.opts.gbl_action == GlobalAction.PUNCH:
             if not self._post_processing(script_env):
                 err('failed to perform post-processing')
                 return False
