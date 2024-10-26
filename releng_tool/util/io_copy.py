@@ -25,6 +25,9 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     """
     copy a file or directory into a target file or directory
 
+    .. versionchanged:: 0.12 Add support for ``dst_dir``.
+    .. versionchanged:: 1.4 Add support for ``nested``.
+
     This call will attempt to copy a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a
     destination file or directory defined by ``dst``. If ``src`` is a file,
@@ -133,6 +136,9 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
 def path_copy_into(src, dst, quiet=False, critical=True, nested=False):
     """
     copy a file or directory into a target directory
+
+    .. versionadded:: 0.13
+    .. versionchanged:: 1.4 Add support for ``nested``.
 
     This call will attempt to copy a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a

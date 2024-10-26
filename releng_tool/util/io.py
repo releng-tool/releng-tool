@@ -61,6 +61,8 @@ def cat(file, *args):
     """
     concatenate files and print on the standard output
 
+    .. versionadded:: 0.11
+
     Attempts to read one or more files provided to this call. For each file, it
     will be read and printed out to the standard output.
 
@@ -100,6 +102,11 @@ def cat(file, *args):
 def ensure_dir_exists(dir_, *args, **kwargs):
     """
     ensure the provided directory exists
+
+    .. versionadded:: 0.3
+    .. versionchanged:: 0.13 Add support for ``critical``.
+    .. versionchanged:: 1.3 Accepts multiple paths components.
+    .. versionchanged:: 1.3 Returns the created path.
 
     Attempts to create the provided directory. If the directory already exists,
     this method has no effect. If the directory does not exist and could not be
@@ -157,6 +164,9 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         args_str=False):
     """
     execute the provided command/arguments
+
+    .. versionchanged:: 1.13 Add support for ``expand``.
+    .. versionchanged:: 1.14 Add support for ``args_str``.
 
     Runs the command described by ``args`` until completion. A caller can adjust
     the working directory of the executed command by explicitly setting the
@@ -241,6 +251,8 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
 def execute_rv(command, *args, **kwargs):
     """
     execute the provided command/arguments
+
+    .. versionadded:: 0.8
 
     Runs the command ``command`` with provided ``args`` until completion. A
     caller can adjust the working directory of the executed command by
@@ -635,6 +647,8 @@ def interpret_stem_extension(basename):
 def ls(dir_):
     """
     list a directory's contents
+
+    .. versionadded:: 0.11
 
     Attempts to read a directory for its contents and prints this information
     to the configured standard output stream.

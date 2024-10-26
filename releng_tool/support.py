@@ -15,6 +15,8 @@ def releng_include(file_path):
     """
     include/execute a script
 
+    .. versionadded:: 0.12
+
     The provided call will execute code at the provided file path. The path
     will be relative to the caller's script, unless an absolute path is
     provided. The executed script will be initialized with globals matching
@@ -81,6 +83,8 @@ def releng_script_envs(script, ctxenv):
 def require_version(version, quiet=False, critical=True):
     """
     perform a required-version check
+
+    .. versionadded:: 0.11
 
     Enables a caller to explicitly check for a required releng-tool version.
     Invoking this function with a dotted-separated ``version`` string, the

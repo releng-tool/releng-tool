@@ -58,6 +58,8 @@ def env_value(key, value=__ENV_VALUE_DEFAULT):
     """
     helper to easily fetch or configure an environment variable
 
+    .. versionadded:: 0.3
+
     Provides a caller a simple method to fetch or configure an environment
     variable for the current context. This call is the same as if one directly
     fetched from or managed a key-value with ``os.environ``. If ``value`` is not

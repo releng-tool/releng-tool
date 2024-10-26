@@ -86,6 +86,9 @@ def hint(msg, *args):
     """
     log a hint message
 
+    .. versionadded:: 0.13
+    .. versionchanged:: 1.4 Ensure availability in script helpers.
+
     Logs a hint message to standard out with a trailing new line and (if
     enabled) a cyan colorization.
 
