@@ -4,7 +4,8 @@
 
 set -e
 
-script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+lib_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+script_dir=$(cd -- "$(dirname -- "$lib_dir")" &>/dev/null && pwd)
 root_dir=$(cd -- "$(dirname -- "$script_dir")" &>/dev/null && pwd)
 dist_dir="$root_dir/dist"
 
@@ -97,7 +98,7 @@ for hash_tool in "${hash_tools[@]}"; do
     for file in "${files[@]}"; do
         fname=${file##*/}
         echo "[$hash_tool] $fname"
-        $hash_tool -b "$fname" >>releng-tool-$version.$hash_tool
+        $hash_tool -b "$fname" >>"releng-tool-$version.$hash_tool"
     done
 done
 popd >/dev/null

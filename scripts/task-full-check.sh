@@ -4,10 +4,11 @@
 # for a changeset and required for a release.
 
 set -e
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null && pwd)
 
 cmd_prefix=
 if command -v winpty >/dev/null 2>/dev/null; then
-    cmd_prefix="winpty"
+    cmd_prefix=winpty
 fi
 
 # invoke environments that can run with modern tox
@@ -28,6 +29,7 @@ primary_envs=(
     py310-tools
     py311-tools
     py312-tools
+    py313-tools
     py37-release
     py38-release
     py39-release
@@ -38,7 +40,7 @@ primary_envs=(
 )
 
 envs=$(IFS=, ; echo "${primary_envs[*]}")
-$cmd_prefix tox -p -e $envs $@
+$cmd_prefix tox -p -e "$envs" "$@"
 
 # invoke legacy environments with an older version of tox
 legacy_envs=(
@@ -57,12 +59,15 @@ legacy_envs=(
 )
 
 envs=$(IFS=, ; echo "${legacy_envs[*]}")
-$cmd_prefix $SHELL \
-    ./tox-legacy \
-    -p $(nproc) \
-    -e $envs \
+$cmd_prefix "$SHELL" \
+    "$script_dir/tox-legacy.sh" \
+    -p "$(nproc)" \
+    -e "$envs" \
     --skip-missing-interpreters
 
 # invoke py27 manually, since running inside an environment set will cause
 # issues with loading extension tests in an older py27-venv setup
-$cmd_prefix $SHELL ./tox-legacy -p $(nproc) -e py27 $@
+$cmd_prefix "$SHELL" \
+    "$script_dir/tox-legacy.sh" \
+    -p "$(nproc)" \
+    -e py27 "$@"

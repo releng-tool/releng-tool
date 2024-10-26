@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 #
-# This is a helper script used to only invoke a single unit test and
-# tools run. Solely used for a quick way to run a supported environment
+# This is a helper script used to only invoke a single unit test run.
+# Solely used for a quick way to run a supported environment
 # without having to try to form one on the command line.
 
-exec tox -e py312,tools $@
+exec tox -e py "$@"

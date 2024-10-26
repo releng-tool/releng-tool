@@ -4,7 +4,8 @@
 
 set -e
 
-script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+lib_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+script_dir=$(cd -- "$(dirname -- "$lib_dir")" &>/dev/null && pwd)
 root_dir=$(cd -- "$(dirname -- "$script_dir")" &>/dev/null && pwd)
 dist_dir="$root_dir/dist"
 
@@ -21,7 +22,7 @@ fi
 # find files to upload and verify they exist
 echo "Checking for release files..."
 readarray -t files <"$dist_dir"/release-files.txt
-if [ -z "$files" ]; then
+if [ -z "${files[*]}" ]; then
     echo "No release files detected."
     exit 1
 fi
