@@ -10,6 +10,11 @@ from releng_tool.defs import PackageType
 from releng_tool.defs import PythonSetupType
 from releng_tool.defs import Rpk
 from releng_tool.defs import VcsType
+from releng_tool.engine.bootstrap import BOOTSTRAP_SCRIPT
+from releng_tool.engine.post import POST_SCRIPT
+from releng_tool.engine.script.build import BUILD_SCRIPT
+from releng_tool.engine.script.configure import CONFIGURE_SCRIPT
+from releng_tool.engine.script.install import INSTALL_SCRIPT
 from releng_tool.packages import PkgKeyType
 from releng_tool.packages import pkg_cache_key
 from releng_tool.packages import pkg_key
@@ -282,18 +287,41 @@ class RelengPackageManager:
         debug('script {}', script)
         opts = self.opts
 
-        if not os.path.isfile(script):
-            raise RelengToolMissingPackageScript({
-                'pkg_name': name,
-                'script': script,
-            })
-
         pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
         self.script_env['DEFAULT_REVISION'] = DEFAULT_ENTRY
         self.script_env['DEFAULT_SITE'] = DEFAULT_ENTRY
         self.script_env['PKG_DEFDIR'] = pkg_def_dir
 
-        env = self.load_package_script(name, script)
+        # Load a package's definition script if it exists. If one does not
+        # exist, check if there are any other stage scripts defined (allowing
+        # a developer to opt-out of defining an empty package definition). If
+        # no other files are found, we will flag this not as a package.
+        if os.path.isfile(script):
+            env = self.load_package_script(name, script)
+        else:
+            package_hints = [
+                BOOTSTRAP_SCRIPT,
+                BUILD_SCRIPT,
+                CONFIGURE_SCRIPT,
+                INSTALL_SCRIPT,
+                POST_SCRIPT,
+            ]
+
+            hint_script_exists = False
+            for package_hint in package_hints:
+                hint_script = '{}-{}'.format(script, package_hint)
+                _, hint_script_exists = opt_file(hint_script)
+                if hint_script_exists:
+                    break
+
+            if hint_script_exists:
+                debug('found package hint; treating as package ({})', name)
+                env = self.script_env.copy()
+            else:
+                raise RelengToolMissingPackageScript({
+                    'pkg_name': name,
+                    'script': script,
+                })
 
         self._active_package = name
         self._active_env = env
