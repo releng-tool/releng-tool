@@ -109,11 +109,11 @@ lint.ignore = [
 ]
 
 [lint.per-file-ignores]
-'releng_tool\api\__init__.py' = [
+'releng_tool/api/__init__.py' = [
     'ARG002',
     'N818',
 ]
 
-'releng_tool\ext\seed\__init__.py' = [
+'releng_tool/ext/seed/__init__.py' = [
     'ARG002',
 ]
