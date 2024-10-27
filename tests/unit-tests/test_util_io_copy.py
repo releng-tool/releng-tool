@@ -199,6 +199,42 @@ class TestUtilIoCopy(unittest.TestCase):
             read_lnk = os.readlink('second-container/sub-symlink')
             self.assertEqual(read_lnk, 'nonexistent-b')
 
+    def test_utilio_copy_symlink_replace(self):
+        if sys.platform == 'win32':
+            raise unittest.SkipTest('symlink test skipped for win32')
+
+        with new_test_wd():
+            os.symlink('entry-a', 'test-symlink')
+            self.assertTrue(os.path.islink('test-symlink'))
+            read_lnk = os.readlink('test-symlink')
+            self.assertEqual(read_lnk, 'entry-a')
+
+            os.symlink('entry-b', 'new-symlink')
+            self.assertTrue(os.path.islink('new-symlink'))
+            read_lnk = os.readlink('new-symlink')
+            self.assertEqual(read_lnk, 'entry-b')
+
+            path_copy('new-symlink', 'test-symlink')
+            self.assertTrue(os.path.islink('test-symlink'))
+            read_lnk = os.readlink('test-symlink')
+            self.assertEqual(read_lnk, 'entry-b')
+
+            os.mkdir('container')
+            os.symlink('entry-c', 'container/sub-symlink')
+            self.assertTrue(os.path.islink('container/sub-symlink'))
+            read_lnk = os.readlink('container/sub-symlink')
+            self.assertEqual(read_lnk, 'entry-c')
+
+            os.mkdir('second-container')
+            os.symlink('entry-d', 'second-container/sub-symlink')
+            self.assertTrue(os.path.islink('second-container/sub-symlink'))
+            read_lnk = os.readlink('second-container/sub-symlink')
+            self.assertEqual(read_lnk, 'entry-d')
+
+            path_copy('container', 'second-container')
+            self.assertTrue(os.path.islink('second-container/sub-symlink'))
+            read_lnk = os.readlink('container/sub-symlink')
+            self.assertEqual(read_lnk, 'entry-c')
 
     def test_utilio_copyinto(self):
         check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
