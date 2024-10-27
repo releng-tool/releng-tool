@@ -823,7 +823,7 @@ of the releng process:
                     env['RELENG_DEVMODE'] = '1'
                 else:
                     env['RELENG_DEVMODE'] = self.opts.devmode
-            if self.opts.force:
+            if self.opts.gbl_action == GlobalAction.PUNCH or self.opts.force:
                 env['RELENG_FORCE'] = '1'
             if self.opts.local_srcs:
                 env['RELENG_LOCALSRCS'] = '1'
