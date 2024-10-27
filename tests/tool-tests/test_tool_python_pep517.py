@@ -12,7 +12,7 @@ class TestToolPythonPep517(PythonSiteToolBase):
     def setUpClass(cls):
         # installer is only available in Python 3.7+
         if sys.version_info < (3, 7):
-            raise unittest.SkipTest('skipping for unsupported interpreters')
+            raise unittest.SkipTest('unsupported interpreter')
 
     def tool_template(self):
         return 'python-pep517'

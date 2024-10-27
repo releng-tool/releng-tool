@@ -12,7 +12,7 @@ class TestToolPythonPdm(PythonSiteToolBase):
     def setUpClass(cls):
         # pdm is only available in Python 3.8+
         if sys.version_info < (3, 8):
-            raise unittest.SkipTest('skipping for unsupported interpreters')
+            raise unittest.SkipTest('unsupported interpreter')
 
     def tool_template(self):
         return 'python-pdm'

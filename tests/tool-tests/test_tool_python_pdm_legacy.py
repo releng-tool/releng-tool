@@ -12,7 +12,7 @@ class TestToolPythonPdmLegacy(PythonSiteToolBase):
     def setUpClass(cls):
         # pdm is only available in Python 3.7+
         if sys.version_info < (3, 7):
-            raise unittest.SkipTest('skipping for unsupported interpreters')
+            raise unittest.SkipTest('unsupported interpreter')
 
     def tool_template(self):
         return 'python-pdm-legacy'
