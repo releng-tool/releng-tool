@@ -5,6 +5,7 @@
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
 from tests import compare_contents
+from tests import new_test_wd
 from tests import prepare_workdir
 from tests.support import fetch_unittest_assets_dir
 import os
@@ -165,6 +166,39 @@ class TestUtilIoCopy(unittest.TestCase):
 
             read_lnk = os.readlink(lnkb_file)
             self.assertEqual(read_lnk, dst_file)
+
+    def test_utilio_copy_symlink_missing(self):
+        if sys.platform == 'win32':
+            raise unittest.SkipTest('symlink test skipped for win32')
+
+        with new_test_wd():
+            # copy a broken symlink
+            os.symlink('nonexistent-a', 'new-symlink')
+            self.assertTrue(os.path.islink('new-symlink'))
+
+            read_lnk = os.readlink('new-symlink')
+            self.assertEqual(read_lnk, 'nonexistent-a')
+
+            path_copy('new-symlink', 'second-symlink')
+            self.assertTrue(os.path.islink('second-symlink'))
+
+            read_lnk = os.readlink('second-symlink')
+            self.assertEqual(read_lnk, 'nonexistent-a')
+
+            # copy directory that contains a broken symlink
+            os.mkdir('container')
+            os.symlink('nonexistent-b', 'container/sub-symlink')
+            self.assertTrue(os.path.islink('container/sub-symlink'))
+
+            read_lnk = os.readlink('container/sub-symlink')
+            self.assertEqual(read_lnk, 'nonexistent-b')
+
+            path_copy('container', 'second-container')
+            self.assertTrue(os.path.islink('second-container/sub-symlink'))
+
+            read_lnk = os.readlink('second-container/sub-symlink')
+            self.assertEqual(read_lnk, 'nonexistent-b')
+
 
     def test_utilio_copyinto(self):
         check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
