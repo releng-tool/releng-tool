@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.defs import GlobalAction
+from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
+from releng_tool.util.io import execute_rv
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import touch
@@ -514,6 +516,67 @@ class TestToolGit(TestSiteToolBase):
         rv = self.engine.run()
         self.assertFalse(rv)
 
+    def test_tool_git_verify_revision_expected_fail(self):
+        tag = self._create_tag('non-signed-tag')
+        self.defconfig_add('GIT_VERIFY_REVISION', True)  # noqa: FBT003
+        self.defconfig_add('VERSION', tag)
+        rv = self.engine.run()
+        self.assertFalse(rv)
+
+    def test_tool_git_verify_revision_expected_pass(self):
+        # prepare a home directory for gpg; we initial setup with a
+        # relative path, otherwise gpg-agent can fail to start in
+        # Windows enviroments (see also: TestToolGpg.test_tool_gpg_valid)
+        os.environ['GNUPGHOME'] = '.gnupghome'
+        os.environ.pop('GPG_AGENT_INFO', None)
+        os.environ.pop('SSH_AUTH_SOCK', None)
+        os.environ.pop('SSH_AGENT_PID', None)
+        ensure_dir_exists('.gnupghome')
+
+        rv, out = execute_rv('gpgconf', '--list-dirs', 'socketdir')
+        if rv != 0:
+            print(out)
+            raise AssertionError('failed to issue gpg command')
+        os.environ['GNUPGHOME'] = out
+
+        # generate a new key
+        rv, out = execute_rv('gpg', '--batch', '--quick-gen-key',
+            '--passphrase', '', 'gpg-key-test@releng.io')
+        if rv != 0:
+            print(out)
+            raise AssertionError('failed to create gpg key')
+
+        # find the identifier for this new key
+        rv, out = execute_rv('gpg', '--list-secret-keys',
+            '--keyid-format=long', '--with-colons', '--quiet')
+        if rv != 0:
+            print(out)
+            raise AssertionError('failed to query id of gpg key')
+
+        find_gpg_key_id = None
+        for line in out.splitlines():
+            if line.startswith('sec'):
+                parts = line.split(':')
+                find_gpg_key_id = parts[4]
+                break
+
+        if not find_gpg_key_id:
+            print(out)
+            raise AssertionError('failed to find gpg key id')
+
+        # configure git to sign with this key
+        self._git_repo('config', 'tag.gpgsign', 'true')
+        self._git_repo('config', 'user.signingkey', find_gpg_key_id + '!')
+
+        # create a signed tag
+        tag = self._create_tag('signed-tag', msg='expected-pass')
+
+        # configure the package and verify
+        self.defconfig_add('GIT_VERIFY_REVISION', True)  # noqa: FBT003
+        self.defconfig_add('VERSION', tag)
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
     def _git(self, workdir, *args):
         with interim_working_dir(workdir):
             out = []
@@ -540,8 +603,8 @@ class TestToolGit(TestSiteToolBase):
         self._git_repo('commit', '--allow-empty', '-m', msg, repo=repo)
         return self._git_repo('rev-parse', 'HEAD', repo=repo)
 
-    def _create_tag(self, tag, repo=None):
-        self._git_repo('tag', tag, repo=repo)
+    def _create_tag(self, tag, msg='', repo=None):
+        self._git_repo('tag', tag, '-m', msg, repo=repo)
         return tag
 
     def _delete_tag(self, tag, repo=None):
