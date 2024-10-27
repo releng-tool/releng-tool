@@ -53,6 +53,7 @@ from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
 from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
+from releng_tool.util.io_symlink import symlink
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import hint
@@ -853,6 +854,7 @@ of the releng process:
         script_env['releng_move_into'] = path_move_into
         script_env['releng_remove'] = path_remove
         script_env['releng_require_version'] = require_version
+        script_env['releng_symlink'] = symlink
         script_env['releng_tmpdir'] = generate_temp_dir
         script_env['releng_touch'] = touch
         script_env['releng_wd'] = interim_working_dir
