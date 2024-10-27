@@ -101,7 +101,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
                 if os.path.islink(src):
                     target = os.readlink(src)
                     if os.path.islink(dst) or os.path.isfile(dst):
-                        path_remove(dst)
+                        path_remove(dst, quiet=quiet)
 
                     os.symlink(target, dst)
                 else:
@@ -201,7 +201,7 @@ def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
         if os.path.islink(src):
             target = os.readlink(src)
             if os.path.islink(dst) or os.path.isfile(dst):
-                path_remove(dst)
+                path_remove(dst, quiet=quiet)
 
             os.symlink(target, dst)
             _copystat(src, dst)

@@ -79,7 +79,7 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
             success = ensure_dir_exists(parent_dir, quiet=quiet)
     elif not os.path.isdir(dst):
         if os.path.exists(dst):
-            path_remove(dst)
+            path_remove(dst, quiet=quiet)
 
         success = ensure_dir_exists(dst, quiet=quiet)
     else:
@@ -97,11 +97,11 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
         try:
             if os.path.isfile(src):
                 if os.path.isfile(dst):
-                    path_remove(dst)
+                    path_remove(dst, quiet=quiet)
 
                 move(src, dst)
             else:
-                _path_move(src, dst)
+                _path_move(src, dst, quiet=quiet)
         except Exception as e:
             success = False
             if not quiet:
@@ -169,7 +169,7 @@ def path_move_into(src, dst, quiet=False, critical=True, nested=False):
         nested=nested)
 
 
-def _path_move(src, dst):
+def _path_move(src, dst, quiet=False):
     """
     move the provided directory into the target directory (recursive)
 
@@ -185,6 +185,7 @@ def _path_move(src, dst):
     Args:
         src: the source directory
         dst: the destination directory
+        quiet (optional): whether to suppress output
 
     Raises:
         OSError: if a path could not be moved
@@ -206,15 +207,15 @@ def _path_move(src, dst):
 
         if os.path.isdir(src_path) and not os.path.islink(src_path):
             if os.path.isdir(dst_path):
-                _path_move(src_path, dst_path)
+                _path_move(src_path, dst_path, quiet=quiet)
             else:
                 if os.path.exists(dst_path):
-                    path_remove(dst_path)
+                    path_remove(dst_path, quiet=quiet)
 
                 move(src_path, dst_path)
         else:
             if os.path.exists(dst_path):
-                path_remove(dst_path)
+                path_remove(dst_path, quiet=quiet)
 
             move(src_path, dst_path)
 
