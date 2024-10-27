@@ -1,0 +1,2 @@
+TEST_SITE = 'p4+example'
+TEST_VERSION = 'dummy'

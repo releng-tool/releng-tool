@@ -40,6 +40,10 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-hg-nosite')
 
+    def test_pkgconfig_vcs_type_invalid_perforce(self):
+        with self.assertRaises(RelengToolMissingPackageSite):
+            self.LOAD('vcs-type-invalid-perforce-nosite')
+
     def test_pkgconfig_vcs_type_invalid_rsync(self):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-rsync-nosite')
@@ -153,6 +157,17 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
     def test_pkgconfig_vcs_type_valid_none_implicit(self):
         pkg, _, _ = self.LOAD('vcs-type-valid-none-implicit')
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
+
+    def test_pkgconfig_vcs_type_valid_perforce_explicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-perforce-explicit')
+        self.assertEqual(pkg.vcs_type, VcsType.PERFORCE)
+
+    def test_pkgconfig_vcs_type_valid_perforce_implicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-perforce-implicit')
+        self.assertEqual(pkg.vcs_type, VcsType.PERFORCE)
+
+        pkg, _, _ = self.LOAD('vcs-type-valid-perforce-implicit2')
+        self.assertEqual(pkg.vcs_type, VcsType.PERFORCE)
 
     def test_pkgconfig_vcs_type_valid_rsync_explicit(self):
         pkg, _, _ = self.LOAD('vcs-type-valid-rsync-explicit')

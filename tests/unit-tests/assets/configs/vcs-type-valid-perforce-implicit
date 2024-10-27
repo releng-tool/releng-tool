@@ -1,0 +1,2 @@
+TEST_SITE = 'perforce+example'
+TEST_VERSION = 'dummy'
