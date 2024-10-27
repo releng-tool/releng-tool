@@ -768,7 +768,7 @@ def path_remove(path, quiet=False):
         path could not be removed from the system
     """
 
-    if not os.path.exists(path):
+    if not os.path.exists(path) and not os.path.islink(path):
         return True
 
     try:
