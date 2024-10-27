@@ -5,6 +5,7 @@
 from releng_tool.util.io_symlink import symlink
 from tests import new_test_wd
 import os
+import platform
 import sys
 import unittest
 
@@ -18,9 +19,12 @@ class TestUtilIoSymlink(unittest.TestCase):
         cls.assertLinkExists = assertLinkExists
 
         def assertLinkMatches(cls, target, expected):
-            cls.assertEqual(
-                os.path.realpath(os.readlink(target)),
-                os.path.realpath(expected))
+            # default just check a trailing match, since readlink may:
+            #  - prefix `/private` in OSX, and
+            #  - prefix `\\\\?` in Windows
+            cls.assertTrue(os.readlink(target).endswith(expected))
+            if platform.system() == 'Linux':
+                cls.assertEqual(os.readlink(target), expected)
         cls.assertLinkMatches = assertLinkMatches
 
         if not callable(getattr(os, 'symlink', None)):
