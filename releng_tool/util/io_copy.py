@@ -81,7 +81,17 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     errmsg = None
 
     try:
-        if os.path.isfile(src):
+        if os.path.isdir(src):
+            if src == dst:
+                errmsg = "'{!s}' and '{!s}' " \
+                         "are the same folder".format(src, dst)
+            elif nested:
+                new_dst = os.path.join(dst, os.path.basename(src))
+                if _copy_tree(src, new_dst, quiet=quiet, critical=critical):
+                    success = True
+            elif _copy_tree(src, dst, quiet=quiet, critical=critical):
+                success = True
+        elif os.path.isfile(src) or os.path.islink(src):
             attempt_copy = True
 
             if dst_dir:
@@ -108,16 +118,6 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
                     _copyfile(src, dst)
 
                 _copystat(src, dst)
-                success = True
-        elif os.path.exists(src):
-            if src == dst:
-                errmsg = "'{!s}' and '{!s}' " \
-                         "are the same folder".format(src, dst)
-            elif nested:
-                new_dst = os.path.join(dst, os.path.basename(src))
-                if _copy_tree(src, new_dst, quiet=quiet, critical=critical):
-                    success = True
-            elif _copy_tree(src, dst, quiet=quiet, critical=critical):
                 success = True
         else:
             errmsg = 'source does not exist: {}'.format(src)
