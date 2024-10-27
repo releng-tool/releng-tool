@@ -18,7 +18,9 @@ class TestUtilIoSymlink(unittest.TestCase):
         cls.assertLinkExists = assertLinkExists
 
         def assertLinkMatches(cls, target, expected):
-            cls.assertEqual(os.readlink(target), expected)
+            cls.assertEqual(
+                os.path.realpath(os.readlink(target)),
+                os.path.realpath(expected))
         cls.assertLinkMatches = assertLinkMatches
 
         if not callable(getattr(os, 'symlink', None)):
