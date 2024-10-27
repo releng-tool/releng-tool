@@ -6,6 +6,7 @@ from releng_tool.util.io import path_remove
 from tests import mock_os_remove_permission_denied
 from tests import prepare_workdir
 import os
+import sys
 import unittest
 
 
@@ -115,3 +116,18 @@ class TestUtilIoRemove(unittest.TestCase):
                 removed = path_remove(dir1)
                 self.assertFalse(removed)
                 self.assertTrue(os.path.exists(dir1))
+
+    def test_utilio_remove_symlink(self):
+        if sys.platform == 'win32':
+            raise unittest.SkipTest('symlink test skipped for win32')
+
+        with prepare_workdir() as work_dir:
+            new_symlink = os.path.join(work_dir, 'test-symlink')
+            os.symlink('dummy', new_symlink)
+            self.assertTrue(os.path.islink(new_symlink))
+
+            removed = path_remove(new_symlink)
+            self.assertTrue(removed)
+
+            self.assertFalse(os.path.islink(new_symlink))
+            self.assertFalse(os.path.exists(new_symlink))
