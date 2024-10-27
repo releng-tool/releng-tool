@@ -115,6 +115,24 @@ def mock_os_remove_permission_denied(f=None):
 
 
 @contextmanager
+def new_test_wd():
+    """
+    prepare a new temporary working directory
+
+    This utility method is used to automatically create a directory for
+    testing. Once created, the working directory will be configured to
+    ths directory. This method will ensure the container directory is emptied
+    before returning.
+
+    Returns:
+        the container directory
+    """
+
+    with generate_temp_dir() as work_dir, interim_working_dir(work_dir):
+        yield work_dir
+
+
+@contextmanager
 def prepare_testenv(config=None, template=None, args=None):
     """
     prepare an engine-ready environment for a test
