@@ -34,6 +34,11 @@ class TestPkgPipelineRemoteScripts(RelengToolTestCase):
             self._assertFileFlag(engine, 'configure-remote', exists=True)
             self._assertFileFlag(engine, 'install-remote', exists=True)
 
+    def test_pkg_pipeline_remote_scripts_none(self):
+        with prepare_testenv(template='remote-scripts-none') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
     def test_pkg_pipeline_remote_scripts_override_all(self):
         with prepare_testenv(template='remote-scripts-override-all') as engine:
             engine.run()
