@@ -39,7 +39,7 @@ def initialize_sample(opts):
     success = True
     if ensure_dir_exists(sample_dir):
         # sample project
-        sample_defs = os.path.join(root_dir, 'package', 'sample', 'sample')
+        sample_defs = os.path.join(root_dir, 'package', 'sample', 'sample.py')
         try:
             with open(sample_defs, 'w') as f:
                 f.write('''\
@@ -56,7 +56,7 @@ SAMPLE_VERSION = '<package-version>'
 
             verbose('written sample file')
         except IOError as e:
-            err('unable to generate a sample file')
+            err('unable to generate a sample.py file')
             verbose(str(e))
             success = False
     else:
@@ -82,7 +82,7 @@ SAMPLE_VERSION = '<package-version>'
 
     # releng project
     try:
-        project_defs = os.path.join(root_dir, 'releng')
+        project_defs = os.path.join(root_dir, 'releng.py')
         with open(project_defs, 'w') as f:
             f.write('''\
 #!/usr/bin/env python
@@ -95,7 +95,7 @@ packages = [
 
         verbose('written releng file')
     except IOError as e:
-        err('unable to generate a releng file')
+        err('unable to generate a releng.py file')
         verbose(str(e))
         success = False
 
