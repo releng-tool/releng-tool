@@ -717,6 +717,7 @@ using deprecated dependency configuration for package: {}
                 VcsType.CVS,
                 VcsType.GIT,
                 VcsType.HG,
+                VcsType.PERFORCE,
                 VcsType.RSYNC,
                 VcsType.SCP,
                 VcsType.SVN,
