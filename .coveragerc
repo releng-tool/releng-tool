@@ -1,5 +1,6 @@
 [coverage:run]
 parallel = 1
+relative_files = 1
 source = releng_tool
 
 [coverage:report]
