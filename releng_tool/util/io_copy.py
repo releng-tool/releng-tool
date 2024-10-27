@@ -117,7 +117,8 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
                 else:
                     _copyfile(src, dst)
 
-                _copystat(src, dst)
+                if os.path.isfile(src) and os.path.isfile(dst):
+                    _copystat(src, dst)
                 success = True
         else:
             errmsg = 'source does not exist: {}'.format(src)
@@ -204,7 +205,8 @@ def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
                 path_remove(dst, quiet=quiet)
 
             os.symlink(target, dst)
-            _copystat(src, dst)
+            if os.path.isfile(target) and os.path.isfile(dst):
+                _copystat(src, dst)
         elif os.path.isdir(src):
             _copy_tree(src, dst, quiet=quiet, critical=critical)
         else:
