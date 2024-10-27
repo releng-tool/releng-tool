@@ -164,6 +164,42 @@ class RelengPackageManager:
         for key in Rpk:
             assert key in self._key_types, 'key {} is missing'.format(key)
 
+    def is_defless_package(self, script):
+        """
+        determine if the provided script path is considered a package
+
+        The existence of a package's definition script is the main indication
+        that a package exists. However, there is support for considering a
+        folder as a package without a package definition script if other
+        package scripts exist (e.g. a bootstrap, configuration, etc. script).
+        This method will check for various package stage scripts based on
+        the path of an expected package definition script. If any stage
+        script exists, this call will return ``True``.
+
+        Args:
+            script: the package script
+
+        Returns:
+            returns whether the script reference is considered a package
+        """
+
+        package_hints = [
+            BOOTSTRAP_SCRIPT,
+            BUILD_SCRIPT,
+            CONFIGURE_SCRIPT,
+            INSTALL_SCRIPT,
+            POST_SCRIPT,
+        ]
+
+        hint_script_exists = False
+        for package_hint in package_hints:
+            hint_script = '{}-{}'.format(script, package_hint)
+            _, hint_script_exists = opt_file(hint_script)
+            if hint_script_exists:
+                break
+
+        return hint_script_exists
+
     def load(self, names):
         """
         load one or more packages from the provided collection of names
@@ -205,7 +241,7 @@ class RelengPackageManager:
             for pkg_dir in self.opts.extern_pkg_dirs:
                 pkg_script = os.path.join(pkg_dir, name, name)
                 pkg_script, pkg_script_exists = opt_file(pkg_script)
-                if pkg_script_exists:
+                if pkg_script_exists or self.is_defless_package(pkg_script):
                     pkg, env, deps = self.load_package(name, pkg_script)
 
             # if a package location has not been found, finally check the
@@ -298,30 +334,14 @@ class RelengPackageManager:
         # no other files are found, we will flag this not as a package.
         if os.path.isfile(script):
             env = self.load_package_script(name, script)
+        elif self.is_defless_package(script):
+            debug('found package hint; treating as package ({})', name)
+            env = self.script_env.copy()
         else:
-            package_hints = [
-                BOOTSTRAP_SCRIPT,
-                BUILD_SCRIPT,
-                CONFIGURE_SCRIPT,
-                INSTALL_SCRIPT,
-                POST_SCRIPT,
-            ]
-
-            hint_script_exists = False
-            for package_hint in package_hints:
-                hint_script = '{}-{}'.format(script, package_hint)
-                _, hint_script_exists = opt_file(hint_script)
-                if hint_script_exists:
-                    break
-
-            if hint_script_exists:
-                debug('found package hint; treating as package ({})', name)
-                env = self.script_env.copy()
-            else:
-                raise RelengToolMissingPackageScript({
-                    'pkg_name': name,
-                    'script': script,
-                })
+            raise RelengToolMissingPackageScript({
+                'pkg_name': name,
+                'script': script,
+            })
 
         self._active_package = name
         self._active_env = env
