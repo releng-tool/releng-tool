@@ -410,7 +410,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
 
         if is_verbose():
             debug('(wd) {}', cwd if cwd else os.getcwd())
-            cmd_str = _cmd_args_to_str(args)
+            cmd_str = cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
             if final_env and is_debug('execute-env'):
                 env_str = '(env)'
@@ -473,14 +473,14 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         except OSError as e:
             if not quiet:
                 if not cmd_str:
-                    cmd_str = _cmd_args_to_str(args)
+                    cmd_str = cmd_args_to_str(args)
 
                 err('unable to execute command: {}\n'
                     '    {}', cmd_str, e)
 
     if rv != 0:
         if critical:
-            cmd_str = _cmd_args_to_str(args) if args else '<empty>'
+            cmd_str = cmd_args_to_str(args) if args else '<empty>'
             err('failed to issue command: ' + cmd_str)
 
             # trigger a hard stop
@@ -493,7 +493,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
     return rv
 
 
-def _cmd_args_to_str(args):
+def cmd_args_to_str(args):
     """
     convert an argument list to a platform escaped string
 

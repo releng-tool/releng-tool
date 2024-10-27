@@ -29,6 +29,7 @@ from releng_tool.util.enum import Enum
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
+from releng_tool.util.io import cmd_args_to_str
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.log import debug
@@ -495,8 +496,11 @@ class RelengPackagePipeline:
             raise RelengToolMissingExecCommand(pkg.name)
 
         note('execution for {}...', pkg.name)
-        debug('dir: {}', pkg.build_tree)
-        debug('cmd: {}', exec_cmd)
+        debug('(wd) {}', pkg.build_tree)
+        if isinstance(exec_cmd, list):
+            debug('(cmd) {}', cmd_args_to_str(exec_cmd))
+        else:
+            debug('(cmd) {}', exec_cmd)
         sys.stdout.flush()
 
         proc = subprocess.Popen(

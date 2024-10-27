@@ -253,7 +253,10 @@ class RelengEngineOptions:
                         break
 
                 if self.pkg_action == PkgAction.EXEC:
-                    self.target_action_exec = args.action_exec
+                    if args.action_exec:
+                        self.target_action_exec = args.action_exec
+                    elif self.forward_args:
+                        self.target_action_exec = self.forward_args
                 elif not self.pkg_action:
                     target_action = args.action
 
