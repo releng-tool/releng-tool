@@ -1,2 +1,3 @@
 /check text eol=lf
 /lint text eol=lf
+/tool-check text eol=lf
