@@ -33,6 +33,15 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
             with prepare_testenv() as engine:
                 self.assertEqual(engine.opts.dl_dir, dl_dir)
 
+    def test_engine_run_environ_cfg_out_container_dir(self):
+        with prepare_workdir() as out_dir:
+            os.environ['RELENG_GLOBAL_OUTPUT_CONTAINER_DIR'] = out_dir
+
+            with prepare_testenv() as engine:
+                mocked_project_name = os.path.basename(engine.opts.root_dir)
+                expected_outdir = os.path.join(out_dir, mocked_project_name)
+                self.assertEqual(engine.opts.out_dir, expected_outdir)
+
     def test_engine_run_environ_cfg_out_dir(self):
         with prepare_workdir() as out_dir:
             os.environ['RELENG_OUTPUT_DIR'] = out_dir
