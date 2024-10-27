@@ -4,6 +4,7 @@ Development
 - Allow adding a package without a definition that defines at least one script
 - Correct ``hint`` missing from script environments
 - Ensure the ``punch`` action triggers the post-build stage
+- Fixed issue where ``releng_copy`` could not copy a broken symbolic link
 - Fixed issue where ``releng_remove`` could not remove a broken symbolic link
 - Flag ``RELENG_FORCE`` when using the ``punch`` action
 - Introduce ``releng_symlink`` helper script function
