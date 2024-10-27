@@ -833,6 +833,7 @@ of the releng process:
         # utility methods (if adjusting, see also `releng_tool.__init__`)
         script_env['debug'] = debug
         script_env['err'] = err
+        script_env['hint'] = hint
         script_env['log'] = log
         script_env['note'] = note
         script_env['releng_cat'] = cat
