@@ -360,6 +360,13 @@ def _create_bare_git_repo(cache_dir):
                 cwd=cache_dir):
             verbose('unable to remove bare configuration on repository')
 
+        # Disable automatic garbage collection tasks on Git repositories
+        # managed in the releng-tool playground -- repositories are interim;
+        # no need for extra work.
+        if not GIT.execute([git_dir, 'config', 'gc.auto', '0'],
+                cwd=cache_dir):
+            verbose('unable to disable maintenance mode on repository')
+
         return True
 
     err('unable to initialize bare git repository')
