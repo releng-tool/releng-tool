@@ -6,6 +6,7 @@ assert not RELENG_CLEAN
 assert not RELENG_DEBUG
 assert not RELENG_DEVMODE
 assert not RELENG_DISTCLEAN
+assert not RELENG_EXEC
 assert not RELENG_FORCE
 assert not RELENG_LOCALSRCS
 assert not RELENG_MRPROPER

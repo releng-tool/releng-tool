@@ -17,6 +17,7 @@ class TestEngineRunEnvironCheck(RelengToolTestCase):
             'RELENG_DEBUG',
             'RELENG_DEVMODE',
             'RELENG_DISTCLEAN',
+            'RELENG_EXEC',
             'RELENG_FORCE',
             'RELENG_LOCALSRCS',
             'RELENG_MRPROPER',
