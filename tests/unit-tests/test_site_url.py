@@ -321,6 +321,9 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(rv)
 
     def test_site_url_fetch_file_https(self):
+        if sys.version_info < (3, 8):
+            raise unittest.SkipTest('legacy ssl; ignoring')
+
         with httpd_context(secure=True) as httpd:
             host, port = httpd.server_address
             site = 'https://localhost:{}/test.txt'.format(port)
