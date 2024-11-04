@@ -5,6 +5,7 @@
 from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
 import os
+import types
 import unittest
 
 
@@ -33,9 +34,11 @@ class TestUtilEnv(unittest.TestCase):
         self.assertEqual(len(env.keys()), 2)
 
         # imported built-in functions are ignored
-        extend_script_env(env,
-            {'test': globals()['__builtins__']['hash']})
-        self.assertEqual(len(env.keys()), 2)
+        # (ignore interpreters where __builtins__ is a module; e.g. pypy)
+        if not isinstance(globals()['__builtins__'], types.ModuleType):
+            extend_script_env(env,
+                {'test': globals()['__builtins__']['hash']})
+            self.assertEqual(len(env.keys()), 2)
 
         # imported functions are ignored
         extend_script_env(env,
