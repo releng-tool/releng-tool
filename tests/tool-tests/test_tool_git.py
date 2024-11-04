@@ -531,6 +531,10 @@ class TestToolGit(TestSiteToolBase):
         # from running for now -- may look at this in the future.
         if sys.version_info < (3, 8):
             raise unittest.SkipTest('skipping due to test runtime issues')
+        # Disabling macOS run for now; should be able to work but test is
+        # not yet tailored to handle this environment yet.
+        elif sys.platform == 'darwin':
+            raise unittest.SkipTest('skipping due to test runtime issues')
 
         # prepare a home directory for gpg; we initial setup with a
         # relative path, otherwise gpg-agent can fail to start in
