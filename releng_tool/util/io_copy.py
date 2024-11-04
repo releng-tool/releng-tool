@@ -117,8 +117,13 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
                 else:
                     _copyfile(src, dst)
 
-                if os.path.isfile(src) and os.path.isfile(dst):
-                    _copystat(src, dst)
+                # copy file statistics if both source and destination exist,
+                # and if the do exist, they are not the same file (py3.5)
+                if os.path.isfile(src) and os.path.isfile(dst) and (
+                        not os.path.islink(src) or not os.path.islink(dst)
+                        or  os.readlink(src) != os.readlink(dst)):
+                    _copy_stat_compat(src, dst)
+
                 success = True
         else:
             errmsg = 'source does not exist: {}'.format(src)
@@ -191,6 +196,19 @@ def path_copy_into(src, dst, quiet=False, critical=True, nested=False):
         nested=nested)
 
 
+def _copy_stat_compat(src, dst):
+    # do not attempt to copy if either component does not exist
+    # (e.g. broken symlink)
+    if not os.path.exists(src) or not os.path.exists(dst):
+        return
+
+    # do not attempt to copy if this is a symlink to itself (py3.5)
+    if os.path.realpath(src) == os.path.realpath(dst):
+        return
+
+    _copystat(src, dst)
+
+
 def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
     if not ensure_dir_exists(dst_folder, quiet=quiet, critical=critical):
         return False
@@ -206,13 +224,13 @@ def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
 
             os.symlink(target, dst)
             if os.path.isfile(target) and os.path.isfile(dst):
-                _copystat(src, dst)
+                _copy_stat_compat(src, dst)
         elif os.path.isdir(src):
             _copy_tree(src, dst, quiet=quiet, critical=critical)
         else:
             _copyfile(src, dst)
-            _copystat(src, dst)
+            _copy_stat_compat(src, dst)
 
-    _copystat(src_folder, dst_folder)
+    _copy_stat_compat(src_folder, dst_folder)
 
     return True
