@@ -745,6 +745,7 @@ of the releng process:
         script_env['RELENG_DEBUG'] = None
         script_env['RELENG_DEVMODE'] = None
         script_env['RELENG_DISTCLEAN'] = None
+        script_env['RELENG_EXEC'] = None
         script_env['RELENG_FORCE'] = None
         script_env['RELENG_LOCALSRCS'] = None
         script_env['RELENG_MRPROPER'] = None
@@ -813,6 +814,9 @@ of the releng process:
             elif gaction == GlobalAction.MRPROPER:
                 env['RELENG_CLEAN'] = '1'  # also set clean flag
                 env['RELENG_MRPROPER'] = '1'
+
+            if paction == PkgAction.EXEC:
+                env['RELENG_EXEC'] = '1'
 
             if paction in (PkgAction.RECONFIGURE, PkgAction.REBUILD,
                     PkgAction.REBUILD_ONLY):
