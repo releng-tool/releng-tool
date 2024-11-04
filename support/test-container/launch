@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+    echo "missing configuration"
+    exit 1
+fi
+
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+root_dir=$(realpath "$script_dir/../../")
+
+cfg="$1"
+shift
+
+if [ "$1" == "--build" ]; then
+    exec docker build -f "$cfg" .
+fi
+
+args=(
+    -v
+    "$root_dir":/mnt
+)
+while [ "$#" -gt 0 ]; do
+    [[ "$1" == "--" ]] && shift && break
+    args+=("$1"); shift
+done
+
+exec docker run --rm -it "${args[@]}" "$(docker build -f "$cfg" -q .)" "$@"

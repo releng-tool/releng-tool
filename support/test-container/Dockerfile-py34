@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM python:3.4
+
+RUN echo "deb http://archive.debian.org/debian stretch main" \
+    >/etc/apt/sources.list
+COPY --chmod=744 ubuntu-deps .
+RUN ./ubuntu-deps
+#RUN cargo install serde_json --version 1.0.82
+#ARUN cargo install --force --locked cargo-vendor
+WORKDIR "/mnt"
+CMD ["tox", "-e", "py34,py34-tools", "--workdir", "/tox-workdir"]

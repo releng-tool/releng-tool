@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+set -e
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update && apt-get install --assume-yes \
+    bzr \
+    cargo \
+    cmake \
+    cvs \
+    git \
+    mercurial \
+    meson \
+    patch \
+    scons \
+    tox \
+    && rm -rf /var/lib/apt/lists/*

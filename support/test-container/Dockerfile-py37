@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM python:3.7
+
+COPY --chmod=744 ubuntu-deps .
+RUN ./ubuntu-deps
+RUN pip install --upgrade setuptools>66.1.1
+WORKDIR "/mnt"
+CMD ["tox", "-e", "py37,py37-tools", "--workdir", "/tox-workdir"]

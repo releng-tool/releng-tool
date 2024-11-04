@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM python:2.7
+
+COPY --chmod=744 ubuntu-deps .
+RUN ./ubuntu-deps
+WORKDIR "/mnt"
+CMD ["tox", "-e", "py27,py27-tools", "--workdir", "/tox-workdir"]
