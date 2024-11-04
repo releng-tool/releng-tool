@@ -11,6 +11,8 @@ from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import touch
 from tests.support.site_tool_test import TestSiteToolBase
 import os
+import sys
+import unittest
 
 
 DEFAULT_BRANCH = 'test'
@@ -524,6 +526,12 @@ class TestToolGit(TestSiteToolBase):
         self.assertFalse(rv)
 
     def test_tool_git_verify_revision_expected_pass(self):
+        # Having some troubling getting Git to verify signatures on older
+        # interpreters that run on older Debian containers. Disabling them
+        # from running for now -- may look at this in the future.
+        if sys.version_info < (3, 8):
+            raise unittest.SkipTest('skipping due to test runtime issues')
+
         # prepare a home directory for gpg; we initial setup with a
         # relative path, otherwise gpg-agent can fail to start in
         # Windows enviroments (see also: TestToolGpg.test_tool_gpg_valid)
