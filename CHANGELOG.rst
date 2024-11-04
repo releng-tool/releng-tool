@@ -3,10 +3,13 @@ Development
 
 - Allow adding a package without a definition that defines at least one script
 - Correct ``hint`` missing from script environments
+- Disable garbage collection and maintenance tasks for Git caches
 - Ensure the ``punch`` action triggers the post-build stage
 - Fixed issue where ``releng_copy`` could not copy a broken symbolic link
 - Fixed issue where ``releng_remove`` could not remove a broken symbolic link
 - Flag ``RELENG_FORCE`` when using the ``punch`` action
+- Introduce ``RELENG_EXEC`` environment/script variable
+- Introduce ``libfoo-fresh`` action
 - Introduce ``releng_symlink`` helper script function
 - Introduce a ``nested`` option for I/O copy/move utility calls
 - Support injecting Visual Studio development environment variables
