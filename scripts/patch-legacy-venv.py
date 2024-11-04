@@ -44,8 +44,9 @@ def getsitepackages(prefixes=None):
         seen.add(prefix)
 
         if os.sep == '/':
-            libdirs = [sys.platlibdir]
-            if sys.platlibdir != 'lib':
+            platlibdir = getattr(sys, 'platlibdir', 'lib')
+            libdirs = [platlibdir]
+            if platlibdir != 'lib':
                 libdirs.append('lib')
 
             for libdir in libdirs:
