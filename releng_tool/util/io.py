@@ -481,14 +481,14 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
     if rv != 0:
         if critical:
             cmd_str = cmd_args_to_str(args) if args else '<empty>'
-            err('failed to issue command: ' + cmd_str)
+            err('failed to issue command ({}): {}', rv, cmd_str)
 
             # trigger a hard stop
             sys.exit(-1)
         elif args:
-            debug('failed to issue last command')
+            debug('failed to issue last command ({})', rv)
         else:
-            debug('failed to issue an empty command')
+            debug('failed to issue an empty command ({})', rv)
 
     return rv
 
