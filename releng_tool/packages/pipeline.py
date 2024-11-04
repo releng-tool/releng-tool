@@ -193,7 +193,7 @@ class RelengPackagePipeline:
                 return PipelineResult.STOP
         if gaction == GlobalAction.PATCH:
             return PipelineResult.CONTINUE
-        if paction == PkgAction.PATCH and pkg.name == target:
+        if paction in (PkgAction.FRESH, PkgAction.PATCH) and pkg.name == target:
             return PipelineResult.STOP
 
         # handle license generation request

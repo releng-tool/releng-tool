@@ -368,6 +368,7 @@ def usage():
  <pkg>-extract             Perform extract stage for the package
  <pkg>-fetch               Perform fetch stage for the package
  <pkg>-fetch-full          Perform fetch stage for the package (with post-fetch)
+ <pkg>-fresh               Freshly prepare a package output
  <pkg>-install             Perform install stage for the package
  <pkg>-license             Generate license information for the package
  <pkg>-patch               Perform patch stage for the package

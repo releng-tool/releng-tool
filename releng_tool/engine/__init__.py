@@ -304,25 +304,29 @@ class RelengEngine:
             return False
 
         # if cleaning a package, remove it's build output directory and stop
-        if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN):
+        if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN, PkgAction.FRESH):
             for pkg in pkgs:
-                if pkg.name == opts.target_action:
-                    def pkg_verbose_clean(desc):
-                        pkg_name = pkg.name  # noqa: B023
-                        verbose('{} for package: {}', desc, pkg_name)
-                    pkg_verbose_clean('removing output directory')
-                    rv = path_remove(pkg.build_output_dir)
+                if pkg.name != opts.target_action:
+                    continue
 
-                    if pa == PkgAction.DISTCLEAN:
-                        if os.path.exists(pkg.cache_file):
-                            pkg_verbose_clean('removing cache file')
-                            rv &= path_remove(pkg.cache_file)
-                        if os.path.isdir(pkg.cache_dir):
-                            pkg_verbose_clean('removing cache directory')
-                            rv &= path_remove(pkg.cache_dir)
+                def pkg_verbose_clean(desc):
+                    pkg_name = pkg.name  # noqa: B023
+                    verbose('{} for package: {}', desc, pkg_name)
+                pkg_verbose_clean('removing output directory')
+                rv = path_remove(pkg.build_output_dir)
 
-                    return rv
-            raise AssertionError('unexpected package clean handling')
+                if pa == PkgAction.DISTCLEAN:
+                    if os.path.exists(pkg.cache_file):
+                        pkg_verbose_clean('removing cache file')
+                        rv &= path_remove(pkg.cache_file)
+                    if os.path.isdir(pkg.cache_dir):
+                        pkg_verbose_clean('removing cache directory')
+                        rv &= path_remove(pkg.cache_dir)
+
+                if rv and pa == PkgAction.FRESH:
+                    break
+
+                return rv
 
         # ensure any of required host tools do exist
         pcheck = 'releng.disable_prerequisites_check' not in opts.quirks
@@ -343,6 +347,7 @@ class RelengEngine:
         requested_preconfig = pa in [
             PkgAction.EXTRACT,
             PkgAction.FETCH,
+            PkgAction.FRESH,
             PkgAction.LICENSE,
             PkgAction.PATCH,
         ]
@@ -797,7 +802,8 @@ of the releng process:
             if self.opts.target_action:
                 env['RELENG_TARGET_PKG'] = self.opts.target_action
 
-            if gaction == GlobalAction.CLEAN or paction == PkgAction.CLEAN:
+            if gaction == GlobalAction.CLEAN or \
+                    paction in (PkgAction.FRESH, PkgAction.CLEAN):
                 env['RELENG_CLEAN'] = '1'
             elif gaction == GlobalAction.DISTCLEAN or \
                     paction == PkgAction.DISTCLEAN:

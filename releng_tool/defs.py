@@ -260,6 +260,7 @@ class PkgAction(Enum):
         EXTRACT: process a package till end of the extraction stage
         FETCH: process a package till end of the fetch stage
         FETCH_FULL: process a package till end of the fetch-post stage
+        FRESH: prepare a fresh package output (before configuration)
         INSTALL: process a package till end of the install stage
         LICENSE: generate license information for a package
         PATCH: process a package till end of the patch stage
@@ -277,6 +278,7 @@ class PkgAction(Enum):
     EXTRACT = 'extract'
     FETCH = 'fetch'
     FETCH_FULL = 'fetch_full'
+    FRESH = 'fresh'
     INSTALL = 'install'
     LICENSE = 'license'
     PATCH = 'patch'
