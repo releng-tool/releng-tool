@@ -299,8 +299,7 @@ class TestEngineRunArgs(RelengToolTestCase):
             }
 
             with prepare_testenv(config=config) as engine:
-                mock_config = os.path.join(os.getcwd(), test_filename)
-                self.assertEqual(engine.opts.conf_point, mock_config)
+                self.assertEqual(engine.opts.conf_point, test_filename)
 
     def test_engine_run_args_debug(self):
         config = {
