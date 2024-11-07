@@ -239,7 +239,7 @@ class RelengEngine:
         if opts.target_action:
             pkg_names = [opts.target_action]
         else:
-            pkg_names = self._get_package_names(settings)
+            pkg_names = self._get_package_names(conf_point, settings)
         if not pkg_names:
             return False
         debug('target packages)')
@@ -568,7 +568,7 @@ has failed. Ensure the following path is accessible for this user:
 
         return rv
 
-    def _get_package_names(self, settings):
+    def _get_package_names(self, conf_point, settings):
         """
         acquire list of project package names to process
 
@@ -578,6 +578,7 @@ has failed. Ensure the following path is accessible for this user:
         processed.
 
         Args:
+            conf_point: the configuration file used to pull package names
             settings: user settings to pull package information from
 
         Returns:
@@ -602,12 +603,9 @@ Ensure a package list exists with the string-based names of packages to be part
 of the releng process:
 
     {}
-        {} = ['liba', 'libb', 'libc']''',
-                self.opts.conf_point,
-                ConfKey.PKGS)
+        {} = ['liba', 'libb', 'libc']''', conf_point, ConfKey.PKGS)
         elif not pkg_names:
-            raise RelengToolMissingPackagesError(
-                self.opts.conf_point, ConfKey.PKGS)
+            raise RelengToolMissingPackagesError(conf_point, ConfKey.PKGS)
         else:
             # remove duplicates (but maintain pre-sorted ordered)
             pkg_names = OrderedDict.fromkeys(pkg_names)
