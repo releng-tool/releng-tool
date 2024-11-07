@@ -21,6 +21,7 @@ from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
+from releng_tool.opts import RELENG_CONF_NAME
 from releng_tool.opts import RELENG_POST_BUILD_NAME
 from releng_tool.packages.exceptions import RelengToolStageFailure
 from releng_tool.packages.manager import RelengPackageManager
@@ -157,7 +158,25 @@ class RelengEngine:
         # verify the project's configuration exists before performing any
         # actions
         verbose('detecting project configuration...')
-        conf_point, conf_point_exists = opt_file(opts.conf_point)
+        if opts.conf_point:
+            conf_point, conf_point_exists = opt_file(opts.conf_point)
+        else:
+            cfg_names = [
+                RELENG_CONF_NAME,
+                # older supported configuration name
+                'releng',
+            ]
+
+            for cfg_name in cfg_names:
+                conf_point = os.path.join(opts.root_dir, cfg_name)
+                debug('trying configuration {}...', conf_point)
+                conf_point, conf_point_exists = opt_file(conf_point)
+                if conf_point_exists:
+                    break
+
+            if not conf_point_exists:
+                conf_point = 'releng-tool.rt'
+
         if not conf_point_exists:
             raise RelengToolMissingConfigurationError(conf_point)
 

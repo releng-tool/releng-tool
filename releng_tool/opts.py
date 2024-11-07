@@ -26,7 +26,7 @@ DEFAULT_TARGET_DIR = 'target'     # default target container directory
 
 # default directory/file paths
 RELENG_CONF_EXTENDED_NAME = '.releng-tool'       # extended conf. script
-RELENG_CONF_NAME = 'releng'                      # conf. script filename
+RELENG_CONF_NAME = 'releng-tool'                 # conf. script filename
 RELENG_CONF_OVERRIDES_NAME = 'releng-overrides'  # conf. overrides filename
 RELENG_POST_BUILD_NAME = 'releng-post-build'     # post build script filename
 FF_PREFIX = '.releng-flag-'          # prefix for all file flags
@@ -345,10 +345,6 @@ class RelengEngineOptions:
             self.target_dir = join(self.out_dir, DEFAULT_TARGET_DIR)
 
         # files
-        if not self.conf_point:
-            self.conf_point = join(root, RELENG_CONF_NAME)
-        elif not os.path.isabs(self.conf_point):
-            self.conf_point = join(os.getcwd(), self.conf_point)
         if not self.conf_point_overrides:
             self.conf_point_overrides = join(root, RELENG_CONF_OVERRIDES_NAME)
         if not self.ff_devmode:
