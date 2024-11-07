@@ -40,7 +40,8 @@ MULTIPART_EXTENSIONS = [
 
 # file extensions permitted for releng-tool scripts/definitions
 RELENG_TOOL_EXTENSIONS = [
-    '.releng',
+    '.rt',
+    '.releng',  # no longer promoted
     '.py',
 ]
 
