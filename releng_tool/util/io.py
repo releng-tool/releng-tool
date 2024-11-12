@@ -413,6 +413,12 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             debug('(wd) {}', cwd if cwd else os.getcwd())
             cmd_str = cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
+            AT_LEAST_THREE_ARGS = 3
+            if len(args) >= AT_LEAST_THREE_ARGS and is_debug('execute-args'):
+                arg_str = '\n ' + args[0]
+                for arg in args[1:]:
+                    arg_str += '\n  {}'.format(arg)
+                debug(arg_str)
             if final_env and is_debug('execute-env'):
                 env_str = '(env)'
                 for k, v in sorted(final_env.items()):

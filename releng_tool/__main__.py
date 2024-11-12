@@ -439,6 +439,7 @@ releng.disable_spdx_check              Disable spdx license checks
 releng.git.no_depth                    Disable depth-limits for Git calls
 releng.git.no_quick_fetch              Disable quick-fetching for Git calls
 releng.git.replicate_cache             Copy Git repositories into build outputs
+releng.log.execute_args                Enable execute argument line logging
 releng.log.execute_env                 Enable execute envrionment debug logging
 releng.stats.no_pdf                    Never generate PDF statistics output
 """
