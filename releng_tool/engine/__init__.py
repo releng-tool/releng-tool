@@ -154,6 +154,8 @@ class RelengEngine:
             debug('injecting key-value arguments into global context')
             gbls.update(opts.injected_kv)
 
+        debug('total job count configured: {}', self.opts.jobs)
+
         debug('loading statistics...')
         self.stats.load()
 
