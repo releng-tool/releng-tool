@@ -296,7 +296,7 @@ class RelengEngine:
         # register the project's host-bin directory as a system path; lazily
         # permits loading host tools built by a project over the system
         debug('registering host bin directory in path...')
-        host_sysroot_dir = os.path.join(opts.host_dir + opts.sysroot_prefix)
+        host_sysroot_dir = opts.host_dir + opts.sysroot_prefix
         host_bin_dir = os.path.join(host_sysroot_dir, 'bin')
         sys.path.insert(0, host_bin_dir)
         os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
