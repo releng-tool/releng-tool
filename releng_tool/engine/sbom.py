@@ -109,7 +109,7 @@ class SbomManager:
 
             cache_pkg['id'] = uid
             cache_pkg['version'] = version_desc
-            cache_pkg['site'] = pkg.site
+            cache_pkg['site'] = pkg.site or ''
             cache_pkg['licenses'] = []
             cache_pkg['hashes'] = []
 
@@ -344,12 +344,18 @@ class SbomManager:
                 pkg_props = ET.SubElement(pkg_data, 'div')
                 pkg_props.set('class', 'entries')
 
+                has_pkg_info = False
+
                 for key, val in properties.items():
-                    entry = ET.SubElement(pkg_props, 'div')
-                    ET.SubElement(entry, 'div').text = val
-                    ET.SubElement(entry, 'div').text = pkg.get(key, '(none)')
+                    prop_data = pkg.get(key)
+                    if prop_data:
+                        has_pkg_info = True
+                        entry = ET.SubElement(pkg_props, 'div')
+                        ET.SubElement(entry, 'div').text = val
+                        ET.SubElement(entry, 'div').text = prop_data
 
                 if pkg['licenses']:
+                    has_pkg_info = True
                     entry = ET.SubElement(pkg_props, 'div')
                     ET.SubElement(entry, 'div').text = 'Licenses'
                     licenses_root = ET.SubElement(entry, 'div')
@@ -359,6 +365,7 @@ class SbomManager:
                         ET.SubElement(licenses_list, 'li').text = pkg_license
 
                 if pkg['hashes']:
+                    has_pkg_info = True
                     pkg_hashes = ET.SubElement(pkg_data, 'div')
                     pkg_hashes.set('class', 'hashes')
 
@@ -369,6 +376,12 @@ class SbomManager:
 
                         ph_data = ET.SubElement(pkg_hashes, 'div')
                         ET.SubElement(ph_data, 'div').text = ph['hash']
+
+                if not has_pkg_info:
+                    entry = ET.SubElement(pkg_data, 'div')
+                    no_details = ET.SubElement(entry, 'div')
+                    no_details.set('class', 'clean')
+                    no_details.text = '(no details)'
 
         if not has_pkg_data:
             no_pkg_data = ET.SubElement(body, 'div')
@@ -666,22 +679,30 @@ class SbomManager:
 '''.format(desc))
 
                 for pkg_name, pkg in data.items():
+                    has_pkg_info = False
                     f.write('\n')
 
                     f.write(pkg_name)
                     if pkg['version']:
+                        has_pkg_info = True
                         f.write(' ({})'.format(pkg['version']))
                     f.write('\n')
 
-                    if pkg['site']:
+                    has_site = pkg.get('site', '')
+                    if has_site:
+                        has_pkg_info = True
                         f.write(' Site: ' + pkg['site'] + '\n')
 
                     if pkg['licenses']:
+                        has_pkg_info = True
                         f.write(' Licenses:\n')
                         for pkg_license in pkg['licenses']:
                             f.write('  {}\n'.format(pkg_license))
+                    elif has_site:
+                        f.write('  No licenses.\n')
 
                     if pkg['hashes']:
+                        has_pkg_info = True
                         f.write(' Hashes:\n')
                         for pkg_hash in pkg['hashes']:
                             f.write('  [{}] {}: {}\n'.format(
@@ -689,6 +710,11 @@ class SbomManager:
                                 pkg_hash['file'],
                                 pkg_hash['hash'],
                             ))
+                    elif has_site:
+                        f.write('  No hashes.\n')
+
+                    if not has_pkg_info:
+                        f.write('  (no details)\n')
 
             if not has_pkg_data:
                 f.write('No package information provided.\n')
@@ -806,6 +832,10 @@ h3 {
 
 .entries > div > :first-child::after {
     content: ':';
+}
+
+.entries .clean::after {
+    content: unset !important;
 }
 
 .entries ul {
