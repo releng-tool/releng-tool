@@ -5,6 +5,7 @@
 from glob import glob
 from releng_tool.defs import VcsType
 from releng_tool.tool.patch import PATCH
+from releng_tool.util.io import opt_file
 from releng_tool.util.io import run_script
 from releng_tool.util.log import err
 from releng_tool.util.log import note
@@ -51,8 +52,8 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     # check if we have a patch script override to process (instead of
     # patch files)
     patch_script_filename = '{}-{}'.format(pkg.name, PATCH_SCRIPT)
-    patch_script = os.path.join(pkg.def_dir, patch_script_filename)
-    has_patch_script = os.path.isfile(patch_script)
+    patch_script_base = os.path.join(pkg.def_dir, patch_script_filename)
+    patch_script, has_patch_script = opt_file(patch_script_base)
 
     # if not patch script, check if we detect any patch files in the
     # package's folder
