@@ -8,6 +8,13 @@ import os
 
 
 class TestPkgPipelineRemoteScripts(RelengToolTestCase):
+    def test_pkg_pipeline_remote_scripts_deprecated(self):
+        with prepare_testenv(template='remote-scripts-deprecated') as engine:
+            engine.run()
+            self._assertFileFlag(engine, 'build-remote', exists=True)
+            self._assertFileFlag(engine, 'configure-remote', exists=True)
+            self._assertFileFlag(engine, 'install-remote', exists=True)
+
     def test_pkg_pipeline_remote_scripts_disabled_option(self):
         with prepare_testenv(template='remote-scripts-disabled') as engine:
             engine.run()

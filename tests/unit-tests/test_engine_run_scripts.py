@@ -42,7 +42,7 @@ class TestEngineRunScripts(RelengToolTestCase):
         rv = run_testenv(template='scripts-invalid-post')
         self.assertFalse(rv)
 
-    def test_engine_run_scripts_valid(self):
+    def test_engine_run_scripts_valid_default(self):
         with prepare_testenv(template='scripts-valid') as engine:
             rv = engine.run()
             self.assertTrue(rv)
@@ -52,6 +52,58 @@ class TestEngineRunScripts(RelengToolTestCase):
                 os.path.join(engine.opts.target_dir, 'invoked-configure'),
                 os.path.join(engine.opts.target_dir, 'invoked-build'),
                 os.path.join(engine.opts.target_dir, 'invoked-install'),
+                os.path.join(engine.opts.target_dir, 'invoked-patch'),
+                os.path.join(engine.opts.target_dir, 'invoked-post'),
+            ]
+
+            for file_flag in file_flags:
+                self.assertTrue(os.path.exists(file_flag))
+
+    def test_engine_run_scripts_valid_ext_none(self):
+        with prepare_testenv(template='scripts-valid-ext-none') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            file_flags = [
+                os.path.join(engine.opts.target_dir, 'invoked-bootstrap'),
+                os.path.join(engine.opts.target_dir, 'invoked-configure'),
+                os.path.join(engine.opts.target_dir, 'invoked-build'),
+                os.path.join(engine.opts.target_dir, 'invoked-install'),
+                os.path.join(engine.opts.target_dir, 'invoked-patch'),
+                os.path.join(engine.opts.target_dir, 'invoked-post'),
+            ]
+
+            for file_flag in file_flags:
+                self.assertTrue(os.path.exists(file_flag))
+
+    def test_engine_run_scripts_valid_ext_py(self):
+        with prepare_testenv(template='scripts-valid-ext-py') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            file_flags = [
+                os.path.join(engine.opts.target_dir, 'invoked-bootstrap'),
+                os.path.join(engine.opts.target_dir, 'invoked-configure'),
+                os.path.join(engine.opts.target_dir, 'invoked-build'),
+                os.path.join(engine.opts.target_dir, 'invoked-install'),
+                os.path.join(engine.opts.target_dir, 'invoked-patch'),
+                os.path.join(engine.opts.target_dir, 'invoked-post'),
+            ]
+
+            for file_flag in file_flags:
+                self.assertTrue(os.path.exists(file_flag))
+
+    def test_engine_run_scripts_valid_ext_releng(self):
+        with prepare_testenv(template='scripts-valid-ext-releng') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            file_flags = [
+                os.path.join(engine.opts.target_dir, 'invoked-bootstrap'),
+                os.path.join(engine.opts.target_dir, 'invoked-configure'),
+                os.path.join(engine.opts.target_dir, 'invoked-build'),
+                os.path.join(engine.opts.target_dir, 'invoked-install'),
+                os.path.join(engine.opts.target_dir, 'invoked-patch'),
                 os.path.join(engine.opts.target_dir, 'invoked-post'),
             ]
 

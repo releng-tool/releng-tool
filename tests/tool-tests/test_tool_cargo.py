@@ -8,7 +8,7 @@ import sys
 
 # cmake template has two projects -- helpers to find the "test" package
 LIBPKG_DEFDIR = os.path.join('package', 'test')
-LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'test')
+LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'test.rt')
 
 
 class TestToolCargo(TestSiteToolBase):

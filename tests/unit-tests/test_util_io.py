@@ -161,6 +161,8 @@ class TestUtilIo(unittest.TestCase):
                 _('file2.py'),
                 _('file3'),
                 _('file3.py'),
+                _('file5.rt'),
+                _('file6.releng'),
             ]
             for file in files:
                 with open(file, 'a') as f:
@@ -187,6 +189,18 @@ class TestUtilIo(unittest.TestCase):
             target, existence = opt_file(src)
             self.assertFalse(existence)
             self.assertEqual(target, src)
+
+            src = _('file5')
+            opt = _('file5.rt')
+            target, existence = opt_file(src)
+            self.assertTrue(existence)
+            self.assertEqual(target, opt)
+
+            src = _('file6')
+            opt = _('file6.releng')
+            target, existence = opt_file(src)
+            self.assertTrue(existence)
+            self.assertEqual(target, opt)
 
     def test_utilio_prepare_helpers(self):
         prepared = prepare_arguments(None)

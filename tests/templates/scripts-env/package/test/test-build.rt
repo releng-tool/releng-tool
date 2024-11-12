@@ -8,7 +8,7 @@ fname = os.path.join(TARGET_DIR, 'pkg-start.json')
 with open(fname, 'w') as f:
     json.dump(dict(os.environ), f)
 
-releng_include(releng_join('nested', 'test-build-nested'))
+releng_include(releng_join('nested', 'test-build-nested.rt'))
 
 fname = os.path.join(TARGET_DIR, 'pkg-end.json')
 with open(fname, 'w') as f:

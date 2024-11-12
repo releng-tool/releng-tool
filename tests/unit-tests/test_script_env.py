@@ -25,11 +25,11 @@ class TestScriptEnv(RelengToolTestCase):
 
             pkg_container_dir = engine.opts.default_pkg_dir
             pkg_dir = os.path.join(pkg_container_dir, 'test')
-            build_script = os.path.join(pkg_dir, 'test-build')
+            build_script = os.path.join(pkg_dir, 'test-build.rt')
             self.assertTrue(os.path.exists(build_script))
 
             nested_dir = os.path.join(pkg_dir, 'nested')
-            nested_script = os.path.join(nested_dir, 'test-build-nested')
+            nested_script = os.path.join(nested_dir, 'test-build-nested.rt')
             self.assertTrue(os.path.exists(nested_script))
 
             # verify build script path and parent path are configured

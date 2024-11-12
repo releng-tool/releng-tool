@@ -8,7 +8,7 @@ import sys
 
 # cmake template has two projects -- helpers to find the "lib" package
 LIBPKG_DEFDIR = os.path.join('package', 'lib')
-LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'lib')
+LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'lib.rt')
 
 
 class TestToolCmake(TestSiteToolBase):
@@ -46,7 +46,7 @@ class TestToolCmake(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
-    def test_tool_cmake_staging(self):
+    def test_tool_cmake_staging_only(self):
         self._update_install_type('staging')
 
         rv = self.engine.run()
@@ -94,5 +94,6 @@ class TestToolCmake(TestSiteToolBase):
         self.defconfig_add('INSTALL_TYPE', install_type)
 
         defconfig = os.path.join(self.engine.opts.root_dir, LIBPKG_DEFINITION)
+        self.assertTrue(os.path.exists(defconfig))
         self.defconfig_add('INSTALL_TYPE', install_type,
             defconfig=defconfig, pkg_name='lib')

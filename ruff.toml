@@ -117,3 +117,7 @@ lint.ignore = [
 'releng_tool/ext/seed/__init__.py' = [
     'ARG002',
 ]
+
+'tests/templates/**' = [
+    'F821',
+]

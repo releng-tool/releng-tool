@@ -10,7 +10,7 @@ import unittest
 
 # template has two projects -- helpers to find the "lib" package
 LIBPKG_DEFDIR = os.path.join('package', 'lib')
-LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'lib')
+LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'lib.rt')
 
 
 class TestToolMeson(TestSiteToolBase):

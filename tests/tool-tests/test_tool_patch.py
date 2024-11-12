@@ -23,7 +23,7 @@ class TestToolPatch(RelengToolTestCase):
             site = 'TEST_SITE=r"file:///{}"'.format(archive)
 
             root_dir = engine.opts.root_dir
-            pkg_script = os.path.join(root_dir, 'package', 'test', 'test')
+            pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
 
             with open(pkg_script, 'a') as f:
                 f.write(site + '\n')
@@ -54,7 +54,8 @@ class TestToolPatch(RelengToolTestCase):
             site = 'TEST_SITE=r"file:///{}"'.format(archive)
 
             root_dir = engine.opts.root_dir
-            pkg_script = os.path.join(root_dir, 'package', 'test', 'test')
+            pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
+            self.assertTrue(os.path.exists(pkg_script))
 
             with open(pkg_script, 'a') as f:
                 f.write(site + '\n')

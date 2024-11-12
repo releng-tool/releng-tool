@@ -16,7 +16,7 @@ import os
 
 PKG_NAME = 'test'
 PKG_DEFDIR = os.path.join('package', PKG_NAME)
-PKG_DEFINITION = os.path.join(PKG_DEFDIR, PKG_NAME)
+PKG_DEFINITION = os.path.join(PKG_DEFDIR, PKG_NAME + '.rt')
 DEFAULT_TEMPLATE = 'site-tool'
 
 
