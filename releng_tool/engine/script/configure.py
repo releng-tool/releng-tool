@@ -2,6 +2,7 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+from releng_tool.engine.script import resolve_remote_script
 from releng_tool.util.io import opt_file
 from releng_tool.util.io import run_script
 from releng_tool.util.log import verbose
@@ -38,9 +39,8 @@ def configure(opts):
                 'releng.disable_remote_scripts' in opts._quirks):
             return True
 
-        configure_script_filename = '{}-{}'.format('releng', CONFIGURE_SCRIPT)
-        configure_script = os.path.join(build_dir, configure_script_filename)
-        configure_script, configure_script_exists = opt_file(configure_script)
+        configure_script, configure_script_exists = \
+            resolve_remote_script(build_dir, CONFIGURE_SCRIPT)
         if not configure_script_exists:
             return True
 
