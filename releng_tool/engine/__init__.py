@@ -22,7 +22,6 @@ from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.opts import RELENG_CONF_NAME
-from releng_tool.opts import RELENG_POST_BUILD_NAME
 from releng_tool.packages.exceptions import RelengToolStageFailure
 from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.packages.pipeline import PipelineResult
@@ -711,22 +710,25 @@ of the releng process:
         with interim_working_dir(self.opts.target_dir):
             self.registry.emit('post-build-started', env=env)
 
-        build_script, postbuild_exists = opt_file(self.opts.post_build_point)
+        RELENG_POST_BUILD_NAME = 'releng-tool-post-build'
+        script_name = os.path.join(self.opts.root_dir, RELENG_POST_BUILD_NAME)
+        build_script, postbuild_exists = opt_file(script_name)
 
-        # TODO remove deprecated configuration load in (at maximum) v1.0
         if not postbuild_exists:
             deprecated_posts = [
+                'releng-post-build',
                 'releng-post',
                 'post.py',
             ]
 
-            for script_name in deprecated_posts:
-                build_script = os.path.join(self.opts.root_dir, script_name)
+            for deprecated_post in deprecated_posts:
+                script_name = os.path.join(self.opts.root_dir, deprecated_post)
+                build_script, postbuild_exists = opt_file(script_name)
                 if os.path.isfile(build_script):
                     warn('using deprecated post-processing file {} -- switch '
-                         'to {} for future projects', script_name,
+                         'to {}.rt when possible',
+                         os.path.basename(build_script),
                          RELENG_POST_BUILD_NAME)
-                    postbuild_exists = True
                     break
 
         if postbuild_exists:
