@@ -161,18 +161,23 @@ class RelengEngine:
         if opts.conf_point:
             conf_point, conf_point_exists = opt_file(opts.conf_point)
         else:
-            cfg_names = [
-                RELENG_CONF_NAME,
-                # older supported configuration name
-                'releng',
-            ]
+            script_name = os.path.join(self.opts.root_dir, RELENG_CONF_NAME)
+            conf_point, conf_point_exists = opt_file(script_name)
 
-            for cfg_name in cfg_names:
-                conf_point = os.path.join(opts.root_dir, cfg_name)
-                debug('trying configuration {}...', conf_point)
-                conf_point, conf_point_exists = opt_file(conf_point)
-                if conf_point_exists:
-                    break
+            if not conf_point_exists:
+                deprecated_cfgs = [
+                    'releng',  # deprecated
+                ]
+
+                for dcfg in deprecated_cfgs:
+                    script_name = os.path.join(self.opts.root_dir, dcfg)
+                    conf_point, conf_point_exists = opt_file(script_name)
+                    if os.path.isfile(conf_point):
+                        warn('using deprecated configuration file {} -- switch '
+                             'to {}.rt when possible',
+                             os.path.basename(conf_point),
+                             RELENG_CONF_NAME)
+                        break
 
             if not conf_point_exists:
                 conf_point = 'releng-tool.rt'
