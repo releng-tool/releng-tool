@@ -5,13 +5,17 @@ Development
 - Correct ``hint`` missing from script environments
 - Disable garbage collection and maintenance tasks for Git caches
 - Ensure the ``punch`` action triggers the post-build stage
+- Fixed incorrect specification for empty sites in JSON/SPDX SBOM documents
 - Fixed issue where ``releng_copy`` could not copy a broken symbolic link
 - Fixed issue where ``releng_remove`` could not remove a broken symbolic link
+- Fixed patch overrides not supporting alternative file extensions
 - Flag ``RELENG_FORCE`` when using the ``punch`` action
 - Introduce ``RELENG_EXEC`` environment/script variable
 - Introduce ``libfoo-fresh`` action
 - Introduce ``releng_symlink`` helper script function
 - Introduce a ``nested`` option for I/O copy/move utility calls
+- Promote use of ``.rt`` extensions for definitions/scripts
+- Promote use of ``releng-tool.rt`` for project configuration
 - Support injecting Visual Studio development environment variables
 - Support preallocated list/dictionary package configurations
 - Utilize forwarded arguments as fallback for ``libfoo-exec`` action
