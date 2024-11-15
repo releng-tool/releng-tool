@@ -11,9 +11,9 @@ import os
 import pickle
 
 try:
-    from time import clock as capture_clock
-except ImportError:
     from time import monotonic as capture_clock
+except ImportError:
+    from time import time as capture_clock
 
 # optional imports
 try:
