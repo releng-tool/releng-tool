@@ -435,7 +435,7 @@ releng.cmake.disable_direct_includes   Disable include-injection with CMake
 releng.disable_prerequisites_check     Disable prerequisites check
 releng.disable_remote_configs          Disable remote configurations
 releng.disable_remote_scripts          Disable remote scripts
-releng.disable_spdx_check              Disable spdx license checks
+releng.disable_spdx_check              Disable SPDX license checks
 releng.git.no_depth                    Disable depth-limits for Git calls
 releng.git.no_quick_fetch              Disable quick-fetching for Git calls
 releng.git.replicate_cache             Copy Git repositories into build outputs
