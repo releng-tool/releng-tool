@@ -523,7 +523,10 @@ class RelengPackageManager:
         if not pkg_vcs_type:
             if pkg_site:
                 site_lc = pkg_site.lower()
-                if site_lc.startswith('bzr+'):
+                if site_lc.startswith('brz+'):
+                    pkg_site = pkg_site[4:]
+                    pkg_vcs_type = VcsType.BRZ
+                elif site_lc.startswith('bzr+'):
                     pkg_site = pkg_site[4:]
                     pkg_vcs_type = VcsType.BZR
                 elif site_lc.startswith('cvs+'):
@@ -574,6 +577,7 @@ class RelengPackageManager:
         # check if the detected vcs type needs a revision, and fail if we do
         # not have one
         if not pkg_revision and pkg_vcs_type in (
+                VcsType.BRZ,
                 VcsType.BZR,
                 VcsType.CVS,
                 VcsType.GIT,
@@ -713,6 +717,7 @@ using deprecated dependency configuration for package: {}
 
         # check a site is defined for vcs types which require it
         if not pkg_site and pkg_vcs_type in (
+                VcsType.BRZ,
                 VcsType.BZR,
                 VcsType.CVS,
                 VcsType.GIT,
@@ -740,6 +745,7 @@ using deprecated dependency configuration for package: {}
         #
         # non-dvcs's will be always gzip-tar'ed.
         if pkg_vcs_type in (
+                VcsType.BRZ,
                 VcsType.BZR,
                 VcsType.CVS,
                 VcsType.PERFORCE,

@@ -6,6 +6,7 @@ from releng_tool.defs import PackageType
 from releng_tool.defs import VcsType
 from releng_tool.tool.autoreconf import AUTORECONF
 from releng_tool.tool.autoreconf import AUTORECONF_COMMAND
+from releng_tool.tool.brz import BRZ
 from releng_tool.tool.bzr import BZR
 from releng_tool.tool.cargo import CARGO
 from releng_tool.tool.cmake import CMAKE
@@ -129,6 +130,12 @@ class RelengPrerequisites:
                 self._verbose_exists(SCONS)
             else:
                 missing.add(SCONS.tool)
+
+        if VcsType.BRZ in vcs_types:
+            if BRZ.exists():
+                self._verbose_exists(BRZ)
+            else:
+                missing.add(BRZ.tool)
 
         if VcsType.BZR in vcs_types:
             if BZR.exists():

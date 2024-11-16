@@ -396,6 +396,7 @@ class VcsType(Enum):
     processing is used when acquiring resources.
 
     Attributes:
+        BRZ: breezy
         BZR: gnu bazaar
         CVS: concurrent versions system
         GIT: git
@@ -408,6 +409,7 @@ class VcsType(Enum):
         SVN: subversion
         URL: url (http, https, ftp, file, etc.)
     """
+    BRZ = 'brz'
     BZR = 'bzr'
     CVS = 'cvs'
     GIT = 'git'
