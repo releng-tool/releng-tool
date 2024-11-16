@@ -18,6 +18,7 @@ from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
 from releng_tool.engine.sbom import SbomManager
+from releng_tool.engine.suggest import suggest
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
@@ -337,8 +338,23 @@ class RelengEngine:
             if not pkgs:
                 return False
         except RelengToolMissingPackageScript:
+            extra = ''
+
+            detected = suggest(opts, opts.target_action)
+            if detected:
+                if len(detected) == 1:
+                    alt = '"{}"'.format(detected[0])
+                elif len(detected) == 2:  # noqa: PLR2004
+                    alt = '"{}" or "{}"'.format(detected[0], detected[1])
+                else:
+                    alt = '"{}" or "{}"'.format(
+                        '", "'.join(detected[:-1]), detected[-1])
+
+                extra = '\n  Did you mean {}?'.format(alt)
+
             raise RelengToolUnknownAction({
                 'action': opts.target_action,
+                'extra': extra,
             })
 
         # if cleaning a package, remove it's build output directory and stop

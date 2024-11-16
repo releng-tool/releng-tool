@@ -107,7 +107,7 @@ class RelengToolUnknownAction(RelengToolException):
     """
     def __init__(self, args):
         super(RelengToolUnknownAction, self).__init__('''\
-unknown action or package: {action}
+unknown action or package: {action}{extra}
 '''.strip().format(**args))
 
 
