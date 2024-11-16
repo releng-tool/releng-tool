@@ -128,6 +128,8 @@ class Rpk(Enum):
         INSTALL_OPTS: package-type install options
         # (package type - autotools)
         AUTOTOOLS_AUTORECONF: autotools /w autoreconf
+        # (package type - cargo)
+        CARGO_NOINSTALL: skip cargo install stage
         # (package type - cmake)
         CMAKE_BUILD_TYPE: the cmake build type to use
         CMAKE_NOINSTALL: skip cmake install stage
@@ -189,6 +191,8 @@ class Rpk(Enum):
     INSTALL_OPTS = 'INSTALL_OPTS'
     # (package type - autotools)
     AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF'
+    # (package type - cargo)
+    CARGO_NOINSTALL = 'CARGO_NOINSTALL'
     # (package type - cmake)
     CMAKE_BUILD_TYPE = 'CMAKE_BUILD_TYPE'
     CMAKE_NOINSTALL = 'CMAKE_NOINSTALL'

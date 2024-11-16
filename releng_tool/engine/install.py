@@ -41,7 +41,9 @@ def stage(engine, pkg, script_env):
     # check if a package is not using the installation stage
     skip_install = False
 
-    if pkg.type == PackageType.CMAKE:
+    if pkg.type == PackageType.CARGO:
+        skip_install = pkg.cargo_noinstall
+    elif pkg.type == PackageType.CMAKE:
         skip_install = pkg.cmake_noinstall
     elif pkg.type == PackageType.MAKE:
         skip_install = pkg.make_noinstall

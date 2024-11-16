@@ -67,6 +67,8 @@ class RelengPackage:
         install_opts: package-type installation option overrides
         (package type - autotools)
         autotools_autoreconf: flag to invoke autoreconf
+        (package type - cargo)
+        cargo_noinstall: flag to disable the install stage for a cargo project
         (package type - cmake)
         cmake_build_type: cmake build type to use
         cmake_noinstall: flag to disable the install stage for a cmake project
@@ -134,6 +136,8 @@ class RelengPackage:
         self.install_opts = None
         # (package type - autotools)
         self.autotools_autoreconf = None
+        # (package type - cargo)
+        self.cargo_noinstall = None
         # (package type - cmake)
         self.cmake_build_type = None
         self.cmake_noinstall = None

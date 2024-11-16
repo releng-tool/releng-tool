@@ -111,6 +111,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.BUILD_ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(Rpk.BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
         self._register_conf(Rpk.BUILD_SUBDIR, PkgKeyType.STR)
+        self._register_conf(Rpk.CARGO_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.CMAKE_BUILD_TYPE, PkgKeyType.STR)
         self._register_conf(Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.CONF_DEFS, PkgKeyType.DICT_STR_STR)
@@ -1245,6 +1246,14 @@ using deprecated dependency configuration for package: {}
         # autotools autoreconf flag
         if pkg.autotools_autoreconf is None:
             pkg.autotools_autoreconf = self._fetch(Rpk.AUTOTOOLS_AUTORECONF)
+
+        # ######################################################################
+        # (package type - cargo)
+        # ######################################################################
+
+        # cargo noinstall flag
+        if pkg.cargo_noinstall is None:
+            pkg.cargo_noinstall = self._fetch(Rpk.CARGO_NOINSTALL)
 
         # ######################################################################
         # (package type - cmake)
