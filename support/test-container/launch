@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
-if [ -z "$1" ]; then
-    echo "missing configuration"
-    exit 1
-fi
-
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 root_dir=$(realpath "$script_dir/../../")
+cfg=
 
-cfg="$1"
-shift
+if [ -n "$1" ] && [[ "$1" != -* ]]; then
+    cfg="$1"
+    shift
+fi
+
+if [ -z "$cfg" ]; then
+    cfg="$script_dir/Dockerfile"
+fi
 
 if [ "$1" == "--build" ]; then
     exec docker build -f "$cfg" .
