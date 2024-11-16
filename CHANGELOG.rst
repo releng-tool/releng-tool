@@ -2,6 +2,7 @@ Development
 -----------
 
 - Allow adding a package without a definition that defines at least one script
+- Allow users to suppress local-site package warnings
 - Correct ``hint`` missing from script environments
 - Disable garbage collection and maintenance tasks for Git caches
 - Ensure the ``punch`` action triggers the post-build stage
@@ -10,12 +11,17 @@ Development
 - Fixed issue where ``releng_remove`` could not remove a broken symbolic link
 - Fixed patch overrides not supporting alternative file extensions
 - Flag ``RELENG_FORCE`` when using the ``punch`` action
+- Introduce ``LIBFOO_CARGO_NOINSTALL`` to support Cargo libraries
 - Introduce ``RELENG_EXEC`` environment/script variable
 - Introduce ``libfoo-fresh`` action
 - Introduce ``releng_symlink`` helper script function
 - Introduce a ``nested`` option for I/O copy/move utility calls
+- Introduce a shared build target for Cargo packages
+- Perform automatic Cargo patching for project-managed dependencies
+- Post-fetching Cargo dependencies now occurs after a package's patch stage
 - Promote use of ``.rt`` extensions for definitions/scripts
 - Promote use of ``releng-tool.rt`` for project configuration
+- Support Breezy VCS-type
 - Support injecting Visual Studio development environment variables
 - Support preallocated list/dictionary package configurations
 - Utilize forwarded arguments as fallback for ``libfoo-exec`` action
