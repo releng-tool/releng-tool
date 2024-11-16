@@ -3,11 +3,13 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.defs import VcsType
+from releng_tool.engine.cargo import CARGO_COMMON_TARGET
 from releng_tool.tool.cargo import CARGO
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
+import os
 
 
 def build(opts):
@@ -50,8 +52,9 @@ def build(opts):
         '--offline',
         # configure target directory to this package's output folder
         '--target-dir',
-        opts.build_output_dir,
+        os.path.join(opts.build_base_dir, CARGO_COMMON_TARGET),
     ]
+    cargo_args.extend(opts._cargo_depargs)
 
     # controlled dependencies... but be flexible for local projects
     if opts._vcs_type != VcsType.LOCAL:

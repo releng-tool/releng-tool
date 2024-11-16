@@ -129,6 +129,7 @@ class Rpk(Enum):
         # (package type - autotools)
         AUTOTOOLS_AUTORECONF: autotools /w autoreconf
         # (package type - cargo)
+        CARGO_NAME: name of the cargo package
         CARGO_NOINSTALL: skip cargo install stage
         # (package type - cmake)
         CMAKE_BUILD_TYPE: the cmake build type to use
@@ -192,6 +193,7 @@ class Rpk(Enum):
     # (package type - autotools)
     AUTOTOOLS_AUTORECONF = 'AUTOTOOLS_AUTORECONF'
     # (package type - cargo)
+    CARGO_NAME = 'CARGO_NAME'
     CARGO_NOINSTALL = 'CARGO_NOINSTALL'
     # (package type - cmake)
     CMAKE_BUILD_TYPE = 'CMAKE_BUILD_TYPE'

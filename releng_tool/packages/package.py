@@ -68,6 +68,8 @@ class RelengPackage:
         (package type - autotools)
         autotools_autoreconf: flag to invoke autoreconf
         (package type - cargo)
+        cargo_depargs: generated patch arguments for detected dependencies
+        cargo_name: name of the cargo package
         cargo_noinstall: flag to disable the install stage for a cargo project
         (package type - cmake)
         cmake_build_type: cmake build type to use
@@ -137,6 +139,8 @@ class RelengPackage:
         # (package type - autotools)
         self.autotools_autoreconf = None
         # (package type - cargo)
+        self.cargo_depargs = []
+        self.cargo_name = None
         self.cargo_noinstall = None
         # (package type - cmake)
         self.cmake_build_type = None

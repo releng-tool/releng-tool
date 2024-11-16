@@ -48,6 +48,7 @@ def stage(engine, pkg):  # noqa: ARG001
             # version cached dependencies (to prevent conflicts)
             '--versioned-dirs',
         ]
+        cargo_args.extend(pkg.cargo_depargs)
 
         if not CARGO.execute(cargo_args, cwd=pkg.build_dir):
             err('failed to vendor-fetch cargo project: {}', name)

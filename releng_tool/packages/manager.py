@@ -111,6 +111,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.BUILD_ENV, PkgKeyType.DICT_STR_STR)
         self._register_conf(Rpk.BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
         self._register_conf(Rpk.BUILD_SUBDIR, PkgKeyType.STR)
+        self._register_conf(Rpk.CARGO_NAME, PkgKeyType.STR)
         self._register_conf(Rpk.CARGO_NOINSTALL, PkgKeyType.BOOL)
         self._register_conf(Rpk.CMAKE_BUILD_TYPE, PkgKeyType.STR)
         self._register_conf(Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL)
@@ -1250,6 +1251,13 @@ using deprecated dependency configuration for package: {}
         # ######################################################################
         # (package type - cargo)
         # ######################################################################
+
+        # cargo name
+        if pkg.cargo_name is None:
+            pkg.cargo_name = self._fetch(Rpk.CARGO_NAME)
+
+        if pkg.cargo_name is None:
+            pkg.cargo_name = pkg.name
 
         # cargo noinstall flag
         if pkg.cargo_noinstall is None:

@@ -53,9 +53,11 @@ class PipelineResult(Enum):
 
     Attributes:
         CONTINUE: pipeline should continue processing
+        ERROR: an error has occurred processing the pipeline
         STOP: pipeline should stop processing
     """
     CONTINUE = 'continue'
+    ERROR = 'error'
     STOP = 'stop'
 
 
@@ -80,7 +82,7 @@ class RelengPackagePipeline:
         self.opts = opts
         self.script_env = script_env
 
-    def process(self, pkg):
+    def process(self, pkg, force_gaction=None):
         """
         process a provided package
 
@@ -100,12 +102,13 @@ class RelengPackagePipeline:
 
         Args:
             pkg: the package to process
+            force_gaction (optional): the global action to override with
 
         Returns:
             returns whether or not the pipeline should continue processing
         """
 
-        gaction = self.opts.gbl_action
+        gaction = force_gaction if force_gaction else self.opts.gbl_action
         paction = self.opts.pkg_action
         target = self.opts.target_action
 
@@ -127,7 +130,7 @@ class RelengPackagePipeline:
                 raise RelengToolExtractionStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'extract')
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                return PipelineResult.STOP
+                return PipelineResult.ERROR
         if gaction == GlobalAction.EXTRACT:
             return PipelineResult.CONTINUE
         if paction == PkgAction.EXTRACT and pkg.name == target:
@@ -135,9 +138,9 @@ class RelengPackagePipeline:
 
         # process the package data with a package-specific environment
         with self._stage_env(pkg) as pkg_env:
-            return self._process_data(pkg, pkg_env)
+            return self._process_data(pkg, pkg_env, gaction, paction, target)
 
-    def _process_data(self, pkg, pkg_env):
+    def _process_data(self, pkg, pkg_env, gaction, paction, target):
         """
         process a provided package (data)
 
@@ -157,14 +160,13 @@ class RelengPackagePipeline:
         Args:
             pkg: the package to process
             pkg_env: the package environment
+            gaction: the global action requested
+            paction: the package action requested
+            target: the package action target
 
         Returns:
             returns whether or not the pipeline should continue processing
         """
-
-        gaction = self.opts.gbl_action
-        paction = self.opts.pkg_action
-        target = self.opts.target_action
 
         # patching
         fflag = pkg._ff_patch
@@ -174,7 +176,7 @@ class RelengPackagePipeline:
                 raise RelengToolPatchStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'patch')
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                return PipelineResult.STOP
+                return PipelineResult.ERROR
         if gaction == GlobalAction.PATCH:
             return PipelineResult.CONTINUE
         if paction in (PkgAction.FRESH, PkgAction.PATCH) and pkg.name == target:
@@ -212,7 +214,7 @@ class RelengPackagePipeline:
             if not self._stage_license(pkg, license_strict):
                 raise RelengToolLicenseStageFailure
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                return PipelineResult.STOP
+                return PipelineResult.ERROR
         if gaction == GlobalAction.LICENSES:
             return PipelineResult.CONTINUE
         if paction == PkgAction.LICENSE and pkg.name == target:
@@ -240,7 +242,7 @@ class RelengPackagePipeline:
                     raise RelengToolBootstrapStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'boot')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return PipelineResult.STOP
+                    return PipelineResult.ERROR
 
             # configuring
             fflag = pkg._ff_configure
@@ -250,7 +252,7 @@ class RelengPackagePipeline:
                     raise RelengToolConfigurationStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'configure')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return PipelineResult.STOP
+                    return PipelineResult.ERROR
             if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
                 if pkg.name == target:
                     return PipelineResult.STOP
@@ -263,7 +265,7 @@ class RelengPackagePipeline:
                     raise RelengToolBuildStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'build')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return PipelineResult.STOP
+                    return PipelineResult.ERROR
             if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
                 if pkg.name == target:
                     return PipelineResult.STOP
@@ -276,7 +278,7 @@ class RelengPackagePipeline:
                     raise RelengToolInstallStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'install')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return PipelineResult.STOP
+                    return PipelineResult.ERROR
             # (note: re-install requests will re-invoke package-specific
             # post-processing)
 
@@ -288,7 +290,7 @@ class RelengPackagePipeline:
                     raise RelengToolPostStageFailure
                 self.engine.stats.track_duration_end(pkg.name, 'post')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                    return PipelineResult.STOP
+                    return PipelineResult.ERROR
             if paction in (
                     PkgAction.INSTALL,
                     PkgAction.REBUILD_ONLY,

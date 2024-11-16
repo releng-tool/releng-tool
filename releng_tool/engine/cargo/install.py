@@ -2,11 +2,13 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+from releng_tool.engine.cargo import CARGO_COMMON_TARGET
 from releng_tool.tool.cargo import CARGO
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
+import os
 
 
 def install(opts):
@@ -52,11 +54,12 @@ def install(opts):
         '--offline',
         # reference the package's output folder where the build was performed
         '--target-dir',
-        opts.build_output_dir,
+        os.path.join(opts.build_base_dir, CARGO_COMMON_TARGET),
         # configure a path at the base of the root (see also `--root` below)
         '--path',
         '.',
     ]
+    cargo_args.extend(opts._cargo_depargs)
 
     cargo_args.extend(prepare_definitions(cargo_defs))
     cargo_args.extend(prepare_arguments(cargo_opts))

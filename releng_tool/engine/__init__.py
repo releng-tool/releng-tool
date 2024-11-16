@@ -8,9 +8,12 @@ from releng_tool import __version__ as releng_version
 from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
+from releng_tool.defs import PackageType
 from releng_tool.defs import PkgAction
 from releng_tool.defs import UNSET_VALUES
 from releng_tool.defs import VcsType
+from releng_tool.engine.cargo import cargo_package_clean
+from releng_tool.engine.cargo import cargo_register_pkg_paths
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
@@ -340,6 +343,12 @@ class RelengEngine:
                 def pkg_verbose_clean(desc):
                     pkg_name = pkg.name  # noqa: B023
                     verbose('{} for package: {}', desc, pkg_name)
+
+                # cargo packages need to perform a custom pre-clean task
+                if pkg.type == PackageType.CARGO:
+                    pkg_verbose_clean('cleaning cargo output')
+                    cargo_package_clean(opts, pkg)
+
                 pkg_verbose_clean('removing output directory')
                 rv = path_remove(pkg.build_output_dir)
 
@@ -448,6 +457,29 @@ class RelengEngine:
                         return False
 
                 pipeline = RelengPackagePipeline(self, opts, script_env)
+
+                # if we have any cargo actions, we will automatically process
+                # them up to the patch stage; as we need each package to have
+                # their `Cargo.toml` configurations ready so that releng-tool
+                # can provide path overrides
+                if not requested_preconfig:
+                    cargo_pkgs = []
+
+                    for pkg in pkgs:
+                        if pkg.type != PackageType.CARGO:
+                            continue
+
+                        verbose('processing package '
+                                '(cargo pre-process): {}', pkg.name)
+                        prv = pipeline.process(pkg, GlobalAction.PATCH)
+                        if prv == PipelineResult.ERROR:
+                            return False
+
+                        cargo_pkgs.append(pkg)
+
+                    cargo_register_pkg_paths(cargo_pkgs)
+
+                # main package processing stage
                 for pkg in pkgs:
                     # if this is a package-specific pre-configure action, only
                     # process the specific action
@@ -455,7 +487,8 @@ class RelengEngine:
                         continue
 
                     verbose('processing package: {}', pkg.name)
-                    if pipeline.process(pkg) == PipelineResult.STOP:
+                    prv = pipeline.process(pkg)
+                    if prv != PipelineResult.CONTINUE:
                         return True
 
                 if not is_action:
