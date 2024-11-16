@@ -569,7 +569,8 @@ class RelengPackageManager:
                 pkg_vcs_type = VcsType.NONE
 
         if pkg_vcs_type == VcsType.LOCAL:
-            warn('package using local content: {}', name)
+            if 'releng.disable_local_site_warn' not in opts.quirks:
+                warn('package using local content: {}', name)
 
         # check if the detected vcs type needs a revision, and fail if we do
         # not have one
