@@ -22,6 +22,12 @@ RUN pacman -Syu \
     scons \
     --noconfirm
 
+# setup a default user
+# (tools like cvs are not happy when running as root)
+RUN useradd -ms /bin/bash default
+USER default
+WORKDIR /home/default
+
 RUN pyenv install 2.7
 # RUN CPPFLAGS="-I/usr/include/openssl-1.1" LDFLAGS="-L/usr/lib/openssl-1.1" \
 #   pyenv install 3.4
@@ -40,6 +46,6 @@ RUN pyenv install pypy3
 
 RUN pyenv local \
     2.7 3.5 3.6 3.7 3.8 3.9 3.10 3.11 3.12 3.13 3.14-dev pypy2 pypy3
-ENV PATH="$PATH:/root/.pyenv/shims"
+ENV PATH="$PATH:/home/default/.pyenv/shims"
 
 RUN python3.7 -m pip install "tox<4" "virtualenv<20"
