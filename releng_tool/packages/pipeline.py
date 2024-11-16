@@ -299,6 +299,9 @@ class RelengPackagePipeline:
                 if pkg.name == target:
                     return PipelineResult.STOP
 
+        if pkg.name == target:
+            return PipelineResult.STOP
+
         return PipelineResult.CONTINUE
 
     @contextmanager

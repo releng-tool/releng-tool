@@ -511,7 +511,10 @@ class RelengEngine:
 
                     verbose('processing package: {}', pkg.name)
                     prv = pipeline.process(pkg)
-                    if prv != PipelineResult.CONTINUE:
+                    if prv == PipelineResult.ERROR:
+                        return False
+
+                    if prv == PipelineResult.STOP:
                         return True
 
                 if not is_action:
