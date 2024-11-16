@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool import __version__ as releng_version
-from releng_tool.defs import GlobalAction
-from releng_tool.defs import PkgAction
 from releng_tool.defs import SbomFormatType
 from releng_tool.engine import RelengEngine
 from releng_tool.exceptions import RelengToolException
