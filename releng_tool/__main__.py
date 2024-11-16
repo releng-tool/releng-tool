@@ -329,6 +329,7 @@ def usage():
  patch                     Ensure all packages have done a patch stage
  punch                     Full run with a forced re-run on all packages
  sbom                      Generate a software bill of materials
+ <pkg>                     Perform all stages for the package
  <pkg>-build               Perform build stage for the package
  <pkg>-clean               Clean build directory for package
  <pkg>-configure           Perform configure stage for the package
