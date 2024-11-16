@@ -133,22 +133,6 @@ class RelengPackagePipeline:
         if paction == PkgAction.EXTRACT and pkg.name == target:
             return PipelineResult.STOP
 
-        # fetching (post)
-        fetch_paction = paction == PkgAction.FETCH_FULL and pkg.name == target
-        fflag = pkg._ff_fetch_post
-        if gaction == GlobalAction.FETCH_FULL or fetch_paction or \
-                check_file_flag(fflag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'fetch-post')
-            if not fetch_post(self.engine, pkg):
-                raise RelengToolFetchPostStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'fetch-post')
-            if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
-                return PipelineResult.STOP
-        if gaction == GlobalAction.FETCH_FULL:
-            return PipelineResult.CONTINUE
-        if fetch_paction:
-            return PipelineResult.STOP
-
         # process the package data with a package-specific environment
         with self._stage_env(pkg) as pkg_env:
             return self._process_data(pkg, pkg_env)
@@ -194,6 +178,26 @@ class RelengPackagePipeline:
         if gaction == GlobalAction.PATCH:
             return PipelineResult.CONTINUE
         if paction in (PkgAction.FRESH, PkgAction.PATCH) and pkg.name == target:
+            return PipelineResult.STOP
+
+        # fetching (post)
+        #
+        # Note that we do post-fetching after the patching stage, to allow
+        # developers to patch out possible source-defined dependencies (if
+        # required).
+        fetch_paction = paction == PkgAction.FETCH_FULL and pkg.name == target
+        fflag = pkg._ff_fetch_post
+        if gaction == GlobalAction.FETCH_FULL or fetch_paction or \
+                check_file_flag(fflag) == FileFlag.NO_EXIST:
+            self.engine.stats.track_duration_start(pkg.name, 'fetch-post')
+            if not fetch_post(self.engine, pkg):
+                raise RelengToolFetchPostStageFailure
+            self.engine.stats.track_duration_end(pkg.name, 'fetch-post')
+            if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
+                return PipelineResult.ERROR
+        if gaction == GlobalAction.FETCH_FULL:
+            return PipelineResult.CONTINUE
+        if fetch_paction:
             return PipelineResult.STOP
 
         # handle license generation request
