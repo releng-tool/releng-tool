@@ -223,7 +223,34 @@ class RelengPackageOptions(object):
         self.version = None
 
 
-class RelengConfigureOptions(RelengPackageOptions):
+class RelengAssembledOptions(RelengPackageOptions):
+    """
+    releng assembled options
+
+    Options that are common between the configuration, building and
+    installation stages.
+
+    Attributes:
+        build_dir: directory for a package's buildable content
+        build_output_dir: build output directory for the package process
+        host_dir: directory container for host tools
+        prefix: prefix for system root (if applicable)
+        staging_dir: directory container for staged content
+        symbols_dir: directory container for symbols content
+        target_dir: directory container for target content
+    """
+    def __init__(self):
+        super(RelengAssembledOptions, self).__init__()
+        self.build_dir = None
+        self.build_output_dir = None
+        self.host_dir = None
+        self.prefix = None
+        self.staging_dir = None
+        self.symbols_dir = None
+        self.target_dir = None
+
+
+class RelengConfigureOptions(RelengAssembledOptions):
     """
     releng configure-type options
 
@@ -232,38 +259,24 @@ class RelengConfigureOptions(RelengPackageOptions):
     react on.
 
     Attributes:
-        build_dir: directory for a package's buildable content
-        build_output_dir: build output directory for the package process
         conf_defs: command line definitions to apply
         conf_env: environment variables to use
         conf_opts: command line options to apply
-        host_dir: directory container for host tools
         install_type: installation type (host, staging, target or images)
         jobs: number of calculated jobs to allow at a given time
         jobsconf: number of jobs to allow at a given time (0: auto)
-        prefix: prefix for system root (if applicable)
-        staging_dir: directory container for staged content
-        symbols_dir: directory container for symbols content
-        target_dir: directory container for target content
     """
     def __init__(self):
         super(RelengConfigureOptions, self).__init__()
-        self.build_dir = None
-        self.build_output_dir = None
         self.conf_defs = None
         self.conf_env = None
         self.conf_opts = None
-        self.host_dir = None
         self.install_type = None
         self.jobs = 1
         self.jobsconf = 0
-        self.prefix = None
-        self.staging_dir = None
-        self.symbols_dir = None
-        self.target_dir = None
 
 
-class RelengBuildOptions(RelengPackageOptions):
+class RelengBuildOptions(RelengAssembledOptions):
     """
     releng build-type options
 
@@ -271,33 +284,19 @@ class RelengBuildOptions(RelengPackageOptions):
     handler. A handler's ``build`` method will be passed options to react on.
 
     Attributes:
+        build_base_dir: directory container for all build content
         build_defs: command line definitions to apply
-        build_dir: directory for a package's buildable content
-        build_env: environment variables to use
         build_opts: command line options to apply
-        build_output_dir: build output directory for the package process
-        host_dir: directory container for host tools
         jobs: number of calculated jobs to allow at a given time
         jobsconf: number of jobs to allow at a given time (0: auto)
-        prefix: prefix for system root (if applicable)
-        staging_dir: directory container for staged content
-        symbols_dir: directory container for symbols content
-        target_dir: directory container for target content
     """
     def __init__(self):
         super(RelengBuildOptions, self).__init__()
+        self.build_base_dir = None
         self.build_defs = None
-        self.build_dir = None
-        self.build_env = None
         self.build_opts = None
-        self.build_output_dir = None
-        self.host_dir = None
         self.jobs = 1
         self.jobsconf = 0
-        self.prefix = None
-        self.staging_dir = None
-        self.symbols_dir = None
-        self.target_dir = None
 
 
 class RelengExtractOptions(RelengPackageOptions):
@@ -348,7 +347,7 @@ class RelengFetchOptions(RelengPackageOptions):
         self.site = None
 
 
-class RelengInstallOptions(RelengPackageOptions):
+class RelengInstallOptions(RelengAssembledOptions):
     """
     releng install-type options
 
@@ -357,37 +356,23 @@ class RelengInstallOptions(RelengPackageOptions):
     on.
 
     Attributes:
-        build_dir: directory for a package's buildable content
-        build_output_dir: build output directory for the package process
         cache_file: location to cache file (if applicable)
         dest_dirs: list of directories to install to
-        host_dir: directory container for host tools
         images_dir: directory container for (final) images
         install_defs: command line definitions to apply
         install_env: environment variables to use
         install_opts: command line options to apply
         install_type: installation type
-        prefix: prefix for system root (if applicable)
-        staging_dir: directory container for staged content
-        symbols_dir: directory container for symbols content
-        target_dir: directory container for target content
     """
     def __init__(self):
         super(RelengInstallOptions, self).__init__()
-        self.build_dir = None
-        self.build_output_dir = None
         self.cache_file = None
         self.dest_dirs = None
-        self.host_dir = None
         self.images_dir = None
         self.install_defs = None
         self.install_env = None
         self.install_opts = None
         self.install_type = None
-        self.prefix = None
-        self.staging_dir = None
-        self.symbols_dir = None
-        self.target_dir = None
 
 
 # ##############################################################################
