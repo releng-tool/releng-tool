@@ -131,8 +131,12 @@ def main():
         args.action_exec = new_args['exec']
         args.injected_kv = new_args['entries']
 
-        # show banner
-        show_banner(args)
+        # show banner unless we are processing a specific action, since some
+        # actions may have no output and it looks weird to just print the
+        # version out
+        show_banner = not args.action
+        if show_banner:
+            log('releng-tool {}', releng_version)
 
         # register any injected entry into the working environment right away
         for k, v in args.injected_kv.items():
@@ -251,41 +255,6 @@ def process_args(args):
         'entries': entries,
         'exec': exec_,
     }, unknown_args
-
-
-def show_banner(args):
-    """
-    show the releng-tool banner on the command line
-
-    At the start of releng-tool, we dump the name/version of the tool on the
-    command line. This is primarily to help indicate/log what version of
-    releng-tool is running for a build. In the case for cleaning-related
-    actions, we want to avoid such a presentation -- a clean clean output,
-    only logging issues when a cleaning operation.
-
-    Args:
-        args: the prepared arguments for a releng-tool run
-    """
-
-    if args.action:
-        # ignore any global clean actions
-        clean_actions = (
-            GlobalAction.CLEAN,
-            GlobalAction.DISTCLEAN,
-            GlobalAction.MRPROPER,
-        )
-        if args.action in clean_actions:
-            return
-
-        # attempt to ignore a possible package-specific clean action
-        pkg_clean_actions = (
-            '-' + PkgAction.CLEAN,
-            '-' + PkgAction.DISTCLEAN,
-        )
-        if args.action.endswith(pkg_clean_actions):
-            return
-
-    log('releng-tool {}', releng_version)
 
 
 def type_nonnegativeint(value):
