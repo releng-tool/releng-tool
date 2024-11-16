@@ -24,6 +24,10 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('vcs-type-devmode-override', manager=manager)
         self.assertEqual(pkg.vcs_type, VcsType.BZR)
 
+    def test_pkgconfig_vcs_type_invalid_brz(self):
+        with self.assertRaises(RelengToolMissingPackageSite):
+            self.LOAD('vcs-type-invalid-brz-nosite')
+
     def test_pkgconfig_vcs_type_invalid_bzr(self):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-bzr-nosite')
@@ -68,6 +72,10 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         with self.assertRaises(RelengToolUnknownVcsType):
             self.LOAD('vcs-type-invalid-value')
 
+    def test_pkgconfig_vcs_type_missing_revision_brz(self):
+        with self.assertRaises(RelengToolMissingPackageRevision):
+            self.LOAD('vcs-type-invalid-brz-norevision')
+
     def test_pkgconfig_vcs_type_missing_revision_bzr(self):
         with self.assertRaises(RelengToolMissingPackageRevision):
             self.LOAD('vcs-type-invalid-bzr-norevision')
@@ -91,6 +99,14 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
     def test_pkgconfig_vcs_type_missing_site(self):
         pkg, _, _ = self.LOAD('missing')
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
+
+    def test_pkgconfig_vcs_type_valid_brz_explicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-brz-explicit')
+        self.assertEqual(pkg.vcs_type, VcsType.BRZ)
+
+    def test_pkgconfig_vcs_type_valid_brz_implicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-brz-implicit')
+        self.assertEqual(pkg.vcs_type, VcsType.BRZ)
 
     def test_pkgconfig_vcs_type_valid_bzr_explicit(self):
         pkg, _, _ = self.LOAD('vcs-type-valid-bzr-explicit')
