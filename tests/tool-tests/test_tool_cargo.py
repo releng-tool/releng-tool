@@ -46,6 +46,20 @@ class TestToolCargo(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
+    def test_tool_cargo_noinstall(self):
+        self.defconfig_add('CARGO_NOINSTALL', value=True)
+
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
+        bin_dir = os.path.join(self.engine.opts.staging_dir + self._prefix())
+        executable = os.path.join(bin_dir, self.filename)
+        self.assertFalse(os.path.exists(executable))
+
+        bin_dir = os.path.join(self.engine.opts.target_dir + self._prefix())
+        executable = os.path.join(bin_dir, self.filename)
+        self.assertFalse(os.path.exists(executable))
+
     def test_tool_cargo_staging(self):
         self._update_install_type('staging')
 
