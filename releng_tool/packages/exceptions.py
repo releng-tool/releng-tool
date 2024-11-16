@@ -86,7 +86,6 @@ class RelengToolMissingPackageScript(RelengToolInvalidPackageConfiguration):
     def __init__(self, args):
         super(RelengToolMissingPackageScript, self).__init__('''\
 unknown package provided: {pkg_name}
- (script) {script}
 '''.strip().format(**args))
 
 

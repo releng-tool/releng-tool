@@ -340,7 +340,6 @@ class RelengPackageManager:
         else:
             raise RelengToolMissingPackageScript({
                 'pkg_name': name,
-                'script': script,
             })
 
         self._active_package = name
@@ -1372,7 +1371,6 @@ using deprecated dependency configuration for package: {}
         if not os.path.isfile(script):
             raise RelengToolMissingPackageScript({
                 'pkg_name': pkg.name,
-                'script': script,
             })
 
         env = self.load_package_script(pkg.name, script)
