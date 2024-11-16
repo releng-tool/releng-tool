@@ -101,6 +101,16 @@ class RelengToolOutsidePathError(RelengToolException):
     """
 
 
+class RelengToolUnknownAction(RelengToolException):
+    """
+    raised when an unknown action or package is provided
+    """
+    def __init__(self, args):
+        super(RelengToolUnknownAction, self).__init__('''\
+unknown action or package: {action}
+'''.strip().format(**args))
+
+
 class RelengToolWarningAsError(RelengToolException):
     """
     exception thrown for a warning being triggered as an error

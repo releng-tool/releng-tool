@@ -24,7 +24,9 @@ from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
+from releng_tool.exceptions import RelengToolUnknownAction
 from releng_tool.opts import RELENG_CONF_NAME
+from releng_tool.packages.exceptions import RelengToolMissingPackageScript
 from releng_tool.packages.exceptions import RelengToolStageFailure
 from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.packages.pipeline import PipelineResult
@@ -330,9 +332,14 @@ class RelengEngine:
                 os.environ['PATH'] = sdir + os.pathsep + os.environ['PATH']
 
         # load and process packages
-        pkgs = self.pkgman.load(pkg_names)
-        if not pkgs:
-            return False
+        try:
+            pkgs = self.pkgman.load(pkg_names)
+            if not pkgs:
+                return False
+        except RelengToolMissingPackageScript:
+            raise RelengToolUnknownAction({
+                'action': opts.target_action,
+            })
 
         # if cleaning a package, remove it's build output directory and stop
         if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN, PkgAction.FRESH):

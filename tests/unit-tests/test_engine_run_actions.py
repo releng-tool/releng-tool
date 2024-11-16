@@ -2,7 +2,7 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
-from releng_tool.packages.exceptions import RelengToolMissingPackageScript
+from releng_tool.exceptions import RelengToolUnknownAction
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import run_testenv
@@ -33,12 +33,12 @@ class TestEngineRunActions(RelengToolTestCase):
             self.assertTrue(rv)
             self.assertTrue(os.path.exists(releng_script))
 
-    def test_engine_run_actions_unknown_package(self):
+    def test_engine_run_actions_unknown_action(self):
         config = {
             'action': 'unknown-package',
         }
 
-        with self.assertRaises(RelengToolMissingPackageScript):
+        with self.assertRaises(RelengToolUnknownAction):
             run_testenv(config=config, template='minimal')
 
     def test_engine_run_actions_valid_action(self):
