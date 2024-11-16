@@ -80,6 +80,7 @@ def stage(engine, pkg, script_env):
 
     install_opts = RelengInstallOptions()
     replicate_package_attribs(install_opts, pkg)
+    install_opts.build_base_dir = engine.opts.build_dir
     install_opts.build_dir = build_dir
     install_opts.build_output_dir = pkg.build_output_dir
     install_opts.cache_file = pkg.cache_file

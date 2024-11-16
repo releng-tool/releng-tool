@@ -231,6 +231,7 @@ class RelengAssembledOptions(RelengPackageOptions):
     installation stages.
 
     Attributes:
+        build_base_dir: directory container for all build content
         build_dir: directory for a package's buildable content
         build_output_dir: build output directory for the package process
         host_dir: directory container for host tools
@@ -241,6 +242,7 @@ class RelengAssembledOptions(RelengPackageOptions):
     """
     def __init__(self):
         super(RelengAssembledOptions, self).__init__()
+        self.build_base_dir = None
         self.build_dir = None
         self.build_output_dir = None
         self.host_dir = None

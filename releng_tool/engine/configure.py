@@ -55,6 +55,7 @@ def stage(engine, pkg, script_env):
 
     configure_opts = RelengConfigureOptions()
     replicate_package_attribs(configure_opts, pkg)
+    configure_opts.build_base_dir = engine.opts.build_dir
     configure_opts.build_dir = build_dir
     configure_opts.build_output_dir = pkg.build_output_dir
     configure_opts.conf_defs = pkg.conf_defs

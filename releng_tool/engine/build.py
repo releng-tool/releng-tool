@@ -49,6 +49,7 @@ def stage(engine, pkg, script_env):
 
     build_opts = RelengBuildOptions()
     replicate_package_attribs(build_opts, pkg)
+    build_opts.build_base_dir = engine.opts.build_dir
     build_opts.build_defs = pkg.build_defs
     build_opts.build_dir = build_dir
     build_opts.build_env = pkg.build_env
