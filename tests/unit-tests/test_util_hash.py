@@ -144,7 +144,11 @@ class TestUtilHash(unittest.TestCase):
         self.assertEqual(result, HashResult.VERIFIED)
 
         # directory-specific check
-        file = os.path.join(samples, 'verify-bad-format-keylen')
+        file = os.path.join(samples, 'verify-bad-format-keylen-int')
+        result = verify_hashes(file, samples, quiet=True)
+        self.assertEqual(result, HashResult.BAD_FORMAT)
+
+        file = os.path.join(samples, 'verify-bad-format-keylen-nonint')
         result = verify_hashes(file, samples, quiet=True)
         self.assertEqual(result, HashResult.BAD_FORMAT)
 
