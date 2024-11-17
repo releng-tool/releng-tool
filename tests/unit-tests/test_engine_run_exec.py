@@ -69,13 +69,31 @@ class TestEngineExec(RelengToolTestCase):
             self.assertTrue('RELENG_EXEC' in data)
             self.assertTrue(data['RELENG_EXEC'])
 
-    def test_engine_run_exec_success(self):
+    def test_engine_run_exec_success_default_arg(self):
         config = {
             'action': 'test-exec',
             'action_exec': 'python success.py',
         }
 
         with prepare_testenv(config=config, template='exec') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            flag = os.path.join(engine.opts.target_dir, 'invoked-success')
+            self.assertTrue(os.path.exists(flag))
+
+    def test_engine_run_exec_success_forward_args(self):
+        config = {
+            'action': 'test-exec',
+        }
+
+        args = [
+            'python',
+            'success.py',
+        ]
+
+        with prepare_testenv(
+                config=config, template='exec', args=args) as engine:
             rv = engine.run()
             self.assertTrue(rv)
 
