@@ -507,9 +507,8 @@ class RelengPackagePipeline:
         note('execution for {}...', pkg.name)
         debug('(wd) {}', pkg.build_tree)
         if isinstance(exec_cmd, list):
-            debug('(cmd) {}', cmd_args_to_str(exec_cmd))
-        else:
-            debug('(cmd) {}', exec_cmd)
+            exec_cmd = cmd_args_to_str(exec_cmd)
+        debug('(cmd) {}', exec_cmd)
         sys.stdout.flush()
 
         proc = subprocess.Popen(
