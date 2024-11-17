@@ -77,7 +77,8 @@ class TestSpdxLicenseWarnings(RelengToolTestCase):
                 if lid:
                     root_dir = engine.opts.root_dir
                     pkg_script = os.path.join(root_dir,
-                        'package', template, template)
+                        'package', template, template + '.rt')
+                    self.assertTrue(os.path.exists(pkg_script))
 
                     with open(pkg_script, 'a', encoding='utf_8') as f:
                         f.write('{key}={val}\n'.format(

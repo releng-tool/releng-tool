@@ -33,7 +33,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -56,7 +57,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -83,7 +85,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -118,7 +121,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -145,7 +149,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -170,7 +175,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 # redo tar fetch but with a no strip option
                 with open(pkg_script, 'a') as f:
@@ -212,7 +218,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -247,7 +254,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -270,7 +278,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -294,7 +303,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -312,7 +322,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))
@@ -332,7 +343,8 @@ class TestSiteUrl(RelengToolTestCase):
 
             with prepare_testenv(template='https-self-signed') as engine:
                 root_dir = engine.opts.root_dir
-                pkg_script = os.path.join(root_dir, 'package', 'pkg', 'pkg')
+                pkg_script = os.path.join(root_dir, 'package', 'pkg', 'pkg.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('PKG_SITE="{}"\n'.format(site))
@@ -350,7 +362,8 @@ class TestSiteUrl(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 root_dir = engine.opts.root_dir
                 pkg_script = os.path.join(root_dir,
-                    'package', 'minimal', 'minimal')
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
                     f.write('MINIMAL_SITE="{}"\n'.format(site))

@@ -21,7 +21,8 @@ class TestEngineSubdir(RelengToolTestCase):
         template = os.path.join(self.template_base, 'subdir-valid-bootstrap')
         with prepare_testenv(template=template) as engine:
             root_dir = engine.opts.root_dir
-            pkg_script = os.path.join(root_dir, 'package', 'test', 'test')
+            pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
+            self.assertTrue(os.path.exists(pkg_script))
 
             with open(pkg_script, 'a') as f:
                 f.write(self.site + '\n')
@@ -36,7 +37,8 @@ class TestEngineSubdir(RelengToolTestCase):
         template = os.path.join(self.template_base, 'subdir-valid-configure')
         with prepare_testenv(template=template) as engine:
             root_dir = engine.opts.root_dir
-            pkg_script = os.path.join(root_dir, 'package', 'test', 'test')
+            pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
+            self.assertTrue(os.path.exists(pkg_script))
 
             with open(pkg_script, 'a') as f:
                 f.write(self.site + '\n')
@@ -51,7 +53,8 @@ class TestEngineSubdir(RelengToolTestCase):
         template = os.path.join(self.template_base, 'subdir-valid-build')
         with prepare_testenv(template=template) as engine:
             root_dir = engine.opts.root_dir
-            pkg_script = os.path.join(root_dir, 'package', 'test', 'test')
+            pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
+            self.assertTrue(os.path.exists(pkg_script))
 
             with open(pkg_script, 'a') as f:
                 f.write(self.site + '\n')
@@ -66,7 +69,8 @@ class TestEngineSubdir(RelengToolTestCase):
         template = os.path.join(self.template_base, 'subdir-valid-install')
         with prepare_testenv(template=template) as engine:
             root_dir = engine.opts.root_dir
-            pkg_script = os.path.join(root_dir, 'package', 'test', 'test')
+            pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
+            self.assertTrue(os.path.exists(pkg_script))
 
             with open(pkg_script, 'a') as f:
                 f.write(self.site + '\n')
@@ -81,7 +85,8 @@ class TestEngineSubdir(RelengToolTestCase):
         template = os.path.join(self.template_base, 'subdir-valid-post')
         with prepare_testenv(template=template) as engine:
             root_dir = engine.opts.root_dir
-            pkg_script = os.path.join(root_dir, 'package', 'test', 'test')
+            pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
+            self.assertTrue(os.path.exists(pkg_script))
 
             with open(pkg_script, 'a') as f:
                 f.write(self.site + '\n')
