@@ -2,9 +2,11 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+from releng_tool import __version__ as releng_version
 from releng_tool.exceptions import RelengToolUnknownAction
 from tests import RelengToolTestCase
 from tests import prepare_testenv
+from tests import redirect_stdout
 from tests import run_testenv
 import os
 
@@ -41,13 +43,25 @@ class TestEngineRunActions(RelengToolTestCase):
         with self.assertRaises(RelengToolUnknownAction):
             run_testenv(config=config, template='minimal')
 
-    def test_engine_run_actions_valid_action(self):
+    def test_engine_run_actions_valid_action_fetch(self):
         config = {
             'action': 'fetch',
         }
 
         rv = run_testenv(config=config, template='minimal')
         self.assertTrue(rv)
+
+    def test_engine_run_actions_valid_action_state(self):
+        config = {
+            'action': 'state',
+        }
+
+        with redirect_stdout() as stream:
+            rv = run_testenv(config=config, template='minimal')
+        self.assertTrue(rv)
+
+        # ensure state always dump's releng-tool's version
+        self.assertIn(releng_version, stream.getvalue())
 
     def test_engine_run_actions_valid_package(self):
         config = {
