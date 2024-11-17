@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+TEST_D_LICENSE = 'GPLv2'
+TEST_D_LICENSE_FILES = 'LICENSE'
+TEST_D_REVISION = '3.0'
+TEST_D_VCS_TYPE = 'local'
