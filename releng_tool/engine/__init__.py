@@ -575,6 +575,7 @@ has failed. Ensure the following path is accessible for this user:
         return True
 
     def _dump_state(self):
+        log('releng-tool {}', releng_version)
         log('Python {}', sys.version)
         log('Tool: {}', self._base_dir)
         log('Root: {}', self.opts.root_dir)
