@@ -23,6 +23,11 @@ class TestSiteUrl(RelengToolTestCase):
         if os.getenv('RELENG_SKIP_TEST_SITE_URL'):
             raise unittest.SkipTest('skipped due to environment flag')
 
+    def setUp(self):
+        os.environ.pop('all_proxy', None)
+        os.environ.pop('http_proxy', None)
+        os.environ.pop('https_proxy', None)
+
     def test_site_url_fetch_archive_tar_bz2_valid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
