@@ -1,6 +1,7 @@
 # building
 /*.egg-info/
 /.eggs/
+/.pybuild/
 /build/
 /dist/
 /pip-wheel-metadata/
