@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from __future__ import unicode_literals
-from io import open
+from io import open  # noqa: A004
 from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
 from tests import prepare_workdir

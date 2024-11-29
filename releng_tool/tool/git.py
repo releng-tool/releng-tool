@@ -2,7 +2,7 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
-from io import open
+from io import open  # noqa: A004
 from releng_tool.tool import RelengTool
 from releng_tool.util.log import err
 import sys
