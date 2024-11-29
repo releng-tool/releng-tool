@@ -5,6 +5,7 @@
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 import sys
+import unittest
 
 # cmake template has two projects -- helpers to find the "lib" package
 LIBPKG_DEFDIR = os.path.join('package', 'lib')
@@ -14,6 +15,10 @@ LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'lib.rt')
 class TestToolCmake(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOL_CMAKE'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
         cls.filename = 'testapp'
         if sys.platform == 'win32':
             cls.filename += '.exe'

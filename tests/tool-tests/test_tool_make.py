@@ -11,6 +11,10 @@ import unittest
 class TestToolMake(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOL_MAKE'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
         if platform.system() != 'Linux':
             raise unittest.SkipTest('make tool test skipped for non-Linux')
 

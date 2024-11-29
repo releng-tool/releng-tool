@@ -7,12 +7,19 @@ from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import touch
 from tests.support.site_tool_test import TestSiteToolBase
 import os
+import unittest
 
 
 DEFAULT_BRANCH = 'default'
 
 
 class TestToolMercurial(TestSiteToolBase):
+    @classmethod
+    def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOL_MERCURIAL'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
     def prepare_defconfig(self, defconfig):
         self.defconfig_add('VCS_TYPE', 'hg')
 

@@ -8,12 +8,19 @@ from releng_tool.util.io import interim_working_dir
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 import time
+import unittest
 
 
 DEFAULT_MODULE = 'test'
 
 
 class TestToolCvs(TestSiteToolBase):
+    @classmethod
+    def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOL_CVS'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
     def prepare_defconfig(self, defconfig):
         self.defconfig_add('VCS_TYPE', 'cvs')
         self.defconfig_add('REVISION', 'HEAD')

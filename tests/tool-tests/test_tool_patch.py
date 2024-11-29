@@ -6,9 +6,16 @@ from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests.support import fetch_unittest_assets_dir
 import os
+import unittest
 
 
 class TestToolPatch(RelengToolTestCase):
+    @classmethod
+    def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOL_PATCH'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
     def test_tool_patch_invalid(self):
         with prepare_testenv(template='patch-file-invalid') as engine:
             rv = engine.run()

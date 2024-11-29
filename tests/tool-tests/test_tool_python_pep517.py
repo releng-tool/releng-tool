@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from tests.support.python_tool_test import PythonSiteToolBase
+import os
 import sys
 import unittest
 
@@ -10,6 +11,10 @@ import unittest
 class TestToolPythonPep517(PythonSiteToolBase):
     @classmethod
     def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOL_PYTHON_PEP517'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
         # installer is only available in Python 3.7+
         if sys.version_info < (3, 7):
             raise unittest.SkipTest('unsupported interpreter')

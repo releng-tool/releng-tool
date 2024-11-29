@@ -17,6 +17,12 @@ import unittest
 
 
 class TestSiteUrl(RelengToolTestCase):
+    @classmethod
+    def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_SITE_URL'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
     def test_site_url_fetch_archive_tar_bz2_valid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address

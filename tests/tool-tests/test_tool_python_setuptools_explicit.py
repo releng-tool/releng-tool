@@ -3,9 +3,17 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from tests.support.python_tool_test import PythonSiteToolBase
+import os
+import unittest
 
 
 class TestToolPythonSetuptoolsExplicit(PythonSiteToolBase):
+    @classmethod
+    def setUpClass(cls):
+        # support skipping the test for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOL_PYTHON_SETUPTOOLS_EXPLICIT'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
     def tool_template(self):
         return 'python-setuptools-explicit'
 
