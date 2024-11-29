@@ -6,6 +6,7 @@ from releng_tool.defs import PackageInstallType
 from releng_tool.engine.meson import DEFAULT_LIB_DIR
 from releng_tool.engine.meson import meson_prepare_environment
 from releng_tool.tool.meson import MESON
+from releng_tool.util.io import path_exists
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
@@ -96,8 +97,10 @@ def configure(opts):
     # provide build directory
     meson_args.append(opts.build_output_dir)
 
-    # if this is a forced reconfiguration, inform meson
-    if 'RELENG_RECONFIGURE' in opts.env:
+    # if this is a forced reconfiguration and we have built before,
+    # inform meson
+    if path_exists(opts.build_output_dir) and \
+            opts.env.get('RELENG_RECONFIGURE'):
         meson_args.append('--reconfigure')
 
     if not MESON.execute(meson_args, env=expand(meson_env)):
