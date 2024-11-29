@@ -8,12 +8,21 @@
 
 ## Overview
 
-When dealing with a project that depends on multiple packages, assets may be
-found in multiple locations and may require various methods to extract, build
-and more. releng-tool can be used to process a defined set of
-projects/packages which identify where resources can be fetched, how packages
-can be extracted and methods to patch, configure, build and install each
-individual package for a target root.
+releng-tool aims to provide a way for developers to tailor the building of
+multiple software components to help prepare packages for desired runtime
+environments (e.g. cross-platform portable packages, embedded targets, etc.).
+When building a package, assets may be located in multiple locations and may
+require various methods to extract, build and more. releng-tool allows
+developers to define a set of packages, specifying where resources should be
+fetched from, how packages should be extracted and the processes for
+patching, configuring, building and installing each package for a target
+sysroot.
+
+The structure of a package depends on the specific project. The simplest
+type is a script-based package, where users can define custom scripts for
+various stages. A package does not need to handle every stage. Helper
+package types are available (e.g. autotools, Cargo, CMake, Make, Meson,
+various Python types, and SCons) for projects using common build systems.
 
 For detailed documentation on the releng-tool project, see
 [releng-tool's documentation][releng-tool-doc].
