@@ -6,6 +6,7 @@ Development
 - Correct ``hint`` missing from script environments
 - Disable garbage collection and maintenance tasks for Git caches
 - Ensure the ``punch`` action triggers the post-build stage
+- Fixed configuration failure when using older Meson packages (pre-v1.1.1)
 - Fixed incorrect specification for empty sites in JSON/SPDX SBOM documents
 - Fixed issue where ``releng_copy`` could not copy a broken symbolic link
 - Fixed issue where ``releng_remove`` could not remove a broken symbolic link
