@@ -35,6 +35,24 @@ class PythonSiteToolBase(TestSiteToolBase):
             if 'site-packages' in dirs:
                 return os.path.join(root, 'site-packages')
 
+            # Workaround for Debian-based site installation paths; while
+            # installing into `dist-packages` is expected for Debian-based
+            # platforms, it is not desired for Python packages "installed"
+            # into a staged/target sysroot. While using environment options
+            # like `SETUPTOOLS_USE_DISTUTILS=stdlib` appear to force projects
+            # to use `site-packages`, it does not handle when using the
+            # `installer` module which provides a Debian library path. For
+            # now, we leave as it so it is consistent between both
+            # installation types. Users should be able to workaround by
+            # manually setting a prefix. Once we figure out a way to always
+            # result in a path with `site-packages`, we can remove this
+            # check option below. Although, we might provide an option to
+            # allow a project to override the path used, so they can point
+            # to `site-packages` or `dist-packages` (outside of the explicit
+            # prefix override), if it seems right.
+            if 'dist-packages' in dirs:
+                return os.path.join(root, 'dist-packages')
+
         return None
 
     def assertPythonModuleExists(self, site_packages, module):
