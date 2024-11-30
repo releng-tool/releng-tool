@@ -1,0 +1,185 @@
+.\" releng-tool man page
+.\"
+.\" Content in this page results from content from:
+.\" https://github.com/releng-tool/releng-tool/blob/main/releng_tool/__main__.py
+.\" https://github.com/releng-tool/releng-tool-docs/tree/main/content
+
+.TH releng-tool 1 "November 2024" "1.0" "releng-tool man page"
+
+.SH NAME
+releng-tool - Tool to tailor the building of packages
+
+.SH SYNOPSIS
+releng-tool <options> [action]
+
+.SH DESCRIPTION
+releng-tool aims to provide a way for developers to tailor the building
+of multiple software components to help prepare packages for desired
+runtime environments (e.g. cross-platform portable packages, embedded
+targets, etc.). When building a package, assets may be located in
+multiple locations and may require various methods to extract, build
+and more. releng-tool allows developers to define a set of packages,
+specifying where resources should be fetched from, how packages should
+be extracted and the processes for patching, configuring, building and
+installing each package for a target sysroot.
+
+.SH ACTIONS
+.TP
+.BI clean
+Clean the output directory.
+.TP
+.BI distclean
+Pristine clean including cache/download content.
+.TP
+.BI extract
+Extract all packages.
+.TP
+.BI fetch
+Fetch all packages.
+.TP
+.BI fetch-full
+Fetch all packages including post-fetch dependencies.
+.TP
+.BI init
+Initialize a root with an example structure.
+.TP
+.BI licenses
+Generate license information for a project.
+.TP
+.BI mrproper
+Pristine clean of the releng project.
+.TP
+.BI patch
+Ensure all packages have done a patch stage.
+.TP
+.BI punch
+Full run with a forced re-run on all packages.
+.TP
+.BI sbom
+Generate a software bill of materials.
+.TP
+.BI <pkg>
+Perform all stages for the package.
+.TP
+.BI <pkg>-build
+Perform build stage for the package.
+.TP
+.BI <pkg>-clean
+Clean build directory for package.
+.TP
+.BI <pkg>-configure
+Perform configure stage for the package.
+.TP
+.BI <pkg>-distclean
+Pristine clean for package.
+.TP
+.BI <pkg>-exec <cmd>
+Invoke a command in the package's directory.
+.TP
+.BI <pkg>-extract
+Perform extract stage for the package.
+.TP
+.BI <pkg>-fetch
+Perform fetch stage for the package.
+.TP
+.BI <pkg>-fetch-full
+Perform fetch stage for the package (with post-fetch).
+.TP
+.BI <pkg>-fresh
+Freshly prepare a package output.
+.TP
+.BI <pkg>-install
+Perform install stage for the package.
+.TP
+.BI <pkg>-license
+Generate license information for the package.
+.TP
+.BI <pkg>-patch
+Perform patch stage for the package.
+.TP
+.BI <pkg>-rebuild
+Force a re-build of a specific package.
+.TP
+.BI <pkg>-rebuild-only
+Force a re-build of a specific package and stop.
+.TP
+.BI <pkg>-reconfigure
+Force a re-configure of a specific package.
+.TP
+.BI <pkg>-reconfigure-only
+Force a re-configure of a specific package and stop.
+.TP
+.BI <pkg>-reinstall
+Force a re-install of a specific package.
+
+.SH OPTIONS
+.TP
+.BI --assets-dir\ <dir>
+Container directory for download and VCS-cache directories
+(e.g. <ASSETS_DIR>/cache).
+.TP
+.BI --cache-dir\ <dir>
+Directory for VCS-cache (default: <ROOT>/cache).
+.TP
+.BI --config\ <file>
+Configuration to use (default: <ROOT>/releng-tool.rt).
+-.TP
+.BI -debug
+Show debug-related messages.
+.TP
+.BI --development,\ -D
+Enable development mode.
+.TP
+.BI --dl-dir\ <dir>
+Directory for download archives (default: <ROOT>/dl).
+.TP
+.BI --force,\ -F
+Trigger a forced request.
+.TP
+.BI --help,\ -h
+Show this help.
+.TP
+.BI --help-quirks
+Show available quirks.
+.TP
+.BI --images-dir\ <dir>
+Directory for generated images (default: <ROOT>/output/images).
+.TP
+.BI --jobs\ <jobs>,\ -j
+Numbers of jobs to handle (default: 0; automatic).
+.TP
+.BI --local-sources\ [[<pkg>@]<dir>],\ -L
+Use development sources from a local path, defaults to the parent of the
+root directory; users can use the format "<pkg>@<path>" to set/override
+specific local paths per package; this argument can be provided multiple
+times.
+.TP
+.BI --nocolorout
+Explicitly disable colorized output.
+.TP
+.BI --out-dir\ <dir>
+Directory for output (builds, images, etc.) (default: <ROOT>/output).
+.TP
+.BI --quirk\ <value>
+Inject in quirk into this run.
+.TP
+.BI --relaxed-args
+Permit the use of unknown arguments.
+.TP
+.BI --root-dir\ <dir>
+Directory to process a releng project (default: working directory).
+.TP
+.BI --sbom-format\ <format>
+Specify the output format for a software build of materials (e.g. csv, json).
+.TP
+.BI --verbose,\ -V
+Show additional messages.
+.TP
+.BI --version
+Show the version.
+.TP
+.BI --werror,\ -Werror
+Treat warnings as errors.
+
+.SH SEE ALSO
+Full documentation <https://docs.releng.io/>
