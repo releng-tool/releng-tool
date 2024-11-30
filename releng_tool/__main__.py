@@ -373,7 +373,7 @@ def usage():
                             materials (e.g. csv, json)
 
 (other)
- --config <file>           Configuration file to load (default: <ROOT>/releng)
+ --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
  --debug                   Show debug-related messages
  -F, --force               Trigger a forced request
  -h, --help                Show this help
