@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 __releng_tool_has_action()
 {
     local opts=(
