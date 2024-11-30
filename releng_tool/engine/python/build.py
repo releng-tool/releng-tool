@@ -38,6 +38,14 @@ def build(opts):
         err('unable to build package; python is not installed')
         return False
 
+    # default environment
+    path0 = python_tool.path(sysroot=opts.host_dir, prefix=opts.prefix)
+    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
+    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
+    env = {
+        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2,
+    }
+
     setup_type = opts._python_setup_type
     python_args = []
     python_defs = {}
@@ -75,6 +83,9 @@ def build(opts):
             # skip source package building
             '--no-sdist',
         ])
+
+        # never attempt to perform a pdm update check
+        env['PDM_CHECK_UPDATE'] = 'false'
     elif setup_type == PythonSetupType.PEP517:
         # https://pypa-build.readthedocs.io/en/latest/
         python_args.extend([
@@ -119,14 +130,6 @@ def build(opts):
             # invoke the build operation
             'build',
         ])
-
-    # default environment
-    path0 = python_tool.path(sysroot=opts.host_dir, prefix=opts.prefix)
-    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
-    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
-    env = {
-        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2,
-    }
 
     # apply package-specific overrides
     if opts.build_defs:

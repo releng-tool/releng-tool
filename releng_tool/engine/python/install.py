@@ -40,10 +40,22 @@ def install(opts):
         err('unable to install package; python is not installed')
         return False
 
+    # default environment
+    path0 = python_tool.path(sysroot=opts.host_dir, prefix=opts.prefix)
+    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
+    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
+    env = {
+        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2,
+    }
+
     setup_type = opts._python_setup_type
     python_args = []
     python_defs = {}
     python_opts = {}
+
+    if setup_type == PythonSetupType.PDM:
+        # never attempt to perform a pdm update check
+        env['PDM_CHECK_UPDATE'] = 'false'
 
     # parameter used to configure where the package will be installed
     python_root_param = '--root'
@@ -128,14 +140,6 @@ def install(opts):
         # argument
         if setup_type == PythonSetupType.SETUPTOOLS:
             python_args.append('--single-version-externally-managed')
-
-    # default environment
-    path0 = python_tool.path(sysroot=opts.host_dir, prefix=opts.prefix)
-    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
-    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
-    env = {
-        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2,
-    }
 
     # apply package-specific overrides
     if opts.install_defs:
