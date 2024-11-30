@@ -12,7 +12,7 @@ class TestToolPythonPdmLegacy(PythonSiteToolBase):
     @classmethod
     def setUpClass(cls):
         # support skipping the test for a distribution build
-        if os.getenv('RELENG_SKIP_TEST_TOOL_PYTHON_PDM_LEGACY'):
+        if os.getenv('RELENG_SKIP_TEST_TOOL_PYTHON_PDM'):
             raise unittest.SkipTest('skipped due to environment flag')
 
         # pdm is only available in Python 3.7+
