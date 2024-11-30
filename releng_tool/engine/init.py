@@ -39,32 +39,32 @@ def initialize_sample(opts):
     success = True
     if ensure_dir_exists(sample_dir):
         # sample project
-        sample_defs = os.path.join(root_dir, 'package', 'sample', 'sample.py')
+        sample_defs = os.path.join(root_dir, 'package', 'sample', 'sample.rt')
         try:
             with open(sample_defs, 'w') as f:
                 f.write('''\
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: YOUR_LICENSE
+# Copyright YOUR_COPYRIGHT
 
-SAMPLE_NEEDS = []
-SAMPLE_LICENSE = ['<license name>']
-SAMPLE_LICENSE_FILES = ['<license file>']
-SAMPLE_SITE = '<location for sources>'
-SAMPLE_TYPE = '<package-type>'
-SAMPLE_VERSION = '<package-version>'
+#SAMPLE_LICENSE = ['<license name>']
+#SAMPLE_LICENSE_FILES = ['<license file>']
+#SAMPLE_NEEDS = []
+#SAMPLE_SITE = '<location for sources>'
+#SAMPLE_TYPE = '<package-type>'
+#SAMPLE_VERSION = '<package-version>'
 ''')
 
             verbose('written sample file')
         except IOError as e:
-            err('unable to generate a sample.py file')
+            err('unable to generate a sample.rt file')
             verbose(str(e))
             success = False
     else:
         success = False
 
-    # .gitignore
+    # .gitignore  (assumption)
     try:
-        project_gitignore = os.path.join(root_dir, '.gitignore')  # (assumption)
+        project_gitignore = os.path.join(root_dir, '.gitignore')
         with open(project_gitignore, 'w') as f:
             f.write('''\
 # releng-tool
@@ -82,11 +82,11 @@ SAMPLE_VERSION = '<package-version>'
 
     # releng project
     try:
-        project_defs = os.path.join(root_dir, 'releng.py')
+        project_defs = os.path.join(root_dir, 'releng-tool.rt')
         with open(project_defs, 'w') as f:
             f.write('''\
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: YOUR_LICENSE
+# Copyright YOUR_COPYRIGHT
 
 packages = [
     'sample',
@@ -95,7 +95,7 @@ packages = [
 
         verbose('written releng file')
     except IOError as e:
-        err('unable to generate a releng.py file')
+        err('unable to generate a releng-tool.rt file')
         verbose(str(e))
         success = False
 

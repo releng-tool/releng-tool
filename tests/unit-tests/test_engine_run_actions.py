@@ -28,7 +28,7 @@ class TestEngineRunActions(RelengToolTestCase):
 
         with prepare_testenv(config=config) as engine:
             root_dir = engine.opts.root_dir
-            releng_script = os.path.join(root_dir, 'releng.py')
+            releng_script = os.path.join(root_dir, 'releng-tool.rt')
             self.assertFalse(os.path.exists(releng_script))
 
             rv = engine.run()
