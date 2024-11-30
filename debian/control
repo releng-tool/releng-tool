@@ -1,0 +1,38 @@
+Source: releng-tool
+Section: python
+Priority: optional
+Maintainer: James Knight <git@jdknight.me>
+Uploaders:
+ James Knight <git@jdknight.me>,
+Build-Depends:
+ bash-completion,
+ debhelper-compat (= 13),
+ dh-sequence-bash-completion,
+ dh-sequence-python3,
+ python3-all,
+ python3-setuptools,
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+Homepage: https://releng.io/
+Vcs-Git: https://github.com/releng-tool/releng-tool.git
+Vcs-Browser: https://github.com/releng-tool/releng-tool
+
+Package: releng-tool
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+Recommends:
+ patch,
+Suggests:
+ python3-matplotlib,
+Description: Tool to tailor the building of packages
+ releng-tool aims to provide a way for developers to tailor the building
+ of multiple software components to help prepare packages for desired
+ runtime environments (e.g. cross-platform portable packages, embedded
+ targets, etc.). When building a package, assets may be located in
+ multiple locations and may require various methods to extract, build
+ and more. releng-tool allows developers to define a set of packages,
+ specifying where resources should be fetched from, how packages should
+ be extracted and the processes for patching, configuring, building and
+ installing each package for a target sysroot.

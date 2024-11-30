@@ -1,0 +1,13 @@
+/.*
+/*.egg-info/
+/build/
+/dist/
+/htmlcov*/
+/outgoing/
+/pip-wheel-metadata/
+__pycache__/
+*$py.class
+*.py[cod]
+
+!/.coveragerc
+!/.pylintrc

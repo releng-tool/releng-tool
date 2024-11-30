@@ -1,0 +1,5 @@
+releng-tool (1.4.0.dev0) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #nnnn)
+
+ -- James Knight <git@jdknight.me>  Sat, 30 Nov 2024 00:00:00 +0000

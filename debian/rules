@@ -1,0 +1,32 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+export PYBUILD_NAME=releng-tool
+export PYBUILD_TEST_ARGS=--buffer --failfast
+
+# avoid socket-dependent tests
+export RELENG_SKIP_TEST_SITE_URL=1
+
+# default optional tooling-specific testing
+#export RELENG_SKIP_TEST_TOOL_CARGO=1
+#export RELENG_SKIP_TEST_TOOL_CMAKE=1
+#export RELENG_SKIP_TEST_TOOL_CVS=1
+#export RELENG_SKIP_TEST_TOOL_GIT=1
+#export RELENG_SKIP_TEST_TOOL_MAKE=1
+#export RELENG_SKIP_TEST_TOOL_MERCURIAL=1
+#export RELENG_SKIP_TEST_TOOL_PATCH=1
+#export RELENG_SKIP_TEST_TOOL_PYTHON_DISTUTILS=1
+#export RELENG_SKIP_TEST_TOOL_PYTHON_FLIT=1
+# avoid using hatch-related tests as hatch is not in distribution
+export RELENG_SKIP_TEST_TOOL_PYTHON_HATCHLING=1
+# avoid testing pdm perform performs networking-related actions
+export RELENG_SKIP_TEST_TOOL_PYTHON_PDM=1
+# package type tests have issues with pybuild environment
+export RELENG_SKIP_TEST_TOOL_PYTHON_PEP517=1
+#export RELENG_SKIP_TEST_TOOL_PYTHON_POETRY=1
+#export RELENG_SKIP_TEST_TOOL_PYTHON_SETUPTOOLS=1
+#export RELENG_SKIP_TEST_TOOL_SCONS=1
+
+%:
+	cp -a scripts/completion/bash debian/bash-completion
+	dh $@ --buildsystem=pybuild
