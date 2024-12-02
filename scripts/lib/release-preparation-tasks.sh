@@ -51,6 +51,12 @@ files=()
 for entry in $success_msg; do
     fentry="$dist_dir/$entry"
     if [ -f "$fentry" ]; then
+        # see: https://github.com/pypa/setuptools/pull/4159
+        if [[ "$fentry" == *releng_tool* ]]; then
+            new_fentry="${fentry/releng_tool/releng-tool}"
+            mv "$fentry" "$new_fentry"
+            fentry="$new_fentry"
+        fi
         files+=("$fentry")
     fi
 done
@@ -66,7 +72,7 @@ for file in "${files[@]}"; do
     if [[ "$file" == *.tar.gz ]]; then
         fname=${file##*/}
         part="${fname%.tar.gz}"
-        version="${part#releng_tool-}"
+        version="${part#releng-tool-}"
         break
     fi
 done
