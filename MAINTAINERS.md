@@ -44,13 +44,13 @@ git verify-tag <tag>
 Prepare a release by invoking the following script:
 
 ```shell-session
-./task-release-prepare
+tox -c tox-release.ini -e prepare-release
 ```
 
 Publish the release:
 
 ```shell-session
-./task-release-publish
+tox -c tox-release.ini -e publish-release
 ```
 
 Push up the release tag:
