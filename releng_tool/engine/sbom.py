@@ -472,11 +472,15 @@ class SbomManager:
                 else:
                     pkg_license = 'NOASSERTION'
 
+                pkg_dl_loc = pkg.get('site', 'NONE')
+                if pkg_dl_loc == 'local':
+                    pkg_dl_loc = 'NONE'
+
                 package_entry = OrderedDict()
                 package_entry['SPDXID'] = 'SPDXRef-' + pkg_name
                 package_entry['name'] = pkg_name
                 package_entry['versionInfo'] = pkg.get('version', '')
-                package_entry['downloadLocation'] = pkg.get('site', 'NONE')
+                package_entry['downloadLocation'] = pkg_dl_loc
                 package_entry['filesAnalyzed'] = False
                 package_entry['licenseDeclared'] = pkg_license
                 package_entry['licenseConcluded'] = pkg_license_final
@@ -549,6 +553,8 @@ class SbomManager:
 
             for pkg_name, pkg in data.items():
                 pkg_dl_loc = pkg.get('site', 'NONE')
+                if pkg_dl_loc == 'local':
+                    pkg_dl_loc = 'NONE'
 
                 rcontainer = ET.SubElement(root, 'spdx:relationship')
                 rroot = ET.SubElement(rcontainer, 'spdx:Relationship')
