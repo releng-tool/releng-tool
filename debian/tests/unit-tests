@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-set -e
-
-cp -r tests "$AUTOPKGTEST_TMP/" && cd "$AUTOPKGTEST_TMP"
-for py in $(py3versions -s); do
-    echo $py -Wd -m tests 2>&1;
-done

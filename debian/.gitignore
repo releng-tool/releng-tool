@@ -1,6 +1,0 @@
-/releng-tool/
-/bash-completion
-/files
-*.log
-*.debhelper*
-*.substvars
