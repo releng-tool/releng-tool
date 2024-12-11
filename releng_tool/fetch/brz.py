@@ -22,7 +22,7 @@ def fetch(opts):
         opts: fetch options
 
     Returns:
-        ``True`` if the fetch stage is completed; ``False`` otherwise
+        the fetched cache file; ``None`` if fetching has failed
     """
 
     assert opts

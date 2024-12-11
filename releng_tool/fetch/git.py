@@ -56,7 +56,7 @@ def fetch(opts):
         opts: fetch options
 
     Returns:
-        ``True`` if the fetch stage is completed; ``False`` otherwise
+        the fetched cache directory; ``None`` if fetching has failed
     """
 
     assert opts
@@ -82,7 +82,7 @@ def fetch_default(opts):
         opts: fetch options
 
     Returns:
-        ``True`` if the fetch stage is completed; ``False`` otherwise
+        the fetched cache directory; ``None`` if fetching has failed
     """
 
     cache_dir = opts.cache_dir
@@ -677,7 +677,7 @@ def fetch_local_srcs(opts):
         opts: fetch options
 
     Returns:
-        ``True`` if the fetch stage is completed; ``False`` otherwise
+        the fetched cache directory; ``None`` if fetching has failed
     """
 
     assert opts._build_dir
