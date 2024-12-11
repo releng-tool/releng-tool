@@ -5,9 +5,10 @@ Development
 - Allow users to suppress local-site package warnings
 - Correct ``hint`` missing from script environments
 - Disable garbage collection and maintenance tasks for Git caches
+- Disable update checks for PDM when processing PDM packages
 - Ensure the ``punch`` action triggers the post-build stage
-- Fixed configuration failure when using older Meson packages (pre-v1.1.1)
-- Fixed incorrect specification for empty sites in JSON/SPDX SBOM documents
+- Fixed configuration failure when using older Meson (pre-v1.1.1)
+- Fixed incorrect JSON/SPDX SBOM documents for projects with empty/local sites
 - Fixed issue where ``releng_copy`` could not copy a broken symbolic link
 - Fixed issue where ``releng_remove`` could not remove a broken symbolic link
 - Fixed patch overrides not supporting alternative file extensions
