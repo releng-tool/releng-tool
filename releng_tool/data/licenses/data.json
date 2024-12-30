@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "3.25.0",
+  "licenseListVersion": "3.26.0",
   "licenses": {
     "0BSD": {
       "name": "BSD Zero Clause License",
@@ -125,6 +125,10 @@
       "name": "Any OSI License",
       "deprecated": false
     },
+    "any-OSI-perl-modules": {
+      "name": "Any OSI License - Perl Modules",
+      "deprecated": false
+    },
     "Apache-1.0": {
       "name": "Apache License 1.0",
       "deprecated": false
@@ -239,6 +243,10 @@
     },
     "Boehm-GC": {
       "name": "Boehm-Demers-Weiser GC License",
+      "deprecated": false
+    },
+    "Boehm-GC-without-fee": {
+      "name": "Boehm-Demers-Weiser GC License (without fee)",
       "deprecated": false
     },
     "Borceux": {
@@ -645,6 +653,14 @@
       "name": "Creative Commons Public Domain Dedication and Certification",
       "deprecated": false
     },
+    "CC-PDM-1.0": {
+      "name": "Creative    Commons Public Domain Mark 1.0 Universal",
+      "deprecated": false
+    },
+    "CC-SA-1.0": {
+      "name": "Creative Commons Share Alike 1.0 Generic",
+      "deprecated": false
+    },
     "CC0-1.0": {
       "name": "Creative Commons Zero v1.0 Universal",
       "deprecated": false
@@ -849,6 +865,10 @@
       "name": "DocBook Schema License",
       "deprecated": false
     },
+    "DocBook-Stylesheet": {
+      "name": "DocBook Stylesheet License",
+      "deprecated": false
+    },
     "DocBook-XML": {
       "name": "DocBook XML License",
       "deprecated": false
@@ -1015,6 +1035,10 @@
     },
     "GD": {
       "name": "GD License",
+      "deprecated": false
+    },
+    "generic-xts": {
+      "name": "Generic XTS License",
       "deprecated": false
     },
     "GFDL-1.1": {
@@ -1381,6 +1405,10 @@
       "name": "Inner Net License v2.0",
       "deprecated": false
     },
+    "InnoSetup": {
+      "name": "Inno Setup License",
+      "deprecated": false
+    },
     "Intel": {
       "name": "Intel Open Source License",
       "deprecated": false
@@ -1653,6 +1681,10 @@
       "name": "Minpack License",
       "deprecated": false
     },
+    "MIPS": {
+      "name": "MIPS License",
+      "deprecated": false
+    },
     "MirOS": {
       "name": "The MirOS Licence",
       "deprecated": false
@@ -1667,6 +1699,10 @@
     },
     "MIT-advertising": {
       "name": "Enlightenment License (e16)",
+      "deprecated": false
+    },
+    "MIT-Click": {
+      "name": "MIT Click License",
       "deprecated": false
     },
     "MIT-CMU": {
@@ -2261,6 +2297,10 @@
       "name": "Sendmail License 8.23",
       "deprecated": false
     },
+    "Sendmail-Open-Source-1.1": {
+      "name": "Sendmail Open Source License v1.1",
+      "deprecated": false
+    },
     "SGI-B-1.0": {
       "name": "SGI Free Software License B v1.0",
       "deprecated": false
@@ -2307,6 +2347,10 @@
     },
     "Sleepycat": {
       "name": "Sleepycat License",
+      "deprecated": false
+    },
+    "SMAIL-GPL": {
+      "name": "SMAIL General Public License",
       "deprecated": false
     },
     "SMLNJ": {
@@ -2421,6 +2465,10 @@
       "name": "Transitive Grace Period Public Licence 1.0",
       "deprecated": false
     },
+    "ThirdEye": {
+      "name": "ThirdEye License",
+      "deprecated": false
+    },
     "threeparttable": {
       "name": "threeparttable License",
       "deprecated": false
@@ -2443,6 +2491,10 @@
     },
     "TPL-1.0": {
       "name": "THOR Public License 1.0",
+      "deprecated": false
+    },
+    "TrustedQSL": {
+      "name": "TrustedQSL License",
       "deprecated": false
     },
     "TTWL": {
@@ -2555,6 +2607,10 @@
     },
     "WTFPL": {
       "name": "Do What The F*ck You Want To Public License",
+      "deprecated": false
+    },
+    "wwl": {
+      "name": "WWL License",
       "deprecated": false
     },
     "wxWindows": {
@@ -2711,6 +2767,10 @@
       "name": "Bootloader Distribution Exception",
       "deprecated": false
     },
+    "CGAL-linking-exception": {
+      "name": "CGAL Linking Exception",
+      "deprecated": false
+    },
     "Classpath-exception-2.0": {
       "name": "Classpath exception 2.0",
       "deprecated": false
@@ -2768,7 +2828,7 @@
       "deprecated": false
     },
     "Gmsh-exception": {
-      "name": "Gmsh exception>",
+      "name": "Gmsh exception",
       "deprecated": false
     },
     "GNAT-exception": {
@@ -2785,6 +2845,10 @@
     },
     "gnu-javamail-exception": {
       "name": "GNU JavaMail exception",
+      "deprecated": false
+    },
+    "GPL-3.0-389-ds-base-exception": {
+      "name": "GPL-3.0 389 DS Base Exception",
       "deprecated": false
     },
     "GPL-3.0-interface-exception": {
@@ -2811,8 +2875,16 @@
       "name": "GStreamer Exception (2008)",
       "deprecated": false
     },
+    "harbour-exception": {
+      "name": "harbour exception",
+      "deprecated": false
+    },
     "i2p-gpl-java-exception": {
       "name": "i2p GPL+Java Exception",
+      "deprecated": false
+    },
+    "Independent-modules-exception": {
+      "name": "Independent Module Linking exception",
       "deprecated": false
     },
     "KiCad-libraries-exception": {
@@ -2849,6 +2921,10 @@
     },
     "mif-exception": {
       "name": "Macros and Inline Functions Exception",
+      "deprecated": false
+    },
+    "mxml-exception": {
+      "name": "mxml Exception",
       "deprecated": false
     },
     "Nokia-Qt-exception-1.1": {

@@ -33,7 +33,7 @@ import xml.etree.cElementTree as ET  # noqa: N817
 SBOM_VERSION = '0'
 
 # spdx license list version used
-SPDX_LLVERSION = '3.25'
+SPDX_LLVERSION = '3.26'
 
 # specification followed for generated spdx-sboms
 SPDX_SPEC = 'SPDX-2.3'
