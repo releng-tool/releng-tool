@@ -26,6 +26,7 @@ Development
 - Support Breezy VCS-type
 - Support injecting Visual Studio development environment variables
 - Support preallocated list/dictionary package configurations
+- Update SPDX license database to v3.26
 - Utilize forwarded arguments as fallback for ``libfoo-exec`` action
 
 1.3 (2024-08-19)
