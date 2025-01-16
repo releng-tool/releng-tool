@@ -3,6 +3,8 @@ lint.select = [
 ]
 
 lint.ignore = [
+    # ignore shadowed modules at this time
+    'A005',
     # ignore flake8-annotations since python 2.7 is supported
     'ANN',
     # ignore various unused arguments in api definitions
@@ -29,6 +31,8 @@ lint.ignore = [
     'FBT002',
     # ignore TODOs for generic linter check
     'FIX',
+    # removeprefix not supported pre-python 3.9
+    'FURB188',
     # imports are sorted lexicographically in this project
     'I001',
     # suppress no-pep420 checks for valid support and test scripts
