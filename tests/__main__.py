@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.util.log import releng_log_configuration
+from releng_tool.util.runner import detect_ci_runner_debug_mode
 from releng_tool.util.win32 import enable_ansi as enable_ansi_win32
 from tests import RelengToolTestSuite
 import argparse
@@ -53,7 +54,7 @@ def main():
 
         buffered = False
 
-    if args.debug:
+    if args.debug or detect_ci_runner_debug_mode():
         buffered = False
         if not verbosity:
             verbosity = 1
