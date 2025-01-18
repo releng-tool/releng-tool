@@ -14,6 +14,7 @@ from releng_tool.util.log import log
 from releng_tool.util.log import releng_log_configuration
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
+from releng_tool.util.runner import detect_ci_runner_debug_mode
 from releng_tool.util.win32 import enable_ansi as enable_ansi_win32
 import argparse
 import os
@@ -89,10 +90,7 @@ def main():
         # if a CI debug mode (e.g. GitHub "debug" runs) is detected,
         # automatically enable debugging for releng-tool
         if not os.getenv('RELENG_IGNORE_RUNNER_DEBUG'):
-            debug_mode = False
-            debug_mode |= 'RUNNER_DEBUG' in os.environ  # github
-            debug_mode |= 'CI_DEBUG_TRACE' in os.environ  # gitlab
-            if debug_mode:
+            if detect_ci_runner_debug_mode():
                 args.debug = True
 
         # force verbose messages if debugging is enabled
