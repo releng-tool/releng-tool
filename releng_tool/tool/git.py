@@ -45,6 +45,8 @@ GIT_SANITIZE_ENV_KEYS = [
 
 #: dictionary of environment entries append to the environment dictionary
 GIT_EXTEND_ENV = {
+    # disable all advice messages
+    'GIT_ADVICE': '0',
     # prevent the terminal prompt for ssh clones from being shown
     'GIT_SSH_COMMAND': 'ssh -oBatchMode=yes',
     # prevent the terminal prompt from being shown
