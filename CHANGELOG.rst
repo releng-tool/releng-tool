@@ -25,6 +25,7 @@ Development
 - Promote use of ``releng-tool.rt`` for project configuration
 - Support Breezy VCS-type
 - Support injecting Visual Studio development environment variables
+- Support newer GitLab CI flag for automatic debugging mode
 - Support preallocated list/dictionary package configurations
 - Update SPDX license database to v3.26
 - Utilize forwarded arguments as fallback for ``libfoo-exec`` action
