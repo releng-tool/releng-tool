@@ -4,6 +4,7 @@
 
 from io import open  # noqa: A004
 from releng_tool.tool import RelengTool
+from releng_tool.util.log import debug
 from releng_tool.util.log import err
 import sys
 
@@ -74,6 +75,7 @@ class GitTool(RelengTool):
             the revision; ``None`` when a revision cannot be extracted
         """
 
+        debug('attempting to determine git submodule revision')
         rv, ref = self.execute_rv('--git-dir=' + git_dir, 'show-ref', '--head')
         if rv != 0:
             err('failed to extract a submodule revision')
@@ -86,6 +88,8 @@ class GitTool(RelengTool):
             revision = revision[len('refs/heads/'):]
         elif revision.startswith('refs/remotes/origin/'):
             revision = revision[len('refs/remotes/origin/'):]
+
+        debug('detected revision: {}', revision)
         return revision
 
     def parse_cfg_file(self, target):

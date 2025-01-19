@@ -527,6 +527,7 @@ def _fetch_submodules(opts, cache_dir, revision):
 
         # if a revision is not provided, extract the HEAD from the cache
         if not submodule_revision:
+            debug('no submodule revision provided; attempting to find revision')
             submodule_revision = GIT.extract_submodule_revision(
                 submodule_cache_dir)
             if not submodule_revision:
