@@ -1,5 +1,5 @@
-Development
------------
+1.4 (2025-01-19)
+----------------
 
 - Allow adding a package without a definition that defines at least one script
 - Allow users to suppress local-site package warnings
