@@ -2,7 +2,7 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
-__version__ = '1.5.0.dev0'
+__version__ = '2.0.0.dev0'
 
 # Below should contain a series of helper implementations to assist releng-tool
 # developer's wanting to explicitly import script helpers into scripts not
