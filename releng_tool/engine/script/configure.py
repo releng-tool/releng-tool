@@ -30,7 +30,7 @@ def configure(opts):
     def_dir = opts.def_dir
     env = opts.env
 
-    configure_script_filename = '{}-{}'.format(opts.name, CONFIGURE_SCRIPT)
+    configure_script_filename = f'{opts.name}-{CONFIGURE_SCRIPT}'
     configure_script = os.path.join(def_dir, configure_script_filename)
     configure_script, configure_script_exists = opt_file(configure_script)
     if not configure_script_exists:

@@ -34,7 +34,7 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     verbose('bootstrapping {} (pre-check)...', pkg.name)
     sys.stdout.flush()
 
-    bootstrap_script_filename = '{}-{}'.format(pkg.name, BOOTSTRAP_SCRIPT)
+    bootstrap_script_filename = f'{pkg.name}-{BOOTSTRAP_SCRIPT}'
     bootstrap_script = os.path.join(pkg.def_dir, bootstrap_script_filename)
     bootstrap_script, bootstrap_script_exists = opt_file(bootstrap_script)
     if not bootstrap_script_exists:

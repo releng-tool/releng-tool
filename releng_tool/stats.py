@@ -90,7 +90,7 @@ class RelengStats:
             return
 
         if desc:
-            desc = ' ({})'.format(desc)
+            desc = f' ({desc})'
         else:
             desc = ''
 
@@ -141,7 +141,7 @@ class RelengStats:
         self.data['duration'][pkg][stage] = end_time - start_time
 
         if save:
-            self.save(desc='{}-{}'.format(pkg, stage))
+            self.save(desc=f'{pkg}-{stage}')
 
     def generate(self):
         """

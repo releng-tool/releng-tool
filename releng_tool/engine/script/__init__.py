@@ -7,7 +7,7 @@ import os
 
 
 def resolve_remote_script(build_dir, script_name):
-    script_filename = '{}-{}'.format('releng-tool', script_name)
+    script_filename = f'releng-tool-{script_name}'
     script_base = os.path.join(build_dir, script_filename)
     remote_script, script_exists = opt_file(script_base)
 
@@ -17,7 +17,7 @@ def resolve_remote_script(build_dir, script_name):
         ]
 
         for deprecated_name in deprecated_names:
-            alt_script_filename = '{}-{}'.format(deprecated_name, script_name)
+            alt_script_filename = f'{deprecated_name}-{script_name}'
             script_base = os.path.join(build_dir, alt_script_filename)
             remote_script, script_exists = opt_file(script_base)
             if os.path.isfile(remote_script):

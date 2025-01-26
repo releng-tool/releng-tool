@@ -57,7 +57,7 @@ def fetch_default(opts):
     site = opts.site
     work_dir = opts.work_dir
 
-    note('fetching {}...'.format(name))
+    note(f'fetching {name}...')
     sys.stdout.flush()
 
     log('checking out sources')

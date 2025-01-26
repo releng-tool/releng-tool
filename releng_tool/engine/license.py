@@ -97,9 +97,9 @@ class LicenseManager:
                     license_header = 'license(s)'
 
                 # output license header
-                dst.write('''{}
+                dst.write(f'''{license_header}
 ################################################################################
-'''.format(license_header))
+''')
 
                 # output license header
                 has_pkg_info = False
@@ -107,10 +107,10 @@ class LicenseManager:
                     license_files = license_data['files']
                     license_version = license_data['version']
                     has_pkg_info = True
-                    dst.write('''
-{}-{}
+                    dst.write(f'''
+{license_name}-{license_version}
 --------------------------------------------------------------------------------
-'''.format(license_name, license_version))
+''')
                     for pkg_license_file in sorted(license_files):
                         verbose('writing license file ({}): {}',
                             license_name, pkg_license_file)

@@ -87,7 +87,7 @@ class RelengPackage:
         self.name = name
         self.version = version
         if version:
-            self.nv = '{}-{}'.format(name, version)
+            self.nv = f'{name}-{version}'
         else:
             self.nv = self.name
         # (commons)

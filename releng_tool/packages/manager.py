@@ -160,7 +160,7 @@ class RelengPackageManager:
 
         # sanity check that check option is properly registered
         for key in Rpk:
-            assert key in self._key_types, 'key {} is missing'.format(key)
+            assert key in self._key_types, f'key {key} is missing'
 
     def is_defless_package(self, script):
         """
@@ -191,7 +191,7 @@ class RelengPackageManager:
 
         hint_script_exists = False
         for package_hint in package_hints:
-            hint_script = '{}-{}'.format(script, package_hint)
+            hint_script = f'{script}-{package_hint}'
             _, hint_script_exists = opt_file(hint_script)
             if hint_script_exists:
                 break
@@ -1570,7 +1570,7 @@ using deprecated dependency configuration for package: {}
             type_: the expected configuration type
         """
 
-        assert key not in self._key_types, 'key {} is registered'.format(key)
+        assert key not in self._key_types, f'key {key} is registered'
         self._key_types[key] = type_
 
     def _deprecated(self, name, old_key, new_key):

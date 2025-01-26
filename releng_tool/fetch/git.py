@@ -180,7 +180,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
     git_dir = '--git-dir=' + cache_dir
 
     if not desc:
-        desc = 'repository: {}'.format(opts.name)
+        desc = f'repository: {opts.name}'
 
     log('fetching most recent sources')
     prepared_fetch_cmd = [
@@ -211,7 +211,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
             'origin',
         ]
         debug('checking if tag exists on remote')
-        if GIT.execute([*ls_cmd, '--tags', 'refs/tags/{}'.format(revision)],
+        if GIT.execute([*ls_cmd, '--tags', f'refs/tags/{revision}'],
                 cwd=cache_dir, quiet=True):
             debug('attempting a tag reference fetch operation')
             fetch_cmd = list(prepared_fetch_cmd)
@@ -224,7 +224,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
                 return True
 
         debug('checking if reference exists on remote')
-        if GIT.execute([*ls_cmd, '--heads', 'refs/heads/{}'.format(revision)],
+        if GIT.execute([*ls_cmd, '--heads', f'refs/heads/{revision}'],
                 cwd=cache_dir, quiet=True):
             debug('attempting a head reference fetch operation')
             fetch_cmd = list(prepared_fetch_cmd)
@@ -587,7 +587,7 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
         return False
 
     # fetch sources for this submodule
-    desc = 'submodule ({}): {}'.format(opts.name, name)
+    desc = f'submodule ({opts.name}): {name}'
     return _fetch_srcs(opts, cache_dir, revision, desc=desc)
 
 

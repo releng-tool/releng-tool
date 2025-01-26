@@ -50,7 +50,7 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
 
     # check if we have a patch script override to process (instead of
     # patch files)
-    patch_script_filename = '{}-{}'.format(pkg.name, PATCH_SCRIPT)
+    patch_script_filename = f'{pkg.name}-{PATCH_SCRIPT}'
     patch_script_base = os.path.join(pkg.def_dir, patch_script_filename)
     patch_script, has_patch_script = opt_file(patch_script_base)
 
@@ -88,13 +88,13 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
         return False
 
     for patch in patches:
-        print('({})'.format(os.path.basename(patch)))
+        print(f'({os.path.basename(patch)})')
 
         if not PATCH.execute([
                 '--batch',
                 '--forward',
                 '--ignore-whitespace',
-                '--input={}'.format(patch),
+                f'--input={patch}',
                 '--strip=1',
                 ], cwd=patch_dir):
             err('failed to apply patch')

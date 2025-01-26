@@ -164,10 +164,10 @@ class RelengRegistry(RelengRegistryInterface):
         name_key = name.lower()
         if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined extract types '
-                'must be prefixed with "{}"'.format(PREFIX_REQUIREMENT))
+                f'must be prefixed with "{PREFIX_REQUIREMENT}"')
         if name_key in self.extract_types:
-            raise RelengInvalidSetupException('extension extract type {} is '
-                'already defined by another extension'.format(name))
+            raise RelengInvalidSetupException(f'extension extract type {name} '
+                'is already defined by another extension')
         if not inspect.isclass(handler):
             raise RelengInvalidSetupException('handler is not a class')
         extract_type = handler()
@@ -217,10 +217,10 @@ class RelengRegistry(RelengRegistryInterface):
         name_key = name.lower()
         if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined fetch types '
-                'must be prefixed with "{}"'.format(PREFIX_REQUIREMENT))
+                f'must be prefixed with "{PREFIX_REQUIREMENT}"')
         if name_key in self.fetch_types:
-            raise RelengInvalidSetupException('extension fetch type {} is '
-                'already defined by another extension'.format(name))
+            raise RelengInvalidSetupException(f'extension fetch type {name} is '
+                'already defined by another extension')
         if not inspect.isclass(handler):
             raise RelengInvalidSetupException('handler is not a class')
         fetch_type = handler()
@@ -271,10 +271,10 @@ class RelengRegistry(RelengRegistryInterface):
         name_key = name.lower()
         if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined package types '
-                'must be prefixed with "{}"'.format(PREFIX_REQUIREMENT))
+                f'must be prefixed with "{PREFIX_REQUIREMENT}"')
         if name_key in self.package_types:
-            raise RelengInvalidSetupException('extension package type {} '
-                'is already defined by another extension'.format(name))
+            raise RelengInvalidSetupException(f'extension package type {name} '
+                'is already defined by another extension')
         if not inspect.isclass(handler):
             raise RelengInvalidSetupException('handler is not a class')
         package_type = handler()
@@ -393,7 +393,7 @@ class RelengRegistry(RelengRegistryInterface):
 
         if not require_version(version, quiet=True, critical=False):
             raise RelengVersionNotSupportedException(
-                'requires {}, has {}'.format(version, releng_version))
+                f'requires {version}, has {releng_version}')
 
 
 class EventListener:

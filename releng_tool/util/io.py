@@ -404,12 +404,12 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             if len(args) >= AT_LEAST_THREE_ARGS and is_debug('execute-args'):
                 arg_str = '\n ' + args[0]
                 for arg in args[1:]:
-                    arg_str += '\n  {}'.format(arg)
+                    arg_str += f'\n  {arg}'
                 debug(arg_str)
             if final_env and is_debug('execute-env'):
                 env_str = '(env)'
                 for k, v in sorted(final_env.items()):
-                    env_str += '\n  {}: {}'.format(k, v)
+                    env_str += f'\n  {k}: {v}'
                 debug(env_str)
             sys.stdout.flush()
 
@@ -633,7 +633,7 @@ def interpret_stem_extension(basename):
             break
 
         part, ext = ext.split('.', 1)
-        stem = '{}.{}'.format(stem, part)
+        stem = f'{stem}.{part}'
 
     return stem, ext
 
@@ -920,7 +920,7 @@ def prepare_definitions(defs, prefix=None):
             if prefix:
                 key = prefix + key
 
-            final.append('{}={}'.format(key, val))
+            final.append(f'{key}={val}')
 
     return final
 

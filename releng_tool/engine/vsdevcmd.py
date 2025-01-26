@@ -38,7 +38,7 @@ def vsdevcmd_initialize(verstr=None, env=None):
 
     debug('detecting vsdevcmd variables')
     comspec = os.getenv('COMSPEC', 'cmd.exe')
-    invoked_cmd = '""{}" && set"'.format(vsdevcmd)
+    invoked_cmd = f'""{vsdevcmd}" && set"'
     rv, output = execute_rv(
         comspec, '/s', '/c', invoked_cmd,
         env_update = {

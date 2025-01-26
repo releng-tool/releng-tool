@@ -116,7 +116,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
 
                 success = True
         else:
-            errmsg = 'source does not exist: {}'.format(src)
+            errmsg = f'source does not exist: {src}'
     except (IOError, ShutilError) as e:
         errmsg = str(e)
 

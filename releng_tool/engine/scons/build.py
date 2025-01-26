@@ -47,7 +47,7 @@ def build(opts):
     scons_args.extend(prepare_arguments(scons_opts))
 
     if opts.jobs > 1:
-        scons_args.append('--jobs={}'.format(opts.jobs))
+        scons_args.append(f'--jobs={opts.jobs}')
 
     if not SCONS.execute(scons_args, env=expand(opts.build_env)):
         err('failed to build scons project: {}', opts.name)

@@ -154,7 +154,7 @@ def _workdir_extract(opts, cache_dir, work_dir, revision):
         return False
 
     verbose('ensure target revision is up-to-date in work tree')
-    origin_revision = 'origin/{}'.format(revision)
+    origin_revision = f'origin/{revision}'
     output = []
     if GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
             origin_revision], quiet=True, capture=output):
@@ -209,6 +209,6 @@ diverged revision detected; attempting to correct...
                 verbose('failed to replicate .git directory')
         else:
             with open(git_file, 'w') as f:
-                f.write('gitdir: {}\n'.format(cache_dir))
+                f.write(f'gitdir: {cache_dir}\n')
 
     return True

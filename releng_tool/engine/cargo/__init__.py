@@ -117,7 +117,7 @@ def cargo_register_pkg_paths(pkgs):
 
         cpth = pkg.build_tree.replace(os.sep, posixpath.sep)
         cargo_patches[pkg.cargo_name] = \
-            'patch.crates-io."{}".path="{}"'.format(pkg.cargo_name, cpth)
+            f'patch.crates-io."{pkg.cargo_name}".path="{cpth}"'
 
     # extract all known dependencies from each cargo package
     cargo_deps = {}

@@ -88,7 +88,7 @@ def extract(opts):
                 tar_args = [
                     '--extract',
                     '--file=' + cache_file,
-                    '--strip-components={}'.format(strip_count),
+                    f'--strip-components={strip_count}',
                     '--verbose',
                 ]
 

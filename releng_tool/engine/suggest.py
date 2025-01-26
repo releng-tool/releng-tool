@@ -55,7 +55,7 @@ def suggest(opts, value, pkg_finder=_populate_possible_pkgs):
         if matches:
             matches2 = []
             for match in matches:
-                matches2.append('{}-{}'.format(match, opts.pkg_action))
+                matches2.append(f'{match}-{opts.pkg_action}')
             matches = matches2
     # no package action but we have a dash, check if there are any matches
     # to possible valid package actions
@@ -72,7 +72,7 @@ def suggest(opts, value, pkg_finder=_populate_possible_pkgs):
             if matches:
                 matches2 = []
                 for match in matches:
-                    matches2.append('{}-{}'.format(pkg_name, match))
+                    matches2.append(f'{pkg_name}-{match}')
                 matches = matches2
 
         # if the package name is not valid, this is either an entire package

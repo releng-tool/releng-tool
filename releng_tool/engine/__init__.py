@@ -202,7 +202,7 @@ class RelengEngine:
             if self.opts.devmode is True:
                 postfix = ''
             else:
-                postfix = ' ({})'.format(self.opts.devmode)
+                postfix = f' ({self.opts.devmode})'
             hint('running in development mode' + postfix)
 
         if self.opts.local_srcs:
@@ -344,7 +344,7 @@ class RelengEngine:
                     alt = '"{}" or "{}"'.format(
                         '", "'.join(detected[:-1]), detected[-1])
 
-                extra = '\n  Did you mean {}?'.format(alt)
+                extra = f'\n  Did you mean {alt}?'
 
             raise RelengToolUnknownAction({
                 'action': opts.target_action,
@@ -578,7 +578,7 @@ has failed. Ensure the following path is accessible for this user:
             if self.opts.devmode is True:
                 postfix = ''
             else:
-                postfix = ' ({})'.format(self.opts.devmode)
+                postfix = f' ({self.opts.devmode})'
             log('Development mode: Enabled' + postfix)
         else:
             log('Development mode: Disabled')
@@ -1022,7 +1022,7 @@ for any desired locally sourced packages.
                         if opts.devmode is True:
                             dms = ''
                         else:
-                            dms = ' ({})'.format(opts.devmode)
+                            dms = f' ({opts.devmode})'
 
                         success('configured root for development mode' + dms)
                         configured = True

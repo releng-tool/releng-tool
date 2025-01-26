@@ -30,7 +30,7 @@ def build(opts):
     def_dir = opts.def_dir
     env = opts.env
 
-    build_script_filename = '{}-{}'.format(opts.name, BUILD_SCRIPT)
+    build_script_filename = f'{opts.name}-{BUILD_SCRIPT}'
     build_script = os.path.join(def_dir, build_script_filename)
     build_script, build_script_exists = opt_file(build_script)
     if not build_script_exists:

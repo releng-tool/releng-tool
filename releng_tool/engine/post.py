@@ -34,7 +34,7 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     verbose('post-processing {} (pre-check)...', pkg.name)
     sys.stdout.flush()
 
-    post_script_filename = '{}-{}'.format(pkg.name, POST_SCRIPT)
+    post_script_filename = f'{pkg.name}-{POST_SCRIPT}'
     post_script = os.path.join(pkg.def_dir, post_script_filename)
     post_script, post_script_exists = opt_file(post_script)
     if not post_script_exists:

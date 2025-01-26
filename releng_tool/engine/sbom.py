@@ -421,7 +421,7 @@ class SbomManager:
 
         prj_name = cache['releng-tool-pid']
         uid = cache['report-id']
-        doc_namespace = 'https://spdx.org/spdxdocs/{}-{}'.format(prj_name, uid)
+        doc_namespace = f'https://spdx.org/spdxdocs/{prj_name}-{uid}'
 
         spdx_cache = OrderedDict()
         spdx_cache['SPDXID'] = 'SPDXRef-DOCUMENT'
@@ -506,8 +506,8 @@ class SbomManager:
         prj_name = cache['releng-tool-pid']
         tool_ref = 'Tool: releng-tool-' + cache['releng-tool-version']
         uid = cache['report-id']
-        base_namespace = 'https://spdx.org/spdxdocs/{}-{}'.format(prj_name, uid)
-        doc_namespace = '{}#{}'.format(base_namespace, 'SPDXRef-DOCUMENT')
+        base_namespace = f'https://spdx.org/spdxdocs/{prj_name}-{uid}'
+        doc_namespace = f'{base_namespace}#SPDXRef-DOCUMENT'
 
         # resource description root
         rdf_root = ET.Element('rdf:RDF')
@@ -554,7 +554,7 @@ class SbomManager:
                 relement = ET.SubElement(rroot, 'spdx:relatedSpdxElement')
                 proot = ET.SubElement(relement, 'spdx:Package')
 
-                pkg_namespace = '{}#SPDXRef-{}'.format(base_namespace, pkg_name)
+                pkg_namespace = f'{base_namespace}#SPDXRef-{pkg_name}'
                 proot.set('rdf:about', pkg_namespace)
 
                 XML_ELEMENT(proot, 'spdx:specVersion', SPDX_SPEC)
@@ -669,11 +669,11 @@ class SbomManager:
                     continue
 
                 has_pkg_data = True
-                f.write('''\
+                f.write(f'''\
 --------------------------------------------------------------------------------
-{}
+{desc}
 --------------------------------------------------------------------------------
-'''.format(desc))
+''')
 
                 for pkg_name, pkg in data.items():
                     has_pkg_info = False
@@ -694,7 +694,7 @@ class SbomManager:
                         has_pkg_info = True
                         f.write(' Licenses:\n')
                         for pkg_license in pkg['licenses']:
-                            f.write('  {}\n'.format(pkg_license))
+                            f.write(f'  {pkg_license}\n')
                     elif has_site:
                         f.write('  No licenses.\n')
 

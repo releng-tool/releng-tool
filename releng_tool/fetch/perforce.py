@@ -36,7 +36,7 @@ def fetch(opts):
         err('unable to fetch package; git (for perforce) is not installed')
         return None
 
-    note('fetching {}...'.format(name))
+    note(f'fetching {name}...')
     sys.stdout.flush()
 
     p4env = {}
@@ -66,7 +66,7 @@ as the depot path to synchronize. For example:
 
     log('checking out sources')
     if revision:
-        target_path = '{}@{}'.format(view_dir, revision)
+        target_path = f'{view_dir}@{revision}'
     else:
         target_path = view_dir
     if not GIT.execute(['p4', 'clone', target_path],

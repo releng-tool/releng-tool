@@ -263,7 +263,7 @@ Ensure the hash file correctly names an expected file.
                     else:
                         provided = ''
                         for hash_ in hashes:
-                            provided += '\n     Provided: {}'.format(hash_)
+                            provided += f'\n     Provided: {hash_}'
 
                         err('''\
 hash mismatch detected
