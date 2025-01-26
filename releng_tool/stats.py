@@ -5,14 +5,10 @@ from collections import defaultdict
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
+from time import monotonic
 import math
 import os
 import pickle
-
-try:
-    from time import monotonic as capture_clock
-except ImportError:
-    from time import time as capture_clock
 
 # optional imports
 try:
@@ -117,7 +113,7 @@ class RelengStats:
             pkg: the package
             stage: the stage which has started
         """
-        self.cache[pkg][stage]['start'] = capture_clock()
+        self.cache[pkg][stage]['start'] = monotonic()
 
     def track_duration_end(self, pkg, stage, save=True):
         """
@@ -132,7 +128,7 @@ class RelengStats:
             stage: the stage which has ended
             save (optional): automatically save the duration (default: True)
         """
-        end_time = capture_clock()
+        end_time = monotonic()
         start_time = self.cache[pkg][stage]['start']
 
         if 'duration' not in self.data:
