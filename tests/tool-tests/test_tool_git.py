@@ -13,6 +13,7 @@ from tests.support.site_tool_test import TestSiteToolBase
 import os
 import sys
 import unittest
+import uuid
 
 
 DEFAULT_BRANCH = 'test'
@@ -429,15 +430,15 @@ class TestToolGit(TestSiteToolBase):
             touch(os.path.join(repo3, 'file3'))
             self._create_commit('add file', repo=repo3, add=True)
 
-            # add a submodule repo2 to repo1
-            self._git_repo('-c', 'protocol.file.allow=always',
-                'submodule', 'add', repo2, 'repo2', repo=repo1)
-            self._create_commit('add module', repo=repo1, add=True)
-
             # add a submodule repo3 to repo2
             self._git_repo('-c', 'protocol.file.allow=always',
                 'submodule', 'add', repo3, 'repo3', repo=repo2)
-            self._create_commit('add module', repo=repo2, add=True)
+            self._create_commit('add repo3 module', repo=repo2, add=True)
+
+            # add a submodule repo2 to repo1
+            self._git_repo('-c', 'protocol.file.allow=always',
+                'submodule', 'add', repo2, 'repo2', repo=repo1)
+            self._create_commit('add repo2 module', repo=repo1, add=True)
 
             # extract package and submodules
             self.engine.opts.gbl_action = GlobalAction.EXTRACT
@@ -471,45 +472,55 @@ class TestToolGit(TestSiteToolBase):
 
             # dummy file on repo1
             touch(os.path.join(repo1, 'file1'))
-            self._create_commit('add file', repo=repo1, add=True)
+            self._create_commit('add file1', add=True)
 
-            # dummy files on repo2 for two branches
-            CUSTOM_BRANCH = 'custom'
-
+            # dummy file on repo2
             touch(os.path.join(repo2, 'file2'))
-            self._create_commit('add file', repo=repo2, add=True)
-
-            self._git_repo('checkout', '-b', CUSTOM_BRANCH, repo=repo2)
-
-            touch(os.path.join(repo2, 'file3'))
-            self._create_commit('add file', repo=repo2, add=True)
-
-            self._git_repo('checkout', DEFAULT_BRANCH, repo=repo2)
+            eref1 = self._create_commit('add file2', repo=repo2, add=True)
 
             # add a submodule repo2 to repo1
             self._git_repo('-c', 'protocol.file.allow=always',
                 'submodule', 'add', repo2, 'repo2', repo=repo1)
-            self._create_commit('add module', repo=repo1, add=True)
+            self._create_commit('add module', add=True)
 
-            # extract package but not submodules (by default)
+            # second dummy file on repo2
+            CUSTOM_BRANCH = 'custom'
+
+            self._git_repo('checkout', '-b', CUSTOM_BRANCH, repo=repo2)
+
+            touch(os.path.join(repo2, 'file3'))
+            eref2 = self._create_commit('add file3', repo=repo2, add=True)
+
+            # extract package with default submodule
             self.engine.opts.gbl_action = GlobalAction.EXTRACT
             rv = self.engine.run()
             self.assertTrue(rv)
 
-            # verify expected content from main package; not submodules
+            # verify expected content from main and default submodule branch
             out_dir = os.path.join(
                 self.engine.opts.build_dir, 'test-' + DEFAULT_BRANCH)
-            repo1_file = os.path.join(out_dir, 'file1')
-            repo2_file = os.path.join(out_dir, 'repo2', 'file2')
-            self.assertTrue(os.path.exists(repo1_file))
-            self.assertTrue(os.path.exists(repo2_file))
+            repo1_file1 = os.path.join(out_dir, 'file1')
+            repo2_file2 = os.path.join(out_dir, 'repo2', 'file2')
+            repo2_file3 = os.path.join(out_dir, 'repo2', 'file3')
+            self.assertTrue(os.path.exists(repo1_file1))
+            self.assertTrue(os.path.exists(repo2_file2))
+            self.assertFalse(os.path.exists(repo2_file3))
 
             # cleanup
             self.cleanup_outdir()
 
             # adjust submodule to target the custom branch
+            check_ref = self._git_repo('rev-parse', f'{DEFAULT_BRANCH}:repo2')
+            self.assertEqual(check_ref, eref1)
+
             self._git_repo('config', '-f', '.gitmodules',
-                'submodule.repo2.branch', CUSTOM_BRANCH, repo=repo1)
+                'submodule.repo2.branch', CUSTOM_BRANCH)
+            self._git_repo('-c', 'protocol.file.allow=always',
+                'submodule', 'update', '--remote', 'repo2')
+            self._create_commit('updated module reference', add=True)
+
+            check_ref = self._git_repo('rev-parse', f'{DEFAULT_BRANCH}:repo2')
+            self.assertEqual(check_ref, eref2)
 
             # force a fetch (which should update the cache)
             self.engine.opts.gbl_action = GlobalAction.FETCH
@@ -522,8 +533,7 @@ class TestToolGit(TestSiteToolBase):
             self.assertTrue(rv)
 
             # verify expected content from main package and submodules
-            repo3_file = os.path.join(out_dir, 'repo2', 'file3')
-            self.assertTrue(os.path.exists(repo3_file))
+            self.assertTrue(os.path.exists(repo2_file3))
 
     def test_tool_git_unknown_branch_tag(self):
         self.defconfig_add('VERSION', 'unknown')
@@ -627,10 +637,15 @@ class TestToolGit(TestSiteToolBase):
         return self._git(repo, *args)
 
     def _create_commit(self, msg='test', **kwargs):
+        # always append a unique identifier; otherwise fresh/empty repositories
+        # created at the same time for a test may result in the same hash value
+        uid = str(uuid.uuid4())[:5]
+        umsg = f'{msg} ({uid})'
+
         repo = kwargs.get('repo')
         if kwargs.get('add'):
             self._git_repo('add', '.', repo=repo)
-        self._git_repo('commit', '--allow-empty', '-m', msg, repo=repo)
+        self._git_repo('commit', '--allow-empty', '-m', umsg, repo=repo)
         return self._git_repo('rev-parse', 'HEAD', repo=repo)
 
     def _create_tag(self, tag, msg='', repo=None):
