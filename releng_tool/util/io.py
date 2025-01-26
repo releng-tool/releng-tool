@@ -11,6 +11,7 @@ from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.string import expand as expand_util
 from runpy import run_path
+from shlex import quote
 from shutil import copyfileobj
 import errno
 import os
@@ -20,10 +21,6 @@ import sys
 import tempfile
 import traceback
 
-try:
-    from shlex import quote
-except ImportError:
-    from pipes import quote
 
 #: list of (lower-cased) extension with "multiple parts"
 #: (see ``interpretStemExtension``)
