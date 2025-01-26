@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from configparser import ConfigParser
 from releng_tool.defs import VcsType
 from releng_tool.tool.cargo import CARGO
 from releng_tool.util.io import interim_working_dir
@@ -10,10 +11,6 @@ from releng_tool.util.log import warn
 import os
 import posixpath
 
-try:
-    from ConfigParser import SafeConfigParser as ConfigParser
-except ImportError:
-    from configparser import ConfigParser
 
 # folder name (under build) where all cargo packages will target
 CARGO_COMMON_TARGET = '.releng-tool-cargo-target'
