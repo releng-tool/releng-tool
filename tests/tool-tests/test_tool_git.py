@@ -402,12 +402,6 @@ class TestToolGit(TestSiteToolBase):
             self.assertFalse(os.path.exists(repo2_file))
 
     def test_tool_git_submodules_enabled(self):
-        # Disabling macOS run for now; should be able to work but test fails
-        # on GitHub's runner. Appears to work a local build.
-        # https://github.com/releng-tool/releng-tool/actions/runs/12846263122/job/35821323870
-        if sys.platform == 'darwin':
-            raise unittest.SkipTest('skipping due to unexpected ci issue')
-
         self.defconfig_add('GIT_SUBMODULES', value=True)
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
 
@@ -455,12 +449,6 @@ class TestToolGit(TestSiteToolBase):
             self.assertTrue(os.path.exists(repo3_file))
 
     def test_tool_git_submodules_branch_revision(self):
-        # Disabling macOS run for now; should be able to work but test fails
-        # on GitHub's runner. Appears to work a local build.
-        # https://github.com/releng-tool/releng-tool/actions/runs/12846263122/job/35821323870
-        if sys.platform == 'darwin':
-            raise unittest.SkipTest('skipping due to unexpected ci issue')
-
         self.defconfig_add('GIT_SUBMODULES', value=True)
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
 
