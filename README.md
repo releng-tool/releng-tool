@@ -4,7 +4,7 @@
 [![Supports all Python versions](https://badgen.net/static/Python/2.7%20%7C%203.4-3.13)](https://pypi.python.org/pypi/releng-tool)
 [![Build Status](https://github.com/releng-tool/releng-tool/actions/workflows/build.yml/badge.svg)](https://github.com/releng-tool/releng-tool/actions/workflows/build.yml)
 [![Tools Status](https://github.com/releng-tool/releng-tool/actions/workflows/check-tools.yml/badge.svg)](https://github.com/releng-tool/releng-tool/actions/workflows/check-tools.yml)
-[![Documentation](https://badgen.net/badge/Documentation/releng.io/333333)](https://docs.releng.io) 
+[![Documentation](https://badgen.net/badge/Documentation/releng.io/333333)](https://docs.releng.io)
 
 ## Overview
 
