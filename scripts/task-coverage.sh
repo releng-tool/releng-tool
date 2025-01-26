@@ -35,15 +35,10 @@ if [ $perform_clean = true ]; then
         -c "$script_dir"/../tox-coverage.ini -e coverage-erase
 fi
 
-# gather coverage data under Python 2.7
-echo "Generating Python 2.7 coverage data..."
-$cmd_prefix "$SHELL" "$script_dir"/tox-legacy.sh "${new_args[@]}" \
-    -c "$script_dir"/../tox-coverage.ini -e coverage-py27
-
-# gather coverage data under Python 3
-echo "Generating Python 3 coverage data..."
+# gather coverage data
+echo "Generating coverage data..."
 $cmd_prefix tox "${new_args[@]}" \
-    -c "$script_dir"/../tox-coverage.ini -e coverage-py3
+    -c "$script_dir"/../tox-coverage.ini -e coverage-data
 
 # generate a coverage report
 if [ $perform_report = true ]; then
