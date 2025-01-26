@@ -7,72 +7,72 @@ from io import open  # noqa: A004
 from releng_tool.packages import pkg_key
 from tests import RelengToolTestCase
 from tests import prepare_testenv
-from tests import redirect_stderr
+from tests import redirect_stdout
 import os
 
 
 class TestSpdxLicenseWarnings(RelengToolTestCase):
     def test_spdx_licenses_broken_spdx_license_value01(self):
-        stderr = self._process_license('MIT AND')
-        self.assertIn('unexpected spdx license format detected', stderr)
+        output = self._process_license('MIT AND')
+        self.assertIn('unexpected spdx license format detected', output)
 
     def test_spdx_licenses_broken_spdx_license_value02(self):
-        stderr = self._process_license('BSD AND OR MIT')
-        self.assertIn('unexpected spdx license format detected', stderr)
+        output = self._process_license('BSD AND OR MIT')
+        self.assertIn('unexpected spdx license format detected', output)
 
     def test_spdx_licenses_deprecated_spdx_exception(self):
-        stderr = self._process_license(
+        output = self._process_license(
             'LGPL-2.0-only WITH Nokia-Qt-exception-1.1')
-        self.assertIn('deprecated spdx license exception detected', stderr)
+        self.assertIn('deprecated spdx license exception detected', output)
 
     def test_spdx_licenses_deprecated_spdx_license(self):
-        stderr = self._process_license('LGPL-3.0')
-        self.assertIn('deprecated spdx license detected', stderr)
+        output = self._process_license('LGPL-3.0')
+        self.assertIn('deprecated spdx license detected', output)
 
     def test_spdx_licenses_exception_check(self):
-        stderr = self._process_license(None, template='spdx-extras')
-        self.assertIn('unknown spdx license detected', stderr)
-        self.assertIn('unknown spdx license exception detected', stderr)
+        output = self._process_license(None, template='spdx-extras')
+        self.assertIn('unknown spdx license detected', output)
+        self.assertIn('unknown spdx license exception detected', output)
 
     def test_spdx_licenses_exception_license_exception_extra(self):
-        stderr = self._process_license('PERMIT_LICENSE', template='spdx-extras')
-        self.assertNotIn('unknown spdx license detected', stderr)
+        output = self._process_license('PERMIT_LICENSE', template='spdx-extras')
+        self.assertNotIn('unknown spdx license detected', output)
 
     def test_spdx_licenses_exception_license_extra(self):
-        stderr = self._process_license(
+        output = self._process_license(
             'MIT WITH PERMIT_EXCEPTION', template='spdx-extras')
-        self.assertNotIn('unknown spdx license detected', stderr)
+        self.assertNotIn('unknown spdx license detected', output)
 
     def test_spdx_licenses_suppress_quirk(self):
         config = {
             'quirk': ['releng.disable_spdx_check'],
         }
 
-        stderr = self._process_license('DUMMY', config=config)
-        self.assertNotIn('unknown spdx license detected', stderr)
+        output = self._process_license('DUMMY', config=config)
+        self.assertNotIn('unknown spdx license detected', output)
 
     def test_spdx_licenses_unknown_spdx_exception(self):
-        stderr = self._process_license('BSD WITH DUMMY')
-        self.assertIn('unknown spdx license exception detected', stderr)
+        output = self._process_license('BSD WITH DUMMY')
+        self.assertIn('unknown spdx license exception detected', output)
 
     def test_spdx_licenses_unknown_spdx_license(self):
-        stderr = self._process_license('DUMMY')
-        self.assertIn('unknown spdx license detected', stderr)
+        output = self._process_license('DUMMY')
+        self.assertIn('unknown spdx license detected', output)
 
     def test_spdx_licenses_valid_spdx_license_common(self):
-        stderr = self._process_license('BSD-2-Clause')
-        self.assertEqual(stderr, '')  # no errors
+        output = self._process_license('BSD-2-Clause')
+        self.assertNotIn('(warn)', output)  # no warnings
 
     def test_spdx_licenses_valid_spdx_license_custom_ascii(self):
-        stderr = self._process_license('LicenseRef-MyCompanyLicense')
-        self.assertEqual(stderr, '')  # no errors
+        output = self._process_license('LicenseRef-MyCompanyLicense')
+        self.assertNotIn('(warn)', output)  # no warnings
 
     def test_spdx_licenses_valid_spdx_license_custom_unicode(self):
-        stderr = self._process_license('LicenseRef-Prüfen')
-        self.assertEqual(stderr, '')  # no errors
+        output = self._process_license('LicenseRef-Prüfen')
+        self.assertNotIn('(warn)', output)  # no warnings
 
     def _process_license(self, lid, config=None, template='minimal'):
-        with redirect_stderr() as stream:
+        with redirect_stdout() as stream:
             with prepare_testenv(config=config, template=template) as engine:
                 if lid:
                     root_dir = engine.opts.root_dir

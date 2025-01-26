@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 from releng_tool.util.platform import platform_exit
-from tests import redirect_stderr
+from tests import redirect_stdout
 import unittest
 
 
@@ -15,7 +15,7 @@ class TestUtilPlatform(unittest.TestCase):
         self.assertEqual(cm.exception.code, 123)
 
     def test_util_platform_message_no_code(self):
-        with redirect_stderr() as stream:
+        with redirect_stdout() as stream:
             with self.assertRaises(SystemExit) as cm:
                 platform_exit('my message')
 
@@ -23,7 +23,7 @@ class TestUtilPlatform(unittest.TestCase):
         self.assertEqual(cm.exception.code, 1)
 
     def test_util_platform_message_with_code(self):
-        with redirect_stderr() as stream:
+        with redirect_stdout() as stream:
             with self.assertRaises(SystemExit) as cm:
                 platform_exit('my message', 456)
 
