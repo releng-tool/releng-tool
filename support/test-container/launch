@@ -32,4 +32,6 @@ while [ "$#" -gt 0 ]; do
     args+=("$1"); shift
 done
 
-exec docker run --rm -it "${args[@]}" "$(docker build -f "$cfg" -q .)" "$@"
+if docker build -f "$cfg" .; then
+    exec docker run --rm -it "${args[@]}" "$(docker build -f "$cfg" -q .)" "$@"
+fi
