@@ -605,8 +605,7 @@ class RelengPackageManager:
         if deps is None:
             deps = self._fetch(Rpk.DEPS, default=[])
             if deps:
-                # TODO switch from verbose to warn in v1.4 or newer
-                verbose('''\
+                warn('''\
 using deprecated dependency configuration for package: {}
  (update '{}' to '{}')\
 ''', name, pkg_key(name, Rpk.DEPS), pkg_key(name, Rpk.NEEDS))
