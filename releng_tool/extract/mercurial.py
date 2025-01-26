@@ -32,7 +32,7 @@ def extract(opts):
         err('unable to extract package; mercurial (hg) is not installed')
         return None
 
-    log('checking out target revision into work tree')
+    log(f'checking out revision ({revision}) into work tree')
     if not HG.execute(['--verbose', 'clone', '--rev', revision,
             cache_dir, work_dir],
             cwd=work_dir):
