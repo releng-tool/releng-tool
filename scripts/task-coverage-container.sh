@@ -12,10 +12,6 @@ script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null && pwd)
 root_dir=$(realpath "$script_dir"/..)
 launch_script="$root_dir/support/test-container/launch"
 
-# ensure user runs with the same group permission as the project folder,
-# as we want to write coverage data to it
-mnt_gid=$(stat -c '%g' "$root_dir")
-
 # launch container with the coverage task, starting with a clean state
-exec "$launch_script" --group-add "$mnt_gid" -- \
+exec "$launch_script" -- \
     /mnt/scripts/task-coverage.sh --no-report --workdir /tmp

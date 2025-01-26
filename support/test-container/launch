@@ -17,9 +17,15 @@ if [ "$1" == "--build" ]; then
     exec docker build -f "$cfg" .
 fi
 
+# ensure user runs with the same group permission as the project folder,
+# as we want to write coverage data to it
+mnt_gid=$(stat -c '%g' "$root_dir")
+
 args=(
     -v
     "$root_dir":/mnt
+    --group-add
+    "$mnt_gid"
 )
 while [ "$#" -gt 0 ]; do
     [[ "$1" == "--" ]] && shift && break
