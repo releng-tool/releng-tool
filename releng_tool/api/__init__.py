@@ -5,7 +5,7 @@
 # attempt to prevent the changing of the following classes, methods, etc. to
 # prevent compatibility issues as both this tool and extensions (if any) evolve.
 
-class RelengRegistryInterface(object):
+class RelengRegistryInterface:
     """
     interface of the registry passed into an extension's setup stage
 
@@ -199,7 +199,7 @@ class RelengRegistryInterface(object):
 # ##############################################################################
 
 
-class RelengPackageOptions(object):
+class RelengPackageOptions:
     """
     releng package-type options
 
@@ -379,7 +379,7 @@ class RelengInstallOptions(RelengAssembledOptions):
 # ##############################################################################
 
 
-class RelengExtensionInterface(object):
+class RelengExtensionInterface:
     """
     base interface type
 

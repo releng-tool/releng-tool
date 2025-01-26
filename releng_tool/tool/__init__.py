@@ -12,7 +12,7 @@ import os
 import re
 
 
-class RelengTool(object):
+class RelengTool:
     """
     a host tool
 

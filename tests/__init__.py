@@ -144,7 +144,7 @@ def prepare_testenv(config=None, template=None, args=None):
         the engine
     """
 
-    class MockArgs(object):
+    class MockArgs:
         def __getattr__(self, name):
             return self.name if name in self.__dict__ else None
 
