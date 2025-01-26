@@ -7,7 +7,6 @@ from releng_tool.util.hash import BadFormatHashLoadError
 from releng_tool.util.hash import load as load_hashes
 from releng_tool.util.hash import verify as verify_hashes
 import os
-import sys
 import unittest
 
 
@@ -127,18 +126,12 @@ class TestUtilHash(unittest.TestCase):
         samples = self.samples_dir
         target_sample = os.path.join(samples, 'sample-asset')
 
-        # since Python 3.6, blake/sha3/shake are available
-        if sys.version_info >= (3, 6):
-            verify_success = 'verify-success-since-36'
-        else:
-            verify_success = 'verify-success-pre-36'
-
         # archive-specific check
         file = os.path.join(samples, 'verify-missing-archive')
         result = verify_hashes(file, target_sample, quiet=True)
         self.assertEqual(result, HashResult.MISSING_ARCHIVE)
 
-        file = os.path.join(samples, verify_success)
+        file = os.path.join(samples, 'verify-success')
         result = verify_hashes(file, target_sample)
         self.assertEqual(result, HashResult.VERIFIED)
 
@@ -171,7 +164,7 @@ class TestUtilHash(unittest.TestCase):
         result = verify_hashes(file, samples, quiet=True)
         self.assertEqual(result, HashResult.MISSING_LISTED)
 
-        file = os.path.join(samples, verify_success)
+        file = os.path.join(samples, 'verify-success')
         result = verify_hashes(file, samples, quiet=True)
         self.assertEqual(result, HashResult.VERIFIED)
 
@@ -185,6 +178,6 @@ class TestUtilHash(unittest.TestCase):
 
         # excluded/empty
         exclude = ['sample-asset']
-        file = os.path.join(samples, verify_success)
+        file = os.path.join(samples, 'verify-success')
         result = verify_hashes(file, target_sample, exclude=exclude)
         self.assertEqual(result, HashResult.EMPTY)

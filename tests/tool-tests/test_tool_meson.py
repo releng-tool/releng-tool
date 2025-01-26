@@ -15,10 +15,6 @@ LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'lib.rt')
 class TestToolMeson(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):
-        # meson is only available in Python 3.7+
-        if sys.version_info < (3, 7):
-            raise unittest.SkipTest('unsupported interpreter')
-
         # while in theory a Meson build could work in Windows, it appears that
         # issuing install requests to a Windows setup/built project can fail
         # since the generated targets are looking for library files which are

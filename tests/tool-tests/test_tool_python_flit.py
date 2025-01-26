@@ -3,7 +3,6 @@
 
 from tests.support.python_tool_test import PythonSiteToolBase
 import os
-import sys
 import unittest
 
 
@@ -13,10 +12,6 @@ class TestToolPythonFlit(PythonSiteToolBase):
         # support skipping the test for a distribution build
         if os.getenv('RELENG_SKIP_TEST_TOOL_PYTHON_FLIT'):
             raise unittest.SkipTest('skipped due to environment flag')
-
-        # installer is only available in Python 3.7+
-        if sys.version_info < (3, 7):
-            raise unittest.SkipTest('unsupported interpreter')
 
     def tool_template(self):
         return 'python-flit'

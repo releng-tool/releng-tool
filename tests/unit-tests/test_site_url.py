@@ -10,7 +10,6 @@ from tests.support import fetch_unittest_assets_dir
 from tests.support.http_daemon import httpd_context
 import io
 import os
-import sys
 import tarfile
 import unittest
 
@@ -243,9 +242,6 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(stripped_file))
 
     def test_site_url_fetch_archive_txz_valid(self):
-        if sys.version_info < (3, 0):
-            raise unittest.SkipTest('tar may not support xz; ignoring')
-
         if not TAR.exists():
             raise unittest.SkipTest('environment does not have a tar command')
 
@@ -342,9 +338,6 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(rv)
 
     def test_site_url_fetch_file_https(self):
-        if sys.version_info < (3, 8):
-            raise unittest.SkipTest('legacy ssl; ignoring')
-
         with httpd_context(secure=True) as httpd:
             host, port = httpd.server_address
             site = 'https://localhost:{}/test.txt'.format(port)
