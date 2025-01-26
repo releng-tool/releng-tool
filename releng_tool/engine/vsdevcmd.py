@@ -22,9 +22,9 @@ def vsdevcmd_initialize(verstr=None, env=None):
         if output:
             raise RelengToolMissingVsDevCmdError(
                 'missing installation', output)
-        else:
-            raise RelengToolMissingVsDevCmdError(
-                'non-existent installation path', 'no installations found')
+
+        raise RelengToolMissingVsDevCmdError(
+            'non-existent installation path', 'no installations found')
 
     install_dir = output
     if not os.path.isdir(install_dir):

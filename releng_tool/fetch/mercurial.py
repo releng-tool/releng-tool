@@ -32,8 +32,8 @@ def fetch(opts):
 
     if opts._local_srcs:
         return fetch_local_srcs(opts)
-    else:
-        return fetch_default(opts)
+
+    return fetch_default(opts)
 
 
 def fetch_default(opts):

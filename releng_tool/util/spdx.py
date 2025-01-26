@@ -137,8 +137,8 @@ def spdx_parse(data):
                 op = s.pop()
                 if op == '(':
                     break
-                else:
-                    q.put(op)
+
+                q.put(op)
 
         elif token.upper() in operators:
             token = token.upper()

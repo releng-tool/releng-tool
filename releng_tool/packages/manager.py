@@ -261,7 +261,8 @@ class RelengPackageManager:
                     raise RelengToolCyclicPackageDependency({
                         'pkg_name': name,
                     })
-                elif dep not in pkgs:
+
+                if dep not in pkgs:
                     if dep not in names_left:
                         verbose('adding implicitly defined package: {}', dep)
                         names_left.append(dep)

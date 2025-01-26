@@ -60,7 +60,8 @@ def fetch(opts):
         if '--remove-source-files' in fetch_arg:
             err('option `--remove-source-files` not permitted')
             return None
-        elif not fetch_arg.startswith('-'):
+
+        if not fetch_arg.startswith('-'):
             err('invalid fetch option provided:', fetch_arg)
             return None
 

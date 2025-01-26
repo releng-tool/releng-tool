@@ -63,12 +63,6 @@ lint.ignore = [
     # single quotes are preferred in this project
     'Q000',
     'Q001',
-    # suppress what appears to be false-positives with these checks
-    'RET504',
-    'RET505',
-    'RET506',
-    'RET507',
-    'RET508',
     # unpacking a collection literal not supported pre-python 3.5
     'RUF005',
     # annotated class attributes not supported pre-python 3.5

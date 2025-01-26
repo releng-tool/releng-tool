@@ -32,7 +32,8 @@ class TestUtilIoSymlink(unittest.TestCase):
 
         if not callable(getattr(os, 'symlink', None)):
             raise unittest.SkipTest('symlink not available')
-        elif sys.platform == 'win32':
+
+        if sys.platform == 'win32':
             # [WinError 1314] A required privilege is not held by the client
             WINERROR_1314 = 1314
 

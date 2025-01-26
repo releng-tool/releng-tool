@@ -95,7 +95,8 @@ def symlink(target, link_path, quiet=False, critical=True, lpd=False,
 
     if os.path.exists(dst_file) and not os.path.islink(dst_file):
         return symlink_failure('link path already exist: ' + dst_file)
-    elif os.path.islink(dst_file):
+
+    if os.path.islink(dst_file):
         if not path_remove(dst_file, quiet=quiet):
             return symlink_failure('failed to remove symlink: ' + dst_file)
     elif base_dir and \

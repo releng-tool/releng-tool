@@ -138,7 +138,8 @@ def interpret_dictionary_strings(obj):
             if not isinstance(key, basestring):
                 rv = None
                 break
-            elif value is not None and not isinstance(value, basestring):
+
+            if value is not None and not isinstance(value, basestring):
                 rv = None
                 break
 
@@ -224,7 +225,8 @@ def interpret_zero_to_one_strings(obj):
             if not isinstance(key, basestring):
                 rv = None
                 break
-            elif value is not None and not isinstance(value, basestring):
+
+            if value is not None and not isinstance(value, basestring):
                 rv = None
                 break
     elif isinstance(obj, Sequence):

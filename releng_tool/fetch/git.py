@@ -66,8 +66,8 @@ def fetch(opts):
 
     if opts._local_srcs:
         return fetch_local_srcs(opts)
-    else:
-        return fetch_default(opts)
+
+    return fetch_default(opts)
 
 
 def fetch_default(opts):
@@ -322,8 +322,8 @@ def revision_exists(git_dir, revision):
     if output and output[0] == revision:
         if GIT.execute([git_dir, 'cat-file', '-t', revision], quiet=True):
             return GitExistsType.EXISTS_HASH
-        else:
-            return GitExistsType.MISSING_HASH
+
+        return GitExistsType.MISSING_HASH
 
     return GitExistsType.EXISTS_BRANCH
 

@@ -1118,10 +1118,11 @@ The file used to track `--local-sources` options cannot be written to.
 
         if err_flag:
             return False
-        elif configured:
+
+        if configured:
             return True
-        else:
-            return None
+
+        return None
 
     def _process_settings(self, settings):
         """

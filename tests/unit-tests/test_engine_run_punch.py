@@ -61,6 +61,4 @@ class TestEngineRunPunch(RelengToolTestCase):
                 self.assertTrue(os.path.exists(test_state_db))
 
                 with open(test_state_db, 'r') as f:
-                    state = json.load(f)
-
-                return state
+                    return json.load(f)
