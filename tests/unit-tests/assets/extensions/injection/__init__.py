@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
-
 def releng_setup(app):
     app.connect('config-loaded', on_config_event)
 

@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
 
 from releng_tool.defs import PackageInstallType
 import os

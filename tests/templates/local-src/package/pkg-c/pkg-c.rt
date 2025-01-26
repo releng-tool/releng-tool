@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 test_srcs = releng_join(PKG_DEFDIR, 'srcs.tar')
 
 PKG_C_INTERNAL = False

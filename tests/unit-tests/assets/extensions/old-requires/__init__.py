@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
-
 # sample extension will should load since the the required version
 # number is older than the current version
 def releng_setup(app):

@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
 
 from releng_tool.engine.meson import meson_prepare_environment
 from releng_tool.tool.meson import MESON

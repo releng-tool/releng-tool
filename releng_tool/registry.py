@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
 
 from importlib import import_module
 from releng_tool import __version__ as releng_version

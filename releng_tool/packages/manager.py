@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
 
 from collections import OrderedDict
 from releng_tool.defs import DEFAULT_CMAKE_BUILD_TYPE

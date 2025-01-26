@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
 
 from releng_tool.engine.script.configure import configure as configure_script
 from releng_tool.tool.scons import SCONS

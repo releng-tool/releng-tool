@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
 
 from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_strings

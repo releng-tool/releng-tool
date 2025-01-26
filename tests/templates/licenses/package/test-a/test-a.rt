@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 TEST_A_LICENSE = ['BSD', 'MIT']
 TEST_A_LICENSE_FILES = ['COPYING.bsd', 'COPYING.mit']
 TEST_A_VCS_TYPE = 'local'

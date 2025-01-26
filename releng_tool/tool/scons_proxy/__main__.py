@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
-#
+# Copyright releng-tool
+
 # This is a utility module to help load a legacy version of SCons. typically
 # found in older Python interpreters (i.e. Python 2.7 and Python 3.4). For
 # older installs, the SCons module is found inside a `scons` directory. This

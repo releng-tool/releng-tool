@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause OR 0BSD
+# Copyright releng-tool
 
 # Implementation in this file is considered "API safe". There is a strong
 # attempt to prevent the changing of the following classes, methods, etc. to

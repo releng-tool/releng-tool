@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 TEST_TYPE = 'python'
 TEST_PYTHON_SETUP_TYPE = 'pep517'
 TEST_VCS_TYPE = 'local'

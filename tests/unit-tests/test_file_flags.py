@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
 
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import process_file_flag

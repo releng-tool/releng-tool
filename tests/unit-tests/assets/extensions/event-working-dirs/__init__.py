@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
-
 import json
 import os
 

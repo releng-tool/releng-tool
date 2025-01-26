@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 PRIMARY_NEEDS = [
     'need-01',
     'need-02',

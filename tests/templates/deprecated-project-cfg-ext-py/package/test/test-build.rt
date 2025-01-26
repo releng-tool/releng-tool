@@ -1,4 +1,2 @@
-# -*- coding: utf-8 -*-
-
 file_flag = releng_join(OUTPUT_DIR, 'invoked-build')
 releng_touch(file_flag)

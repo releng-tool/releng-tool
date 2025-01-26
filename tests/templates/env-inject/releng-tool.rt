@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 environment = {
     'TEST_1': 'A',
     'TEST_2': 'B',

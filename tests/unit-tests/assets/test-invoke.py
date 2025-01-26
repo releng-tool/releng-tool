@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
-#
+# Copyright releng-tool
+
 # Provides an invoke testing executable, which will capture arguments and the
 # working directory of a call and output it into a JSON file. Unit tests may
 # use this utility file to help verify executions in certain scenarios.
