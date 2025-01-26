@@ -2,7 +2,6 @@
 # Copyright releng-tool
 
 from __future__ import unicode_literals
-from io import open  # noqa: A004
 from releng_tool.defs import GlobalAction
 from releng_tool.packages import pkg_key
 from releng_tool.util.io import generate_temp_dir

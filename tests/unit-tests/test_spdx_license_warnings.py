@@ -2,7 +2,6 @@
 # Copyright releng-tool
 
 from __future__ import unicode_literals
-from io import open  # noqa: A004
 from releng_tool.packages import pkg_key
 from tests import RelengToolTestCase
 from tests import prepare_testenv

@@ -4,7 +4,6 @@
 from contextlib import contextmanager
 from difflib import unified_diff
 from io import StringIO
-from io import open  # noqa: A004
 from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.io import generate_temp_dir

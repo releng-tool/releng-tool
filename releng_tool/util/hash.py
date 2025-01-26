@@ -2,7 +2,6 @@
 # Copyright releng-tool
 
 from __future__ import absolute_import
-from io import open  # noqa: A004
 from releng_tool.util.enum import Enum
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
