@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from __future__ import print_function
 from releng_tool.exceptions import RelengToolWarningAsError
 
 #: flag to track the enablement of debug messages

@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from __future__ import absolute_import
 from releng_tool.util.enum import Enum
 from releng_tool.util.log import debug
 from releng_tool.util.log import err

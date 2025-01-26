@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from __future__ import unicode_literals
 from releng_tool.packages import pkg_key
 from tests import RelengToolTestCase
 from tests import prepare_testenv

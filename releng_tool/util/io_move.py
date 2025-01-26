@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from __future__ import unicode_literals
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.log import err
