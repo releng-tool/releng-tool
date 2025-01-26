@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.tool import RelengTool
-from releng_tool.util.compat import which
 from releng_tool.util.log import debug
+from shutil import which
 
 #: executable used to run scp commands
 SCP_COMMAND = 'scp'

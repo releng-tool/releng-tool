@@ -20,9 +20,9 @@ from releng_tool.tool.rsync import RSYNC
 from releng_tool.tool.scons import SCONS
 from releng_tool.tool.scp import SCP
 from releng_tool.tool.svn import SVN
-from releng_tool.util.compat import which
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
+from shutil import which
 
 
 class RelengPrerequisites:
