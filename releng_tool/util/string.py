@@ -1,12 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from collections.abc import Sequence
 import os
-
-try:
-    from collections.abc import Sequence
-except ImportError:
-    from collections import Sequence  # pylint: disable=W1512
 
 
 def expand(obj, kv=None):

@@ -1,12 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from collections.abc import Sequence
 import re
-
-try:
-    from collections.abc import Sequence
-except ImportError:
-    from collections import Sequence  # pylint: disable=W1512
 
 try:
     from queue import Queue
