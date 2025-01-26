@@ -10,8 +10,6 @@ on:
       - 'releng_tool/**'
       - 'tests/**'
       - 'requirements-tools.txt'
-      - 'setup.cfg'
-      - 'setup.py'
       - 'tox.ini'
   pull_request:
     branches:
@@ -22,8 +20,6 @@ on:
       - 'releng_tool/**'
       - 'tests/**'
       - 'requirements-tools.txt'
-      - 'setup.cfg'
-      - 'setup.py'
       - 'tox.ini'
   workflow_dispatch:
 
@@ -41,11 +37,6 @@ jobs:
       matrix:
         include:
             # supported interpreters
-            - { os: ubuntu-latest, img:  "python:2.7", python:  "2.7", cache: ~/.cache/pip }
-            - { os: ubuntu-latest, img:  "python:3.5", python:  "3.5", cache: ~/.cache/pip }
-            - { os: ubuntu-latest, img:  "python:3.6", python:  "3.6", cache: ~/.cache/pip }
-            - { os: ubuntu-latest, img:  "python:3.7", python:  "3.7", cache: ~/.cache/pip }
-            - { os: ubuntu-latest, img:  "python:3.8", python:  "3.8", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img:  "python:3.9", python:  "3.9", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img: "python:3.10", python: "3.10", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img: "python:3.11", python: "3.11", cache: ~/.cache/pip }

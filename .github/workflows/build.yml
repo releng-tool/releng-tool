@@ -11,8 +11,6 @@ on:
       - 'tests/**'
       - 'MANIFEST.in'
       - 'pyproject.toml'
-      - 'setup.cfg'
-      - 'setup.py'
       - 'tox.ini'
   pull_request:
     branches:
@@ -24,8 +22,6 @@ on:
       - 'tests/**'
       - 'MANIFEST.in'
       - 'pyproject.toml'
-      - 'setup.cfg'
-      - 'setup.py'
       - 'tox.ini'
   workflow_dispatch:
 
@@ -42,11 +38,6 @@ jobs:
     strategy:
       matrix:
         include:
-            - { os:  ubuntu-latest, img: "python:2.7-slim",          python:  "2.7", toxenv:   py27, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, img: "python:3.5-slim",          python:  "3.5", toxenv:   py35, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, img: "python:3.6-slim",          python:  "3.6", toxenv:   py36, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, img: "python:3.7-slim-bullseye", python:  "3.7", toxenv:   py37, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, img: "python:3.8-slim",          python:  "3.8", toxenv:   py38, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.9-slim",          python:  "3.9", toxenv:   py39, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.10-slim",         python: "3.10", toxenv:  py310, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.11-slim",         python: "3.11", toxenv:  py311, cache: ~/.cache/pip }
