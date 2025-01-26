@@ -27,8 +27,6 @@ lint.ignore = [
     'EXE002',
     # imports are sorted lexicographically in this project
     'FBT002',
-    # ignore TODOs for generic linter check
-    'FIX',
     # removeprefix not supported pre-python 3.9
     'FURB188',
     # imports are sorted lexicographically in this project
@@ -100,8 +98,6 @@ lint.ignore = [
     'SLF001',
     # ignore flake8-print since we support/expect printing
     'T20',
-    # ignore todo requirements
-    'TD',
     # purposely used long exception messages
     'TRY003',
     # ignore desired usages of raise calls within trys
