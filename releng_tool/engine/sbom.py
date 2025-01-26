@@ -4,11 +4,11 @@
 from collections import OrderedDict
 from copy import deepcopy
 from datetime import datetime
+from datetime import timezone
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import SbomFormatType
 from releng_tool.defs import VcsType
-from releng_tool.util.compat import utc_timezone
 from releng_tool.util.hash import BadFileHashLoadError
 from releng_tool.util.hash import BadFormatHashLoadError
 from releng_tool.util.hash import load as load_hashes
@@ -144,7 +144,7 @@ class SbomManager:
 
         # after processing all packages, now is a good time to timestamp the
         # cache of when this content was populated
-        utc_now = datetime.now(tz=utc_timezone)
+        utc_now = datetime.now(tz=timezone.utc)
         utc_now_str = utc_now.strftime("%Y-%m-%dT%H:%M:%S") + 'Z'
         cache['datetime'] = utc_now_str
 
