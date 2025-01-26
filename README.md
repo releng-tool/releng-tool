@@ -28,7 +28,8 @@ For detailed documentation on the releng-tool project, see
 
 ## Requirements
 
-* [Python][python] 2.7 or 3.4+
+* Active: [Python][python] 2.7 or 3.4+
+* Next (v2.x): [Python][python] 3.9+
 
 Host tools such as [Git][git], scp, etc. may be required depending on the
 project being processed (e.g. if a package's sources fetch from a Git source,
