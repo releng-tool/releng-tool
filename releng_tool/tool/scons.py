@@ -44,7 +44,7 @@ class SconsTool(RelengTool):
 
         # try to find scons using a standard check; if not, we will try to
         # fallback at looking for the SCons module in the running interpreter
-        if not super(SconsTool, self).exists():
+        if not super().exists():
             debug('attempting to find {} in the running interpreter', self.tool)
             self._scons_interpreter = None
 
@@ -99,7 +99,7 @@ class SconsTool(RelengTool):
             interpreter = sys.executable if sys.executable else 'python'
             return [interpreter, '-m', module]
 
-        return super(SconsTool, self)._invoked_tool()
+        return super()._invoked_tool()
 
 #: scons host tool helper
 SCONS = SconsTool(SCONS_COMMAND, env_sanitize=SCONS_SANITIZE_ENV_KEYS)

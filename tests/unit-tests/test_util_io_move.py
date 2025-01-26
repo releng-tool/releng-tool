@@ -15,7 +15,7 @@ class TestUtilIoMove(unittest.TestCase):
         with prepare_workdir() as work_dir:
             self.work_dir = work_dir
 
-            super(TestUtilIoMove, self).run(result)
+            super().run(result)
 
     def _(self, *args):
         return os.path.join(self.work_dir, *args)

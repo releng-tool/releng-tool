@@ -317,7 +317,7 @@ class RelengToolTestCase(unittest.TestCase):
         """
 
         with self.env_wrap():
-            super(RelengToolTestCase, self).run(result)
+            super().run(result)
 
     def dumpenv(self):
         """

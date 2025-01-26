@@ -36,7 +36,7 @@ class TestEngineRunCleanFail(RelengToolTestCase):
                     self.pkg_ff_prefix = os.path.join(
                         self.pkg_build_dir, '.releng_tool-stage-')
 
-            super(TestEngineRunCleanFail, self).run(result)
+            super().run(result)
 
     def test_engine_run_clean_fail_noperm_all_clean(self):
         with mock_os_remove_permission_denied():

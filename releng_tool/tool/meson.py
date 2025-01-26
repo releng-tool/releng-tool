@@ -42,7 +42,7 @@ class MesonTool(RelengTool):
 
         # try to find meson using a standard check; if not, we will try to
         # fallback at looking for the meson module in the running interpreter
-        if not super(MesonTool, self).exists():
+        if not super().exists():
             debug('attempting to find {} in the running interpreter', self.tool)
             self._meson_interpreter = None
 
@@ -75,7 +75,7 @@ class MesonTool(RelengTool):
             interpreter = sys.executable if sys.executable else 'python'
             return [interpreter, '-m', module]
 
-        return super(MesonTool, self)._invoked_tool()
+        return super()._invoked_tool()
 
 #: meson host tool helper
 MESON = MesonTool(MESON_COMMAND, env_include=MESON_EXTEND_ENV)

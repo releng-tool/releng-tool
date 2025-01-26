@@ -197,7 +197,7 @@ def spdx_parse(data):
 
 class LicenseEntries(list):
     def __init__(self, *args, **kwargs):
-        super(LicenseEntries, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.conjunctive = None
 
     def __str__(self):
@@ -217,7 +217,7 @@ class LicenseEntries(list):
 
 class ConjunctiveLicenses(LicenseEntries):
     def __init__(self, *args, **kwargs):
-        super(ConjunctiveLicenses, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.conjunctive = True
 
     def _str_operator(self):
@@ -226,7 +226,7 @@ class ConjunctiveLicenses(LicenseEntries):
 
 class DisjunctiveLicenses(LicenseEntries):
     def __init__(self, *args, **kwargs):
-        super(DisjunctiveLicenses, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.conjunctive = False
 
     def _str_operator(self):

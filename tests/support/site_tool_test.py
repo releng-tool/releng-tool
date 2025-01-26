@@ -64,7 +64,7 @@ class TestSiteToolBase(RelengToolTestCase):
                 self.defconfig_add('SITE', self.repo_dir)
                 self.prepare_defconfig(self.defconfig)
 
-                super(TestSiteToolBase, self).run(result)
+                super().run(result)
 
     def prepare_global_action(self):
         """

@@ -240,7 +240,7 @@ class RelengAssembledOptions(RelengPackageOptions):
         target_dir: directory container for target content
     """
     def __init__(self):
-        super(RelengAssembledOptions, self).__init__()
+        super().__init__()
         self.build_base_dir = None
         self.build_dir = None
         self.build_output_dir = None
@@ -268,7 +268,7 @@ class RelengConfigureOptions(RelengAssembledOptions):
         jobsconf: number of jobs to allow at a given time (0: auto)
     """
     def __init__(self):
-        super(RelengConfigureOptions, self).__init__()
+        super().__init__()
         self.conf_defs = None
         self.conf_env = None
         self.conf_opts = None
@@ -292,7 +292,7 @@ class RelengBuildOptions(RelengAssembledOptions):
         jobsconf: number of jobs to allow at a given time (0: auto)
     """
     def __init__(self):
-        super(RelengBuildOptions, self).__init__()
+        super().__init__()
         self.build_base_dir = None
         self.build_defs = None
         self.build_opts = None
@@ -315,7 +315,7 @@ class RelengExtractOptions(RelengPackageOptions):
         work_dir: the working directory
     """
     def __init__(self):
-        super(RelengExtractOptions, self).__init__()
+        super().__init__()
         self.cache_dir = None
         self.cache_file = None
         self.revision = None
@@ -339,7 +339,7 @@ class RelengFetchOptions(RelengPackageOptions):
         site: the site (uri) to acquire a package's resources
     """
     def __init__(self):
-        super(RelengFetchOptions, self).__init__()
+        super().__init__()
         self.cache_dir = None
         self.cache_file = None
         self.fetch_opts = None
@@ -366,7 +366,7 @@ class RelengInstallOptions(RelengAssembledOptions):
         install_type: installation type
     """
     def __init__(self):
-        super(RelengInstallOptions, self).__init__()
+        super().__init__()
         self.cache_file = None
         self.dest_dirs = None
         self.images_dir = None

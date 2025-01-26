@@ -24,7 +24,7 @@ class TestExtractArchive(unittest.TestCase):
         with prepare_workdir() as work_dir:
             self.opts.work_dir = work_dir
 
-            super(TestExtractArchive, self).run(result)
+            super().run(result)
 
     def test_extract_archive_override_invalid(self):
         cache_file = os.path.join(self.opts.work_dir, 'mock.dat')
