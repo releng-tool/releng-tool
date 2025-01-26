@@ -335,7 +335,7 @@ class TestUtilIoMove(unittest.TestCase):
     def _assertContents(self, f, data):
         contents = ''
 
-        with open(f, mode='r', encoding='utf_8') as file:
+        with open(f, encoding='utf_8') as file:
             for line in file:
                 contents += line.strip() + '\n'
 

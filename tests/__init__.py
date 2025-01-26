@@ -35,13 +35,13 @@ def compare_contents(first, second):
         return [line.strip() + '\n' for line in lines]
 
     try:
-        with open(first, mode='r', encoding='utf_8') as file:
+        with open(first, encoding='utf_8') as file:
             content1 = strip_lines(file.readlines())
     except IOError:
         return 'failed to load first file: ' + first
 
     try:
-        with open(second, mode='r', encoding='utf_8') as file:
+        with open(second, encoding='utf_8') as file:
             content2 = strip_lines(file.readlines())
     except IOError:
         return 'failed to load second file: ' + second

@@ -109,7 +109,7 @@ class RelengEngine:
         licenses_file = os.path.join(data_dir, 'licenses', 'data.json')
 
         debug('loading spdx license database: {}', licenses_file)
-        with open(licenses_file, mode='r') as f:
+        with open(licenses_file) as f:
             self.opts.spdx = json.load(f)
 
         # enable execute environment logging if the quirk is set
@@ -985,7 +985,7 @@ of the releng process:
                 if not devmode_changed:
                     opts.devmode = True
             else:
-                with open(opts.ff_devmode, mode='r') as f:
+                with open(opts.ff_devmode) as f:
                     try:
                         devmode_cfg = json.load(f)
                         if not devmode_changed:
@@ -1046,7 +1046,7 @@ The file used to track `--development` options cannot be written to.
                 if GBL_LSRCS not in opts.local_srcs:
                     opts.local_srcs[GBL_LSRCS] = None
             else:
-                with open(opts.ff_local_srcs, mode='r') as f:
+                with open(opts.ff_local_srcs) as f:
                     try:
                         # cache any new local sources configurations, pull in
                         # the configure local sources content and apply any new

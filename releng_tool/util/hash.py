@@ -78,7 +78,7 @@ def load(hash_file):
         BadFormatHashLoadError: a format issue has been detected
     """
     try:
-        with open(hash_file, mode='r', encoding='utf_8') as f:
+        with open(hash_file, encoding='utf_8') as f:
             data = f.readlines()
     except IOError as ex:
         raise BadFileHashLoadError from ex

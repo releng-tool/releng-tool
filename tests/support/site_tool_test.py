@@ -166,7 +166,7 @@ class TestSiteToolBase(RelengToolTestCase):
         if not defconfig:
             defconfig = self.defconfig
 
-        with open(defconfig, mode='r', encoding='utf_8') as f:
+        with open(defconfig, encoding='utf_8') as f:
             content = f.readlines()
 
         print('-------------------------------')

@@ -63,7 +63,7 @@ class GitTool(RelengTool):
             the parser; ``None`` when a parsing error is detected
         """
 
-        with open(target, mode='r', encoding='utf_8') as f:
+        with open(target, encoding='utf_8') as f:
             data = '\n'.join(f.readlines())
 
         return self.parse_cfg_str(data)
