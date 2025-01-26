@@ -78,11 +78,6 @@ import os
 import ssl
 import sys
 
-if sys.version_info < (3, 0):
-    import imp
-else:
-    imp = None  # added to suppress pylint warning
-
 
 class RelengEngine:
     """
@@ -107,11 +102,8 @@ class RelengEngine:
         self.stats = RelengStats(opts)
 
         # load spdx license data
-        if sys.version_info < (3, 0) and not os.path.isabs(__file__):
-            _, self._base_dir, _ = imp.find_module('releng_tool')
-        else:
-            engine_dir = os.path.dirname(__file__)
-            self._base_dir = os.path.dirname(engine_dir)
+        engine_dir = os.path.dirname(__file__)
+        self._base_dir = os.path.dirname(engine_dir)
 
         data_dir = os.path.join(self._base_dir, 'data')
         licenses_file = os.path.join(data_dir, 'licenses', 'data.json')

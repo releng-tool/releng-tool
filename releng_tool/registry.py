@@ -13,17 +13,6 @@ from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.string import interpret_string
 import inspect
-import sys
-
-if sys.version_info < (3, 0):
-    import imp
-else:
-    imp = None  # added to suppress pylint warning
-
-try:
-    RelengModuleNotFoundError = ModuleNotFoundError
-except NameError:
-    RelengModuleNotFoundError = ImportError
 
 
 #: prefix requirement for extension named types
@@ -103,52 +92,7 @@ class RelengRegistry(RelengRegistryInterface):
         loaded = False
         debug('attempting to load extension: {}', name)
         try:
-            try:
-                plugin = import_module(name)
-            except RelengModuleNotFoundError:
-                # python 2.7 may not be able to load from a nested path; try
-                # searching through each package (if a nested module)
-                if sys.version_info >= (3, 0) or '.' not in name:
-                    raise
-
-                # split the module into parts and for each part, check to see
-                # if it's a package directory; if so, keep going until the last
-                # namespace package
-                ext_parts = name.split('.')
-                path = None
-                last_part = ''
-                for part in ext_parts[:-1]:
-                    file, pathname, desc = imp.find_module(part, path)
-
-                    if desc[-1] != imp.PKG_DIRECTORY:
-                        raise ImportError(name)
-
-                    part = last_part + part
-                    last_part = part + '.'
-
-                    pkg = sys.modules.get(part, None)
-                    if not pkg:
-                        try:
-                            pkg = imp.load_module(part, file, pathname, desc)
-                        finally:
-                            if file:
-                                file.close()
-                        path = pkg.__path__
-                    else:
-                        path = [pathname]
-
-                # with the path of the last namespace package found, find the
-                # desired module in this path
-                last_part = ext_parts[-1]
-                file, pathname, desc = imp.find_module(last_part, path)
-
-                plugin = sys.modules.get(name, None)
-                if not plugin:
-                    try:
-                        plugin = imp.load_module(name, file, pathname, desc)
-                    finally:
-                        if file:
-                            file.close()
+            plugin = import_module(name)
 
             if hasattr(plugin, 'releng_setup'):
                 if not ignore:
@@ -173,7 +117,7 @@ class RelengRegistry(RelengRegistryInterface):
                     loaded = True
             else:
                 warn('extension does not have a setup method: {}', name)
-        except RelengModuleNotFoundError:
+        except ModuleNotFoundError:
             warn('unable to find extension: {}', name)
 
         return loaded

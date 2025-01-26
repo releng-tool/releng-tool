@@ -3,6 +3,7 @@
 
 from contextlib import contextmanager
 from difflib import unified_diff
+from io import StringIO
 from io import open  # noqa: A004
 from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
@@ -13,11 +14,6 @@ import os
 import pprint
 import sys
 import unittest
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 
 def compare_contents(first, second):

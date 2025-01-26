@@ -3,17 +3,8 @@
 
 from io import open  # noqa: A004
 from releng_tool.tool import RelengTool
-import sys
+import configparser
 
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 #: executable used to run git commands
 GIT_COMMAND = 'git'
@@ -95,14 +86,7 @@ class GitTool(RelengTool):
 
         cfg = configparser.ConfigParser(allow_no_value=True)
         try:
-            if sys.version_info >= (3, 0):
-                cfg.read_string(value)
-            else:
-                # strip whitespaces from lines for python 2.7
-                value = '\n'.join([line.strip() for line in value.splitlines()])
-
-                fp = StringIO(value)
-                cfg.readfp(fp)  # pylint: disable=E1101
+            cfg.read_string(value)
         except configparser.Error:
             return None
 

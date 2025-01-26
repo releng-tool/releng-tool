@@ -400,14 +400,6 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         if sys.platform != 'win32':
             args = prepend_shebang_interpreter(args)
 
-        # python 2.7 can have trouble with unicode environment variables;
-        # forcing all values to an ascii type
-        if final_env and sys.version_info[0] < 3:  # noqa: PLR2004
-            debug('detected python 2.7; sanity checking environment variables')
-            for k, v in final_env.items():
-                if isinstance(v, unicode):  # pylint: disable=E0602 # noqa: F821
-                    final_env[k] = v.encode('ascii', 'replace')
-
         if is_verbose():
             debug('(wd) {}', cwd if cwd else os.getcwd())
             cmd_str = cmd_args_to_str(args)

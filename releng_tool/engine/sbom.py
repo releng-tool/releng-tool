@@ -22,7 +22,6 @@ import csv
 import hashlib
 import json
 import os
-import sys
 import uuid
 import xml.dom.minidom as xml_minidom
 import xml.etree.cElementTree as ET  # noqa: N817
@@ -227,14 +226,7 @@ class SbomManager:
         verbose('writing sbom (csv)')
         sbom_file = os.path.join(self.opts.out_dir, 'sbom.csv')
 
-        attribs = {}
-        if sys.version_info >= (3, 0):
-            attribs['mode'] = 'w'
-            attribs['newline'] = ''
-        else:
-            attribs['mode'] = 'wb'
-
-        with open(sbom_file, **attribs) as f:
+        with open(sbom_file, mode='w', newline='') as f:
             f.write('# Software build of materials (SBOM; releng-tool)\n')
             f.write('# Report ID: ' + cache['report-id'] + '\n')
             f.write('# Generated: ' + cache['datetime'] + '\n')

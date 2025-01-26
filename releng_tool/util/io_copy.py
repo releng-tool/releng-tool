@@ -2,22 +2,14 @@
 # Copyright releng-tool
 
 from __future__ import unicode_literals
-from functools import partial
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.log import err
 from shutil import Error as ShutilError
-from shutil import copyfile as shutil_copyfile
-from shutil import copystat as shutil_copystat
+from shutil import copyfile
+from shutil import copystat
 import os
 import sys
-
-if sys.version_info[0] >= 3:  # noqa: PLR2004
-    _copyfile = partial(shutil_copyfile, follow_symlinks=False)
-    _copystat = partial(shutil_copystat, follow_symlinks=False)
-else:
-    _copyfile = shutil_copyfile
-    _copystat = shutil_copystat
 
 
 def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
@@ -114,7 +106,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
 
                     os.symlink(target, dst)
                 else:
-                    _copyfile(src, dst)
+                    copyfile(src, dst, follow_symlinks=False)
 
                 # copy file statistics if both source and destination exist,
                 # and if the do exist, they are not the same file (py3.5)
@@ -205,7 +197,7 @@ def _copy_stat_compat(src, dst):
     if os.path.realpath(src) == os.path.realpath(dst):
         return
 
-    _copystat(src, dst)
+    copystat(src, dst, follow_symlinks=False)
 
 
 def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
@@ -227,7 +219,7 @@ def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
         elif os.path.isdir(src):
             _copy_tree(src, dst, quiet=quiet, critical=critical)
         else:
-            _copyfile(src, dst)
+            copyfile(src, dst, follow_symlinks=False)
             _copy_stat_compat(src, dst)
 
     _copy_stat_compat(src_folder, dst_folder)
