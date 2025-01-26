@@ -5,14 +5,11 @@ from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import warn
+from urllib.request import urlopen
 import contextlib
 import os
 import sys
 
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
 
 #: size of blocks read when downloading a resource
 REQUEST_READ_BLOCKSIZE = 8192
