@@ -9,7 +9,7 @@ lint.ignore = [
     'ANN',
     # ignore various unused arguments in api definitions
     'ARG002',
-    # zip does not have a strict option in python 2.7
+    # zip does not have a strict option in python 3.9
     'B905',
     # various cases in the code where catching all exceptions is desired
     'BLE',
