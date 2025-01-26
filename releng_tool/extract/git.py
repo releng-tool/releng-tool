@@ -43,13 +43,13 @@ def extract(opts):
 
     # extract submodules (if configured to do so)
     if opts._git_submodules:
-        if not _process_submodules(opts, work_dir):
+        if not _process_submodules(opts, cache_dir, work_dir, revision):
             return False
 
     return True
 
 
-def _process_submodules(opts, work_dir):
+def _process_submodules(opts, cache_dir, work_dir, revision):
     """
     process submodules for an extracted repository
 
@@ -60,11 +60,15 @@ def _process_submodules(opts, work_dir):
 
     Args:
         opts: the extraction options
+        cache_dir: the cache repository that may be holding submodules
         work_dir: the working directory to look for submodules
+        revision: the revision of the repository that may be holding submodules
 
     Returns:
         ``True`` if submodules have been processed; ``False`` otherwise
     """
+
+    git_dir = '--git-dir=' + cache_dir
 
     git_modules_file = os.path.join(work_dir, '.gitmodules')
     if not os.path.exists(git_modules_file):
@@ -86,13 +90,19 @@ def _process_submodules(opts, work_dir):
             continue
 
         submodule_path = cfg.get(sec_name, 'path')
-        submodule_revision = None
-        if cfg.has_option(sec_name, 'branch'):
-            submodule_revision = cfg.get(sec_name, 'branch')
+        debug('submodule path: {}', submodule_path)
+
         submodule_url = cfg.get(sec_name, 'url')
+        debug('submodule url: {}', submodule_url)
+
+        rev_ref = f'{revision}:{submodule_path}'
+        rv, submodule_revision = GIT.execute_rv(git_dir, 'rev-parse', rev_ref)
+        if rv != 0:
+            err(f'unable to determine submodule revision: {submodule_path}')
+            return False
+
         log('extracting submodule ({}): {}', opts.name, submodule_path)
-        debug('submodule revision: {}',
-            submodule_revision if submodule_revision else '(none)')
+        debug('submodule revision: {}', submodule_revision)
 
         ckey = pkg_cache_key(submodule_url)
         root_cache_dir = os.path.abspath(
@@ -107,7 +117,8 @@ def _process_submodules(opts, work_dir):
             return False
 
         # process nested submodules
-        if not _process_submodules(opts, sm_work_dir):
+        if not _process_submodules(
+                opts, sm_cache_dir, sm_work_dir, submodule_revision):
             return False
 
     return True
@@ -136,20 +147,14 @@ def _workdir_extract(opts, cache_dir, work_dir, revision):
     git_dir = '--git-dir=' + cache_dir
     work_tree = '--work-tree=' + work_dir
 
-    # if a revision is not provided, extract the HEAD from the cache
-    if not revision:
-        revision = GIT.extract_submodule_revision(cache_dir)
-        if not revision:
-            return False
-
-    log('checking out target revision into work tree')
+    log(f'checking out revision ({revision}) into work tree')
     if not GIT.execute([git_dir, work_tree, '-c', 'advice.detachedHead=false',
                 'checkout', '--force', revision],
             cwd=work_dir):
         err('unable to checkout revision')
         return False
 
-    log('ensure target revision is up-to-date in work tree')
+    verbose('ensure target revision is up-to-date in work tree')
     origin_revision = 'origin/{}'.format(revision)
     output = []
     if GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify',
@@ -165,7 +170,11 @@ def _workdir_extract(opts, cache_dir, work_dir, revision):
         debug('local revision: {}', local_revision)
 
         if local_revision != remote_revision:
-            warn('diverged revision detected; attempting to correct...')
+            warn(f'''\
+diverged revision detected; attempting to correct...
+  local: {local_revision}
+ remote: {remote_revision}''')
+
             if not GIT.execute(
                     [
                         git_dir,
@@ -176,6 +185,14 @@ def _workdir_extract(opts, cache_dir, work_dir, revision):
                     ], cwd=work_dir):
                 err('unable to checkout revision')
                 return False
+
+    # always dump git hash to aid in logging
+    output = []
+    GIT.execute([git_dir, 'rev-parse', '--quiet', '--verify', 'HEAD'],
+        quiet=True, capture=output)
+    local_revision = ''.join(output)
+    if revision != local_revision:
+        log(f'working tree hash: {local_revision}')
 
     # Setup a `.git` file with a path to the cache directory. This should
     # help provide a way for developers to interact with Git inside a

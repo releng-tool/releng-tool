@@ -4,8 +4,6 @@
 
 from io import open  # noqa: A004
 from releng_tool.tool import RelengTool
-from releng_tool.util.log import debug
-from releng_tool.util.log import err
 import sys
 
 try:
@@ -60,39 +58,6 @@ class GitTool(RelengTool):
 
     Provides addition helper methods for git-based tool interaction.
     """
-
-    def extract_submodule_revision(self, git_dir):
-        """
-        extract a submodule revision
-
-        Attempts to extract the HEAD reference of a submodule based off a
-        provided git Git repository. This is to help support processing Git
-        submodules which do not have a branch/version explicitly set for module,
-        which is required for (at least) recursive submodule processing.
-
-        Args:
-            git_dir: the git repository
-
-        Returns:
-            the revision; ``None`` when a revision cannot be extracted
-        """
-
-        debug('attempting to determine git submodule revision')
-        rv, ref = self.execute_rv('--git-dir=' + git_dir, 'show-ref', '--head')
-        if rv != 0:
-            err('failed to extract a submodule revision')
-            return None
-
-        # a `--head` fetch may fetch more than one reference; extract the first
-        # entry and remove any known ref prefix from it
-        revision = ref.split(None, 2)[1]
-        if revision.startswith('refs/heads/'):
-            revision = revision[len('refs/heads/'):]
-        elif revision.startswith('refs/remotes/origin/'):
-            revision = revision[len('refs/remotes/origin/'):]
-
-        debug('detected revision: {}', revision)
-        return revision
 
     def parse_cfg_file(self, target):
         """

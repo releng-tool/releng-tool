@@ -470,10 +470,12 @@ def _fetch_submodules(opts, cache_dir, revision):
     git_dir = '--git-dir=' + cache_dir
 
     # find a .gitmodules configuration on the target revision
-    submodule_ref = '{}:.gitmodules'.format(revision)
+    tree_ref = revision
+    submodule_ref = f'{tree_ref}:.gitmodules'
     rv, raw_submodules = GIT.execute_rv(git_dir, 'show', submodule_ref)
     if rv != 0:
-        submodule_ref = 'origin/' + submodule_ref
+        tree_ref = f'origin/{revision}'
+        submodule_ref = f'{tree_ref}:.gitmodules'
         rv, raw_submodules = GIT.execute_rv(git_dir, 'show', submodule_ref)
         if rv != 0:
             verbose('no git submodules file detected for this revision')
@@ -495,20 +497,23 @@ def _fetch_submodules(opts, cache_dir, revision):
             continue
 
         submodule_path = cfg.get(sec_name, 'path')
-        submodule_revision = None
-        if cfg.has_option(sec_name, 'branch'):
-            submodule_revision = cfg.get(sec_name, 'branch')
-        submodule_url = cfg.get(sec_name, 'url')
         verbose('detected submodule: {}', submodule_path)
-        debug('submodule revision: {}',
-            submodule_revision if submodule_revision else '(none)')
+
+        submodule_url = cfg.get(sec_name, 'url')
         debug('submodule url: {}', submodule_url)
+
+        rev_ref = f'{tree_ref}:{submodule_path}'
+        rv, submodule_revision = GIT.execute_rv(git_dir, 'rev-parse', rev_ref)
+        if rv != 0:
+            err(f'unable to determine submodule revision: {submodule_path}')
+            return False
+
+        debug('submodule revision: {}', submodule_revision)
 
         ckey = pkg_cache_key(submodule_url)
         root_cache_dir = os.path.abspath(
             os.path.join(opts.cache_dir, os.pardir))
         submodule_cache_dir = os.path.join(root_cache_dir, ckey)
-        verbose('submodule_cache_dir: {}', submodule_cache_dir)
 
         # check to make sure the submodule's path isn't pointing to a relative
         # path outside the expected cache base
@@ -524,14 +529,6 @@ def _fetch_submodules(opts, cache_dir, revision):
         if not _fetch_submodule(opts, submodule_path, submodule_cache_dir,
                 submodule_revision, submodule_url):
             return False
-
-        # if a revision is not provided, extract the HEAD from the cache
-        if not submodule_revision:
-            debug('no submodule revision provided; attempting to find revision')
-            submodule_revision = GIT.extract_submodule_revision(
-                submodule_cache_dir)
-            if not submodule_revision:
-                return False
 
         # process nested submodules
         if not _fetch_submodules(opts, submodule_cache_dir, submodule_revision):
