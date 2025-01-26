@@ -5,11 +5,6 @@ from releng_tool.tool import RelengTool
 from releng_tool.util.log import debug
 import sys
 
-try:
-    RelengModuleNotFoundError = ModuleNotFoundError
-except NameError:
-    RelengModuleNotFoundError = ImportError
-
 
 #: executable used to run meson commands
 MESON_COMMAND = 'meson'
@@ -51,7 +46,7 @@ class MesonTool(RelengTool):
                 debug('{} tool is detected in the interpreter', self.tool)
                 RelengTool.detected[self.tool] = True
                 self._meson_interpreter = 'mesonbuild.mesonmain'
-            except RelengModuleNotFoundError:
+            except ModuleNotFoundError:
                 debug('{} tool is not detected in the interpreter', self.tool)
 
         return RelengTool.detected[self.tool]

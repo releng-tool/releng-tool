@@ -8,11 +8,6 @@ from releng_tool.api import RelengPackageExtensionInterface
 from releng_tool.registry import RelengRegistry
 from tests import RelengToolTestCase
 
-try:
-    RelengModuleNotFoundError = ModuleNotFoundError
-except NameError:
-    RelengModuleNotFoundError = ImportError
-
 
 class TestRegistry(RelengToolTestCase):
     def test_registry_connect_and_disconnect(self):

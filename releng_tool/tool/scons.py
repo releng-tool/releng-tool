@@ -7,11 +7,6 @@ import os
 import site
 import sys
 
-try:
-    RelengModuleNotFoundError = ModuleNotFoundError
-except NameError:
-    RelengModuleNotFoundError = ImportError
-
 
 #: executable used to run scons commands
 SCONS_COMMAND = 'scons'
@@ -53,7 +48,7 @@ class SconsTool(RelengTool):
                 debug('{} tool is detected in the interpreter', self.tool)
                 RelengTool.detected[self.tool] = True
                 self._scons_interpreter = 'SCons'
-            except RelengModuleNotFoundError:
+            except ModuleNotFoundError:
                 debug('{} tool is not detected in the interpreter', self.tool)
 
             # older versions of SCons will have its module found inside
@@ -75,7 +70,7 @@ class SconsTool(RelengTool):
                         RelengTool.detected[self.tool] = True
                         self._scons_interpreter = 'releng_tool.tool.scons_proxy'
                         break
-                    except RelengModuleNotFoundError:
+                    except ModuleNotFoundError:
                         debug('{} tool is not detected in container', self.tool)
 
         return RelengTool.detected[self.tool]
