@@ -8,7 +8,7 @@ import subprocess
 
 try:
     import ctypes.wintypes
-    import winreg as reg
+    import winreg as reg  # pylint: disable=E0401
 except Exception:  # noqa: S110
     pass
 
