@@ -2,22 +2,20 @@
 # Copyright releng-tool
 
 from contextlib import contextmanager
+from http.server import BaseHTTPRequestHandler
+from http.server import HTTPServer
 from tests.support import fetch_unittest_assets_dir
 from threading import Thread
 import os
 import ssl
 import time
 
-try:
-    import http.server as http_server
-except ImportError:
-    import BaseHTTPServer as http_server
 
 # http server endpoint to use a local/free random port
 LOCAL_RANDOM_PORT = ('127.0.0.1', 0)
 
 
-class MockServerRequestHandler(http_server.BaseHTTPRequestHandler):
+class MockServerRequestHandler(BaseHTTPRequestHandler):
     """
     mock server request handler
 
@@ -74,7 +72,7 @@ def build_httpd(secure=None):
         the http server
     """
 
-    httpd = http_server.HTTPServer(LOCAL_RANDOM_PORT, MockServerRequestHandler)
+    httpd = HTTPServer(LOCAL_RANDOM_PORT, MockServerRequestHandler)
     httpd.req = {}
     httpd.rsp = []
 
