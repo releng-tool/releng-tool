@@ -71,7 +71,7 @@ def install(opts):
         # install to each destination
         for dest_dir in opts.dest_dirs:
             env['DESTDIR'] = dest_dir
-            scons_args_tmp = ['DESTDIR=' + dest_dir] + scons_args
+            scons_args_tmp = ['DESTDIR=' + dest_dir, *scons_args]
             if not SCONS.execute(scons_args_tmp, env=env):
                 err('failed to install scons project: {}', opts.name)
                 return False

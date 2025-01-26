@@ -60,7 +60,7 @@ def install(opts):
     # install to each destination
     for dest_dir in opts.dest_dirs:
         env['DESTDIR'] = dest_dir
-        make_args_tmp = ['DESTDIR=' + dest_dir] + make_args
+        make_args_tmp = ['DESTDIR=' + dest_dir, *make_args]
         if not MAKE.execute(make_args_tmp, env=env):
             err('failed to install make project: {}', opts.name)
             return False

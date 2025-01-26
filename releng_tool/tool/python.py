@@ -40,7 +40,7 @@ class PythonTool(RelengTool):
         found = True
         tool = self.tool
 
-        if execute([tool] + self.exists_args, quiet=True, critical=False):
+        if execute([tool, *self.exists_args], quiet=True, critical=False):
             found = True
         # if windows and a non-path entry, try to find the interpreter on the
         # local system
@@ -51,7 +51,7 @@ class PythonTool(RelengTool):
             if alt_tool:
                 debug('{} tool to be replaced by: {}', tool, alt_tool)
 
-                if execute([alt_tool] + self.exists_args, quiet=True,
+                if execute([alt_tool, *self.exists_args], quiet=True,
                         critical=False):
                     found = True
 

@@ -211,7 +211,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
             'origin',
         ]
         debug('checking if tag exists on remote')
-        if GIT.execute(ls_cmd + ['--tags', 'refs/tags/{}'.format(revision)],
+        if GIT.execute([*ls_cmd, '--tags', 'refs/tags/{}'.format(revision)],
                 cwd=cache_dir, quiet=True):
             debug('attempting a tag reference fetch operation')
             fetch_cmd = list(prepared_fetch_cmd)
@@ -224,7 +224,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
                 return True
 
         debug('checking if reference exists on remote')
-        if GIT.execute(ls_cmd + ['--heads', 'refs/heads/{}'.format(revision)],
+        if GIT.execute([*ls_cmd, '--heads', 'refs/heads/{}'.format(revision)],
                 cwd=cache_dir, quiet=True):
             debug('attempting a head reference fetch operation')
             fetch_cmd = list(prepared_fetch_cmd)

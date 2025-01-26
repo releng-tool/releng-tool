@@ -294,7 +294,7 @@ def execute_rv(command, *args, **kwargs):
 
     out = []
     rv = _execute(
-        [command] + list(args),
+        [command, *list(args)],
         capture=out,
         critical=False,
         cwd=kwargs.get('cwd'),

@@ -282,17 +282,17 @@ class TestUtilIo(unittest.TestCase):
             return rv
 
         # simple interpreter
-        self.assertEqual(psi(si01), [b'interpreter'] + E(si01))
+        self.assertEqual(psi(si01), [b'interpreter', *E(si01)])
         # interpreter with a single argument
-        self.assertEqual(psi(si02), [b'interpreter', b'arg'] + E(si02))
+        self.assertEqual(psi(si02), [b'interpreter', b'arg', *E(si02)])
         # interpreter with a single argument (with whitespaces)
-        self.assertEqual(psi(si03), [b'interpreter', b'arg1 arg2'] + E(si03))
+        self.assertEqual(psi(si03), [b'interpreter', b'arg1 arg2', *E(si03)])
         # too long of an interpreter
         self.assertEqual(psi(si04), si04)
         # interpreter with whitespaces
-        self.assertEqual(psi(si05), [b'interpreter'] + E(si05))
+        self.assertEqual(psi(si05), [b'interpreter', *E(si05)])
         # real example of an interpreter
-        self.assertEqual(psi(si06), [b'/usr/bin/env', b'python'] + E(si06))
+        self.assertEqual(psi(si06), [b'/usr/bin/env', b'python', *E(si06)])
 
     def test_utilio_touch(self):
         with prepare_workdir() as work_dir:

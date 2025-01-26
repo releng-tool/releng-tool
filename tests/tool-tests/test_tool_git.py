@@ -602,8 +602,8 @@ class TestToolGit(TestSiteToolBase):
     def _git(self, workdir, *args):
         with interim_working_dir(workdir):
             out = []
-            if not execute(['git'] + list(args), capture=out, critical=False):
-                print(['(TestToolGit) git'] + list(args))
+            if not execute(['git', *list(args)], capture=out, critical=False):
+                print(['(TestToolGit) git', *list(args)])
                 print('\n'.join(out))
                 raise AssertionError('failed to issue git command')
             return '\n'.join(out)

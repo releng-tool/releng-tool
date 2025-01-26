@@ -53,7 +53,7 @@ def install(opts):
     # install to each destination
     env = expand(opts.install_env)
     for dest_dir in opts.dest_dirs:
-        if not MAKE.execute(['DESTDIR=' + dest_dir] + autotools_args, env=env):
+        if not MAKE.execute(['DESTDIR=' + dest_dir, *autotools_args], env=env):
             err('failed to install autotools project: {}', opts.name)
             return False
 

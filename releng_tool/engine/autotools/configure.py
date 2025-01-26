@@ -56,7 +56,7 @@ def configure(opts):
     autotools_args.extend(prepare_definitions(autotools_defs))
     autotools_args.extend(prepare_arguments(autotools_opts))
 
-    if not execute(['./configure'] + autotools_args,
+    if not execute(['./configure', *autotools_args],
             env_update=expand(opts.conf_env), critical=False):
         err('failed to prepare autotools project (configure): {}', opts.name)
         return False

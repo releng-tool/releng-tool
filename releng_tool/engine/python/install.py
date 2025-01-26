@@ -178,14 +178,14 @@ def install(opts):
                     python_args_tmp.extend(['--prefix', container])
 
                     rv = python_tool.execute(
-                        python_args_tmp + [python_root_param, tmp_dir], env=env)
+                        [*python_args_tmp, python_root_param, tmp_dir], env=env)
 
                     if rv:
                         src_dir = os.path.join(tmp_dir, container) + os.sep
                         path_move(src_dir, dest_dir)
             else:
                 rv = python_tool.execute(
-                    python_args + [python_root_param, dest_dir], env=env)
+                    [*python_args, python_root_param, dest_dir], env=env)
 
             if not rv:
                 err('failed to install python project: {}', opts.name)

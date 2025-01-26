@@ -59,7 +59,7 @@ def fetch_default(opts):
 
     # check if we have the target revision; if so, full stop
     if os.path.isdir(cache_dir) and not opts.ignore_cache:
-        if HG.execute(hg_dir + ['--quiet', 'log', '--rev', revision],
+        if HG.execute([*hg_dir, '--quiet', 'log', '--rev', revision],
                 cwd=cache_dir, quiet=True):
             return cache_dir
 
@@ -78,13 +78,13 @@ def fetch_default(opts):
             return None
 
     log('fetching most recent sources')
-    if not HG.execute(hg_dir + ['--noninteractive', '--verbose', 'pull'],
+    if not HG.execute([*hg_dir, '--noninteractive', '--verbose', 'pull'],
             cwd=cache_dir):
         err('unable to fetch from remote repository')
         return None
 
     log('verifying target revision exists')
-    if not HG.execute(hg_dir + ['--quiet', 'log', '--rev', revision],
+    if not HG.execute([*hg_dir, '--quiet', 'log', '--rev', revision],
             cwd=cache_dir, quiet=True):
         err('unable to find matching revision in repository: {}\n'
             ' (revision: {})', name, revision)

@@ -91,8 +91,8 @@ class TestToolCvs(TestSiteToolBase):
 
     def _cvs(self, *args):
         out = []
-        if not execute(['cvs'] + list(args), capture=out, critical=False):
-            print(['cvs'] + list(args))
+        if not execute(['cvs', *list(args)], capture=out, critical=False):
+            print(['(TestToolCvs) cvs', *list(args)])
             print('\n'.join(out))
             raise AssertionError('failed to issue cvs command')
         return '\n'.join(out)
@@ -103,7 +103,7 @@ class TestToolCvs(TestSiteToolBase):
             repo = self.repo_dir
 
         # configure CVSROOT to the repository
-        new_args = ('-d', repo) + args
+        new_args = ('-d', repo, *args)
 
         return self._cvs(*new_args)
 

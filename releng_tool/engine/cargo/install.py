@@ -81,7 +81,8 @@ def install(opts):
         # install to each destination
         for dest_dir in opts.dest_dirs:
             prefixed_dest_dir = dest_dir + opts.prefix
-            cargo_args_tmp = cargo_args + [
+            cargo_args_tmp = [
+                *cargo_args,
                 '--root',
                 prefixed_dest_dir,
             ]

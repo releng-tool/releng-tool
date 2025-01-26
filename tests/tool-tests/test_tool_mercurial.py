@@ -121,9 +121,9 @@ class TestToolMercurial(TestSiteToolBase):
     def _hg(self, workdir, *args):
         with interim_working_dir(workdir):
             out = []
-            if not execute(['hg', '--noninteractive'] + list(args),
+            if not execute(['hg', '--noninteractive', *list(args)],
                     capture=out, critical=False):
-                print(['hg'] + list(args))
+                print(['(TestToolMercurial) hg', *list(args)])
                 print('\n'.join(out))
                 raise AssertionError('failed to issue hg command')
             return '\n'.join(out)
