@@ -27,8 +27,6 @@ lint.ignore = [
     'EXE002',
     # imports are sorted lexicographically in this project
     'FBT002',
-    # removeprefix not supported pre-python 3.9
-    'FURB188',
     # imports are sorted lexicographically in this project
     'I001',
     # suppress no-pep420 checks for valid support and test scripts

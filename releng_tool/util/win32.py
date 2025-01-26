@@ -69,8 +69,7 @@ def find_win32_python_interpreter(target):
     PYTHON_EXEC = r'python.exe'
 
     # remove any python prefix ('python3.8' -> '3.8')
-    if target.startswith(PYTHON_PREFIX):
-        target = target[len(PYTHON_PREFIX):]
+    target = target.removeprefix(PYTHON_PREFIX)
 
     # keep track of a dictionary of available interpreters when trying to pick
     # a provided major version (e.g. "python3"), when cycling through all the

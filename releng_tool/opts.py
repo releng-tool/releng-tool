@@ -262,8 +262,7 @@ class RelengEngineOptions:
                 # package folder prefix and use the resulting value as
                 # the target
                 target_action = target_action.replace(os.sep, '/')
-                if target_action.startswith('package/'):
-                    target_action = target_action[len('package/'):]
+                target_action = target_action.removeprefix('package/')
 
                 self.target_action = target_action
 
