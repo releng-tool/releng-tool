@@ -7,6 +7,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
 from releng_tool.util.string import is_sequence_not_string
+from typing import ClassVar
 import os
 import re
 
@@ -27,7 +28,7 @@ class RelengTool(object):
         env_sanitize (optional): environment variables to sanitize
         env_include (optional): environment variables to always include
     """
-    detected = {}
+    detected: ClassVar[dict[str, bool]] = {}
 
     def __init__(self, tool, exists_args=None, env_sanitize=None,
             env_include=None):

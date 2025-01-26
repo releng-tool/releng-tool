@@ -63,8 +63,6 @@ lint.ignore = [
     # single quotes are preferred in this project
     'Q000',
     'Q001',
-    # annotated class attributes not supported pre-python 3.5
-    'RUF012',
     # use of asserts are acceptable for this tool
     'S101',
     # there is no internally managed password/authentication; hide false detects
