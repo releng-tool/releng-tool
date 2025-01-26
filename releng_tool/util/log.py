@@ -4,7 +4,6 @@
 
 from __future__ import print_function
 from releng_tool.exceptions import RelengToolWarningAsError
-import sys
 
 #: flag to track the enablement of debug messages
 RELENG_LOG_DEBUG_FLAG = False
@@ -37,7 +36,7 @@ def log(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('', '', msg, sys.stdout, *args)
+    __log('', '', msg, *args)
 
 
 def debug(msg, *args):
@@ -58,7 +57,7 @@ def debug(msg, *args):
             generating a formatted message
     """
     if RELENG_LOG_DEBUG_FLAG:
-        __log('(debug) ', '\033[2m', msg, sys.stdout, *args)
+        __log('(debug) ', '\033[2m', msg, *args)
 
 
 def err(msg, *args):
@@ -77,9 +76,7 @@ def err(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    sys.stdout.flush()
-    __log('(error) ', '\033[1;31m', msg, sys.stderr, *args)
-    sys.stderr.flush()
+    __log('(error) ', '\033[1;31m', msg, *args)
 
 
 def hint(msg, *args):
@@ -101,7 +98,7 @@ def hint(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('', '\033[1;36m', msg, sys.stdout, *args)
+    __log('', '\033[1;36m', msg, *args)
 
 
 def is_debug(tag=None):
@@ -174,7 +171,7 @@ def note(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('', '\033[7m', msg, sys.stdout, *args)
+    __log('', '\033[7m', msg, *args)
 
 
 def success(msg, *args):
@@ -193,7 +190,7 @@ def success(msg, *args):
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
-    __log('(success) ', '\033[1;32m', msg, sys.stdout, *args)
+    __log('(success) ', '\033[1;32m', msg, *args)
 
 
 def verbose(msg, *args):
@@ -214,7 +211,7 @@ def verbose(msg, *args):
             generating a formatted message
     """
     if RELENG_LOG_VERBOSE_FLAG:
-        __log('(verbose) ', '\033[2m', msg, sys.stdout, *args)
+        __log('(verbose) ', '\033[2m', msg, *args)
 
 
 def warn(msg, *args):
@@ -236,16 +233,13 @@ def warn(msg, *args):
     Raises:
         RelengToolWarningAsError: when warnings-are-errors is configured
     """
-    sys.stdout.flush()
-
     if RELENG_LOG_WERROR_FLAG:
         raise RelengToolWarningAsError(msg.format(*args))
 
-    __log('(warn) ', '\033[1;35m', msg, sys.stderr, *args)
-    sys.stderr.flush()
+    __log('(warn) ', '\033[1;35m', msg, *args)
 
 
-def __log(prefix, color, msg, file, *args):
+def __log(prefix, color, msg, *args):
     """
     utility logging method
 
@@ -255,7 +249,6 @@ def __log(prefix, color, msg, file, *args):
         prefix: prefix to add to the message
         color: the color to apply to the message
         msg: the message
-        file: the file to write to
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
     """
@@ -267,7 +260,7 @@ def __log(prefix, color, msg, file, *args):
     msg = str(msg)
     if args:
         msg = msg.format(*args)
-    print('{}{}{}{}'.format(color, prefix, msg, post), file=file)
+    print('{}{}{}{}'.format(color, prefix, msg, post), flush=True)
 
 
 def releng_log_configuration(debug_, nocolor, verbose_, werror):
