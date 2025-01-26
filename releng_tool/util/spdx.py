@@ -4,11 +4,6 @@
 import re
 
 try:
-    basestring  # noqa: B018  pylint: disable=E0601
-except NameError:
-    basestring = str
-
-try:
     from collections.abc import Sequence
 except ImportError:
     from collections import Sequence  # pylint: disable=W1512
@@ -111,7 +106,7 @@ def spdx_parse(data):
     if not data:
         return None
 
-    if isinstance(data, Sequence) and not isinstance(data, basestring):
+    if isinstance(data, Sequence) and not isinstance(data, str):
         if isinstance(data, tuple):
             data = ') AND ('.join(data)
         else:

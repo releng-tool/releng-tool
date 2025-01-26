@@ -4,11 +4,6 @@
 import os
 
 try:
-    basestring  # noqa: B018  pylint: disable=E0601
-except NameError:
-    basestring = str
-
-try:
     from collections.abc import Sequence
 except ImportError:
     from collections import Sequence  # pylint: disable=W1512
@@ -49,7 +44,7 @@ def expand(obj, kv=None):
     Returns:
         the expanded object
     """
-    if isinstance(obj, basestring):
+    if isinstance(obj, str):
         try:
             idx = obj.index('$')
         except ValueError:
@@ -135,11 +130,11 @@ def interpret_dictionary_strings(obj):
     if isinstance(obj, dict):
         rv = obj
         for key, value in obj.items():
-            if not isinstance(key, basestring):
+            if not isinstance(key, str):
                 rv = None
                 break
 
-            if value is not None and not isinstance(value, basestring):
+            if value is not None and not isinstance(value, str):
                 rv = None
                 break
 
@@ -162,7 +157,7 @@ def interpret_string(obj):
     """
     rv = None
 
-    if isinstance(obj, basestring):
+    if isinstance(obj, str):
         rv = obj
 
     return rv
@@ -187,12 +182,12 @@ def interpret_strings(obj):
     rv = None
 
     if isinstance(obj, Sequence):
-        if isinstance(obj, basestring):
+        if isinstance(obj, str):
             rv = [obj]
         else:
             rv = obj
             for child in obj:
-                if not isinstance(child, basestring):
+                if not isinstance(child, str):
                     rv = None
                     break
 
@@ -222,20 +217,20 @@ def interpret_zero_to_one_strings(obj):
     if isinstance(obj, dict):
         rv = obj
         for key, value in obj.items():
-            if not isinstance(key, basestring):
+            if not isinstance(key, str):
                 rv = None
                 break
 
-            if value is not None and not isinstance(value, basestring):
+            if value is not None and not isinstance(value, str):
                 rv = None
                 break
     elif isinstance(obj, Sequence):
         rv = {}
-        if isinstance(obj, basestring):
+        if isinstance(obj, str):
             rv[obj] = ''
         else:
             for child in obj:
-                if not isinstance(child, basestring):
+                if not isinstance(child, str):
                     rv = None
                     break
                 rv[child] = ''
@@ -256,4 +251,4 @@ def is_sequence_not_string(obj):
     Returns:
         whether or not a non-string sequence
     """
-    return isinstance(obj, Sequence) and not isinstance(obj, basestring)
+    return isinstance(obj, Sequence) and not isinstance(obj, str)
