@@ -337,6 +337,9 @@ class RelengEngine:
             if not pkgs:
                 return False
         except RelengToolMissingPackageScript:
+            if not opts.target_action:
+                raise
+
             extra = ''
 
             detected = suggest(opts, opts.target_action)
