@@ -45,8 +45,8 @@ def main():
                 else:
                     f.write(line)
 
-    except configparser.Error as e:
-        raise SystemExit('failed to load configuration: ' + str(e))
+    except configparser.Error as ex:
+        raise SystemExit(f'failed to load configuration: {ex}') from ex
 
 
 def update(license_base_url):

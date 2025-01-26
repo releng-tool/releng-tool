@@ -328,7 +328,7 @@ class RelengEngine:
             pkgs = self.pkgman.load(pkg_names)
             if not pkgs:
                 return False
-        except RelengToolMissingPackageScript:
+        except RelengToolMissingPackageScript as ex:
             if not opts.target_action:
                 raise
 
@@ -349,7 +349,7 @@ class RelengEngine:
             raise RelengToolUnknownAction({
                 'action': opts.target_action,
                 'extra': extra,
-            })
+            }) from ex
 
         # if cleaning a package, remove it's build output directory and stop
         if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN, PkgAction.FRESH):

@@ -1048,12 +1048,12 @@ using deprecated dependency configuration for package: {}
         # run the package script
         try:
             env = run_script(script, self.script_env, catch=False)
-        except Exception as e:
+        except Exception as ex:
             raise RelengToolInvalidPackageScript({
-                'description': str(e),
+                'description': str(ex),
                 'script': script,
                 'traceback': traceback.format_exc(),
-            })
+            }) from ex
 
         # if an interim configuration has not been used, automatically remove
         # them from the environment as if it was ``None`` in the first place

@@ -861,8 +861,8 @@ def _path_remove_file(path):
 
             os.chmod(path, st.st_mode | stat.S_IWUSR)
             os.remove(path)
-        except OSError:
-            raise e
+        except OSError as ex2:
+            raise e from ex2
 
 
 def prepare_arguments(args):

@@ -39,10 +39,11 @@ class TestUtilIoSymlink(unittest.TestCase):
             try:
                 with new_test_wd():
                     os.symlink('arg1', 'arg2')
-            except OSError as e:
-                if e.winerror == WINERROR_1314 or \
-                        'symbolic link privilege not held' in str(e):
-                    raise unittest.SkipTest('symlink test skipped for Windows')
+            except OSError as ex:
+                if ex.winerror == WINERROR_1314 or \
+                        'symbolic link privilege not held' in str(ex):
+                    raise unittest.SkipTest(
+                        'symlink test skipped for Windows') from ex
 
     def test_utilio_symlink_absolute(self):
         with new_test_wd() as work_dir:

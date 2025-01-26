@@ -82,8 +82,8 @@ def load(hash_file):
     try:
         with open(hash_file, mode='r', encoding='utf_8') as f:
             data = f.readlines()
-    except IOError:
-        raise BadFileHashLoadError
+    except IOError as ex:
+        raise BadFileHashLoadError from ex
 
     # strip and split into chunks
     data = [x.split() for x in data if x.strip()]
@@ -113,10 +113,10 @@ def load(hash_file):
                 try:
                     if int(hash_len) <= 0:
                         raise BadFormatHashLoadError(
-                            'invalid has keylen for entry {}'.format(idx + 1))
-                except ValueError:
+                            f'invalid has keylen for entry {idx + 1}')
+                except ValueError as ex:
                     raise BadFormatHashLoadError(
-                        'invalid has keylen type for entry {}'.format(idx + 1))
+                        f'invalid has keylen type for entry {idx + 1}') from ex
 
     # compile a list of tuples with no empty entries
     return [tuple(x) for x in data if x]
