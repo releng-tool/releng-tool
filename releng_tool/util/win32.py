@@ -8,11 +8,7 @@ import subprocess
 
 try:
     import ctypes.wintypes
-
-    try:
-        import winreg as reg
-    except ImportError:
-        import _winreg as reg
+    import winreg as reg
 except Exception:  # noqa: S110
     pass
 
