@@ -14,7 +14,7 @@ if [ -z "$cfg" ]; then
 fi
 
 if [ "$1" == "--build" ]; then
-    exec docker build -f "$cfg" .
+    exec docker build --pull -f "$cfg" .
 fi
 
 # ensure user runs with the same group permission as the project folder,
