@@ -49,6 +49,7 @@ from releng_tool.util.string import interpret_dictionary_strings
 from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from releng_tool.util.string import interpret_zero_to_one_strings
+from urllib.parse import urlparse
 import pickle
 import posixpath
 import pprint
@@ -56,10 +57,6 @@ import os
 import traceback
 import sys
 
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
 
 # special value for a "default" entry in a dictionary
 DEFAULT_ENTRY = '*'
