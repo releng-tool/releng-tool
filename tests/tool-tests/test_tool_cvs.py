@@ -127,12 +127,12 @@ class TestToolCvs(TestSiteToolBase):
                     time.sleep(1)
 
                 with open(target_file, 'w') as f:
-                    f.write('commit {}\n'.format(n))
+                    f.write(f'commit {n}\n')
 
                 # first time writing to this file, register it
                 if n == 1:
                     self._cvs_repo('add', target_file)
-                self._cvs_repo('commit', '-m', 'adding commit {}'.format(n))
+                self._cvs_repo('commit', '-m', f'adding commit {n}')
 
     def _cvs_remove(self, module, filename):
         with generate_temp_dir() as workdir, interim_working_dir(workdir):
@@ -150,5 +150,5 @@ class TestToolCvs(TestSiteToolBase):
         with open(path, 'r') as f:
             data = f.read().strip()
 
-        msg = 'found `{}` instead of `{}`'.format(data, contents)
+        msg = f'found `{data}` instead of `{contents}`'
         self.assertIn(contents, data, msg)

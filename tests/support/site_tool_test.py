@@ -190,7 +190,7 @@ class TestSiteToolBase(RelengToolTestCase):
 
         files = self._dir_fetch(dir_)
 
-        print('DIR: {}]'.format(dir_))
+        print(f'DIR: {dir_}]')
         print('-------------------------------')
         for file_ in files:
             print(file_[len(dir_) + 1:])

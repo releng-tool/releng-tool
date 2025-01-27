@@ -286,7 +286,7 @@ class TestUtilIoMove(unittest.TestCase):
 
         for file in files:
             with open(file, 'a') as f:
-                f.write('{}-{}'.format(os.path.basename(file), 'A'))
+                f.write('{}-A'.format(os.path.basename(file)))
 
         files = [
             self._('d3', 'file1'),
@@ -296,7 +296,7 @@ class TestUtilIoMove(unittest.TestCase):
 
         for file in files:
             with open(file, 'a') as f:
-                f.write('{}-{}'.format(os.path.basename(file), 'B'))
+                f.write('{}-B'.format(os.path.basename(file)))
 
         # move entire folder tree into a new base
         src_dir = self._('d1')

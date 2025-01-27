@@ -78,10 +78,10 @@ class TestSpdxLicenseWarnings(RelengToolTestCase):
                     self.assertTrue(os.path.exists(pkg_script))
 
                     with open(pkg_script, 'a', encoding='utf_8') as f:
-                        f.write('{key}={val}\n'.format(
-                            key=pkg_key(template, 'INTERNAL'), val=True))
-                        f.write('{}="{}"\n'.format(
-                            pkg_key(template, 'LICENSE'), lid))
+                        key = pkg_key(template, 'INTERNAL')
+                        f.write(f'{key}=True\n')
+                        key = pkg_key(template, 'LICENSE')
+                        f.write(f'{key}="{lid}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)

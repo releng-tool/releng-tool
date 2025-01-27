@@ -88,11 +88,11 @@ def main():
         if target_unit_tests:
             print('running specific tests:')
             for test in target_unit_tests:
-                print('    {}'.format(test.id()))
+                print(f'    {test.id()}')
             sys.stdout.flush()
         else:
             print('ERROR: unable to find test with pattern: '
-                '{}'.format(target_test_name_pattern))
+                 f'{target_test_name_pattern}')
             if not module_load_failure:
                 sys.exit(0 if args.relaxed else 1)
 
@@ -125,7 +125,7 @@ def find_tests(entity, pattern):
     module_load_failure = False
 
     if isinstance(entity, unittest.case.TestCase):
-        if fnmatch.fnmatch(entity.id(), '*{}*'.format(pattern)):
+        if fnmatch.fnmatch(entity.id(), f'*{pattern}*'):
             found.append(entity)
         elif 'ModuleImportFailure' in entity.id():
             module_load_failure = True

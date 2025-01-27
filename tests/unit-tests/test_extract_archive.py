@@ -137,8 +137,7 @@ class TestExtractArchive(unittest.TestCase):
         unknowns = sorted(found_entries.difference(required))
 
         if missing or unknowns:
-            print('failed to verify extracted contents for: {}'.format(
-                self.opts.cache_file))
+            print(f'failed to verify extracted data: {self.opts.cache_file}')
             print()
 
         if missing:

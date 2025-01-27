@@ -17,7 +17,7 @@ class TestToolGpg(TestSiteToolBase):
         cls.archive = os.path.join(sample_files, 'sample-files.tar')
 
     def prepare_defconfig(self, defconfig):
-        self.defconfig_add('SITE', 'file://{}'.format(self.archive))
+        self.defconfig_add('SITE', f'file://{self.archive}')
         self.asc_file = os.path.join(self.def_dir, self.pkg_name + '.asc')
 
     def test_tool_gpg_invalid(self):

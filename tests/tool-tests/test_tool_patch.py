@@ -26,7 +26,7 @@ class TestToolPatch(RelengToolTestCase):
             # jump to
             sample_files = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(sample_files, 'sample-files.tar')
-            site = 'TEST_SITE=r"file:///{}"'.format(archive)
+            site = f'TEST_SITE=r"file:///{archive}"'
 
             root_dir = engine.opts.root_dir
             pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')
@@ -57,7 +57,7 @@ class TestToolPatch(RelengToolTestCase):
             # jump to
             sample_files = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(sample_files, 'sample-files.tar')
-            site = 'TEST_SITE=r"file:///{}"'.format(archive)
+            site = f'TEST_SITE=r"file:///{archive}"'
 
             root_dir = engine.opts.root_dir
             pkg_script = os.path.join(root_dir, 'package', 'test', 'test.rt')

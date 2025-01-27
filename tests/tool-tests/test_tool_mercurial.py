@@ -155,7 +155,7 @@ class TestToolMercurial(TestSiteToolBase):
             dummy_id = getattr(self, '_hg_tmpid', 1)
             dummy_id += 1
             self._id = dummy_id
-            dummy_tag = 'dummy-{}'.format(dummy_id)
+            dummy_tag = f'dummy-{dummy_id}'
             self._hg_repo('tag', dummy_tag, '-f', '-m', msg, repo=repo)
 
         return self._hg_repo('identify', '--id', repo=repo)

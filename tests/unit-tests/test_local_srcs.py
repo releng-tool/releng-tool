@@ -113,7 +113,7 @@ class TestLocalSources(RelengToolTestCase):
                     # --local-sources set to a specific path
                     dir_a,
                     # overriding path for the `pkg-b` package
-                    'pkg-b@{}'.format(dir_b),
+                    f'pkg-b@{dir_b}',
                 ],
             })
 
@@ -165,9 +165,9 @@ class TestLocalSources(RelengToolTestCase):
             init_config.update({
                 'local_sources': [
                     # explicit path set for `pkg-a` package
-                    'pkg-a@{}'.format(dir_a),
+                    f'pkg-a@{dir_a}',
                     # explicit path set for `pkg-b` package
-                    'pkg-b@{}'.format(dir_b),
+                    f'pkg-b@{dir_b}',
                 ],
             })
 
@@ -270,7 +270,7 @@ class TestLocalSources(RelengToolTestCase):
             init_config.update({
                 'local_sources': [
                     # explicit path set for a single package
-                    'pkg-b@{}'.format(test_dir),
+                    f'pkg-b@{test_dir}',
                 ],
             })
 
@@ -384,5 +384,5 @@ class TestLocalSources(RelengToolTestCase):
         with open(path, 'r') as f:
             data = f.read().strip()
 
-        msg = 'found `{}` instead of `{}`'.format(data, contents)
+        msg = f'found `{data}` instead of `{contents}`'
         self.assertIn(contents, data, msg)

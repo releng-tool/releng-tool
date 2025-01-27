@@ -29,7 +29,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_tar_bz2_valid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.tar.bz2'.format(host, port)
+            site = f'http://{host}:{port}/test.tar.bz2'
 
             httpd_assets = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(httpd_assets, 'sample-files.tar.bz2')
@@ -46,7 +46,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)
@@ -59,7 +59,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_tar_invalid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.tgz'.format(host, port)
+            site = f'http://{host}:{port}/test.tgz'
 
             httpd.rsp.append((200, b'not-an-archive'))
 
@@ -70,7 +70,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertFalse(rv)
@@ -78,7 +78,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_tar_path_traversal(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/traversal.tar'.format(host, port)
+            site = f'http://{host}:{port}/traversal.tar'
 
             dummy_file_data = io.BytesIO(b'test')
             dummy_file_sz = len(dummy_file_data.getvalue())
@@ -98,7 +98,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 otes = TAR.exists()
                 try:
@@ -117,7 +117,7 @@ class TestSiteUrl(RelengToolTestCase):
 
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.tar'.format(host, port)
+            site = f'http://{host}:{port}/test.tar'
 
             httpd_assets = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(httpd_assets, 'sample-files.tar')
@@ -134,7 +134,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)
@@ -147,7 +147,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_tar_valid_internal_extract(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.tar'.format(host, port)
+            site = f'http://{host}:{port}/test.tar'
 
             httpd_assets = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(httpd_assets, 'sample-files.tar')
@@ -162,7 +162,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 otes = TAR.exists()
                 try:
@@ -189,7 +189,7 @@ class TestSiteUrl(RelengToolTestCase):
 
                 # redo tar fetch but with a no strip option
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
                     f.write('MINIMAL_STRIP_COUNT=0\n')
 
                 try:
@@ -214,7 +214,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_tgz_valid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.tgz'.format(host, port)
+            site = f'http://{host}:{port}/test.tgz'
 
             httpd_assets = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(httpd_assets, 'sample-files.tgz')
@@ -231,7 +231,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)
@@ -247,7 +247,7 @@ class TestSiteUrl(RelengToolTestCase):
 
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.tar.xz'.format(host, port)
+            site = f'http://{host}:{port}/test.tar.xz'
 
             httpd_assets = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(httpd_assets, 'sample-files.tar.xz')
@@ -264,7 +264,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)
@@ -277,7 +277,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_zip_invalid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.zip'.format(host, port)
+            site = f'http://{host}:{port}/test.zip'
 
             httpd.rsp.append((200, b'not-an-archive'))
 
@@ -288,7 +288,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertFalse(rv)
@@ -296,7 +296,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_archive_zip_valid(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.zip'.format(host, port)
+            site = f'http://{host}:{port}/test.zip'
 
             httpd_assets = fetch_unittest_assets_dir('sample-files')
             archive = os.path.join(httpd_assets, 'sample-files.zip')
@@ -313,7 +313,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)
@@ -321,7 +321,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_file_http(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/test.txt'.format(host, port)
+            site = f'http://{host}:{port}/test.txt'
 
             httpd.rsp.append((200, b'Sample text file.'))
 
@@ -332,7 +332,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)
@@ -340,7 +340,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_file_https(self):
         with httpd_context(secure=True) as httpd:
             host, port = httpd.server_address
-            site = 'https://localhost:{}/test.txt'.format(port)
+            site = f'https://localhost:{port}/test.txt'
 
             httpd.rsp.append((200, b'Sample text file.'))
 
@@ -350,7 +350,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('PKG_SITE="{}"\n'.format(site))
+                    f.write(f'PKG_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertTrue(rv)
@@ -358,7 +358,7 @@ class TestSiteUrl(RelengToolTestCase):
     def test_site_url_fetch_missing(self):
         with httpd_context() as httpd:
             host, port = httpd.server_address
-            site = 'http://{}:{}/missing.txt'.format(host, port)
+            site = f'http://{host}:{port}/missing.txt'
 
             httpd.rsp.append((404, None))
 
@@ -369,7 +369,7 @@ class TestSiteUrl(RelengToolTestCase):
                 self.assertTrue(os.path.exists(pkg_script))
 
                 with open(pkg_script, 'a') as f:
-                    f.write('MINIMAL_SITE="{}"\n'.format(site))
+                    f.write(f'MINIMAL_SITE="{site}"\n')
 
                 rv = engine.run()
                 self.assertFalse(rv)

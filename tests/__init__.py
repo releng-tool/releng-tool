@@ -50,7 +50,7 @@ def compare_contents(first, second):
         fromfile=first, tofile=second, lineterm='\n')
     diff_content = ''.join(list(diff))
     if diff_content:
-        return 'unexpected file differences\n{}'.format(diff_content)
+        return f'unexpected file differences\n{diff_content}'
 
     return None
 

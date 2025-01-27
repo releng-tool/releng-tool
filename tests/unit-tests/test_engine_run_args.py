@@ -366,7 +366,7 @@ class TestEngineRunArgs(RelengToolTestCase):
                     # --local-sources set to a specific path
                     dir_a,
                     # overriding path for the `multiple-b` package
-                    'multiple-b@{}'.format(dir_b),
+                    f'multiple-b@{dir_b}',
                 ],
             }
 
@@ -382,9 +382,9 @@ class TestEngineRunArgs(RelengToolTestCase):
             config = {
                 'local_sources': [
                     # explicit path set for `multiple-a` package
-                    'multiple-a@{}'.format(dir_a),
+                    f'multiple-a@{dir_a}',
                     # explicit path set for `multiple-b` package
-                    'multiple-b:{}'.format(dir_b),
+                    f'multiple-b:{dir_b}',
                 ],
             }
 
@@ -417,7 +417,7 @@ class TestEngineRunArgs(RelengToolTestCase):
             config = {
                 'local_sources': [
                     # explicit path set for a single package
-                    'multiple-b:{}'.format(test_dir),
+                    f'multiple-b:{test_dir}',
                 ],
             }
 
