@@ -35,7 +35,7 @@ def main():
         engine_dir = os.path.join(root_dir, 'releng_tool', 'engine')
         sbom_implementation = os.path.join(engine_dir, 'sbom.py')
 
-        with open(sbom_implementation, 'r') as f:
+        with open(sbom_implementation) as f:
             sbom_py_data = f.readlines()
 
         with open(sbom_implementation, 'w') as f:

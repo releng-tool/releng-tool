@@ -22,7 +22,7 @@ class TestExtensionInjectEnvironment(RelengToolTestCase):
             sts = os.path.join(engine.opts.target_dir, 'status.json')
             self.assertTrue(os.path.exists(sts))
 
-            with open(sts, 'r') as f:
+            with open(sts) as f:
                 data = json.load(f)
                 self.assertTrue('custom-invoke' in data)
                 self.assertEqual(data['custom-invoke'], 42)

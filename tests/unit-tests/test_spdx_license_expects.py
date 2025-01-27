@@ -28,7 +28,7 @@ class TestSpdxLicenseExpects(RelengToolTestCase):
             sbom_file = os.path.join(engine.opts.out_dir, SBOM_FILE)
             self.assertTrue(os.path.exists(sbom_file))
 
-            with open(sbom_file, 'r') as f:
+            with open(sbom_file) as f:
                 data = json.load(f)
 
             self.assertIn('packages', data)

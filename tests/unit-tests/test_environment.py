@@ -18,7 +18,7 @@ class TestEnvironment(RelengToolTestCase):
             capture = os.path.join(engine.opts.target_dir, 'invoke-env.json')
             self.assertTrue(os.path.exists(capture))
 
-            with open(capture, 'r') as f:
+            with open(capture) as f:
                 data = json.load(f)
 
             # sanity check one entry

@@ -87,7 +87,7 @@ def cat(file, *args):
 
     try:
         for filename in files:
-            with open(filename, 'r') as f:
+            with open(filename) as f:
                 copyfileobj(f, sys.stdout)
     except OSError:
         return False

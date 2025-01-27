@@ -25,7 +25,7 @@ class TestPkgPipelinePackageEnvironment(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             # verify that provided environment keys which may be empty if not
@@ -49,7 +49,7 @@ class TestPkgPipelinePackageEnvironment(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             # verify that all expected environment variables are set
@@ -96,7 +96,7 @@ class TestPkgPipelinePackageEnvironment(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             # ensure that the internal environment flag is set when processing
@@ -119,7 +119,7 @@ class TestPkgPipelinePackageEnvironment(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             # sanity check that the base and build directories are different

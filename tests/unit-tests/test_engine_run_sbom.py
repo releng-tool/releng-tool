@@ -35,7 +35,7 @@ class TestEngineRunSbom(RelengToolTestCase):
             results = os.path.join(out_dir, 'generated-sbom.json')
             self.assertTrue(os.path.isfile(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 generated_sboms = json.load(f)
 
             self.assertEqual(len(generated_sboms), len(expected))

@@ -32,7 +32,7 @@ class TestScriptEnv(RelengToolTestCase):
             self.assertTrue(os.path.exists(nested_script))
 
             # verify build script path and parent path are configured
-            with open(pkg_start_file, 'r') as f:
+            with open(pkg_start_file) as f:
                 data = json.load(f)
                 self.assertIn('RELENG_SCRIPT', data)
                 self.assertEqual(data['RELENG_SCRIPT'], build_script)
@@ -40,7 +40,7 @@ class TestScriptEnv(RelengToolTestCase):
                 self.assertEqual(data['RELENG_SCRIPT_DIR'], pkg_dir)
 
             # check we using an include, the script/parent-dir updates
-            with open(nested_file, 'r') as f:
+            with open(nested_file) as f:
                 data = json.load(f)
                 self.assertIn('RELENG_SCRIPT', data)
                 self.assertEqual(data['RELENG_SCRIPT'], nested_script)
@@ -48,7 +48,7 @@ class TestScriptEnv(RelengToolTestCase):
                 self.assertEqual(data['RELENG_SCRIPT_DIR'], nested_dir)
 
             # after coming back from an include, ensure original values are set
-            with open(pkg_end_file, 'r') as f:
+            with open(pkg_end_file) as f:
                 data = json.load(f)
                 self.assertIn('RELENG_SCRIPT', data)
                 self.assertEqual(data['RELENG_SCRIPT'], build_script)

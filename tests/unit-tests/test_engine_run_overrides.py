@@ -19,7 +19,7 @@ class TestEngineRunOverrides(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-vars.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             # check that the revision has been overridden
@@ -37,7 +37,7 @@ class TestEngineRunOverrides(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-vars.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             # check that the revision has been overridden

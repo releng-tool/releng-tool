@@ -18,7 +18,7 @@ class TestEngineRunLicenses(RelengToolTestCase):
             results = os.path.join(out_dir, 'generated-licenses.json')
             self.assertTrue(os.path.isfile(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 generated_licenses = json.load(f)
 
             for entry in generated_licenses:

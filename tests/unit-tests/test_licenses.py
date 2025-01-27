@@ -41,7 +41,7 @@ class TestLicenses(RelengToolTestCase):
 
             # read the license file to ensure the header data is there
             license_file = os.path.join(opts.license_dir, 'licenses')
-            with open(license_file, 'r') as f:
+            with open(license_file) as f:
                 raw_data = f.read().strip()
 
             self.assertIn(HEADER_STR, raw_data)

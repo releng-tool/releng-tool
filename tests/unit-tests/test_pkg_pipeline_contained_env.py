@@ -31,7 +31,7 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
             results1 = os.path.join(test1_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results1))
 
-            with open(results1, 'r') as f:
+            with open(results1) as f:
                 data = json.load(f)
 
             pkg_keys = [
@@ -105,7 +105,7 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
             results2 = os.path.join(test2_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results2))
 
-            with open(results2, 'r') as f:
+            with open(results2) as f:
                 data = json.load(f)
 
             if 'NJOBS' in data:

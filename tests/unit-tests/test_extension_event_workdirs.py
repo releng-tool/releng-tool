@@ -29,7 +29,7 @@ class TestExtensionEventWorkingDirectories(RelengToolTestCase):
                 state = os.path.join(engine.opts.root_dir, k + '.json')
                 self.assertTrue(os.path.exists(state))
 
-                with open(state, 'r') as f:
+                with open(state) as f:
                     data = json.load(f)
                     self.assertTrue('wd' in data)
                     self.assertEqual(os.path.realpath(data['wd']),

@@ -47,7 +47,7 @@ class TestToolPatch(RelengToolTestCase):
             new_file = os.path.join(build_dir, 'new-file.txt')
             self.assertTrue(os.path.exists(new_file))
 
-            with open(new_file, 'r') as f:
+            with open(new_file) as f:
                 data = f.read()
                 self.assertTrue('Sample file.' in data)
 
@@ -79,7 +79,7 @@ class TestToolPatch(RelengToolTestCase):
             new_file = os.path.join(container_dir, 'new-file.txt')
             self.assertTrue(os.path.exists(new_file))
 
-            with open(new_file, 'r') as f:
+            with open(new_file) as f:
                 data = f.read()
                 self.assertTrue('Sample file.' in data)
 
@@ -92,6 +92,6 @@ class TestToolPatch(RelengToolTestCase):
             new_file = os.path.join(build_dir, 'new-file.txt')
             self.assertTrue(os.path.exists(new_file))
 
-            with open(new_file, 'r') as f:
+            with open(new_file) as f:
                 data = f.read()
                 self.assertTrue('Sample file.' in data)

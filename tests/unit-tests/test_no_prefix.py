@@ -18,7 +18,7 @@ class TestNoPrefix(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             pkg_keys = [
@@ -63,7 +63,7 @@ class TestNoPrefix(RelengToolTestCase):
             results = os.path.join(test_outdir, 'invoke-env.json')
             self.assertTrue(os.path.exists(results))
 
-            with open(results, 'r') as f:
+            with open(results) as f:
                 data = json.load(f)
 
             pkg_keys = [

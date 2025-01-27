@@ -116,7 +116,7 @@ class LicenseManager:
                             license_name, pkg_license_file)
 
                         if os.path.isfile(pkg_license_file):
-                            with open(pkg_license_file, 'r') as f:
+                            with open(pkg_license_file) as f:
                                 copyfileobj(f, dst)
                         else:
                             dst.write('(missing)\n')

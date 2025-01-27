@@ -376,12 +376,12 @@ class TestLocalSources(RelengToolTestCase):
         return uid
 
     def _assertEnvLocalSrcs(self, path, expected):
-        with open(path, 'r') as f:
+        with open(path) as f:
             data = json.load(f)
             self.assertEqual('PKG_LOCALSRCS' in data, expected)
 
     def _assertFileContains(self, path, contents):
-        with open(path, 'r') as f:
+        with open(path) as f:
             data = f.read().strip()
 
         msg = f'found `{data}` instead of `{contents}`'

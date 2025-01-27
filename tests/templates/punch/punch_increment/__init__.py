@@ -6,7 +6,7 @@ def increment_key(outdir, key):
     test_state_db = os.path.join(outdir, 'state.json')
 
     if os.path.exists(test_state_db):
-        with open(test_state_db, 'r') as f:
+        with open(test_state_db) as f:
             data = json.load(f)
     else:
         data = {}

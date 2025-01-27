@@ -52,7 +52,7 @@ class TestExtractArchive(unittest.TestCase):
         results = os.path.join(self.opts.work_dir, 'invoke-results.json')
         self.assertTrue(os.path.exists(results))
 
-        with open(results, 'r') as f:
+        with open(results) as f:
             data = json.load(f)
 
         self.assertTrue('args' in data)

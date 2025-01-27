@@ -147,7 +147,7 @@ class TestToolCvs(TestSiteToolBase):
         self._cvs_repo('rtag', tag, module)
 
     def _assertFileContains(self, path, contents):
-        with open(path, 'r') as f:
+        with open(path) as f:
             data = f.read().strip()
 
         msg = f'found `{data}` instead of `{contents}`'
