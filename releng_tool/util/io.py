@@ -593,7 +593,7 @@ def interim_working_dir(dir_):
     finally:
         try:
             os.chdir(owd)
-        except IOError:
+        except OSError:
             warn('unable to restore original working directory: ' + owd)
 
 
@@ -951,7 +951,7 @@ def prepend_shebang_interpreter(args):
                     return args
                 interp_args = interp.split(None, 1)[:2]
                 return interp_args + [arg.encode() for arg in args]
-    except (IOError, UnicodeError):
+    except (OSError, UnicodeError):
         pass
     return args
 

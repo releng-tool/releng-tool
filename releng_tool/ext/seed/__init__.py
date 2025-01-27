@@ -15,7 +15,7 @@ class RelengSeedExtension:
         try:
             with open(opts.cache_file, 'w'):
                 pass
-        except IOError:
+        except OSError:
             return None
         else:
             return opts.cache_file

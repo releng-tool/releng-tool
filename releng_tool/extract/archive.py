@@ -183,7 +183,7 @@ def extract(opts):
         debug('file not considered extractable: ' + cache_file)
         try:
             shutil.copy2(cache_file, work_dir)
-        except IOError as e:
+        except OSError as e:
             err('unable to copy over cache file\n'
                 '    {}\n'
                 ' (file: {})\n'

@@ -1528,7 +1528,7 @@ using deprecated dependency configuration for package: {}
                 with open(self._dvcs_cache_fname, 'rb') as f:
                     self._dvcs_cache = pickle.load(f)
                 debug('loaded dvcs cache database')
-            except IOError:
+            except OSError:
                 verbose('failed to load dvcs cache database (io error)')
             except ValueError:
                 verbose('failed to load dvcs cache database (pickle error)')
@@ -1553,7 +1553,7 @@ using deprecated dependency configuration for package: {}
                 pickle.dump(self._dvcs_cache, f,
                     protocol=2)  # 2 for py2/py3 support
             debug('saved dvcs cache')
-        except IOError:
+        except OSError:
             verbose('failed to save dvcs cache')
 
     def _register_conf(self, key, type_):

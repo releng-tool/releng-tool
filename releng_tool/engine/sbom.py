@@ -205,7 +205,7 @@ class SbomManager:
 
             if sbom_xml:
                 self._generate_xml(cache)
-        except IOError as e:
+        except OSError as e:
             err('unable to generate sbom output\n'
                 '    {}\n', e)
             return False

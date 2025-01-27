@@ -80,7 +80,7 @@ def load(hash_file):
     try:
         with open(hash_file, encoding='utf_8') as f:
             data = f.readlines()
-    except IOError as ex:
+    except OSError as ex:
         raise BadFileHashLoadError from ex
 
     # strip and split into chunks
@@ -231,7 +231,7 @@ library.
                     for hasher in hashers.values():
                         hasher.update(buf)
                     buf = f.read(HASH_READ_BLOCKSIZE)
-        except IOError:
+        except OSError:
             if not quiet:
                 if relaxed:
                     warn('missing expected file for verification: ' + asset)

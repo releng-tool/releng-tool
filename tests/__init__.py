@@ -37,13 +37,13 @@ def compare_contents(first, second):
     try:
         with open(first, encoding='utf_8') as file:
             content1 = strip_lines(file.readlines())
-    except IOError:
+    except OSError:
         return 'failed to load first file: ' + first
 
     try:
         with open(second, encoding='utf_8') as file:
             content2 = strip_lines(file.readlines())
-    except IOError:
+    except OSError:
         return 'failed to load second file: ' + second
 
     diff = unified_diff(content1, content2,

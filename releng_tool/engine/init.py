@@ -54,7 +54,7 @@ def initialize_sample(opts):
 ''')
 
             verbose('written sample file')
-        except IOError as e:
+        except OSError as e:
             err('unable to generate a sample.rt file')
             verbose(str(e))
             success = False
@@ -74,7 +74,7 @@ def initialize_sample(opts):
 ''')
 
         verbose('written .gitignore file')
-    except IOError as e:
+    except OSError as e:
         err('unable to generate a .gitignore file')
         verbose(str(e))
         success = False
@@ -93,7 +93,7 @@ packages = [
 ''')
 
         verbose('written releng file')
-    except IOError as e:
+    except OSError as e:
         err('unable to generate a releng-tool.rt file')
         verbose(str(e))
         success = False

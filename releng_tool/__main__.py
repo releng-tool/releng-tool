@@ -161,7 +161,7 @@ def main():
                     try:
                         with open('/proc/2/status') as f:
                             inside_container = 'kthreadd' not in f.read()
-                    except IOError:
+                    except OSError:
                         inside_container = True
 
                     if not inside_container:

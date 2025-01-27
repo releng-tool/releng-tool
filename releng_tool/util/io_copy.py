@@ -117,7 +117,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
                 success = True
         else:
             errmsg = f'source does not exist: {src}'
-    except (IOError, ShutilError) as e:
+    except (OSError, ShutilError) as e:
         errmsg = str(e)
 
     if not quiet and errmsg:

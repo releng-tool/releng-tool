@@ -129,7 +129,7 @@ class LicenseManager:
 
             self.generated.append(license_file)
             verbose('license file has been written')
-        except IOError as e:
+        except OSError as e:
             err('unable to populate license information\n'
                 '    {}', e)
             return False

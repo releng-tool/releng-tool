@@ -67,7 +67,7 @@ class RelengStats:
             with open(self.dat_file, 'rb') as f:
                 self.data = pickle.load(f)
             debug('loaded statistics')
-        except IOError:
+        except OSError:
             verbose('failed to load original statistics (io error)')
         except ValueError:
             verbose('failed to load original statistics (pickle error)')
@@ -98,7 +98,7 @@ class RelengStats:
             with open(self.dat_file, 'wb') as f:
                 pickle.dump(self.data, f, protocol=2)  # 2 for py2/py3 support
             debug('saved statistics' + desc)
-        except IOError:
+        except OSError:
             verbose('failed to save statistics' + desc)
 
     def track_duration_start(self, pkg, stage):
@@ -217,7 +217,7 @@ class RelengStats:
                         value = durations[pkg].get(category, 0)
                         f.write(',' + str(int(value)))
                     f.write('\n')
-        except IOError as e:
+        except OSError as e:
             verbose('failed to write duration statistics: {}', e)
 
         # duration statistics to plot (if available)
