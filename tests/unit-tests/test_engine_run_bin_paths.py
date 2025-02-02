@@ -48,4 +48,5 @@ class TestEngineRunBinPaths(RelengToolTestCase):
                 break
 
         self.assertIsNotNone(gbls)
+        self.assertIn('var', gbls)
         self.assertEqual(gbls['var'], name)
