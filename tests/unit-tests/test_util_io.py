@@ -74,10 +74,25 @@ class TestUtilIo(unittest.TestCase):
 
         # verify output
         with redirect_stdout() as stream:
-            test_cmd = [sys.executable, '-c', 'print("Hello")']
+            test_cmd = [
+                sys.executable,
+                '-c',
+                'import sys; print("Hello", file=sys.stderr); print("World")',
+            ]
             result = execute(test_cmd, critical=False)
             self.assertTrue(result)
-        self.assertEqual(stream.getvalue().strip(), 'Hello')
+        self.assertEqual(stream.getvalue().strip(), 'Hello\nWorld')
+
+        # verify output (no stderr)
+        with redirect_stdout() as stream:
+            test_cmd = [
+                sys.executable,
+                '-c',
+                'import sys; print("Hello", file=sys.stderr); print("World")',
+            ]
+            result = execute(test_cmd, critical=False, ignore_stderr=True)
+            self.assertTrue(result)
+        self.assertEqual(stream.getvalue().strip(), 'World')
 
         # verify variable expansion
         os.environ['VERIFY_EXPANSION'] = 'abc123'
