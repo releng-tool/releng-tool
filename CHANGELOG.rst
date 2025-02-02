@@ -3,6 +3,8 @@ Development
 
 - **(note)** Support for non-LTS version of Python have been dropped
 - Fixed handling of Git submodules using incorrect revisions
+- Support ignoring ``stderr`` output in execute calls
+- Support using Python's ``installer`` for setuptools/distutils Python packages
 
 1.4 (2025-01-19)
 ----------------
