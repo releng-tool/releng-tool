@@ -1,0 +1,4 @@
+TEST2_INSTALL_TYPE = 'host'
+TEST2_PYTHON_SETUP_TYPE = 'setuptools'
+TEST2_TYPE = 'python'
+TEST2_VCS_TYPE = 'local'

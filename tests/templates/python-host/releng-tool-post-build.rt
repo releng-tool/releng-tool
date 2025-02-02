@@ -1,0 +1,21 @@
+# verify we can run the installed binary (installer)
+releng_execute(['releng-tool-test-hello-module'])
+
+# verify we can run the installed binary (non-installer)
+releng_execute(['releng-tool-test-hello-module2'])
+
+# verify we can import the host-provided package (installer)
+try:
+    from hello_module import hello_world
+except:
+    raise
+else:
+    hello_world()
+
+# verify we can import the host-provided package (non-installer)
+try:
+    from hello_module2 import hello_world2
+except:
+    raise
+else:
+    hello_world2()

@@ -1,0 +1,13 @@
+[build-system]
+requires = [
+    'setuptools',
+]
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'hello_module2'
+description = 'hello world2 description'
+version = '1.0'
+
+[project.scripts]
+releng-tool-test-hello-module2 = 'hello_module2.__main__:main'
