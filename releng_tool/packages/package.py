@@ -80,6 +80,7 @@ class RelengPackage:
         (other - python)
         python_interpreter: python interpreter to invoke stages with
         python_setup_type: setup type to build/install with
+        python_use_installer: always use installer when installing packages
         (package type - scons)
         scons_noinstall: flag to disable the install stage for a scons project
     """
@@ -157,5 +158,6 @@ class RelengPackage:
         # (other - python)
         self.python_interpreter = None
         self.python_setup_type = None
+        self.python_use_installer = None
         # (package type - scons)
         self.scons_noinstall = None

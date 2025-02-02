@@ -145,6 +145,7 @@ class RelengPackageManager:
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR)
+        self._register_conf(Rpk.PYTHON_USE_INSTALLER, PkgKeyType.BOOL)
         self._register_conf(Rpk.REMOTE_CONFIG, PkgKeyType.BOOL)
         self._register_conf(Rpk.REMOTE_SCRIPTS, PkgKeyType.BOOL)
         self._register_conf(Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR)
@@ -1310,6 +1311,10 @@ using deprecated dependency configuration for package: {}
                         'pkg_name': pkg.name,
                         'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
                     })
+
+        # python use installer flag
+        if pkg.python_use_installer is None:
+            pkg.python_use_installer = self._fetch(Rpk.PYTHON_USE_INSTALLER)
 
         # ######################################################################
         # (package type - scons)

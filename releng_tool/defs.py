@@ -140,6 +140,7 @@ class Rpk(Enum):
         # (package type - python)
         PYTHON_INTERPRETER: python interpreter
         PYTHON_SETUP_TYPE: python setup type to build/install with
+        PYTHON_USE_INSTALLER: always use installer for installing packages
         # (package type - scons)
         SCONS_NOINSTALL: skip scons install stage
     """
@@ -204,6 +205,7 @@ class Rpk(Enum):
     # (package type - python)
     PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
     PYTHON_SETUP_TYPE = 'PYTHON_SETUP_TYPE'
+    PYTHON_USE_INSTALLER = 'PYTHON_USE_INSTALLER'
     # (package type - scons)
     SCONS_NOINSTALL = 'SCONS_NOINSTALL'
 

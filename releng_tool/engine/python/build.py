@@ -123,11 +123,16 @@ def build(opts):
         if not python_args:
             python_args.append('setup.py')
 
+        # if configured to user the installer, ensure we build a wheel package
+        # that the installer can use
+        use_installer = opts._python_use_installer
+        build_target = 'bdist_wheel' if use_installer else 'build'
+
         python_args.extend([
             # ignore user's pydistutils.cfg
             '--no-user-cfg',
             # invoke the build operation
-            'build',
+            build_target,
         ])
 
     # apply package-specific overrides

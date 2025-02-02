@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.defs import PythonSetupType
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PYTHON_EXTEND_ENV
@@ -48,6 +49,7 @@ def install(opts):
     }
 
     setup_type = opts._python_setup_type
+    use_installer = opts._python_use_installer
     python_args = []
     python_defs = {}
     python_opts = {}
@@ -71,19 +73,21 @@ def install(opts):
         PythonSetupType.POETRY,
     ]
 
-    if setup_type in installer_types:
-        container_dir = 'dist'
+    if setup_type in installer_types or use_installer:
+        container_dir = Path('dist')
         debug('search for whl package inside "{}": {}',
             container_dir, opts.name)
 
         # find the built wheel package under `dist/` and append it to the
         # installer
         whl_package = None
-        for file in os.listdir(container_dir):
-            if file.endswith('.whl'):
-                whl_package = file
-                debug('found a whl package for {}: {}', opts.name, whl_package)
-                break
+
+        if container_dir.is_dir():
+            for file in os.listdir(container_dir):
+                if file.endswith('.whl'):
+                    whl_package = file
+                    debug(f'found a whl package for {opts.name}: {whl_package}')
+                    break
 
         if not whl_package:
             err('failed to find generated wheel package: {}', opts.name)
