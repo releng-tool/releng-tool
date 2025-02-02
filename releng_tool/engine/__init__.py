@@ -223,7 +223,7 @@ class RelengEngine:
         # was configured). This is peformed later in the engine run call.
         self._prepare_script_environment(gbls, gaction, opts.pkg_action)
 
-        verbose('loading project configuration...')
+        verbose(f'loading project configuration: {conf_point}')
         settings = run_script(conf_point, gbls, subject='configuration')
         if not settings:
             raise RelengToolInvalidConfigurationScript
