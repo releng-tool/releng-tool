@@ -3,6 +3,9 @@ Development
 
 - **(note)** Support for non-LTS version of Python have been dropped
 - Fixed handling of Git submodules using incorrect revisions
+- Fixed issue where triggering a re-install on select Python packages would fail
+- Fixed issue where configured prefixes could be ignored in Python packages
+- Rework Python package processing to better support host tool integration
 - Support ignoring ``stderr`` output in execute calls
 - Support using Python's ``installer`` for setuptools/distutils Python packages
 
