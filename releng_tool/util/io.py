@@ -373,6 +373,10 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         SystemExit: if the execution operation fails with ``critical=True``
     """
 
+    # flexbile execute request
+    if isinstance(args, str):
+        args = [args]
+
     # append provided environment updates (if any) to the provided or existing
     # environment dictionary
     final_env = None
