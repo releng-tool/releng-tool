@@ -249,6 +249,8 @@ def execute_rv(command, *args, **kwargs):
     execute the provided command/arguments
 
     .. versionadded:: 0.8
+    .. versionchanged:: 1.13 Add support for ``expand``.
+    .. versionchanged:: 1.14 Add support for ``args_str``.
 
     Runs the command ``command`` with provided ``args`` until completion. A
     caller can adjust the working directory of the executed command by
