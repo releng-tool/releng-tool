@@ -315,7 +315,7 @@ class RelengToolTestCase(unittest.TestCase):
             result (optional): the test result to populate
         """
 
-        with self.env_wrap():
+        with self.env_wrap(), self.syspath_wrap():
             super().run(result)
 
     def dumpenv(self):
@@ -342,3 +342,19 @@ class RelengToolTestCase(unittest.TestCase):
         finally:
             os.environ.clear()
             os.environ.update(old_env)
+
+    @contextmanager
+    def syspath_wrap(self):
+        """
+        wrap the context's system path values
+
+        This context method provides a way restrict system path changes to the
+        context.
+        """
+
+        old_sys_path = list(sys.path)
+        try:
+            yield
+        finally:
+            sys.path.clear()
+            sys.path.extend(old_sys_path)
