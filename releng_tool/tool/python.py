@@ -11,12 +11,6 @@ import sys
 #: executable used to run python commands
 PYTHON_COMMAND = 'python'
 
-#: dictionary of environment entries append to the environment dictionary
-PYTHON_EXTEND_ENV = {
-    # prevent user site-packages from being included
-    'PYTHONNOUSERSITE': '1',
-}
-
 
 class PythonTool(RelengTool):
     """
@@ -113,4 +107,4 @@ class PythonTool(RelengTool):
         return os.path.join(base_path, 'site-packages')
 
 #: python host tool helper
-PYTHON = PythonTool(PYTHON_COMMAND, env_include=PYTHON_EXTEND_ENV)
+PYTHON = PythonTool(PYTHON_COMMAND)

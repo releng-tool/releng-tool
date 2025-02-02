@@ -4,7 +4,6 @@
 from pathlib import Path
 from releng_tool.defs import PythonSetupType
 from releng_tool.tool.python import PYTHON
-from releng_tool.tool.python import PYTHON_EXTEND_ENV
 from releng_tool.tool.python import PythonTool
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import prepare_arguments
@@ -31,8 +30,7 @@ def install(opts):
     """
 
     if opts._python_interpreter:
-        python_tool = PythonTool(opts._python_interpreter,
-            env_include=PYTHON_EXTEND_ENV)
+        python_tool = PythonTool(opts._python_interpreter)
     else:
         python_tool = PYTHON
 
