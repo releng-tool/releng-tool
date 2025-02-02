@@ -398,7 +398,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         # force any `None` arguments to empty strings, as a subprocess request
         # will not accept it; ideally, a call should not be passing a `None`
         # entry, but providing flexibility when it has been done
-        args = [arg if arg is not None else '' for arg in args]
+        args = [str(arg) if arg is not None else '' for arg in args]
 
         # expand any variables
         if expand:
