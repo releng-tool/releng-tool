@@ -157,12 +157,13 @@ def ensure_dir_exists(dir_, *args, **kwargs):
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         critical=True, poll=False, capture=None, expand=True,
-        args_str=False):
+        args_str=False, ignore_stderr=False):
     """
     execute the provided command/arguments
 
     .. versionchanged:: 1.13 Add support for ``expand``.
     .. versionchanged:: 1.14 Add support for ``args_str``.
+    .. versionchanged:: 2.0 Add support for ``ignore_stderr``.
 
     Runs the command described by ``args`` until completion. A caller can adjust
     the working directory of the executed command by explicitly setting the
@@ -220,6 +221,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         capture (optional): list to capture output into
         expand (optional): perform variable expansion on arguments
         args_str (optional): invoke arguments as a single string
+        ignore_stderr (optional): ignore any stderr output
 
     Returns:
         ``True`` if the execution has completed with no error; ``False`` if the
@@ -240,6 +242,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         poll=poll,
         quiet=quiet,
         args_str=args_str,
+        ignore_stderr=ignore_stderr,
     )
     return rv == 0
 
@@ -251,6 +254,7 @@ def execute_rv(command, *args, **kwargs):
     .. versionadded:: 0.8
     .. versionchanged:: 1.13 Add support for ``expand``.
     .. versionchanged:: 1.14 Add support for ``args_str``.
+    .. versionchanged:: 2.0 Add support for ``ignore_stderr``.
 
     Runs the command ``command`` with provided ``args`` until completion. A
     caller can adjust the working directory of the executed command by
@@ -285,6 +289,7 @@ def execute_rv(command, *args, **kwargs):
         **env_update: environment variables to append for the process
         **expand: perform variable expansion on arguments
         **args_str: invoke arguments as a single string
+        **ignore_stderr: ignore any stderr output
 
     Returns:
         the return code and output of the execution request
@@ -300,6 +305,7 @@ def execute_rv(command, *args, **kwargs):
         env_update=kwargs.get('env_update'),
         expand=kwargs.get('expand'),
         args_str=kwargs.get('args_str'),
+        ignore_stderr=kwargs.get('ignore_stderr'),
         quiet=True,
     )
     return rv, '\n'.join(out)
@@ -307,7 +313,7 @@ def execute_rv(command, *args, **kwargs):
 
 def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         critical=True, poll=False, capture=None, expand=True,
-        args_str=False):
+        args_str=False, ignore_stderr=False):
     """
     execute the provided command/arguments
 
@@ -358,6 +364,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         capture (optional): list to capture output into
         expand (optional): perform variable expansion on arguments
         args_str (optional): invoke arguments as a single string
+        ignore_stderr (optional): ignore any stderr output
 
     Returns:
         the return code of the execution request
@@ -429,12 +436,16 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
 
             run_args = ' '.join(args) if args_str else args
 
+            # allow a caller to ignore the stderr output, if they are only
+            # interested in the stdout stream
+            stderr = subprocess.DEVNULL if ignore_stderr else subprocess.STDOUT
+
             proc = subprocess.Popen(
                 run_args,
                 bufsize=bufsize,
                 cwd=cwd,
                 env=final_env,
-                stderr=subprocess.STDOUT,
+                stderr=stderr,
                 stdout=subprocess.PIPE,
                 universal_newlines=universal_newlines,
             )
