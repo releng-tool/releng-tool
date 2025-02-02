@@ -93,3 +93,37 @@ def env_value(key, value=__ENV_VALUE_DEFAULT):
         os.environ[key] = value
 
     return value
+
+
+def insert_env_path(key, path, env=None):
+    """
+    insert a path into a path-list environment variable
+
+    This call accepts an environment key and a provided path. The provided
+    path will be added (at the start) of the provided path list, only if the
+    path does not already exist.
+
+    Args:
+        key: the environment key
+        path: the path
+        env (optional): the environment to use
+
+    Returns:
+        whether a modification was made
+    """
+
+    append_path = True
+
+    target_env = env if env else os.environ
+
+    env_value = target_env.get(key, None)
+    if env_value:
+        append_path = path not in env_value.split(os.pathsep)
+
+        if append_path:
+            new_env_value = f'{path}{os.pathsep}{env_value}'
+            target_env[key] = new_env_value
+    else:
+        target_env[key] = path
+
+    return append_path

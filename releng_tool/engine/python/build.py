@@ -4,6 +4,7 @@
 from releng_tool.defs import PythonSetupType
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
+from releng_tool.util.env import insert_env_path
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
@@ -36,12 +37,20 @@ def build(opts):
         return False
 
     # default environment
-    path0 = python_tool.path(sysroot=opts.host_dir, prefix=opts.prefix)
-    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
-    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
-    env = {
-        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2,
-    }
+    env = {}
+
+    # if `PYTHONPATH` is already configured/setup, use it as a base
+    existing_pythonpath = os.getenv('PYTHONPATH')
+    if existing_pythonpath:
+        env['PYTHONPATH'] = existing_pythonpath
+
+    # include the python staging path into the set for this package's runtime
+    path1 = python_tool.path(opts.staging_dir, opts.prefix)
+    insert_env_path('PYTHONPATH', path1, env=env)
+
+    # include the python target path into the set for this package's runtime
+    path2 = python_tool.path(opts.target_dir, opts.prefix)
+    insert_env_path('PYTHONPATH', path2, env=env)
 
     setup_type = opts._python_setup_type
     python_args = []

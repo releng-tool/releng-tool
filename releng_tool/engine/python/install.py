@@ -5,10 +5,11 @@ from pathlib import Path
 from releng_tool.defs import PythonSetupType
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
+from releng_tool.util.env import insert_env_path
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
-from releng_tool.util.io_move import path_move
+from releng_tool.util.io_copy import path_copy
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
@@ -39,12 +40,20 @@ def install(opts):
         return False
 
     # default environment
-    path0 = python_tool.path(sysroot=opts.host_dir, prefix=opts.prefix)
-    path1 = python_tool.path(sysroot=opts.staging_dir, prefix=opts.prefix)
-    path2 = python_tool.path(sysroot=opts.target_dir, prefix=opts.prefix)
-    env = {
-        'PYTHONPATH': path0 + os.pathsep + path1 + os.pathsep + path2,
-    }
+    env = {}
+
+    # if `PYTHONPATH` is already configured/setup, use it as a base
+    existing_pythonpath = os.getenv('PYTHONPATH')
+    if existing_pythonpath:
+        env['PYTHONPATH'] = existing_pythonpath
+
+    # include the python staging path into the set for this package's runtime
+    path1 = python_tool.path(opts.staging_dir, opts.prefix)
+    insert_env_path('PYTHONPATH', path1, env=env)
+
+    # include the python target path into the set for this package's runtime
+    path2 = python_tool.path(opts.target_dir, opts.prefix)
+    insert_env_path('PYTHONPATH', path2, env=env)
 
     setup_type = opts._python_setup_type
     use_installer = opts._python_use_installer
@@ -58,10 +67,6 @@ def install(opts):
 
     # parameter used to configure where the package will be installed
     python_root_param = '--root'
-
-    # whether to install packages in an interim folder when trying to install
-    # for an empty prefix that the installer does not support
-    python_empty_prefix_tweak = False
 
     installer_types = [
         PythonSetupType.FLIT,
@@ -125,13 +130,6 @@ def install(opts):
             'install',
         ])
 
-        # do not apply a prefix if the value is "empty"/(root path) since a
-        # setup.py invoke may ignore provided `--root` value or `--prefix`
-        # value; apply if it is set; otherwise flag for manipulation
-        python_empty_prefix_tweak = True
-        if opts.prefix and opts.prefix != os.sep:
-            python_defs['--prefix'] = opts.prefix
-
         # avoid building pyc files for non-host packages
         if opts.install_type != 'host':
             python_opts['--no-compile'] = ''
@@ -156,40 +154,71 @@ def install(opts):
     python_args.extend(prepare_definitions(python_defs))
     python_args.extend(prepare_arguments(python_opts))
 
-    # install to target destination(s)
+    # handle package-override install
     #
     # If the package already defines a root path, use it over any other
     # configured destination directories.
     if python_root_param in python_opts:
-        if not python_tool.execute(python_args, env=env):
+        python_args_tmp = python_args
+        if '--prefix' not in python_opts:
+            python_args_tmp.extend(['--prefix', opts.prefix or '/'])
+
+        if not python_tool.execute(python_args_tmp, env=env):
             err('failed to install python project: {}', opts.name)
             return False
-    else:
-        # install to each destination
-        for dest_dir in opts.dest_dirs:
-            if python_empty_prefix_tweak and '--prefix' not in python_defs:
-                # for empty prefixes, we will need to install the package into
-                # an interim container folder (temporary prefix) of distutils
-                # will apply a default prefix for a desired empty prefix -- we
-                # set a temporary prefix, install the package in that folder,
-                # then move it into the desired destination folder
-                with generate_temp_dir() as tmp_dir:
-                    container = 'releng-tool-container'
 
-                    python_args_tmp = python_args
-                    python_args_tmp.extend(['--prefix', container])
+        return True
 
-                    rv = python_tool.execute(
-                        [*python_args_tmp, python_root_param, tmp_dir], env=env)
+    # install to target destination(s)
+    #
+    # We will trigger an installation into a interim folder and then copy the
+    # installed content into each configured destination directory.
+    #
+    #  1) The `installer` module will not support installing over existing
+    #     files by default (there is a `--overwrite-existing` argument; but at
+    #     the time of writing, it is not a stable release and we also went to
+    #     be flexible for older `installer` module versions for now). This can
+    #     be a pain for users re-installing packages, forcing a requirement to
+    #     clean then build the entire package set again.
+    #
+    #  2) We will manage the prefix path manually. For the most part, the
+    #     `--prefix` argument works as expected with the `installer` module,
+    #     but there are some inconsistencies for setuptools/distutils install;
+    #     especially between different platform states. For example, if an
+    #     "empty"/(root path) prefix is provided, a `setup.py` invoke may
+    #     ignore provided `--root` value or `--prefix` value.
 
-                    if rv:
-                        src_dir = os.path.join(tmp_dir, container) + os.sep
-                        path_move(src_dir, dest_dir)
-            else:
-                rv = python_tool.execute(
-                    [*python_args, python_root_param, dest_dir], env=env)
+    with generate_temp_dir() as tmp_dir:
+        python_args_tmp = python_args
 
-            if not rv:
+        # configure to use our interim prefix; unless a package states
+        # wants to do override
+        tmp_prefix = python_opts.get('--prefix', 'rt-tmp-prefix')
+        if '--prefix' not in python_opts:
+            python_args_tmp.extend(['--prefix', tmp_prefix])
+
+        # install the package into the interim path
+        rv = python_tool.execute(
+            [*python_args_tmp, python_root_param, tmp_dir], env=env)
+
+        if not rv:
+            err('failed to install python project: {}', opts.name)
+            return False
+
+        # determine the final prefix to be used in the destination directories
+        if opts.prefix and opts.prefix != '/':
+            install_prefix = opts.prefix.removeprefix('/')
+        else:
+            install_prefix = ''
+
+        # replicate into each destination
+        for cfg_dest_dir in opts.dest_dirs:
+            src_dir = Path(tmp_dir) / tmp_prefix
+            dest_dir = Path(cfg_dest_dir) / install_prefix
+
+            copied = path_copy(
+                f'{src_dir}{os.sep}', f'{dest_dir}', critical=False)
+            if not copied:
                 err('failed to install python project: {}', opts.name)
                 return False
 

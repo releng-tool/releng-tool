@@ -306,22 +306,7 @@ class RelengEngine:
         # register additional host directories, if python is installed;
         # although this does not cover a varity of use cases such as custom
         # interpreter overrides for specific Python package
-        if PYTHON.exists():
-            # include the host environment's site-package folder (if any)
-            debug('registering PYTHONPATH host path...')
-            host_python_path = PYTHON.path(
-                sysroot=opts.host_dir, prefix=opts.sysroot_prefix)
-            if 'PYTHONPATH' in os.environ:
-                host_python_path += os.pathsep + os.environ['PYTHONPATH']
-            os.environ['PYTHONPATH'] = host_python_path
-
-            # if Windows, also register a path to a common scripts folder for
-            # Python installation (if host-based Python packages are built)
-            if sys.platform == 'win32':
-                debug('registering Python-Scripts path...')
-                sdir = os.path.join(host_sysroot_dir, 'Scripts')
-                sys.path.insert(0, sdir)
-                os.environ['PATH'] = sdir + os.pathsep + os.environ['PATH']
+        PYTHON.register_host_python(opts.host_dir, opts.sysroot_prefix)
 
         # load and process packages
         try:
@@ -510,6 +495,14 @@ class RelengEngine:
 
                     if prv == PipelineResult.STOP:
                         return True
+
+                    # if this was a host targetted python package, attempt to
+                    # register additional host directories into the path to
+                    # allow them to be used by later packages/post-scripts;
+                    # only adds new paths if the package has a custom prefix
+                    if pkg.type == PackageType.PYTHON and \
+                            pkg.install_type == 'host':
+                        PYTHON.register_host_python(opts.host_dir, pkg.prefix)
 
                 if not is_action:
                     note('all packages have been processed')
