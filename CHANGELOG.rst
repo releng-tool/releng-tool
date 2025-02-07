@@ -3,11 +3,14 @@ Development
 
 - **(note)** Support for non-LTS version of Python have been dropped
 - Fixed handling of Git submodules using incorrect revisions
-- Fixed issue where triggering a re-install on select Python packages would fail
 - Fixed issue where configured prefixes could be ignored in Python packages
-- Rework Python package processing to better support host tool integration
+- Fixed issue where triggering a re-install on select Python packages would fail
+- Improved support for host tool integration with Python packages
+- Overhaul of Python package processing (requirement for ``installer`` module,
+  install scheme configuration via ``PYTHON_INSTALLER_SCHEME`` and launcher
+  configuration via ``PYTHON_INSTALLER_LAUNCHER_KIND``)
 - Support ignoring ``stderr`` output in execute calls
-- Support using Python's ``installer`` for setuptools/distutils Python packages
+- Use of Python's ``installer`` required for all Python packages
 
 1.4 (2025-01-19)
 ----------------
