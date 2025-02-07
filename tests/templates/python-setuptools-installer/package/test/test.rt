@@ -1,4 +1,0 @@
-TEST_TYPE = 'python'
-TEST_PYTHON_SETUP_TYPE = 'setuptools'
-TEST_PYTHON_USE_INSTALLER = True
-TEST_VCS_TYPE = 'local'

@@ -1,0 +1,7 @@
+# dump (to help with debugging)
+# print(f'HOST_DIR: {HOST_DIR}')
+# releng_ls(HOST_DIR, recursive=True)
+# print(releng_env('PATH'))
+
+# verify we can run dependency host tool in bootstrap stage
+releng_execute(['releng-tool-test-hello-module'])

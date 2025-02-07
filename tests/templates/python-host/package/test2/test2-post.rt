@@ -1,0 +1,2 @@
+# verify we can run dependency host tool in post stage
+releng_execute(['releng-tool-test-hello-module'])

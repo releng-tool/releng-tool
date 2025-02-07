@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
+from releng_tool.opts import DEFAULT_SYSROOT_PREFIX
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 
@@ -16,6 +18,21 @@ class PythonSiteToolBase(TestSiteToolBase):
 
     def prepare_global_action(self):
         return None  # use releng-tool default
+
+    def python_lib(self, dir_: str,
+            prefix: str = DEFAULT_SYSROOT_PREFIX) -> Path:
+        """
+        return the python library directory for a given path
+
+        This call returns the default releng-tool library path for Python
+        packages based on a configure target.
+
+        Args:
+            dir_: the directory to search
+            prefix (optional): the prefix of the install
+        """
+
+        return Path(dir_) / prefix.strip('/') / 'lib' / 'python'
 
     def find_site_packages(self, dir_):
         """
