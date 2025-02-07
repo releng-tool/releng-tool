@@ -6,10 +6,15 @@ Development
 - Fixed issue where configured prefixes could be ignored in Python packages
 - Fixed issue where triggering a re-install on select Python packages would fail
 - Improved support for host tool integration with Python packages
+- Introduce `--only-mirror` argument to force external package fetch with mirror
+- Introduce alternative hash-files for package development revisions
 - Overhaul of Python package processing (requirement for ``installer`` module,
   install scheme configuration via ``PYTHON_INSTALLER_SCHEME`` and launcher
   configuration via ``PYTHON_INSTALLER_LAUNCHER_KIND``)
+- Script function ``releng_ls`` now accepts a ``recursive`` argument
+- Support format hints in ``url_mirror``
 - Support ignoring ``stderr`` output in execute calls
+- Support maximum checks when using ``releng_require_version``
 - Use of Python's ``installer`` required for all Python packages
 
 1.4 (2025-01-19)
