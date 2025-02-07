@@ -20,7 +20,7 @@ class TestUrlMirror(RelengToolTestCase):
         os.environ.pop('all_proxy', None)
         os.environ.pop('http_proxy', None)
 
-    def test_url_mirror_fallback(self):
+    def test_url_mirror_fallback_default(self):
         with httpd_context() as httpd, httpd_context() as mirror_httpd:
             host, port = httpd.server_address
             site = f'http://{host}:{port}/test.txt'
@@ -56,6 +56,43 @@ class TestUrlMirror(RelengToolTestCase):
 
                 self.assertEqual(len(httpd.req), 1)
                 self.assertEqual(len(httpd.rsp), 0)
+                self.assertEqual(len(mirror_httpd.req), 1)
+                self.assertEqual(len(mirror_httpd.rsp), 0)
+
+    def test_url_mirror_fallback_restricted(self):
+        with httpd_context() as httpd, httpd_context() as mirror_httpd:
+            host, port = httpd.server_address
+            site = f'http://{host}:{port}/test.txt'
+
+            mirror_host, mirror_port = mirror_httpd.server_address
+            mirror = f'http://{mirror_host}:{mirror_port}/'
+
+            httpd.rsp.append((200, b'Sample text file.'))  # should not hit
+            mirror_httpd.rsp.append((404, None))
+
+            with prepare_testenv(template='minimal') as engine:
+                # force only-mirror mode
+                engine.opts.only_mirror = True
+
+                root_dir = Path(engine.opts.root_dir)
+
+                prj_def = root_dir / 'releng-tool.rt'
+                self.assertTrue(prj_def.is_file())
+
+                with prj_def.open('a') as f:
+                    f.write(f'url_mirror = "{mirror}"\n')
+
+                pkg_script = root_dir / 'package' / 'minimal' / 'minimal.rt'
+                self.assertTrue(pkg_script.is_file())
+
+                with pkg_script.open('a') as f:
+                    f.write(f'MINIMAL_SITE="{site}"\n')
+
+                rv = engine.run()
+                self.assertFalse(rv)
+
+                self.assertEqual(len(httpd.req), 0)
+                self.assertEqual(len(httpd.rsp), 1)
                 self.assertEqual(len(mirror_httpd.req), 1)
                 self.assertEqual(len(mirror_httpd.rsp), 0)
 
