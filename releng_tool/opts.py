@@ -79,6 +79,7 @@ class RelengEngineOptions:
         license_header: header content for a generated license file (if any)
         local_srcs: dictionary of local source configurations
         no_color_out: whether or not colored messages are shown
+        only_mirror: require mirror for external packages
         out_dir: directory container for all output data
         pkg_action: the specific package-action to perform (if any)
         prerequisites: list of required host tools (if any)
@@ -128,6 +129,7 @@ class RelengEngineOptions:
         self.license_header = None
         self.local_srcs = {}
         self.no_color_out = False
+        self.only_mirror = False
         self.out_dir = None
         self.pkg_action = None
         self.prerequisites = []
@@ -188,6 +190,7 @@ class RelengEngineOptions:
         self.force = args.force
         self.jobs = self.jobsconf = (args.jobs or 0)
         self.no_color_out = args.nocolorout
+        self.only_mirror = args.only_mirror
         self.verbose = args.verbose
 
         if args.development:

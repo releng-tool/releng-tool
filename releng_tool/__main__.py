@@ -48,6 +48,7 @@ def main():
         parser.add_argument('--jobs', '-j', default=0, type=type_nonnegativeint)
         parser.add_argument('--local-sources', '-L', nargs='?', action='append')
         parser.add_argument('--nocolorout', action='store_true')
+        parser.add_argument('--only-mirror', action='store_true')
         parser.add_argument('--out-dir')
         parser.add_argument('--relaxed-args', action='store_true')
         parser.add_argument('--root-dir')
@@ -376,6 +377,7 @@ def usage():
  -h, --help                Show this help
  --help-quirks             Show available quirks
  --nocolorout              Explicitly disable colorized output
+ --only-mirror             Only fetch external projects with configured mirror
  --relaxed-args            Permit the use of unknown arguments
  --quirk <value>           Inject in quirk into this run
  -V, --verbose             Show additional messages

@@ -244,13 +244,21 @@ file. Ensure that the package's public key has been registered into gpg.
                 )
                 new_site = url_mirror + cache_filename
                 if original_site != new_site:
-                    fetch_opts._mirror = True
-
                     fetch_opts.site = new_site
-                    fetched = fetcher(fetch_opts)
-                    fetch_opts.site = original_site
 
-                    fetch_opts._mirror = False
+                    # we have configured for a new url mirror and are about
+                    # to fetch; but if this is an external project and we
+                    # should only be fetching from the mirror, continue the
+                    # fetch operation as normal since we will only attempt a
+                    # single fetch event
+                    if pkg.is_internal or not engine.opts.only_mirror:
+                        fetch_opts._mirror = True
+                        fetched = fetcher(fetch_opts)
+                        fetch_opts._mirror = False
+
+                        fetch_opts.site = original_site
+                    else:
+                        verbose('only mirror fetch for package: {}', name)
 
             # perform the fetch request (if not already fetched)
             if not fetched:
