@@ -4,7 +4,6 @@
 from releng_tool.defs import PythonSetupType
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
-from releng_tool.util.env import insert_env_path
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
@@ -38,19 +37,6 @@ def build(opts):
 
     # default environment
     env = {}
-
-    # if `PYTHONPATH` is already configured/setup, use it as a base
-    existing_pythonpath = os.getenv('PYTHONPATH')
-    if existing_pythonpath:
-        env['PYTHONPATH'] = existing_pythonpath
-
-    # include the python staging path into the set for this package's runtime
-    path1 = python_tool.path(opts.staging_dir, opts.prefix)
-    insert_env_path('PYTHONPATH', path1, env=env)
-
-    # include the python target path into the set for this package's runtime
-    path2 = python_tool.path(opts.target_dir, opts.prefix)
-    insert_env_path('PYTHONPATH', path2, env=env)
 
     setup_type = opts._python_setup_type
     python_args = []
@@ -130,16 +116,11 @@ def build(opts):
         if not python_args:
             python_args.append('setup.py')
 
-        # if configured to user the installer, ensure we build a wheel package
-        # that the installer can use
-        use_installer = opts._python_use_installer
-        build_target = 'bdist_wheel' if use_installer else 'build'
-
         python_args.extend([
             # ignore user's pydistutils.cfg
             '--no-user-cfg',
             # invoke the build operation
-            build_target,
+            'bdist_wheel',
         ])
 
     # apply package-specific overrides

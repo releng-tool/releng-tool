@@ -78,9 +78,10 @@ class RelengPackage:
         (package type - meson)
         meson_noinstall: flag to disable the install stage for a meson project
         (other - python)
+        python_installer_launcher_kind: launcher kind to use for installation
+        python_installer_scheme: scheme to use for installation
         python_interpreter: python interpreter to invoke stages with
         python_setup_type: setup type to build/install with
-        python_use_installer: always use installer when installing packages
         (package type - scons)
         scons_noinstall: flag to disable the install stage for a scons project
     """
@@ -156,8 +157,9 @@ class RelengPackage:
         self.git_submodules = None
         self.git_verify_revision = None
         # (other - python)
+        self.python_installer_launcher_kind = None
+        self.python_installer_scheme = None
         self.python_interpreter = None
         self.python_setup_type = None
-        self.python_use_installer = None
         # (package type - scons)
         self.scons_noinstall = None

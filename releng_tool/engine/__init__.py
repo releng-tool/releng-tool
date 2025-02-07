@@ -37,6 +37,7 @@ from releng_tool.stats import RelengStats
 from releng_tool.support import releng_include
 from releng_tool.support import require_version
 from releng_tool.tool.python import PYTHON
+from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
@@ -303,11 +304,6 @@ class RelengEngine:
         sys.path.insert(0, host_bin_dir)
         os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
 
-        # register additional host directories, if python is installed;
-        # although this does not cover a varity of use cases such as custom
-        # interpreter overrides for specific Python package
-        PYTHON.register_host_python(opts.host_dir, opts.sysroot_prefix)
-
         # load and process packages
         try:
             pkgs = self.pkgman.load(pkg_names)
@@ -488,6 +484,16 @@ class RelengEngine:
                     if requested_preconfig and pkg.name != opts.target_action:
                         continue
 
+                    # if this was a host targeted python package, attempt to
+                    # register additional host directories into the path to
+                    # allow them to be used by later packages/post-scripts;
+                    # only adds new paths if the package has a custom prefix
+                    if pkg.type == PackageType.PYTHON and \
+                            pkg.install_type == 'host' and \
+                            not pkg.python_installer_scheme:
+                        pfx = NC(pkg.prefix, opts.sysroot_prefix)
+                        PYTHON.register_host_python(opts.host_dir, pfx)
+
                     verbose('processing package: {}', pkg.name)
                     prv = pipeline.process(pkg)
                     if prv == PipelineResult.ERROR:
@@ -495,14 +501,6 @@ class RelengEngine:
 
                     if prv == PipelineResult.STOP:
                         return True
-
-                    # if this was a host targetted python package, attempt to
-                    # register additional host directories into the path to
-                    # allow them to be used by later packages/post-scripts;
-                    # only adds new paths if the package has a custom prefix
-                    if pkg.type == PackageType.PYTHON and \
-                            pkg.install_type == 'host':
-                        PYTHON.register_host_python(opts.host_dir, pkg.prefix)
 
                 if not is_action:
                     note('all packages have been processed')

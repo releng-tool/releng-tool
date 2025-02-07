@@ -9,7 +9,6 @@ from releng_tool.util.log import debug
 from releng_tool.util.win32 import find_win32_python_interpreter
 import os
 import sys
-import sysconfig
 
 
 #: executable used to run python commands
@@ -67,57 +66,34 @@ class PythonTool(RelengTool):
 
         return RelengTool.detected[tool]
 
-    def path(self, sysroot, prefix):
+    def scheme(self, prefix):
         """
-        return a site-packages path value for the python interpreter
+        return releng-tool's python scheme
 
-        Returns the expected site-packages path for the Python interpreter
-        as if it was part of a provided system root path. This can be used
-        to help register expected paths into `sys.path` or environments based
-        on packages that get installed into a host tools sysroot.
+        Returns the standard scheme used for all releng-tool processed
+        Python packages. Using a fixed scheme ensures consistency across
+        various platform when producing a generic sysroot for a project to
+        manipulate on.
 
         Args:
-            sysroot: system root value to add
-            prefix: prefix value to add
+            prefix: prefix for each path
 
         Returns:
-            the site-packages path
+            the scheme dictionary
         """
 
-        if not self.exists():
-            return None
+        final_prefix = prefix.strip('/')
 
-        syscfg_paths = sysconfig.get_paths()
-
-        try:
-            # https://docs.python.org/3/library/sysconfig.html
-            # platlib)
-            # We use this solely to determine the "site-packages" type;
-            # where on Debian, this may vary.
-            #  /usr/local/lib/python3.11/dist-packages
-            #  C:\Program Files\Python312\Lib\site-packages
-            path_platlib = Path(syscfg_paths.get('platlib'))
-            # stdlib)
-            #  /usr/lib/python3.11
-            #  C:\Program Files\Python312\Lib
-            path_stdlib = Path(syscfg_paths.get('stdlib'))
-        except KeyError:
-            return None
-
-        # interpret the current prefix on the stdlib and replace it with the new one
-        if sys.platform == 'win32':
-            sys_prefix = path_stdlib.parent
-        else:
-            sys_prefix = path_stdlib.parent.parent
-
-        container = path_stdlib.relative_to(sys_prefix)
-        container = Path(prefix or '/') / container
-
-        # remove anchor before we append it ssto the provided sysroot
-        container = container.relative_to(container.anchor)
-
-        # build the configured host "site-packages" library path
-        return Path(sysroot) / container / path_platlib.name
+        return {
+            'data':        f'{final_prefix}',
+            'include':     f'{final_prefix}/include/python',
+            'platinclude': f'{final_prefix}/include/python',
+            'platlib':     f'{final_prefix}/lib/python',
+            'platstdlib':  f'{final_prefix}/lib/python',
+            'purelib':     f'{final_prefix}/lib/python',
+            'scripts':     f'{final_prefix}/bin',
+            'stdlib':      f'{final_prefix}/lib/python',
+        }
 
     def register_host_python(self, sysroot, prefix):
         """
@@ -133,25 +109,22 @@ class PythonTool(RelengTool):
         Args:
             sysroot: system root value to add
             prefix: prefix value to add
+            scheme: scheme used for the host
         """
 
-        host_pylib = self.path(sysroot, prefix)
+        syscfg_paths = self.scheme(prefix)
+        sysroot_path = Path(sysroot)
 
         # include the host environment's site-package folder into the
         # interpreter's system path to allow us to import modules; also
         # register the host path into PYTHONPATH, allowing other packages
         # and scripts to utilize host packages
-        self._register_path('PYTHONPATH', str(host_pylib), 'Python-library')
+        libpath = sysroot_path / syscfg_paths['purelib'].removeprefix('/')
+        self._register_path('PYTHONPATH', str(libpath), 'library')
 
-        # if Windows, also register a path to a common scripts folder for
-        # Python installation (if host-based Python packages are built)
-        if sys.platform == 'win32':
-            sdir = str(host_pylib.parent.parent / 'Scripts')
-            self._register_path('PATH', sdir, 'Python-Scripts')
-        # sanity check that the bin path is already registered; if not, add
-        else:
-            bdir = str(host_pylib.parent.parent.parent / 'bin')
-            self._register_path('PATH', bdir, 'Python-bin')
+        # also register a path to a common scripts folder
+        scripts_path = sysroot_path / syscfg_paths['scripts'].removeprefix('/')
+        self._register_path('PATH', str(scripts_path), 'scripts')
 
     def _register_path(self, key: str, path: str, desc: str) -> None:
         """
@@ -168,10 +141,11 @@ class PythonTool(RelengTool):
         """
 
         if path not in sys.path:
-            debug(f'registering {desc} host path: {path}')
             sys.path.insert(0, path)
+            debug(f'registered Python-{desc} host path: {path}')
 
-        insert_env_path(key, path)
+        if insert_env_path(key, path):
+            debug(f'registered Python-{desc} in PATH: {path}')
 
 
 #: python host tool helper

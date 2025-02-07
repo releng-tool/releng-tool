@@ -143,9 +143,11 @@ class RelengPackageManager:
         self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
         self._register_conf(Rpk.PATCH_SUBDIR, PkgKeyType.STR)
         self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
+        self._register_conf(Rpk.PYTHON_INSTALLER_LAUNCHER_KIND, PkgKeyType.STR)
+        self._register_conf(Rpk.PYTHON_INSTALLER_SCHEME,
+            PkgKeyType.DICT_STR_STR_OR_STR)
         self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
         self._register_conf(Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR)
-        self._register_conf(Rpk.PYTHON_USE_INSTALLER, PkgKeyType.BOOL)
         self._register_conf(Rpk.REMOTE_CONFIG, PkgKeyType.BOOL)
         self._register_conf(Rpk.REMOTE_SCRIPTS, PkgKeyType.BOOL)
         self._register_conf(Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR)
@@ -1224,6 +1226,9 @@ using deprecated dependency configuration for package: {}
         if pkg.install_defs is None:
             pkg.install_defs = self._fetch(Rpk.INSTALL_DEFS)
 
+            if pkg.install_defs and pkg.type == PackageType.PYTHON:
+                self._obsolete(pkg.name, Rpk.INSTALL_DEFS)
+
         # package-type installation environment options
         if pkg.install_env is None:
             pkg.install_env = dict(pkg_env) if pkg_env else None
@@ -1233,9 +1238,15 @@ using deprecated dependency configuration for package: {}
                     pkg.install_env = {}
                 pkg.install_env.update(install_env)
 
+            if install_env and pkg.type == PackageType.PYTHON:
+                self._obsolete(pkg.name, Rpk.INSTALL_ENV)
+
         # package-type installation options
         if pkg.install_opts is None:
             pkg.install_opts = self._fetch(Rpk.INSTALL_OPTS)
+
+            if pkg.install_opts and pkg.type == PackageType.PYTHON:
+                self._obsolete(pkg.name, Rpk.INSTALL_OPTS)
 
         # ######################################################################
         # (package type - autotools)
@@ -1295,6 +1306,16 @@ using deprecated dependency configuration for package: {}
         # (package type - python)
         # ######################################################################
 
+        # python installer launcher kind
+        if pkg.python_installer_launcher_kind is None:
+            pkg.python_installer_launcher_kind = \
+                self._fetch(Rpk.PYTHON_INSTALLER_LAUNCHER_KIND)
+
+        # python installer scheme flag
+        if pkg.python_installer_scheme is None:
+            pkg.python_installer_scheme = \
+                self._fetch(Rpk.PYTHON_INSTALLER_SCHEME)
+
         # python interpreter
         if pkg.python_interpreter is None:
             pkg.python_interpreter = self._fetch(Rpk.PYTHON_INTERPRETER)
@@ -1311,10 +1332,6 @@ using deprecated dependency configuration for package: {}
                         'pkg_name': pkg.name,
                         'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
                     })
-
-        # python use installer flag
-        if pkg.python_use_installer is None:
-            pkg.python_use_installer = self._fetch(Rpk.PYTHON_USE_INSTALLER)
 
         # ######################################################################
         # (package type - scons)
@@ -1591,3 +1608,16 @@ using deprecated dependency configuration for package: {}
         warn('''\
 using deprecated dependency configuration for package: {}
  (update '{}' to '{}')''', name, pkg_key(name, old_key), pkg_key(name, new_key))
+
+    def _obsolete(self, name, key):
+        """
+        warn about the use of an obsolete configuration key
+
+        Args:
+            name: the name of the package
+            key: the configuration key
+        """
+
+        warn('''\
+using obsolete configuration for package: {}
+ ('{}')''', name, pkg_key(name, key))

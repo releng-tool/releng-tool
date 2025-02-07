@@ -138,9 +138,10 @@ class Rpk(Enum):
         # (package type - meson)
         MESON_NOINSTALL: skip meson install stage
         # (package type - python)
+        PYTHON_INSTALLER_LAUNCHER_KIND: launcher kind to use for installation
+        PYTHON_INSTALLER_SCHEME: scheme to use for installation
         PYTHON_INTERPRETER: python interpreter
         PYTHON_SETUP_TYPE: python setup type to build/install with
-        PYTHON_USE_INSTALLER: always use installer for installing packages
         # (package type - scons)
         SCONS_NOINSTALL: skip scons install stage
     """
@@ -203,9 +204,10 @@ class Rpk(Enum):
     # (package type - meson)
     MESON_NOINSTALL = 'MESON_NOINSTALL'
     # (package type - python)
+    PYTHON_INSTALLER_LAUNCHER_KIND = 'PYTHON_INSTALLER_LAUNCHER_KIND'
+    PYTHON_INSTALLER_SCHEME = 'PYTHON_INSTALLER_SCHEME'
     PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
     PYTHON_SETUP_TYPE = 'PYTHON_SETUP_TYPE'
-    PYTHON_USE_INSTALLER = 'PYTHON_USE_INSTALLER'
     # (package type - scons)
     SCONS_NOINSTALL = 'SCONS_NOINSTALL'
 
