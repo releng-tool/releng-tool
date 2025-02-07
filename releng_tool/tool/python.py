@@ -12,7 +12,7 @@ import sys
 
 
 #: executable used to run python commands
-PYTHON_COMMAND = 'python'
+PYTHON_COMMAND = sys.executable if sys.executable else 'python'
 
 
 class PythonTool(RelengTool):
