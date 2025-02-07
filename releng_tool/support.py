@@ -79,11 +79,12 @@ def releng_script_envs(script, ctxenv):
                 os.environ.pop(k, None)
 
 
-def require_version(version, quiet=False, critical=True):
+def require_version(minver=None, **kwargs):
     """
     perform a required-version check
 
     .. versionadded:: 0.11
+    .. versionchanged:: 2.0 Support maximum version.
 
     Enables a caller to explicitly check for a required releng-tool version.
     Invoking this function with a dotted-separated ``version`` string, the
@@ -101,9 +102,10 @@ def require_version(version, quiet=False, critical=True):
         releng_require_version('1.0.0')
 
     Args:
-        version: dotted-separated version string
-        quiet (optional): whether or not to suppress output
-        critical (optional): whether or not to stop execution on failure
+        minver: dotted-separated minimum version string
+        **quiet (optional): whether or not to suppress output
+        **critical (optional): whether or not to stop execution on failure
+        **maxver (optional): dotted-separated maximum version string
 
     Returns:
         ``True`` if the version check is met; ``False`` if the version check
@@ -112,18 +114,21 @@ def require_version(version, quiet=False, critical=True):
     Raises:
         SystemExit: if the version check fails with ``critical=True``
     """
+    critical = kwargs.get('critical', True)
+    maxver = kwargs.get('maxver')
+    quiet = kwargs.get('quiet')
 
     rv = True
 
-    if version:
-        requested = version.split('.')
+    if minver:
+        requested = minver.split('.')
         current = releng_version.split('.')
         rv = requested <= current
         if not rv:
             if not quiet:
                 args = {
                     'detected': releng_version,
-                    'required': version,
+                    'required': minver,
                 }
                 err('''
 required releng-tool version check has failed
@@ -138,6 +143,35 @@ detected:
 Please update to a more recent version:
 
  https://docs.releng.io/install/
+'''.strip().format(**args))
+
+            if critical:
+                sys.exit(-1)
+
+    if maxver:
+        requested = maxver.split('.')
+        current = releng_version.split('.')
+        rv = requested >= current
+        print('requested', requested)
+        print('current', current)
+        print(requested >= current)
+        if not rv:
+            if not quiet:
+                args = {
+                    'detected': releng_version,
+                    'required': maxver,
+                }
+                err('''
+required releng-tool version check has failed
+
+This project has indicated a required maximum version of releng-tool to
+be installed on this system; however, an older version has been
+detected:
+
+    (required) {required}
+    (detected) {detected}
+
+This package needs to upgraded or releng-tool needs to be downgraded.
 '''.strip().format(**args))
 
             if critical:
