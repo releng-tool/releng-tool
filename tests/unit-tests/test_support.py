@@ -9,7 +9,7 @@ import unittest
 class TestSupport(unittest.TestCase):
     def test_support_require_version(self):
         # existing version should report has valid
-        result = require_version(releng_version)
+        result = require_version(minver=releng_version)
         self.assertTrue(result)
 
         # an old version should report has valid
@@ -23,3 +23,7 @@ class TestSupport(unittest.TestCase):
         # fail version check on a future version which does not exist (critical)
         with self.assertRaises(SystemExit):
             require_version('999999')
+
+        # ensure max older version triggers a failure
+        result = require_version(maxver='0.0', critical=False)
+        self.assertFalse(result)
