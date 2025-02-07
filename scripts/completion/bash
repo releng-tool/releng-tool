@@ -117,6 +117,7 @@ _releng_tool_module()
             '--images-dir'
             '--local-sources'
             '--nocolorout'
+            '--only-mirror'
             '--out-dir'
             '--root-dir'
             '--sbom-format'

@@ -30,6 +30,7 @@ function _releng_tool {
         {--jobs,-j}'[numbers of jobs to handle]: ' \
         '--local-sources[enables local-sources mode]' \
         '--nocolorout[explicitly disable colorized output]' \
+        '--only-mirror[only fetch external projects with configured mirror]' \
         '--out-dir[directory for output]: :_files' \
         '--root-dir[directory of the project to process]: :_files' \
         '--sbom-format[format to generate sbom files]: ' \
