@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from contextlib import contextmanager
+from pathlib import Path
 from releng_tool.support import releng_script_envs
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
@@ -655,11 +657,12 @@ def interpret_stem_extension(basename):
     return stem, ext
 
 
-def ls(dir_):
+def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> None:
     """
     list a directory's contents
 
     .. versionadded:: 0.11
+    .. versionchanged:: 2.0 Add support for ``recursive``.
 
     Attempts to read a directory for its contents and prints this information
     to the configured standard output stream.
@@ -672,6 +675,7 @@ def ls(dir_):
 
     Args:
         dir_: the directory
+        recursive (optional): recursive search of entries
 
     Returns:
         ``True`` if the directory could be read and its contents have been
@@ -679,19 +683,20 @@ def ls(dir_):
         be read
     """
 
-    if not os.path.isdir(dir_):
+    path = Path(dir_)
+    if not path.is_dir():
         return False
 
-    try:
-        for entry in os.listdir(dir_):
-            if os.path.isdir(os.path.join(dir_, entry)):
-                print(entry + '/')
-            else:
-                print(entry)
-    except OSError:
-        return False
+    if recursive:
+        for p in sorted(path.rglob('*')):
+            pf = os.sep if p.is_dir() else ''
+            print(f'{p.relative_to(path)}{pf}')
     else:
-        return True
+        for p in sorted(path.iterdir()):
+            pf = os.sep if p.is_dir() else ''
+            print(f'{p.relative_to(path)}{pf}')
+
+    return True
 
 
 def opt_file(file):
