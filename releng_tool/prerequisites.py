@@ -23,6 +23,7 @@ from releng_tool.tool.svn import SVN
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 from shutil import which
+import importlib.util
 
 
 class RelengPrerequisites:
@@ -123,6 +124,10 @@ class RelengPrerequisites:
                     self._verbose_exists(interpreter)
                 else:
                     missing.add(interpreter.tool)
+
+            has_installer = importlib.util.find_spec('installer')
+            if not has_installer:
+                missing.add('python-installer')
 
         if PackageType.SCONS in pkg_types:
             if SCONS.exists():
