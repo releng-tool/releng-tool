@@ -238,7 +238,11 @@ file. Ensure that the package's public key has been registered into gpg.
             fetched = None
             if engine.opts.url_mirror and pkg.vcs_type == VcsType.URL:
                 original_site = fetch_opts.site
-                new_site = engine.opts.url_mirror + cache_filename
+                url_mirror = engine.opts.url_mirror.format(
+                    name=pkg.name,
+                    version=pkg.version,
+                )
+                new_site = url_mirror + cache_filename
                 if original_site != new_site:
                     fetch_opts._mirror = True
 
