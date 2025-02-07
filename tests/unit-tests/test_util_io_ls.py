@@ -32,7 +32,7 @@ class TestUtilIoLs(unittest.TestCase):
         self.assertTrue(listed)
 
         entries = stream.getvalue().split('\n')
-        self.assertTrue('assets/' in entries)
+        self.assertTrue(f'assets{os.sep}' in entries)
         self.assertTrue('__init__.py' in entries)
         self.assertTrue('test_util_io_cat.py' in entries)
 
