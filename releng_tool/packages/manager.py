@@ -54,6 +54,7 @@ import pickle
 import posixpath
 import pprint
 import os
+import re
 import traceback
 import sys
 
@@ -967,6 +968,15 @@ using deprecated dependency configuration for package: {}
         pkg.strip_count = pkg_strip_count
         pkg.type = pkg_type
         pkg.vcs_type = pkg_vcs_type
+
+        # if this package has a development mode variant, check if see if
+        # there is an alternative hash file for this revision; if so, use it
+        # over the default one
+        if pkg.devmode:
+            devfix = re.sub('\\W', '_', pkg_revision)
+            alt_hash_file = f'{pkg.hash_file}-{devfix}'
+            if os.path.isfile(alt_hash_file):
+                pkg.hash_file = alt_hash_file
 
         self._apply_postinit_options(pkg)
 
