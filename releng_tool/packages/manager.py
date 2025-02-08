@@ -577,6 +577,11 @@ class RelengPackageManager:
             if 'releng.disable_local_site_warn' not in opts.quirks:
                 warn('package using local content: {}', name)
 
+        if pkg_vcs_type == VcsType.BZR:
+            warn('''\
+use of GNU Bazaar is deprecated; see package: {}
+ (consider switching to using Breezy; `brz`)''', name)
+
         # check if the detected vcs type needs a revision, and fail if we do
         # not have one
         if not pkg_revision and pkg_vcs_type in (
