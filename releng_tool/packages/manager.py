@@ -1348,6 +1348,10 @@ using deprecated dependency configuration for package: {}
                         'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
                     })
 
+        if pkg.python_setup_type == PythonSetupType.DISTUTILS:
+            warn('''\
+use of Python distutils is deprecated; see package: {}''', pkg.name)
+
         # ######################################################################
         # (package type - scons)
         # ######################################################################
