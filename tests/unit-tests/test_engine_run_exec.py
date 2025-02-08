@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.exceptions import RelengToolMissingExecCommand
+from releng_tool.tool.python import PYTHON
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 import json
@@ -21,7 +22,7 @@ class TestEngineExec(RelengToolTestCase):
     def test_engine_run_exec_failed(self):
         config = {
             'action': 'test-exec',
-            'action_exec': 'python fail.py',
+            'action_exec': f'{PYTHON.tool} fail.py',
         }
 
         with prepare_testenv(config=config, template='exec') as engine:
@@ -50,7 +51,7 @@ class TestEngineExec(RelengToolTestCase):
     def test_engine_run_exec_flag_set(self):
         config = {
             'action': 'test-exec',
-            'action_exec': 'python noop.py',
+            'action_exec': f'{PYTHON.tool} noop.py',
         }
 
         with prepare_testenv(config=config, template='exec-flag') as engine:
@@ -71,7 +72,7 @@ class TestEngineExec(RelengToolTestCase):
     def test_engine_run_exec_success_default_arg(self):
         config = {
             'action': 'test-exec',
-            'action_exec': 'python success.py',
+            'action_exec': f'{PYTHON.tool} success.py',
         }
 
         with prepare_testenv(config=config, template='exec') as engine:
@@ -87,7 +88,7 @@ class TestEngineExec(RelengToolTestCase):
         }
 
         args = [
-            'python',
+            PYTHON.tool,
             'success.py',
         ]
 

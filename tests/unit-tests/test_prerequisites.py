@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.prerequisites import RelengPrerequisites
+from releng_tool.tool.python import PYTHON
 import unittest
 
 
@@ -13,7 +14,7 @@ class TestPrerequisites(unittest.TestCase):
 
     def test_prerequisites_exist(self):
         # python should exist; since we rely on python
-        prerequisites = RelengPrerequisites([], ['python'])
+        prerequisites = RelengPrerequisites([], [PYTHON.tool])
         check = prerequisites.check()
         self.assertTrue(check)
 

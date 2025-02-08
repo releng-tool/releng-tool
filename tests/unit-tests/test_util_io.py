@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from collections import OrderedDict
+from releng_tool.tool.python import PYTHON
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension as ise
@@ -60,7 +61,7 @@ class TestUtilIo(unittest.TestCase):
         result = execute([], quiet=True, critical=False)
         self.assertFalse(result)
 
-        test_cmd = ['python', '-c', 'print("Hello")']
+        test_cmd = [PYTHON.tool, '-c', 'print("Hello")']
         result = execute(test_cmd, quiet=True, critical=False)
         self.assertTrue(result)
 

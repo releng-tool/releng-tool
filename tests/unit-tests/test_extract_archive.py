@@ -3,6 +3,7 @@
 
 from releng_tool.api import RelengExtractOptions
 from releng_tool.extract.archive import extract
+from releng_tool.tool.python import PYTHON
 from tests import prepare_workdir
 from tests.support import fetch_unittest_assets_dir
 import json
@@ -43,7 +44,7 @@ class TestExtractArchive(unittest.TestCase):
 
         override_cmd = os.path.join(self.assets_dir, 'test-invoke.py')
         self.opts._extract_override = {
-            'dat': 'python ' + override_cmd + ' {file} {dir}',
+            'dat': f'{PYTHON.tool} {override_cmd} {{file}} {{dir}}',
         }
 
         extracted = extract(self.opts)
