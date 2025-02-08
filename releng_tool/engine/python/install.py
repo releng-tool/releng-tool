@@ -47,7 +47,8 @@ def install(opts):
     # find the built wheel package under `dist/` and append it to the
     # installer
     whl_pkg = None
-    container_dir = Path('dist')
+    pkg_dist_path = opts._python_dist_path
+    container_dir = Path(pkg_dist_path if pkg_dist_path else 'dist')
     debug('search for whl package inside "{}": {}', container_dir, opts.name)
 
     if container_dir.is_dir():
@@ -56,6 +57,8 @@ def install(opts):
                 whl_pkg = container_dir / file
                 debug(f'found a whl package for {opts.name}: {whl_pkg.name}')
                 break
+    else:
+        debug(f'no dist folder ({container_dir}) found: {opts.name}')
 
     if not whl_pkg:
         err('failed to find generated wheel package: {}', opts.name)

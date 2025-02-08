@@ -138,6 +138,7 @@ class Rpk(Enum):
         # (package type - meson)
         MESON_NOINSTALL: skip meson install stage
         # (package type - python)
+        PYTHON_DIST_PATH: output folder for dist
         PYTHON_INSTALLER_LAUNCHER_KIND: launcher kind to use for installation
         PYTHON_INSTALLER_SCHEME: scheme to use for installation
         PYTHON_INTERPRETER: python interpreter
@@ -204,6 +205,7 @@ class Rpk(Enum):
     # (package type - meson)
     MESON_NOINSTALL = 'MESON_NOINSTALL'
     # (package type - python)
+    PYTHON_DIST_PATH = 'PYTHON_DIST_PATH'
     PYTHON_INSTALLER_LAUNCHER_KIND = 'PYTHON_INSTALLER_LAUNCHER_KIND'
     PYTHON_INSTALLER_SCHEME = 'PYTHON_INSTALLER_SCHEME'
     PYTHON_INTERPRETER = 'PYTHON_INTERPRETER'
