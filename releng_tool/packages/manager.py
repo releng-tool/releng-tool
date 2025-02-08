@@ -650,7 +650,7 @@ using deprecated dependency configuration for package: {}
             pkg_skip_remote_config = self._fetch(Rpk.SKIP_REMOTE_CONFIG)
             if pkg_skip_remote_config is not None:
                 pkg_remote_config = not pkg_skip_remote_config
-                self._deprecated(name,
+                self._deprecated_replaced(name,
                     Rpk.SKIP_REMOTE_CONFIG, Rpk.REMOTE_CONFIG)
 
         # remote scripts
@@ -659,7 +659,7 @@ using deprecated dependency configuration for package: {}
             pkg_skip_remote_scripts = self._fetch(Rpk.SKIP_REMOTE_SCRIPTS)
             if pkg_skip_remote_scripts is not None:
                 pkg_remote_scripts = not pkg_skip_remote_scripts
-                self._deprecated(name,
+                self._deprecated_replaced(name,
                     Rpk.SKIP_REMOTE_SCRIPTS, Rpk.REMOTE_SCRIPTS)
 
         # type
@@ -1605,9 +1605,9 @@ using deprecated dependency configuration for package: {}
         assert key not in self._key_types, f'key {key} is registered'
         self._key_types[key] = type_
 
-    def _deprecated(self, name, old_key, new_key):
+    def _deprecated_replaced(self, name, old_key, new_key):
         """
-        warn about the use of a deprecated configuration key
+        warn about the use of a replaced deprecated configuration key
 
         Args:
             name: the name of the package
