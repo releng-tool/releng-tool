@@ -1348,6 +1348,11 @@ using deprecated dependency configuration for package: {}
                         'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
                     })
 
+        if pkg.type == PackageType.PYTHON and not pkg.python_setup_type:
+            warn('''\
+missing setup type for Python package (required in future releases): {}
+ (add a '{}' entry)''', pkg.name, pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE))
+
         if pkg.python_setup_type == PythonSetupType.DISTUTILS:
             warn('''\
 use of Python distutils is deprecated; see package: {}''', pkg.name)
