@@ -11,16 +11,32 @@ import os
 import sys
 
 
-#: executable used to run python commands
-PYTHON_COMMAND = sys.executable if sys.executable else 'python'
-
-
 class PythonTool(RelengTool):
     """
     python host tool
 
     Provides addition helper methods for Python-based tool interaction.
     """
+
+    def __init__(self, tool=None):
+        """
+        a python tool
+
+        Provides a series of host tools methods to assist in validating the
+        existence of a host tool as well as the execution of a host tool.
+
+        Args:
+            tool (optional): the file name of the tool
+        """
+
+        if sys.executable:
+            default_python_command = sys.executable
+        elif sys.platform == 'win32':
+            default_python_command = 'python'
+        else:
+            default_python_command = 'python3'
+
+        super().__init__(tool if tool else default_python_command)
 
     def exists(self):
         """
@@ -149,4 +165,4 @@ class PythonTool(RelengTool):
 
 
 #: python host tool helper
-PYTHON = PythonTool(PYTHON_COMMAND)
+PYTHON = PythonTool()
