@@ -19,12 +19,6 @@ DEFAULT_BRANCH = 'test'
 
 
 class TestToolGit(TestSiteToolBase):
-    @classmethod
-    def setUpClass(cls):
-        # support skipping the test for a distribution build
-        if os.getenv('RELENG_SKIP_TEST_TOOL_GIT'):
-            raise unittest.SkipTest('skipped due to environment flag')
-
     def prepare_defconfig(self, defconfig):
         self.defconfig_add('VCS_TYPE', 'git')
 

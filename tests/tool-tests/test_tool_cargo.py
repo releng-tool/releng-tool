@@ -4,7 +4,7 @@
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 import sys
-import unittest
+
 
 # cmake template has two projects -- helpers to find the "test" package
 LIBPKG_DEFDIR = os.path.join('package', 'test')
@@ -14,9 +14,7 @@ LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'test.rt')
 class TestToolCargo(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):
-        # support skipping the test for a distribution build
-        if os.getenv('RELENG_SKIP_TEST_TOOL_CARGO'):
-            raise unittest.SkipTest('skipped due to environment flag')
+        super().setUpClass()
 
         cls.filename = 'hello_cargo'
         if sys.platform == 'win32':

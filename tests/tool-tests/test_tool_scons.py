@@ -4,15 +4,12 @@
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 import sys
-import unittest
 
 
 class TestToolScons(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):
-        # support skipping the test for a distribution build
-        if os.getenv('RELENG_SKIP_TEST_TOOL_SCONS'):
-            raise unittest.SkipTest('skipped due to environment flag')
+        super().setUpClass()
 
         cls.filename = 'main'
         if sys.platform == 'win32':

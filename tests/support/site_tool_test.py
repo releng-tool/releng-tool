@@ -9,6 +9,7 @@ from releng_tool.util.io import path_remove
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
+import unittest
 
 
 PKG_NAME = 'test'
@@ -31,6 +32,19 @@ class TestSiteToolBase(RelengToolTestCase):
     sanity check that releng-tool handles various package options and repository
     states.
     """
+
+    @classmethod
+    def setUpClass(cls):
+        # support skipping all tooling tests for a distribution build
+        if os.getenv('RELENG_SKIP_TEST_TOOLING'):
+            raise unittest.SkipTest('skipped due to environment flag')
+
+        # support skipping the test for a distribution build
+        test_type = cls.__qualname__.removeprefix('TestTool')
+        pf = ''.join(['_' + c if c.isupper() else c for c in test_type]).upper()
+        if os.getenv(f'RELENG_SKIP_TEST_TOOL{pf}'):
+            raise unittest.SkipTest('skipped due to specific environment flag')
+
 
     def run(self, result=None):
         """
