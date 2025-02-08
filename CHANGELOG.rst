@@ -9,8 +9,9 @@ Development
 - Introduce `--only-mirror` argument to force external package fetch with mirror
 - Introduce alternative hash-files for package development revisions
 - Overhaul of Python package processing with install scheme configuration
-  via ``PYTHON_INSTALLER_SCHEME`` and launcher configuration via
-  ``PYTHON_INSTALLER_LAUNCHER_KIND``
+  via ``LIBFOO_PYTHON_INSTALLER_SCHEME``, launcher configuration via
+  ``LIBFOO_PYTHON_INSTALLER_LAUNCHER_KIND`` and dist overrides via
+  ``LIBFOO_PYTHON_DIST_PATH``
 - Script function ``releng_ls`` now accepts a ``recursive`` argument
 - Support for GNU Bazaar sites is deprecated
 - Support for Python distutils packages is deprecated
