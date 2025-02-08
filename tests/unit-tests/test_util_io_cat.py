@@ -4,11 +4,11 @@
 from releng_tool.util.io import cat
 from tests import prepare_workdir
 from tests import redirect_stdout
+from tests import RelengToolTestCase
 import os
-import unittest
 
 
-class TestUtilIoCat(unittest.TestCase):
+class TestUtilIoCat(RelengToolTestCase):
     def test_utilio_cat_invalid_file(self):
         with redirect_stdout() as stream:
             with prepare_workdir() as test_dir:

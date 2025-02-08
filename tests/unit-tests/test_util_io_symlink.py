@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.util.io_symlink import symlink
+from tests import RelengToolTestCase
 from tests import new_test_wd
 import posixpath
 import os
@@ -9,7 +10,7 @@ import sys
 import unittest
 
 
-class TestUtilIoSymlink(unittest.TestCase):
+class TestUtilIoSymlink(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
         def assertLinkExists(cls, path, *args):

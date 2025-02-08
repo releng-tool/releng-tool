@@ -3,6 +3,7 @@
 
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
+from tests import RelengToolTestCase
 from tests import compare_contents
 from tests import new_test_wd
 from tests import prepare_workdir
@@ -14,7 +15,7 @@ import sys
 import unittest
 
 
-class TestUtilIoCopy(unittest.TestCase):
+class TestUtilIoCopy(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
         cls.assets_dir = fetch_unittest_assets_dir()

@@ -4,16 +4,16 @@
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.registry import RelengRegistry
+from tests import RelengToolTestCase
 from tests.support import fetch_unittest_assets_dir
 import os
-import unittest
 
 
 # base directory in the unit test folder which holds configurations
 CONFIGS_DIR = 'configs'
 
 
-class TestPkgConfigsBase(unittest.TestCase):
+class TestPkgConfigsBase(RelengToolTestCase):
     """
     package configuration unit test base
 

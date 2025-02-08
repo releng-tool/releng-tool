@@ -2,11 +2,11 @@
 # Copyright releng-tool
 
 from releng_tool.util.io import path_exists
+from tests import RelengToolTestCase
 from tests.support import fetch_unittest_assets_dir
-import unittest
 
 
-class TestUtilIoExists(unittest.TestCase):
+class TestUtilIoExists(RelengToolTestCase):
     def test_utilio_exists(self):
         assets_dir = fetch_unittest_assets_dir()
 

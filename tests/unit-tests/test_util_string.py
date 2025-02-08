@@ -3,11 +3,11 @@
 
 from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_strings
+from tests import RelengToolTestCase
 import os
-import unittest
 
 
-class TestUtilStrings(unittest.TestCase):
+class TestUtilStrings(RelengToolTestCase):
     def test_utilstr_expand(self):
         def assertExpand(self, obj, result, kv=None):
             self.assertEqual(expand(obj, kv), result)

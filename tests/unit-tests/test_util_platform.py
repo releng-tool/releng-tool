@@ -2,11 +2,11 @@
 # Copyright releng-tool
 
 from releng_tool.util.platform import platform_exit
+from tests import RelengToolTestCase
 from tests import redirect_stdout
-import unittest
 
 
-class TestUtilPlatform(unittest.TestCase):
+class TestUtilPlatform(RelengToolTestCase):
     def test_util_platform_error(self):
         with self.assertRaises(SystemExit) as cm:
             platform_exit(code=123)

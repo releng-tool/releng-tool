@@ -2,10 +2,10 @@
 # Copyright releng-tool
 
 from releng_tool.util.spdx import spdx_extract
-import unittest
+from tests import RelengToolTestCase
 
 
-class TestUtilSpdx(unittest.TestCase):
+class TestUtilSpdx(RelengToolTestCase):
     def test_utilspdx_extract(self):
         self.assertEqual(
             spdx_extract('BSD-3-Clause'),

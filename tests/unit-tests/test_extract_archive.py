@@ -4,15 +4,15 @@
 from releng_tool.api import RelengExtractOptions
 from releng_tool.extract.archive import extract
 from releng_tool.tool.python import PYTHON
+from tests import RelengToolTestCase
 from tests import prepare_workdir
 from tests.support import fetch_unittest_assets_dir
 import json
 import os
 import posixpath
-import unittest
 
 
-class TestExtractArchive(unittest.TestCase):
+class TestExtractArchive(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
         cls.assets_dir = fetch_unittest_assets_dir()

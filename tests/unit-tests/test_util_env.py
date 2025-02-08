@@ -3,12 +3,12 @@
 
 from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
+from tests import RelengToolTestCase
 import os
 import types
-import unittest
 
 
-class TestUtilEnv(unittest.TestCase):
+class TestUtilEnv(RelengToolTestCase):
     def test_utilenv_extendscriptenv(self):
         env = {'a': 1}
 
@@ -45,7 +45,7 @@ class TestUtilEnv(unittest.TestCase):
         self.assertEqual(len(env.keys()), 2)
 
         # imported modules are ignored
-        extend_script_env(env, {'test': globals()['unittest']})
+        extend_script_env(env, {'test': globals()['os']})
         self.assertEqual(len(env.keys()), 2)
 
     def test_utilenv_env_value(self):

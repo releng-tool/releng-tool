@@ -3,10 +3,10 @@
 
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.tool.python import PYTHON
-import unittest
+from tests import RelengToolTestCase
 
 
-class TestPrerequisites(unittest.TestCase):
+class TestPrerequisites(RelengToolTestCase):
     def test_prerequisites_exclude(self):
         prerequisites = RelengPrerequisites([], ['misc-command'])
         check = prerequisites.check(exclude=['misc-command'])

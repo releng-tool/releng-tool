@@ -2,10 +2,10 @@
 # Copyright releng-tool
 
 from releng_tool.util import nullish_coalescing
-import unittest
+from tests import RelengToolTestCase
 
 
-class TestUtilCommon(unittest.TestCase):
+class TestUtilCommon(RelengToolTestCase):
     def test_util_nullish_coalescing(self):
         # using provided value
         value = nullish_coalescing('test', None)

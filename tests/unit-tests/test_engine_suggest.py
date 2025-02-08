@@ -4,10 +4,10 @@
 from releng_tool.engine.suggest import suggest
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.defs import PkgAction
-import unittest
+from tests import RelengToolTestCase
 
 
-class TestEngineSuggest(unittest.TestCase):
+class TestEngineSuggest(RelengToolTestCase):
     def setUp(self):
         self.opts = RelengEngineOptions()
 

@@ -2,13 +2,13 @@
 # Copyright releng-tool
 
 from releng_tool.util.io import ls
+from tests import RelengToolTestCase
 from tests import prepare_workdir
 from tests import redirect_stdout
 import os
-import unittest
 
 
-class TestUtilIoLs(unittest.TestCase):
+class TestUtilIoLs(RelengToolTestCase):
     def test_utilio_ls_invalid_directory(self):
         with redirect_stdout() as stream:
             listed = ls(os.path.realpath(__file__))

@@ -2,7 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.util.sort import TopologicalSorter
-import unittest
+from tests import RelengToolTestCase
 
 
 class TestObj:
@@ -14,7 +14,7 @@ class TestObj:
         return self.name
 
 
-class TestUtilSort(unittest.TestCase):
+class TestUtilSort(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
         def sorting_method(obj):

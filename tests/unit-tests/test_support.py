@@ -3,10 +3,10 @@
 
 from releng_tool import __version__ as releng_version
 from releng_tool.support import require_version
-import unittest
+from tests import RelengToolTestCase
 
 
-class TestSupport(unittest.TestCase):
+class TestSupport(RelengToolTestCase):
     def test_support_require_version(self):
         # existing version should report has valid
         result = require_version(minver=releng_version)

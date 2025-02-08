@@ -3,14 +3,14 @@
 
 from releng_tool.api import RelengVersionNotSupportedException
 from releng_tool.registry import RelengRegistry
-import unittest
+from tests import RelengToolTestCase
 
 
 # base folder for test extensions
 EXT_PREFIX = 'tests.unit-tests.assets.extensions.'
 
 
-class TestExtensions(unittest.TestCase):
+class TestExtensions(RelengToolTestCase):
     def test_extension_events(self):
         registry = RelengRegistry()
         loaded = registry.load(EXT_PREFIX + 'events')

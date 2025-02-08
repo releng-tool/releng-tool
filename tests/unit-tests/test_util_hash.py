@@ -6,15 +6,15 @@ from releng_tool.util.hash import BadFileHashLoadError
 from releng_tool.util.hash import BadFormatHashLoadError
 from releng_tool.util.hash import load as load_hashes
 from releng_tool.util.hash import verify as verify_hashes
+from tests import RelengToolTestCase
 import os
-import unittest
 
 
 ASSETS_DIR = 'assets'
 SAMPLES_DIR = 'hash-samples'
 
 
-class TestUtilHash(unittest.TestCase):
+class TestUtilHash(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
         base_dir = os.path.dirname(os.path.realpath(__file__))

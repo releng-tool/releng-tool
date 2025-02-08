@@ -13,6 +13,7 @@ from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import run_script
 from releng_tool.util.io import touch
 from releng_tool.util.log import is_verbose
+from tests import RelengToolTestCase
 from tests import prepare_workdir
 from tests import redirect_stdout
 from tests.support import fetch_unittest_assets_dir
@@ -21,7 +22,7 @@ import sys
 import unittest
 
 
-class TestUtilIo(unittest.TestCase):
+class TestUtilIo(RelengToolTestCase):
     def test_utilio_ensuredirexists(self):
         with prepare_workdir() as work_dir:
             result = ensure_dir_exists(work_dir)

@@ -3,12 +3,12 @@
 
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import process_file_flag
+from tests import RelengToolTestCase
 from tests import prepare_workdir
 import os
-import unittest
 
 
-class TestFileFlags(unittest.TestCase):
+class TestFileFlags(RelengToolTestCase):
     def test_ff_create(self):
         with prepare_workdir() as work_dir:
             file = os.path.join(work_dir, 'flag-create')

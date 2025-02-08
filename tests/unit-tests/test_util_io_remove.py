@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.util.io import path_remove
+from tests import RelengToolTestCase
 from tests import mock_os_remove_permission_denied
 from tests import prepare_workdir
 import os
@@ -9,7 +10,7 @@ import sys
 import unittest
 
 
-class TestUtilIoRemove(unittest.TestCase):
+class TestUtilIoRemove(RelengToolTestCase):
     def test_utilio_remove_default(self):
         with prepare_workdir() as work_dir:
             def _(*args):

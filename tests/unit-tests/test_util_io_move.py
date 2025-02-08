@@ -3,12 +3,12 @@
 
 from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
+from tests import RelengToolTestCase
 from tests import prepare_workdir
 import os
-import unittest
 
 
-class TestUtilIoMove(unittest.TestCase):
+class TestUtilIoMove(RelengToolTestCase):
     def run(self, result=None):
         with prepare_workdir() as work_dir:
             self.work_dir = work_dir
