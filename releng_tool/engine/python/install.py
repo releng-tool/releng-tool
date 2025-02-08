@@ -2,6 +2,10 @@
 # Copyright releng-tool
 
 from collections import defaultdict
+from installer import install as installer_install
+from installer.destinations import SchemeDictionaryDestination
+from installer.sources import WheelFile
+from installer.utils import get_launcher_kind
 from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.exceptions import RelengToolException
@@ -15,15 +19,6 @@ import os
 import sys
 import sysconfig
 import traceback
-
-try:
-    from installer import install as installer_install
-    from installer.destinations import SchemeDictionaryDestination
-    from installer.sources import WheelFile
-    from installer.utils import get_launcher_kind
-    has_installer = True
-except ImportError:
-    has_installer = False
 
 
 def install(opts):
@@ -47,10 +42,6 @@ def install(opts):
 
     if not python_tool.exists():
         err('unable to install package; python is not installed')
-        return False
-
-    if not has_installer:
-        err('python-installer is not available/installed')
         return False
 
     # find the built wheel package under `dist/` and append it to the

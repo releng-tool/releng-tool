@@ -28,6 +28,9 @@ classifiers = [
     'Topic :: Software Development',
     'Topic :: Software Development :: Build Tools',
 ]
+dependencies = [
+    'installer',
+]
 dynamic = [
     'entry-points',
     'version',
