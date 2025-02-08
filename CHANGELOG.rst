@@ -8,10 +8,12 @@ Development
 - Improved support for host tool integration with Python packages
 - Introduce `--only-mirror` argument to force external package fetch with mirror
 - Introduce alternative hash-files for package development revisions
-- Overhaul of Python package processing (requirement for ``installer`` module,
-  install scheme configuration via ``PYTHON_INSTALLER_SCHEME`` and launcher
-  configuration via ``PYTHON_INSTALLER_LAUNCHER_KIND``)
+- Overhaul of Python package processing with install scheme configuration
+  via ``PYTHON_INSTALLER_SCHEME`` and launcher configuration via
+  ``PYTHON_INSTALLER_LAUNCHER_KIND``
 - Script function ``releng_ls`` now accepts a ``recursive`` argument
+- Support for GNU Bazaar sites is deprecated
+- Support for Python distutils packages is deprecated
 - Support format hints in ``url_mirror``
 - Support ignoring ``stderr`` output in execute calls
 - Support maximum checks when using ``releng_require_version``
