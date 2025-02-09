@@ -1,0 +1,2 @@
+TEST_SITE = 'file://example'
+TEST_VERSION = 'dummy'

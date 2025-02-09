@@ -1,0 +1,3 @@
+TEST_SITE = 'file://example'
+TEST_VCS_TYPE = 'url'
+TEST_VERSION = 'dummy'

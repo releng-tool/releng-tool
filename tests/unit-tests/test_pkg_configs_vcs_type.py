@@ -138,6 +138,18 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit6')
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
+    def test_pkgconfig_vcs_type_valid_file_deprecated(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-file-deprecated-url')
+        self.assertEqual(pkg.vcs_type, VcsType.FILE)
+
+    def test_pkgconfig_vcs_type_valid_file_explicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-file-explicit')
+        self.assertEqual(pkg.vcs_type, VcsType.FILE)
+
+    def test_pkgconfig_vcs_type_valid_file_implicit(self):
+        pkg, _, _ = self.LOAD('vcs-type-valid-file-implicit')
+        self.assertEqual(pkg.vcs_type, VcsType.FILE)
+
     def test_pkgconfig_vcs_type_valid_git_explicit(self):
         pkg, _, _ = self.LOAD('vcs-type-valid-git-explicit')
         self.assertEqual(pkg.vcs_type, VcsType.GIT)
