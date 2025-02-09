@@ -73,8 +73,8 @@ def fetch(opts):
                     f.write(buf)
     except Exception as e:
         log_func = warn if is_mirror_attempt else err
-        log_func('failed to download resource\n'
-            '    {}', e)
+        log_func('failed to download resource: {}\n'
+            '    {}', site, e)
         return None
 
     # cleanup any download progress prints
