@@ -373,3 +373,23 @@ class TestSiteUrl(RelengToolTestCase):
 
                 rv = engine.run()
                 self.assertFalse(rv)
+
+    def test_site_url_fetch_retry(self):
+        with httpd_context() as httpd:
+            host, port = httpd.server_address
+            site = f'http://{host}:{port}/test.txt'
+
+            httpd.rsp.append((503, None))  # first attempt fails
+            httpd.rsp.append((200, b'Sample text file.'))  # retry attempt
+
+            with prepare_testenv(template='minimal') as engine:
+                root_dir = engine.opts.root_dir
+                pkg_script = os.path.join(root_dir,
+                    'package', 'minimal', 'minimal.rt')
+                self.assertTrue(os.path.exists(pkg_script))
+
+                with open(pkg_script, 'a') as f:
+                    f.write(f'MINIMAL_SITE="{site}"\n')
+
+                rv = engine.run()
+                self.assertTrue(rv)

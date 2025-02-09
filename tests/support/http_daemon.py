@@ -43,7 +43,7 @@ class MockServerRequestHandler(BaseHTTPRequestHandler):
         try:
             code, data = self.server.rsp.pop(0)
         except IndexError:
-            code = 500
+            code = 501
             data = None
 
         self.send_response(code)
