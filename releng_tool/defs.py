@@ -412,19 +412,21 @@ class VcsType(Enum):
         CVS: concurrent versions system
         GIT: git
         HG: mercurial
+        FILE: file
         LOCAL: no version control (local interim-development package)
         NONE: no version control (placeholder package)
         P4: perforce
         RSYNC: rsync
         SCP: secure copy
         SVN: subversion
-        URL: url (http, https, ftp, file, etc.)
+        URL: url (http, https, ftp, etc.)
     """
     BRZ = 'brz'
     BZR = 'bzr'
     CVS = 'cvs'
     GIT = 'git'
     HG = 'hg'
+    FILE = 'file'
     LOCAL = 'local'
     NONE = 'none'
     PERFORCE = 'perforce'

@@ -50,13 +50,13 @@ from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from releng_tool.util.string import interpret_zero_to_one_strings
 from urllib.parse import urlparse
+import os
 import pickle
 import posixpath
 import pprint
-import os
 import re
-import traceback
 import sys
+import traceback
 
 
 # special value for a "default" entry in a dictionary
@@ -490,7 +490,7 @@ class RelengPackageManager:
         # being provided an unescaped path string
         if sys.platform == 'win32' and \
                 pkg_site and pkg_site.startswith('file://'):
-            pkg_site = pkg_site[len('file://'):]
+            pkg_site = pkg_site.removeprefix('file://')
             abs_site = os.path.isabs(pkg_site)
             pkg_site = pkg_site.replace(os.sep, posixpath.sep)
             if abs_site:
@@ -544,6 +544,14 @@ class RelengPackageManager:
                         ':pserver:',
                         )):
                     pkg_vcs_type = VcsType.CVS
+                elif site_lc.startswith('file://'):
+                    pkg_vcs_type = VcsType.FILE
+                elif site_lc.startswith('file+'):
+                    pkg_site = pkg_site.removeprefix('file+')
+                    pkg_vcs_type = VcsType.FILE
+                elif site_lc.startswith('file+'):
+                    pkg_site = pkg_site[5:]
+                    pkg_vcs_type = VcsType.FILE
                 elif site_lc.startswith('git+'):
                     pkg_site = pkg_site[4:]
                     pkg_vcs_type = VcsType.GIT
@@ -582,6 +590,14 @@ class RelengPackageManager:
             warn('''\
 use of GNU Bazaar is deprecated; see package: {}
  (consider switching to using Breezy; `brz`)''', name)
+
+        if pkg_vcs_type == VcsType.URL and pkg_site and \
+                pkg_site.startswith('file://'):
+            pkg_vcs_type = VcsType.FILE
+            warn('''\
+explicit url vcs-type with files is deprecated: {}
+ (update '{}' to 'file')\
+''', name, pkg_key(name, Rpk.VCS_TYPE))
 
         # check if the detected vcs type needs a revision, and fail if we do
         # not have one
@@ -728,6 +744,7 @@ using deprecated dependency configuration for package: {}
                 VcsType.BRZ,
                 VcsType.BZR,
                 VcsType.CVS,
+                VcsType.FILE,
                 VcsType.GIT,
                 VcsType.HG,
                 VcsType.PERFORCE,

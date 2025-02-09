@@ -6,6 +6,7 @@ from releng_tool.defs import VcsType
 from releng_tool.fetch.brz import fetch as fetch_brz
 from releng_tool.fetch.bzr import fetch as fetch_bzr
 from releng_tool.fetch.cvs import fetch as fetch_cvs
+from releng_tool.fetch.file import fetch as fetch_file
 from releng_tool.fetch.git import fetch as fetch_git
 from releng_tool.fetch.mercurial import fetch as fetch_mercurial
 from releng_tool.fetch.perforce import fetch as fetch_perforce
@@ -56,7 +57,7 @@ def stage(engine, pkg, ignore_cache, extra_opts):
     # if the vcs-type is archive-based, flag that hash checks are needed
     perform_file_asc_check = False
     perform_file_hash_check = False
-    if pkg.vcs_type == VcsType.URL:
+    if pkg.vcs_type in (VcsType.FILE, VcsType.URL):
         perform_file_asc_check = os.path.exists(pkg.asc_file)
         perform_file_hash_check = True
 
@@ -73,6 +74,8 @@ def stage(engine, pkg, ignore_cache, extra_opts):
         fetcher = fetch_bzr
     elif pkg.vcs_type == VcsType.CVS:
         fetcher = fetch_cvs
+    elif pkg.vcs_type == VcsType.FILE:
+        fetcher = fetch_file
     elif pkg.vcs_type == VcsType.GIT:
         fetcher = fetch_git
     elif pkg.vcs_type == VcsType.HG:
