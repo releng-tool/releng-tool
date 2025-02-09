@@ -54,8 +54,10 @@ name = 'releng_tool'
 
 [tool.hatch.build.targets.sdist]
 include = [
-    'releng_tool',
+    'Documentation',
     'releng-tool',
+    'releng_tool',
+    'scripts/completion',
     'tests',
 ]
 
