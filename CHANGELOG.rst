@@ -1,5 +1,5 @@
-Development
------------
+2.0 (2025-02-09)
+----------------
 
 - **(note)** Support for non-LTS version of Python have been dropped
 - Fixed handling of Git submodules using incorrect revisions
