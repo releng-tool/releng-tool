@@ -42,9 +42,9 @@ This tool can be installed using [pip][pip] or [pipx][pipx]:
 ```shell
 pipx install releng-tool
  (or)
-pip install releng-tool
+pip install -U releng-tool
  (or)
-python -m pip install releng-tool
+python -m pip install -U releng-tool
 ```
 
 For Arch Linux users, this package is also available on AUR:
