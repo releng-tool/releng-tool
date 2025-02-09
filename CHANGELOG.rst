@@ -17,6 +17,8 @@ Development
 - Support URL fetch retries on transient errors
 - Support for GNU Bazaar sites is deprecated
 - Support for Python distutils packages is deprecated
+- Support for ``override_revisions`` is deprecated
+- Support for ``override_sites`` is deprecated
 - Support format hints in ``url_mirror``
 - Support ignoring ``stderr`` output in execute calls
 - Support maximum checks when using ``releng_require_version``
