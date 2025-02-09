@@ -6,7 +6,6 @@ from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import warn
 from urllib.request import urlopen
-import contextlib
 import os
 import sys
 
@@ -43,7 +42,7 @@ def fetch(opts):
 
     log('requesting: ' + site)
     try:
-        with contextlib.closing(urlopen(site, context=urlopen_context)) as rsp:
+        with urlopen(site, context=urlopen_context) as rsp:
             total = 0
             total_str = ''
             if 'content-length' in rsp.headers:
