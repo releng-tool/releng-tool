@@ -14,6 +14,7 @@ Development
   ``LIBFOO_PYTHON_INSTALLER_LAUNCHER_KIND`` and dist overrides via
   ``LIBFOO_PYTHON_DIST_PATH``
 - Script function ``releng_ls`` now accepts a ``recursive`` argument
+- Support URL fetch retries on transient errors
 - Support for GNU Bazaar sites is deprecated
 - Support for Python distutils packages is deprecated
 - Support format hints in ``url_mirror``
