@@ -61,14 +61,21 @@ releng-tool --help
 python -m releng-tool --help
 ```
 
-## Examples
+## Demonstration
 
-Examples of releng-tool projects can be found in
-[releng-tool's examples repository][releng-tool-examples].
+Users can follow the tutorials found in the documentation:
+
+> releng-tool — Tutorials \
+> https://docs.releng.io/getting-started/tutorials/
+
+Or may inspect various test examples demonstrating various capabilities:
+
+> releng-tool — Examples Repository \
+> https://github.com/releng-tool/releng-tool-examples
+
 
 [git]: https://git-scm.com/
 [pip]: https://pip.pypa.io/
 [pipx]: https://pipx.pypa.io/
 [python]: https://www.python.org/
 [releng-tool-doc]: https://docs.releng.io/
-[releng-tool-examples]: https://github.com/releng-tool/releng-tool-examples
