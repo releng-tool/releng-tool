@@ -4,6 +4,7 @@ Development
 - **(note)** Support for non-LTS version of Python have been dropped
 - Fixed handling of Git submodules using incorrect revisions
 - Fixed issue where configured prefixes could be ignored in Python packages
+- Fixed issue where file URIs sites may prevent other URL sites from fetching
 - Fixed issue where triggering a re-install on select Python packages would fail
 - Improved support for host tool integration with Python packages
 - Introduce `--only-mirror` argument to force external package fetch with mirror
