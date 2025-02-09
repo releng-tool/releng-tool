@@ -7,7 +7,6 @@ from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 import os
-import sys
 
 
 def fetch(opts):
@@ -64,7 +63,6 @@ def fetch_default(opts):
             return cache_dir
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     # if we have no cache for this repository, build one
     if not os.path.isdir(cache_dir) or len(os.listdir(cache_dir)) == 0:

@@ -18,7 +18,6 @@ from releng_tool.util.io import interim_working_dir
 from releng_tool.util.log import err
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
-import sys
 
 
 def stage(engine, pkg, script_env):
@@ -56,7 +55,6 @@ def stage(engine, pkg, script_env):
         return True
 
     note('installing {}...', pkg.name)
-    sys.stdout.flush()
 
     if pkg.build_subdir:
         build_dir = pkg.build_subdir

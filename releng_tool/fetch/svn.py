@@ -7,7 +7,6 @@ from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 import os
-import sys
 import tarfile
 
 
@@ -58,7 +57,6 @@ def fetch_default(opts):
     work_dir = opts.work_dir
 
     note(f'fetching {name}...')
-    sys.stdout.flush()
 
     log('checking out sources')
     if not SVN.execute(['checkout', '-r', revision, site, work_dir],

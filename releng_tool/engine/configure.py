@@ -15,7 +15,6 @@ from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.log import err
 from releng_tool.util.log import note
-import sys
 
 
 def stage(engine, pkg, script_env):
@@ -35,7 +34,6 @@ def stage(engine, pkg, script_env):
     """
 
     note('configuring {}...', pkg.name)
-    sys.stdout.flush()
 
     # ignore configuration step for types which do not have one
     ignored_types = [

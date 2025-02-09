@@ -6,7 +6,6 @@ from releng_tool.tool.cargo import CARGO
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
-import sys
 
 
 def stage(engine, pkg):  # noqa: ARG001
@@ -30,7 +29,6 @@ def stage(engine, pkg):  # noqa: ARG001
     # for cargo projects, vendor fetch any dependencies
     if pkg.type == PackageType.CARGO:
         note('fetching (post; cargo) {}...', name)
-        sys.stdout.flush()
 
         if not CARGO.exists():
             err('unable to post-fetch package; cargo is not installed')

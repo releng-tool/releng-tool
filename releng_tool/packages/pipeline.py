@@ -508,7 +508,6 @@ class RelengPackagePipeline:
         if isinstance(exec_cmd, list):
             exec_cmd = cmd_args_to_str(exec_cmd)
         debug('(cmd) {}', exec_cmd)
-        sys.stdout.flush()
 
         proc = subprocess.Popen(
             exec_cmd,

@@ -9,7 +9,6 @@ from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 import os
-import sys
 import tarfile
 
 
@@ -63,7 +62,6 @@ def fetch_default(opts):
     cache_stem, __ = interpret_stem_extension(cache_basename)
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     cvsroot, module = _extract_site(site)
     if not cvsroot or not module:

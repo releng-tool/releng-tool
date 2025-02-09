@@ -9,7 +9,6 @@ from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 import os
-import sys
 
 try:
     CERTIFI_MISSING_WARNED = False
@@ -43,7 +42,6 @@ def fetch(opts):
         return None
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
     if not ensure_dir_exists(cache_dir):

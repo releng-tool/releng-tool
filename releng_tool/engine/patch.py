@@ -10,7 +10,7 @@ from releng_tool.util.log import err
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 import os
-import sys
+
 
 #: filename of the script to execute custom patching operations (if any)
 PATCH_SCRIPT = 'patch'
@@ -46,7 +46,6 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
         return True
 
     verbose('patching {} (pre-check)...', pkg.name)
-    sys.stdout.flush()
 
     # check if we have a patch script override to process (instead of
     # patch files)
@@ -66,7 +65,6 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
             return True
 
     note('patching {}...', pkg.name)
-    sys.stdout.flush()
 
     if pkg.patch_subdir:
         patch_dir = pkg.patch_subdir

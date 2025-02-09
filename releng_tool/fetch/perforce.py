@@ -7,7 +7,6 @@ from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 import os
-import sys
 import tarfile
 
 
@@ -37,7 +36,6 @@ def fetch(opts):
         return None
 
     note(f'fetching {name}...')
-    sys.stdout.flush()
 
     p4env = {}
 

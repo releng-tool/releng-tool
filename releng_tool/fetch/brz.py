@@ -7,7 +7,6 @@ from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 import os
-import sys
 
 
 def fetch(opts):
@@ -35,7 +34,6 @@ def fetch(opts):
         return None
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
     if not ensure_dir_exists(cache_dir):

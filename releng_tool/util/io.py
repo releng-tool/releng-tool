@@ -426,7 +426,6 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                 for k, v in sorted(final_env.items()):
                     env_str += f'\n  {k}: {v}'
                 debug(env_str)
-            sys.stdout.flush()
 
         try:
             # check if this execution should poll (for carriage returns and new

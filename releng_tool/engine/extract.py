@@ -19,7 +19,6 @@ from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 import os
 import shutil
-import sys
 
 
 def stage(engine, pkg):
@@ -50,7 +49,6 @@ def stage(engine, pkg):
         return True
 
     note('extracting {}...', pkg.name)
-    sys.stdout.flush()
 
     extract_opts = RelengExtractOptions()
     replicate_package_attribs(extract_opts, pkg)

@@ -7,7 +7,6 @@ from releng_tool.util.io import run_script
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 import os
-import sys
 
 #: filename of the script to execute the bootstrapping operation (if any)
 BOOTSTRAP_SCRIPT = 'bootstrap'
@@ -32,7 +31,6 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     """
 
     verbose('bootstrapping {} (pre-check)...', pkg.name)
-    sys.stdout.flush()
 
     bootstrap_script_filename = f'{pkg.name}-{BOOTSTRAP_SCRIPT}'
     bootstrap_script = os.path.join(pkg.def_dir, bootstrap_script_filename)
@@ -41,7 +39,6 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
         return True
 
     note('bootstrapping {}...', pkg.name)
-    sys.stdout.flush()
 
     if pkg.build_subdir:
         build_dir = pkg.build_subdir

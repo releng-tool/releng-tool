@@ -13,7 +13,6 @@ from releng_tool.util.log import note
 from releng_tool.util.log import warn
 from releng_tool.util.log import verbose
 import os
-import sys
 
 
 class GitExistsType(Enum):
@@ -108,7 +107,6 @@ def fetch_default(opts):
                 return cache_dir
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     # validate any cache directory (if one exists)
     has_cache, bad_validation = _validate_cache(cache_dir)
@@ -567,7 +565,6 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
             return _sync_git_origin(cache_dir, site)
 
     log('processing submodule (package: {}) {}...', opts.name, name)
-    sys.stdout.flush()
 
     # validate any cache directory (if one exists)
     has_cache, bad_validation = _validate_cache(cache_dir)

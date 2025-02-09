@@ -7,7 +7,7 @@ from releng_tool.util.io import run_script
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 import os
-import sys
+
 
 #: filename of the script to execute the post-processing operation (if any)
 POST_SCRIPT = 'post'
@@ -32,7 +32,6 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     """
 
     verbose('post-processing {} (pre-check)...', pkg.name)
-    sys.stdout.flush()
 
     post_script_filename = f'{pkg.name}-{POST_SCRIPT}'
     post_script = os.path.join(pkg.def_dir, post_script_filename)
@@ -41,7 +40,6 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
         return True
 
     note('post-processing {}...', pkg.name)
-    sys.stdout.flush()
 
     if pkg.build_subdir:
         build_dir = pkg.build_subdir

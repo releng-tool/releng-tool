@@ -5,7 +5,6 @@ from releng_tool.tool.scp import SCP
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
-import sys
 
 
 def fetch(opts):
@@ -33,7 +32,6 @@ def fetch(opts):
         return None
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     if not SCP.execute(['-o', 'BatchMode yes', site, cache_file], cwd=work_dir):
         err('unable to secure-copied file from target')

@@ -9,7 +9,6 @@ from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.string import expand
 import os
-import sys
 import tarfile
 
 
@@ -41,7 +40,6 @@ def fetch(opts):
         return None
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     # options
     fetch_opts = {

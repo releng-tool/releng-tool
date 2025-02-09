@@ -7,7 +7,6 @@ from releng_tool.util.log import note
 from releng_tool.util.log import warn
 from urllib.request import urlopen
 import os
-import sys
 
 
 #: size of blocks read when downloading a resource
@@ -38,7 +37,6 @@ def fetch(opts):
     filename = os.path.basename(cache_file)
 
     note('fetching {}...', name)
-    sys.stdout.flush()
 
     log('requesting: ' + site)
     try:
