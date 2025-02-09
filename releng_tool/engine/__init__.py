@@ -236,7 +236,7 @@ class RelengEngine:
 
         # configuration overrides file for builders
         if os.path.isfile(opts.conf_point_overrides):
-            warn('detected configuration overrides file')
+            warn('detected deprecated configuration overrides file')
 
             overrides = run_script(opts.conf_point_overrides, gbls,
                 subject='configuration overrides')
@@ -1202,6 +1202,8 @@ following key entry and re-try again.
                 notify_invalid_value(ConfKey.OVERRIDE_REV, 'dict(str,str)')
                 return False
             self.opts.revision_override = orz
+            if self.opts.revision_override:
+                warn('configuration "{}" is deprecated', ConfKey.OVERRIDE_REV)
 
         if ConfKey.OVERRIDE_SITES in settings:
             v = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_SITES])
@@ -1209,6 +1211,8 @@ following key entry and re-try again.
                 notify_invalid_value(ConfKey.OVERRIDE_SITES, 'dict(str,str)')
                 return False
             self.opts.sites_override = v
+            if self.opts.sites_override:
+                warn('configuration "{}" is deprecated', ConfKey.OVERRIDE_SITES)
 
         if ConfKey.OVERRIDE_TOOLS in settings:
             v = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_TOOLS])
