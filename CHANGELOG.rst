@@ -1,3 +1,8 @@
+2.0.1 (2025-02-09)
+------------------
+
+- Including missing completion scripts and man page in source package
+
 2.0 (2025-02-09)
 ----------------
 
