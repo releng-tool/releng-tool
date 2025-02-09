@@ -49,7 +49,7 @@ python -m pip install -U releng-tool
 
 For Arch Linux users, this package is also available on AUR:
 
-> Arch User Repository - releng-tool \
+> Arch User Repository — releng-tool \
 > https://aur.archlinux.org/packages/releng-tool/
 
 ## Usage
