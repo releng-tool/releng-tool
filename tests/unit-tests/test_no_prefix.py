@@ -25,15 +25,18 @@ class TestNoPrefix(RelengToolTestCase):
                 'HOST_BIN_DIR',
                 'HOST_INCLUDE_DIR',
                 'HOST_LIB_DIR',
+                'HOST_SHARE_DIR',
                 'PREFIXED_HOST_DIR',
                 'PREFIXED_STAGING_DIR',
                 'PREFIXED_TARGET_DIR',
                 'STAGING_BIN_DIR',
                 'STAGING_INCLUDE_DIR',
                 'STAGING_LIB_DIR',
+                'STAGING_SHARE_DIR',
                 'TARGET_BIN_DIR',
                 'TARGET_INCLUDE_DIR',
                 'TARGET_LIB_DIR',
+                'TARGET_SHARE_DIR',
             ]
             self.assertTrue(all(x in data for x in pkg_keys))
 
@@ -43,15 +46,18 @@ class TestNoPrefix(RelengToolTestCase):
             self._verify('HOST_BIN_DIR',         'host',    'bin'    )
             self._verify('HOST_INCLUDE_DIR',     'host',    'include')
             self._verify('HOST_LIB_DIR',         'host',    'lib'    )
+            self._verify('HOST_SHARE_DIR',       'host',    'share'  )
             self._verify('PREFIXED_HOST_DIR',    'host'              )
             self._verify('PREFIXED_STAGING_DIR', 'staging'           )
             self._verify('PREFIXED_TARGET_DIR',  'target'            )
             self._verify('STAGING_BIN_DIR',      'staging', 'bin'    )
             self._verify('STAGING_INCLUDE_DIR',  'staging', 'include')
             self._verify('STAGING_LIB_DIR',      'staging', 'lib'    )
+            self._verify('STAGING_SHARE_DIR',    'staging', 'share'  )
             self._verify('TARGET_BIN_DIR',       'target',  'bin'    )
             self._verify('TARGET_INCLUDE_DIR',   'target',  'include')
             self._verify('TARGET_LIB_DIR',       'target',  'lib'    )
+            self._verify('TARGET_SHARE_DIR',     'target',  'share'  )
 
     def test_no_prefix_pkg(self):
         with prepare_testenv(template='no-prefix-pkg') as engine:
@@ -70,15 +76,18 @@ class TestNoPrefix(RelengToolTestCase):
                 'HOST_BIN_DIR',
                 'HOST_INCLUDE_DIR',
                 'HOST_LIB_DIR',
+                'HOST_SHARE_DIR',
                 'PREFIXED_HOST_DIR',
                 'PREFIXED_STAGING_DIR',
                 'PREFIXED_TARGET_DIR',
                 'STAGING_BIN_DIR',
                 'STAGING_INCLUDE_DIR',
                 'STAGING_LIB_DIR',
+                'STAGING_SHARE_DIR',
                 'TARGET_BIN_DIR',
                 'TARGET_INCLUDE_DIR',
                 'TARGET_LIB_DIR',
+                'TARGET_SHARE_DIR',
             ]
             self.assertTrue(all(x in data for x in pkg_keys))
 
@@ -88,15 +97,18 @@ class TestNoPrefix(RelengToolTestCase):
             self._verify('HOST_BIN_DIR',         'host',    'bin'    )
             self._verify('HOST_INCLUDE_DIR',     'host',    'include')
             self._verify('HOST_LIB_DIR',         'host',    'lib'    )
+            self._verify('HOST_SHARE_DIR',       'host',    'share'  )
             self._verify('PREFIXED_HOST_DIR',    'host'              )
             self._verify('PREFIXED_STAGING_DIR', 'staging'           )
             self._verify('PREFIXED_TARGET_DIR',  'target'            )
             self._verify('STAGING_BIN_DIR',      'staging', 'bin'    )
             self._verify('STAGING_INCLUDE_DIR',  'staging', 'include')
             self._verify('STAGING_LIB_DIR',      'staging', 'lib'    )
+            self._verify('STAGING_SHARE_DIR',    'staging', 'share'  )
             self._verify('TARGET_BIN_DIR',       'target',  'bin'    )
             self._verify('TARGET_INCLUDE_DIR',   'target',  'include')
             self._verify('TARGET_LIB_DIR',       'target',  'lib'    )
+            self._verify('TARGET_SHARE_DIR',     'target',  'share'  )
 
     def _verify(self, key, container, leaf=None):
         entry_path = self.data[key]

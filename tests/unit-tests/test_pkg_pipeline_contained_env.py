@@ -38,6 +38,7 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 'HOST_BIN_DIR',
                 'HOST_INCLUDE_DIR',
                 'HOST_LIB_DIR',
+                'HOST_SHARE_DIR',
                 'NJOBS',
                 'NJOBSCONF',
                 'PREFIX',
@@ -47,9 +48,11 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 'STAGING_BIN_DIR',
                 'STAGING_INCLUDE_DIR',
                 'STAGING_LIB_DIR',
+                'STAGING_SHARE_DIR',
                 'TARGET_BIN_DIR',
                 'TARGET_INCLUDE_DIR',
                 'TARGET_LIB_DIR',
+                'TARGET_SHARE_DIR',
             ]
             self.assertTrue(all(x in data for x in pkg_keys))
             self.assertEqual(data['NJOBS'], '42')
@@ -66,12 +69,15 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
             expected_host_bin_dir = J(expected_host_pdir, 'bin')
             expected_host_include_dir = J(expected_host_pdir, 'include')
             expected_host_lib_dir = J(expected_host_pdir, 'lib')
+            expected_host_share_dir = J(expected_host_pdir, 'share')
             expected_staging_bin_dir = J(expected_staging_pdir, 'bin')
             expected_staging_include_dir = J(expected_staging_pdir, 'include')
             expected_staging_lib_dir = J(expected_staging_pdir, 'lib')
+            expected_staging_share_dir = J(expected_staging_pdir, 'share')
             expected_target_bin_dir = J(expected_target_pdir, 'bin')
             expected_target_include_dir = J(expected_target_pdir, 'include')
             expected_target_lib_dir = J(expected_target_pdir, 'lib')
+            expected_target_share_dir = J(expected_target_pdir, 'share')
 
             self.assertEqual(
                 data['HOST_BIN_DIR'], expected_host_bin_dir)
@@ -79,6 +85,8 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 data['HOST_INCLUDE_DIR'], expected_host_include_dir)
             self.assertEqual(
                 data['HOST_LIB_DIR'], expected_host_lib_dir)
+            self.assertEqual(
+                data['HOST_SHARE_DIR'], expected_host_share_dir)
             self.assertEqual(
                 data['PREFIXED_HOST_DIR'], expected_host_pdir)
             self.assertEqual(
@@ -92,11 +100,15 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
             self.assertEqual(
                 data['STAGING_LIB_DIR'], expected_staging_lib_dir)
             self.assertEqual(
+                data['STAGING_SHARE_DIR'], expected_staging_share_dir)
+            self.assertEqual(
                 data['TARGET_BIN_DIR'], expected_target_bin_dir)
             self.assertEqual(
                 data['TARGET_INCLUDE_DIR'], expected_target_include_dir)
             self.assertEqual(
                 data['TARGET_LIB_DIR'], expected_target_lib_dir)
+            self.assertEqual(
+                data['TARGET_SHARE_DIR'], expected_target_share_dir)
 
             # verify package-specific environment variables were properly
             # restored to original counts (leak check)
@@ -123,6 +135,8 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 self.assertNotEqual(
                     data['HOST_LIB_DIR'], expected_host_lib_dir)
                 self.assertNotEqual(
+                    data['HOST_SHARE_DIR'], expected_host_share_dir)
+                self.assertNotEqual(
                     data['PREFIXED_HOST_DIR'], expected_host_pdir)
                 self.assertNotEqual(
                     data['PREFIXED_STAGING_DIR'], expected_staging_pdir)
@@ -135,8 +149,12 @@ class TestPkgPipelineContainedEnvironment(RelengToolTestCase):
                 self.assertNotEqual(
                     data['STAGING_LIB_DIR'], expected_staging_lib_dir)
                 self.assertNotEqual(
+                    data['STAGING_SHARE_DIR'], expected_staging_share_dir)
+                self.assertNotEqual(
                     data['TARGET_BIN_DIR'], expected_target_bin_dir)
                 self.assertNotEqual(
                     data['TARGET_INCLUDE_DIR'], expected_target_include_dir)
                 self.assertNotEqual(
                     data['TARGET_LIB_DIR'], expected_target_lib_dir)
+                self.assertNotEqual(
+                    data['TARGET_SHARE_DIR'], expected_target_share_dir)
