@@ -264,8 +264,9 @@ class RelengEngineOptions:
                 #  specific packaging in the file system), strip the
                 # package folder prefix and use the resulting value as
                 # the target
-                target_action = target_action.replace(os.sep, '/')
-                target_action = target_action.removeprefix('package/')
+                target_action = target_action\
+                    .replace(os.sep, '/') \
+                    .removeprefix(f'{DEFAULT_PKG_DIR}/')
 
                 self.target_action = target_action
 
