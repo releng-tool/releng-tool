@@ -1066,10 +1066,18 @@ for any desired locally sourced packages.
         if local_srcs_changed:
             local_srcs_unconfigured = False
 
-            for key in list(opts.local_srcs.keys()):
-                if opts.local_srcs[key] in UNSET_VALUES:
-                    del opts.local_srcs[key]
-                    local_srcs_unconfigured = True
+            # if an unset value is set to the "default" entry, we clear
+            # all local-sources settings; as we want a `--local-sources unset`
+            # set to be an easy unconfiguration event
+            gbl_lsrcs = opts.local_srcs.get(GBL_LSRCS)
+            if gbl_lsrcs in UNSET_VALUES:
+                opts.local_srcs.clear()
+                local_srcs_unconfigured = True
+            else:
+                for key in list(opts.local_srcs.keys()):
+                    if opts.local_srcs[key] in UNSET_VALUES:
+                        del opts.local_srcs[key]
+                        local_srcs_unconfigured = True
 
             if local_srcs_unconfigured and not opts.local_srcs:
                 if os.path.exists(self.opts.ff_local_srcs):
