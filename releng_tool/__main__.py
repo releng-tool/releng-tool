@@ -359,10 +359,10 @@ def usage():
 
 (mode options)
  -D, --development         Enable development mode
- -L, --local-sources [[<pkg>@]<dir>]
+ -L, --local-sources [[<pkg>:]<dir>]
                            Use development sources from a local path, defaults
                             to the parent of the root directory; users can use
-                            the format "<pkg>@<path>" to set/override specific
+                            the format "<pkg>:<path>" to set/override specific
                             local paths per package; this argument can be
                             provided multiple times
 
