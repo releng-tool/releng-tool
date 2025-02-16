@@ -69,6 +69,7 @@ from releng_tool.util.log import releng_log_tag
 from releng_tool.util.log import success
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
+from releng_tool.util.log import warn_wrap
 from releng_tool.util.platform import platform_exit
 from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_dictionary_strings
@@ -584,7 +585,7 @@ has failed. Ensure the following path is accessible for this user:
 
                 entry = val
                 if key != GBL_LSRCS and not os.path.exists(val):
-                    entry += "  (does not exist)"
+                    entry += warn_wrap('  (path does not exist)')
 
                 log(' {}: {}', key, entry)
 
@@ -1102,7 +1103,7 @@ for any desired locally sourced packages.
 
                         entry = val
                         if key != GBL_LSRCS and not os.path.exists(val):
-                            entry += "  (does not exist)"
+                            entry += warn_wrap('  (path does not exist)')
 
                         log(' {}: {}', key, entry)
 

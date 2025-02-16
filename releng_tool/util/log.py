@@ -237,6 +237,31 @@ def warn(msg, *args):
     __log('(warn) ', '\033[1;35m', msg, *args)
 
 
+def warn_wrap(msg):
+    """
+    wrap a message with a warning color hint
+
+    Wraps a provided message with (if enabled) a purple colorization.
+
+    .. code-block:: python
+
+        msg = warn_wrap('warning')
+        log(f'this is a {msg}')
+
+    Args:
+        msg: the message
+    """
+
+    if RELENG_LOG_NOCOLOR_FLAG:
+        color = ''
+        post = ''
+    else:
+        color = '\033[1;35m'
+        post = '\033[0m'
+
+    return f'{color}{msg}{post}'
+
+
 def __log(prefix, color, msg, *args):
     """
     utility logging method
