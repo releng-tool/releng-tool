@@ -235,6 +235,13 @@ class RelengEngineOptions:
                 if path and path not in UNSET_VALUES:
                     path = os.path.abspath(path)
 
+                # remove any package-prefix on a module to allow users to
+                # easily use shell completion to populate packages when
+                # populating a local-sources argument on the command line
+                module = module\
+                    .replace(os.sep, '/') \
+                    .removeprefix(f'{DEFAULT_PKG_DIR}/')
+
                 self.local_srcs[module] = path if path else None
 
         if args.action:
