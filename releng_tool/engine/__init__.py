@@ -841,12 +841,15 @@ of the releng process:
         host_bin_dir = os.path.join(host_pdir, 'bin')
         host_include_dir = os.path.join(host_pdir, 'include')
         host_lib_dir = os.path.join(host_pdir, 'lib')
+        host_share_dir = os.path.join(host_pdir, 'share')
         staging_bin_dir = os.path.join(staging_pdir, 'bin')
         staging_include_dir = os.path.join(staging_pdir, 'include')
         staging_lib_dir = os.path.join(staging_pdir, 'lib')
+        staging_share_dir = os.path.join(staging_pdir, 'share')
         target_bin_dir = os.path.join(target_pdir, 'bin')
         target_include_dir = os.path.join(target_pdir, 'include')
         target_lib_dir = os.path.join(target_pdir, 'lib')
+        target_share_dir = os.path.join(target_pdir, 'share')
 
         # global variables
         for env in (os.environ, script_env):
@@ -857,6 +860,7 @@ of the releng process:
             env['HOST_DIR'] = self.opts.host_dir
             env['HOST_INCLUDE_DIR'] = host_include_dir
             env['HOST_LIB_DIR'] = host_lib_dir
+            env['HOST_SHARE_DIR'] = host_share_dir
             env['IMAGES_DIR'] = self.opts.images_dir
             env['LICENSE_DIR'] = self.opts.license_dir
             env['NJOBS'] = str(self.opts.jobs)
@@ -872,11 +876,13 @@ of the releng process:
             env['STAGING_DIR'] = self.opts.staging_dir
             env['STAGING_INCLUDE_DIR'] = staging_include_dir
             env['STAGING_LIB_DIR'] = staging_lib_dir
+            env['STAGING_SHARE_DIR'] = staging_share_dir
             env['SYMBOLS_DIR'] = self.opts.symbols_dir
             env['TARGET_BIN_DIR'] = target_bin_dir
             env['TARGET_DIR'] = self.opts.target_dir
             env['TARGET_INCLUDE_DIR'] = target_include_dir
             env['TARGET_LIB_DIR'] = target_lib_dir
+            env['TARGET_SHARE_DIR'] = target_share_dir
 
             if self.opts.target_action:
                 env['RELENG_TARGET_PKG'] = self.opts.target_action

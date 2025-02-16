@@ -406,6 +406,7 @@ class RelengPackagePipeline:
             'HOST_BIN_DIR',
             'HOST_INCLUDE_DIR',
             'HOST_LIB_DIR',
+            'HOST_SHARE_DIR',
             'NJOBS',
             'NJOBSCONF',
             'PREFIX',
@@ -415,9 +416,11 @@ class RelengPackagePipeline:
             'STAGING_BIN_DIR',
             'STAGING_INCLUDE_DIR',
             'STAGING_LIB_DIR',
+            'STAGING_SHARE_DIR',
             'TARGET_BIN_DIR',
             'TARGET_INCLUDE_DIR',
             'TARGET_LIB_DIR',
+            'TARGET_SHARE_DIR',
         ]
 
         # check if we should preload environment variables from vsdevcmd
@@ -447,17 +450,21 @@ class RelengPackagePipeline:
                     host_bin_dir = os.path.join(host_pdir, 'bin')
                     host_include_dir = os.path.join(host_pdir, 'include')
                     host_lib_dir = os.path.join(host_pdir, 'lib')
+                    host_share_dir = os.path.join(host_pdir, 'share')
                     staging_bin_dir = os.path.join(staging_pdir, 'bin')
                     staging_include_dir = os.path.join(staging_pdir, 'include')
                     staging_lib_dir = os.path.join(staging_pdir, 'lib')
+                    staging_share_dir = os.path.join(staging_pdir, 'share')
                     target_bin_dir = os.path.join(target_pdir, 'bin')
                     target_include_dir = os.path.join(target_pdir, 'include')
                     target_lib_dir = os.path.join(target_pdir, 'lib')
+                    target_share_dir = os.path.join(target_pdir, 'share')
 
                     # will override existing prefix related variables
                     env['HOST_BIN_DIR'] = host_bin_dir
                     env['HOST_INCLUDE_DIR'] = host_include_dir
                     env['HOST_LIB_DIR'] = host_lib_dir
+                    env['HOST_SHARE_DIR'] = host_share_dir
                     env['PREFIX'] = pkg.prefix
                     env['PREFIXED_HOST_DIR'] = host_pdir
                     env['PREFIXED_STAGING_DIR'] = staging_pdir
@@ -465,9 +472,11 @@ class RelengPackagePipeline:
                     env['STAGING_BIN_DIR'] = staging_bin_dir
                     env['STAGING_INCLUDE_DIR'] = staging_include_dir
                     env['STAGING_LIB_DIR'] = staging_lib_dir
+                    env['STAGING_SHARE_DIR'] = staging_share_dir
                     env['TARGET_BIN_DIR'] = target_bin_dir
                     env['TARGET_INCLUDE_DIR'] = target_include_dir
                     env['TARGET_LIB_DIR'] = target_lib_dir
+                    env['TARGET_SHARE_DIR'] = target_share_dir
 
                 if pkg.fixed_jobs:
                     env['NJOBS'] = str(pkg.fixed_jobs)
