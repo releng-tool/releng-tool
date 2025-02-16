@@ -571,6 +571,7 @@ has failed. Ensure the following path is accessible for this user:
             else:
                 postfix = f' ({self.opts.devmode})'
             log('Development mode: Enabled' + postfix)
+            log(' (invoke `releng-tool --development unset` to unconfigure)')
         else:
             log('Development mode: Disabled')
 
@@ -586,6 +587,8 @@ has failed. Ensure the following path is accessible for this user:
                     entry += "  (does not exist)"
 
                 log(' {}: {}', key, entry)
+
+            log(' (invoke `releng-tool --local-sources unset` to unconfigure)')
         else:
             log('Local-sources mode: Disabled')
 
