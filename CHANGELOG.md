@@ -1,7 +1,9 @@
 ## Development
 
+- Avoid multi-fetching packages with ignore-cache in development mode
 - Improve ease of unconfiguring local-sources mode with single `unset` call
 - Introduce `*_SHARE_DIR` environment/script variables
+- Introduce `default_devmode_ignore_cache` project configuration
 - Local-sources configurations can now accept `package/`-prefixed entries
 - Prevent unused CLI warnings with CMake for releng-tool-managed options
 - Support a pre-defined `CMAKE_MODULE_PATH` for CMake staging/target/host areas
