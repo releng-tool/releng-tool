@@ -21,6 +21,26 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         with self.assertRaises(RelengToolInvalidPackageKeyValue):
             self.LOAD('devmode-ignore-cache-invalid')
 
+    def test_pkgconfig_devmode_ignore_cache_default_on(self):
+        opts = RelengEngineOptions()
+        opts.default_dev_ignore_cache = True
+
+        registry = RelengRegistry()
+        manager = RelengPackageManager(opts, registry)
+
+        pkg, _, _ = self.LOAD('missing', manager=manager)
+        self.assertTrue(pkg.devmode_ignore_cache)
+
+    def test_pkgconfig_devmode_ignore_cache_default_off(self):
+        opts = RelengEngineOptions()
+        opts.default_dev_ignore_cache = False
+
+        registry = RelengRegistry()
+        manager = RelengPackageManager(opts, registry)
+
+        pkg, _, _ = self.LOAD('missing', manager=manager)
+        self.assertFalse(pkg.devmode_ignore_cache)
+
     def test_pkgconfig_devmode_ignore_cache_missing(self):
         pkg, _, _ = self.LOAD('missing')
         self.assertIsNone(pkg.devmode_ignore_cache)
