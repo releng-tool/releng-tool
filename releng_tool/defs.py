@@ -15,6 +15,7 @@ class ConfKey(Enum):
     Attributes:
         CACHE_EXT_TRANSFORM: cache extension transform
         DEFINTERN: packages are internal (implicitly)
+        DEF_DEV_IGNORE_CACHE: development mode no-cache default state
         ENVIRONMENT: project environment options to apply
         EXTENSIONS: project releng-extension list
         EXTEN_PKGS: project external packages list
@@ -34,6 +35,7 @@ class ConfKey(Enum):
     """
     CACHE_EXT_TRANSFORM = 'cache_ext'
     DEFINTERN = 'default_internal'
+    DEF_DEV_IGNORE_CACHE = 'default_devmode_ignore_cache'
     ENVIRONMENT = 'environment'
     EXTENSIONS = 'extensions'
     EXTEN_PKGS = 'external_packages'

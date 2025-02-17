@@ -1176,6 +1176,13 @@ following key entry and re-try again.
                 return False
             self.opts.default_internal_pkgs = is_default_internal
 
+        if ConfKey.DEF_DEV_IGNORE_CACHE in settings:
+            default_dev_ignore_cache = settings[ConfKey.DEF_DEV_IGNORE_CACHE]
+            if not isinstance(default_dev_ignore_cache, bool):
+                notify_invalid_value(ConfKey.DEF_DEV_IGNORE_CACHE, 'bool')
+                return False
+            self.opts.default_dev_ignore_cache = default_dev_ignore_cache
+
         if ConfKey.ENVIRONMENT in settings:
             env = interpret_dictionary_strings(settings[ConfKey.ENVIRONMENT])
             if env is None:
