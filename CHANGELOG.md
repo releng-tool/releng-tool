@@ -1,3 +1,11 @@
+## Development
+
+- Improve ease of unconfiguring local-sources mode with single `unset` call
+- Introduce `*_SHARE_DIR` environment/script variables
+- Local-sources configurations can now accept `package/`-prefixed entries
+- Prevent unused CLI warnings with CMake for releng-tool-managed options
+- Support a pre-defined `CMAKE_MODULE_PATH` for CMake staging/target/host areas
+
 ## 2.0.1 (2025-02-09)
 
 - Including missing completion scripts and man page in source package
