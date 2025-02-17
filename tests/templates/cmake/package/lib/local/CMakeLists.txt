@@ -7,3 +7,4 @@ install(TARGETS testlib
     LIBRARY DESTINATION lib
     PUBLIC_HEADER DESTINATION include
 )
+install(FILES example-module-helper.cmake DESTINATION share/cmake/Modules)
