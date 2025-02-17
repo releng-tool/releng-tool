@@ -1,4 +1,4 @@
-## Development
+## 2.1.1 (2025-02-17)
 
 - Fixed extraction warnings for non-empty folders due to improper fetch flags
 
