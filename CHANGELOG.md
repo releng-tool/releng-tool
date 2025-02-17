@@ -1,3 +1,7 @@
+## Development
+
+- Fixed extraction warnings for non-empty folders due to improper fetch flags
+
 ## 2.1.0 (2025-02-17)
 
 - Avoid multi-fetching packages with ignore-cache in development mode
