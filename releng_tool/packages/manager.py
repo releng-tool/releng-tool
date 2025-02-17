@@ -1017,12 +1017,16 @@ using deprecated dependency configuration for package: {}
 
         # (internals)
         prefix = '.releng_tool-stage-'
+
+        ff_fetch = os.path.join(
+            opts.build_dir, '.releng-tool', f'{prefix}fetch-{pkg_nv}')
+
         outdir = pkg.build_output_dir
         pkg._ff_bootstrap = os.path.join(outdir, prefix + 'bootstrap')
         pkg._ff_build = os.path.join(outdir, prefix + 'build')
         pkg._ff_configure = os.path.join(outdir, prefix + 'configure')
         pkg._ff_extract = os.path.join(outdir, prefix + 'extract')
-        pkg._ff_fetch = os.path.join(outdir, prefix + 'fetch')
+        pkg._ff_fetch = os.path.join(outdir, ff_fetch)
         pkg._ff_fetch_post = os.path.join(outdir, prefix + 'fetch-post')
         pkg._ff_install = os.path.join(outdir, prefix + 'install')
         pkg._ff_license = os.path.join(outdir, prefix + 'license')
