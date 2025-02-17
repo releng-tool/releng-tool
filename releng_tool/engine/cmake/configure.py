@@ -8,6 +8,7 @@ from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
+from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 from releng_tool.util.string import expand
@@ -82,7 +83,7 @@ def configure(opts):
 
     # definitions
     compiled_include_locs = ';'.join(include_locs)
-    cmake_defs = {
+    default_cmake_defs = {
         'CMAKE_BUILD_TYPE': opts._cmake_build_type,
         # common paths for releng-tool sysroots
         'CMAKE_INCLUDE_PATH': compiled_include_locs,
@@ -107,12 +108,29 @@ def configure(opts):
 
     if 'releng.cmake.disable_direct_includes' not in opts._quirks:
         for option in CMAKE_INCLUDE_INJECT_OPTIONS:
-            cmake_defs[option] = compiled_include_locs
+            default_cmake_defs[option] = compiled_include_locs
     else:
         verbose('cmake direct includes disabled by quirk')
 
+    # compile a list of package-provided defines
+    cmake_defs = {}
     if opts.conf_defs:
         cmake_defs.update(expand(opts.conf_defs))
+
+    # untrack any "default defines" that a package may have explicitly set
+    for cmake_def_key in cmake_defs:
+        default_cmake_defs.pop(cmake_def_key, None)
+
+    # compile a list of releng-tool default defines into a CMake cache file;
+    # we foward releng-tool configurations using an initial cache file to
+    # help avoid CLI warning events if a project does not accept all of the
+    # generic options configured by default
+    cmake_pre_cache = Path(opts.build_output_dir) / '.releng-tool-cmake-cache'
+    debug(f'building initial cache for cmake project: {cmake_pre_cache}')
+    with cmake_pre_cache.open('w') as fp:
+        for k, v in default_cmake_defs.items():
+            debug(f' {k}={v}')
+            fp.write(f'set({k} "{v}" CACHE INTERNAL "releng-tool generated")\n')
 
     # options
     cmake_opts = {
@@ -122,6 +140,10 @@ def configure(opts):
 
     # argument building
     cmake_args = [
+        # add releng-tool's initial cache outside of `cmake_opts`, since we
+        # do not want a package to replace it; and to ensure a package can
+        # define their own `-C` argument for their own purpose
+        '-C', cmake_pre_cache.as_posix(),
     ]
     cmake_args.extend(prepare_definitions(cmake_defs, '-D'))
     cmake_args.extend(prepare_arguments(cmake_opts))
