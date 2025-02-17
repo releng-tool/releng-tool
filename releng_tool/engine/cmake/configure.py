@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.defs import PackageInstallType
 from releng_tool.tool.cmake import CMAKE
 from releng_tool.util.io import ensure_dir_exists
@@ -64,12 +65,15 @@ def configure(opts):
 
     include_locs = []
     library_locs = []
+    modules_locs = []
     prefix_locs = []
     for base_loc in base_locs:
-        prefixed_base = base_loc + prefix
-        include_locs.append(os.path.join(prefixed_base, 'include'))
-        library_locs.append(os.path.join(prefixed_base, DEFAULT_LIB_DIR))
-        prefix_locs.append(prefixed_base)
+        prefixed_base = Path(base_loc + prefix)
+        cmake_modules = prefixed_base / 'share' / 'cmake' / 'Modules'
+        include_locs.append((prefixed_base / 'include').as_posix())
+        library_locs.append((prefixed_base / DEFAULT_LIB_DIR).as_posix())
+        modules_locs.append(cmake_modules.as_posix())
+        prefix_locs.append(prefixed_base.as_posix())
 
     # ensure the non-full prefix options are passed in a posix style, or
     # some versions of CMake/projects may treat the path separators as
@@ -84,6 +88,7 @@ def configure(opts):
         'CMAKE_INCLUDE_PATH': compiled_include_locs,
         'CMAKE_INSTALL_PREFIX': posix_prefix,
         'CMAKE_LIBRARY_PATH': ';'.join(library_locs),
+        'CMAKE_MODULE_PATH': ';'.join(modules_locs),
         'CMAKE_PREFIX_PATH': ';'.join(prefix_locs),
         # releng-tool's sysroot assumes a `lib` directory. CMake's
         # GNUInstallDirs may adjust the expected lib directory based on the
