@@ -84,25 +84,6 @@ for file in "${files[@]}"; do
     python -m twine check --strict "$file"
 done
 
-# generate hashes
-hash_tools=(
-    sha256sum
-    sha512sum
-)
-
-echo ""
-echo "Generating hashes..."
-pushd "$dist_dir" >/dev/null
-for hash_tool in "${hash_tools[@]}"; do
-    rm "releng-tool-$version.$hash_tool" 2>/dev/null || true
-    for file in "${files[@]}"; do
-        fname=${file##*/}
-        echo "[$hash_tool] $fname"
-        $hash_tool -b "$fname" >>"releng_tool-$version.$hash_tool"
-    done
-done
-popd >/dev/null
-
 # gpg signing release files
 echo ""
 echo "Sign artifacts..."
@@ -119,6 +100,27 @@ for file in "${files[@]}"; do
     echo "[gpg-verify] $fname"
     gpg --verify "${file}.asc"
 done
+
+# generate hashes
+hash_tools=(
+    sha256sum
+    sha512sum
+)
+
+echo ""
+echo "Generating hashes..."
+pushd "$dist_dir" >/dev/null
+for hash_tool in "${hash_tools[@]}"; do
+    rm "releng-tool-$version.$hash_tool" 2>/dev/null || true
+    for file in "${files[@]}"; do
+        fname=${file##*/}
+        echo "[$hash_tool] $fname"
+        $hash_tool -b "$fname" >>"releng_tool-$version.$hash_tool"
+        echo "[$hash_tool] $fname.asc"
+        $hash_tool -b "$fname.asc" >>"releng_tool-$version.$hash_tool"
+    done
+done
+popd >/dev/null
 
 # dump prepare files to a metadata file
 metadata_file="$dist_dir/release-files.txt"
