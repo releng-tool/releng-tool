@@ -230,7 +230,7 @@
 - Introduce `<PKG_NAME>_DEFDIR` environment/script variable
 - Introduce `LIBFOO_CMAKE_NOINSTALL` for CMake packages with no install rule
 - Introduce support for rsync sites
-- Provide an option to suppress root warning (for zero-uid containers)
+- Provide an option to suppress root warning (for zero-UID containers)
 - Remove the requirement to have a package version entry
 - Support configuring cache/download directories using environment variables
 - Support custom SSL context overrides via `urlopen_context`
@@ -313,7 +313,7 @@
 - Allow setting quirks in command line
 - Fixed a scenario where a Git extraction stage could fetch sources
 - Fixed Git fetch/extraction if package is cached and site has changed
-- Improved handling of output files which may set the readonly attribute
+- Improved handling of output files which may set the read-only attribute
 - Introduce support for local interim-development package content
 - Introduce support for shallow Git fetching
 
