@@ -98,7 +98,7 @@ for hash_tool in "${hash_tools[@]}"; do
     for file in "${files[@]}"; do
         fname=${file##*/}
         echo "[$hash_tool] $fname"
-        $hash_tool -b "$fname" >>"releng-tool-$version.$hash_tool"
+        $hash_tool -b "$fname" >>"releng_tool-$version.$hash_tool"
     done
 done
 popd >/dev/null
