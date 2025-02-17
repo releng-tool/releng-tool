@@ -1,4 +1,4 @@
-## Development
+## 2.1.0 (2025-02-17)
 
 - Avoid multi-fetching packages with ignore-cache in development mode
 - Improve ease of unconfiguring local-sources mode with single `unset` call
