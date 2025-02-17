@@ -42,6 +42,7 @@ from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
+from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import FailedToPrepareWorkingDirectoryError
 from releng_tool.util.io import cat
 from releng_tool.util.io import ensure_dir_exists
@@ -414,17 +415,28 @@ class RelengEngine:
                 if pkg.vcs_type in (VcsType.LOCAL, VcsType.NONE):
                     continue
 
-                # in the event that we are not explicit fetching and the package
-                # has already been extracted, completely skip the fetching stage
+                # skip if already fetched
+                #
+                # In the event that we are not explicitly fetching and the
+                # package has already been fetched, skip the fetching stage.
+                # We want to rely on a fetch-specific flag since we do not
+                # want to constantly re-fetch unprocessed packages in certain
+                # development mode states. For example, if a build fails,
+                # a user re-triggers a build and all ignore-cache packages
+                # will be re-fetched again (where really, we only want to
+                # have the ignore-cache flag fetch once from a cleaned state).
+                fflag = pkg._ff_fetch
                 if not req_fetch and not pkg.local_srcs:
-                    flag = pkg._ff_extract
-                    if check_file_flag(flag) == FileFlag.EXISTS:
+                    if check_file_flag(fflag) == FileFlag.EXISTS:
                         continue
 
                 self.stats.track_duration_start(pkg.name, 'fetch')
                 fetched = fetch_stage(self, pkg, req_fetch, pkg.fetch_opts)
                 self.stats.track_duration_end(pkg.name, 'fetch')
                 if not fetched:
+                    return False
+
+                if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return False
 
             # re-apply script environment to ensure previous script environment
@@ -615,6 +627,7 @@ has failed. Ensure the following path is accessible for this user:
         # When a punch/forced request is made, clear all file flags so these
         # stages can be invoked again.
         if self.opts.gbl_action == GlobalAction.PUNCH or self.opts.force:
+            rv &= path_remove(pkg._ff_fetch)
             rv &= path_remove(pkg._ff_bootstrap)
             rv &= path_remove(pkg._ff_configure)
             rv &= path_remove(pkg._ff_build)
