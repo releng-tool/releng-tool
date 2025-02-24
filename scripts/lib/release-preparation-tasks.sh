@@ -19,6 +19,13 @@ if [ -z "$RELENG_TOOL_PREPARE_RELEASE" ]; then
     exit 1
 fi
 
+# we aim to package with lf lines
+pyproject="$root_dir"/pyproject.toml
+if ! dos2unix <"$pyproject" | cmp - "$pyproject" >/dev/null; then
+    echo "Sources not checked out as LF."
+    exit 1
+fi
+
 # verify working from a clean state
 mkdir -p "$dist_dir"
 if [ -n "$(ls -A "$dist_dir")" ]; then
