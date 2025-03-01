@@ -10,8 +10,8 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
-from releng_tool.util.log import warn
 from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 import os
 
 
