@@ -24,7 +24,6 @@ from releng_tool.packages.exceptions import RelengToolInstallStageFailure
 from releng_tool.packages.exceptions import RelengToolLicenseStageFailure
 from releng_tool.packages.exceptions import RelengToolPatchStageFailure
 from releng_tool.packages.exceptions import RelengToolPostStageFailure
-from releng_tool.util.enum import Enum
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
@@ -35,12 +34,13 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
 from releng_tool.util.log import warn
+from releng_tool.util.strccenum import StrCcEnum
 import os
 import subprocess
 import sys
 
 
-class PipelineResult(Enum):
+class PipelineResult(StrCcEnum):
     """
     pipeline process result
 

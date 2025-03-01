@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.enum import Enum
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import warn
+from releng_tool.util.strccenum import StrCcEnum
 import hashlib
 import os
 
@@ -15,7 +15,7 @@ HASH_READ_BLOCKSIZE = 1048576
 HASH_ENTRY_PARTS = 3
 
 
-class HashResult(Enum):
+class HashResult(StrCcEnum):
     """
     result of a hash verification check
 

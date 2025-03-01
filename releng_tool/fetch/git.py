@@ -3,7 +3,6 @@
 
 from releng_tool.packages import pkg_cache_key
 from releng_tool.tool.git import GIT
-from releng_tool.util.enum import Enum
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.log import debug
@@ -12,10 +11,11 @@ from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
+from releng_tool.util.strccenum import StrCcEnum
 import os
 
 
-class GitExistsType(Enum):
+class GitExistsType(StrCcEnum):
     """
     git exists type
 

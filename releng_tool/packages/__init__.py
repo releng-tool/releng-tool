@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.enum import Enum
+from releng_tool.util.strccenum import StrCcEnum
 import hashlib
 
 
-class PkgKeyType(Enum):
+class PkgKeyType(StrCcEnum):
     """
     package key type
 

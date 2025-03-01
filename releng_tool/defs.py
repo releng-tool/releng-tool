@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.enum import Enum
+from releng_tool.util.strccenum import StrCcEnum
 
 
-class ConfKey(Enum):
+class ConfKey(StrCcEnum):
     """
     configuration file keys
 
@@ -55,7 +55,7 @@ class ConfKey(Enum):
     VSDEVCMD = 'vsdevcmd'
 
 
-class ListenerEvent(Enum):
+class ListenerEvent(StrCcEnum):
     """
     releng listener event types
 
@@ -72,7 +72,7 @@ class ListenerEvent(Enum):
     POST_BUILD_FINISHED = 'post-build-finished'
 
 
-class Rpk(Enum):
+class Rpk(StrCcEnum):
     """
     releng package keys (postfixes)
 
@@ -216,7 +216,7 @@ class Rpk(Enum):
     SCONS_NOINSTALL = 'SCONS_NOINSTALL'
 
 
-class GlobalAction(Enum):
+class GlobalAction(StrCcEnum):
     """
     specific stage action to perform
 
@@ -252,7 +252,7 @@ class GlobalAction(Enum):
     STATE = 'state'
 
 
-class PkgAction(Enum):
+class PkgAction(StrCcEnum):
     """
     package-specific stage action to perform
 
@@ -302,7 +302,7 @@ class PkgAction(Enum):
     REINSTALL = 'reinstall'
 
 
-class PackageType(Enum):
+class PackageType(StrCcEnum):
     """
     package types
 
@@ -329,7 +329,7 @@ class PackageType(Enum):
     SCRIPT = 'script'
 
 
-class PackageInstallType(Enum):
+class PackageInstallType(StrCcEnum):
     """
     package install types
 
@@ -350,7 +350,7 @@ class PackageInstallType(Enum):
     TARGET = 'target'
 
 
-class PythonSetupType(Enum):
+class PythonSetupType(StrCcEnum):
     """
     python setup types
 
@@ -375,7 +375,7 @@ class PythonSetupType(Enum):
     SETUPTOOLS = 'setuptools'
 
 
-class SbomFormatType(Enum):
+class SbomFormatType(StrCcEnum):
     """
     sbom format types
 
@@ -401,7 +401,7 @@ class SbomFormatType(Enum):
     XML = 'xml'
 
 
-class VcsType(Enum):
+class VcsType(StrCcEnum):
     """
     version control system types
 

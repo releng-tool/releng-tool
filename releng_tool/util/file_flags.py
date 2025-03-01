@@ -10,13 +10,13 @@
 # intent would be to configure the one (or multiple) file flag state and have
 # the running instance shutdown.
 
-from releng_tool.util.enum import Enum
 from releng_tool.util.io import touch
 from releng_tool.util.log import err
+from releng_tool.util.strccenum import StrCcEnum
 import os
 
 
-class FileFlag(Enum):
+class FileFlag(StrCcEnum):
     """
     file flag result states
 
