@@ -10,7 +10,7 @@ RELENG_LOG_DEBUG_FLAG = False
 RELENG_LOG_NOCOLOR_FLAG = False
 
 #: tracking logging tag/hints
-RELENG_LOG_TAGS = set()
+RELENG_LOG_TAGS: set[str] = set()
 
 #: flag to track the enablement of verbose messages
 RELENG_LOG_VERBOSE_FLAG = False
