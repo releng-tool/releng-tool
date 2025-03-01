@@ -151,9 +151,6 @@ Please update to a more recent version:
         requested = maxver.split('.')
         current = releng_version.split('.')
         rv = requested >= current
-        print('requested', requested)
-        print('current', current)
-        print(requested >= current)
         if not rv:
             if not quiet:
                 args = {
