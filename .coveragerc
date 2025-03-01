@@ -13,4 +13,3 @@ omit =
     # ignore mainlines
     *__main__.py*
 show_missing = 1
-skip_covered = 1
