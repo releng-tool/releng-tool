@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.io import opt_file
+from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.log import warn
 import os
 

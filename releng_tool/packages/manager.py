@@ -31,13 +31,13 @@ from releng_tool.packages.exceptions import RelengToolUnknownInstallType
 from releng_tool.packages.exceptions import RelengToolUnknownPackageType
 from releng_tool.packages.exceptions import RelengToolUnknownPythonSetupType
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
-from releng_tool.packages.package import RelengPackage
 from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
+from releng_tool.packages.package import RelengPackage
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import interpret_stem_extension
-from releng_tool.util.io import opt_file
 from releng_tool.util.io import run_script
+from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -167,9 +167,9 @@ class RelengPackageManager:
         for key in Rpk:
             assert key in self._key_types, f'key {key} is missing'
 
-    def is_defless_package(self, script):
+    def is_defless_package(self, pkg_def_dir, name):
         """
-        determine if the provided script path is considered a package
+        determine if the provided package is considered a package
 
         The existence of a package's definition script is the main indication
         that a package exists. However, there is support for considering a
@@ -180,7 +180,8 @@ class RelengPackageManager:
         script exists, this call will return ``True``.
 
         Args:
-            script: the package script
+            pkg_def_dir: the package definiton directory
+            name: the name of the package
 
         Returns:
             returns whether the script reference is considered a package
@@ -196,8 +197,9 @@ class RelengPackageManager:
 
         hint_script_exists = False
         for package_hint in package_hints:
-            hint_script = f'{script}-{package_hint}'
-            _, hint_script_exists = opt_file(hint_script)
+            hint_script_name = f'{name}-{package_hint}'
+            hint_script = os.path.join(pkg_def_dir, hint_script_name)
+            _, hint_script_exists = opt_file(hint_script, warn_deprecated=False)
             if hint_script_exists:
                 break
 
@@ -242,9 +244,11 @@ class RelengPackageManager:
 
             # attempt to load the package from a user defined external directory
             for pkg_dir in self.opts.extern_pkg_dirs:
-                pkg_script = os.path.join(pkg_dir, name, name)
+                pkg_def_dir = os.path.join(pkg_dir, name)
+                pkg_script = os.path.join(pkg_def_dir, name)
                 pkg_script, pkg_script_exists = opt_file(pkg_script)
-                if pkg_script_exists or self.is_defless_package(pkg_script):
+                if pkg_script_exists or \
+                        self.is_defless_package(pkg_def_dir, name):
                     pkg, env, deps = self.load_package(name, pkg_script)
 
             # if a package location has not been found, finally check the
@@ -337,8 +341,9 @@ class RelengPackageManager:
         # a developer to opt-out of defining an empty package definition). If
         # no other files are found, we will flag this not as a package.
         if os.path.isfile(script):
+            debug('found package script ({})', name)
             env = self.load_package_script(name, script)
-        elif self.is_defless_package(script):
+        elif self.is_defless_package(pkg_def_dir, name):
             debug('found package hint; treating as package ({})', name)
             env = self.script_env.copy()
         else:

@@ -6,7 +6,6 @@ from releng_tool.tool.python import PYTHON
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension as ise
-from releng_tool.util.io import opt_file
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prepend_shebang_interpreter as psi
@@ -168,58 +167,6 @@ class TestUtilIo(RelengToolTestCase):
         provided = None
         expected = (None, None)
         self.assertEqual(ise(provided), expected)
-
-    def test_utilio_optfile(self):
-        with prepare_workdir() as work_dir:
-            def _(*args):
-                return os.path.join(work_dir, *args)
-
-            # setup
-            files = [
-                _('file1'),
-                _('file2.py'),
-                _('file3'),
-                _('file3.py'),
-                _('file5.rt'),
-                _('file6.releng'),
-            ]
-            for file in files:
-                with open(file, 'a') as f:
-                    f.write(file)
-
-            # checks
-            src = _('file1')
-            target, existence = opt_file(src)
-            self.assertTrue(existence)
-            self.assertEqual(target, src)
-
-            src = _('file2')
-            opt = _('file2.py')
-            target, existence = opt_file(src)
-            self.assertTrue(existence)
-            self.assertEqual(target, opt)
-
-            src = _('file3')
-            target, existence = opt_file(src)
-            self.assertTrue(existence)
-            self.assertEqual(target, src)
-
-            src = _('file4')
-            target, existence = opt_file(src)
-            self.assertFalse(existence)
-            self.assertEqual(target, src)
-
-            src = _('file5')
-            opt = _('file5.rt')
-            target, existence = opt_file(src)
-            self.assertTrue(existence)
-            self.assertEqual(target, opt)
-
-            src = _('file6')
-            opt = _('file6.releng')
-            target, existence = opt_file(src)
-            self.assertTrue(existence)
-            self.assertEqual(target, opt)
 
     def test_utilio_prepare_helpers(self):
         prepared = prepare_arguments(None)

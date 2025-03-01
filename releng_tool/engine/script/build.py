@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.engine.script import resolve_remote_script
-from releng_tool.util.io import opt_file
 from releng_tool.util.io import run_script
+from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.log import verbose
 import os
 
