@@ -19,11 +19,6 @@ class TestToolPythonFlit(PythonSiteToolBase):
         self.assertFalse(lib_python.is_dir())
 
         lib_python = self.python_lib(self.engine.opts.target_dir)
-        print()
-        print()
-        print('lib_python', lib_python)
-        from releng_tool.util.io import ls
-        ls(self.engine.opts.target_dir, recursive=True)
         self.assertTrue(lib_python.is_dir())
         self.assertPythonModuleExists(lib_python, 'hello_module')
 
