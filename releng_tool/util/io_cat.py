@@ -9,7 +9,8 @@ import os
 import sys
 
 
-def cat(file: str | bytes | os.PathLike, *args: str | bytes | os.PathLike):
+def cat(file: str | bytes | os.PathLike,
+        *args: str | bytes | os.PathLike) -> bool:
     """
     concatenate files and print on the standard output
 
