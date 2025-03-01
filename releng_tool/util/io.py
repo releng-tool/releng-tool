@@ -5,6 +5,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 from pathlib import Path
 from releng_tool.support import releng_script_envs
+from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_debug
@@ -151,8 +152,7 @@ def ensure_dir_exists(dir_, *args, **kwargs):
             if not quiet:
                 err('unable to create directory: {}\n'
                     '    {}', final_dir, e)
-            if critical:
-                sys.exit(-1)
+            raise_for_critical(critical)
             return None
     return final_dir
 
@@ -496,7 +496,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             err('failed to issue command ({}): {}', rv, cmd_str)
 
             # trigger a hard stop
-            sys.exit(-1)
+            raise_for_critical()
         elif args:
             debug('failed to issue last command ({})', rv)
         else:

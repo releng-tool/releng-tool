@@ -4,11 +4,11 @@
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.log import err
+from releng_tool.util.critical import raise_for_critical
 from shutil import Error as ShutilError
 from shutil import copyfile
 from shutil import copystat
 import os
-import sys
 
 
 def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
@@ -124,8 +124,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
         err('unable to copy source contents to target location\n'
             '    {}', errmsg)
 
-    if not success and critical:
-        sys.exit(-1)
+    raise_for_critical(not success and critical)
     return success
 
 

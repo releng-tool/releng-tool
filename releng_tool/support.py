@@ -3,11 +3,11 @@
 
 from contextlib import contextmanager
 from releng_tool import __version__ as releng_version
+from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.log import err
 from runpy import run_path
 import inspect
 import os
-import sys
 
 
 def releng_include(file_path):
@@ -145,8 +145,7 @@ Please update to a more recent version:
  https://docs.releng.io/install/
 '''.strip().format(**args))
 
-            if critical:
-                sys.exit(-1)
+            raise_for_critical(critical)
 
     if maxver:
         requested = maxver.split('.')
@@ -174,7 +173,6 @@ detected:
 This package needs to upgraded or releng-tool needs to be downgraded.
 '''.strip().format(**args))
 
-            if critical:
-                sys.exit(-1)
+            raise_for_critical(critical)
 
     return rv

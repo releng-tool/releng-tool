@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.log import err
 import os
-import sys
 
 
 def symlink(target, link_path, quiet=False, critical=True, lpd=False,
@@ -80,9 +80,7 @@ def symlink(target, link_path, quiet=False, critical=True, lpd=False,
             err('unable to create symbolic link\n'
                 '    {}', msg)
 
-        if critical:
-            sys.exit(-1)
-
+        raise_for_critical(critical)
         return False
 
     if lpd:
