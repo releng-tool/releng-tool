@@ -9,6 +9,7 @@ on:
       - 'releng_tool/**'
       - 'scripts/**'
       - 'tests/**'
+      - '.mypy.ini'
       - '.pylintrc'
       - 'ruff.toml'
       - 'tox.ini'
@@ -20,6 +21,7 @@ on:
       - 'releng_tool/**'
       - 'scripts/**'
       - 'tests/**'
+      - '.mypy.ini'
       - '.pylintrc'
       - 'ruff.toml'
       - 'tox.ini'
@@ -36,6 +38,7 @@ jobs:
         include:
             - { toxenv:   ruff }
             - { toxenv: pylint }
+            - { toxenv:   mypy }
 
     steps:
     - name: Checkout
