@@ -86,6 +86,8 @@ lint.ignore = [
     'SLF001',
     # ignore flake8-print since we support/expect printing
     'T20',
+    # ignore warnings about using type-checking block
+    'TCH',
     # purposely used long exception messages
     'TRY003',
     # ignore desired usages of raise calls within trys
