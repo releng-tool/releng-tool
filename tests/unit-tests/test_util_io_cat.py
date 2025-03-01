@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.io import cat
+from releng_tool.util.io_cat import cat
 from tests import prepare_workdir
 from tests import redirect_stdout
 from tests import RelengToolTestCase

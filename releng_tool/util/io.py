@@ -15,7 +15,6 @@ from releng_tool.util.log import warn
 from releng_tool.util.string import expand as expand_util
 from runpy import run_path
 from shlex import quote
-from shutil import copyfileobj
 import errno
 import os
 import stat
@@ -54,48 +53,6 @@ class FailedToPrepareWorkingDirectoryError(Exception):
     """
     raised when a working directory could not be prepared
     """
-
-
-def cat(file, *args):
-    """
-    concatenate files and print on the standard output
-
-    .. versionadded:: 0.11
-
-    Attempts to read one or more files provided to this call. For each file, it
-    will be read and printed out to the standard output.
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        releng_cat('my-file')
-
-    Args:
-        file: the file
-        *args (optional): additional files to include
-
-    Returns:
-        ``True`` if all the files exists and were printed to the standard
-        output; ``False`` if one or more files could not be read
-    """
-
-    files = []
-    files.append(file)
-    files.extend(args)
-
-    for f in files:
-        if not os.path.isfile(f):
-            return False
-
-    try:
-        for filename in files:
-            with open(filename) as f:
-                copyfileobj(f, sys.stdout)
-    except OSError:
-        return False
-    else:
-        return True
 
 
 def ensure_dir_exists(dir_, *args, **kwargs):

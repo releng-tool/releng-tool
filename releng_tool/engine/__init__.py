@@ -44,7 +44,6 @@ from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import FailedToPrepareWorkingDirectoryError
-from releng_tool.util.io import cat
 from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
@@ -56,6 +55,7 @@ from releng_tool.util.io import path_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.io import run_script
 from releng_tool.util.io import touch
+from releng_tool.util.io_cat import cat
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
 from releng_tool.util.io_move import path_move
