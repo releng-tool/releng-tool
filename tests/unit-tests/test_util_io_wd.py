@@ -44,5 +44,5 @@ class TestUtilIoWd(RelengToolTestCase):
     def _fetch_cwd(self):
         cwd = Path.cwd()
         if sys.platform == 'darwin' and Path('/private') in cwd.parents:
-            cwd = cwd.relative_to(*cwd.parts[:2])
+            cwd = Path('/') / cwd.relative_to(*cwd.parts[:2])
         return cwd

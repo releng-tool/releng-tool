@@ -66,6 +66,6 @@ class TestUtilIoTempDir(RelengToolTestCase):
 
             cwd = Path.cwd()
             if sys.platform == 'darwin' and Path('/private') in cwd.parents:
-                cwd = cwd.relative_to(*cwd.parts[:2])
+                cwd = Path('/') / cwd.relative_to(*cwd.parts[:2])
 
             self.assertEqual(new_dir, cwd)
