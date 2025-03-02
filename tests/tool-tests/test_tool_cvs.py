@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.util.io import execute
-from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io_temp_dir import temp_dir
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 import time
@@ -101,7 +101,7 @@ class TestToolCvs(TestSiteToolBase):
         return self._cvs(*new_args)
 
     def _cvs_add(self, module, filename, total=1):
-        with generate_temp_dir() as workdir, interim_working_dir(workdir):
+        with temp_dir() as workdir, interim_working_dir(workdir):
             self._cvs_repo('checkout', '.')
 
             # build a module (if not yet created)
@@ -128,7 +128,7 @@ class TestToolCvs(TestSiteToolBase):
                 self._cvs_repo('commit', '-m', f'adding commit {n}')
 
     def _cvs_remove(self, module, filename):
-        with generate_temp_dir() as workdir, interim_working_dir(workdir):
+        with temp_dir() as workdir, interim_working_dir(workdir):
             self._cvs_repo('checkout', '.')
 
             target_file = os.path.join(module, filename)

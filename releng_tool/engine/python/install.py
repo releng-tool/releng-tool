@@ -11,8 +11,8 @@ from releng_tool import __version__ as releng_version
 from releng_tool.exceptions import RelengToolException
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
-from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io_copy import path_copy
+from releng_tool.util.io_temp_dir import temp_dir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 import os
@@ -129,7 +129,7 @@ def install(opts):
     else:
         optimization = [0, 1]  # default
 
-    with generate_temp_dir() as tmp_dir:
+    with temp_dir() as tmp_dir:
         # prepare the destination for the installation request
         dst = SchemeDictionaryDestination(
             cfg_scheme,

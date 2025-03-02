@@ -4,9 +4,9 @@
 from releng_tool.defs import GlobalAction
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
-from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_temp_dir import temp_dir
 from releng_tool.util.io_touch import touch
 from tests.support.site_tool_test import TestSiteToolBase
 import os
@@ -364,7 +364,7 @@ class TestToolGit(TestSiteToolBase):
     def test_tool_git_submodules_default(self):
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
 
-        with generate_temp_dir() as repo2:
+        with temp_dir() as repo2:
             # prepare additional mock repository directories
             repo1 = self.repo_dir
             self.prepare_repo_dir(repo2)
@@ -399,7 +399,7 @@ class TestToolGit(TestSiteToolBase):
         self.defconfig_add('GIT_SUBMODULES', value=True)
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
 
-        with generate_temp_dir() as repo2, generate_temp_dir() as repo3:
+        with temp_dir() as repo2, temp_dir() as repo3:
             # prepare additional mock repository directories
             repo1 = self.repo_dir
             self.prepare_repo_dir(repo2)
@@ -446,7 +446,7 @@ class TestToolGit(TestSiteToolBase):
         self.defconfig_add('GIT_SUBMODULES', value=True)
         self.defconfig_add('VERSION', DEFAULT_BRANCH)
 
-        with generate_temp_dir() as repo2:
+        with temp_dir() as repo2:
             # prepare additional mock repository directories
             repo1 = self.repo_dir
             self.prepare_repo_dir(repo2)

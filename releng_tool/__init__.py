@@ -27,7 +27,6 @@ from releng_tool.support import require_version as releng_require_version
 from releng_tool.util.env import env_value as releng_env
 from releng_tool.util.io import execute as releng_execute
 from releng_tool.util.io import execute_rv as releng_execute_rv
-from releng_tool.util.io import generate_temp_dir as releng_tmpdir
 from releng_tool.util.io import interim_working_dir as releng_wd
 from releng_tool.util.io import path_exists as releng_exists
 from releng_tool.util.io_cat import cat as releng_cat
@@ -39,6 +38,7 @@ from releng_tool.util.io_move import path_move as releng_move
 from releng_tool.util.io_move import path_move_into as releng_move_into
 from releng_tool.util.io_remove import path_remove as releng_remove
 from releng_tool.util.io_symlink import symlink as releng_symlink
+from releng_tool.util.io_temp_dir import temp_dir as releng_tmpdir
 from releng_tool.util.io_touch import touch as releng_touch
 from releng_tool.util.log import debug as debug
 from releng_tool.util.log import err as err

@@ -6,9 +6,9 @@ from difflib import unified_diff
 from io import StringIO
 from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
-from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io_copy import path_copy
+from releng_tool.util.io_temp_dir import temp_dir
 from unittest.mock import patch
 import os
 import pprint
@@ -118,7 +118,7 @@ def new_test_wd():
         the container directory
     """
 
-    with generate_temp_dir() as work_dir, interim_working_dir(work_dir):
+    with temp_dir() as work_dir, interim_working_dir(work_dir):
         yield work_dir
 
 
@@ -146,7 +146,7 @@ def prepare_testenv(config=None, template=None, args=None):
 
     config = {} if config is None else dict(config)
 
-    with generate_temp_dir() as work_dir, interim_working_dir(work_dir):
+    with temp_dir() as work_dir, interim_working_dir(work_dir):
         # force root directory to temporary directory; or configure all working
         # content based off the generated temporary directory
         if 'root_dir' not in config:
@@ -187,7 +187,7 @@ def prepare_workdir():
         the container directory
     """
 
-    with generate_temp_dir() as work_dir:
+    with temp_dir() as work_dir:
         yield work_dir
 
 

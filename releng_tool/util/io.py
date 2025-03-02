@@ -6,7 +6,6 @@ from contextlib import contextmanager
 from releng_tool.support import releng_script_envs
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io_mkdir import mkdir
-from releng_tool.util.io_remove import path_remove
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_debug
@@ -16,11 +15,9 @@ from releng_tool.util.log import warn
 from releng_tool.util.string import expand as expand_util
 from runpy import run_path
 from shlex import quote
-import errno
 import os
 import subprocess
 import sys
-import tempfile
 import traceback
 
 
@@ -34,12 +31,6 @@ MULTIPART_EXTENSIONS = [
     'tar.xz',
     'tar.z',
 ]
-
-
-class FailedToPrepareBaseDirectoryError(Exception):
-    """
-    raised when a base directory could not be prepared
-    """
 
 
 class FailedToPrepareWorkingDirectoryError(Exception):
@@ -422,46 +413,6 @@ def cmd_args_to_str(args):
         cmd_str = cmd_str.strip()
 
     return cmd_str
-
-
-@contextmanager
-def generate_temp_dir(dir_=None):
-    """
-    generate a context-supported temporary directory
-
-    Creates a temporary directory in the provided directory ``dir_`` (or system
-    default, is not provided). This is a context-supported call and will
-    automatically remove the directory when completed. If the provided
-    directory does not exist, it will created. If the directory could not be
-    created, an ``FailedToPrepareBaseDirectoryError`` exception will be thrown.
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        with releng_tmpdir() as dir_:
-            print(dir_)
-
-    Args:
-        dir_ (optional): the directory to create the temporary directory in
-
-    Raises:
-        FailedToPrepareBaseDirectoryError: the base directory does not exist and
-            could not be created
-    """
-    if dir_ and not mkdir(dir_):
-        raise FailedToPrepareBaseDirectoryError(dir_)
-
-    dir_ = tempfile.mkdtemp(prefix='.releng-tmp-', dir=dir_)
-    try:
-        yield dir_
-    finally:
-        try:
-            path_remove(dir_)
-        except OSError as e:
-            if e.errno != errno.ENOENT:
-                warn('unable to cleanup temporary directory: {}\n'
-                     '    {}', dir_, e)
 
 
 @contextmanager

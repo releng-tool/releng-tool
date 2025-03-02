@@ -9,9 +9,9 @@ from releng_tool.extract.mercurial import extract as extract_mercurial
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.hash import HashResult
 from releng_tool.util.hash import verify as verify_hashes
-from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io_remove import path_remove
+from releng_tool.util.io_temp_dir import temp_dir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
@@ -76,7 +76,7 @@ def stage(engine, pkg):
     # extraction (or moving resources), the work directory will be moved to the
     # package's respective build directory.
     out_dir = engine.opts.out_dir
-    with generate_temp_dir(out_dir) as work_dir:
+    with temp_dir(out_dir) as work_dir:
         with interim_working_dir(work_dir):
             extract_opts.work_dir = work_dir
 

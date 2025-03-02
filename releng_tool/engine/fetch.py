@@ -18,10 +18,10 @@ from releng_tool.tool.gpg import GPG
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.hash import HashResult
 from releng_tool.util.hash import verify as verify_hashes
-from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_remove import path_remove
+from releng_tool.util.io_temp_dir import temp_dir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
@@ -137,8 +137,7 @@ local sources option to use the default process).
 
     cache_filename = os.path.basename(pkg.cache_file)
     out_dir = engine.opts.out_dir
-    with generate_temp_dir(out_dir) as work_dir, \
-            generate_temp_dir(out_dir) as interim_cache_dir:
+    with temp_dir(out_dir) as work_dir, temp_dir(out_dir) as interim_cache_dir:
         with interim_working_dir(work_dir):
             interim_cache_file = os.path.join(interim_cache_dir, cache_filename)
             fetch_opts.cache_file = interim_cache_file
