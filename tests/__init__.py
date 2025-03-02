@@ -9,6 +9,7 @@ from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io_copy import path_copy
+from unittest.mock import patch
 import os
 import pprint
 import sys
@@ -91,21 +92,16 @@ def mock_os_remove_permission_denied(f=None):
         f (optional): the mock method to use; otherwise defaults to OSError
     """
 
-    def _(path):  # noqa: ARG001
+    def _(path, **kwargs):  # noqa: ARG001
         raise OSError('Mocked permission denied')
 
-    try:
-        original_remove = os.remove
-        original_rmdir = os.rmdir
-        try:
-            os.remove = f if f else _
-            os.rmdir = f if f else _
-            yield
-        finally:
-            os.remove = original_remove
-            os.rmdir = original_rmdir
-    finally:
-        pass
+    mock_method = f if f else _
+
+    with patch('os.remove', new=mock_method), \
+            patch('os.rmdir', new=mock_method), \
+            patch('pathlib.Path.rmdir', new=mock_method), \
+            patch('pathlib.Path.unlink', new=mock_method):
+        yield
 
 
 @contextmanager

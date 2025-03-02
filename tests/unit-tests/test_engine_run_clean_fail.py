@@ -57,8 +57,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_build_dir_clean(self):
-        def rmcmd(path):
-            if path == self.opts.build_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.build_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -67,8 +67,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_build_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.build_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.build_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -77,8 +77,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_build_dir_mrproper(self):
-        def rmcmd(path):
-            if path == self.opts.build_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.build_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -87,8 +87,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_cache_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.cache_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.cache_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -97,8 +97,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_dl_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.dl_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.dl_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -116,8 +116,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
         ]
 
         for target_file in file_flags:
-            def rmcmd(path):
-                if path == target_file:  # noqa: B023
+            def rmcmd(path, **kwargs):  # noqa: ARG001
+                if str(path) == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
@@ -126,8 +126,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
                 self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_host_dir_clean(self):
-        def rmcmd(path):
-            if path == self.opts.host_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.host_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -136,8 +136,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_host_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.host_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.host_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -146,8 +146,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_host_dir_mrproper(self):
-        def rmcmd(path):
-            if path == self.opts.host_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.host_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -156,8 +156,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_license_dir_clean(self):
-        def rmcmd(path):
-            if path == self.opts.license_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.license_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -166,8 +166,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_license_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.license_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.license_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -176,8 +176,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_license_dir_mrproper(self):
-        def rmcmd(path):
-            if path == self.opts.license_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.license_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -186,8 +186,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_pkg_clean(self):
-        def rmcmd(path):
-            if self.pkg_build_dir == path:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.pkg_build_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -196,8 +196,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_pkg_distclean(self):
-        def rmcmd(path):
-            if self.pkg_build_dir == path:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.pkg_build_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -213,8 +213,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
         ]
 
         for target_file in file_flags:
-            def rmcmd(path):
-                if path == target_file:  # noqa: B023
+            def rmcmd(path, **kwargs):  # noqa: ARG001
+                if str(path) == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
@@ -232,8 +232,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
         ]
 
         for target_file in file_flags:
-            def rmcmd(path):
-                if path == target_file:  # noqa: B023
+            def rmcmd(path, **kwargs):  # noqa: ARG001
+                if str(path) == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
@@ -248,8 +248,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
         ]
 
         for target_file in file_flags:
-            def rmcmd(path):
-                if path == target_file:  # noqa: B023
+            def rmcmd(path, **kwargs):  # noqa: ARG001
+                if str(path) == target_file:  # noqa: B023
                     raise OSError('Mocked permission denied')
 
             with mock_os_remove_permission_denied(f=rmcmd):
@@ -258,8 +258,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
                 self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_staging_dir_clean(self):
-        def rmcmd(path):
-            if path == self.opts.staging_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.staging_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -268,8 +268,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_staging_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.staging_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.staging_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -278,8 +278,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_staging_dir_mrproper(self):
-        def rmcmd(path):
-            if path == self.opts.staging_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.staging_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -288,8 +288,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_symbols_dir_clean(self):
-        def rmcmd(path):
-            if path == self.opts.symbols_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.symbols_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -298,8 +298,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_symbols_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.symbols_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.symbols_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -308,8 +308,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_symbols_dir_mrproper(self):
-        def rmcmd(path):
-            if path == self.opts.symbols_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.symbols_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -318,8 +318,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_target_dir_clean(self):
-        def rmcmd(path):
-            if path == self.opts.target_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.target_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -328,8 +328,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_target_dir_distclean(self):
-        def rmcmd(path):
-            if path == self.opts.target_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.target_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
@@ -338,8 +338,8 @@ class TestEngineRunCleanFail(RelengToolTestCase):
             self.assertFalse(rv)
 
     def test_engine_run_clean_fail_noperm_check_target_dir_mrproper(self):
-        def rmcmd(path):
-            if path == self.opts.target_dir:
+        def rmcmd(path, **kwargs):  # noqa: ARG001
+            if str(path) == self.opts.target_dir:
                 raise OSError('Mocked permission denied')
 
         with mock_os_remove_permission_denied(f=rmcmd):
