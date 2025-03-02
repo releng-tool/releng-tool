@@ -34,9 +34,9 @@ from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
 from releng_tool.packages.package import RelengPackage
 from releng_tool.util.env import extend_script_env
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import run_script
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
@@ -1625,7 +1625,7 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
         if not self._dvcs_cache_enabled:
             return
 
-        if not ensure_dir_exists(self.opts.cache_dir):
+        if not mkdir(self.opts.cache_dir):
             verbose('unable to generate output directory for dvcs cache')
             return
 

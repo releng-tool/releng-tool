@@ -4,10 +4,10 @@
 from pathlib import Path
 from releng_tool.defs import PackageInstallType
 from releng_tool.tool.cmake import CMAKE
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
@@ -159,7 +159,7 @@ def configure(opts):
     if 'CMAKE_LIBRARY_PATH' in cmake_defs:
         populate_dirs.extend(cmake_defs['CMAKE_LIBRARY_PATH'].split(';'))
     for dir_ in populate_dirs:
-        if not ensure_dir_exists(dir_):
+        if not mkdir(dir_):
             return False
 
     # cmake prepares build scripts out-of-source; move into the build output

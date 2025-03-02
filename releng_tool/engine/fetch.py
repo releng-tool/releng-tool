@@ -18,10 +18,10 @@ from releng_tool.tool.gpg import GPG
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.hash import HashResult
 from releng_tool.util.hash import verify as verify_hashes
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import path_remove
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
@@ -322,7 +322,7 @@ file. Ensure that the package's public key has been registered into gpg.
 
                 # ensure the cache container/directory exists
                 cache_dir = os.path.dirname(pkg.cache_file)
-                if not ensure_dir_exists(cache_dir):
+                if not mkdir(cache_dir):
                     return False
 
                 try:

@@ -25,7 +25,6 @@ from os.path import join as releng_join
 from releng_tool.support import releng_include as releng_include
 from releng_tool.support import require_version as releng_require_version
 from releng_tool.util.env import env_value as releng_env
-from releng_tool.util.io import ensure_dir_exists as releng_mkdir
 from releng_tool.util.io import execute as releng_execute
 from releng_tool.util.io import execute_rv as releng_execute_rv
 from releng_tool.util.io import generate_temp_dir as releng_tmpdir
@@ -37,6 +36,7 @@ from releng_tool.util.io_cat import cat as releng_cat
 from releng_tool.util.io_copy import path_copy as releng_copy
 from releng_tool.util.io_copy import path_copy_into as releng_copy_into
 from releng_tool.util.io_ls import ls as releng_ls
+from releng_tool.util.io_mkdir import mkdir as releng_mkdir
 from releng_tool.util.io_move import path_move as releng_move
 from releng_tool.util.io_move import path_move_into as releng_move_into
 from releng_tool.util.io_symlink import symlink as releng_symlink

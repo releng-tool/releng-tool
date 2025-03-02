@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.critical import raise_for_critical
 from shutil import Error as ShutilError
@@ -90,7 +90,7 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
                 base_dir = os.path.dirname(dst)
 
             if base_dir and not os.path.isdir(base_dir):
-                attempt_copy = ensure_dir_exists(base_dir, quiet=quiet)
+                attempt_copy = mkdir(base_dir, quiet=quiet)
             else:
                 attempt_copy = True
 
@@ -199,7 +199,7 @@ def _copy_stat_compat(src, dst):
 
 
 def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
-    if not ensure_dir_exists(dst_folder, quiet=quiet, critical=critical):
+    if not mkdir(dst_folder, quiet=quiet, critical=critical):
         return False
 
     for entry in os.listdir(src_folder):

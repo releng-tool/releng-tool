@@ -3,8 +3,8 @@
 
 from releng_tool.packages import pkg_cache_key
 from releng_tool.tool.git import GIT
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log
@@ -115,7 +115,7 @@ def fetch_default(opts):
 
     # if we have no cache for this repository, build one
     if not has_cache:
-        if not ensure_dir_exists(cache_dir):
+        if not mkdir(cache_dir):
             return None
 
         if not _create_bare_git_repo(cache_dir):
@@ -573,7 +573,7 @@ def _fetch_submodule(opts, name, cache_dir, revision, site):
 
     # if we have no cache for this repository, build one
     if not has_cache:
-        if not ensure_dir_exists(cache_dir):
+        if not mkdir(cache_dir):
             return False
 
         if not _create_bare_git_repo(cache_dir):

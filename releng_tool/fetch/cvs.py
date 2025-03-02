@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.tool.cvs import CVS
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import interpret_stem_extension
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
@@ -81,7 +81,7 @@ def fetch_default(opts):
     log('caching sources')
 
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
-    if not ensure_dir_exists(cache_dir):
+    if not mkdir(cache_dir):
         return None
 
     def cvs_filter(info):
@@ -131,7 +131,7 @@ def fetch_local_srcs(opts):
 
     # CVS requires the base directory exists before attempting to checkout
     verbose('preparing container directory')
-    if not ensure_dir_exists(container_dir):
+    if not mkdir(container_dir):
         return None
 
     if not CVS.execute(['-d', cvsroot, 'checkout', '-d', basename, module],

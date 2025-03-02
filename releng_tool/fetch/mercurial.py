@@ -2,7 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.tool.hg import HG
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
@@ -66,7 +66,7 @@ def fetch_default(opts):
 
     # if we have no cache for this repository, build one
     if not os.path.isdir(cache_dir) or len(os.listdir(cache_dir)) == 0:
-        if not ensure_dir_exists(cache_dir):
+        if not mkdir(cache_dir):
             return None
 
         if not HG.execute(['--noninteractive', '--verbose',

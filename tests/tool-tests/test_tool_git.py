@@ -2,12 +2,12 @@
 # Copyright releng-tool
 
 from releng_tool.defs import GlobalAction
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import touch
+from releng_tool.util.io_mkdir import mkdir
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 import sys
@@ -547,7 +547,7 @@ class TestToolGit(TestSiteToolBase):
         os.environ.pop('GPG_AGENT_INFO', None)
         os.environ.pop('SSH_AUTH_SOCK', None)
         os.environ.pop('SSH_AGENT_PID', None)
-        ensure_dir_exists('.gnupghome')
+        mkdir('.gnupghome')
 
         rv, out = execute_rv('gpgconf', '--list-dirs', 'socketdir')
         if rv != 0:

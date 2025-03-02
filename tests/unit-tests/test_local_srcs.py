@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from tests import RelengToolTestCase
 from tests import copy_template
 from tests import prepare_testenv
@@ -367,7 +367,7 @@ class TestLocalSources(RelengToolTestCase):
 
         if pkg:
             container = os.path.join(container, pkg)
-        assert ensure_dir_exists(container)
+        assert mkdir(container)
 
         metadata = os.path.join(container, 'metadata')
         with open(metadata, 'w') as f:

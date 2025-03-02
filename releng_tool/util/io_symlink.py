@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.util.critical import raise_for_critical
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 import os
 
@@ -96,8 +96,7 @@ def symlink(target, link_path, quiet=False, critical=True, lpd=False,
     if os.path.islink(dst_file):
         if not path_remove(dst_file, quiet=quiet):
             return symlink_failure('failed to remove symlink: ' + dst_file)
-    elif base_dir and \
-            not ensure_dir_exists(base_dir, quiet=quiet, critical=critical):
+    elif base_dir and not mkdir(base_dir, quiet=quiet, critical=critical):
         return False
 
     if relative:

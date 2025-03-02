@@ -28,8 +28,8 @@ from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import cmd_args_to_str
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io_copy import path_copy
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
@@ -125,7 +125,7 @@ class RelengPackagePipeline:
             # now that the extraction stage has (most likely)
             # created a build directory, ensure the output directory
             # exists as well (for file flags and other content)
-            if not ensure_dir_exists(pkg.build_output_dir):
+            if not mkdir(pkg.build_output_dir):
                 raise RelengToolExtractionStageFailure
             self.engine.stats.track_duration_end(pkg.name, 'extract')
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
@@ -554,7 +554,7 @@ class RelengPackagePipeline:
 
         # ensure package-specific license directory exists
         pkg_license_dir = os.path.join(self.opts.license_dir, pkg.nv)
-        if not ensure_dir_exists(pkg_license_dir):
+        if not mkdir(pkg_license_dir):
             return False
 
         # copy over each license files

@@ -3,7 +3,6 @@
 
 from collections import OrderedDict
 from releng_tool.tool.python import PYTHON
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension as ise
 from releng_tool.util.io import prepare_arguments
@@ -22,38 +21,6 @@ import unittest
 
 
 class TestUtilIo(RelengToolTestCase):
-    def test_utilio_ensuredirexists(self):
-        with prepare_workdir() as work_dir:
-            result = ensure_dir_exists(work_dir)
-            self.assertEqual(result, work_dir)
-
-            new_dir = os.path.join(work_dir, 'test1')
-            self.assertFalse(os.path.exists(new_dir))
-
-            result = ensure_dir_exists(new_dir)
-            self.assertTrue(result)
-            self.assertTrue(os.path.exists(new_dir))
-
-            new_dir = os.path.join(work_dir, 'test2')
-            self.assertFalse(os.path.exists(new_dir))
-
-            result = ensure_dir_exists(work_dir, 'test2')
-            self.assertEqual(result, new_dir)
-            self.assertTrue(os.path.exists(new_dir))
-
-            new_file = os.path.join(work_dir, 'test3')
-            with open(new_file, 'ab'):
-                pass
-            self.assertTrue(os.path.isfile(new_file))
-
-            result = ensure_dir_exists(new_file)
-            self.assertIsNone(result)
-            self.assertTrue(os.path.isfile(new_file))
-
-            with self.assertRaises(SystemExit):
-                ensure_dir_exists(new_file, critical=True)
-            self.assertTrue(os.path.isfile(new_file))
-
     def test_utilio_execution(self):
         result = execute(None, quiet=True, critical=False)
         self.assertFalse(result)

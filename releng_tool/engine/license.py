@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -84,7 +84,7 @@ class LicenseManager:
         """
 
         # ensure we can output any license content into the license folder
-        if not ensure_dir_exists(self.opts.license_dir):
+        if not mkdir(self.opts.license_dir):
             return False
 
         # build a single license file -- holding a list of all license

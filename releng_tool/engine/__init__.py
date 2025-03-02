@@ -44,7 +44,6 @@ from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import FailedToPrepareWorkingDirectoryError
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
 from releng_tool.util.io import generate_temp_dir
@@ -57,6 +56,7 @@ from releng_tool.util.io_cat import cat
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
 from releng_tool.util.io_ls import ls
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
 from releng_tool.util.io_opt_file import opt_file
@@ -464,7 +464,7 @@ class RelengEngine:
                     opts.target_dir,
                 ]
                 for common_dir in common_dirs:
-                    if not ensure_dir_exists(common_dir):
+                    if not mkdir(common_dir):
                         return False
 
                 pipeline = RelengPackagePipeline(self, opts, script_env)
@@ -803,7 +803,7 @@ of the releng process:
 
             # ensure images directory exists (as the post-processing script will
             # most likely populate it)
-            if not ensure_dir_exists(self.opts.images_dir):
+            if not mkdir(self.opts.images_dir):
                 return False
 
             if not run_script(build_script, env, subject='post-build'):
@@ -956,7 +956,7 @@ of the releng process:
         script_env['releng_include'] = releng_include
         script_env['releng_join'] = os.path.join
         script_env['releng_ls'] = ls
-        script_env['releng_mkdir'] = ensure_dir_exists
+        script_env['releng_mkdir'] = mkdir
         script_env['releng_move'] = path_move
         script_env['releng_move_into'] = path_move_into
         script_env['releng_remove'] = path_remove

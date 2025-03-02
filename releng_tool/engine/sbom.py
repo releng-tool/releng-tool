@@ -12,7 +12,7 @@ from releng_tool.defs import VcsType
 from releng_tool.util.hash import BadFileHashLoadError
 from releng_tool.util.hash import BadFormatHashLoadError
 from releng_tool.util.hash import load as load_hashes
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 from releng_tool.util.spdx import ConjunctiveLicenses
@@ -166,7 +166,7 @@ class SbomManager:
 
         # ensure output directory exists before any attempts to generate
         # (e.g. if an engine was just asked to create SBOMs)
-        if not ensure_dir_exists(self.opts.out_dir):
+        if not mkdir(self.opts.out_dir):
             return False
 
         fmt = self.opts.sbom_format

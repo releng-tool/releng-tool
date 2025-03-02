@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.util.critical import raise_for_critical
-from releng_tool.util.io import ensure_dir_exists
 from releng_tool.util.io import path_remove
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from shutil import move
 import os
@@ -74,12 +74,12 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     if os.path.isfile(src) and not dst_dir:
         parent_dir = os.path.dirname(dst)
         if parent_dir and not os.path.isdir(parent_dir):
-            success = ensure_dir_exists(parent_dir, quiet=quiet)
+            success = mkdir(parent_dir, quiet=quiet)
     elif not os.path.isdir(dst):
         if os.path.exists(dst):
             path_remove(dst, quiet=quiet)
 
-        success = ensure_dir_exists(dst, quiet=quiet)
+        success = mkdir(dst, quiet=quiet)
     else:
         src_dir = os.path.realpath(src)
         dst_dir = os.path.realpath(dst)

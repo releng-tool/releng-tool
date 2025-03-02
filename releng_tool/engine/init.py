@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import verbose
@@ -26,7 +26,7 @@ def initialize_sample(opts):
 
     root_dir = opts.root_dir
 
-    if not ensure_dir_exists(root_dir):
+    if not mkdir(root_dir):
         return False
 
     if os.listdir(root_dir):
@@ -36,7 +36,7 @@ def initialize_sample(opts):
     sample_dir = os.path.join(root_dir, 'package', 'sample')
 
     success = True
-    if ensure_dir_exists(sample_dir):
+    if mkdir(sample_dir):
         # sample project
         sample_defs = os.path.join(root_dir, 'package', 'sample', 'sample.rt')
         try:

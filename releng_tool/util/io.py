@@ -5,6 +5,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 from releng_tool.support import releng_script_envs
 from releng_tool.util.critical import raise_for_critical
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_debug
@@ -45,65 +46,6 @@ class FailedToPrepareWorkingDirectoryError(Exception):
     """
     raised when a working directory could not be prepared
     """
-
-
-def ensure_dir_exists(dir_, *args, **kwargs):
-    """
-    ensure the provided directory exists
-
-    .. versionadded:: 0.3
-    .. versionchanged:: 0.13 Add support for ``critical``.
-    .. versionchanged:: 1.3 Accepts multiple paths components.
-    .. versionchanged:: 1.3 Returns the created path.
-
-    Attempts to create the provided directory. If the directory already exists,
-    this method has no effect. If the directory does not exist and could not be
-    created, this method will return ``None``. Also, if an error has been
-    detected, an error message will be output to standard error (unless
-    ``quiet`` is set to ``True``).
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        if releng_mkdir('my-directory'):
-            print('directory was created')
-        else:
-            print('directory was not created')
-
-        target_dir = releng_mkdir(TARGET_DIR, 'sub-folder')
-        if target_dir:
-            # output] target directory: <target>/sub-folder
-            print('target directory:', target_dir)
-        else:
-            print('directory was not created')
-
-    Args:
-        dir_: the directory
-        *args (optional): additional components of the directory
-        **quiet (optional): whether or not to suppress output (defaults
-            to ``False``)
-        **critical (optional): whether or not to stop execution on
-            failure (defaults to ``False``)
-
-    Returns:
-        the directory that exists; ``None`` if the directory could not
-        be created
-    """
-    quiet = kwargs.get('quiet')
-    critical = kwargs.get('critical')
-
-    final_dir = os.path.join(dir_, *args)
-    try:
-        os.makedirs(final_dir)
-    except OSError as e:
-        if e.errno != errno.EEXIST or not os.path.isdir(final_dir):
-            if not quiet:
-                err('unable to create directory: {}\n'
-                    '    {}', final_dir, e)
-            raise_for_critical(critical)
-            return None
-    return final_dir
 
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
@@ -507,7 +449,7 @@ def generate_temp_dir(dir_=None):
         FailedToPrepareBaseDirectoryError: the base directory does not exist and
             could not be created
     """
-    if dir_ and not ensure_dir_exists(dir_):
+    if dir_ and not mkdir(dir_):
         raise FailedToPrepareBaseDirectoryError(dir_)
 
     dir_ = tempfile.mkdtemp(prefix='.releng-tmp-', dir=dir_)
@@ -551,7 +493,7 @@ def interim_working_dir(dir_):
     """
     owd = os.getcwd()
 
-    if not ensure_dir_exists(dir_):
+    if not mkdir(dir_):
         raise FailedToPrepareWorkingDirectoryError(dir_)
 
     os.chdir(dir_)
@@ -922,7 +864,7 @@ def touch(file):
     try:
         parent_dir = os.path.dirname(file)
         if parent_dir and not os.path.isdir(parent_dir):
-            ensure_dir_exists(parent_dir)
+            mkdir(parent_dir)
 
         with open(file, 'ab'):
             os.utime(file, None)

@@ -2,7 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.tool.git import GIT
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
@@ -76,7 +76,7 @@ as the depot path to synchronize. For example:
 
     # ensure cache file's directory exists
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
-    if not ensure_dir_exists(cache_dir):
+    if not mkdir(cache_dir):
         return None
 
     def perforce_filter(info):

@@ -2,7 +2,7 @@
 # Copyright releng-tool
 
 from collections import defaultdict
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from time import monotonic
@@ -85,7 +85,7 @@ class RelengStats:
             desc (optional): description of this save event (for logging)
         """
 
-        if not ensure_dir_exists(self.out_dir):
+        if not mkdir(self.out_dir):
             verbose('unable to generate output directory for statistics')
             return
 
@@ -151,7 +151,7 @@ class RelengStats:
         generate reports/etc. for any tracked statistics information based on
         the current and previous invoked executions (if any).
         """
-        if not ensure_dir_exists(self.out_dir):
+        if not mkdir(self.out_dir):
             verbose('unable to generate output directory for statistics')
             return
 

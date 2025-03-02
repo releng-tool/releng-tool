@@ -2,7 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.tool.svn import SVN
-from releng_tool.util.io import ensure_dir_exists
+from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
@@ -70,7 +70,7 @@ def fetch_default(opts):
 
     # ensure cache file's directory exists
     cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
-    if not ensure_dir_exists(cache_dir):
+    if not mkdir(cache_dir):
         return None
 
     with tarfile.open(cache_file, 'w:gz') as tar:
