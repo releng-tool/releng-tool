@@ -5,7 +5,7 @@ from releng_tool.defs import GlobalAction
 from releng_tool.packages import pkg_key
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
-from releng_tool.util.io import path_remove
+from releng_tool.util.io_remove import path_remove
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os

@@ -20,8 +20,8 @@ from releng_tool.util.hash import HashResult
 from releng_tool.util.hash import verify as verify_hashes
 from releng_tool.util.io import generate_temp_dir
 from releng_tool.util.io import interim_working_dir
-from releng_tool.util.io import path_remove
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_remove import path_remove
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose

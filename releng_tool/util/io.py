@@ -6,6 +6,7 @@ from contextlib import contextmanager
 from releng_tool.support import releng_script_envs
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_remove import path_remove
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_debug
@@ -17,7 +18,6 @@ from runpy import run_path
 from shlex import quote
 import errno
 import os
-import stat
 import subprocess
 import sys
 import tempfile
@@ -571,132 +571,6 @@ def path_exists(path, *args):
         ``True`` if the path exists; ``False`` otherwise
     """
     return os.path.exists(os.path.join(path, *args))
-
-
-def path_remove(path, quiet=False):
-    """
-    remove the provided path
-
-    Attempts to remove the provided path if it exists. The path value can either
-    be a directory or a specific file. If the provided path does not exist, this
-    method has no effect. In the event that a file or directory could not be
-    removed due to an error other than unable to be found, an error message will
-    be output to standard error (unless ``quiet`` is set to ``True``).
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        releng_remove('my-file')
-        # (or)
-        releng_remove('my-directory/')
-
-    Args:
-        path: the path to remove
-        quiet (optional): whether or not to suppress output
-
-    Returns:
-        ``True`` if the path was removed or does not exist; ``False`` if the
-        path could not be removed from the system
-    """
-
-    if not os.path.exists(path) and not os.path.islink(path):
-        return True
-
-    try:
-        if os.path.isdir(path) and not os.path.islink(path):
-            _path_remove_dir(path)
-        else:
-            _path_remove_file(path)
-    except OSError as e:
-        if e.errno != errno.ENOENT:
-            if not quiet:
-                err('unable to remove path: {}\n'
-                    '    {}', path, e)
-            return False
-
-    return True
-
-
-def _path_remove_dir(dir_):
-    """
-    remove the provided directory (recursive)
-
-    Attempts to remove the provided directory. In the event that a file or
-    directory could not be removed due to an error, this function will typically
-    raise an OSError exception.
-
-    In the chance that a file cannot be removed due to permission issues, this
-    function can attempt to adjust permissions to specific paths to help in the
-    removal processes (e.g. dealing with read-only files or other strict
-    permissions setup during a build process).
-
-    Args:
-        dir_: the directory to remove
-
-    Raises:
-        OSError: if a path could not be removed
-    """
-
-    # ensure a caller has read/write access before hand to prepare for removal
-    # (e.g. if marked as read-only) and ensure contents can be fetched as well
-    try:
-        st = os.stat(dir_)
-        if not (st.st_mode & stat.S_IRUSR) or not (st.st_mode & stat.S_IWUSR):
-            os.chmod(dir_, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
-    except OSError:
-        pass
-
-    # remove directory contents (if any)
-    entries = os.listdir(dir_)
-    for entry in entries:
-        path = os.path.join(dir_, entry)
-        if os.path.isdir(path) and not os.path.islink(path):
-            _path_remove_dir(path)
-        else:
-            _path_remove_file(path)
-
-    # remove directory
-    os.rmdir(dir_)
-
-
-def _path_remove_file(path):
-    """
-    remove the provided file
-
-    Attempts to remove the provided file. In the event that the file could not
-    be removed due to an error, this function will typically raise an OSError
-    exception.
-
-    In the chance that a file cannot be removed due to permission issues, this
-    function can attempt to adjust permissions to specific paths to help in the
-    removal processes (e.g. dealing with read-only files or other strict
-    permissions setup during a build process).
-
-    Args:
-        path: the file to remove
-
-    Raises:
-        OSError: if the file could not be removed
-    """
-
-    try:
-        os.remove(path)
-    except OSError as e:
-        if e.errno != errno.EACCES:
-            raise
-
-        # if a file could not be removed, try adding write permissions
-        # and retry removal
-        try:
-            st = os.stat(path)
-            if (st.st_mode & stat.S_IWUSR):
-                raise
-
-            os.chmod(path, st.st_mode | stat.S_IWUSR)
-            os.remove(path)
-        except OSError as ex2:
-            raise e from ex2
 
 
 def prepare_arguments(args):

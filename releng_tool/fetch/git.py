@@ -3,8 +3,8 @@
 
 from releng_tool.packages import pkg_cache_key
 from releng_tool.tool.git import GIT
-from releng_tool.util.io import path_remove
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_remove import path_remove
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log

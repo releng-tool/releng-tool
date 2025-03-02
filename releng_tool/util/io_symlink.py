@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.util.critical import raise_for_critical
-from releng_tool.util.io import path_remove
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_remove import path_remove
 from releng_tool.util.log import err
 import os
 
