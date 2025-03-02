@@ -5,7 +5,7 @@ lint.select = [
 lint.ignore = [
     # ignore shadowed modules at this time
     'A005',
-    # ignore flake8-annotations since python 2.7 is supported
+    # ignore annotations requirement for now until we can complete them
     'ANN',
     # ignore various unused arguments in api definitions
     'ARG002',
@@ -58,7 +58,7 @@ lint.ignore = [
     'PLW0603',
     # project uses unittest module
     'PT',
-    # pathlib not supported in python 2.7
+    # suppress pathlib lint until we can update implementation in a good state
     'PTH',
     # single quotes are preferred in this project
     'Q000',
@@ -92,7 +92,7 @@ lint.ignore = [
     'TRY003',
     # ignore desired usages of raise calls within trys
     'TRY301',
-    # ignore pyupgrade since python 2.7 is supported
+    # disable pyupgrade for now since we have a lot to upgrade still
     'UP',
 ]
 
