@@ -5,7 +5,11 @@
 - Improve accepting of path-like arguments into `releng_cat`
 - Improve accepting of path-like arguments into `releng_ls`
 - Improve accepting of path-like arguments into `releng_mkdir`
+- Improve accepting of path-like arguments into `releng_remove`
+- Improve accepting of path-like arguments into `releng_tmpdir`
+- Improve accepting of path-like arguments into `releng_wd`
 - Support for extensionless configuration/scripts is deprecated
+- Support working-directory changing with `releng_tmpdir`
 
 ## 2.1.1 (2025-02-17)
 
