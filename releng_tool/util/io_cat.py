@@ -15,6 +15,7 @@ def cat(file: str | bytes | os.PathLike,
     concatenate files and print on the standard output
 
     .. versionadded:: 0.11
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     Attempts to read one or more files provided to this call. For each file, it
     will be read and printed out to the standard output.

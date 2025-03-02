@@ -12,6 +12,7 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
 
     .. versionadded:: 0.11
     .. versionchanged:: 2.0 Add support for ``recursive``.
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     Attempts to read a directory for its contents and prints this information
     to the configured standard output stream.

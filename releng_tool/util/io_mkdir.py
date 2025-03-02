@@ -17,6 +17,7 @@ def mkdir(dir_: str | bytes | os.PathLike, *args: str | bytes | os.PathLike,
     .. versionchanged:: 0.13 Add support for ``critical``.
     .. versionchanged:: 1.3 Accepts multiple paths components.
     .. versionchanged:: 1.3 Returns the created path.
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     Attempts to create the provided directory. If the directory already exists,
     this method has no effect. If the directory does not exist and could not be
