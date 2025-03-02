@@ -39,7 +39,7 @@ class TestUtilIo(RelengToolTestCase):
 
         result = mkdir(new_dir, 'part', b'leaf')
         self.assertEqual(result, expected_dir)
-        self.assertTrue(new_dir.is_dir())
+        self.assertTrue(expected_dir.is_dir())
 
     def test_utilio_mkdir_new_dir_encoded(self):
         new_dir = self.work_dir / 'test-dir'
