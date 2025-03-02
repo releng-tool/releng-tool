@@ -45,7 +45,8 @@ class TestUtilIoMkdir(RelengToolTestCase):
         new_dir = self.work_dir / 'test-dir'
         self.assertFalse(new_dir.exists())
 
-        result = mkdir(new_dir)
+        new_dir_encoded = os.fsencode(new_dir)
+        result = mkdir(new_dir_encoded)
         self.assertEqual(result, new_dir)
         self.assertTrue(new_dir.is_dir())
 
@@ -53,8 +54,7 @@ class TestUtilIoMkdir(RelengToolTestCase):
         new_dir = self.work_dir / 'test-dir'
         self.assertFalse(new_dir.exists())
 
-        new_dir_encoded = os.fsencode(new_dir)
-        result = mkdir(new_dir_encoded)
+        result = mkdir(new_dir)
         self.assertEqual(result, new_dir)
         self.assertTrue(new_dir.is_dir())
 
@@ -62,7 +62,7 @@ class TestUtilIoMkdir(RelengToolTestCase):
         new_dir = self.work_dir / 'test-dir'
         self.assertFalse(new_dir.exists())
 
-        new_dir_str = os.fsencode(new_dir)
+        new_dir_str = str(new_dir)
         result = mkdir(new_dir_str)
         self.assertEqual(result, new_dir)
         self.assertTrue(new_dir.is_dir())
