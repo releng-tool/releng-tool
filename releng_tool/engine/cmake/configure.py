@@ -4,10 +4,10 @@
 from pathlib import Path
 from releng_tool.defs import PackageInstallType
 from releng_tool.tool.cmake import CMAKE
-from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
@@ -164,7 +164,7 @@ def configure(opts):
 
     # cmake prepares build scripts out-of-source; move into the build output
     # directory and generate scripts from the build directory
-    with interim_working_dir(opts.build_output_dir):
+    with wd(opts.build_output_dir):
         if not CMAKE.execute(cmake_args, env=expand(opts.conf_env)):
             err('failed to prepare cmake project: {}', opts.name)
             return False

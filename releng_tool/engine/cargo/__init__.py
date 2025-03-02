@@ -4,7 +4,7 @@
 from configparser import ConfigParser
 from releng_tool.defs import VcsType
 from releng_tool.tool.cargo import CARGO
-from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -79,7 +79,7 @@ def cargo_package_clean(opts, pkg):
         cargo_args.append('--release')
 
     # invoke a package-specific clean
-    with interim_working_dir(build_dir):
+    with wd(build_dir):
         if not CARGO.execute(cargo_args):
             warn('failed to clean cargo contents: {}', pkg.name)
 

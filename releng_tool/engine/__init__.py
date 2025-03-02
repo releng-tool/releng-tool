@@ -43,10 +43,8 @@ from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
-from releng_tool.util.io import FailedToPrepareWorkingDirectoryError
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
-from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import path_exists
 from releng_tool.util.io import run_script
 from releng_tool.util.io_cat import cat
@@ -61,6 +59,8 @@ from releng_tool.util.io_remove import path_remove
 from releng_tool.util.io_symlink import symlink
 from releng_tool.util.io_temp_dir import temp_dir
 from releng_tool.util.io_touch import touch
+from releng_tool.util.io_wd import FailedToPrepareWorkingDirectoryError
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import hint
@@ -288,7 +288,7 @@ class RelengEngine:
             os.environ[key] = val
 
         # notify extensions that configuration options have been processed
-        with interim_working_dir(opts.root_dir):
+        with wd(opts.root_dir):
             self.registry.emit('config-loaded', env=script_env)
 
         # register the project's host directory as a system path; lazily permits
@@ -774,7 +774,7 @@ of the releng process:
         """
 
         # notify extensions that a post-build event has started
-        with interim_working_dir(self.opts.target_dir):
+        with wd(self.opts.target_dir):
             self.registry.emit('post-build-started', env=env)
 
         RELENG_POST_BUILD_NAME = 'releng-tool-post-build'
@@ -812,7 +812,7 @@ of the releng process:
             verbose('post-processing (build) completed')
 
         # notify extensions that a post-build event has completed
-        with interim_working_dir(self.opts.target_dir):
+        with wd(self.opts.target_dir):
             self.registry.emit('post-build-finished', env=env)
 
         return True
@@ -964,7 +964,7 @@ of the releng process:
         script_env['releng_symlink'] = symlink
         script_env['releng_tmpdir'] = temp_dir
         script_env['releng_touch'] = touch
-        script_env['releng_wd'] = interim_working_dir
+        script_env['releng_wd'] = wd
         script_env['success'] = success
         script_env['verbose'] = verbose
         script_env['warn'] = warn

@@ -4,10 +4,10 @@
 from releng_tool.defs import GlobalAction
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
-from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_temp_dir import temp_dir
 from releng_tool.util.io_touch import touch
+from releng_tool.util.io_wd import wd
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 import sys
@@ -594,7 +594,7 @@ class TestToolGit(TestSiteToolBase):
         self.assertTrue(rv)
 
     def _git(self, workdir, *args):
-        with interim_working_dir(workdir):
+        with wd(workdir):
             out = []
             if not execute(['git', *list(args)], capture=out, critical=False):
                 print(['(TestToolGit) git', *list(args)])

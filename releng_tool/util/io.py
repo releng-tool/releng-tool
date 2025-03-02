@@ -2,16 +2,13 @@
 # Copyright releng-tool
 
 from __future__ import annotations
-from contextlib import contextmanager
 from releng_tool.support import releng_script_envs
 from releng_tool.util.critical import raise_for_critical
-from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_debug
 from releng_tool.util.log import is_verbose
 from releng_tool.util.log import verbose
-from releng_tool.util.log import warn
 from releng_tool.util.string import expand as expand_util
 from runpy import run_path
 from shlex import quote
@@ -31,12 +28,6 @@ MULTIPART_EXTENSIONS = [
     'tar.xz',
     'tar.z',
 ]
-
-
-class FailedToPrepareWorkingDirectoryError(Exception):
-    """
-    raised when a working directory could not be prepared
-    """
 
 
 def execute(args, cwd=None, env=None, env_update=None, quiet=None,
@@ -413,48 +404,6 @@ def cmd_args_to_str(args):
         cmd_str = cmd_str.strip()
 
     return cmd_str
-
-
-@contextmanager
-def interim_working_dir(dir_):
-    """
-    move into a context-supported working directory
-
-    Moves the current context into the provided working directory ``dir``. When
-    returned, the original working directory will be restored. If the provided
-    directory does not exist, it will created. If the directory could not be
-    created, an ``FailedToPrepareWorkingDirectoryError`` exception will be
-    thrown.
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        with releng_wd('my-directory/'):
-            # invoked in 'my-directory'
-
-        # invoked in original working directory
-
-    Args:
-        dir_: the target working directory
-
-    Raises:
-        FailedToPrepareWorkingDirectoryError: the working directory does not
-            exist and could not be created
-    """
-    owd = os.getcwd()
-
-    if not mkdir(dir_):
-        raise FailedToPrepareWorkingDirectoryError(dir_)
-
-    os.chdir(dir_)
-    try:
-        yield dir_
-    finally:
-        try:
-            os.chdir(owd)
-        except OSError:
-            warn('unable to restore original working directory: ' + owd)
 
 
 def interpret_stem_extension(basename):

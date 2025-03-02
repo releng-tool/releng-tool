@@ -12,7 +12,7 @@ from releng_tool.engine.scons.configure import configure as conf_scons
 from releng_tool.engine.script.configure import configure as conf_script
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
-from releng_tool.util.io import interim_working_dir
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import err
 from releng_tool.util.log import note
 
@@ -102,7 +102,7 @@ def stage(engine, pkg, script_env):
         err('configurer type is not implemented: {}', pkg.type)
         return False
 
-    with interim_working_dir(build_dir):
+    with wd(build_dir):
         configured = configurer(configure_opts)
         if not configured:
             return False

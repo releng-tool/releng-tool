@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import run_script
 from releng_tool.util.io_opt_file import opt_file
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 import os
@@ -46,7 +46,7 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
     else:
         build_dir = pkg.build_dir
 
-    with interim_working_dir(build_dir):
+    with wd(build_dir):
         if not run_script(post_script, script_env, subject='post-processing'):
             return False
 
