@@ -3,7 +3,7 @@
 
 from releng_tool.util.io import execute
 from releng_tool.util.io import interim_working_dir
-from releng_tool.util.io import touch
+from releng_tool.util.io_touch import touch
 from tests.support.site_tool_test import TestSiteToolBase
 import os
 

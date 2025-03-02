@@ -9,7 +9,6 @@ from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.io import prepend_shebang_interpreter as psi
 from releng_tool.util.io import run_script
-from releng_tool.util.io import touch
 from releng_tool.util.log import is_verbose
 from tests import RelengToolTestCase
 from tests import prepare_workdir
@@ -227,16 +226,3 @@ class TestUtilIo(RelengToolTestCase):
         self.assertEqual(psi(si05), [b'interpreter', *E(si05)])
         # real example of an interpreter
         self.assertEqual(psi(si06), [b'/usr/bin/env', b'python', *E(si06)])
-
-    def test_utilio_touch(self):
-        with prepare_workdir() as work_dir:
-            test_file = os.path.join(work_dir, 'test-file')
-
-            created = touch(test_file)
-            self.assertTrue(created)
-
-            exists = os.path.isfile(test_file)
-            self.assertTrue(exists)
-
-            updated = touch(test_file)
-            self.assertTrue(updated)

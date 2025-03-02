@@ -51,7 +51,6 @@ from releng_tool.util.io import interim_working_dir
 from releng_tool.util.io import path_exists
 from releng_tool.util.io import path_remove
 from releng_tool.util.io import run_script
-from releng_tool.util.io import touch
 from releng_tool.util.io_cat import cat
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
@@ -61,6 +60,7 @@ from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
 from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.io_symlink import symlink
+from releng_tool.util.io_touch import touch
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import hint
