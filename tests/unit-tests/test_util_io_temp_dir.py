@@ -5,6 +5,7 @@ from pathlib import Path
 from releng_tool.util.io_temp_dir import temp_dir
 from tests import RelengToolTestCase
 import os
+import sys
 import tempfile
 
 
@@ -62,4 +63,9 @@ class TestUtilIoTempDir(RelengToolTestCase):
         with temp_dir(base_dir, wd=True) as tmp_dir:
             new_dir = Path(tmp_dir)
             self.assertTrue(new_dir.is_dir())
-            self.assertEqual(new_dir, Path.cwd())
+
+            cwd = Path.cwd()
+            if sys.platform == 'darwin' and Path('/private') in cwd.parents:
+                cwd = cwd.relative_to(*cwd.parts[:2])
+
+            self.assertEqual(new_dir, cwd)
