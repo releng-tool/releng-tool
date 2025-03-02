@@ -1,3 +1,12 @@
+## Development
+
+- Cleanup unexpected prints in `releng_require_version`
+- Extension priority changed: (1) `.rt`, (2) `.py`, (3) *(none)*, (4) `.releng`
+- Improve accepting of path-like arguments into `releng_cat`
+- Improve accepting of path-like arguments into `releng_ls`
+- Improve accepting of path-like arguments into `releng_mkdir`
+- Support for extensionless configuration/scripts is deprecated
+
 ## 2.1.1 (2025-02-17)
 
 - Fixed extraction warnings for non-empty folders due to improper fetch flags
