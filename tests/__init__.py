@@ -8,7 +8,6 @@ from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_temp_dir import temp_dir
-from releng_tool.util.io_wd import wd
 from unittest.mock import patch
 import os
 import pprint
@@ -105,24 +104,6 @@ def mock_os_remove_permission_denied(f=None):
 
 
 @contextmanager
-def new_test_wd():
-    """
-    prepare a new temporary working directory
-
-    This utility method is used to automatically create a directory for
-    testing. Once created, the working directory will be configured to
-    ths directory. This method will ensure the container directory is emptied
-    before returning.
-
-    Returns:
-        the container directory
-    """
-
-    with temp_dir() as work_dir, wd(work_dir):
-        yield work_dir
-
-
-@contextmanager
 def prepare_testenv(config=None, template=None, args=None):
     """
     prepare an engine-ready environment for a test
@@ -146,7 +127,7 @@ def prepare_testenv(config=None, template=None, args=None):
 
     config = {} if config is None else dict(config)
 
-    with temp_dir() as work_dir, wd(work_dir):
+    with temp_dir(wd=True) as work_dir:
         # force root directory to temporary directory; or configure all working
         # content based off the generated temporary directory
         if 'root_dir' not in config:

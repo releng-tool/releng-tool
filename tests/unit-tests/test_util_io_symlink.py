@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from releng_tool.util.io_symlink import symlink
+from releng_tool.util.io_temp_dir import temp_dir
 from tests import RelengToolTestCase
-from tests import new_test_wd
 import posixpath
 import os
 import sys
@@ -39,7 +39,7 @@ class TestUtilIoSymlink(RelengToolTestCase):
             WINERROR_1314 = 1314
 
             try:
-                with new_test_wd():
+                with temp_dir(wd=True):
                     os.symlink('arg1', 'arg2')
             except OSError as ex:
                 if ex.winerror == WINERROR_1314 or \
@@ -48,7 +48,7 @@ class TestUtilIoSymlink(RelengToolTestCase):
                         'symlink test skipped for Windows') from ex
 
     def test_utilio_symlink_absolute(self):
-        with new_test_wd() as work_dir:
+        with temp_dir(wd=True) as work_dir:
             rv1 = symlink(       'target1',        'my-link1', relative=False)
             rv2 = symlink('nested/target2',        'my-link2', relative=False)
             rv3 = symlink(       'target3', 'nested/my-link3', relative=False)
@@ -70,7 +70,7 @@ class TestUtilIoSymlink(RelengToolTestCase):
             self.assertLinkMatches('nested/my-link3', target3_abspath)
 
     def test_utilio_symlink_blocked(self):
-        with new_test_wd():
+        with temp_dir(wd=True):
             with open('already-exists', 'w'):
                 pass
 
@@ -81,14 +81,14 @@ class TestUtilIoSymlink(RelengToolTestCase):
             self.assertFalse(created)
 
     def test_utilio_symlink_container(self):
-        with new_test_wd():
+        with temp_dir(wd=True):
             created = symlink('target', 'container', lpd=True)
             self.assertTrue(created)
             self.assertLinkExists('container/target')
             self.assertLinkMatches('container/target', '../target')
 
     def test_utilio_symlink_overwrite(self):
-        with new_test_wd():
+        with temp_dir(wd=True):
             created = symlink('target1', 'my-symlink')
             self.assertTrue(created)
             self.assertLinkExists('my-symlink')
@@ -100,7 +100,7 @@ class TestUtilIoSymlink(RelengToolTestCase):
             self.assertLinkMatches('my-symlink', 'target2')
 
     def test_utilio_symlink_relative(self):
-        with new_test_wd():
+        with temp_dir(wd=True):
             rv1 = symlink(       'target1',        'my-link1')
             rv2 = symlink('nested/target2',        'my-link2')
             rv3 = symlink(       'target3', 'nested/my-link3')

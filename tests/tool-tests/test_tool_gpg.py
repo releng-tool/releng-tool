@@ -3,7 +3,6 @@
 
 from releng_tool.tool.gpg import GPG
 from releng_tool.util.io_temp_dir import temp_dir
-from releng_tool.util.io_wd import wd
 from tests.support import fetch_unittest_assets_dir
 from tests.support.site_tool_test import TestSiteToolBase
 import os
@@ -59,13 +58,13 @@ class TestToolGpg(TestSiteToolBase):
         # verification request (inside the releng-tool engine) will share the
         # same home directory.
         if sys.platform == 'win32':
-            with temp_dir(self.engine.opts.out_dir) as gpg_tmp, wd(gpg_tmp):
+            with temp_dir(self.engine.opts.out_dir, wd=True) as gpg_tmp:
                 os.environ['GNUPGHOME'] = '..'
                 self._test_tool_gpg_valid()
         else:
             # NOTE: osx will fail to implicitly start gpg-agent if the
             # temporary directory is too long
-            with temp_dir() as gpg_tmp, wd(gpg_tmp):
+            with temp_dir(wd=True) as gpg_tmp:
                 os.environ['GNUPGHOME'] = gpg_tmp
                 self._test_tool_gpg_valid()
 

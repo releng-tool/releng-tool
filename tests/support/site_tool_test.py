@@ -5,7 +5,6 @@ from releng_tool.defs import GlobalAction
 from releng_tool.packages import pkg_key
 from releng_tool.util.io_remove import path_remove
 from releng_tool.util.io_temp_dir import temp_dir
-from releng_tool.util.io_wd import wd
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 import os
@@ -57,7 +56,7 @@ class TestSiteToolBase(RelengToolTestCase):
             result (optional): the test result to populate
         """
 
-        with temp_dir() as repo_dir, wd(repo_dir):
+        with temp_dir(wd=True) as repo_dir:
             self.repo_dir = repo_dir
             self.prepare_repo_dir(repo_dir)
 

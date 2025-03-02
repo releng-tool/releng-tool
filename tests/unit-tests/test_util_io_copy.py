@@ -3,9 +3,9 @@
 
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
+from releng_tool.util.io_temp_dir import temp_dir
 from tests import RelengToolTestCase
 from tests import compare_contents
-from tests import new_test_wd
 from tests import prepare_workdir
 from tests.support import fetch_unittest_assets_dir
 import os
@@ -171,7 +171,7 @@ class TestUtilIoCopy(RelengToolTestCase):
         if sys.platform == 'win32':
             raise unittest.SkipTest('symlink test skipped for win32')
 
-        with new_test_wd():
+        with temp_dir(wd=True):
             # copy a broken symlink
             os.symlink('nonexistent-a', 'new-symlink')
             self.assertTrue(os.path.islink('new-symlink'))
@@ -203,7 +203,7 @@ class TestUtilIoCopy(RelengToolTestCase):
         if sys.platform == 'win32':
             raise unittest.SkipTest('symlink test skipped for win32')
 
-        with new_test_wd():
+        with temp_dir(wd=True):
             os.symlink('entry-a', 'test-symlink')
             self.assertTrue(os.path.islink('test-symlink'))
             read_lnk = os.readlink('test-symlink')
