@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_remove import path_remove
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import warn
 import errno
 import os
@@ -15,12 +16,12 @@ import tempfile
 
 @contextmanager
 def temp_dir(dir_: str | bytes | os.PathLike | None = None,
-        *args: str | bytes | os.PathLike) -> Iterator[str]:
+        *args: str | bytes | os.PathLike, **kwargs) -> Iterator[str]:
     """
     generate a context-supported temporary directory
 
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
-    .. versionchanged:: 2.2 Add support for ``*args``.
+    .. versionchanged:: 2.2 Add support for ``*args`` and ``**wd``.
 
     Creates a temporary directory in the provided directory ``dir_`` (or system
     default, is not provided). This is a context-supported call and will
@@ -37,6 +38,8 @@ def temp_dir(dir_: str | bytes | os.PathLike | None = None,
 
     Args:
         dir_ (optional): the directory to create the temporary directory in
+        **wd (optional): whether to use the temporary directory as the
+                          working directory (defaults to ``False``)
 
     Raises:
         FailedToPrepareBaseDirectoryError: the base directory does not exist and
@@ -51,7 +54,11 @@ def temp_dir(dir_: str | bytes | os.PathLike | None = None,
 
     tmp_dir = tempfile.mkdtemp(prefix='.releng-tmp-', dir=base_dir)
     try:
-        yield tmp_dir
+        if kwargs.get('wd'):
+            with wd(tmp_dir):
+                yield tmp_dir
+        else:
+            yield tmp_dir
     finally:
         try:
             path_remove(tmp_dir)

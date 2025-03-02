@@ -55,3 +55,11 @@ class TestUtilIoTempDir(RelengToolTestCase):
             new_dir = Path(tmp_dir)
             self.assertTrue(new_dir.is_dir())
             self.assertIn(base_dir, new_dir.parents)
+
+    def test_utilio_tempdir_working_directory(self):
+        base_dir = self.work_dir / 'base-dir'
+
+        with temp_dir(base_dir, wd=True) as tmp_dir:
+            new_dir = Path(tmp_dir)
+            self.assertTrue(new_dir.is_dir())
+            self.assertEqual(new_dir, Path.cwd())
