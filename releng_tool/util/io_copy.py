@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io import path_remove
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
-from releng_tool.util.critical import raise_for_critical
 from shutil import Error as ShutilError
 from shutil import copyfile
 from shutil import copystat

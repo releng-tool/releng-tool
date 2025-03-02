@@ -14,6 +14,7 @@ from releng_tool.engine.post import POST_SCRIPT
 from releng_tool.engine.script.build import BUILD_SCRIPT
 from releng_tool.engine.script.configure import CONFIGURE_SCRIPT
 from releng_tool.engine.script.install import INSTALL_SCRIPT
+from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
 from releng_tool.packages import PkgKeyType
 from releng_tool.packages import pkg_cache_key
 from releng_tool.packages import pkg_key
@@ -31,7 +32,6 @@ from releng_tool.packages.exceptions import RelengToolUnknownInstallType
 from releng_tool.packages.exceptions import RelengToolUnknownPackageType
 from releng_tool.packages.exceptions import RelengToolUnknownPythonSetupType
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
-from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
 from releng_tool.packages.package import RelengPackage
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.io import interpret_stem_extension
