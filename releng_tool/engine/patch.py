@@ -16,7 +16,7 @@ import os
 PATCH_SCRIPT = 'patch'
 
 
-def stage(engine, pkg, script_env):  # noqa: ARG001
+def stage(engine, pkg, script_env):
     """
     handles the patching stage for a package
 
@@ -85,16 +85,23 @@ def stage(engine, pkg, script_env):  # noqa: ARG001
         err('unable to apply patches; patch is not installed')
         return False
 
+    patch_args = [
+        '--batch',
+        '--binary',
+        '--forward',
+        '--ignore-whitespace',
+        '--strip=1',
+    ]
+
+    # attempt to be flexible for patches between cross-platform environments
+    # by disabling the heuristic for transforming line endings
+    if 'releng.disable_binary_patch' not in engine.opts.quirks:
+        patch_args.append('--binary')
+
     for patch in patches:
         print(f'({os.path.basename(patch)})')
 
-        if not PATCH.execute([
-                '--batch',
-                '--forward',
-                '--ignore-whitespace',
-                f'--input={patch}',
-                '--strip=1',
-                ], cwd=patch_dir):
+        if not PATCH.execute([*patch_args, f'--input={patch}'], cwd=patch_dir):
             err('failed to apply patch')
             return False
 
