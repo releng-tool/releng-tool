@@ -8,7 +8,7 @@ from tests import prepare_workdir
 import os
 
 
-class TestUtilIo(RelengToolTestCase):
+class TestUtilIoTouch(RelengToolTestCase):
     def run(self, result=None):
         with prepare_workdir() as work_dir:
             self.work_dir = Path(work_dir)
