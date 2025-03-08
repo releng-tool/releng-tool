@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from contextlib import contextmanager
+from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.log import err
@@ -10,7 +12,7 @@ import inspect
 import os
 
 
-def releng_include(file_path):
+def releng_include(file_path: str | bytes | os.PathLike) -> None:
     """
     include/execute a script
 
@@ -34,17 +36,19 @@ def releng_include(file_path):
 
     caller_stack = inspect.stack()[1]
 
-    if os.path.isabs(file_path):
-        target_script = file_path
+    final_file = Path(os.fsdecode(file_path))
+
+    if final_file.is_absolute():
+        target_script = final_file
     else:
         invoked_script = caller_stack[1]
-        invoked_script_base = os.path.dirname(invoked_script)
-        target_script = os.path.join(invoked_script_base, file_path)
+        invoked_script_base = Path(invoked_script).parent
+        target_script = invoked_script_base / final_file
 
     ctx_globals = caller_stack[0].f_globals
 
-    with releng_script_envs(target_script, ctx_globals) as script_env:
-        run_path(target_script, init_globals=script_env)
+    with releng_script_envs(str(target_script), ctx_globals) as script_env:
+        run_path(str(target_script), init_globals=script_env)
 
 
 @contextmanager
