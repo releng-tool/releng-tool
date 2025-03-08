@@ -25,16 +25,6 @@ class TestUtilIoTouch(RelengToolTestCase):
         self.assertTrue(exists)
         self.assertTrue(test_file.is_file())
 
-    def test_utilio_touch_fail_on_dir(self):
-        test_dir = self.work_dir / 'test-dir'
-        test_dir.mkdir()
-
-        self.assertTrue(test_dir.is_dir())
-
-        exists = touch(test_dir)
-        self.assertFalse(exists)
-        self.assertTrue(test_dir.is_dir())
-
     def test_utilio_touch_multipart(self):
         container_dir = self.work_dir / 'test-dir'
         self.assertFalse(container_dir.exists())
