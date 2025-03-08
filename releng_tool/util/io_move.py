@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
+from pathlib import Path
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_remove import path_remove
@@ -10,12 +12,15 @@ import os
 import stat
 
 
-def path_move(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
+def path_move(src: str | bytes | os.PathLike, dst: str | bytes | os.PathLike,
+    *, quiet: bool = False, critical: bool = True, dst_dir: bool | None = None,
+    nested: bool = False) -> bool:
     """
     move a file or directory into a target file or directory
 
     .. versionchanged:: 0.14 Add support for ``dst_dir``.
     .. versionchanged:: 1.4 Add support for ``nested``.
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     This call will attempt to move a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a
@@ -65,40 +70,42 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
 
     success = True
 
-    if src == dst:
+    src_entry = Path(os.fsdecode(src))
+    dst_str = os.fsdecode(dst)
+    dst_flag = dst_str.endswith(('/', '\\')) if dst_dir is None else dst_dir
+    dst_entry = Path(dst_str)
+
+    if src_entry == dst_entry:
         return True
 
-    if nested and os.path.isdir(src):
-        dst = os.path.join(dst, os.path.basename(src))
+    if nested and src_entry.is_dir():
+        dst_entry = dst_entry / src_entry.name
 
-    if os.path.isfile(src) and not dst_dir:
-        parent_dir = os.path.dirname(dst)
-        if parent_dir and not os.path.isdir(parent_dir):
-            success = mkdir(parent_dir, quiet=quiet)
-    elif not os.path.isdir(dst):
-        if os.path.exists(dst):
-            path_remove(dst, quiet=quiet)
+    if src_entry.is_file() and not dst_flag:
+        parent_dir = dst_entry.parent
+        if not parent_dir.is_dir():
+            success = bool(mkdir(parent_dir, quiet=quiet))
+    elif not dst_entry.is_dir():
+        if dst_entry.exists():
+            path_remove(dst_entry, quiet=quiet)
 
-        success = mkdir(dst, quiet=quiet)
-    else:
-        src_dir = os.path.realpath(src)
-        dst_dir = os.path.realpath(dst)
-        if dst_dir.startswith(src_dir):
-            if not quiet:
-                err('unable to move source contents to target location\n'
-                    '    attempt to move directory into a child subdirectory')
-            raise_for_critical(critical)
-            return False
+        success = bool(mkdir(dst_entry, quiet=quiet))
+    elif dst_entry.is_relative_to(src_entry):
+        if not quiet:
+            err('unable to move source contents to target location\n'
+                '    attempt to move directory into a child subdirectory')
+        raise_for_critical(critical)
+        return False
 
     if success:
         try:
-            if os.path.isfile(src):
-                if os.path.isfile(dst):
-                    path_remove(dst, quiet=quiet)
+            if src_entry.is_file():
+                if dst_entry.is_file():
+                    path_remove(dst_entry, quiet=quiet)
 
-                move(src, dst)
+                move(src_entry, dst_entry)
             else:
-                _path_move(src, dst, quiet=quiet)
+                _path_move(src_entry, dst_entry, quiet=quiet)
         except Exception as e:
             success = False
             if not quiet:
@@ -109,12 +116,15 @@ def path_move(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     return success
 
 
-def path_move_into(src, dst, quiet=False, critical=True, nested=False):
+def path_move_into(src: str | bytes | os.PathLike,
+    dst: str | bytes | os.PathLike, *, quiet: bool = False,
+    critical: bool = True, nested: bool = False) -> bool:
     """
     move a file or directory into a target directory
 
     .. versionadded:: 0.14
     .. versionchanged:: 1.4 Add support for ``nested``.
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     This call will attempt to move a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a
@@ -165,7 +175,7 @@ def path_move_into(src, dst, quiet=False, critical=True, nested=False):
         nested=nested)
 
 
-def _path_move(src, dst, quiet=False):
+def _path_move(src: Path, dst: Path, *, quiet: bool = False) -> None:
     """
     move the provided directory into the target directory (recursive)
 
@@ -190,30 +200,28 @@ def _path_move(src, dst, quiet=False):
     # ensure a caller has read/write access before hand to prepare for moving
     # (e.g. if marked as read-only) and ensure contents can be fetched as well
     try:
-        st = os.stat(src)
+        st = src.stat()
         if not (st.st_mode & stat.S_IRUSR) or not (st.st_mode & stat.S_IWUSR):
-            os.chmod(src, st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
+            src.chmod(st.st_mode | stat.S_IRUSR | stat.S_IWUSR)
     except OSError:
         pass
 
-    entries = os.listdir(src)
-    for entry in entries:
-        src_path = os.path.join(src, entry)
-        dst_path = os.path.join(dst, entry)
+    for src_path in src.iterdir():
+        dst_path = dst / src_path.name
 
-        if os.path.isdir(src_path) and not os.path.islink(src_path):
-            if os.path.isdir(dst_path):
+        if src_path.is_dir() and not src_path.is_symlink():
+            if dst_path.is_dir():
                 _path_move(src_path, dst_path, quiet=quiet)
             else:
-                if os.path.exists(dst_path):
+                if dst_path.exists():
                     path_remove(dst_path, quiet=quiet)
 
                 move(src_path, dst_path)
         else:
-            if os.path.exists(dst_path):
+            if dst_path.exists():
                 path_remove(dst_path, quiet=quiet)
 
             move(src_path, dst_path)
 
     # remove directory
-    os.rmdir(src)
+    src.rmdir()

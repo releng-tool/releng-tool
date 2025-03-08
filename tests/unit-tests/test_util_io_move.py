@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
 from tests import RelengToolTestCase
@@ -331,6 +332,29 @@ class TestUtilIoMove(RelengToolTestCase):
         # attempt to move to itself; ignore it
         result = path_move(path, path)
         self.assertTrue(result)
+
+    def test_utilio_move_types(self):
+        path1 = self._('dir1')
+        path2 = self._('dir2')
+        path3 = self._('dir3')
+        path4 = self._('dir4')
+        os.makedirs(path1)
+        self.assertTrue(os.path.isdir(path1))
+
+        result = path_move(Path(path1), Path(path2))
+        self.assertTrue(result)
+        self.assertFalse(os.path.isdir(path1))
+        self.assertTrue(os.path.isdir(path2))
+
+        result = path_move(str(path2), str(path3))
+        self.assertTrue(result)
+        self.assertFalse(os.path.isdir(path2))
+        self.assertTrue(os.path.isdir(path3))
+
+        result = path_move(os.fsencode(path3), os.fsencode(path4))
+        self.assertTrue(result)
+        self.assertFalse(os.path.isdir(path3))
+        self.assertTrue(os.path.isdir(path4))
 
     def _assertContents(self, f, data):
         contents = ''
