@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.util.io_symlink import symlink
 from releng_tool.util.io_temp_dir import temp_dir
 from tests import RelengToolTestCase
@@ -116,3 +117,21 @@ class TestUtilIoSymlink(RelengToolTestCase):
             self.assertLinkMatches(       'my-link1',        'target1')
             self.assertLinkMatches(       'my-link2', 'nested/target2')
             self.assertLinkMatches('nested/my-link3',     '../target3')
+
+    def test_utilio_symlink_types(self):
+        with temp_dir(wd=True):
+            rv1 = symlink(            'target' ,             'my-link1' )
+            rv2 = symlink(       Path('target'),        Path('my-link2'))
+            rv3 = symlink(os.fsencode('target'), os.fsencode('my-link3'))
+
+            self.assertTrue(rv1)
+            self.assertTrue(rv2)
+            self.assertTrue(rv3)
+
+            self.assertLinkExists('my-link1')
+            self.assertLinkExists('my-link2')
+            self.assertLinkExists('my-link3')
+
+            self.assertLinkMatches('my-link1', 'target')
+            self.assertLinkMatches('my-link2', 'target')
+            self.assertLinkMatches('my-link3', 'target')
