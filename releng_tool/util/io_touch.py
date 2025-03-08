@@ -42,8 +42,7 @@ def touch(file: str | bytes | os.PathLike,
         container = final_file.parent
         container.mkdir(parents=True, exist_ok=True)
 
-        with final_file.open('ab'):
-            os.utime(file, None)
+        final_file.touch(exist_ok=True)
     except OSError:
         return False
     else:
