@@ -146,10 +146,10 @@ def path_move_into(src: str | bytes | os.PathLike,
         # my-directory2/another-file2
         # my-file
         # my-file2
-        releng_move('my-file', 'my-file3')
-        releng_move('my-directory', 'my-directory3')
-        releng_move('my-file2', 'my-directory3')
-        releng_move('my-directory2', 'my-directory3', nested=True)
+        releng_move_into('my-file', 'my-file3')
+        releng_move_into('my-directory', 'my-directory3')
+        releng_move_into('my-file2', 'my-directory3')
+        releng_move_into('my-directory2', 'my-directory3', nested=True)
         # (output)
         # my-directory3/my-directory2/another-file2
         # my-directory3/another-file
