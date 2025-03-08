@@ -17,6 +17,7 @@ def releng_include(file_path: str | bytes | os.PathLike) -> None:
     include/execute a script
 
     .. versionadded:: 0.12
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     The provided call will execute code at the provided file path. The path
     will be relative to the caller's script, unless an absolute path is
