@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
+from pathlib import Path
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_remove import path_remove
@@ -11,12 +13,15 @@ from shutil import copystat
 import os
 
 
-def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
+def path_copy(src: str | bytes | os.PathLike, dst: str | bytes | os.PathLike,
+    *, quiet: bool = False, critical: bool = True, dst_dir: bool | None = None,
+    nested: bool = False) -> bool:
     """
     copy a file or directory into a target file or directory
 
     .. versionchanged:: 0.12 Add support for ``dst_dir``.
     .. versionchanged:: 1.4 Add support for ``nested``.
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     This call will attempt to copy a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a
@@ -70,53 +75,55 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     success = False
     errmsg = None
 
+    src_entry = Path(os.fsdecode(src))
+    dst_str = os.fsdecode(dst)
+    dst_flag = dst_str.endswith(('/', '\\')) if dst_dir is None else dst_dir
+    dst_entry = Path(dst_str)
+
     try:
-        if os.path.isdir(src):
-            if src == dst:
+        if src_entry.is_dir():
+            if src_entry == dst_entry:
                 errmsg = "'{!s}' and '{!s}' " \
-                         "are the same folder".format(src, dst)
+                         "are the same folder".format(src_entry, dst_entry)
             elif nested:
-                new_dst = os.path.join(dst, os.path.basename(src))
-                if _copy_tree(src, new_dst, quiet=quiet, critical=critical):
+                new_dst = dst_entry / src_entry.name
+                if _copy_tree(src_entry, new_dst, quiet=quiet, critical=critical):
                     success = True
-            elif _copy_tree(src, dst, quiet=quiet, critical=critical):
+            elif _copy_tree(src_entry, dst_entry, quiet=quiet, critical=critical):
                 success = True
-        elif os.path.isfile(src) or os.path.islink(src):
+        elif src_entry.is_file() or src_entry.is_symlink():
             attempt_copy = True
 
-            if dst_dir:
-                base_dir = dst
+            if dst_flag:
+                base_dir = dst_entry
             else:
-                base_dir = os.path.dirname(dst)
+                base_dir = dst_entry.parent
 
-            if base_dir and not os.path.isdir(base_dir):
-                attempt_copy = mkdir(base_dir, quiet=quiet)
+            if base_dir and not base_dir.is_dir():
+                attempt_copy = bool(mkdir(base_dir, quiet=quiet))
             else:
                 attempt_copy = True
 
             if attempt_copy:
-                if os.path.isdir(dst):
-                    dst = os.path.join(dst, os.path.basename(src))
+                if dst_entry.is_dir():
+                    dst_entry = dst_entry / src_entry.name
 
-                if os.path.islink(src):
-                    target = os.readlink(src)
-                    if os.path.islink(dst) or os.path.isfile(dst):
-                        path_remove(dst, quiet=quiet)
+                if src_entry.is_symlink():
+                    target = src_entry.readlink()
+                    if dst_entry.is_symlink() or dst_entry.is_file():
+                        path_remove(dst_entry, quiet=quiet)
 
-                    os.symlink(target, dst)
+                    dst_entry.symlink_to(target)
                 else:
-                    copyfile(src, dst, follow_symlinks=False)
+                    copyfile(src_entry, dst_entry, follow_symlinks=False)
 
-                # copy file statistics if both source and destination exist,
-                # and if the do exist, they are not the same file (py3.5)
-                if os.path.isfile(src) and os.path.isfile(dst) and (
-                        not os.path.islink(src) or not os.path.islink(dst)
-                        or  os.readlink(src) != os.readlink(dst)):
-                    _copy_stat_compat(src, dst)
+                # copy file statistics if both source and destination exist
+                if src_entry.is_file() and dst_entry.is_file():
+                    copystat(src_entry, dst_entry)
 
                 success = True
         else:
-            errmsg = f'source does not exist: {src}'
+            errmsg = f'source does not exist: {src_entry}'
     except (OSError, ShutilError) as e:
         errmsg = str(e)
 
@@ -128,12 +135,15 @@ def path_copy(src, dst, quiet=False, critical=True, dst_dir=None, nested=False):
     return success
 
 
-def path_copy_into(src, dst, quiet=False, critical=True, nested=False):
+def path_copy_into(src: str | bytes | os.PathLike,
+    dst: str | bytes | os.PathLike, *, quiet: bool = False,
+    critical: bool = True, nested: bool = False) -> bool:
     """
     copy a file or directory into a target directory
 
     .. versionadded:: 0.13
     .. versionchanged:: 1.4 Add support for ``nested``.
+    .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
 
     This call will attempt to copy a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a
@@ -185,41 +195,29 @@ def path_copy_into(src, dst, quiet=False, critical=True, nested=False):
         nested=nested)
 
 
-def _copy_stat_compat(src, dst):
-    # do not attempt to copy if either component does not exist
-    # (e.g. broken symlink)
-    if not os.path.exists(src) or not os.path.exists(dst):
-        return
-
-    # do not attempt to copy if this is a symlink to itself (py3.5)
-    if os.path.realpath(src) == os.path.realpath(dst):
-        return
-
-    copystat(src, dst, follow_symlinks=False)
-
-
-def _copy_tree(src_folder, dst_folder, quiet=False, critical=True):
+def _copy_tree(src_folder: Path, dst_folder: Path, *,
+        quiet: bool = False, critical: bool = True) -> bool:
     if not mkdir(dst_folder, quiet=quiet, critical=critical):
         return False
 
-    for entry in os.listdir(src_folder):
-        src = os.path.join(src_folder, entry)
-        dst = os.path.join(dst_folder, entry)
 
-        if os.path.islink(src):
-            target = os.readlink(src)
-            if os.path.islink(dst) or os.path.isfile(dst):
+    for src in src_folder.iterdir():
+        dst = dst_folder / src.name
+
+        if src.is_symlink():
+            target = src.readlink()
+            if dst.is_symlink() or dst.is_file():
                 path_remove(dst, quiet=quiet)
 
-            os.symlink(target, dst)
-            if os.path.isfile(target) and os.path.isfile(dst):
-                _copy_stat_compat(src, dst)
-        elif os.path.isdir(src):
+            dst.symlink_to(target)
+            if target.is_file() and dst.is_file():
+                copystat(src, dst)
+        elif src.is_dir():
             _copy_tree(src, dst, quiet=quiet, critical=critical)
         else:
             copyfile(src, dst, follow_symlinks=False)
-            _copy_stat_compat(src, dst)
+            copystat(src, dst)
 
-    _copy_stat_compat(src_folder, dst_folder)
+    copystat(src_folder, dst_folder)
 
     return True

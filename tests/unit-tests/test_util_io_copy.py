@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
 from releng_tool.util.io_temp_dir import temp_dir
@@ -288,3 +289,27 @@ class TestUtilIoCopy(RelengToolTestCase):
 
             with self.assertRaises(SystemExit):
                 path_copy_into(check_dir_02, bad_target)
+
+    def test_utilio_copy_types(self):
+        with prepare_workdir() as work_dir:
+            path1 = Path(work_dir) / 'dir1'
+            path2 = Path(work_dir) / 'dir2'
+            path3 = Path(work_dir) / 'dir3'
+            path4 = Path(work_dir) / 'dir4'
+            path1.mkdir()
+            self.assertTrue(path1.is_dir())
+
+            result = path_copy(Path(path1), Path(path2))
+            self.assertTrue(result)
+            self.assertTrue(path1.is_dir())
+            self.assertTrue(path2.is_dir())
+
+            result = path_copy(str(path2), str(path3))
+            self.assertTrue(result)
+            self.assertTrue(path2.is_dir())
+            self.assertTrue(path3.is_dir())
+
+            result = path_copy(os.fsencode(path3), os.fsencode(path4))
+            self.assertTrue(result)
+            self.assertTrue(path3.is_dir())
+            self.assertTrue(path4.is_dir())
