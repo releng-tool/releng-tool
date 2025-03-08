@@ -447,32 +447,6 @@ def interpret_stem_extension(basename):
     return stem, ext
 
 
-def path_exists(path, *args):
-    """
-    return whether or not the path exists
-
-    Allows a caller to verify the existence of a file on the file system. This
-    call will return ``True`` if the path exists; ``False`` otherwise.
-
-    An example when using in the context of script helpers is as follows:
-
-    .. code-block:: python
-
-        if releng_exists('my-file'):
-            print('the file exists')
-        else:
-            print('the file does not exist')
-
-    Args:
-        path: the path
-        *args: additional path parts
-
-    Returns:
-        ``True`` if the path exists; ``False`` otherwise
-    """
-    return os.path.exists(os.path.join(path, *args))
-
-
 def prepare_arguments(args):
     """
     prepares arguments from a dictionary

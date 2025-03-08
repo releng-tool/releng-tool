@@ -5,9 +5,9 @@ from releng_tool.defs import PackageInstallType
 from releng_tool.engine.meson import DEFAULT_LIB_DIR
 from releng_tool.engine.meson import meson_prepare_environment
 from releng_tool.tool.meson import MESON
-from releng_tool.util.io import path_exists
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
+from releng_tool.util.io_exists import path_exists
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
 import os

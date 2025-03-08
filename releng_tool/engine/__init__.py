@@ -45,11 +45,11 @@ from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
-from releng_tool.util.io import path_exists
 from releng_tool.util.io import run_script
 from releng_tool.util.io_cat import cat
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_copy import path_copy_into
+from releng_tool.util.io_exists import path_exists
 from releng_tool.util.io_ls import ls
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_move import path_move
