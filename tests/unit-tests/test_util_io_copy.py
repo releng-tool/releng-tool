@@ -124,7 +124,64 @@ class TestUtilIoCopy(RelengToolTestCase):
             with self.assertRaises(SystemExit):
                 path_copy(dst_file, dst_file)
 
-    def test_utilio_copy_symlink_directory(self):
+    def test_utilio_copy_symlink_dir_nested(self):
+        if platform.system() != 'Linux':
+            raise unittest.SkipTest('symlink test skipped for non-Linux')
+
+        with prepare_workdir() as work_dir:
+            example_dir = Path(work_dir) / 'example'
+            example_dir.mkdir()
+
+            subdir_dir = example_dir / 'subdir'
+            subdir_dir.mkdir()
+
+            example_file = subdir_dir / 'test-file'
+            example_file.touch()
+            self.assertExists(example_file)
+
+            symlink_dir = Path(example_dir) / 'symlinked'
+            symlink_dir.symlink_to(subdir_dir)
+            self.assertTrue(symlink_dir.is_symlink())
+
+            new_dir = Path(work_dir) / 'newdir'
+            path_copy_into(example_dir, new_dir)
+
+            new_subdir = new_dir / 'subdir'
+            self.assertTrue(new_subdir.is_dir())
+
+            new_symlinked = new_dir / 'symlinked'
+            self.assertTrue(new_symlinked.is_symlink())
+
+            new_example_file = new_symlinked / 'test-file'
+            self.assertExists(new_example_file)
+
+    def test_utilio_copy_symlink_dir_root(self):
+        if platform.system() != 'Linux':
+            raise unittest.SkipTest('symlink test skipped for non-Linux')
+
+        with prepare_workdir() as work_dir:
+            example_dir = Path(work_dir) / 'example'
+            example_dir.mkdir()
+
+            example_file = example_dir / 'test-file'
+            example_file.touch()
+            self.assertExists(example_file)
+
+            symlink_dir = Path(work_dir) / 'symlinked'
+            symlink_dir.symlink_to(example_dir, target_is_directory=True)
+            self.assertTrue(symlink_dir.is_symlink())
+
+            example_file2 = symlink_dir / 'test-file'
+            self.assertExists(example_file2)
+
+            new_dir = Path(work_dir) / 'newdir'
+            path_copy(symlink_dir, new_dir)
+            self.assertTrue(new_dir.is_symlink())
+
+            example_file3 = new_dir / 'test-file'
+            self.assertExists(example_file3)
+
+    def test_utilio_copy_symlink_file_nested(self):
         if platform.system() != 'Linux':
             raise unittest.SkipTest('symlink test skipped for non-Linux')
 
@@ -148,7 +205,7 @@ class TestUtilIoCopy(RelengToolTestCase):
             read_lnk = os.readlink(lnkb_file)
             self.assertEqual(read_lnk, dst_file)
 
-    def test_utilio_copy_symlink_file(self):
+    def test_utilio_copy_symlink_file_root(self):
         if sys.platform == 'win32':
             raise unittest.SkipTest('symlink test skipped for win32')
 
