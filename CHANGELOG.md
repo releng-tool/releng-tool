@@ -2,15 +2,16 @@
 
 - Cleanup unexpected prints in `releng_require_version`
 - Extension priority changed: (1) `.rt`, (2) `.py`, (3) *(none)*, (4) `.releng`
+- Fixed `releng_copy` not replicating symlinks in base directory
 - Improve accepting of path-like arguments into `releng_cat`
-- Improve accepting of path-like arguments into `releng_copy`
 - Improve accepting of path-like arguments into `releng_copy_into`
+- Improve accepting of path-like arguments into `releng_copy`
 - Improve accepting of path-like arguments into `releng_exists`
 - Improve accepting of path-like arguments into `releng_include`
 - Improve accepting of path-like arguments into `releng_ls`
 - Improve accepting of path-like arguments into `releng_mkdir`
-- Improve accepting of path-like arguments into `releng_move`
 - Improve accepting of path-like arguments into `releng_move_into`
+- Improve accepting of path-like arguments into `releng_move`
 - Improve accepting of path-like arguments into `releng_remove`
 - Improve accepting of path-like arguments into `releng_symlink`
 - Improve accepting of path-like arguments into `releng_tmpdir`
