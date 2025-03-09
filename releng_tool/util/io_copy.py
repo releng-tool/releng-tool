@@ -81,7 +81,7 @@ def path_copy(src: str | bytes | os.PathLike, dst: str | bytes | os.PathLike,
     dst_entry = Path(dst_str)
 
     try:
-        if src_entry.is_dir():
+        if src_entry.is_dir() and not src_entry.is_symlink():
             if src_entry == dst_entry:
                 errmsg = "'{!s}' and '{!s}' " \
                          "are the same folder".format(src_entry, dst_entry)
