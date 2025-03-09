@@ -197,9 +197,28 @@ def path_copy_into(src: str | bytes | os.PathLike,
 
 def _copy_tree(src_folder: Path, dst_folder: Path, *,
         quiet: bool = False, critical: bool = True) -> bool:
+    """
+    copy a source tree into a destination tree
+
+    Attempt to copy the contents of a source folder into a target destination
+    folder.
+
+    Args:
+        src_folder: the source directory or file
+        dst_folder: the destination directory
+        quiet (optional): whether to suppress output
+        critical (optional): whether to stop execution on failure
+
+    Returns:
+        ``True`` if the copy has completed with no error; ``False`` if the copy
+        has failed
+
+    Raises:
+        SystemExit: if the tree copy fails with ``critical=True``
+    """
+
     if not mkdir(dst_folder, quiet=quiet, critical=critical):
         return False
-
 
     for src in src_folder.iterdir():
         dst = dst_folder / src.name
