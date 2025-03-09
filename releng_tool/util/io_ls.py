@@ -38,12 +38,33 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
         return False
 
     if recursive:
-        for p in sorted(path.rglob('*')):
-            pf = os.sep if p.is_dir() else ''
-            print(f'{p.relative_to(path)}{pf}')
+        path_obs = path.rglob('*')
     else:
-        for p in sorted(path.iterdir()):
-            pf = os.sep if p.is_dir() else ''
-            print(f'{p.relative_to(path)}{pf}')
+        path_obs = path.iterdir()
+
+    for p in sorted(path_obs):
+        print(f'{p.relative_to(path)}{_desc(p)}')
 
     return True
+
+
+def _desc(path: Path) -> str:
+    """
+    provide a description of a path entry
+
+    Args:
+        path: the path
+
+    Returns:
+        a path description
+    """
+
+    desc = ''
+
+    if path.is_dir():
+        desc += os.sep
+
+    if path.is_symlink():
+        desc += f' -> {path.readlink()}'
+
+    return desc
