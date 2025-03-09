@@ -19,20 +19,21 @@ import unittest
 class TestUtilIoCopy(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.assets_dir = fetch_unittest_assets_dir()
+        cls.assets_dir = Path(fetch_unittest_assets_dir())
 
-        def assertExists(cls, path, *args):
-            target = os.path.join(path, *args)
-            cls.assertTrue(os.path.exists(target), 'missing file: ' + target)
+        def assertExists(cls, path: Path, *args: Path):
+            target = path.joinpath(*args)
+            cls.assertTrue(target.exists(), f'missing file: {target}')
         cls.assertExists = assertExists
 
     def test_utilio_copy(self):
-        check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
-        check_dir_02 = os.path.join(self.assets_dir, 'copy-check-02')
+        check_dir_01 = self.assets_dir / 'copy-check-01'
+        check_dir_02 = self.assets_dir / 'copy-check-02'
 
         with prepare_workdir() as work_dir:
-            # (directories)
+            work_dir = Path(work_dir)
 
+            # (directories)
             # copy the first batch of assets into the working directory
             result = path_copy(check_dir_01, work_dir, critical=False)
             self.assertTrue(result)
@@ -40,8 +41,8 @@ class TestUtilIoCopy(RelengToolTestCase):
             self.assertExists(work_dir, 'test-file-b')
             self.assertExists(work_dir, 'test-file-x')
             cc1 = compare_contents(
-                os.path.join(check_dir_01, 'test-file-b'),
-                os.path.join(work_dir, 'test-file-b'))
+                check_dir_01 / 'test-file-b',
+                work_dir / 'test-file-b')
             self.assertIsNone(cc1, cc1)
 
             # override the working directory with the second batch
@@ -52,18 +53,18 @@ class TestUtilIoCopy(RelengToolTestCase):
             self.assertExists(work_dir, 'test-file-c')
             self.assertExists(work_dir, 'test-file-x')
             cc2 = compare_contents(
-                os.path.join(check_dir_02, 'test-file-b'),
-                os.path.join(work_dir, 'test-file-b'))
+                check_dir_02 / 'test-file-b',
+                work_dir / 'test-file-b')
             self.assertIsNone(cc2, cc2)
 
             # (files)
-            sub_dir = os.path.join(work_dir, 'sub', 'dir', 'xyz', '')
-            copied_file_a = os.path.join(work_dir, 'test-file-a')
-            copied_file_b = os.path.join(work_dir, 'test-file-b')
-            target_ow = os.path.join(sub_dir, 'test-file-a')
+            sub_dir = work_dir / 'sub' / 'dir' / 'xyz'
+            copied_file_a = work_dir / 'test-file-a'
+            copied_file_b = work_dir / 'test-file-b'
+            target_ow = sub_dir / 'test-file-a'
 
             # copy individual files (file to new directory)
-            result = path_copy(copied_file_a, sub_dir, critical=False)
+            result = path_copy(copied_file_a, f'{sub_dir}/', critical=False)
             self.assertTrue(result)
             self.assertExists(target_ow)
             cc3 = compare_contents(copied_file_a, target_ow)
@@ -76,15 +77,15 @@ class TestUtilIoCopy(RelengToolTestCase):
             self.assertIsNone(cc4, cc4)
 
             # force a directory target with a non-trailing path separator
-            force_src = os.path.join(work_dir, 'test-file-a')
+            force_src = work_dir / 'test-file-a'
             self.assertExists(force_src)
 
-            force1 = os.path.join(work_dir, 'force1')
+            force1 = work_dir / 'force1'
             result = path_copy(force_src, force1, critical=False)
             self.assertTrue(result)
             self.assertTrue(os.path.isfile(force1))
 
-            force2 = os.path.join(work_dir, 'force2')
+            force2 = work_dir / 'force2'
             result = path_copy(force_src, force2, critical=False, dst_dir=True)
             self.assertTrue(result)
             self.assertTrue(os.path.isdir(force2))
@@ -98,9 +99,11 @@ class TestUtilIoCopy(RelengToolTestCase):
 
     def test_utilio_copy_missing(self):
         with prepare_workdir() as work_dir:
+            work_dir = Path(work_dir)
+
             # attempt to copy a missing path
-            missing_path = os.path.join(work_dir, 'test-path-missing')
-            target = os.path.join(work_dir, 'container')
+            missing_path = work_dir / 'test-path-missing'
+            target = work_dir / 'container'
             result = path_copy(missing_path, target, critical=False)
             self.assertFalse(result)
 
@@ -109,11 +112,13 @@ class TestUtilIoCopy(RelengToolTestCase):
                 path_copy(missing_path, target)
 
     def test_utilio_copy_self(self):
-        src_dir = os.path.join(self.assets_dir, 'copy-check-01')
-        src_file = os.path.join(src_dir, 'test-file-a')
+        src_dir = self.assets_dir / 'copy-check-01'
+        src_file = src_dir / 'test-file-a'
 
         with prepare_workdir() as work_dir:
-            dst_file = os.path.join(work_dir, 'test-file')
+            work_dir = Path(work_dir)
+
+            dst_file = work_dir / 'test-file'
             shutil.copyfile(src_file, dst_file)
 
             # attempt to copy a directory to itself
@@ -129,6 +134,8 @@ class TestUtilIoCopy(RelengToolTestCase):
             raise unittest.SkipTest('symlink test skipped for non-Linux')
 
         with prepare_workdir() as work_dir:
+            work_dir = Path(work_dir)
+
             example_dir = Path(work_dir) / 'example'
             example_dir.mkdir()
 
@@ -160,21 +167,23 @@ class TestUtilIoCopy(RelengToolTestCase):
             raise unittest.SkipTest('symlink test skipped for non-Linux')
 
         with prepare_workdir() as work_dir:
-            example_dir = Path(work_dir) / 'example'
+            work_dir = Path(work_dir)
+
+            example_dir = work_dir / 'example'
             example_dir.mkdir()
 
             example_file = example_dir / 'test-file'
             example_file.touch()
             self.assertExists(example_file)
 
-            symlink_dir = Path(work_dir) / 'symlinked'
+            symlink_dir = work_dir / 'symlinked'
             symlink_dir.symlink_to(example_dir, target_is_directory=True)
             self.assertTrue(symlink_dir.is_symlink())
 
             example_file2 = symlink_dir / 'test-file'
             self.assertExists(example_file2)
 
-            new_dir = Path(work_dir) / 'newdir'
+            new_dir = work_dir / 'newdir'
             path_copy(symlink_dir, new_dir)
             self.assertTrue(new_dir.is_symlink())
 
@@ -185,23 +194,25 @@ class TestUtilIoCopy(RelengToolTestCase):
         if platform.system() != 'Linux':
             raise unittest.SkipTest('symlink test skipped for non-Linux')
 
-        src_dir = os.path.join(self.assets_dir, 'copy-check-01')
-        src_file = os.path.join(src_dir, 'test-file-a')
+        src_dir = self.assets_dir / 'copy-check-01'
+        src_file = src_dir / 'test-file-a'
 
         with prepare_workdir() as work_dir:
-            subdir = os.path.join(work_dir, 'subdir')
+            work_dir = Path(work_dir)
+
+            subdir = work_dir / 'subdir'
             os.mkdir(subdir)
 
-            dst_file = os.path.join(subdir, 'test-file')
+            dst_file = subdir / 'test-file'
             shutil.copyfile(src_file, dst_file)
 
-            lnka_file = os.path.join(subdir, 'test-file-link-a')
+            lnka_file = subdir / 'test-file-link-a'
             os.symlink(dst_file, lnka_file)
 
-            subdir2 = os.path.join(work_dir, 'subdir2')
+            subdir2 = work_dir / 'subdir2'
             path_copy(subdir, subdir2)
 
-            lnkb_file = os.path.join(subdir2, 'test-file-link-a')
+            lnkb_file = subdir2 / 'test-file-link-a'
             read_lnk = os.readlink(lnkb_file)
             self.assertEqual(read_lnk, dst_file)
 
@@ -209,17 +220,19 @@ class TestUtilIoCopy(RelengToolTestCase):
         if sys.platform == 'win32':
             raise unittest.SkipTest('symlink test skipped for win32')
 
-        src_dir = os.path.join(self.assets_dir, 'copy-check-01')
-        src_file = os.path.join(src_dir, 'test-file-a')
+        src_dir = self.assets_dir / 'copy-check-01'
+        src_file = src_dir / 'test-file-a'
 
         with prepare_workdir() as work_dir:
-            dst_file = os.path.join(work_dir, 'test-file')
+            work_dir = Path(work_dir)
+
+            dst_file = work_dir / 'test-file'
             shutil.copyfile(src_file, dst_file)
 
-            lnka_file = os.path.join(work_dir, 'test-file-link-a')
+            lnka_file = work_dir / 'test-file-link-a'
             os.symlink(dst_file, lnka_file)
 
-            lnkb_file = os.path.join(work_dir, 'test-file-link-b')
+            lnkb_file = work_dir / 'test-file-link-b'
             path_copy(lnka_file, lnkb_file)
 
             read_lnk = os.readlink(lnkb_file)
@@ -295,14 +308,15 @@ class TestUtilIoCopy(RelengToolTestCase):
             self.assertEqual(read_lnk, 'entry-c')
 
     def test_utilio_copyinto(self):
-        check_dir_01 = os.path.join(self.assets_dir, 'copy-check-01')
-        check_dir_02 = os.path.join(self.assets_dir, 'copy-check-02')
+        check_dir_01 = self.assets_dir / 'copy-check-01'
+        check_dir_02 = self.assets_dir / 'copy-check-02'
 
         with prepare_workdir() as work_dir:
-            # (directories)
+            work_dir = Path(work_dir)
 
+            # (directories)
             # copy the first batch of assets into the working directory
-            single_file = os.path.join(check_dir_01, 'test-file-a')
+            single_file = check_dir_01 / 'test-file-a'
 
             result = path_copy_into(single_file, work_dir, critical=False)
             self.assertTrue(result)
@@ -315,8 +329,7 @@ class TestUtilIoCopy(RelengToolTestCase):
             self.assertExists(work_dir, 'test-file-b')
             self.assertExists(work_dir, 'test-file-x')
             cc1 = compare_contents(
-                os.path.join(check_dir_01, 'test-file-b'),
-                os.path.join(work_dir, 'test-file-b'))
+                check_dir_01 / 'test-file-b', work_dir /'test-file-b')
             self.assertIsNone(cc1, cc1)
 
             # override the working directory with the second batch
@@ -327,12 +340,11 @@ class TestUtilIoCopy(RelengToolTestCase):
             self.assertExists(work_dir, 'test-file-c')
             self.assertExists(work_dir, 'test-file-x')
             cc2 = compare_contents(
-                os.path.join(check_dir_02, 'test-file-b'),
-                os.path.join(work_dir, 'test-file-b'))
+                check_dir_02 / 'test-file-b', work_dir / 'test-file-b')
             self.assertIsNone(cc2, cc2)
 
             # attempt to copy to a file
-            bad_target = os.path.join(work_dir, 'test-file-a')
+            bad_target = work_dir / 'test-file-a'
             result = path_copy_into(check_dir_01, bad_target, critical=False)
             self.assertFalse(result)
 
@@ -349,10 +361,11 @@ class TestUtilIoCopy(RelengToolTestCase):
 
     def test_utilio_copy_types(self):
         with prepare_workdir() as work_dir:
-            path1 = Path(work_dir) / 'dir1'
-            path2 = Path(work_dir) / 'dir2'
-            path3 = Path(work_dir) / 'dir3'
-            path4 = Path(work_dir) / 'dir4'
+            work_dir = Path(work_dir)
+            path1 = work_dir / 'dir1'
+            path2 = work_dir / 'dir2'
+            path3 = work_dir / 'dir3'
+            path4 = work_dir / 'dir4'
             path1.mkdir()
             self.assertTrue(path1.is_dir())
 

@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from contextlib import contextmanager
 from difflib import unified_diff
 from io import StringIO
+from pathlib import Path
 from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.util.io_copy import path_copy
@@ -15,7 +17,7 @@ import sys
 import unittest
 
 
-def compare_contents(first, second):
+def compare_contents(first: Path, second: Path) -> str | None:
     """
     compare the contents of two files
 
@@ -35,19 +37,19 @@ def compare_contents(first, second):
         return [line.strip() + '\n' for line in lines]
 
     try:
-        with open(first, encoding='utf_8') as file:
+        with first.open(encoding='utf_8') as file:
             content1 = strip_lines(file.readlines())
     except OSError:
-        return 'failed to load first file: ' + first
+        return f'failed to load first file: {first}'
 
     try:
-        with open(second, encoding='utf_8') as file:
+        with first.open(encoding='utf_8') as file:
             content2 = strip_lines(file.readlines())
     except OSError:
-        return 'failed to load second file: ' + second
+        return f'failed to load second file: {second}'
 
     diff = unified_diff(content1, content2,
-        fromfile=first, tofile=second, lineterm='\n')
+        fromfile=str(first), tofile=str(second), lineterm='\n')
     diff_content = ''.join(list(diff))
     if diff_content:
         return f'unexpected file differences\n{diff_content}'
@@ -71,8 +73,7 @@ def copy_template(template, target):
         target: the target directory
     """
 
-    templates_dir = os.path.join(find_test_base(), 'templates')
-    template_dir = os.path.join(templates_dir, template)
+    template_dir = Path(find_test_base()) / 'templates' / template
     if not path_copy(template_dir, target, critical=False):
         raise AssertionError('failed to setup template into directory')
 
