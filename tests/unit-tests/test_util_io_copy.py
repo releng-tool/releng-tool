@@ -213,7 +213,7 @@ class TestUtilIoCopy(RelengToolTestCase):
             path_copy(subdir, subdir2)
 
             lnkb_file = subdir2 / 'test-file-link-a'
-            read_lnk = os.readlink(lnkb_file)
+            read_lnk = lnkb_file.readlink()
             self.assertEqual(read_lnk, dst_file)
 
     def test_utilio_copy_symlink_file_root(self):
@@ -235,7 +235,7 @@ class TestUtilIoCopy(RelengToolTestCase):
             lnkb_file = work_dir / 'test-file-link-b'
             path_copy(lnka_file, lnkb_file)
 
-            read_lnk = os.readlink(lnkb_file)
+            read_lnk = lnkb_file.readlink()
             self.assertEqual(read_lnk, dst_file)
 
     def test_utilio_copy_symlink_missing(self):
