@@ -16,7 +16,7 @@
 - Improve accepting of path-like arguments into `releng_symlink`
 - Improve accepting of path-like arguments into `releng_tmpdir`
 - Improve accepting of path-like arguments into `releng_wd`
-- Patches are applied with the `--binary` argument
+- Patches are applied with the `--verbose` argument
 - Support for extensionless configuration/scripts is deprecated
 - Support working-directory changing with `releng_tmpdir`
 
