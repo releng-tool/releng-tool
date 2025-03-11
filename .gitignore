@@ -5,6 +5,7 @@
 /build/
 /dist/
 /pip-wheel-metadata/
+/releng_tool-*/
 
 # 'git format-patch' folder
 /outgoing/
