@@ -9,6 +9,7 @@ on:
       - 'releng/**'
       - 'releng_tool/**'
       - 'tests/**'
+      - 'pyproject.toml'
       - 'requirements-tools.txt'
       - 'tox.ini'
   pull_request:
@@ -19,6 +20,7 @@ on:
       - 'releng/**'
       - 'releng_tool/**'
       - 'tests/**'
+      - 'pyproject.toml'
       - 'requirements-tools.txt'
       - 'tox.ini'
   workflow_dispatch:
