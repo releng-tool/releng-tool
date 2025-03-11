@@ -34,7 +34,7 @@ class TestUtilIo(RelengToolTestCase):
         result = execute(['an_unknown_command'], quiet=True, critical=False)
         self.assertFalse(result)
 
-        result = execute('echo', quiet=True, critical=False)
+        result = execute('whoami', quiet=True, critical=False)
         self.assertTrue(result)
 
         # skip output checks if verbose mode is enabled
