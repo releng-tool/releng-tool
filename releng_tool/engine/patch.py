@@ -7,6 +7,7 @@ from releng_tool.tool.patch import PATCH
 from releng_tool.util.io import run_script
 from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.log import err
+from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import verbose
 import os
@@ -87,21 +88,30 @@ def stage(engine, pkg, script_env):
 
     patch_args = [
         '--batch',
-        '--binary',
         '--forward',
         '--ignore-whitespace',
         '--strip=1',
     ]
 
-    # attempt to be flexible for patches between cross-platform environments
-    # by disabling the heuristic for transforming line endings
-    if 'releng.disable_binary_patch' not in engine.opts.quirks:
-        patch_args.append('--binary')
+    # forcing verbose mode as a hack for patch compatibility
+    #
+    # It has been observed for select environments that running in a verbose
+    # mode can alter the ability to apply a patch successfully. Specifically,
+    # running with patch 2.5.9 built for Strawberry Perl will sometimes
+    # report hunk failures (code 3). However, when running in a verbose mode,
+    # patches look to apply. Using `--verbose` for all environments does
+    # not have any issues, to always use it to be flexible for this odd use
+    # case.
+    if 'releng.disable_verbose_patch' not in engine.opts.quirks:
+        patch_args.append('--verbose')
 
     for patch in patches:
         print(f'({os.path.basename(patch)})')
 
-        if not PATCH.execute([*patch_args, f'--input={patch}'], cwd=patch_dir):
+        patch_out = []
+        if not PATCH.execute([*patch_args, f'--input={patch}'],
+                cwd=patch_dir, capture=patch_out):
+            log('\n'.join(patch_out))
             err('failed to apply patch')
             return False
 
