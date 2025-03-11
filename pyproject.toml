@@ -1,8 +1,8 @@
 [build-system]
 requires = [
-    'hatchling',
+    'setuptools >=61.0.0',
 ]
-build-backend = 'hatchling.build'
+build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'releng-tool'
@@ -29,10 +29,9 @@ classifiers = [
     'Topic :: Software Development :: Build Tools',
 ]
 dependencies = [
-    'installer >=0.5.0', 
+    'installer >=0.5.0',
 ]
 dynamic = [
-    'entry-points',
     'version',
 ]
 
@@ -49,23 +48,13 @@ statistics = [
     'matplotlib',
 ]
 
-[tool.flit.module]
-name = 'releng_tool'
-
-[tool.hatch.build.targets.sdist]
+[tool.setuptools.packages.find]
 include = [
-    'Documentation',
-    'releng-tool',
-    'releng_tool',
-    'scripts/completion',
-    'tests',
+    'releng-tool*',
+    'releng_tool*',
 ]
+namespaces = false
+where = ['.']
 
-[tool.hatch.build.targets.wheel]
-packages = [
-    'releng_tool',
-    'releng-tool',
-]
-
-[tool.hatch.version]
-path = 'releng_tool/__init__.py'
+[tool.setuptools.dynamic]
+version = {attr = 'releng_tool.__version__'}
