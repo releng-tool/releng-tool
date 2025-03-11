@@ -44,7 +44,7 @@ class RelengTool:
         else:
             self.exists_args = ['--version']
 
-    def execute(self, args=None, cwd=None, quiet=False, env=None, poll=False,
+    def execute(self, args=None, cwd=None, quiet=None, env=None, poll=False,
             capture=None):
         """
         execute the host tool with the provided arguments (if any)
@@ -90,7 +90,7 @@ class RelengTool:
             capture=out, quiet=True)
         return rv, '\n'.join(out)
 
-    def _execute(self, args=None, cwd=None, quiet=False, env=None, poll=False,
+    def _execute(self, args=None, cwd=None, quiet=None, env=None, poll=False,
             capture=None):
         """
         execute the host tool with the provided arguments (if any)
