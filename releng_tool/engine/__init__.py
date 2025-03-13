@@ -39,6 +39,7 @@ from releng_tool.support import require_version
 from releng_tool.tool.python import PYTHON
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.env import env_value
+from releng_tool.util.env import env_wrap
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
@@ -865,7 +866,7 @@ of the releng process:
         target_share_dir = os.path.join(target_pdir, 'share')
 
         # global variables
-        for env in (os.environ, script_env):
+        for env in (env_wrap(), script_env):
             env['BUILD_DIR'] = self.opts.build_dir
             env['CACHE_DIR'] = self.opts.cache_dir
             env['DL_DIR'] = self.opts.dl_dir

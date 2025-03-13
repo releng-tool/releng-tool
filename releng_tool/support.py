@@ -6,6 +6,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.util.critical import raise_for_critical
+from releng_tool.util.env import env_wrap
 from releng_tool.util.log import err
 from runpy import run_path
 import inspect
@@ -70,7 +71,7 @@ def releng_script_envs(script, ctxenv):
         saved_env[key] = os.environ.get(key, None)
 
     try:
-        for env in (os.environ, script_env):
+        for env in (env_wrap(), script_env):
             env['RELENG_SCRIPT'] = script
             env['RELENG_SCRIPT_DIR'] = script_dir
 

@@ -5,6 +5,26 @@ import os
 import types
 
 
+def env_wrap():
+    """
+    an os environment wrapper
+
+    Provides an environment platform that allows updating the `os.environ`
+    with values that are force-cast to `str` types. This avoids the need
+    to manually converting non-str types into str that have a representation
+    that is expected to be accepted as a value for an OS environment variable.
+
+    Returns:
+        the wrapper
+    """
+
+    class EnvSet:
+        def __setitem__(self, key, value):
+            os.environ[key] = str(value)
+
+    return EnvSet()
+
+
 def extend_script_env(env, extra):
     """
     extend a partially filtered environment (globals) for a run_path event

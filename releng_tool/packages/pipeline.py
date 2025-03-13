@@ -24,6 +24,7 @@ from releng_tool.packages.exceptions import RelengToolInstallStageFailure
 from releng_tool.packages.exceptions import RelengToolLicenseStageFailure
 from releng_tool.packages.exceptions import RelengToolPatchStageFailure
 from releng_tool.packages.exceptions import RelengToolPostStageFailure
+from releng_tool.util.env import env_wrap
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
@@ -354,7 +355,7 @@ class RelengPackagePipeline:
         pkg_env['PKG_LOCALSRCS'] = None
 
         try:
-            for env in (os.environ, pkg_env):
+            for env in (env_wrap(), pkg_env):
                 env['PKG_BUILD_BASE_DIR'] = pkg.build_dir
                 env['PKG_BUILD_DIR'] = build_dir
                 env['PKG_BUILD_OUTPUT_DIR'] = pkg.build_output_dir
@@ -439,7 +440,7 @@ class RelengPackagePipeline:
         try:
             os.environ.update(extra_env)
 
-            for env in (os.environ, pkg_env):
+            for env in (env_wrap(), pkg_env):
                 if pkg.prefix is not None:
                     opts = self.opts
                     nprefix = pkg.prefix
