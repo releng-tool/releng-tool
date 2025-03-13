@@ -62,7 +62,7 @@ class SconsTool(RelengTool):
 
                     debug('searching for {} tool inside container: {}',
                         self.tool, scons_container)
-                    sys.path.append(scons_container)
+                    sys.path.append(str(scons_container))
 
                     try:
                         import SCons  # noqa: F401  pylint: disable=E0401

@@ -214,7 +214,7 @@ class RelengEngine:
         # register the project's root directory as a system path; permits a
         # project to import locally created modules in their build/etc. scripts
         debug('registering root directory in path...')
-        sys.path.append(opts.root_dir)
+        sys.path.append(str(opts.root_dir))
         os.environ['PATH'] = os.environ['PATH'] + os.pathsep + opts.root_dir
 
         # prepare script environment to make helpers available to configuration
@@ -295,7 +295,7 @@ class RelengEngine:
         # loading host tools (not following prefix or bin container) built by a
         # project over the system
         debug(f'registering host directory in path: {opts.host_dir}')
-        sys.path.insert(0, opts.host_dir)
+        sys.path.insert(0, str(opts.host_dir))
         os.environ['PATH'] = opts.host_dir + os.pathsep + os.environ['PATH']
 
         # register the project's host-bin directory as a system path; lazily
@@ -303,7 +303,7 @@ class RelengEngine:
         host_sysroot_dir = opts.host_dir + opts.sysroot_prefix
         host_bin_dir = os.path.join(host_sysroot_dir, 'bin')
         debug(f'registering host bin directory in path: {host_bin_dir}')
-        sys.path.insert(0, host_bin_dir)
+        sys.path.insert(0, str(host_bin_dir))
         os.environ['PATH'] = host_bin_dir + os.pathsep + os.environ['PATH']
 
         # load and process packages

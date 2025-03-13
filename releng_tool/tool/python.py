@@ -157,7 +157,7 @@ class PythonTool(RelengTool):
         """
 
         if path not in sys.path:
-            sys.path.insert(0, path)
+            sys.path.insert(0, str(path))
             debug(f'registered Python-{desc} host path: {path}')
 
         if insert_env_path(key, path):

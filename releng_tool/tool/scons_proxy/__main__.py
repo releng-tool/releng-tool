@@ -16,7 +16,7 @@ import sys
 for site_base in site.getsitepackages():
     scons_container = os.path.join(site_base, 'scons')
     if os.path.exists(scons_container):
-        sys.path.append(scons_container)
+        sys.path.append(str(scons_container))
 
 # invoke the mainline script
 if __name__ == '__main__':
