@@ -8,5 +8,5 @@ pdm-pep517
 pdm
 poetry>=0.8
 scons
-setuptools >=61
+setuptools>=61
 wheel
