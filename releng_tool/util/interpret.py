@@ -19,10 +19,12 @@ def interpret_dict_strs(obj):
     Returns:
         the dictionary; otherwise ``None``
     """
+
     rv = None
 
     if isinstance(obj, dict):
         rv = obj
+
         for key, value in obj.items():
             if not isinstance(key, str):
                 rv = None
@@ -51,17 +53,14 @@ def interpret_strs(obj):
     Returns:
         sequence of zero or more strings; otherwise ``None``
     """
+
     rv = None
 
-    if isinstance(obj, Sequence):
-        if isinstance(obj, str):
-            rv = [obj]
-        else:
+    if isinstance(obj, str):
+        rv = [obj]
+    elif isinstance(obj, Sequence):
+        if all(isinstance(child, str) for child in obj):
             rv = obj
-            for child in obj:
-                if not isinstance(child, str):
-                    rv = None
-                    break
 
     return rv
 
@@ -84,27 +83,17 @@ def interpret_zero_to_one_strs(obj):
     Returns:
         the dictionary; otherwise ``None``
     """
+
     rv = None
 
     if isinstance(obj, dict):
-        rv = obj
-        for key, value in obj.items():
-            if not isinstance(key, str):
-                rv = None
-                break
-
-            if value is not None and not isinstance(value, str):
-                rv = None
-                break
+        rv = interpret_dict_strs(obj)
+    elif isinstance(obj, str):
+        rv = {
+            obj: '',
+        }
     elif isinstance(obj, Sequence):
-        rv = {}
-        if isinstance(obj, str):
-            rv[obj] = ''
-        else:
-            for child in obj:
-                if not isinstance(child, str):
-                    rv = None
-                    break
-                rv[child] = ''
+        if all(isinstance(child, str) for child in obj):
+            rv = {child: '' for child in obj}
 
     return rv
