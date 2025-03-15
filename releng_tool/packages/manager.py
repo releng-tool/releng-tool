@@ -1546,14 +1546,10 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
                         raise_kv_exception('bool or string')
             elif type_ == PkgKeyType.DICT:
                 value = raw_value
-                if allow_expand:
-                    value = expand(value, expand_extra)
                 if not isinstance(value, dict):
                     raise_kv_exception('dictionary')
             elif type_ == PkgKeyType.DICT_STR_STR:
                 value = interpret_dictionary_strings(raw_value)
-                if allow_expand:
-                    value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('dict(str,str)')
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STR:
@@ -1562,24 +1558,16 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
                     value = raw_value
                     if not isinstance(value, dict):
                         raise_kv_exception('dict(str,str) or string')
-                if allow_expand:
-                    value = expand(value, expand_extra)
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
                 value = interpret_zero_to_one_strings(raw_value)
-                if allow_expand:
-                    value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('dict(str,str) or string(s)')
             elif type_ == PkgKeyType.STR:
                 value = interpret_string(raw_value)
-                if allow_expand:
-                    value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('string')
             elif type_ == PkgKeyType.STRS:
                 value = interpret_strings(raw_value)
-                if allow_expand:
-                    value = expand(value, expand_extra)
                 if value is None:
                     raise_kv_exception('string(s)')
             elif type_ == PkgKeyType.INT_NONNEGATIVE:
@@ -1592,6 +1580,9 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
                     raise_kv_exception('positive int')
             else:
                 raise_kv_exception('<unsupported key-value>')
+
+            if allow_expand:
+                value = expand(value, expand_extra)
 
         return value
 
