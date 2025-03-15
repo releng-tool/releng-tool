@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.util.interpret import interpret_dict_strs
-from releng_tool.util.interpret import interpret_strs
+from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.interpret import interpret_zero_to_one_strs
 from tests import RelengToolTestCase
 
@@ -46,40 +47,52 @@ class TestUtilInterpret(RelengToolTestCase):
         val = interpret_dict_strs({'a': 123})
         self.assertIsNone(val)
 
-    def test_utilinterpret_strs(self):
-        val = interpret_strs(None)
+    def test_utilinterpret_seq(self):
+        val = interpret_seq(None, str)
         self.assertIsNone(val)
 
         # string returns a list with the single string
-        val = interpret_strs('this is a string')
+        val = interpret_seq('this is a string', str)
         self.assertEqual(val, ['this is a string'])
 
         # list returns same list
         test_list = ['a', 'b']
-        val = interpret_strs(test_list)
+        val = interpret_seq(test_list, str)
         self.assertEqual(val, ['a', 'b'])
         self.assertIs(val, test_list)
 
         # tuple returns same tuple
         test_tuple = ('a', 'b')
-        val = interpret_strs(test_tuple)
+        val = interpret_seq(test_tuple, str)
         self.assertEqual(val, ('a', 'b'))
         self.assertIs(val, test_tuple)
 
         # empty list returns same list
         test_list = []
-        val = interpret_strs(test_list)
+        val = interpret_seq(test_list, str)
         self.assertEqual(val, [])
         self.assertIs(val, test_list)
 
         # empty tuple returns same tuple
         test_tuple = ()
-        val = interpret_strs(test_tuple)
+        val = interpret_seq(test_tuple, str)
         self.assertEqual(val, ())
         self.assertIs(val, test_tuple)
 
+        # check with another type
+        test_list = [Path('a'), Path('b')]
+        val = interpret_seq(test_list, Path)
+        self.assertEqual(val, [Path('a'), Path('b')])
+        self.assertIs(val, test_list)
+
+        # check with mixing types
+        test_list = ['a', Path('b')]
+        val = interpret_seq(test_list, (Path, str))
+        self.assertEqual(val, ['a', Path('b')])
+        self.assertIs(val, test_list)
+
         # bad entry returns none
-        val = interpret_strs(['a', None])
+        val = interpret_seq(['a', None], str)
         self.assertIsNone(val)
 
     def test_utilinterpret_z2o_strs(self):

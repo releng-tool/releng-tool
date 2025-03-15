@@ -45,7 +45,7 @@ from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.interpret import interpret_dict_strs
-from releng_tool.util.interpret import interpret_strs
+from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
 from releng_tool.util.io import run_script
@@ -680,7 +680,7 @@ has failed. Ensure the following path is accessible for this user:
         bad_pkgs_value = False
 
         if ConfKey.PKGS in settings:
-            pkg_names = interpret_strs(settings[ConfKey.PKGS])
+            pkg_names = interpret_seq(settings[ConfKey.PKGS], str)
             if pkg_names is None:
                 bad_pkgs_value = True
 
@@ -1260,14 +1260,14 @@ following key entry and re-try again.
             self.opts.extract_override = v
 
         if ConfKey.PREREQUISITES in settings:
-            prerequisites = interpret_strs(settings[ConfKey.PREREQUISITES])
+            prerequisites = interpret_seq(settings[ConfKey.PREREQUISITES], str)
             if prerequisites is None:
                 notify_invalid_value(ConfKey.PREREQUISITES, 'str or list(str)')
                 return False
             self.opts.prerequisites.extend(prerequisites)
 
         if ConfKey.QUIRKS in settings:
-            quirks = interpret_strs(settings[ConfKey.QUIRKS])
+            quirks = interpret_seq(settings[ConfKey.QUIRKS], str)
             if quirks is None:
                 notify_invalid_value(ConfKey.QUIRKS, 'str or list(str)')
                 return False
@@ -1276,7 +1276,7 @@ following key entry and re-try again.
                 verbose('configuration quirk applied: ' + quirk)
 
         if ConfKey.SBOM_FORMAT in settings:
-            sbom_format = interpret_strs(settings[ConfKey.SBOM_FORMAT])
+            sbom_format = interpret_seq(settings[ConfKey.SBOM_FORMAT], str)
             if sbom_format is None:
                 notify_invalid_value(ConfKey.SBOM_FORMAT, 'str or list(str)')
                 return False
@@ -1316,7 +1316,7 @@ following key entry and re-try again.
             self.opts.vsdevcmd = vsdevcmd
 
         if ConfKey.EXTEN_PKGS in settings:
-            epd = interpret_strs(settings[ConfKey.EXTEN_PKGS])
+            epd = interpret_seq(settings[ConfKey.EXTEN_PKGS], str)
             if epd is None:
                 notify_invalid_value(ConfKey.EXTEN_PKGS, 'str or list(str)')
                 return False
@@ -1324,7 +1324,7 @@ following key entry and re-try again.
 
         ext_names = []
         if ConfKey.EXTENSIONS in settings:
-            ext_names = interpret_strs(settings[ConfKey.EXTENSIONS])
+            ext_names = interpret_seq(settings[ConfKey.EXTENSIONS], str)
             if ext_names is None:
                 notify_invalid_value(ConfKey.EXTENSIONS, 'str or list(str)')
                 return False

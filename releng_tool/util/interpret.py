@@ -37,29 +37,32 @@ def interpret_dict_strs(obj):
     return rv
 
 
-def interpret_strs(obj):
+def interpret_seq(obj, classinfo):
     """
-    interpret strings, if any, from the provided object
+    interpret a sequence for a class hint, if any, from the provided object
 
-    Attempts to interpret one or more strings from a provided object. Returned
-    will be an iterable containing one or more strings. If a string value is
-    provided, it will be returned inside iterable container. If an iterable
-    container is provided, the same container will be returned. In the case
-    where an unexpected type is detected, this method will return ``None``.
+    This call will return a sequence based on the provided object(s). If a
+    sequence is provided, typically the same sequence is returned. If a single
+    object is provided, it will be returned as an entry of a new sequence.
+    All objects in the resulting sequence will be of a class type based on the
+    provided class hint. If any object is of a non-matching class type, this
+    call will always return ``None``. Providing an empty sequence will return
+    the same sequence.
 
     Args:
         obj: the object to interpret
+        classinfo: the class hint
 
     Returns:
-        sequence of zero or more strings; otherwise ``None``
+        sequence of zero or more objects; otherwise ``None``
     """
 
     rv = None
 
-    if isinstance(obj, str):
+    if isinstance(obj, classinfo):
         rv = [obj]
     elif isinstance(obj, Sequence):
-        if all(isinstance(child, str) for child in obj):
+        if all(isinstance(child, classinfo) for child in obj):
             rv = obj
 
     return rv
