@@ -2,9 +2,10 @@
 # Copyright releng-tool
 
 from pathlib import Path
+from releng_tool.defs import VOID
 from releng_tool.util.interpret import interpret_dict
+from releng_tool.util.interpret import interpret_opts
 from releng_tool.util.interpret import interpret_seq
-from releng_tool.util.interpret import interpret_zero_to_one_strs
 from tests import RelengToolTestCase
 
 
@@ -59,6 +60,63 @@ class TestUtilInterpret(RelengToolTestCase):
         val = interpret_dict({'a': 123}, str)
         self.assertIsNone(val)
 
+    def test_utilinterpret_opts(self):
+        val = interpret_opts(None, str)
+        self.assertIsNone(val)
+
+        # empty dict returns same dict
+        test_dict = {}
+        val = interpret_opts(test_dict, str)
+        self.assertEqual(val, {})
+        self.assertIs(val, test_dict)
+
+        # valid dict returns same dict
+        test_dict = {'a': 'b', 'c': 'd'}
+        val = interpret_opts(test_dict, str)
+        self.assertEqual(val, {'a': 'b', 'c': 'd'})
+        self.assertIs(val, test_dict)
+
+        # dict with a none entry is desired ("unconfigure case")
+        test_dict = {'a': None}
+        val = interpret_opts(test_dict, str)
+        self.assertEqual(val, {'a': None})
+        self.assertIs(val, test_dict)
+        self.assertIsNone(val['a'])
+
+        # list should return dict with expected keys and empty values
+        val = interpret_opts(['a', 'b'], str)
+        self.assertEqual(val, {'a': VOID, 'b': VOID})
+        self.assertIsNotNone(val['a'])
+        self.assertFalse(val['a'])
+
+        # tuple should return dict with expected keys and empty values
+        val = interpret_opts(('a', 'b'), str)
+        self.assertEqual(val, {'a': VOID, 'b': VOID})
+
+        # string should return dict with expected key and empty value
+        val = interpret_opts('c', str)
+        self.assertEqual(val, {'c': VOID})
+
+        # check with another type
+        test_dict = {'a': Path('b')}
+        val = interpret_opts(test_dict, Path)
+        self.assertEqual(val, {'a': Path('b')})
+        self.assertIs(val, test_dict)
+
+        # check with mixing types
+        test_dict = {'a': 'b', 'c': Path('d')}
+        val = interpret_opts(test_dict, (Path, str))
+        self.assertEqual(val, {'a': 'b', 'c': Path('d')})
+        self.assertIs(val, test_dict)
+
+        # bad dict entry returns none
+        val = interpret_opts({'a': 123}, str)
+        self.assertIsNone(val)
+
+        # bad sequence entry returns none
+        val = interpret_opts([123], str)
+        self.assertIsNone(val)
+
     def test_utilinterpret_seq(self):
         val = interpret_seq(None, str)
         self.assertIsNone(val)
@@ -105,46 +163,4 @@ class TestUtilInterpret(RelengToolTestCase):
 
         # bad entry returns none
         val = interpret_seq(['a', None], str)
-        self.assertIsNone(val)
-
-    def test_utilinterpret_z2o_strs(self):
-        val = interpret_zero_to_one_strs(None)
-        self.assertIsNone(val)
-
-        # empty dict returns same dict
-        test_dict = {}
-        val = interpret_zero_to_one_strs(test_dict)
-        self.assertEqual(val, {})
-        self.assertIs(val, test_dict)
-
-        # valid dict returns same dict
-        test_dict = {'a': 'b', 'c': 'd'}
-        val = interpret_zero_to_one_strs(test_dict)
-        self.assertEqual(val, {'a': 'b', 'c': 'd'})
-        self.assertIs(val, test_dict)
-
-        # dict with a none entry is desired ("unconfigure case")
-        test_dict = {'a': None}
-        val = interpret_zero_to_one_strs(test_dict)
-        self.assertEqual(val, {'a': None})
-        self.assertIs(val, test_dict)
-
-        # list should return dict with expected keys and empty values
-        val = interpret_zero_to_one_strs(['a', 'b'])
-        self.assertEqual(val, {'a': '', 'b': ''})
-
-        # tuple should return dict with expected keys and empty values
-        val = interpret_zero_to_one_strs(('a', 'b'))
-        self.assertEqual(val, {'a': '', 'b': ''})
-
-        # string should return dict with expected key and empty value
-        val = interpret_zero_to_one_strs('c')
-        self.assertEqual(val, {'c': ''})
-
-        # bad dict entry returns none
-        val = interpret_zero_to_one_strs({'a': 123})
-        self.assertIsNone(val)
-
-        # bad sequence entry returns none
-        val = interpret_zero_to_one_strs([123])
         self.assertIsNone(val)

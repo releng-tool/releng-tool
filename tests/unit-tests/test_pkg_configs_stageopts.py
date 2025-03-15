@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.defs import VOID
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from tests.support.pkg_config_test import TestPkgConfigsBase
 
@@ -128,14 +129,14 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
 
         pkg, _, _ = self.LOAD('build-opts-valid-str')
         self.assertDictEqual(pkg.build_opts, {
-            'option': '',
+            'option': VOID,
         })
 
         pkg, _, _ = self.LOAD('build-opts-valid-strs')
         self.assertDictEqual(pkg.build_opts, {
-            'option1': '',
-            'option2': '',
-            'option3': '',
+            'option1': VOID,
+            'option2': VOID,
+            'option3': VOID,
         })
 
     def test_pkgconfig_conf_defs_append(self):
@@ -260,14 +261,14 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
 
         pkg, _, _ = self.LOAD('conf-opts-valid-str')
         self.assertDictEqual(pkg.conf_opts, {
-            'option': '',
+            'option': VOID,
         })
 
         pkg, _, _ = self.LOAD('conf-opts-valid-strs')
         self.assertDictEqual(pkg.conf_opts, {
-            'option1': '',
-            'option2': '',
-            'option3': '',
+            'option1': VOID,
+            'option2': VOID,
+            'option3': VOID,
         })
 
     def test_pkgconfig_env_append(self):
@@ -442,12 +443,12 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
 
         pkg, _, _ = self.LOAD('install-opts-valid-str')
         self.assertDictEqual(pkg.install_opts, {
-            'option': '',
+            'option': VOID,
         })
 
         pkg, _, _ = self.LOAD('install-opts-valid-strs')
         self.assertDictEqual(pkg.install_opts, {
-            'option1': '',
-            'option2': '',
-            'option3': '',
+            'option1': VOID,
+            'option2': VOID,
+            'option3': VOID,
         })

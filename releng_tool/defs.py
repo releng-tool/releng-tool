@@ -449,3 +449,9 @@ UNSET_VALUES = [
     '-',
     'unset',
 ]
+
+# a void hint
+#
+# This is used to help indicate a value as not being applicable for scenarios
+# where `None` has a special meaning over applicability.
+VOID = frozenset()  # type: ignore[var-annotated]

@@ -35,8 +35,8 @@ from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.interpret import interpret_dict
+from releng_tool.util.interpret import interpret_opts
 from releng_tool.util.interpret import interpret_seq
-from releng_tool.util.interpret import interpret_zero_to_one_strs
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import run_script
 from releng_tool.util.io_mkdir import mkdir
@@ -1553,7 +1553,7 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
                     if not isinstance(value, dict):
                         raise_kv_exception('dict(str,str) or string')
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
-                value = interpret_zero_to_one_strs(raw_value)
+                value = interpret_opts(raw_value, str)
                 if value is None:
                     raise_kv_exception('dict(str,str) or string(s)')
             elif type_ == PkgKeyType.STR:

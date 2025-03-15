@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.defs import PackageInstallType
+from releng_tool.defs import VOID
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.packages.exceptions import RelengToolConflictingConfiguration
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
@@ -63,14 +64,14 @@ class TestPkgConfigs(TestPkgConfigsBase):
 
         pkg, _, _ = self.LOAD('fetch-opts-valid-str')
         self.assertDictEqual(pkg.fetch_opts, {
-            '--my-option': '',
+            '--my-option': VOID,
         })
 
         pkg, _, _ = self.LOAD('fetch-opts-valid-strs')
         self.assertDictEqual(pkg.fetch_opts, {
-            'option4': '',
-            'option5': '',
-            'option6': '',
+            'option4': VOID,
+            'option5': VOID,
+            'option6': VOID,
         })
 
     def test_pkgconfig_fixed_jobs_invalid(self):
