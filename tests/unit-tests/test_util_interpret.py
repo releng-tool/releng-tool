@@ -13,16 +13,22 @@ class TestUtilInterpret(RelengToolTestCase):
         self.assertIsNone(val)
 
         # empty dict returns same dict
-        val = interpret_dict_strs({})
+        test_dict = {}
+        val = interpret_dict_strs(test_dict)
         self.assertEqual(val, {})
+        self.assertIs(val, test_dict)
 
         # valid dict returns same dict
-        val = interpret_dict_strs({'a': 'b', 'c': 'd'})
+        test_dict = {'a': 'b', 'c': 'd'}
+        val = interpret_dict_strs(test_dict)
         self.assertEqual(val, {'a': 'b', 'c': 'd'})
+        self.assertIs(val, test_dict)
 
         # dict with a none entry is desired ("unconfigure case")
-        val = interpret_dict_strs({'a': None})
+        test_dict = {'a': None}
+        val = interpret_dict_strs(test_dict)
         self.assertEqual(val, {'a': None})
+        self.assertIs(val, test_dict)
 
         # string should return none
         val = interpret_dict_strs('this is a string')
@@ -49,20 +55,28 @@ class TestUtilInterpret(RelengToolTestCase):
         self.assertEqual(val, ['this is a string'])
 
         # list returns same list
-        val = interpret_strs(['a', 'b'])
+        test_list = ['a', 'b']
+        val = interpret_strs(test_list)
         self.assertEqual(val, ['a', 'b'])
+        self.assertIs(val, test_list)
 
         # tuple returns same tuple
-        val = interpret_strs(('a', 'b'))
+        test_tuple = ('a', 'b')
+        val = interpret_strs(test_tuple)
         self.assertEqual(val, ('a', 'b'))
+        self.assertIs(val, test_tuple)
 
         # empty list returns same list
-        val = interpret_strs([])
+        test_list = []
+        val = interpret_strs(test_list)
         self.assertEqual(val, [])
+        self.assertIs(val, test_list)
 
         # empty tuple returns same tuple
-        val = interpret_strs(())
+        test_tuple = ()
+        val = interpret_strs(test_tuple)
         self.assertEqual(val, ())
+        self.assertIs(val, test_tuple)
 
         # bad entry returns none
         val = interpret_strs(['a', None])
@@ -73,16 +87,22 @@ class TestUtilInterpret(RelengToolTestCase):
         self.assertIsNone(val)
 
         # empty dict returns same dict
-        val = interpret_zero_to_one_strs({})
+        test_dict = {}
+        val = interpret_zero_to_one_strs(test_dict)
         self.assertEqual(val, {})
+        self.assertIs(val, test_dict)
 
         # valid dict returns same dict
-        val = interpret_zero_to_one_strs({'a': 'b', 'c': 'd'})
+        test_dict = {'a': 'b', 'c': 'd'}
+        val = interpret_zero_to_one_strs(test_dict)
         self.assertEqual(val, {'a': 'b', 'c': 'd'})
+        self.assertIs(val, test_dict)
 
         # dict with a none entry is desired ("unconfigure case")
-        val = interpret_zero_to_one_strs({'a': None})
+        test_dict = {'a': None}
+        val = interpret_zero_to_one_strs(test_dict)
         self.assertEqual(val, {'a': None})
+        self.assertIs(val, test_dict)
 
         # list should return dict with expected keys and empty values
         val = interpret_zero_to_one_strs(['a', 'b'])
