@@ -4,20 +4,24 @@
 from collections.abc import Sequence
 
 
-def interpret_dict_strs(obj):
+def interpret_dict(obj, classinfo):
     """
-    interpret a dictionary of key-value strings from the provided object
+    interpret a dictionary for a class hint, if any, from the provided object
 
-    Attempts to interpret one or more key-value string pairs from a provided
-    object. If a key-value string dictionary value is provided, it will be
-    returned. In the case where an unexpected type is detected, this method will
-    return ``None``.
+    This call will return a dictionary based on the provided object. If a
+    dictionary is provided, typically the same dictionary is returned. All
+    keys in the resulting dictionary will be of a str class type. All values
+    in the resulting dictionary will be of a class type based on the provided
+    class hint. If any object is of a non-matching class type, this call
+    will always return ``None``. Providing an empty dictionary will return
+    the same dictionary.
 
     Args:
         obj: the object to interpret
+        classinfo: the class hint
 
     Returns:
-        the dictionary; otherwise ``None``
+        dictionary of zero or more entries; otherwise ``None``
     """
 
     rv = None
@@ -30,7 +34,7 @@ def interpret_dict_strs(obj):
                 rv = None
                 break
 
-            if value is not None and not isinstance(value, str):
+            if value is not None and not isinstance(value, classinfo):
                 rv = None
                 break
 
@@ -90,7 +94,7 @@ def interpret_zero_to_one_strs(obj):
     rv = None
 
     if isinstance(obj, dict):
-        rv = interpret_dict_strs(obj)
+        rv = interpret_dict(obj, str)
     elif isinstance(obj, str):
         rv = {
             obj: '',

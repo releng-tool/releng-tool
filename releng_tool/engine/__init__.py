@@ -44,7 +44,7 @@ from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
-from releng_tool.util.interpret import interpret_dict_strs
+from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
@@ -1197,14 +1197,14 @@ following key entry and re-try again.
             self.opts.default_dev_ignore_cache = default_dev_ignore_cache
 
         if ConfKey.ENVIRONMENT in settings:
-            env = interpret_dict_strs(settings[ConfKey.ENVIRONMENT])
+            env = interpret_dict(settings[ConfKey.ENVIRONMENT], str)
             if env is None:
                 notify_invalid_value(ConfKey.ENVIRONMENT, 'dict(str,str)')
                 return False
             self.opts.environment.update(expand(env))
 
         if ConfKey.EXTRA_LEXCEPTS in settings:
-            d = interpret_dict_strs(settings[ConfKey.EXTRA_LEXCEPTS])
+            d = interpret_dict(settings[ConfKey.EXTRA_LEXCEPTS], str)
             if d is None:
                 notify_invalid_value(ConfKey.EXTRA_LEXCEPTS, 'dict(str,str)')
                 return False
@@ -1216,7 +1216,7 @@ following key entry and re-try again.
                 }
 
         if ConfKey.EXTRA_LICENSES in settings:
-            d = interpret_dict_strs(settings[ConfKey.EXTRA_LICENSES])
+            d = interpret_dict(settings[ConfKey.EXTRA_LICENSES], str)
             if d is None:
                 notify_invalid_value(ConfKey.EXTRA_LICENSES, 'dict(str,str)')
                 return False
@@ -1235,7 +1235,7 @@ following key entry and re-try again.
             self.opts.license_header = license_header
 
         if ConfKey.OVERRIDE_REV in settings:
-            orz = interpret_dict_strs(settings[ConfKey.OVERRIDE_REV])
+            orz = interpret_dict(settings[ConfKey.OVERRIDE_REV], str)
             if orz is None:
                 notify_invalid_value(ConfKey.OVERRIDE_REV, 'dict(str,str)')
                 return False
@@ -1244,7 +1244,7 @@ following key entry and re-try again.
                 warn('configuration "{}" is deprecated', ConfKey.OVERRIDE_REV)
 
         if ConfKey.OVERRIDE_SITES in settings:
-            v = interpret_dict_strs(settings[ConfKey.OVERRIDE_SITES])
+            v = interpret_dict(settings[ConfKey.OVERRIDE_SITES], str)
             if v is None:
                 notify_invalid_value(ConfKey.OVERRIDE_SITES, 'dict(str,str)')
                 return False
@@ -1253,7 +1253,7 @@ following key entry and re-try again.
                 warn('configuration "{}" is deprecated', ConfKey.OVERRIDE_SITES)
 
         if ConfKey.OVERRIDE_TOOLS in settings:
-            v = interpret_dict_strs(settings[ConfKey.OVERRIDE_TOOLS])
+            v = interpret_dict(settings[ConfKey.OVERRIDE_TOOLS], str)
             if v is None:
                 notify_invalid_value(ConfKey.OVERRIDE_TOOLS, 'dict(str,str)')
                 return False

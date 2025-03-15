@@ -34,7 +34,7 @@ from releng_tool.packages.exceptions import RelengToolUnknownPythonSetupType
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
 from releng_tool.util.env import extend_script_env
-from releng_tool.util.interpret import interpret_dict_strs
+from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.interpret import interpret_zero_to_one_strs
 from releng_tool.util.io import interpret_stem_extension
@@ -1545,7 +1545,7 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
                 if not isinstance(value, dict):
                     raise_kv_exception('dictionary')
             elif type_ == PkgKeyType.DICT_STR_STR:
-                value = interpret_dict_strs(raw_value)
+                value = interpret_dict(raw_value, str)
                 if value is None:
                     raise_kv_exception('dict(str,str)')
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STR:

@@ -2,49 +2,61 @@
 # Copyright releng-tool
 
 from pathlib import Path
-from releng_tool.util.interpret import interpret_dict_strs
+from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.interpret import interpret_zero_to_one_strs
 from tests import RelengToolTestCase
 
 
 class TestUtilInterpret(RelengToolTestCase):
-    def test_utilinterpret_dict_strs(self):
-        val = interpret_dict_strs(None)
+    def test_utilinterpret_dict(self):
+        val = interpret_dict(None, str)
         self.assertIsNone(val)
 
         # empty dict returns same dict
         test_dict = {}
-        val = interpret_dict_strs(test_dict)
+        val = interpret_dict(test_dict, str)
         self.assertEqual(val, {})
         self.assertIs(val, test_dict)
 
         # valid dict returns same dict
         test_dict = {'a': 'b', 'c': 'd'}
-        val = interpret_dict_strs(test_dict)
+        val = interpret_dict(test_dict, str)
         self.assertEqual(val, {'a': 'b', 'c': 'd'})
         self.assertIs(val, test_dict)
 
         # dict with a none entry is desired ("unconfigure case")
         test_dict = {'a': None}
-        val = interpret_dict_strs(test_dict)
+        val = interpret_dict(test_dict, str)
         self.assertEqual(val, {'a': None})
         self.assertIs(val, test_dict)
 
+        # check with another type
+        test_dict = {'a': Path('b')}
+        val = interpret_dict(test_dict, Path)
+        self.assertEqual(val, {'a': Path('b')})
+        self.assertIs(val, test_dict)
+
+        # check with mixing types
+        test_dict = {'a': 'b', 'c': Path('d')}
+        val = interpret_dict(test_dict, (Path, str))
+        self.assertEqual(val, {'a': 'b', 'c': Path('d')})
+        self.assertIs(val, test_dict)
+
         # string should return none
-        val = interpret_dict_strs('this is a string')
+        val = interpret_dict('this is a string', str)
         self.assertIsNone(val)
 
         # list should return none
-        val = interpret_dict_strs(['a', 'b'])
+        val = interpret_dict(['a', 'b'], str)
         self.assertIsNone(val)
 
         # tuple should return none
-        val = interpret_dict_strs(('a', 'b'))
+        val = interpret_dict(('a', 'b'), str)
         self.assertIsNone(val)
 
         # bad entry returns none
-        val = interpret_dict_strs({'a': 123})
+        val = interpret_dict({'a': 123}, str)
         self.assertIsNone(val)
 
     def test_utilinterpret_seq(self):
