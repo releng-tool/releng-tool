@@ -2,7 +2,6 @@
 # Copyright releng-tool
 
 from releng_tool.util.string import expand
-from releng_tool.util.string import interpret_strings
 from tests import RelengToolTestCase
 import os
 
@@ -49,31 +48,3 @@ class TestUtilStrings(RelengToolTestCase):
 
         os.environ.pop('__RELENGTEST', None)
         assertExpand(self, '$__RELENGTEST', '')
-
-    def test_utilstr_interpretstrings(self):
-        val = interpret_strings(None)
-        self.assertIsNone(val)
-
-        # string returns a list with the single string
-        val = interpret_strings('this is a string')
-        self.assertEqual(val, ['this is a string'])
-
-        # list returns same list
-        val = interpret_strings(['a', 'b'])
-        self.assertEqual(val, ['a', 'b'])
-
-        # set returns same set
-        val = interpret_strings(('a', 'b'))
-        self.assertEqual(val, ('a', 'b'))
-
-        # empty list returns same list
-        val = interpret_strings([])
-        self.assertEqual(val, [])
-
-        # empty set returns same set
-        val = interpret_strings(())
-        self.assertEqual(val, ())
-
-        # bad entry returns none
-        val = interpret_strings(['a', None])
-        self.assertIsNone(val)

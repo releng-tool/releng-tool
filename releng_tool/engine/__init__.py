@@ -44,6 +44,8 @@ from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
+from releng_tool.util.interpret import interpret_dict_strs
+from releng_tool.util.interpret import interpret_strs
 from releng_tool.util.io import execute
 from releng_tool.util.io import execute_rv
 from releng_tool.util.io import run_script
@@ -74,8 +76,6 @@ from releng_tool.util.log import warn
 from releng_tool.util.log import warn_wrap
 from releng_tool.util.platform import platform_exit
 from releng_tool.util.string import expand
-from releng_tool.util.string import interpret_dictionary_strings
-from releng_tool.util.string import interpret_strings
 import json
 import os
 import ssl
@@ -680,7 +680,7 @@ has failed. Ensure the following path is accessible for this user:
         bad_pkgs_value = False
 
         if ConfKey.PKGS in settings:
-            pkg_names = interpret_strings(settings[ConfKey.PKGS])
+            pkg_names = interpret_strs(settings[ConfKey.PKGS])
             if pkg_names is None:
                 bad_pkgs_value = True
 
@@ -1197,14 +1197,14 @@ following key entry and re-try again.
             self.opts.default_dev_ignore_cache = default_dev_ignore_cache
 
         if ConfKey.ENVIRONMENT in settings:
-            env = interpret_dictionary_strings(settings[ConfKey.ENVIRONMENT])
+            env = interpret_dict_strs(settings[ConfKey.ENVIRONMENT])
             if env is None:
                 notify_invalid_value(ConfKey.ENVIRONMENT, 'dict(str,str)')
                 return False
             self.opts.environment.update(expand(env))
 
         if ConfKey.EXTRA_LEXCEPTS in settings:
-            d = interpret_dictionary_strings(settings[ConfKey.EXTRA_LEXCEPTS])
+            d = interpret_dict_strs(settings[ConfKey.EXTRA_LEXCEPTS])
             if d is None:
                 notify_invalid_value(ConfKey.EXTRA_LEXCEPTS, 'dict(str,str)')
                 return False
@@ -1216,7 +1216,7 @@ following key entry and re-try again.
                 }
 
         if ConfKey.EXTRA_LICENSES in settings:
-            d = interpret_dictionary_strings(settings[ConfKey.EXTRA_LICENSES])
+            d = interpret_dict_strs(settings[ConfKey.EXTRA_LICENSES])
             if d is None:
                 notify_invalid_value(ConfKey.EXTRA_LICENSES, 'dict(str,str)')
                 return False
@@ -1235,7 +1235,7 @@ following key entry and re-try again.
             self.opts.license_header = license_header
 
         if ConfKey.OVERRIDE_REV in settings:
-            orz = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_REV])
+            orz = interpret_dict_strs(settings[ConfKey.OVERRIDE_REV])
             if orz is None:
                 notify_invalid_value(ConfKey.OVERRIDE_REV, 'dict(str,str)')
                 return False
@@ -1244,7 +1244,7 @@ following key entry and re-try again.
                 warn('configuration "{}" is deprecated', ConfKey.OVERRIDE_REV)
 
         if ConfKey.OVERRIDE_SITES in settings:
-            v = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_SITES])
+            v = interpret_dict_strs(settings[ConfKey.OVERRIDE_SITES])
             if v is None:
                 notify_invalid_value(ConfKey.OVERRIDE_SITES, 'dict(str,str)')
                 return False
@@ -1253,21 +1253,21 @@ following key entry and re-try again.
                 warn('configuration "{}" is deprecated', ConfKey.OVERRIDE_SITES)
 
         if ConfKey.OVERRIDE_TOOLS in settings:
-            v = interpret_dictionary_strings(settings[ConfKey.OVERRIDE_TOOLS])
+            v = interpret_dict_strs(settings[ConfKey.OVERRIDE_TOOLS])
             if v is None:
                 notify_invalid_value(ConfKey.OVERRIDE_TOOLS, 'dict(str,str)')
                 return False
             self.opts.extract_override = v
 
         if ConfKey.PREREQUISITES in settings:
-            prerequisites = interpret_strings(settings[ConfKey.PREREQUISITES])
+            prerequisites = interpret_strs(settings[ConfKey.PREREQUISITES])
             if prerequisites is None:
                 notify_invalid_value(ConfKey.PREREQUISITES, 'str or list(str)')
                 return False
             self.opts.prerequisites.extend(prerequisites)
 
         if ConfKey.QUIRKS in settings:
-            quirks = interpret_strings(settings[ConfKey.QUIRKS])
+            quirks = interpret_strs(settings[ConfKey.QUIRKS])
             if quirks is None:
                 notify_invalid_value(ConfKey.QUIRKS, 'str or list(str)')
                 return False
@@ -1276,7 +1276,7 @@ following key entry and re-try again.
                 verbose('configuration quirk applied: ' + quirk)
 
         if ConfKey.SBOM_FORMAT in settings:
-            sbom_format = interpret_strings(settings[ConfKey.SBOM_FORMAT])
+            sbom_format = interpret_strs(settings[ConfKey.SBOM_FORMAT])
             if sbom_format is None:
                 notify_invalid_value(ConfKey.SBOM_FORMAT, 'str or list(str)')
                 return False
@@ -1316,7 +1316,7 @@ following key entry and re-try again.
             self.opts.vsdevcmd = vsdevcmd
 
         if ConfKey.EXTEN_PKGS in settings:
-            epd = interpret_strings(settings[ConfKey.EXTEN_PKGS])
+            epd = interpret_strs(settings[ConfKey.EXTEN_PKGS])
             if epd is None:
                 notify_invalid_value(ConfKey.EXTEN_PKGS, 'str or list(str)')
                 return False
@@ -1324,7 +1324,7 @@ following key entry and re-try again.
 
         ext_names = []
         if ConfKey.EXTENSIONS in settings:
-            ext_names = interpret_strings(settings[ConfKey.EXTENSIONS])
+            ext_names = interpret_strs(settings[ConfKey.EXTENSIONS])
             if ext_names is None:
                 notify_invalid_value(ConfKey.EXTENSIONS, 'str or list(str)')
                 return False
