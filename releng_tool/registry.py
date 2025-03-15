@@ -11,7 +11,6 @@ from releng_tool.support import require_version
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
-from releng_tool.util.string import interpret_string
 import inspect
 
 
@@ -159,8 +158,10 @@ class RelengRegistry(RelengRegistryInterface):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        if not interpret_string(name):
+
+        if not isinstance(name, str):
             raise RelengInvalidSetupException('invalid extract name provided')
+
         name_key = name.lower()
         if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined extract types '
@@ -212,8 +213,10 @@ class RelengRegistry(RelengRegistryInterface):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        if not interpret_string(name):
+
+        if not isinstance(name, str):
             raise RelengInvalidSetupException('invalid fetch name provided')
+
         name_key = name.lower()
         if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined fetch types '
@@ -266,8 +269,10 @@ class RelengRegistry(RelengRegistryInterface):
             RelengInvalidSetupException: raised when the provided ``name`` or
                 ``handler`` values are not supported by the releng-tool process
         """
-        if not interpret_string(name):
+
+        if not isinstance(name, str):
             raise RelengInvalidSetupException('invalid package name provided')
+
         name_key = name.lower()
         if not name_key.startswith(PREFIX_REQUIREMENT):
             raise RelengInvalidSetupException('extension-defined package types '

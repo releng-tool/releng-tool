@@ -46,7 +46,6 @@ from releng_tool.util.spdx import spdx_extract
 from releng_tool.util.spdx import spdx_license_identifier
 from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_dictionary_strings
-from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 from releng_tool.util.string import interpret_zero_to_one_strings
 from urllib.parse import urlparse
@@ -1534,18 +1533,15 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
             raw_value = self._active_env.get(pkg_key_, None)
 
         if raw_value is not None:
+            value = raw_value
+
             if type_ == PkgKeyType.BOOL:
-                value = raw_value
                 if not isinstance(value, bool):
                     raise_kv_exception('bool')
             elif type_ == PkgKeyType.BOOL_OR_STR:
-                value = raw_value
-                if not isinstance(value, bool):
-                    value = interpret_string(raw_value)
-                    if not value:
-                        raise_kv_exception('bool or string')
+                if not isinstance(value, (bool, str)):
+                    raise_kv_exception('bool or string')
             elif type_ == PkgKeyType.DICT:
-                value = raw_value
                 if not isinstance(value, dict):
                     raise_kv_exception('dictionary')
             elif type_ == PkgKeyType.DICT_STR_STR:
@@ -1553,9 +1549,7 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
                 if value is None:
                     raise_kv_exception('dict(str,str)')
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STR:
-                value = interpret_string(raw_value)
-                if not value:
-                    value = raw_value
+                if not isinstance(value, str):
                     if not isinstance(value, dict):
                         raise_kv_exception('dict(str,str) or string')
             elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
@@ -1563,19 +1557,16 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
                 if value is None:
                     raise_kv_exception('dict(str,str) or string(s)')
             elif type_ == PkgKeyType.STR:
-                value = interpret_string(raw_value)
-                if value is None:
+                if not isinstance(value, str):
                     raise_kv_exception('string')
             elif type_ == PkgKeyType.STRS:
                 value = interpret_strings(raw_value)
                 if value is None:
                     raise_kv_exception('string(s)')
             elif type_ == PkgKeyType.INT_NONNEGATIVE:
-                value = raw_value
                 if not isinstance(value, int) or value < 0:
                     raise_kv_exception('non-negative int')
             elif type_ == PkgKeyType.INT_POSITIVE:
-                value = raw_value
                 if not isinstance(value, int) or value <= 0:
                     raise_kv_exception('positive int')
             else:

@@ -137,28 +137,6 @@ def interpret_dictionary_strings(obj):
     return rv
 
 
-def interpret_string(obj):
-    """
-    interpret a string, if any, from the provided object
-
-    Attempts to interpret string from a provided object. If a string value is
-    provided, it will be returned. In the case where an unexpected type is
-    detected, this method will return ``None``.
-
-    Args:
-        obj: the object to interpret
-
-    Returns:
-        the string; otherwise ``None``
-    """
-    rv = None
-
-    if isinstance(obj, str):
-        rv = obj
-
-    return rv
-
-
 def interpret_strings(obj):
     """
     interpret strings, if any, from the provided object

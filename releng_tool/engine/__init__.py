@@ -75,7 +75,6 @@ from releng_tool.util.log import warn_wrap
 from releng_tool.util.platform import platform_exit
 from releng_tool.util.string import expand
 from releng_tool.util.string import interpret_dictionary_strings
-from releng_tool.util.string import interpret_string
 from releng_tool.util.string import interpret_strings
 import json
 import os
@@ -1229,8 +1228,8 @@ following key entry and re-try again.
                 }
 
         if ConfKey.LICENSE_HEADER in settings:
-            license_header = interpret_string(settings[ConfKey.LICENSE_HEADER])
-            if license_header is None:
+            license_header = settings[ConfKey.LICENSE_HEADER]
+            if not isinstance(license_header, str):
                 notify_invalid_value(ConfKey.LICENSE_HEADER, 'str')
                 return False
             self.opts.license_header = license_header
@@ -1285,8 +1284,8 @@ following key entry and re-try again.
                 self.opts.sbom_format = sbom_format
 
         if ConfKey.SYSROOT_PREFIX in settings:
-            sysroot_prefix = interpret_string(settings[ConfKey.SYSROOT_PREFIX])
-            if sysroot_prefix is None:
+            sysroot_prefix = settings[ConfKey.SYSROOT_PREFIX]
+            if not isinstance(sysroot_prefix, str):
                 notify_invalid_value(ConfKey.SYSROOT_PREFIX, 'str')
                 return False
             if not sysroot_prefix.startswith('/'):
@@ -1294,8 +1293,8 @@ following key entry and re-try again.
             self.opts.sysroot_prefix = sysroot_prefix
 
         if ConfKey.URL_MIRROR in settings:
-            url_mirror = interpret_string(settings[ConfKey.URL_MIRROR])
-            if url_mirror is None:
+            url_mirror = settings[ConfKey.URL_MIRROR]
+            if not isinstance(url_mirror, str):
                 notify_invalid_value(ConfKey.URL_MIRROR, 'str')
                 return False
             self.opts.url_mirror = url_mirror
@@ -1311,11 +1310,9 @@ following key entry and re-try again.
 
         if ConfKey.VSDEVCMD in settings:
             vsdevcmd = settings[ConfKey.VSDEVCMD]
-            if not isinstance(vsdevcmd, bool):
-                vsdevcmd = interpret_string(settings[ConfKey.VSDEVCMD])
-                if vsdevcmd is None:
-                    notify_invalid_value(ConfKey.VSDEVCMD, 'bool or str')
-                    return False
+            if not isinstance(vsdevcmd, (bool, str)):
+                notify_invalid_value(ConfKey.VSDEVCMD, 'bool or str')
+                return False
             self.opts.vsdevcmd = vsdevcmd
 
         if ConfKey.EXTEN_PKGS in settings:
