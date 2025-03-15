@@ -18,6 +18,7 @@ from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
 from releng_tool.packages import PkgKeyType
 from releng_tool.packages import pkg_cache_key
 from releng_tool.packages import pkg_key
+from releng_tool.packages import raw_value_parse
 from releng_tool.packages.exceptions import RelengToolConflictingConfiguration
 from releng_tool.packages.exceptions import RelengToolConflictingLocalSrcsPath
 from releng_tool.packages.exceptions import RelengToolCyclicPackageDependency
@@ -35,9 +36,6 @@ from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
 from releng_tool.packages.site import site_vcs
 from releng_tool.util.env import extend_script_env
-from releng_tool.util.interpret import interpret_dict
-from releng_tool.util.interpret import interpret_opts
-from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import run_script
 from releng_tool.util.io_mkdir import mkdir
@@ -107,7 +105,7 @@ class RelengPackageManager:
             (Rpk.AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL),
             (Rpk.BUILD_DEFS, PkgKeyType.DICT_STR_STR),
             (Rpk.BUILD_ENV, PkgKeyType.DICT_STR_STR),
-            (Rpk.BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.BUILD_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.BUILD_SUBDIR, PkgKeyType.STR),
             (Rpk.CARGO_NAME, PkgKeyType.STR),
             (Rpk.CARGO_NOINSTALL, PkgKeyType.BOOL),
@@ -115,7 +113,7 @@ class RelengPackageManager:
             (Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.CONF_DEFS, PkgKeyType.DICT_STR_STR),
             (Rpk.CONF_ENV, PkgKeyType.DICT_STR_STR),
-            (Rpk.CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.CONF_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.DEPS, PkgKeyType.STRS),
             (Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL),
             (Rpk.DEVMODE_REVISION, PkgKeyType.STR),
@@ -124,7 +122,7 @@ class RelengPackageManager:
             (Rpk.EXTERNAL, PkgKeyType.BOOL),
             (Rpk.EXTOPT, PkgKeyType.DICT),
             (Rpk.EXTRACT_TYPE, PkgKeyType.STR),
-            (Rpk.FETCH_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.FETCH_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.FIXED_JOBS, PkgKeyType.INT_POSITIVE),
             (Rpk.GIT_CONFIG, PkgKeyType.DICT_STR_STR),
             (Rpk.GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE),
@@ -134,7 +132,7 @@ class RelengPackageManager:
             (Rpk.HOST_PROVIDES, PkgKeyType.STRS),
             (Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_STR),
             (Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_STR),
-            (Rpk.INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.INSTALL_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.INSTALL_TYPE, PkgKeyType.STR),
             (Rpk.INTERNAL, PkgKeyType.BOOL),
             (Rpk.LICENSE, PkgKeyType.STRS),
@@ -1031,7 +1029,7 @@ using deprecated dependency configuration for package: {}
         for k, v in self._key_types.items():
             interim_obj = None
 
-            if v in (PkgKeyType.DICT_STR_STR, PkgKeyType.DICT_STR_STR_OR_STRS):
+            if v in (PkgKeyType.DICT_STR_STR, PkgKeyType.STR_OPTS):
                 interim_obj = {}
             elif v == PkgKeyType.STRS:
                 interim_obj = []
@@ -1056,8 +1054,8 @@ using deprecated dependency configuration for package: {}
         # them from the environment as if it was ``None`` in the first place
         for k, v in self._key_types.items():
             if v in (PkgKeyType.DICT_STR_STR,
-                     PkgKeyType.DICT_STR_STR_OR_STRS,
-                     PkgKeyType.STRS):
+                     PkgKeyType.STRS,
+                     PkgKeyType.STR_OPTS):
                 pkg_cfg_key = pkg_key(name, k)
                 if env[pkg_cfg_key]:
                     continue
@@ -1482,44 +1480,10 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
             raw_value = self._active_env.get(pkg_key_, None)
 
         if raw_value is not None:
-            value = raw_value
-
-            if type_ == PkgKeyType.BOOL:
-                if not isinstance(value, bool):
-                    raise_kv_exception('bool')
-            elif type_ == PkgKeyType.BOOL_OR_STR:
-                if not isinstance(value, (bool, str)):
-                    raise_kv_exception('bool or string')
-            elif type_ == PkgKeyType.DICT:
-                if not isinstance(value, dict):
-                    raise_kv_exception('dictionary')
-            elif type_ == PkgKeyType.DICT_STR_STR:
-                value = interpret_dict(raw_value, str)
-                if value is None:
-                    raise_kv_exception('dict(str,str)')
-            elif type_ == PkgKeyType.DICT_STR_STR_OR_STR:
-                if not isinstance(value, str):
-                    if not isinstance(value, dict):
-                        raise_kv_exception('dict(str,str) or string')
-            elif type_ == PkgKeyType.DICT_STR_STR_OR_STRS:
-                value = interpret_opts(raw_value, str)
-                if value is None:
-                    raise_kv_exception('dict(str,str) or string(s)')
-            elif type_ == PkgKeyType.STR:
-                if not isinstance(value, str):
-                    raise_kv_exception('string')
-            elif type_ == PkgKeyType.STRS:
-                value = interpret_seq(raw_value, str)
-                if value is None:
-                    raise_kv_exception('string(s)')
-            elif type_ == PkgKeyType.INT_NONNEGATIVE:
-                if not isinstance(value, int) or value < 0:
-                    raise_kv_exception('non-negative int')
-            elif type_ == PkgKeyType.INT_POSITIVE:
-                if not isinstance(value, int) or value <= 0:
-                    raise_kv_exception('positive int')
-            else:
-                raise_kv_exception('<unsupported key-value>')
+            try:
+                value = raw_value_parse(raw_value, type_)
+            except (TypeError, ValueError) as ex:
+                raise_kv_exception(str(ex))
 
             if allow_expand:
                 value = expand(value, expand_extra)

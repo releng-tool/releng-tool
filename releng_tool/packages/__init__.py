@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.util.interpret import interpret_dict
+from releng_tool.util.interpret import interpret_opts
+from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.strccenum import StrCcEnum
 import hashlib
 
@@ -18,22 +21,22 @@ class PkgKeyType(StrCcEnum):
         DICT: dictionary value
         DICT_STR_STR: dictionary of string pairs value
         DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
-        DICT_STR_STR_OR_STRS: dictionary of string pairs or strings value
-        STR: single string value
-        STRS: one or more strings value
         INT_NONNEGATIVE: non-negative integer value
         INT_POSITIVE: positive integer value
+        STR: single string value
+        STRS: one or more strings value
+        STR_OPTS: dictionary of string options
     """
     BOOL = 'bool'
     BOOL_OR_STR = 'bool_or_str'
     DICT = 'dict'
     DICT_STR_STR = 'dict_str_str'
     DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
-    DICT_STR_STR_OR_STRS = 'dict_str_str_or_strs'
-    STR = 'str'
-    STRS = 'strs'
     INT_NONNEGATIVE = 'int_nonnegative'
     INT_POSITIVE = 'int_positive'
+    STR = 'str'
+    STRS = 'strs'
+    STR_OPTS = 'opts'
 
 
 def pkg_cache_key(site):
@@ -71,3 +74,72 @@ def pkg_key(pkg, type_):
     for c in [' ', '*', '-', '.', ':', '?', '|']:
         clean = clean.replace(c, '_')
     return '{}_{}'.format(clean.upper(), type_)
+
+
+def raw_value_parse(value: object, type_: PkgKeyType) -> object:
+    """
+    accepts a raw value for a package type and verifies/parses the result
+
+    This call accepts a raw object value that is associated with a specific
+    package key-type. The provided object will be verified and returned with
+    a final object compatible for the package key-type. In the event that
+    the object is not supported for the provided package key-type, an
+    exception will be thrown.
+
+    Args:
+        value: the value to verify/parse
+        type_: the package key type
+
+    Returns:
+        the parsed value
+
+    Raises:
+        TypeError if an unexpected type is detected for the package key type
+        ValueError if an unexpected value is detected for the package key type
+    """
+
+    if type_ == PkgKeyType.BOOL:
+        if not isinstance(value, bool):
+            raise TypeError('bool')
+    elif type_ == PkgKeyType.BOOL_OR_STR:
+        if not isinstance(value, (bool, str)):
+            raise TypeError('bool or string')
+    elif type_ == PkgKeyType.DICT:
+        if not isinstance(value, dict):
+            raise TypeError('dictionary')
+    elif type_ == PkgKeyType.DICT_STR_STR:
+        value = interpret_dict(value, str)
+        if value is None:
+            raise TypeError('dict(str,str)')
+    elif type_ == PkgKeyType.DICT_STR_STR_OR_STR:
+        if not isinstance(value, str):
+            value = interpret_dict(value, str)
+            if value is None:
+                raise TypeError('dict(str,str) or string')
+    elif type_ == PkgKeyType.INT_NONNEGATIVE:
+        if not isinstance(value, int):
+            raise TypeError('non-negative int')
+
+        if value < 0:
+            raise ValueError('non-negative int')
+    elif type_ == PkgKeyType.INT_POSITIVE:
+        if not isinstance(value, int):
+            raise TypeError('positive int')
+
+        if value <= 0:
+            raise ValueError('positive int')
+    elif type_ == PkgKeyType.STR:
+        if not isinstance(value, str):
+            raise TypeError('string')
+    elif type_ == PkgKeyType.STRS:
+        value = interpret_seq(value, str)
+        if value is None:
+            raise TypeError('string(s)')
+    elif type_ == PkgKeyType.STR_OPTS:
+        value = interpret_opts(value, str)
+        if value is None:
+            raise TypeError('dict(str,str) or string(s)')
+    else:
+        raise TypeError('<unsupported key-value>')
+
+    return value
