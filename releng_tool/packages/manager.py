@@ -33,6 +33,7 @@ from releng_tool.packages.exceptions import RelengToolUnknownPackageType
 from releng_tool.packages.exceptions import RelengToolUnknownPythonSetupType
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
+from releng_tool.packages.site import site_vcs
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_opts
@@ -533,59 +534,7 @@ class RelengPackageManager:
 
         if not pkg_vcs_type:
             if pkg_site:
-                site_lc = pkg_site.lower()
-                if site_lc.startswith('brz+'):
-                    pkg_site = pkg_site[4:]
-                    pkg_vcs_type = VcsType.BRZ
-                elif site_lc.startswith('bzr+'):
-                    pkg_site = pkg_site[4:]
-                    pkg_vcs_type = VcsType.BZR
-                elif site_lc.startswith('cvs+'):
-                    pkg_site = pkg_site[4:]
-                    pkg_vcs_type = VcsType.CVS
-                elif site_lc.startswith((
-                        ':ext:',
-                        ':extssh:',
-                        ':gserver:',
-                        ':kserver:',
-                        ':pserver:',
-                        )):
-                    pkg_vcs_type = VcsType.CVS
-                elif site_lc.startswith('file://'):
-                    pkg_vcs_type = VcsType.FILE
-                elif site_lc.startswith('file+'):
-                    pkg_site = pkg_site.removeprefix('file+')
-                    pkg_vcs_type = VcsType.FILE
-                elif site_lc.startswith('file+'):
-                    pkg_site = pkg_site[5:]
-                    pkg_vcs_type = VcsType.FILE
-                elif site_lc.startswith('git+'):
-                    pkg_site = pkg_site[4:]
-                    pkg_vcs_type = VcsType.GIT
-                elif site_lc.endswith('.git'):
-                    pkg_vcs_type = VcsType.GIT
-                elif site_lc.startswith('hg+'):
-                    pkg_site = pkg_site[3:]
-                    pkg_vcs_type = VcsType.HG
-                elif site_lc.startswith('p4+'):
-                    pkg_site = pkg_site[3:]
-                    pkg_vcs_type = VcsType.PERFORCE
-                elif site_lc.startswith('perforce+'):
-                    pkg_site = pkg_site[9:]
-                    pkg_vcs_type = VcsType.PERFORCE
-                elif site_lc.startswith('rsync+'):
-                    pkg_site = pkg_site[6:]
-                    pkg_vcs_type = VcsType.RSYNC
-                elif site_lc.startswith('scp+'):
-                    pkg_site = pkg_site[4:]
-                    pkg_vcs_type = VcsType.SCP
-                elif site_lc.startswith('svn+'):
-                    pkg_site = pkg_site[4:]
-                    pkg_vcs_type = VcsType.SVN
-                elif site_lc == 'local':
-                    pkg_vcs_type = VcsType.LOCAL
-                else:
-                    pkg_vcs_type = VcsType.URL
+                pkg_site, pkg_vcs_type = site_vcs(pkg_site)
             else:
                 pkg_vcs_type = VcsType.NONE
 
