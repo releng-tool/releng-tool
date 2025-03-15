@@ -103,65 +103,68 @@ class RelengPackageManager:
         self._load_dvcs_cache()
 
         # register expected types for each configuration
-        self._register_conf(Rpk.AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL)
-        self._register_conf(Rpk.BUILD_DEFS, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.BUILD_ENV, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-        self._register_conf(Rpk.BUILD_SUBDIR, PkgKeyType.STR)
-        self._register_conf(Rpk.CARGO_NAME, PkgKeyType.STR)
-        self._register_conf(Rpk.CARGO_NOINSTALL, PkgKeyType.BOOL)
-        self._register_conf(Rpk.CMAKE_BUILD_TYPE, PkgKeyType.STR)
-        self._register_conf(Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL)
-        self._register_conf(Rpk.CONF_DEFS, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.CONF_ENV, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-        self._register_conf(Rpk.DEPS, PkgKeyType.STRS)
-        self._register_conf(Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL)
-        self._register_conf(Rpk.DEVMODE_REVISION, PkgKeyType.STR)
-        self._register_conf(Rpk.ENV, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.EXTENSION, PkgKeyType.STR)
-        self._register_conf(Rpk.EXTERNAL, PkgKeyType.BOOL)
-        self._register_conf(Rpk.EXTOPT, PkgKeyType.DICT)
-        self._register_conf(Rpk.EXTRACT_TYPE, PkgKeyType.STR)
-        self._register_conf(Rpk.FETCH_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-        self._register_conf(Rpk.FIXED_JOBS, PkgKeyType.INT_POSITIVE)
-        self._register_conf(Rpk.GIT_CONFIG, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE)
-        self._register_conf(Rpk.GIT_REFSPECS, PkgKeyType.STRS)
-        self._register_conf(Rpk.GIT_SUBMODULES, PkgKeyType.BOOL)
-        self._register_conf(Rpk.GIT_VERIFY_REVISION, PkgKeyType.BOOL)
-        self._register_conf(Rpk.HOST_PROVIDES, PkgKeyType.STRS)
-        self._register_conf(Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_STR)
-        self._register_conf(Rpk.INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS)
-        self._register_conf(Rpk.INSTALL_TYPE, PkgKeyType.STR)
-        self._register_conf(Rpk.INTERNAL, PkgKeyType.BOOL)
-        self._register_conf(Rpk.LICENSE, PkgKeyType.STRS)
-        self._register_conf(Rpk.LICENSE_FILES, PkgKeyType.STRS)
-        self._register_conf(Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL)
-        self._register_conf(Rpk.MESON_NOINSTALL, PkgKeyType.BOOL)
-        self._register_conf(Rpk.NEEDS, PkgKeyType.STRS)
-        self._register_conf(Rpk.NO_EXTRACTION, PkgKeyType.BOOL)
-        self._register_conf(Rpk.PATCH_SUBDIR, PkgKeyType.STR)
-        self._register_conf(Rpk.PREFIX, PkgKeyType.STR)
-        self._register_conf(Rpk.PYTHON_DIST_PATH, PkgKeyType.STR)
-        self._register_conf(Rpk.PYTHON_INSTALLER_LAUNCHER_KIND, PkgKeyType.STR)
-        self._register_conf(Rpk.PYTHON_INSTALLER_SCHEME,
-            PkgKeyType.DICT_STR_STR_OR_STR)
-        self._register_conf(Rpk.PYTHON_INTERPRETER, PkgKeyType.STR)
-        self._register_conf(Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR)
-        self._register_conf(Rpk.REMOTE_CONFIG, PkgKeyType.BOOL)
-        self._register_conf(Rpk.REMOTE_SCRIPTS, PkgKeyType.BOOL)
-        self._register_conf(Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR)
-        self._register_conf(Rpk.SCONS_NOINSTALL, PkgKeyType.BOOL)
-        self._register_conf(Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR)
-        self._register_conf(Rpk.SKIP_REMOTE_CONFIG, PkgKeyType.BOOL)
-        self._register_conf(Rpk.SKIP_REMOTE_SCRIPTS, PkgKeyType.BOOL)
-        self._register_conf(Rpk.STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE)
-        self._register_conf(Rpk.TYPE, PkgKeyType.STR)
-        self._register_conf(Rpk.VCS_TYPE, PkgKeyType.DICT_STR_STR_OR_STR)
-        self._register_conf(Rpk.VERSION, PkgKeyType.STR)
-        self._register_conf(Rpk.VSDEVCMD, PkgKeyType.BOOL_OR_STR)
+        regval = [
+            (Rpk.AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL),
+            (Rpk.BUILD_DEFS, PkgKeyType.DICT_STR_STR),
+            (Rpk.BUILD_ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.BUILD_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.BUILD_SUBDIR, PkgKeyType.STR),
+            (Rpk.CARGO_NAME, PkgKeyType.STR),
+            (Rpk.CARGO_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.CMAKE_BUILD_TYPE, PkgKeyType.STR),
+            (Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.CONF_DEFS, PkgKeyType.DICT_STR_STR),
+            (Rpk.CONF_ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.CONF_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.DEPS, PkgKeyType.STRS),
+            (Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL),
+            (Rpk.DEVMODE_REVISION, PkgKeyType.STR),
+            (Rpk.ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.EXTENSION, PkgKeyType.STR),
+            (Rpk.EXTERNAL, PkgKeyType.BOOL),
+            (Rpk.EXTOPT, PkgKeyType.DICT),
+            (Rpk.EXTRACT_TYPE, PkgKeyType.STR),
+            (Rpk.FETCH_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.FIXED_JOBS, PkgKeyType.INT_POSITIVE),
+            (Rpk.GIT_CONFIG, PkgKeyType.DICT_STR_STR),
+            (Rpk.GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE),
+            (Rpk.GIT_REFSPECS, PkgKeyType.STRS),
+            (Rpk.GIT_SUBMODULES, PkgKeyType.BOOL),
+            (Rpk.GIT_VERIFY_REVISION, PkgKeyType.BOOL),
+            (Rpk.HOST_PROVIDES, PkgKeyType.STRS),
+            (Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_STR),
+            (Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.INSTALL_OPTS, PkgKeyType.DICT_STR_STR_OR_STRS),
+            (Rpk.INSTALL_TYPE, PkgKeyType.STR),
+            (Rpk.INTERNAL, PkgKeyType.BOOL),
+            (Rpk.LICENSE, PkgKeyType.STRS),
+            (Rpk.LICENSE_FILES, PkgKeyType.STRS),
+            (Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.MESON_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.NEEDS, PkgKeyType.STRS),
+            (Rpk.NO_EXTRACTION, PkgKeyType.BOOL),
+            (Rpk.PATCH_SUBDIR, PkgKeyType.STR),
+            (Rpk.PREFIX, PkgKeyType.STR),
+            (Rpk.PYTHON_DIST_PATH, PkgKeyType.STR),
+            (Rpk.PYTHON_INSTALLER_LAUNCHER_KIND, PkgKeyType.STR),
+            (Rpk.PYTHON_INSTALLER_SCHEME, PkgKeyType.DICT_STR_STR_OR_STR),
+            (Rpk.PYTHON_INTERPRETER, PkgKeyType.STR),
+            (Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR),
+            (Rpk.REMOTE_CONFIG, PkgKeyType.BOOL),
+            (Rpk.REMOTE_SCRIPTS, PkgKeyType.BOOL),
+            (Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR),
+            (Rpk.SCONS_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR),
+            (Rpk.SKIP_REMOTE_CONFIG, PkgKeyType.BOOL),
+            (Rpk.SKIP_REMOTE_SCRIPTS, PkgKeyType.BOOL),
+            (Rpk.STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE),
+            (Rpk.TYPE, PkgKeyType.STR),
+            (Rpk.VCS_TYPE, PkgKeyType.DICT_STR_STR_OR_STR),
+            (Rpk.VERSION, PkgKeyType.STR),
+            (Rpk.VSDEVCMD, PkgKeyType.BOOL_OR_STR),
+        ]
+        for k, v in regval:
+            self._register_conf(k, v)
 
         # sanity check that check option is properly registered
         for key in Rpk:
