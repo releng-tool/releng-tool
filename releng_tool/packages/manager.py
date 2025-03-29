@@ -105,7 +105,7 @@ class RelengPackageManager:
             (Rpk.AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL),
             (Rpk.BUILD_DEFS, PkgKeyType.DICT_STR_PSTR),
             (Rpk.BUILD_ENV, PkgKeyType.DICT_STR_PSTR),
-            (Rpk.BUILD_OPTS, PkgKeyType.STR_OPTS),
+            (Rpk.BUILD_OPTS, PkgKeyType.OPTS),
             (Rpk.BUILD_SUBDIR, PkgKeyType.PSTR),
             (Rpk.CARGO_NAME, PkgKeyType.STR),
             (Rpk.CARGO_NOINSTALL, PkgKeyType.BOOL),
@@ -113,7 +113,7 @@ class RelengPackageManager:
             (Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.CONF_DEFS, PkgKeyType.DICT_STR_PSTR),
             (Rpk.CONF_ENV, PkgKeyType.DICT_STR_PSTR),
-            (Rpk.CONF_OPTS, PkgKeyType.STR_OPTS),
+            (Rpk.CONF_OPTS, PkgKeyType.OPTS),
             (Rpk.DEPS, PkgKeyType.STRS),
             (Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL),
             (Rpk.DEVMODE_REVISION, PkgKeyType.STR),
@@ -122,7 +122,7 @@ class RelengPackageManager:
             (Rpk.EXTERNAL, PkgKeyType.BOOL),
             (Rpk.EXTOPT, PkgKeyType.DICT),
             (Rpk.EXTRACT_TYPE, PkgKeyType.STR),
-            (Rpk.FETCH_OPTS, PkgKeyType.STR_OPTS),
+            (Rpk.FETCH_OPTS, PkgKeyType.OPTS),
             (Rpk.FIXED_JOBS, PkgKeyType.INT_POSITIVE),
             (Rpk.GIT_CONFIG, PkgKeyType.DICT_STR_PSTR),
             (Rpk.GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE),
@@ -132,7 +132,7 @@ class RelengPackageManager:
             (Rpk.HOST_PROVIDES, PkgKeyType.STRS),
             (Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_PSTR),
             (Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_PSTR),
-            (Rpk.INSTALL_OPTS, PkgKeyType.STR_OPTS),
+            (Rpk.INSTALL_OPTS, PkgKeyType.OPTS),
             (Rpk.INSTALL_TYPE, PkgKeyType.STR),
             (Rpk.INTERNAL, PkgKeyType.BOOL),
             (Rpk.LICENSE, PkgKeyType.STRS),
@@ -1029,7 +1029,7 @@ using deprecated dependency configuration for package: {}
         for k, v in self._key_types.items():
             interim_obj = None
 
-            if v in (PkgKeyType.DICT_STR_PSTR, PkgKeyType.STR_OPTS):
+            if v in (PkgKeyType.DICT_STR_PSTR, PkgKeyType.OPTS):
                 interim_obj = {}
             elif v == PkgKeyType.STRS:
                 interim_obj = []
@@ -1055,7 +1055,7 @@ using deprecated dependency configuration for package: {}
         for k, v in self._key_types.items():
             if v in (PkgKeyType.DICT_STR_PSTR,
                      PkgKeyType.STRS,
-                     PkgKeyType.STR_OPTS):
+                     PkgKeyType.OPTS):
                 pkg_cfg_key = pkg_key(name, k)
                 if env[pkg_cfg_key]:
                     continue

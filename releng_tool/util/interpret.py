@@ -90,12 +90,12 @@ def interpret_opts(obj, classinfo):
 
     if isinstance(obj, dict):
         rv = interpret_dict(obj, classinfo)
-    elif isinstance(obj, str):
+    elif isinstance(obj, classinfo):
         rv = {
             obj: VOID,
         }
     elif isinstance(obj, Sequence):
-        if all(isinstance(child, str) for child in obj):
+        if all(isinstance(child, classinfo) for child in obj):
             rv = {child: VOID for child in obj}
 
     return rv

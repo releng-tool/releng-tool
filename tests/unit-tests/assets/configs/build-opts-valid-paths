@@ -1,0 +1,7 @@
+from pathlib import Path
+
+TEST_BUILD_OPTS = [
+    Path('option1'),
+    Path('option2'),
+    Path('option3'),
+]

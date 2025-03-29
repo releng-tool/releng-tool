@@ -104,6 +104,15 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('conf-opts-valid-dict')
         self.assertIsNone(pkg.build_opts)
 
+        pkg, _, _ = self.LOAD('conf-opts-valid-mixed')
+        self.assertIsNone(pkg.build_opts)
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-path')
+        self.assertIsNone(pkg.build_opts)
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-paths')
+        self.assertIsNone(pkg.build_opts)
+
         pkg, _, _ = self.LOAD('conf-opts-valid-str')
         self.assertIsNone(pkg.build_opts)
 
@@ -111,6 +120,15 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
         self.assertIsNone(pkg.build_opts)
 
         pkg, _, _ = self.LOAD('install-opts-valid-dict')
+        self.assertIsNone(pkg.build_opts)
+
+        pkg, _, _ = self.LOAD('install-opts-valid-mixed')
+        self.assertIsNone(pkg.build_opts)
+
+        pkg, _, _ = self.LOAD('install-opts-valid-path')
+        self.assertIsNone(pkg.build_opts)
+
+        pkg, _, _ = self.LOAD('install-opts-valid-paths')
         self.assertIsNone(pkg.build_opts)
 
         pkg, _, _ = self.LOAD('install-opts-valid-str')
@@ -125,6 +143,24 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key1': 'val1',
             'key2': None,
             'key3': 'val3',
+        })
+
+        pkg, _, _ = self.LOAD('build-opts-valid-mixed')
+        self.assertDictEqual(pkg.build_opts, {
+            'option1': VOID,
+            'option2': VOID,
+        })
+
+        pkg, _, _ = self.LOAD('build-opts-valid-path')
+        self.assertDictEqual(pkg.build_opts, {
+            'option': VOID,
+        })
+
+        pkg, _, _ = self.LOAD('build-opts-valid-paths')
+        self.assertDictEqual(pkg.build_opts, {
+            'option1': VOID,
+            'option2': VOID,
+            'option3': VOID,
         })
 
         pkg, _, _ = self.LOAD('build-opts-valid-str')
@@ -236,6 +272,15 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('build-opts-valid-dict')
         self.assertIsNone(pkg.conf_opts)
 
+        pkg, _, _ = self.LOAD('build-opts-valid-mixed')
+        self.assertIsNone(pkg.conf_opts)
+
+        pkg, _, _ = self.LOAD('build-opts-valid-path')
+        self.assertIsNone(pkg.conf_opts)
+
+        pkg, _, _ = self.LOAD('build-opts-valid-paths')
+        self.assertIsNone(pkg.conf_opts)
+
         pkg, _, _ = self.LOAD('build-opts-valid-str')
         self.assertIsNone(pkg.conf_opts)
 
@@ -243,6 +288,15 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
         self.assertIsNone(pkg.conf_opts)
 
         pkg, _, _ = self.LOAD('install-opts-valid-dict')
+        self.assertIsNone(pkg.conf_opts)
+
+        pkg, _, _ = self.LOAD('install-opts-valid-mixed')
+        self.assertIsNone(pkg.conf_opts)
+
+        pkg, _, _ = self.LOAD('install-opts-valid-path')
+        self.assertIsNone(pkg.conf_opts)
+
+        pkg, _, _ = self.LOAD('install-opts-valid-paths')
         self.assertIsNone(pkg.conf_opts)
 
         pkg, _, _ = self.LOAD('install-opts-valid-str')
@@ -257,6 +311,24 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key1': 'val1',
             'key2': None,
             'key3': 'val3',
+        })
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-mixed')
+        self.assertDictEqual(pkg.conf_opts, {
+            'option1': VOID,
+            'option2': VOID,
+        })
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-path')
+        self.assertDictEqual(pkg.conf_opts, {
+            'option': VOID,
+        })
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-paths')
+        self.assertDictEqual(pkg.conf_opts, {
+            'option1': VOID,
+            'option2': VOID,
+            'option3': VOID,
         })
 
         pkg, _, _ = self.LOAD('conf-opts-valid-str')
@@ -418,6 +490,15 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('build-opts-valid-dict')
         self.assertIsNone(pkg.install_opts)
 
+        pkg, _, _ = self.LOAD('build-opts-valid-mixed')
+        self.assertIsNone(pkg.install_opts)
+
+        pkg, _, _ = self.LOAD('build-opts-valid-path')
+        self.assertIsNone(pkg.install_opts)
+
+        pkg, _, _ = self.LOAD('build-opts-valid-paths')
+        self.assertIsNone(pkg.install_opts)
+
         pkg, _, _ = self.LOAD('build-opts-valid-str')
         self.assertIsNone(pkg.install_opts)
 
@@ -425,6 +506,15 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
         self.assertIsNone(pkg.install_opts)
 
         pkg, _, _ = self.LOAD('conf-opts-valid-dict')
+        self.assertIsNone(pkg.install_opts)
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-mixed')
+        self.assertIsNone(pkg.install_opts)
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-path')
+        self.assertIsNone(pkg.install_opts)
+
+        pkg, _, _ = self.LOAD('conf-opts-valid-paths')
         self.assertIsNone(pkg.install_opts)
 
         pkg, _, _ = self.LOAD('conf-opts-valid-str')
@@ -439,6 +529,24 @@ class TestPkgConfigsStageOpts(TestPkgConfigsBase):
             'key1': 'val1',
             'key2': None,
             'key3': 'val3',
+        })
+
+        pkg, _, _ = self.LOAD('install-opts-valid-mixed')
+        self.assertDictEqual(pkg.install_opts, {
+            'option1': VOID,
+            'option2': VOID,
+        })
+
+        pkg, _, _ = self.LOAD('install-opts-valid-path')
+        self.assertDictEqual(pkg.install_opts, {
+            'option': VOID,
+        })
+
+        pkg, _, _ = self.LOAD('install-opts-valid-paths')
+        self.assertDictEqual(pkg.install_opts, {
+            'option1': VOID,
+            'option2': VOID,
+            'option3': VOID,
         })
 
         pkg, _, _ = self.LOAD('install-opts-valid-str')

@@ -1,0 +1,6 @@
+from pathlib import Path
+
+TEST_CONF_OPTS = [
+    'option1',
+    Path('option2'),
+]

@@ -136,6 +136,39 @@ class TestPkgRawValueParse(RelengToolTestCase):
         with self.assertRaises(ValueError):
             raw_value_parse(-1, PkgKeyType.INT_POSITIVE)
 
+    def test_pkg_rvp_opts(self):
+        rv = raw_value_parse({}, PkgKeyType.OPTS)
+        self.assertEqual(rv, {})
+
+        rv = raw_value_parse({'a': 'b'}, PkgKeyType.OPTS)
+        self.assertEqual(rv, {'a': 'b'})
+
+        rv = raw_value_parse({'c': Path('d')}, PkgKeyType.OPTS)
+        self.assertEqual(rv, {'c': 'd'})
+
+        rv = raw_value_parse('', PkgKeyType.OPTS)
+        self.assertEqual(rv, {'': VOID})
+
+        rv = raw_value_parse(['e', Path('f')], PkgKeyType.OPTS)
+        self.assertEqual(rv, {'e': VOID, 'f': VOID})
+
+        rv = raw_value_parse('value', PkgKeyType.OPTS)
+        self.assertEqual(rv, {'value': VOID})
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(None, PkgKeyType.OPTS)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(123, PkgKeyType.OPTS)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(
+                {'a': 'valid', 'b': 123}, PkgKeyType.OPTS)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(
+                {'a': True, 'b': 123}, PkgKeyType.OPTS)
+
     def test_pkg_rvp_pstr(self):
         rv = raw_value_parse('', PkgKeyType.PSTR)
         self.assertEqual(rv, '')
@@ -201,30 +234,3 @@ class TestPkgRawValueParse(RelengToolTestCase):
 
         with self.assertRaises(TypeError):
             raw_value_parse(1, PkgKeyType.STRS)
-
-    def test_pkg_rvp_str_opts(self):
-        rv = raw_value_parse({}, PkgKeyType.STR_OPTS)
-        self.assertEqual(rv, {})
-
-        rv = raw_value_parse({'a': 'b'}, PkgKeyType.STR_OPTS)
-        self.assertEqual(rv, {'a': 'b'})
-
-        rv = raw_value_parse('', PkgKeyType.STR_OPTS)
-        self.assertEqual(rv, {'': VOID})
-
-        rv = raw_value_parse('value', PkgKeyType.STR_OPTS)
-        self.assertEqual(rv, {'value': VOID})
-
-        with self.assertRaises(TypeError):
-            raw_value_parse(None, PkgKeyType.STR_OPTS)
-
-        with self.assertRaises(TypeError):
-            raw_value_parse(123, PkgKeyType.STR_OPTS)
-
-        with self.assertRaises(TypeError):
-            raw_value_parse(
-                {'a': 'valid', 'b': 123}, PkgKeyType.STR_OPTS)
-
-        with self.assertRaises(TypeError):
-            raw_value_parse(
-                {'a': True, 'b': 123}, PkgKeyType.STR_OPTS)

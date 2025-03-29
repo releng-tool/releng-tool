@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.defs import VOID
 from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_opts
 from releng_tool.util.interpret import interpret_seq
@@ -24,10 +25,10 @@ class PkgKeyType(StrCcEnum):
         DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
         INT_NONNEGATIVE: non-negative integer value
         INT_POSITIVE: positive integer value
+        OPTS: dictionary of (command line) options
         PSTR: single string or path-like value
         STR: single string value
         STRS: one or more strings value
-        STR_OPTS: dictionary of string options
     """
     BOOL = 'bool'
     BOOL_OR_STR = 'bool_or_str'
@@ -36,10 +37,10 @@ class PkgKeyType(StrCcEnum):
     DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
     INT_NONNEGATIVE = 'int_nonnegative'
     INT_POSITIVE = 'int_positive'
+    OPTS = 'opts'
     PSTR = 'pstr'
     STR = 'str'
     STRS = 'strs'
-    STR_OPTS = 'opts'
 
 
 def pkg_cache_key(site):
@@ -133,6 +134,13 @@ def raw_value_parse(value: object, type_: PkgKeyType) -> object:
 
         if value <= 0:
             raise ValueError('positive int')
+    elif type_ == PkgKeyType.OPTS:
+        value = interpret_opts(value, (str, bytes, os.PathLike, type(VOID)))
+        if value is None:
+            raise TypeError('dict(str,str/path-like), str(s) or path-like(s)')
+        value = { os.fsdecode(k) if k is not None else k:
+                  os.fsdecode(v) if v not in (VOID, None) else v
+                  for k, v in value.items() }  # type: ignore[attr-defined]
     elif type_ == PkgKeyType.PSTR:
         if not isinstance(value, (str, bytes, os.PathLike)):
             raise TypeError('string or path-like')
@@ -144,10 +152,6 @@ def raw_value_parse(value: object, type_: PkgKeyType) -> object:
         value = interpret_seq(value, str)
         if value is None:
             raise TypeError('string(s)')
-    elif type_ == PkgKeyType.STR_OPTS:
-        value = interpret_opts(value, str)
-        if value is None:
-            raise TypeError('dict(str,str) or string(s)')
     else:
         raise TypeError('<unsupported key-value>')
 

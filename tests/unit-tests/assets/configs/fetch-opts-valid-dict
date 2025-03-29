@@ -1,5 +1,8 @@
+from pathlib import Path
+
 TEST_FETCH_OPTS = {
     'key4': 'value',
     'key8': None,
     'key1': None,
+    'key3': Path('val3'),
 }

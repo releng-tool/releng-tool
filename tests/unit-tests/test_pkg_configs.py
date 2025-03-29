@@ -60,6 +60,7 @@ class TestPkgConfigs(TestPkgConfigsBase):
             'key1': None,
             'key4': 'value',
             'key8': None,
+            'key3': 'val3',
         })
 
         pkg, _, _ = self.LOAD('fetch-opts-valid-str')
