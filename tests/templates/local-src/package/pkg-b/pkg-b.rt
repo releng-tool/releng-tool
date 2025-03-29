@@ -1,4 +1,4 @@
-test_srcs = releng_join(PKG_DEFDIR, 'srcs.tar')
+test_srcs = PKG_DEFDIR / 'srcs.tar'
 
 PKG_B_INTERNAL = True
 PKG_B_SITE = f'file+{test_srcs}'
