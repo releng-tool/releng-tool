@@ -35,6 +35,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
 from releng_tool.util.log import warn
+from releng_tool.util.path import P
 from releng_tool.util.strccenum import StrCcEnum
 import os
 import subprocess
@@ -357,11 +358,11 @@ class RelengPackagePipeline:
         try:
             for env in (env_wrap(), pkg_env):
                 env['PKG_BUILD_BASE_DIR'] = pkg.build_dir
-                env['PKG_BUILD_DIR'] = build_dir
-                env['PKG_BUILD_OUTPUT_DIR'] = pkg.build_output_dir
-                env['PKG_CACHE_DIR'] = pkg.cache_dir
-                env['PKG_CACHE_FILE'] = pkg.cache_file
-                env['PKG_DEFDIR'] = pkg.def_dir
+                env['PKG_BUILD_DIR'] = P(build_dir)
+                env['PKG_BUILD_OUTPUT_DIR'] = P(pkg.build_output_dir)
+                env['PKG_CACHE_DIR'] = P(pkg.cache_dir)
+                env['PKG_CACHE_FILE'] = P(pkg.cache_file)
+                env['PKG_DEFDIR'] = P(pkg.def_dir)
                 env['PKG_NAME'] = pkg.name
                 env['PKG_SITE'] = pkg.site if pkg.site else ''
                 env['PKG_REVISION'] = pkg.revision
@@ -462,22 +463,22 @@ class RelengPackagePipeline:
                     target_share_dir = os.path.join(target_pdir, 'share')
 
                     # will override existing prefix related variables
-                    env['HOST_BIN_DIR'] = host_bin_dir
-                    env['HOST_INCLUDE_DIR'] = host_include_dir
-                    env['HOST_LIB_DIR'] = host_lib_dir
-                    env['HOST_SHARE_DIR'] = host_share_dir
+                    env['HOST_BIN_DIR'] = P(host_bin_dir)
+                    env['HOST_INCLUDE_DIR'] = P(host_include_dir)
+                    env['HOST_LIB_DIR'] = P(host_lib_dir)
+                    env['HOST_SHARE_DIR'] = P(host_share_dir)
                     env['PREFIX'] = pkg.prefix
-                    env['PREFIXED_HOST_DIR'] = host_pdir
-                    env['PREFIXED_STAGING_DIR'] = staging_pdir
-                    env['PREFIXED_TARGET_DIR'] = target_pdir
-                    env['STAGING_BIN_DIR'] = staging_bin_dir
-                    env['STAGING_INCLUDE_DIR'] = staging_include_dir
-                    env['STAGING_LIB_DIR'] = staging_lib_dir
-                    env['STAGING_SHARE_DIR'] = staging_share_dir
-                    env['TARGET_BIN_DIR'] = target_bin_dir
-                    env['TARGET_INCLUDE_DIR'] = target_include_dir
-                    env['TARGET_LIB_DIR'] = target_lib_dir
-                    env['TARGET_SHARE_DIR'] = target_share_dir
+                    env['PREFIXED_HOST_DIR'] = P(host_pdir)
+                    env['PREFIXED_STAGING_DIR'] = P(staging_pdir)
+                    env['PREFIXED_TARGET_DIR'] = P(target_pdir)
+                    env['STAGING_BIN_DIR'] = P(staging_bin_dir)
+                    env['STAGING_INCLUDE_DIR'] = P(staging_include_dir)
+                    env['STAGING_LIB_DIR'] = P(staging_lib_dir)
+                    env['STAGING_SHARE_DIR'] = P(staging_share_dir)
+                    env['TARGET_BIN_DIR'] = P(target_bin_dir)
+                    env['TARGET_INCLUDE_DIR'] = P(target_include_dir)
+                    env['TARGET_LIB_DIR'] = P(target_lib_dir)
+                    env['TARGET_SHARE_DIR'] = P(target_share_dir)
 
                 if pkg.fixed_jobs:
                     env['NJOBS'] = str(pkg.fixed_jobs)

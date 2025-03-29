@@ -35,6 +35,7 @@ from releng_tool.packages.exceptions import RelengToolUnknownPythonSetupType
 from releng_tool.packages.exceptions import RelengToolUnknownVcsType
 from releng_tool.packages.package import RelengPackage
 from releng_tool.packages.site import site_vcs
+from releng_tool.util.env import env_wrap
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import run_script
@@ -43,6 +44,7 @@ from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.log import debug
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
+from releng_tool.util.path import P
 from releng_tool.util.sort import TopologicalSorter
 from releng_tool.util.spdx import spdx_extract
 from releng_tool.util.spdx import spdx_license_identifier
@@ -335,7 +337,7 @@ class RelengPackageManager:
         pkg_def_dir = os.path.abspath(os.path.join(script, os.pardir))
         self.script_env['DEFAULT_REVISION'] = DEFAULT_ENTRY
         self.script_env['DEFAULT_SITE'] = DEFAULT_ENTRY
-        self.script_env['PKG_DEFDIR'] = pkg_def_dir
+        self.script_env['PKG_DEFDIR'] = P(pkg_def_dir)
 
         # Load a package's definition script if it exists. If one does not
         # exist, check if there are any other stage scripts defined (allowing
@@ -961,10 +963,10 @@ using deprecated dependency configuration for package: {}
         self._apply_postinit_options(pkg)
 
         # (additional environment helpers)
-        for ctx in (os.environ, env):
-            ctx[pkg_key(name, 'BUILD_DIR')] = pkg_build_dir
-            ctx[pkg_key(name, 'BUILD_OUTPUT_DIR')] = pkg_build_output_dir
-            ctx[pkg_key(name, 'DEFDIR')] = pkg_def_dir
+        for ctx in (env_wrap(), env):
+            ctx[pkg_key(name, 'BUILD_DIR')] = P(pkg_build_dir)
+            ctx[pkg_key(name, 'BUILD_OUTPUT_DIR')] = P(pkg_build_output_dir)
+            ctx[pkg_key(name, 'DEFDIR')] = P(pkg_def_dir)
             ctx[pkg_key(name, 'NAME')] = name
             ctx[pkg_key(name, 'REVISION')] = pkg_revision
         os.environ[pkg_key(name, Rpk.VERSION)] = pkg_version

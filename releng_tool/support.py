@@ -8,6 +8,7 @@ from releng_tool import __version__ as releng_version
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.env import env_wrap
 from releng_tool.util.log import err
+from releng_tool.util.path import P
 from runpy import run_path
 import inspect
 import os
@@ -72,8 +73,8 @@ def releng_script_envs(script, ctxenv):
 
     try:
         for env in (env_wrap(), script_env):
-            env['RELENG_SCRIPT'] = script
-            env['RELENG_SCRIPT_DIR'] = script_dir
+            env['RELENG_SCRIPT'] = P(script)
+            env['RELENG_SCRIPT_DIR'] = P(script_dir)
 
         yield script_env
     finally:

@@ -74,6 +74,7 @@ from releng_tool.util.log import success
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.log import warn_wrap
+from releng_tool.util.path import P
 from releng_tool.util.platform import platform_exit
 from releng_tool.util.string import expand
 import json
@@ -866,36 +867,36 @@ of the releng process:
 
         # global variables
         for env in (env_wrap(), script_env):
-            env['BUILD_DIR'] = self.opts.build_dir
-            env['CACHE_DIR'] = self.opts.cache_dir
-            env['DL_DIR'] = self.opts.dl_dir
-            env['HOST_BIN_DIR'] = host_bin_dir
-            env['HOST_DIR'] = self.opts.host_dir
-            env['HOST_INCLUDE_DIR'] = host_include_dir
-            env['HOST_LIB_DIR'] = host_lib_dir
-            env['HOST_SHARE_DIR'] = host_share_dir
-            env['IMAGES_DIR'] = self.opts.images_dir
-            env['LICENSE_DIR'] = self.opts.license_dir
+            env['BUILD_DIR'] = P(self.opts.build_dir)
+            env['CACHE_DIR'] = P(self.opts.cache_dir)
+            env['DL_DIR'] = P(self.opts.dl_dir)
+            env['HOST_BIN_DIR'] = P(host_bin_dir)
+            env['HOST_DIR'] = P(self.opts.host_dir)
+            env['HOST_INCLUDE_DIR'] = P(host_include_dir)
+            env['HOST_LIB_DIR'] = P(host_lib_dir)
+            env['HOST_SHARE_DIR'] = P(host_share_dir)
+            env['IMAGES_DIR'] = P(self.opts.images_dir)
+            env['LICENSE_DIR'] = P(self.opts.license_dir)
             env['NJOBS'] = str(self.opts.jobs)
             env['NJOBSCONF'] = str(self.opts.jobsconf)
-            env['OUTPUT_DIR'] = self.opts.out_dir
+            env['OUTPUT_DIR'] = P(self.opts.out_dir)
             env['PREFIX'] = self.opts.sysroot_prefix
-            env['PREFIXED_HOST_DIR'] = host_pdir
-            env['PREFIXED_STAGING_DIR'] = staging_pdir
-            env['PREFIXED_TARGET_DIR'] = target_pdir
+            env['PREFIXED_HOST_DIR'] = P(host_pdir)
+            env['PREFIXED_STAGING_DIR'] = P(staging_pdir)
+            env['PREFIXED_TARGET_DIR'] = P(target_pdir)
             env['RELENG_VERSION'] = releng_version
-            env['ROOT_DIR'] = self.opts.root_dir
-            env['STAGING_BIN_DIR'] = staging_bin_dir
-            env['STAGING_DIR'] = self.opts.staging_dir
-            env['STAGING_INCLUDE_DIR'] = staging_include_dir
-            env['STAGING_LIB_DIR'] = staging_lib_dir
-            env['STAGING_SHARE_DIR'] = staging_share_dir
-            env['SYMBOLS_DIR'] = self.opts.symbols_dir
-            env['TARGET_BIN_DIR'] = target_bin_dir
-            env['TARGET_DIR'] = self.opts.target_dir
-            env['TARGET_INCLUDE_DIR'] = target_include_dir
-            env['TARGET_LIB_DIR'] = target_lib_dir
-            env['TARGET_SHARE_DIR'] = target_share_dir
+            env['ROOT_DIR'] = P(self.opts.root_dir)
+            env['STAGING_BIN_DIR'] = P(staging_bin_dir)
+            env['STAGING_DIR'] = P(self.opts.staging_dir)
+            env['STAGING_INCLUDE_DIR'] = P(staging_include_dir)
+            env['STAGING_LIB_DIR'] = P(staging_lib_dir)
+            env['STAGING_SHARE_DIR'] = P(staging_share_dir)
+            env['SYMBOLS_DIR'] = P(self.opts.symbols_dir)
+            env['TARGET_BIN_DIR'] = P(target_bin_dir)
+            env['TARGET_DIR'] = P(self.opts.target_dir)
+            env['TARGET_INCLUDE_DIR'] = P(target_include_dir)
+            env['TARGET_LIB_DIR'] = P(target_lib_dir)
+            env['TARGET_SHARE_DIR'] = P(target_share_dir)
 
             if self.opts.target_action:
                 env['RELENG_TARGET_PKG'] = self.opts.target_action
