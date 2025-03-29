@@ -1,0 +1,2 @@
+from pathlib import Path
+TEST_PREFIX = Path('myprefix')

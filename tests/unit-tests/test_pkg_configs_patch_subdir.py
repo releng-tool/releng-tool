@@ -19,6 +19,10 @@ class TestPkgConfigsPatchSubdir(TestPkgConfigsBase):
         with self.assertRaises(RelengToolPathPackageTraversal):
             self.LOAD('patch-subdir-traversal')
 
-    def test_pkgconfig_patch_subdir_valid(self):
-        pkg, _, _ = self.LOAD('patch-subdir-valid')
+    def test_pkgconfig_patch_subdir_valid_path(self):
+        pkg, _, _ = self.LOAD('patch-subdir-valid-path')
+        self.assertTrue(pkg.patch_subdir.endswith('patch-subdir'))
+
+    def test_pkgconfig_patch_subdir_valid_str(self):
+        pkg, _, _ = self.LOAD('patch-subdir-valid-str')
         self.assertTrue(pkg.patch_subdir.endswith('patch-subdir'))

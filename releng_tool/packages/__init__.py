@@ -6,6 +6,7 @@ from releng_tool.util.interpret import interpret_opts
 from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.strccenum import StrCcEnum
 import hashlib
+import os
 
 
 class PkgKeyType(StrCcEnum):
@@ -23,6 +24,7 @@ class PkgKeyType(StrCcEnum):
         DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
         INT_NONNEGATIVE: non-negative integer value
         INT_POSITIVE: positive integer value
+        PSTR: single string or path-like value
         STR: single string value
         STRS: one or more strings value
         STR_OPTS: dictionary of string options
@@ -34,6 +36,7 @@ class PkgKeyType(StrCcEnum):
     DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
     INT_NONNEGATIVE = 'int_nonnegative'
     INT_POSITIVE = 'int_positive'
+    PSTR = 'pstr'
     STR = 'str'
     STRS = 'strs'
     STR_OPTS = 'opts'
@@ -128,6 +131,10 @@ def raw_value_parse(value: object, type_: PkgKeyType) -> object:
 
         if value <= 0:
             raise ValueError('positive int')
+    elif type_ == PkgKeyType.PSTR:
+        if not isinstance(value, (str, bytes, os.PathLike)):
+            raise TypeError('string or path-like')
+        value = os.fsdecode(value)
     elif type_ == PkgKeyType.STR:
         if not isinstance(value, str):
             raise TypeError('string')

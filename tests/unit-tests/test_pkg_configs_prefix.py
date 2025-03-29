@@ -19,6 +19,10 @@ class TestPkgConfigsPrefix(TestPkgConfigsBase):
         with self.assertRaises(RelengToolPathPackageTraversal):
             self.LOAD('prefix-traversal')
 
-    def test_pkgconfig_prefix_valid(self):
-        pkg, _, _ = self.LOAD('prefix-valid')
+    def test_pkgconfig_prefix_valid_path(self):
+        pkg, _, _ = self.LOAD('prefix-valid-path')
+        self.assertEqual(pkg.prefix, 'myprefix')
+
+    def test_pkgconfig_prefix_valid_str(self):
+        pkg, _, _ = self.LOAD('prefix-valid-str')
         self.assertEqual(pkg.prefix, 'myprefix')

@@ -1,0 +1,2 @@
+from pathlib import Path
+TEST_PATCH_SUBDIR = Path('patch-subdir')

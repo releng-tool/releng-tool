@@ -16,8 +16,12 @@ class TestPkgPythonConfigs(TestPkgConfigsBase):
         pkg, _, _ = self.LOAD('missing')
         self.assertIsNone(pkg.python_interpreter)
 
-    def test_pkgconfig_python_interpreter_valid(self):
-        pkg, _, _ = self.LOAD('python-interpreter-valid')
+    def test_pkgconfig_python_interpreter_valid_path(self):
+        pkg, _, _ = self.LOAD('python-interpreter-valid-path')
+        self.assertEqual(pkg.python_interpreter, 'mypython')
+
+    def test_pkgconfig_python_interpreter_valid_str(self):
+        pkg, _, _ = self.LOAD('python-interpreter-valid-str')
         self.assertEqual(pkg.python_interpreter, 'mypython')
 
     def test_pkgconfig_python_setup_type_invalid_type(self):
