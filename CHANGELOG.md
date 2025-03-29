@@ -1,4 +1,4 @@
-## Development
+## 2.2.0 (2025-03-29)
 
 - Cleanup unexpected prints in `releng_require_version`
 - Extension priority changed: (1) `.rt`, (2) `.py`, (3) *(none)*, (4) `.releng`
