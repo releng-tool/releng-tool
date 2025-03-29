@@ -103,35 +103,35 @@ class RelengPackageManager:
         # register expected types for each configuration
         regval = [
             (Rpk.AUTOTOOLS_AUTORECONF, PkgKeyType.BOOL),
-            (Rpk.BUILD_DEFS, PkgKeyType.DICT_STR_STR),
-            (Rpk.BUILD_ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.BUILD_DEFS, PkgKeyType.DICT_STR_PSTR),
+            (Rpk.BUILD_ENV, PkgKeyType.DICT_STR_PSTR),
             (Rpk.BUILD_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.BUILD_SUBDIR, PkgKeyType.PSTR),
             (Rpk.CARGO_NAME, PkgKeyType.STR),
             (Rpk.CARGO_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.CMAKE_BUILD_TYPE, PkgKeyType.STR),
             (Rpk.CMAKE_NOINSTALL, PkgKeyType.BOOL),
-            (Rpk.CONF_DEFS, PkgKeyType.DICT_STR_STR),
-            (Rpk.CONF_ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.CONF_DEFS, PkgKeyType.DICT_STR_PSTR),
+            (Rpk.CONF_ENV, PkgKeyType.DICT_STR_PSTR),
             (Rpk.CONF_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.DEPS, PkgKeyType.STRS),
             (Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL),
             (Rpk.DEVMODE_REVISION, PkgKeyType.STR),
-            (Rpk.ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.ENV, PkgKeyType.DICT_STR_PSTR),
             (Rpk.EXTENSION, PkgKeyType.STR),
             (Rpk.EXTERNAL, PkgKeyType.BOOL),
             (Rpk.EXTOPT, PkgKeyType.DICT),
             (Rpk.EXTRACT_TYPE, PkgKeyType.STR),
             (Rpk.FETCH_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.FIXED_JOBS, PkgKeyType.INT_POSITIVE),
-            (Rpk.GIT_CONFIG, PkgKeyType.DICT_STR_STR),
+            (Rpk.GIT_CONFIG, PkgKeyType.DICT_STR_PSTR),
             (Rpk.GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE),
             (Rpk.GIT_REFSPECS, PkgKeyType.STRS),
             (Rpk.GIT_SUBMODULES, PkgKeyType.BOOL),
             (Rpk.GIT_VERIFY_REVISION, PkgKeyType.BOOL),
             (Rpk.HOST_PROVIDES, PkgKeyType.STRS),
-            (Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_STR),
-            (Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_STR),
+            (Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_PSTR),
+            (Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_PSTR),
             (Rpk.INSTALL_OPTS, PkgKeyType.STR_OPTS),
             (Rpk.INSTALL_TYPE, PkgKeyType.STR),
             (Rpk.INTERNAL, PkgKeyType.BOOL),
@@ -1029,7 +1029,7 @@ using deprecated dependency configuration for package: {}
         for k, v in self._key_types.items():
             interim_obj = None
 
-            if v in (PkgKeyType.DICT_STR_STR, PkgKeyType.STR_OPTS):
+            if v in (PkgKeyType.DICT_STR_PSTR, PkgKeyType.STR_OPTS):
                 interim_obj = {}
             elif v == PkgKeyType.STRS:
                 interim_obj = []
@@ -1053,7 +1053,7 @@ using deprecated dependency configuration for package: {}
         # if an interim configuration has not been used, automatically remove
         # them from the environment as if it was ``None`` in the first place
         for k, v in self._key_types.items():
-            if v in (PkgKeyType.DICT_STR_STR,
+            if v in (PkgKeyType.DICT_STR_PSTR,
                      PkgKeyType.STRS,
                      PkgKeyType.STR_OPTS):
                 pkg_cfg_key = pkg_key(name, k)

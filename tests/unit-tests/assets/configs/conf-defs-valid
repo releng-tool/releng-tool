@@ -1,5 +1,7 @@
+from pathlib import Path
+
 TEST_CONF_DEFS = {
     'key1': 'val1',
     'key2': None,
-    'key3': 'val3',
+    'key3': Path('val3'),
 }

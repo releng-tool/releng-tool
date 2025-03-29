@@ -20,7 +20,7 @@ class PkgKeyType(StrCcEnum):
         BOOL: boolean value
         BOOL_OR_STR: boolean value or a string value
         DICT: dictionary value
-        DICT_STR_STR: dictionary of string pairs value
+        DICT_STR_PSTR: dictionary of string keys with string/path-like values
         DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
         INT_NONNEGATIVE: non-negative integer value
         INT_POSITIVE: positive integer value
@@ -32,7 +32,7 @@ class PkgKeyType(StrCcEnum):
     BOOL = 'bool'
     BOOL_OR_STR = 'bool_or_str'
     DICT = 'dict'
-    DICT_STR_STR = 'dict_str_str'
+    DICT_STR_PSTR = 'dict_str_pstr'
     DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
     INT_NONNEGATIVE = 'int_nonnegative'
     INT_POSITIVE = 'int_positive'
@@ -110,10 +110,12 @@ def raw_value_parse(value: object, type_: PkgKeyType) -> object:
     elif type_ == PkgKeyType.DICT:
         if not isinstance(value, dict):
             raise TypeError('dictionary')
-    elif type_ == PkgKeyType.DICT_STR_STR:
-        value = interpret_dict(value, str)
+    elif type_ == PkgKeyType.DICT_STR_PSTR:
+        value = interpret_dict(value, (str, bytes, os.PathLike))
         if value is None:
-            raise TypeError('dict(str,str)')
+            raise TypeError('dict(str,str/path-like)')
+        value = { k: os.fsdecode(v) if v is not None else v
+                  for k, v in value.items() }  # type: ignore[attr-defined]
     elif type_ == PkgKeyType.DICT_STR_STR_OR_STR:
         if not isinstance(value, str):
             value = interpret_dict(value, str)

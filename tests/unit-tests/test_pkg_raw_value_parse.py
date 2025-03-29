@@ -55,24 +55,27 @@ class TestPkgRawValueParse(RelengToolTestCase):
         with self.assertRaises(TypeError):
             raw_value_parse('value', PkgKeyType.DICT)
 
-    def test_pkg_rvp_dict_str_str(self):
-        rv = raw_value_parse({}, PkgKeyType.DICT_STR_STR)
+    def test_pkg_rvp_dict_str_pstr(self):
+        rv = raw_value_parse({}, PkgKeyType.DICT_STR_PSTR)
         self.assertEqual(rv, {})
 
-        rv = raw_value_parse({'a': 'b'}, PkgKeyType.DICT_STR_STR)
+        rv = raw_value_parse({'a': 'b'}, PkgKeyType.DICT_STR_PSTR)
         self.assertEqual(rv, {'a': 'b'})
 
-        with self.assertRaises(TypeError):
-            raw_value_parse(None, PkgKeyType.DICT_STR_STR)
+        rv = raw_value_parse({'c': Path('d')}, PkgKeyType.DICT_STR_PSTR)
+        self.assertEqual(rv, {'c': 'd'})
 
         with self.assertRaises(TypeError):
-            raw_value_parse('value', PkgKeyType.DICT_STR_STR)
+            raw_value_parse(None, PkgKeyType.DICT_STR_PSTR)
 
         with self.assertRaises(TypeError):
-            raw_value_parse({'a': 'valid', 'b': 123}, PkgKeyType.DICT_STR_STR)
+            raw_value_parse('value', PkgKeyType.DICT_STR_PSTR)
 
         with self.assertRaises(TypeError):
-            raw_value_parse({'a': True, 'b': 123}, PkgKeyType.DICT_STR_STR)
+            raw_value_parse({'a': 'valid', 'b': 123}, PkgKeyType.DICT_STR_PSTR)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse({'a': True, 'b': 123}, PkgKeyType.DICT_STR_PSTR)
 
     def test_pkg_rvp_dict_str_str_or_str(self):
         rv = raw_value_parse('', PkgKeyType.DICT_STR_STR_OR_STR)
