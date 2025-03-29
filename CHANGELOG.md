@@ -7,6 +7,7 @@
 - Improve accepting of path-like arguments into multiple package options
 - Patches are applied with the `--verbose` argument
 - Support for extensionless configuration/scripts is deprecated
+- Support path-like types for multiple path-like script variables
 - Support working-directory changing with `releng_tmpdir`
 
 ## 2.1.1 (2025-02-17)
