@@ -1,0 +1,2 @@
+from pathlib import Path
+TEST_PYTHON_DIST_PATH = Path('dist2')

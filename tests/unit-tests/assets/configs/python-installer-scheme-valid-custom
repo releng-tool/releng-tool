@@ -1,0 +1,10 @@
+TEST_PYTHON_INSTALLER_SCHEME = {
+    'data':        '',
+    'include':     'myinclude/python',
+    'platinclude': 'myinclude/python',
+    'platlib':     'mylib/python',
+    'platstdlib':  'mylib/python',
+    'purelib':     'mylib/python',
+    'scripts':     'mybin',
+    'stdlib':      'mylib/python',
+}
