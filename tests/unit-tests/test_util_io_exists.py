@@ -12,7 +12,7 @@ class TestUtilIoExists(RelengToolTestCase):
         assets_dir = fetch_unittest_assets_dir()
 
         self.assertTrue(path_exists(assets_dir))
-        self.assertTrue(path_exists(assets_dir, b'.gitattributes'))
+        self.assertTrue(path_exists(assets_dir, b'__init__.py'))
         self.assertTrue(path_exists(assets_dir, 'copy-check-01'))
         self.assertTrue(path_exists(assets_dir, 'copy-check-01', 'test-file-a'))
         self.assertTrue(path_exists(assets_dir, Path('copy-check-02')))
