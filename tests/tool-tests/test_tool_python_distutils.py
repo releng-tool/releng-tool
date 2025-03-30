@@ -2,7 +2,6 @@
 # Copyright releng-tool
 
 from tests.support.python_tool_test import PythonSiteToolBase
-import os
 import sys
 import unittest
 
@@ -10,9 +9,7 @@ import unittest
 class TestToolPythonDistutils(PythonSiteToolBase):
     @classmethod
     def setUpClass(cls):
-        # support skipping the test for a distribution build
-        if os.getenv('RELENG_SKIP_TEST_TOOL_PYTHON_DISTUTILS'):
-            raise unittest.SkipTest('skipped due to environment flag')
+        super().setUpClass()
 
         # distutils is no longer available in Python 3.12+
         if sys.version_info >= (3, 12):

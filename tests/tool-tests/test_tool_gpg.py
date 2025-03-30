@@ -12,6 +12,8 @@ import sys
 class TestToolGpg(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):
+        super().setUpClass()
+
         sample_files = fetch_unittest_assets_dir('sample-files')
         cls.archive = os.path.join(sample_files, 'sample-files.tar')
 
