@@ -390,6 +390,14 @@ class RelengEngine:
             PkgAction.PATCH,
         ]
 
+        # track if the run is a "specific action", where only a subset of
+        # work will be done; do not consider the "punch" action a specific
+        # action as we want to do everything in this case
+        if self.opts.gbl_action == GlobalAction.PUNCH:
+            is_action = False
+        else:
+            is_action = (gaction or pa or opts.target_action is not None)
+
         # determine if an explicit fetch request has been made
         only_fetch = None
         if gaction == GlobalAction.FETCH or pa == PkgAction.FETCH:
@@ -398,8 +406,6 @@ class RelengEngine:
         req_fetch = only_fetch
         if gaction == GlobalAction.FETCH_FULL or pa == PkgAction.FETCH_FULL:
             req_fetch = True
-
-        is_action = (gaction or pa or opts.target_action is not None)
 
         try:
             # ensure all package sources are acquired first
@@ -560,7 +566,7 @@ has failed. Ensure the following path is accessible for this user:
 
         # perform post-processing and completion message if not performing a
         # specific action
-        if not is_action or self.opts.gbl_action == GlobalAction.PUNCH:
+        if not is_action:
             if not self._post_processing(script_env):
                 err('failed to perform post-processing')
                 return False
