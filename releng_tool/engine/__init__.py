@@ -17,6 +17,7 @@ from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
 from releng_tool.engine.sbom import SbomManager
+from releng_tool.engine.script_env import prepare_script_environment
 from releng_tool.engine.suggest import suggest
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
@@ -34,34 +35,18 @@ from releng_tool.packages.pipeline import RelengPackagePipeline
 from releng_tool.prerequisites import RelengPrerequisites
 from releng_tool.registry import RelengRegistry
 from releng_tool.stats import RelengStats
-from releng_tool.support import releng_include
-from releng_tool.support import require_version
 from releng_tool.tool.python import PYTHON
 from releng_tool.util import nullish_coalescing as NC
-from releng_tool.util.env import env_value
-from releng_tool.util.env import env_wrap
 from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
 from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_seq
-from releng_tool.util.io import execute
-from releng_tool.util.io import execute_rv
 from releng_tool.util.io import run_script
-from releng_tool.util.io_cat import cat
-from releng_tool.util.io_copy import path_copy
-from releng_tool.util.io_copy import path_copy_into
-from releng_tool.util.io_exists import path_exists
-from releng_tool.util.io_ls import ls
 from releng_tool.util.io_mkdir import mkdir
-from releng_tool.util.io_move import path_move
-from releng_tool.util.io_move import path_move_into
 from releng_tool.util.io_opt_file import opt_file
 from releng_tool.util.io_remove import path_remove
-from releng_tool.util.io_symlink import symlink
-from releng_tool.util.io_temp_dir import temp_dir
-from releng_tool.util.io_touch import touch
 from releng_tool.util.io_wd import FailedToPrepareWorkingDirectoryError
 from releng_tool.util.io_wd import wd
 from releng_tool.util.log import debug
@@ -74,8 +59,6 @@ from releng_tool.util.log import success
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.log import warn_wrap
-from releng_tool.util.path import P
-from releng_tool.util.platform import platform_exit
 from releng_tool.util.string import expand
 import json
 import os
@@ -225,7 +208,7 @@ class RelengEngine:
         # need to be updated after running the project's configuration (e.g.
         # possibly needing to update the `PREFIX` variable if `sysroot_prefix`
         # was configured). This is peformed later in the engine run call.
-        self._prepare_script_environment(gbls, gaction, opts.pkg_action)
+        prepare_script_environment(gbls, opts)
 
         verbose(f'loading project configuration: {conf_point}')
         settings = run_script(conf_point, gbls, subject='configuration')
@@ -449,8 +432,7 @@ class RelengEngine:
             # re-apply script environment to ensure previous script environment
             # changes have not manipulated the environment (from standard
             # helpers).
-            self._prepare_script_environment(
-                script_env, gaction, opts.pkg_action)
+            prepare_script_environment(script_env, opts)
 
             # process each package (configuring, building, etc.)
             if not only_fetch and not requested_sbom:
@@ -823,158 +805,6 @@ of the releng process:
             self.registry.emit('post-build-finished', env=env)
 
         return True
-
-    def _prepare_script_environment(self, script_env, gaction, paction):
-        """
-        prepare the script environment with common project values
-
-        A package stage will be invoked with a tailored environment variables.
-        This method is used to prepare an environment dictionary with common
-        variables such the the staging directory, target directory and more.
-
-        Args:
-            script_env: environment dictionary to prepare
-            gaction: the global action invoked (if any)
-            paction: the package-specific action invoked (if any)
-        """
-
-        # always register optional flags in script environment
-        script_env['RELENG_CLEAN'] = None
-        script_env['RELENG_DEBUG'] = None
-        script_env['RELENG_DEVMODE'] = None
-        script_env['RELENG_DISTCLEAN'] = None
-        script_env['RELENG_EXEC'] = None
-        script_env['RELENG_FORCE'] = None
-        script_env['RELENG_LOCALSRCS'] = None
-        script_env['RELENG_MRPROPER'] = None
-        script_env['RELENG_REBUILD'] = None
-        script_env['RELENG_RECONFIGURE'] = None
-        script_env['RELENG_REINSTALL'] = None
-        script_env['RELENG_TARGET_PKG'] = None
-        script_env['RELENG_VERBOSE'] = None
-
-        #: default lib container directory
-        nprefix = os.path.normpath(self.opts.sysroot_prefix)
-        host_pdir = os.path.normpath(self.opts.host_dir + nprefix)
-        staging_pdir = os.path.normpath(self.opts.staging_dir + nprefix)
-        target_pdir = os.path.normpath(self.opts.target_dir + nprefix)
-        host_bin_dir = os.path.join(host_pdir, 'bin')
-        host_include_dir = os.path.join(host_pdir, 'include')
-        host_lib_dir = os.path.join(host_pdir, 'lib')
-        host_share_dir = os.path.join(host_pdir, 'share')
-        staging_bin_dir = os.path.join(staging_pdir, 'bin')
-        staging_include_dir = os.path.join(staging_pdir, 'include')
-        staging_lib_dir = os.path.join(staging_pdir, 'lib')
-        staging_share_dir = os.path.join(staging_pdir, 'share')
-        target_bin_dir = os.path.join(target_pdir, 'bin')
-        target_include_dir = os.path.join(target_pdir, 'include')
-        target_lib_dir = os.path.join(target_pdir, 'lib')
-        target_share_dir = os.path.join(target_pdir, 'share')
-
-        # global variables
-        for env in (env_wrap(), script_env):
-            env['BUILD_DIR'] = P(self.opts.build_dir)
-            env['CACHE_DIR'] = P(self.opts.cache_dir)
-            env['DL_DIR'] = P(self.opts.dl_dir)
-            env['HOST_BIN_DIR'] = P(host_bin_dir)
-            env['HOST_DIR'] = P(self.opts.host_dir)
-            env['HOST_INCLUDE_DIR'] = P(host_include_dir)
-            env['HOST_LIB_DIR'] = P(host_lib_dir)
-            env['HOST_SHARE_DIR'] = P(host_share_dir)
-            env['IMAGES_DIR'] = P(self.opts.images_dir)
-            env['LICENSE_DIR'] = P(self.opts.license_dir)
-            env['NJOBS'] = str(self.opts.jobs)
-            env['NJOBSCONF'] = str(self.opts.jobsconf)
-            env['OUTPUT_DIR'] = P(self.opts.out_dir)
-            env['PREFIX'] = self.opts.sysroot_prefix
-            env['PREFIXED_HOST_DIR'] = P(host_pdir)
-            env['PREFIXED_STAGING_DIR'] = P(staging_pdir)
-            env['PREFIXED_TARGET_DIR'] = P(target_pdir)
-            env['RELENG_VERSION'] = releng_version
-            env['ROOT_DIR'] = P(self.opts.root_dir)
-            env['STAGING_BIN_DIR'] = P(staging_bin_dir)
-            env['STAGING_DIR'] = P(self.opts.staging_dir)
-            env['STAGING_INCLUDE_DIR'] = P(staging_include_dir)
-            env['STAGING_LIB_DIR'] = P(staging_lib_dir)
-            env['STAGING_SHARE_DIR'] = P(staging_share_dir)
-            env['SYMBOLS_DIR'] = P(self.opts.symbols_dir)
-            env['TARGET_BIN_DIR'] = P(target_bin_dir)
-            env['TARGET_DIR'] = P(self.opts.target_dir)
-            env['TARGET_INCLUDE_DIR'] = P(target_include_dir)
-            env['TARGET_LIB_DIR'] = P(target_lib_dir)
-            env['TARGET_SHARE_DIR'] = P(target_share_dir)
-
-            if self.opts.target_action:
-                env['RELENG_TARGET_PKG'] = self.opts.target_action
-
-            if gaction == GlobalAction.CLEAN or \
-                    paction in (PkgAction.FRESH, PkgAction.CLEAN):
-                env['RELENG_CLEAN'] = '1'
-            elif gaction == GlobalAction.DISTCLEAN or \
-                    paction == PkgAction.DISTCLEAN:
-                env['RELENG_CLEAN'] = '1'  # also set clean flag
-                env['RELENG_DISTCLEAN'] = '1'
-                env['RELENG_MRPROPER'] = '1'  # also set mrproper flag
-            elif gaction == GlobalAction.MRPROPER:
-                env['RELENG_CLEAN'] = '1'  # also set clean flag
-                env['RELENG_MRPROPER'] = '1'
-
-            if paction == PkgAction.EXEC:
-                env['RELENG_EXEC'] = '1'
-
-            if paction in (PkgAction.RECONFIGURE, PkgAction.REBUILD,
-                    PkgAction.REBUILD_ONLY):
-                env['RELENG_REBUILD'] = '1'
-            if paction in (PkgAction.RECONFIGURE, PkgAction.RECONFIGURE_ONLY):
-                env['RELENG_RECONFIGURE'] = '1'
-            if paction in (PkgAction.RECONFIGURE, PkgAction.REBUILD,
-                    PkgAction.REINSTALL):
-                env['RELENG_REINSTALL'] = '1'
-
-            if self.opts.debug:
-                env['RELENG_DEBUG'] = '1'
-            if self.opts.devmode:
-                if self.opts.devmode is True:
-                    env['RELENG_DEVMODE'] = '1'
-                else:
-                    env['RELENG_DEVMODE'] = self.opts.devmode
-            if self.opts.gbl_action == GlobalAction.PUNCH or self.opts.force:
-                env['RELENG_FORCE'] = '1'
-            if self.opts.local_srcs:
-                env['RELENG_LOCALSRCS'] = '1'
-            if self.opts.verbose:
-                env['RELENG_VERBOSE'] = '1'
-
-        # utility methods (if adjusting, see also `releng_tool.__init__`)
-        script_env['debug'] = debug
-        script_env['err'] = err
-        script_env['hint'] = hint
-        script_env['log'] = log
-        script_env['note'] = note
-        script_env['releng_cat'] = cat
-        script_env['releng_copy'] = path_copy
-        script_env['releng_copy_into'] = path_copy_into
-        script_env['releng_env'] = env_value
-        script_env['releng_execute'] = execute
-        script_env['releng_execute_rv'] = execute_rv
-        script_env['releng_exists'] = path_exists
-        script_env['releng_exit'] = platform_exit
-        script_env['releng_expand'] = expand
-        script_env['releng_include'] = releng_include
-        script_env['releng_join'] = os.path.join
-        script_env['releng_ls'] = ls
-        script_env['releng_mkdir'] = mkdir
-        script_env['releng_move'] = path_move
-        script_env['releng_move_into'] = path_move_into
-        script_env['releng_remove'] = path_remove
-        script_env['releng_require_version'] = require_version
-        script_env['releng_symlink'] = symlink
-        script_env['releng_tmpdir'] = temp_dir
-        script_env['releng_touch'] = touch
-        script_env['releng_wd'] = wd
-        script_env['success'] = success
-        script_env['verbose'] = verbose
-        script_env['warn'] = warn
 
     def _process_file_flags(self):
         """
