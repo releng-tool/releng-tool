@@ -369,13 +369,13 @@ class RelengPackagePipeline:
                 env['PKG_VERSION'] = pkg.version
 
                 if pkg.devmode:
-                    env['PKG_DEVMODE'] = '1'
+                    env['PKG_DEVMODE'] = True
 
                 if pkg.is_internal:
-                    env['PKG_INTERNAL'] = '1'
+                    env['PKG_INTERNAL'] = True
 
                 if pkg.local_srcs:
-                    env['PKG_LOCALSRCS'] = '1'
+                    env['PKG_LOCALSRCS'] = True
 
             yield pkg_env
         finally:

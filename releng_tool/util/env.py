@@ -20,7 +20,7 @@ def env_wrap():
 
     class EnvSet:
         def __setitem__(self, key, value):
-            os.environ[key] = str(value)
+            os.environ[key] = '1' if value is True else str(value)
 
     return EnvSet()
 

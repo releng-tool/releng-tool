@@ -95,8 +95,8 @@ def prepare_script_environment(env, opts):
         env_['HOST_SHARE_DIR'] = P(host_share_dir)
         env_['IMAGES_DIR'] = P(opts.images_dir)
         env_['LICENSE_DIR'] = P(opts.license_dir)
-        env_['NJOBS'] = str(opts.jobs)
-        env_['NJOBSCONF'] = str(opts.jobsconf)
+        env_['NJOBS'] = opts.jobs
+        env_['NJOBSCONF'] = opts.jobsconf
         env_['OUTPUT_DIR'] = P(opts.out_dir)
         env_['PREFIX'] = opts.sysroot_prefix
         env_['PREFIXED_HOST_DIR'] = P(host_pdir)
@@ -121,42 +121,42 @@ def prepare_script_environment(env, opts):
 
         if opts.gbl_action == GlobalAction.CLEAN or \
                 opts.pkg_action in (PkgAction.FRESH, PkgAction.CLEAN):
-            env_['RELENG_CLEAN'] = '1'
+            env_['RELENG_CLEAN'] = True
         elif opts.gbl_action == GlobalAction.DISTCLEAN or \
                 opts.pkg_action == PkgAction.DISTCLEAN:
-            env_['RELENG_CLEAN'] = '1'  # also set clean flag
-            env_['RELENG_DISTCLEAN'] = '1'
-            env_['RELENG_MRPROPER'] = '1'  # also set mrproper flag
+            env_['RELENG_CLEAN'] = True  # also set clean flag
+            env_['RELENG_DISTCLEAN'] = True
+            env_['RELENG_MRPROPER'] = True  # also set mrproper flag
         elif opts.gbl_action == GlobalAction.MRPROPER:
-            env_['RELENG_CLEAN'] = '1'  # also set clean flag
-            env_['RELENG_MRPROPER'] = '1'
+            env_['RELENG_CLEAN'] = True  # also set clean flag
+            env_['RELENG_MRPROPER'] = True
 
         if opts.pkg_action == PkgAction.EXEC:
-            env_['RELENG_EXEC'] = '1'
+            env_['RELENG_EXEC'] = True
 
         if opts.pkg_action in (PkgAction.RECONFIGURE, PkgAction.REBUILD,
                 PkgAction.REBUILD_ONLY):
-            env_['RELENG_REBUILD'] = '1'
+            env_['RELENG_REBUILD'] = True
         if opts.pkg_action in (PkgAction.RECONFIGURE,
                 PkgAction.RECONFIGURE_ONLY):
-            env_['RELENG_RECONFIGURE'] = '1'
+            env_['RELENG_RECONFIGURE'] = True
         if opts.pkg_action in (PkgAction.RECONFIGURE, PkgAction.REBUILD,
                 PkgAction.REINSTALL):
-            env_['RELENG_REINSTALL'] = '1'
+            env_['RELENG_REINSTALL'] = True
 
         if opts.debug:
-            env_['RELENG_DEBUG'] = '1'
+            env_['RELENG_DEBUG'] = True
         if opts.devmode:
             if opts.devmode is True:
-                env_['RELENG_DEVMODE'] = '1'
+                env_['RELENG_DEVMODE'] = True
             else:
                 env_['RELENG_DEVMODE'] = opts.devmode
         if opts.gbl_action == GlobalAction.PUNCH or opts.force:
-            env_['RELENG_FORCE'] = '1'
+            env_['RELENG_FORCE'] = True
         if opts.local_srcs:
-            env_['RELENG_LOCALSRCS'] = '1'
+            env_['RELENG_LOCALSRCS'] = True
         if opts.verbose:
-            env_['RELENG_VERBOSE'] = '1'
+            env_['RELENG_VERBOSE'] = True
 
     # utility methods (if adjusting, see also `releng_tool.__init__`)
     env['debug'] = debug
