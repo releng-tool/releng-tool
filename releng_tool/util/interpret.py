@@ -96,7 +96,7 @@ def interpret_opts(obj, classinfo):
         }
     elif isinstance(obj, Sequence):
         if all(isinstance(child, classinfo) for child in obj):
-            rv = {child: VOID for child in obj}
+            rv = dict.fromkeys(obj, VOID)
 
     return rv
 

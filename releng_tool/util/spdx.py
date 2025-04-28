@@ -88,9 +88,7 @@ def spdx_license_identifier(license_value):
     if not license_value.startswith('LicenseRef-'):
         return False
 
-    id_str = license_value[len('LicenseRef-'):]
-    if isinstance(id_str, bytes):
-        id_str = id_str.decode('utf_8')
+    id_str = license_value.removeprefix('LicenseRef-')
     return id_str.replace('.', '').replace('-', '').isalpha()
 
 

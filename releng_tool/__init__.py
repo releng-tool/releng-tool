@@ -20,7 +20,9 @@ __version__ = '2.3.0.dev0'
 # Note: changes introduced here should be synonymous with engine-shared helpers:
 #        RelengEngine._prepareSharedEnvironment
 
-# flake8: noqa
+# ruff: noqa: F401
+# ruff: noqa: PLC0414
+
 from os.path import join as releng_join
 from releng_tool.support import releng_include as releng_include
 from releng_tool.support import require_version as releng_require_version

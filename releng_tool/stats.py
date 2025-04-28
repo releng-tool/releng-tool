@@ -282,12 +282,12 @@ class RelengStats:
             # provide some spacing near the right
             MIN_OFFSET = 10
 
-            xlim = int(math.ceil(max(offset) / 10.)) * 10
+            xlim = round(math.ceil(max(offset) / 10.)) * 10
             if xlim - max(offset) < MIN_OFFSET:
                 xlim += MIN_OFFSET
             ax_pkgs.set_xlim([0, xlim])
 
-            xlim_total = int(math.ceil(max(offset_total) / 10.)) * 10
+            xlim_total = round(math.ceil(max(offset_total) / 10.)) * 10
             if xlim_total - max(offset_total) < MIN_OFFSET:
                 xlim_total += MIN_OFFSET
             ax_total.set_xlim([0, xlim_total])
