@@ -2,5 +2,6 @@ from pathlib import Path
 
 releng_include('test-build-stage1.rt')
 releng_include(releng_join(PKG_DEFDIR, 'test-build-stage2.rt'))
-releng_include(Path('test-build-stage3.rt'))
-releng_include(b'test-build-stage4.rt')
+releng_include(PKG_DEFDIR / 'test-build-stage3.rt')
+releng_include(Path('test-build-stage4.rt'))
+releng_include(b'test-build-stage5.rt')

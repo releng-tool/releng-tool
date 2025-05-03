@@ -16,6 +16,9 @@ class TestEngineRunScripts(RelengToolTestCase):
             file_flags = [
                 os.path.join(engine.opts.target_dir, 'invoked-stage1'),
                 os.path.join(engine.opts.target_dir, 'invoked-stage2'),
+                os.path.join(engine.opts.target_dir, 'invoked-stage3'),
+                os.path.join(engine.opts.target_dir, 'invoked-stage4'),
+                os.path.join(engine.opts.target_dir, 'invoked-stage5'),
             ]
 
             for file_flag in file_flags:
