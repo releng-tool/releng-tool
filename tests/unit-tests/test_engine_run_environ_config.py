@@ -47,3 +47,15 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
 
             with prepare_testenv() as engine:
                 self.assertEqual(engine.opts.out_dir, out_dir)
+
+    def test_engine_run_environ_cfg_parallel_level_ignored(self):
+        os.environ['RELENG_PARALLEL_LEVEL'] = 'invalid'
+
+        with prepare_testenv() as engine:
+            self.assertGreater(engine.opts.jobs, 0)
+
+    def test_engine_run_environ_cfg_parallel_level_set(self):
+        os.environ['RELENG_PARALLEL_LEVEL'] = '42'
+
+        with prepare_testenv() as engine:
+            self.assertEqual(engine.opts.jobs, 42)
