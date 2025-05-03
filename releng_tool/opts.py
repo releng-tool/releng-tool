@@ -5,6 +5,7 @@ from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import UNSET_VALUES
+import contextlib
 import multiprocessing
 import os
 import re
@@ -297,6 +298,10 @@ class RelengEngineOptions:
             self.images_dir = os.environ.get('RELENG_IMAGES_DIR')
         if not self.out_dir:
             self.out_dir = os.environ.get('RELENG_OUTPUT_DIR')
+
+        if not self.jobs and 'RELENG_PARALLEL_LEVEL' in os.environ:
+            with contextlib.suppress(ValueError):
+                self.jobs = int(os.environ.get('RELENG_PARALLEL_LEVEL'))
 
     def _finalize_options(self):
         """
