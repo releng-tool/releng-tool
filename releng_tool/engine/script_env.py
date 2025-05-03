@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
@@ -179,6 +180,7 @@ def prepare_script_environment(env, opts):
     env['releng_mkdir'] = mkdir
     env['releng_move'] = path_move
     env['releng_move_into'] = path_move_into
+    env['releng_path'] = Path
     env['releng_remove'] = path_remove
     env['releng_require_version'] = require_version
     env['releng_symlink'] = symlink
