@@ -1,3 +1,10 @@
+## Development
+
+- Installed Python packages now use releng-tool interpreter values for launchers
+- Introduce `LIBFOO_PYTHON_INSTALLER_INTERPRETER` for interpreter tailoring
+- Introduce `RELENG_PARALLEL_LEVEL` for environment-managed job management
+- Introduce `releng_path` helper script function
+
 ## 2.2.0 (2025-03-29)
 
 - Cleanup unexpected prints in `releng_require_version`
