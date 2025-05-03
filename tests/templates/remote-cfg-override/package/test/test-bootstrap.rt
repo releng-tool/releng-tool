@@ -1,2 +1,2 @@
-file_flag = releng_join(TARGET_DIR, f'jobs-{NJOBSCONF}')
+file_flag = TARGET_DIR / f'jobs-{NJOBSCONF}'
 releng_touch(file_flag)

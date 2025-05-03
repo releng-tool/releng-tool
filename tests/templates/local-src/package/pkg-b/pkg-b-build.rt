@@ -1,7 +1,7 @@
 import json
 import os
 
-target = releng_join(TARGET_DIR, 'metadata-b')
+target = TARGET_DIR / 'metadata-b'
 releng_copy('metadata', target)
 
 fname = os.path.join(TARGET_DIR, 'invoke-env-b.json')

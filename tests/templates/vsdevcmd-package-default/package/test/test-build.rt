@@ -1,4 +1,4 @@
 rv, _ = releng_execute_rv('cl')
 if rv == 0:
-    file_flag = releng_join(TARGET_DIR, 'build-success')
+    file_flag = TARGET_DIR / 'build-success'
     releng_touch(file_flag)

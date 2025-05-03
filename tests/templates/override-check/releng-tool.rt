@@ -6,7 +6,7 @@ packages = [
 # (see `test_cli_overrides`)
 try:
     if TEST_OVERRIDE == '123':
-        file_flag = releng_join(TARGET_DIR, 'override-detected')
+        file_flag = TARGET_DIR / 'override-detected'
         releng_touch(file_flag)
 except NameError:
     pass
