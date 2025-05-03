@@ -146,6 +146,7 @@ class RelengPackageManager:
             (Rpk.PATCH_SUBDIR, PkgKeyType.PSTR),
             (Rpk.PREFIX, PkgKeyType.PSTR),
             (Rpk.PYTHON_DIST_PATH, PkgKeyType.PSTR),
+            (Rpk.PYTHON_INSTALLER_INTERPRETER, PkgKeyType.STR),
             (Rpk.PYTHON_INSTALLER_LAUNCHER_KIND, PkgKeyType.STR),
             (Rpk.PYTHON_INSTALLER_SCHEME, PkgKeyType.DICT_STR_STR_OR_STR),
             (Rpk.PYTHON_INTERPRETER, PkgKeyType.PSTR),
@@ -1306,6 +1307,11 @@ using deprecated dependency configuration for package: {}
         # python dist output path
         if pkg.python_dist_path is None:
             pkg.python_dist_path = self._fetch(Rpk.PYTHON_DIST_PATH)
+
+        # python installer interpreter
+        if pkg.python_installer_interpreter is None:
+            pkg.python_installer_interpreter = \
+                self._fetch(Rpk.PYTHON_INSTALLER_INTERPRETER)
 
         # python installer launcher kind
         if pkg.python_installer_launcher_kind is None:

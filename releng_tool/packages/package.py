@@ -79,6 +79,7 @@ class RelengPackage:
         meson_noinstall: flag to disable the install stage for a meson project
         (other - python)
         python_dist_path: output folder for dist
+        python_installer_interpreter: interpreter to use for installation
         python_installer_launcher_kind: launcher kind to use for installation
         python_installer_scheme: scheme to use for installation
         python_interpreter: python interpreter to invoke stages with
@@ -159,6 +160,7 @@ class RelengPackage:
         self.git_verify_revision = None
         # (other - python)
         self.python_dist_path = None
+        self.python_installer_interpreter = None
         self.python_installer_launcher_kind = None
         self.python_installer_scheme = None
         self.python_interpreter = None

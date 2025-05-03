@@ -86,6 +86,7 @@ def install(opts):
     #     "empty"/(root path) prefix is provided, a `setup.py` invoke may
     #     ignore provided `--root` value or `--prefix` value.
 
+    pkg_installer_interpreter = opts._python_installer_interpreter
     pkg_installer_launcher_kind = opts._python_installer_launcher_kind
     pkg_installer_scheme = opts._python_installer_scheme
     scheme_paths = {}
@@ -123,6 +124,13 @@ def install(opts):
     else:
         script_kind = get_launcher_kind()
 
+    if pkg_installer_interpreter:
+        installer_interpreter = pkg_installer_interpreter
+    elif sys.platform == 'win32':
+        installer_interpreter = 'python.exe'
+    else:
+        installer_interpreter = '/usr/bin/python'
+
     # avoid building pyc files for non-host packages
     if opts.install_type != 'host':
         optimization = []  # --no-compile-bytecode
@@ -133,7 +141,7 @@ def install(opts):
         # prepare the destination for the installation request
         dst = SchemeDictionaryDestination(
             cfg_scheme,
-            interpreter=sys.executable,
+            interpreter=installer_interpreter,
             script_kind=script_kind,
             bytecode_optimization_levels=optimization,
             destdir=tmp_dir,  # --destdir
