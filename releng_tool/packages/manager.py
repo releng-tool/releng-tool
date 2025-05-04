@@ -1193,11 +1193,11 @@ using deprecated dependency configuration for package: {}
         # package-type build environment options
         if pkg.build_env is None:
             pkg.build_env = dict(pkg_env) if pkg_env else None
-            build_env = self._fetch(Rpk.BUILD_ENV)
-            if build_env:
+            pkg.build_env_pkg = self._fetch(Rpk.BUILD_ENV)
+            if pkg.build_env_pkg:
                 if pkg.build_env is None:
                     pkg.build_env = {}
-                pkg.build_env.update(build_env)
+                pkg.build_env.update(pkg.build_env_pkg)
 
         # package-type build options
         if pkg.build_opts is None:
@@ -1210,11 +1210,11 @@ using deprecated dependency configuration for package: {}
         # package-type configuration environment options
         if pkg.conf_env is None:
             pkg.conf_env = dict(pkg_env) if pkg_env else None
-            conf_env = self._fetch(Rpk.CONF_ENV)
-            if conf_env:
+            pkg.conf_env_pkg = self._fetch(Rpk.CONF_ENV)
+            if pkg.conf_env_pkg:
                 if pkg.conf_env is None:
                     pkg.conf_env = {}
-                pkg.conf_env.update(conf_env)
+                pkg.conf_env.update(pkg.conf_env_pkg)
 
         # package-type configuration options
         if pkg.conf_opts is None:
@@ -1230,13 +1230,13 @@ using deprecated dependency configuration for package: {}
         # package-type installation environment options
         if pkg.install_env is None:
             pkg.install_env = dict(pkg_env) if pkg_env else None
-            install_env = self._fetch(Rpk.INSTALL_ENV)
-            if install_env:
+            pkg.install_env_pkg = self._fetch(Rpk.INSTALL_ENV)
+            if pkg.install_env_pkg:
                 if pkg.install_env is None:
                     pkg.install_env = {}
-                pkg.install_env.update(install_env)
+                pkg.install_env.update(pkg.install_env_pkg)
 
-            if install_env and pkg.type == PackageType.PYTHON:
+            if pkg.install_env_pkg and pkg.type == PackageType.PYTHON:
                 self._obsolete(pkg.name, Rpk.INSTALL_ENV)
 
         # package-type installation options

@@ -132,12 +132,15 @@ class RelengPackage:
         # (package type - common)
         self.build_defs = None
         self.build_env = None
+        self.build_env_pkg = None
         self.build_opts = None
         self.conf_defs = None
         self.conf_env = None
+        self.conf_env_pkg = None
         self.conf_opts = None
         self.install_defs = None
         self.install_env = None
+        self.install_env_pkg = None
         self.install_opts = None
         # (package type - autotools)
         self.autotools_autoreconf = None
