@@ -1,4 +1,4 @@
-## Development
+## 2.3.0 (2025-05-04)
 
 - Installed Python packages now use releng-tool interpreter values for launchers
 - Introduce `LIBFOO_PYTHON_INSTALLER_INTERPRETER` for interpreter tailoring
