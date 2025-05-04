@@ -8,6 +8,7 @@ from io import StringIO
 from pathlib import Path
 from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
+from releng_tool.packages import pkg_key
 from releng_tool.util.io_copy import path_copy
 from releng_tool.util.io_temp_dir import temp_dir
 from unittest.mock import patch
@@ -217,6 +218,31 @@ def run_testenv(config=None, template=None, args=None):
 
     with prepare_testenv(config=config, template=template, args=args) as engine:
         return engine.run()
+
+
+def setpkgcfg(engine, pkg_name, key, value):
+    """
+    configure a package setting from a template project
+
+    This utility method can be used to append package-specific configuration
+    options onto a package definition. This is to help append additional
+    options desired at a test's runtime that are not included in a persisted
+    template configuration.
+
+    Args:
+        engine: the engine used for this run
+        pkg_name: the name of the package to modify
+        key: the configuration key to add
+        value: the configuration value to set
+    """
+
+    pkgs_dir = os.path.join(engine.opts.root_dir, 'package')
+    pkg_defdir = os.path.join(pkgs_dir, pkg_name)
+    pkg_def = os.path.join(pkg_defdir, f'{pkg_name}.rt')
+
+    with open(pkg_def, mode='a', encoding='utf_8') as file_def:
+        file_def.write('{} = {}\n'.format(
+            pkg_key(pkg_name, key), repr(value)))
 
 
 def find_test_base():
