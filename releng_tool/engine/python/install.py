@@ -8,6 +8,7 @@ from installer.sources import WheelFile
 from installer.utils import get_launcher_kind
 from pathlib import Path
 from releng_tool import __version__ as releng_version
+from releng_tool.defs import PackageInstallType
 from releng_tool.exceptions import RelengToolException
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
@@ -124,7 +125,16 @@ def install(opts):
     else:
         script_kind = get_launcher_kind()
 
-    if pkg_installer_interpreter:
+    # configure the interpreter to to use
+    #
+    # If a host build, use the same interpreter used by releng-tool since
+    # we want to ensure any host build's utilities can run. For non-host
+    # environments, use the package-defined interpreter. If none are
+    # configured, default to common platform interpreter (just in case
+    # releng-tool is operating in a custom interpreter; e.g. pipx).
+    if opts.install_type == PackageInstallType.HOST:
+        installer_interpreter = sys.executable
+    elif pkg_installer_interpreter:
         installer_interpreter = pkg_installer_interpreter
     elif sys.platform == 'win32':
         installer_interpreter = 'python.exe'
