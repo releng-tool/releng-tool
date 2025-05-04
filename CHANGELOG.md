@@ -4,6 +4,8 @@
 - Introduce `LIBFOO_PYTHON_INSTALLER_INTERPRETER` for interpreter tailoring
 - Introduce `RELENG_PARALLEL_LEVEL` for environment-managed job management
 - Introduce `releng_path` helper script function
+- Ensure Make configuration stage runs if any configuration setting is set
+- Ensure SCons configuration stage runs if any configuration setting is set
 
 ## 2.2.0 (2025-03-29)
 
