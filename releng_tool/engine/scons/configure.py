@@ -28,9 +28,9 @@ def configure(opts):
         err('unable to configure package; scons is not installed')
         return False
 
-    # If the provided package has not provided any configuration options,
+    # If the provided package has not provided any configuration settings,
     # assume that the scons project does not have a configuration event.
-    if not opts.conf_opts:
+    if not opts.conf_defs and not opts._conf_env_pkg and not opts.conf_opts:
         verbose('no configuration options provided: {}', opts.name)
 
         # fallback to invoking a configuration script
