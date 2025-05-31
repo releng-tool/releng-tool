@@ -1,4 +1,4 @@
-## Development
+## 2.4.0 (2025-05-31)
 
 - Include VCS revisions in generated SBOM documents
 - Introduce a `--debug-extended` argument
