@@ -278,7 +278,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
                 return False
         else:
             err('unable to find matching revision in {}\n'
-                'revision: {})', desc, revision)
+                ' (revision: {})', desc, revision)
             return False
 
     return True
