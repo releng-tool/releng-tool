@@ -405,6 +405,7 @@ def usage_quirks():
 
 releng.bzr.certifi                     Use certifi for bzr exports
 releng.cmake.disable_direct_includes   Disable include-injection with CMake
+releng.disable_devmode_ignore_cache    Disable package ignore-cache flags
 releng.disable_local_site_warn         Disable local-site warnings
 releng.disable_prerequisites_check     Disable prerequisites check
 releng.disable_remote_configs          Disable remote configurations

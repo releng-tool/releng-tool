@@ -595,8 +595,9 @@ using deprecated dependency configuration for package: {}
         # ignore cache
         pkg_devmode_ignore_cache = self._fetch(Rpk.DEVMODE_IGNORE_CACHE)
         if pkg_devmode_ignore_cache is None:
-            if opts.default_dev_ignore_cache is not None:
-                pkg_devmode_ignore_cache = opts.default_dev_ignore_cache
+            if 'releng.disable_devmode_ignore_cache' not in opts.quirks:
+                if opts.default_dev_ignore_cache is not None:
+                    pkg_devmode_ignore_cache = opts.default_dev_ignore_cache
 
         # extension (override)
         pkg_filename_ext = self._fetch(Rpk.EXTENSION)
