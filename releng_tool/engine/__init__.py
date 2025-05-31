@@ -1000,9 +1000,10 @@ The file used to track `--local-sources` options cannot be written to.
             flags has completed with no errors; ``False`` if the request to
             configure file flags failed to be performed
         """
-        def notify_invalid_value(key, expected):
+
+        def notify_invalid_type(key, expected):
             err('''\
-invalid configuration value provided
+invalid configuration type provided
 
 The configuration file defines a key with an unexpected type. Correct the
 following key entry and re-try again.
@@ -1015,35 +1016,35 @@ following key entry and re-try again.
             if callable(settings[ConfKey.CACHE_EXT_TRANSFORM]):
                 cet = settings[ConfKey.CACHE_EXT_TRANSFORM]
             if cet is None:
-                notify_invalid_value(ConfKey.CACHE_EXT_TRANSFORM, 'callable')
+                notify_invalid_type(ConfKey.CACHE_EXT_TRANSFORM, 'callable')
                 return False
             self.opts.cache_ext_transform = cet
 
         if ConfKey.DEFINTERN in settings:
             is_default_internal = settings[ConfKey.DEFINTERN]
             if not isinstance(is_default_internal, bool):
-                notify_invalid_value(ConfKey.DEFINTERN, 'bool')
+                notify_invalid_type(ConfKey.DEFINTERN, 'bool')
                 return False
             self.opts.default_internal_pkgs = is_default_internal
 
         if ConfKey.DEF_DEV_IGNORE_CACHE in settings:
             default_dev_ignore_cache = settings[ConfKey.DEF_DEV_IGNORE_CACHE]
             if not isinstance(default_dev_ignore_cache, bool):
-                notify_invalid_value(ConfKey.DEF_DEV_IGNORE_CACHE, 'bool')
+                notify_invalid_type(ConfKey.DEF_DEV_IGNORE_CACHE, 'bool')
                 return False
             self.opts.default_dev_ignore_cache = default_dev_ignore_cache
 
         if ConfKey.ENVIRONMENT in settings:
             env = interpret_dict(settings[ConfKey.ENVIRONMENT], str)
             if env is None:
-                notify_invalid_value(ConfKey.ENVIRONMENT, 'dict(str,str)')
+                notify_invalid_type(ConfKey.ENVIRONMENT, 'dict(str,str)')
                 return False
             self.opts.environment.update(expand(env))
 
         if ConfKey.EXTRA_LEXCEPTS in settings:
             d = interpret_dict(settings[ConfKey.EXTRA_LEXCEPTS], str)
             if d is None:
-                notify_invalid_value(ConfKey.EXTRA_LEXCEPTS, 'dict(str,str)')
+                notify_invalid_type(ConfKey.EXTRA_LEXCEPTS, 'dict(str,str)')
                 return False
 
             for key, val in d.items():
@@ -1055,7 +1056,7 @@ following key entry and re-try again.
         if ConfKey.EXTRA_LICENSES in settings:
             d = interpret_dict(settings[ConfKey.EXTRA_LICENSES], str)
             if d is None:
-                notify_invalid_value(ConfKey.EXTRA_LICENSES, 'dict(str,str)')
+                notify_invalid_type(ConfKey.EXTRA_LICENSES, 'dict(str,str)')
                 return False
 
             for key, val in d.items():
@@ -1067,14 +1068,14 @@ following key entry and re-try again.
         if ConfKey.LICENSE_HEADER in settings:
             license_header = settings[ConfKey.LICENSE_HEADER]
             if not isinstance(license_header, str):
-                notify_invalid_value(ConfKey.LICENSE_HEADER, 'str')
+                notify_invalid_type(ConfKey.LICENSE_HEADER, 'str')
                 return False
             self.opts.license_header = license_header
 
         if ConfKey.OVERRIDE_REV in settings:
             orz = interpret_dict(settings[ConfKey.OVERRIDE_REV], str)
             if orz is None:
-                notify_invalid_value(ConfKey.OVERRIDE_REV, 'dict(str,str)')
+                notify_invalid_type(ConfKey.OVERRIDE_REV, 'dict(str,str)')
                 return False
             self.opts.revision_override = orz
             if self.opts.revision_override:
@@ -1083,7 +1084,7 @@ following key entry and re-try again.
         if ConfKey.OVERRIDE_SITES in settings:
             v = interpret_dict(settings[ConfKey.OVERRIDE_SITES], str)
             if v is None:
-                notify_invalid_value(ConfKey.OVERRIDE_SITES, 'dict(str,str)')
+                notify_invalid_type(ConfKey.OVERRIDE_SITES, 'dict(str,str)')
                 return False
             self.opts.sites_override = v
             if self.opts.sites_override:
@@ -1092,21 +1093,21 @@ following key entry and re-try again.
         if ConfKey.OVERRIDE_TOOLS in settings:
             v = interpret_dict(settings[ConfKey.OVERRIDE_TOOLS], str)
             if v is None:
-                notify_invalid_value(ConfKey.OVERRIDE_TOOLS, 'dict(str,str)')
+                notify_invalid_type(ConfKey.OVERRIDE_TOOLS, 'dict(str,str)')
                 return False
             self.opts.extract_override = v
 
         if ConfKey.PREREQUISITES in settings:
             prerequisites = interpret_seq(settings[ConfKey.PREREQUISITES], str)
             if prerequisites is None:
-                notify_invalid_value(ConfKey.PREREQUISITES, 'str or list(str)')
+                notify_invalid_type(ConfKey.PREREQUISITES, 'str or list(str)')
                 return False
             self.opts.prerequisites.extend(prerequisites)
 
         if ConfKey.QUIRKS in settings:
             quirks = interpret_seq(settings[ConfKey.QUIRKS], str)
             if quirks is None:
-                notify_invalid_value(ConfKey.QUIRKS, 'str or list(str)')
+                notify_invalid_type(ConfKey.QUIRKS, 'str or list(str)')
                 return False
             self.opts.quirks.extend(quirks)
             for quirk in quirks:
@@ -1115,7 +1116,7 @@ following key entry and re-try again.
         if ConfKey.SBOM_FORMAT in settings:
             sbom_format = interpret_seq(settings[ConfKey.SBOM_FORMAT], str)
             if sbom_format is None:
-                notify_invalid_value(ConfKey.SBOM_FORMAT, 'str or list(str)')
+                notify_invalid_type(ConfKey.SBOM_FORMAT, 'str or list(str)')
                 return False
             if not self.opts.sbom_format:
                 self.opts.sbom_format = sbom_format
@@ -1123,7 +1124,7 @@ following key entry and re-try again.
         if ConfKey.SYSROOT_PREFIX in settings:
             sysroot_prefix = settings[ConfKey.SYSROOT_PREFIX]
             if not isinstance(sysroot_prefix, str):
-                notify_invalid_value(ConfKey.SYSROOT_PREFIX, 'str')
+                notify_invalid_type(ConfKey.SYSROOT_PREFIX, 'str')
                 return False
             if not sysroot_prefix.startswith('/'):
                 sysroot_prefix = '/' + sysroot_prefix
@@ -1132,7 +1133,7 @@ following key entry and re-try again.
         if ConfKey.URL_MIRROR in settings:
             url_mirror = settings[ConfKey.URL_MIRROR]
             if not isinstance(url_mirror, str):
-                notify_invalid_value(ConfKey.URL_MIRROR, 'str')
+                notify_invalid_type(ConfKey.URL_MIRROR, 'str')
                 return False
             self.opts.url_mirror = url_mirror
 
@@ -1141,21 +1142,21 @@ following key entry and re-try again.
             if isinstance(settings[ConfKey.URLOPEN_CONTEXT], ssl.SSLContext):
                 urlopen_context = settings[ConfKey.URLOPEN_CONTEXT]
             if urlopen_context is None:
-                notify_invalid_value(ConfKey.URLOPEN_CONTEXT, 'ssl.SSLContext')
+                notify_invalid_type(ConfKey.URLOPEN_CONTEXT, 'ssl.SSLContext')
                 return False
             self.opts.urlopen_context = urlopen_context
 
         if ConfKey.VSDEVCMD in settings:
             vsdevcmd = settings[ConfKey.VSDEVCMD]
             if not isinstance(vsdevcmd, (bool, str)):
-                notify_invalid_value(ConfKey.VSDEVCMD, 'bool or str')
+                notify_invalid_type(ConfKey.VSDEVCMD, 'bool or str')
                 return False
             self.opts.vsdevcmd = vsdevcmd
 
         if ConfKey.EXTEN_PKGS in settings:
             epd = interpret_seq(settings[ConfKey.EXTEN_PKGS], str)
             if epd is None:
-                notify_invalid_value(ConfKey.EXTEN_PKGS, 'str or list(str)')
+                notify_invalid_type(ConfKey.EXTEN_PKGS, 'str or list(str)')
                 return False
             self.opts.extern_pkg_dirs = epd
 
@@ -1163,7 +1164,7 @@ following key entry and re-try again.
         if ConfKey.EXTENSIONS in settings:
             ext_names = interpret_seq(settings[ConfKey.EXTENSIONS], str)
             if ext_names is None:
-                notify_invalid_value(ConfKey.EXTENSIONS, 'str or list(str)')
+                notify_invalid_type(ConfKey.EXTENSIONS, 'str or list(str)')
                 return False
 
         self.registry.load_all_extensions(ext_names)
