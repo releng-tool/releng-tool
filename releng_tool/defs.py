@@ -392,7 +392,8 @@ class SbomFormatType(StrCcEnum):
         HTML: an HTML file
         JSON: a JSON file
         JSON_SPDX: a SPDX-compliant JSON file
-        RDP_SPDX: a SPDX-compliant RDP (XML) file
+        RDF_SPDX: a SPDX-compliant RDF (XML) file
+        RDP_SPDX: legacy entry for bad naming of RDF_SPDX
         TEXT: a plain text file
         XML: an XML file
     """
@@ -401,6 +402,7 @@ class SbomFormatType(StrCcEnum):
     HTML = 'html'
     JSON = 'json'
     JSON_SPDX = 'json-spdx'
+    RDF_SPDX = 'rdf-spdx'
     RDP_SPDX = 'rdp-spdx'
     TEXT = 'text'
     XML = 'xml'

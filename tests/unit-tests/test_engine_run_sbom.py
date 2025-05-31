@@ -110,8 +110,8 @@ class TestEngineRunSbom(RelengToolTestCase):
 
             self._check_expected_files(engine.opts.out_dir, expected)
 
-    def test_engine_run_sbom_rdp_spdx(self):
-        with prepare_testenv(template='sbom-rdp-spdx') as engine:
+    def test_engine_run_sbom_rdf_spdx(self):
+        with prepare_testenv(template='sbom-rdf-spdx') as engine:
             rv = engine.run()
             self.assertTrue(rv)
 

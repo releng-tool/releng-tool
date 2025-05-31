@@ -15,6 +15,7 @@ from releng_tool.util.hash import load as load_hashes
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 from releng_tool.util.spdx import ConjunctiveLicenses
 from releng_tool.util.spdx import LicenseEntries
 from releng_tool.util.spdx import spdx_parse
@@ -176,9 +177,14 @@ class SbomManager:
         sbom_html = all_fmt or SbomFormatType.HTML in fmt
         sbom_json = all_fmt or SbomFormatType.JSON in fmt
         sbom_json_spdx = all_fmt or SbomFormatType.JSON_SPDX in fmt
-        sbom_rdp_spdx = all_fmt or SbomFormatType.RDP_SPDX in fmt
+        sbom_rdf_spdx = all_fmt or SbomFormatType.RDF_SPDX in fmt \
+             or SbomFormatType.RDP_SPDX in fmt
         sbom_text = all_fmt or SbomFormatType.TEXT in fmt
         sbom_xml = all_fmt or SbomFormatType.XML in fmt
+
+        if SbomFormatType.RDP_SPDX in fmt:
+            warn(f'detected obsolete sbom format "{SbomFormatType.RDP_SPDX}"; '
+                 f'switch to "{SbomFormatType.RDF_SPDX}"')
 
         # if not formats are configured, enable text-SBOM by default
         if not fmt:
@@ -197,8 +203,8 @@ class SbomManager:
             if sbom_json_spdx:
                 self._generate_json_spdx(cache)
 
-            if sbom_rdp_spdx:
-                self._generate_rdp_spdx(cache)
+            if sbom_rdf_spdx:
+                self._generate_rdf_spdx(cache)
 
             if sbom_text:
                 self._generate_text(cache)
@@ -486,11 +492,11 @@ class SbomManager:
 
         self.generated.append(sbom_file)
 
-    def _generate_rdp_spdx(self, cache):
+    def _generate_rdf_spdx(self, cache):
         """
-        generate a SPDX compliant RDP (XML) format sbom file
+        generate a SPDX compliant RDF (XML) format sbom file
 
-        Compiles an RDP-formatted software build-of-materials document based
+        Compiles an RDF-formatted software build-of-materials document based
         on the cache information populated from a releng-tool project.
 
         Args:
@@ -627,7 +633,7 @@ class SbomManager:
                     license_droot.set('rdf:resource', rdf_term_none)
 
         # writing the processed cache data to a file
-        verbose('writing sbom (rdp-spdx)')
+        verbose('writing sbom (rdf-spdx)')
         sbom_file = os.path.join(self.opts.out_dir, 'sbom-spdx.xml')
         xml = ET.tostring(rdf_root, 'utf_8')
         tree = xml_minidom.parseString(xml)

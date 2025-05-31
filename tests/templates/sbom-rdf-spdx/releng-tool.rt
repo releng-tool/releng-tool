@@ -2,4 +2,4 @@ packages = [
     'test',
 ]
 
-sbom_format = 'rdp-spdx'
+sbom_format = 'rdf-spdx'
