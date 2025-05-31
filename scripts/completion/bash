@@ -108,6 +108,7 @@ _releng_tool_module()
             '--cache-dir'
             '--config'
             '--debug'
+            '--debug-extended'
             '--development'
             '--dl-dir'
             '--force'

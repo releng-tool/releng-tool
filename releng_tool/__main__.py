@@ -39,6 +39,7 @@ def main():
         parser.add_argument('--cache-dir')
         parser.add_argument('--config')
         parser.add_argument('--debug', action='store_true')
+        parser.add_argument('--debug-extended', action='store_true')
         parser.add_argument('--development', '-D', nargs='?', default=False)
         parser.add_argument('--dl-dir')
         parser.add_argument('--force', '-F', action='store_true')
@@ -92,6 +93,10 @@ def main():
         if not os.getenv('RELENG_IGNORE_RUNNER_DEBUG'):
             if detect_ci_runner_debug_mode():
                 args.debug = True
+
+        # force debug messages if extended debugging is enabled
+        if args.debug_extended:
+            args.debug = True
 
         # force verbose messages if debugging is enabled
         if args.debug:
@@ -373,6 +378,7 @@ def usage():
 (other)
  --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
  --debug                   Show debug-related messages
+ --debug-extended          Show even more debug-related messages
  -F, --force               Trigger a forced request
  -h, --help                Show this help
  --help-quirks             Show available quirks

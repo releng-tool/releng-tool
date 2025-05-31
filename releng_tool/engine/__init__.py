@@ -100,10 +100,10 @@ class RelengEngine:
             self.opts.spdx = json.load(f)
 
         # enable execute environment logging if the quirk is set
-        if 'releng.log.execute_args' in opts.quirks:
+        if opts.debug_extended or 'releng.log.execute_args' in opts.quirks:
             releng_log_tag('execute-args')
 
-        if 'releng.log.execute_env' in opts.quirks:
+        if opts.debug_extended or 'releng.log.execute_env' in opts.quirks:
             releng_log_tag('execute-env')
 
     def run(self):

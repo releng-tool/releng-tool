@@ -21,6 +21,7 @@ function _releng_tool {
         '--cache-dir[directory for distributed version control cache]: :_files' \
         '--config[configuration file to load]: :_files' \
         '--debug[show debug-related messages]' \
+        '--debug-extended[show extended debug-related messages]' \
         '--development[enables development mode]' \
         '--dl-dir[directory for download archives]: :_files' \
         {--force,-F}'[trigger a forced request]' \

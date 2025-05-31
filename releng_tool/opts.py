@@ -59,6 +59,7 @@ class RelengEngineOptions:
         conf_point: releng project's configuration
         conf_point_overrides: releng project's configuration overrides
         debug: whether or not debug messages are shown
+        debug_extended: whether extended debug mode is enabled
         default_dev_ignore_cache: default flag state for devmode ignore cache
         default_internal_pkgs: whether or not packages are implicitly internal
         default_pkg_dir: default package directory
@@ -110,6 +111,7 @@ class RelengEngineOptions:
         self.conf_point = None
         self.conf_point_overrides = None
         self.debug = False
+        self.debug_extended = False
         self.default_dev_ignore_cache = None
         self.default_internal_pkgs = False
         self.default_pkg_dir = None
@@ -190,6 +192,7 @@ class RelengEngineOptions:
 
         self.conf_point = args.config
         self.debug = args.debug
+        self.debug_extended = args.debug_extended
         self.force = args.force
         self.jobs = self.jobsconf = (args.jobs or 0)
         self.no_color_out = args.nocolorout
