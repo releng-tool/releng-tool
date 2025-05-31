@@ -54,6 +54,7 @@ class RelengPackage:
         vcs_type: vcs type of the package (git, file, etc.)
         version: package version
         vsdevcmd: vsdevcmd configuration
+        vsdevcmd_products: vsdevcmd products configuration
         (package type - common)
         build_defs: package-type build definitions
         build_env: package-type build environment overrides
@@ -129,6 +130,7 @@ class RelengPackage:
         self.type = None
         self.vcs_type = None
         self.vsdevcmd = None
+        self.vsdevcmd_products = None
         # (package type - common)
         self.build_defs = None
         self.build_env = None

@@ -102,6 +102,7 @@ class RelengEngineOptions:
         urlopen_context: context to apply for all url open calls
         verbose: whether or not verbose messages are shown
         vsdevcmd: configuration for loading vsdevcmd environment variables
+        vsdevcmd_products: vswhere products to search for
     """
     def __init__(self, args=None, forward_args=None):
         self.assets_dir = None
@@ -154,6 +155,7 @@ class RelengEngineOptions:
         self.urlopen_context = None
         self.verbose = False
         self.vsdevcmd = None
+        self.vsdevcmd_products = None
 
         # default have an empty license/exception entries, until SPDX data
         # is loaded into the options

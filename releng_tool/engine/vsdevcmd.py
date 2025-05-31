@@ -9,10 +9,14 @@ from releng_tool.util.log import verbose
 import os
 
 
-def vsdevcmd_initialize(verstr=None, env=None):
+def vsdevcmd_initialize(prodstr=None, verstr=None, env=None):
     verbose('initializing vsdevcmd...')
 
-    args = ('-property', 'installationPath', '-latest')
+    args = (
+        '-property', 'installationPath',
+        '-latest',
+        '-products', prodstr or '*',
+    )
     if verstr and not isinstance(verstr, bool):
         args += ('-version', verstr)
 

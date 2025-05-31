@@ -53,6 +53,7 @@ class ConfKey(StrCcEnum):
     URL_MIRROR = 'url_mirror'
     URLOPEN_CONTEXT = 'urlopen_context'
     VSDEVCMD = 'vsdevcmd'
+    VSDEVCMD_PRODUCTS = 'vsdevcmd_products'
 
 
 class ListenerEvent(StrCcEnum):
@@ -116,6 +117,7 @@ class Rpk(StrCcEnum):
         VCS_TYPE: type of project the package's fetch source is
         VERSION: the version of the package
         VSDEVCMD: configuration for loading vsdevcmd environment variables
+        VSDEVCMD_PRODUCTS: vswhere products to search for
         # (package type - common)
         CONF_DEFS: package-type configuration definitions
         CONF_ENV: package-type configuration environment values
@@ -184,6 +186,7 @@ class Rpk(StrCcEnum):
     VCS_TYPE = 'VCS_TYPE'
     VERSION = 'VERSION'
     VSDEVCMD = 'VSDEVCMD'
+    VSDEVCMD_PRODUCTS = 'VSDEVCMD_PRODUCTS'
     # (package type - common)
     CONF_DEFS = 'CONF_DEFS'
     CONF_ENV = 'CONF_ENV'

@@ -163,6 +163,7 @@ class RelengPackageManager:
             (Rpk.VCS_TYPE, PkgKeyType.DICT_STR_STR_OR_STR),
             (Rpk.VERSION, PkgKeyType.STR),
             (Rpk.VSDEVCMD, PkgKeyType.BOOL_OR_STR),
+            (Rpk.VSDEVCMD_PRODUCTS, PkgKeyType.STR),
         ]
         for k, v in regval:
             self._register_conf(k, v)
@@ -1178,6 +1179,9 @@ using deprecated dependency configuration for package: {}
         # vsdevcmd configuration
         if pkg.vsdevcmd is None:
             pkg.vsdevcmd = self._fetch(Rpk.VSDEVCMD)
+
+        if pkg.vsdevcmd_products is None:
+            pkg.vsdevcmd_products = self._fetch(Rpk.VSDEVCMD_PRODUCTS)
 
         # ######################################################################
         # (package type - shared)

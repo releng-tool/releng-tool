@@ -265,7 +265,11 @@ class RelengEngine:
         # check if we should preload environment variables from vsdevcmd
         if opts.vsdevcmd and sys.platform == 'win32':
             debug('attempting to load vsdevcmd variables')
-            vsdevcmd_initialize(opts.vsdevcmd, env=os.environ)
+            vsdevcmd_initialize(
+                prodstr=opts.vsdevcmd_products,
+                verstr=opts.vsdevcmd,
+                env=os.environ,
+            )
 
         # load project-defined environment options
         for key, val in opts.environment.items():
@@ -1152,6 +1156,13 @@ following key entry and re-try again.
                 notify_invalid_type(ConfKey.VSDEVCMD, 'bool or str')
                 return False
             self.opts.vsdevcmd = vsdevcmd
+
+        if ConfKey.VSDEVCMD_PRODUCTS in settings:
+            vsdevcmd_products = settings[ConfKey.VSDEVCMD_PRODUCTS]
+            if not isinstance(vsdevcmd_products, str):
+                notify_invalid_type(ConfKey.VSDEVCMD_PRODUCTS, 'str')
+                return False
+            self.opts.vsdevcmd_products = vsdevcmd
 
         if ConfKey.EXTEN_PKGS in settings:
             epd = interpret_seq(settings[ConfKey.EXTEN_PKGS], str)

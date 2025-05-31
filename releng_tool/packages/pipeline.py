@@ -429,7 +429,10 @@ class RelengPackagePipeline:
         extra_env = {}
         if pkg.vsdevcmd and sys.platform == 'win32':
             debug('attempting to load package-specific vsdevcmd variables')
-            extra_env = vsdevcmd_initialize(pkg.vsdevcmd)
+            extra_env = vsdevcmd_initialize(
+                prodstr=pkg.vsdevcmd_products,
+                verstr=pkg.vsdevcmd,
+            )
             pkg_keys.extend(extra_env)
 
         saved_env = {}
