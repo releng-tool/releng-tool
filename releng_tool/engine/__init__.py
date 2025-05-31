@@ -9,6 +9,7 @@ from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PackageType
 from releng_tool.defs import PkgAction
+from releng_tool.defs import SbomFormatType
 from releng_tool.defs import UNSET_VALUES
 from releng_tool.defs import VcsType
 from releng_tool.engine.cargo import cargo_package_clean
@@ -1015,6 +1016,17 @@ following key entry and re-try again.
     Key: {}
     Expected Type: {}''', key, expected)
 
+        def notify_invalid_value(key, value, expected):
+            err('''\
+invalid configuration value provided
+
+The configuration file defines a key with an unexpected value. Correct the
+following key entry and re-try again.
+
+    Key: {}
+    Unknown value: {}
+    Expected: {}''', key, value, expected)
+
         if ConfKey.CACHE_EXT_TRANSFORM in settings:
             cet = None
             if callable(settings[ConfKey.CACHE_EXT_TRANSFORM]):
@@ -1122,6 +1134,17 @@ following key entry and re-try again.
             if sbom_format is None:
                 notify_invalid_type(ConfKey.SBOM_FORMAT, 'str or list(str)')
                 return False
+            for entry in sbom_format:
+                if entry not in SbomFormatType:
+                    notify_invalid_value(
+                        ConfKey.SBOM_FORMAT,
+                        entry,
+                        ', '.join([
+                            x for x in SbomFormatType
+                            if x != SbomFormatType.RDP_SPDX],
+                        ),
+                    )
+                    return False
             if not self.opts.sbom_format:
                 self.opts.sbom_format = sbom_format
 
