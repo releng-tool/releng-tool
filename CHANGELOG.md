@@ -1,3 +1,10 @@
+## Development
+
+- Introduce a `--debug-extended` argument
+- Introduce quirk to help disable package-specific ignore-cache flags
+- Renamed SBOM format `rdp-spdx` to `rdf-spdx`
+- Support Visual Studio Build Tools when using injected Visual Studio support
+
 ## 2.3.0 (2025-05-04)
 
 - Installed Python packages now use releng-tool interpreter values for launchers
