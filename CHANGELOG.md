@@ -1,5 +1,6 @@
 ## Development
 
+- Include VCS revisions in generated SBOM documents
 - Introduce a `--debug-extended` argument
 - Introduce quirk to help disable package-specific ignore-cache flags
 - Renamed SBOM format `rdp-spdx` to `rdf-spdx`
