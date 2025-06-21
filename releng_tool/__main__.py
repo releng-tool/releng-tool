@@ -384,8 +384,8 @@ def usage():
  --help-quirks             Show available quirks
  --nocolorout              Explicitly disable colorized output
  --only-mirror             Only fetch external projects with configured mirror
- --relaxed-args            Permit the use of unknown arguments
  --quirk <value>           Inject in quirk into this run
+ --relaxed-args            Permit the use of unknown arguments
  --verbose, -V             Show additional messages
  --version                 Show the version
  --werror, -Werror         Treat warnings as errors
