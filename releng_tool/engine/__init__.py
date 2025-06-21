@@ -127,9 +127,12 @@ class RelengEngine:
         if gaction == GlobalAction.INIT:
             return initialize_sample(opts)
 
+        # share detected foward argument, unless this is an exec call
+        forward_args = [] if pa == PkgAction.EXEC else opts.forward_args
+
         start_time = datetime.now().replace(microsecond=0)  # noqa: DTZ005
         gbls = {
-            'releng_args': opts.forward_args,
+            'releng_args': forward_args,
             'releng_version': releng_version,
         }
 
