@@ -356,15 +356,15 @@ def usage():
  --dl-dir <dir>            Directory for download archives (default: <ROOT>/dl)
  --images-dir <dir>        Directory for generated images
                             (default: <ROOT>/output/images)
- -j, --jobs <jobs>         Numbers of jobs to handle (default: 0; automatic)
+ --jobs <jobs>, -j <jobs>  Numbers of jobs to handle (default: 0; automatic)
  --out-dir <dir>           Directory for output (builds, images, etc.)
                             (default: <ROOT>/output)
  --root-dir <dir>          Directory to process a releng project
                             (default: working directory)
 
 (mode options)
- -D, --development         Enable development mode
- -L, --local-sources [[<pkg>:]<dir>]
+ --development, -D         Enable development mode
+ --local-sources [[<pkg>:]<dir>], -L [[<pkg>:]<dir>]
                            Use development sources from a local path, defaults
                             to the parent of the root directory; users can use
                             the format "<pkg>:<path>" to set/override specific
@@ -379,14 +379,14 @@ def usage():
  --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
  --debug                   Show debug-related messages
  --debug-extended          Show even more debug-related messages
- -F, --force               Trigger a forced request
- -h, --help                Show this help
+ --force, -F               Trigger a forced request
+ --help, -h                Show this help
  --help-quirks             Show available quirks
  --nocolorout              Explicitly disable colorized output
  --only-mirror             Only fetch external projects with configured mirror
  --relaxed-args            Permit the use of unknown arguments
  --quirk <value>           Inject in quirk into this run
- -V, --verbose             Show additional messages
+ --verbose, -V             Show additional messages
  --version                 Show the version
  --werror, -Werror         Treat warnings as errors
 
