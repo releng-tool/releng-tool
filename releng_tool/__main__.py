@@ -389,6 +389,9 @@ def usage():
  -V, --verbose             Show additional messages
  --version                 Show the version
  --werror, -Werror         Treat warnings as errors
+
+Using only "--" as an argument can forward remaining arguments into a
+<pkg>-exec invoke or into the releng-tool project (if configured to accept).
 """
 
 

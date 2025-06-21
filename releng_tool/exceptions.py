@@ -60,6 +60,8 @@ has been provided. Ensure after specifying an exec call that the following
 argument defines the command to be executed.
 
     releng-tool {pkg}-exec "mycmd arg1 arg2"
+     (or)
+    releng-tool {pkg}-exec -- mycmd arg1 arg2
 '''.strip())
 
 
