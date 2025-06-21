@@ -43,5 +43,8 @@ class P(_PathBase):
 
         return super().__eq__(other)
 
+    def __hash__(self) -> int:
+        return super().__hash__()
+
     def __radd__(self, other: str) -> str:
         return f'{other}{self.__str__()}'

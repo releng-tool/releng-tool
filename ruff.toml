@@ -27,6 +27,8 @@ lint.ignore = [
     'EXE002',
     # imports are sorted lexicographically in this project
     'FBT002',
+    # in some cases, for-loop-writes present better in a limited line length
+    'FURB122',
     # imports are sorted lexicographically in this project
     'I001',
     # suppress no-pep420 checks for valid support and test scripts

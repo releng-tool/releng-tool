@@ -42,7 +42,7 @@ class MesonTool(RelengTool):
             self._meson_interpreter = None
 
             try:
-                import mesonbuild  # noqa: F401  pylint: disable=E0401
+                import mesonbuild  # noqa: F401, PLC0415  pylint: disable=E0401
                 debug('{} tool is detected in the interpreter', self.tool)
                 RelengTool.detected[self.tool] = True
                 self._meson_interpreter = 'mesonbuild.mesonmain'

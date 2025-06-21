@@ -44,7 +44,7 @@ class SconsTool(RelengTool):
             self._scons_interpreter = None
 
             try:
-                import SCons  # pylint: disable=E0401
+                import SCons  # noqa: PLC0415  pylint: disable=E0401
                 debug('{} tool is detected in the interpreter', self.tool)
                 RelengTool.detected[self.tool] = True
                 self._scons_interpreter = 'SCons'
@@ -65,7 +65,8 @@ class SconsTool(RelengTool):
                     sys.path.append(str(scons_container))
 
                     try:
-                        import SCons  # noqa: F401  pylint: disable=E0401
+                        # pylint: disable=E0401
+                        import SCons  # noqa: F401, PLC0415
                         debug('{} tool is detected in container', self.tool)
                         RelengTool.detected[self.tool] = True
                         self._scons_interpreter = 'releng_tool.tool.scons_proxy'
