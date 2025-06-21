@@ -392,6 +392,8 @@ def usage():
 
 Using only "--" as an argument can forward remaining arguments into a
 <pkg>-exec invoke or into the releng-tool project (if configured to accept).
+
+For more help on using releng-tool, head to: https://docs.releng.io
 """
 
 
