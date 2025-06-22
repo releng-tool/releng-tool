@@ -1,6 +1,7 @@
 ## Development
 
 - Avoid forwarding arguments to project when using `<pkg>-exec`
+- Drop warnings when using local-site packages
 - Introduce a profile argument for a project's configuration discretion
 - Support checking multiple Visual Studio installs for `VsDevCmd.bat`
 
