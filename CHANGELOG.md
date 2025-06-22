@@ -1,4 +1,4 @@
-## Development
+## 2.5.0 (2025-06-22)
 
 - Avoid forwarding arguments to project when using `<pkg>-exec`
 - Drop warnings when using local-site packages
