@@ -60,6 +60,7 @@ def prepare_script_environment(env, opts):
     env['RELENG_FORCE'] = None
     env['RELENG_LOCALSRCS'] = None
     env['RELENG_MRPROPER'] = None
+    env['RELENG_PROFILES'] = []
     env['RELENG_REBUILD'] = None
     env['RELENG_RECONFIGURE'] = None
     env['RELENG_REINSTALL'] = None
@@ -156,6 +157,8 @@ def prepare_script_environment(env, opts):
             env_['RELENG_FORCE'] = True
         if opts.local_srcs:
             env_['RELENG_LOCALSRCS'] = True
+        if opts.profiles:
+            env_['RELENG_PROFILES'] = opts.profiles
         if opts.verbose:
             env_['RELENG_VERBOSE'] = True
 

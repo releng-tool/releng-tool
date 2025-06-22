@@ -51,6 +51,7 @@ def main():
         parser.add_argument('--nocolorout', action='store_true')
         parser.add_argument('--only-mirror', action='store_true')
         parser.add_argument('--out-dir')
+        parser.add_argument('--profile', '-P', action='append')
         parser.add_argument('--relaxed-args', action='store_true')
         parser.add_argument('--root-dir')
         parser.add_argument('--sbom-format', type=type_sbom_format)
@@ -370,6 +371,11 @@ def usage():
                             the format "<pkg>:<path>" to set/override specific
                             local paths per package; this argument can be
                             provided multiple times
+ --profile <profile>, -D <profile>
+                           Configure a profile to run with; providing this
+                            option is only applicable if the project accepts
+                            custom profile options; multiple profiles can be
+                            provided by repeating this argument
 
 (sbom options)
  --sbom-format <format>    Specify the output format for a software build of

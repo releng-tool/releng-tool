@@ -5,6 +5,7 @@ from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import UNSET_VALUES
+from releng_tool.util.string import normalize
 import contextlib
 import multiprocessing
 import os
@@ -86,6 +87,7 @@ class RelengEngineOptions:
         out_dir: directory container for all output data
         pkg_action: the specific package-action to perform (if any)
         prerequisites: list of required host tools (if any)
+        profiles: the active profiles for this run
         quirks: advanced configuration quirks for the running instance
         revision_override: dictionary to override revision values
         root_dir: directory container for all (configuration, output, etc.)
@@ -139,6 +141,7 @@ class RelengEngineOptions:
         self.out_dir = None
         self.pkg_action = None
         self.prerequisites = []
+        self.profiles = []
         self.quirks = []
         self.revision_override = None
         self.root_dir = None
@@ -209,6 +212,13 @@ class RelengEngineOptions:
             self.quirks.extend(args.quirk)
         if args.sbom_format:
             self.sbom_format = args.sbom_format
+
+        # add any new profile entries
+        if args.profile:
+            for entry in args.profile:
+                profile = normalize(entry)
+                if entry not in self.profiles:
+                    self.profiles.append(profile)
 
         # cycle through the provided local source arguments to configure
         # global and package-specific local sources modes; we use the `:`/`@`

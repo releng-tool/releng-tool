@@ -3,6 +3,7 @@
 
 from releng_tool.util.env import env_value
 from releng_tool.util.env import extend_script_env
+from releng_tool.util.env import env_wrap
 from tests import RelengToolTestCase
 import os
 import types
@@ -92,3 +93,28 @@ class TestUtilEnv(RelengToolTestCase):
         # retry removing the environment variable (no-op)
         value = env_value(test_env_key, None)
         self.assertIsNone(value)
+
+    def test_utilenv_env_wrap(self):
+        ev = env_wrap()
+
+        ev['KEY'] = 'value'
+        self.assertIn('KEY', os.environ)
+        self.assertEqual(os.getenv('KEY'), 'value')
+
+        ev['KEY'] = True
+        self.assertIn('KEY', os.environ)
+        self.assertEqual(os.getenv('KEY'), '1')
+
+        ev['KEY'] = False
+        self.assertNotIn('KEY', os.environ)
+
+        ev['KEY'] = ['a', 'b']
+        self.assertIn('KEY', os.environ)
+        self.assertEqual(os.getenv('KEY'), 'a;b')
+
+        ev['KEY'] = None
+        self.assertNotIn('KEY', os.environ)
+
+        ev['KEY'] = 123
+        self.assertIn('KEY', os.environ)
+        self.assertEqual(os.getenv('KEY'), '123')

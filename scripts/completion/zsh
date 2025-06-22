@@ -33,6 +33,7 @@ function _releng_tool {
         '--nocolorout[explicitly disable colorized output]' \
         '--only-mirror[only fetch external projects with configured mirror]' \
         '--out-dir[directory for output]: :_files' \
+        '--profile[run with a profile]' \
         '--root-dir[directory of the project to process]: :_files' \
         '--sbom-format[format to generate sbom files]: ' \
         '--quirk[quirk to apply to a run]: ' \

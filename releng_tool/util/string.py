@@ -3,6 +3,7 @@
 
 from collections.abc import Sequence
 import os
+import re
 
 
 def expand(obj, kv=None):
@@ -120,3 +121,19 @@ def is_sequence_not_string(obj):
         whether or not a non-string sequence
     """
     return isinstance(obj, Sequence) and not isinstance(obj, str)
+
+
+def normalize(name):
+    """
+    return a normalized name
+
+    Returns a consistent name representation for a given string. This replaces
+    various characters from a value with a ``-`` character and strips the name.
+
+    Args:
+        name: the name to be normalized
+
+    Returns:
+        the normalized name
+    """
+    return re.sub(r'[ *\-_,.:;?!|\\]+', '-', name.strip(' -')).lower()

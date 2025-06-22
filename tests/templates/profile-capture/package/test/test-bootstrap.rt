@@ -1,0 +1,15 @@
+import json
+import os
+
+
+data = {
+	'has-env': 'RELENG_PROFILES' in os.environ,
+	'env': os.getenv('RELENG_PROFILES'),
+	'has-local': 'RELENG_PROFILES' in locals(),
+	'local': RELENG_PROFILES if 'RELENG_PROFILES' in locals() else None,
+}
+
+
+capture = OUTPUT_DIR / 'capture.json'
+with capture.open('w') as f:
+	json.dump(data, f)

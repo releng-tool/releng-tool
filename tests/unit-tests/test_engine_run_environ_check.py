@@ -20,6 +20,7 @@ class TestEngineRunEnvironCheck(RelengToolTestCase):
             'RELENG_FORCE',
             'RELENG_LOCALSRCS',
             'RELENG_MRPROPER',
+            'RELENG_PROFILES',
             'RELENG_REBUILD',
             'RELENG_RECONFIGURE',
             'RELENG_REINSTALL',

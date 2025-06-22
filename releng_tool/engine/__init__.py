@@ -136,6 +136,9 @@ class RelengEngine:
             'releng_version': releng_version,
         }
 
+        if opts.profiles:
+            debug('operating with profiles: {}', ', '.join(opts.profiles))
+
         # if any injected key-value entries are provided, attempt to add them
         # into the global context
         if opts.injected_kv:

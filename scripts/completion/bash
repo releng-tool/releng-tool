@@ -120,6 +120,7 @@ _releng_tool_module()
             '--nocolorout'
             '--only-mirror'
             '--out-dir'
+            '--profile'
             '--root-dir'
             '--sbom-format'
             '--quirk'

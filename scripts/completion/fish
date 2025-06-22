@@ -121,6 +121,9 @@ complete --command releng-tool --long-option='nocolorout' \
 complete --command releng-tool --long-option='out-dir' \
     --require-parameter \
     --description 'directory for output'
+complete --command releng-tool --long-option='profile' \
+    --no-files \
+    --description 'run with a profile'
 complete --command releng-tool --long-option='root-dir' \
     --require-parameter \
     --description 'directory of the project to process'

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from collections.abc import Iterable
 import os
 import types
 
@@ -20,7 +21,25 @@ def env_wrap():
 
     class EnvSet:
         def __setitem__(self, key, value):
-            os.environ[key] = '1' if value is True else str(value)
+            # for a false/unset value, remove environment entry
+            if value is False or value is None:
+                os.environ.pop(key, None)
+                return
+
+            # a true entry is always represented as "1"
+            if value is True:
+                val = '1'
+            # passthrough strings
+            elif isinstance(value, str):
+                val = value
+            # for all collections, use ';' separated parts
+            elif isinstance(value, Iterable):
+                val = ';'.join(value)
+            # for all other cases, perform a standard string cast
+            else:
+                val = str(value)
+
+            os.environ[key] = val
 
     return EnvSet()
 

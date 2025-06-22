@@ -217,6 +217,34 @@ class TestEngineScriptEnv(RelengToolTestCase):
         prepare_script_environment(env, self.opts)
         self.assertFalse(env['RELENG_MRPROPER'])
 
+    def test_engine_scriptenv_env_releng_profiles(self):
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertIn('RELENG_PROFILES', env)
+        self.assertFalse(env['RELENG_PROFILES'])
+
+        self.opts.profiles = [
+            'example',
+        ]
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertEqual(env['RELENG_PROFILES'], [
+            'example',
+        ])
+
+        self.opts.profiles = [
+            'one',
+            'two',
+            'three',
+        ]
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertEqual(env['RELENG_PROFILES'], [
+            'one',
+            'two',
+            'three',
+        ])
+
     def test_engine_scriptenv_env_releng_rebuild(self):
         env = {}
         prepare_script_environment(env, self.opts)
