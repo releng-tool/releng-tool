@@ -350,48 +350,43 @@ def usage():
  <pkg>-reconfigure-only    Force a re-configure of a specific package and stop
  <pkg>-reinstall           Force a re-install of a specific package
 
-(common options)
+(options)
  --assets-dir <dir>        Container directory for download and VCS-cache
                             directories (e.g. <ASSETS_DIR>/cache)
  --cache-dir <dir>         Directory for VCS-cache (default: <ROOT>/cache)
+ --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
+ --development [<mode>], -D [<mode>]
+                           Enable development mode
  --dl-dir <dir>            Directory for download archives (default: <ROOT>/dl)
+ --debug                   Show debug-related messages
+ --debug-extended          Show even more debug-related messages
+ --force, -F               Trigger a forced request
+ --help, -h                Show this help
+ --help-quirks             Show available quirks
  --images-dir <dir>        Directory for generated images
                             (default: <ROOT>/output/images)
  --jobs <jobs>, -j <jobs>  Numbers of jobs to handle (default: 0; automatic)
- --out-dir <dir>           Directory for output (builds, images, etc.)
-                            (default: <ROOT>/output)
- --root-dir <dir>          Directory to process a releng project
                             (default: working directory)
-
-(mode options)
- --development, -D         Enable development mode
  --local-sources [[<pkg>:]<dir>], -L [[<pkg>:]<dir>]
                            Use development sources from a local path, defaults
                             to the parent of the root directory; users can use
                             the format "<pkg>:<path>" to set/override specific
                             local paths per package; this argument can be
                             provided multiple times
+ --nocolorout              Explicitly disable colorized output
+ --only-mirror             Only fetch external projects with configured mirror
+ --out-dir <dir>           Directory for output (builds, images, etc.)
+                            (default: <ROOT>/output)
  --profile <profile>, -D <profile>
                            Configure a profile to run with; providing this
                             option is only applicable if the project accepts
                             custom profile options; multiple profiles can be
                             provided by repeating this argument
-
-(sbom options)
- --sbom-format <format>    Specify the output format for a software build of
-                            materials (e.g. csv, json)
-
-(other)
- --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
- --debug                   Show debug-related messages
- --debug-extended          Show even more debug-related messages
- --force, -F               Trigger a forced request
- --help, -h                Show this help
- --help-quirks             Show available quirks
- --nocolorout              Explicitly disable colorized output
- --only-mirror             Only fetch external projects with configured mirror
  --quirk <value>           Inject in quirk into this run
  --relaxed-args            Permit the use of unknown arguments
+ --root-dir <dir>          Directory to process a releng project
+ --sbom-format <format>    Override the output format for a software build of
+                            materials (e.g. csv, json)
  --verbose, -V             Show additional messages
  --version                 Show the version
  --werror, -Werror         Treat warnings as errors
