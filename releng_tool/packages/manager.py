@@ -540,10 +540,6 @@ class RelengPackageManager:
             else:
                 pkg_vcs_type = VcsType.NONE
 
-        if pkg_vcs_type == VcsType.LOCAL:
-            if 'releng.disable_local_site_warn' not in opts.quirks:
-                warn('package using local content: {}', name)
-
         if pkg_vcs_type == VcsType.BZR:
             warn('''\
 use of GNU Bazaar is deprecated; see package: {}
