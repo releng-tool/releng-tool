@@ -39,10 +39,25 @@ class TestMisc(RelengToolTestCase):
             'third',
         ])
 
+        # even multiple profiles in a given profile argument
+        args = MockArgs()
+        args.profile = [
+            'alpha,charlie',
+            'bravo;delta',
+        ]
+
+        opts = RelengEngineOptions(args)
+        self.assertEqual(opts.profiles, [
+            'alpha',
+            'charlie',
+            'bravo',
+            'delta',
+        ])
+
         # profiles are normalized
         args = MockArgs()
         args.profile = [
-            ' this is;an--example',
+            ' this is an--example',
         ]
 
         opts = RelengEngineOptions(args)

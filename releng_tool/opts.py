@@ -214,9 +214,10 @@ class RelengEngineOptions:
         # add any new profile entries
         if args.profile:
             for entry in args.profile:
-                profile = normalize(entry)
-                if profile not in self.profiles:
-                    self.profiles.append(profile)
+                for subentry in re.split(',|;', entry):
+                    profile = normalize(subentry)
+                    if profile not in self.profiles:
+                        self.profiles.append(profile)
 
         # add any new quirks
         if args.quirk:
