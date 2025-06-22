@@ -208,8 +208,6 @@ class RelengEngineOptions:
             self.devmode = args.development
         if args.injected_kv:
             self.injected_kv = args.injected_kv
-        if args.quirk:
-            self.quirks.extend(args.quirk)
         if args.sbom_format:
             self.sbom_format = args.sbom_format
 
@@ -219,6 +217,13 @@ class RelengEngineOptions:
                 profile = normalize(entry)
                 if profile not in self.profiles:
                     self.profiles.append(profile)
+
+        # add any new quirks
+        if args.quirk:
+            for entry in args.quirk:
+                quirk = entry.strip()
+                if quirk not in self.quirks:
+                    self.quirks.append(quirk)
 
         # cycle through the provided local source arguments to configure
         # global and package-specific local sources modes; we use the `:`/`@`
