@@ -73,7 +73,7 @@ Perform configure stage for the package.
 .BI <pkg>-distclean
 Pristine clean for package.
 .TP
-.BI <pkg>-exec <cmd>
+.BI <pkg>-exec\ <cmd>
 Invoke a command in the package's directory.
 .TP
 .BI <pkg>-extract
@@ -130,7 +130,7 @@ Show debug-related messages.
 .BI --debug-extended
 Show even more debug-related messages.
 .TP
-.BI --development,\ -D
+.BI --development\ [<mode>],\ -D\ [<mode>]
 Enable development mode.
 .TP
 .BI --dl-dir\ <dir>
@@ -148,10 +148,10 @@ Show available quirks.
 .BI --images-dir\ <dir>
 Directory for generated images (default: <ROOT>/output/images).
 .TP
-.BI --jobs\ <jobs>,\ -j
+.BI --jobs\ <jobs>,\ -j\ <jobs>
 Numbers of jobs to handle (default: 0; automatic).
 .TP
-.BI --local-sources\ [[<pkg>@]<dir>],\ -L
+.BI --local-sources\ [[<pkg>@]<dir>],\ -L\ [[<pkg>@]<dir>]
 Use development sources from a local path, defaults to the parent of the
 root directory; users can use the format "<pkg>@<path>" to set/override
 specific local paths per package; this argument can be provided multiple
