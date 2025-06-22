@@ -357,9 +357,9 @@ def usage():
  --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
  --development [<mode>], -D [<mode>]
                            Enable development mode
- --dl-dir <dir>            Directory for download archives (default: <ROOT>/dl)
  --debug                   Show debug-related messages
  --debug-extended          Show even more debug-related messages
+ --dl-dir <dir>            Directory for download archives (default: <ROOT>/dl)
  --force, -F               Trigger a forced request
  --help, -h                Show this help
  --help-quirks             Show available quirks
