@@ -217,7 +217,7 @@ class RelengEngineOptions:
         if args.profile:
             for entry in args.profile:
                 profile = normalize(entry)
-                if entry not in self.profiles:
+                if profile not in self.profiles:
                     self.profiles.append(profile)
 
         # cycle through the provided local source arguments to configure
