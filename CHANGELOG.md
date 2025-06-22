@@ -1,3 +1,9 @@
+## Development
+
+- Avoid forwarding arguments to project when using `<pkg>-exec`
+- Introduce a profile argument for a project's configuration discretion
+- Support checking multiple Visual Studio installs for `VsDevCmd.bat`
+
 ## 2.4.0 (2025-05-31)
 
 - Include VCS revisions in generated SBOM documents
