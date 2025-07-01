@@ -1,3 +1,7 @@
+## Development
+
+- Update SPDX license database to v3.27
+
 ## 2.5.0 (2025-06-22)
 
 - Avoid forwarding arguments to project when using `<pkg>-exec`
