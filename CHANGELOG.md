@@ -1,5 +1,7 @@
 ## Development
 
+- Always output configured local sources paths
+- Handle trailing path-slash in a local sources package reference
 - Update SPDX license database to v3.27
 
 ## 2.5.0 (2025-06-22)
