@@ -200,7 +200,20 @@ class RelengEngine:
             hint('running in development mode' + postfix)
 
         if self.opts.local_srcs:
-            hint('running in local-sources mode')
+            local_srcs_state = ''
+            if len(self.opts.local_srcs) > 1 or \
+                    GBL_LSRCS not in self.opts.local_srcs:
+                for key, val in sorted(self.opts.local_srcs.items()):
+                    if not val:
+                        val = '<parent>' if key == GBL_LSRCS else '<unset>'
+
+                    entry = val
+                    if key != GBL_LSRCS and not os.path.exists(val):
+                        entry += warn_wrap('  (path does not exist)')
+
+                    local_srcs_state += f'\n {key}: {entry}'
+
+            hint(f'running in local-sources mode{local_srcs_state}')
 
         # register the project's root directory as a system path; permits a
         # project to import locally created modules in their build/etc. scripts
