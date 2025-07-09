@@ -262,9 +262,10 @@ class RelengEngineOptions:
                 # remove any package-prefix on a module to allow users to
                 # easily use shell completion to populate packages when
                 # populating a local-sources argument on the command line
-                module = module\
+                module = module \
                     .replace(os.sep, '/') \
-                    .removeprefix(f'{DEFAULT_PKG_DIR}/')
+                    .removeprefix(f'{DEFAULT_PKG_DIR}/') \
+                    .removesuffix('/')
 
                 self.local_srcs[module] = path if path else None
 
