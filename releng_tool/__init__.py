@@ -21,7 +21,6 @@ __version__ = '2.6.0.dev0'
 #        RelengEngine._prepareSharedEnvironment
 
 # ruff: noqa: F401
-# ruff: noqa: PLC0414
 
 from os.path import join as releng_join
 from pathlib import Path as releng_path
