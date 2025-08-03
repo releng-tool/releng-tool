@@ -1,6 +1,12 @@
 [build-system]
 requires = [
     'setuptools >=61',
+    # The project configuration aims to include a `license` entry with a
+    # SPDX identifier in the future; however, support for this requires
+    # setuptools>=75.6. We are still trying to be build-compatible with
+    # some environments which stable version is an older version of setuptools
+    # (e.g. Debian's stable uses v66.1.1).
+    # 'setuptools >=75.6',
 ]
 build-backend = 'setuptools.build_meta'
 
@@ -12,11 +18,11 @@ authors = [
 ]
 requires-python = '>=3.9'
 readme = 'README.md'
-license = {text = 'BSD-2-Clause'}
+# (future: see setuptools requirement above)
+# license = 'BSD-2-Clause'
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
-    'License :: OSI Approved :: BSD License',
     'Operating System :: OS Independent',
     'Programming Language :: Python :: 3 :: Only',
     'Programming Language :: Python :: 3',
