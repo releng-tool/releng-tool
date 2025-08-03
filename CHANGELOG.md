@@ -1,6 +1,9 @@
 ## Development
 
 - Always output configured local sources paths
+- Avoid configuring `CMAKE_PREFIX_PATH` and solely rely on find-related defines
+- Detected tool version information is printed in debug mode
+- Ensure `CMAKE_MODULE_PATH` paths are pre-populated to avoid directory building
 - Handle trailing path-slash in a local sources package reference
 - Support a pre-defined `CMAKE_FIND_ROOT_PATH` for staging/target/host areas
 - Update SPDX license database to v3.27
