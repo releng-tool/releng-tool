@@ -163,6 +163,8 @@ def configure(opts):
         populate_dirs.extend(cmake_defs['CMAKE_INCLUDE_PATH'].split(';'))
     if 'CMAKE_LIBRARY_PATH' in cmake_defs:
         populate_dirs.extend(cmake_defs['CMAKE_LIBRARY_PATH'].split(';'))
+    if 'CMAKE_MODULE_PATH' in cmake_defs:
+        populate_dirs.extend(cmake_defs['CMAKE_MODULE_PATH'].split(';'))
     for dir_ in populate_dirs:
         if not mkdir(dir_):
             return False
