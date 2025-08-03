@@ -86,6 +86,11 @@ class TestToolCmake(TestSiteToolBase):
         self.assertFalse(os.path.exists(executable))
 
     def test_tool_cmake_toolchain(self):
+        # skip the toolchain test on Windows; while this does work on CMake v4+
+        # installations, the current project's CI script is still using v3.31.
+        if sys.platform == 'win32':
+            raise self.skipTest('cmake<4 issues on win32')
+
         self.defconfig_add('CONF_DEFS', {
             'CMAKE_TOOLCHAIN_FILE': '$ROOT_DIR/toolchain.cmake',
         })
