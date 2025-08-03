@@ -1,4 +1,4 @@
-## Development
+## 2.6.0 (2025-08-03)
 
 - Always output configured local sources paths
 - Avoid configuring `CMAKE_PREFIX_PATH` and solely rely on find-related defines
