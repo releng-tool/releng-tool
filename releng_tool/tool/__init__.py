@@ -5,6 +5,7 @@ from releng_tool.util.io import _execute
 from releng_tool.util.io import execute
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import verbose
 from releng_tool.util.string import expand
 from releng_tool.util.string import is_sequence_not_string
 from typing import ClassVar
@@ -161,11 +162,18 @@ class RelengTool:
         if self.tool in RelengTool.detected:
             return RelengTool.detected[self.tool]
 
-        if execute([self.tool, *self.exists_args], quiet=True, critical=False):
-            debug('{} tool is detected on this system', self.tool)
+        exist_args = [self.tool, *self.exists_args]
+        output = []
+        found = execute(exist_args, capture=output, critical=False)
+        output_str = ' '.join(x for x in output if x.strip())
+        if output_str:
+            debug(output_str)
+
+        if found:
             RelengTool.detected[self.tool] = True
+            verbose(f'{self.tool} tool is detected on this system')
         else:
-            debug('{} tool is not detected on this system', self.tool)
+            verbose(f'{self.tool} tool is not detected on this system')
             RelengTool.detected[self.tool] = False
 
         return RelengTool.detected[self.tool]
