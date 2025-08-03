@@ -25,169 +25,169 @@ installing each package for a target sysroot.
 
 .SH ACTIONS
 .TP
-.BI clean
+\fBclean\fP
 Clean the output directory.
 .TP
-.BI distclean
+\fBdistclean\fP
 Pristine clean including cache/download content.
 .TP
-.BI extract
+\fBextract\fP
 Extract all packages.
 .TP
-.BI fetch
+\fBfetch\fP
 Fetch all packages.
 .TP
-.BI fetch-full
+\fBfetch-full\fP
 Fetch all packages including post-fetch dependencies.
 .TP
-.BI init
+\fBinit\fP
 Initialize a root with an example structure.
 .TP
-.BI licenses
+\fBlicenses\fP
 Generate license information for a project.
 .TP
-.BI mrproper
+\fBmrproper\fP
 Pristine clean of the releng project.
 .TP
-.BI patch
+\fBpatch\fP
 Ensure all packages have done a patch stage.
 .TP
-.BI punch
+\fBpunch\fP
 Full run with a forced re-run on all packages.
 .TP
-.BI sbom
+\fBsbom\fP
 Generate a software bill of materials.
 .TP
-.BI <pkg>
+\fB<pkg>\fP
 Perform all stages for the package.
 .TP
-.BI <pkg>-build
+\fB<pkg>\-build\fP
 Perform build stage for the package.
 .TP
-.BI <pkg>-clean
+\fB<pkg>\-clean\fP
 Clean build directory for package.
 .TP
-.BI <pkg>-configure
+\fB<pkg>\-configure\fP
 Perform configure stage for the package.
 .TP
-.BI <pkg>-distclean
+\fB<pkg>\-distclean\fP
 Pristine clean for package.
 .TP
-.BI <pkg>-exec\ <cmd>
+\fB<pkg>\-exec <cmd>\fP
 Invoke a command in the package's directory.
 .TP
-.BI <pkg>-extract
+\fB<pkg>\-extract\fP
 Perform extract stage for the package.
 .TP
-.BI <pkg>-fetch
+\fB<pkg>\-fetch\fP
 Perform fetch stage for the package.
 .TP
-.BI <pkg>-fetch-full
+\fB<pkg>\-fetch\-full\fP
 Perform fetch stage for the package (with post-fetch).
 .TP
-.BI <pkg>-fresh
+\fB<pkg>\-fresh\fP
 Freshly prepare a package output.
 .TP
-.BI <pkg>-install
+\fB<pkg>\-install\fP
 Perform install stage for the package.
 .TP
-.BI <pkg>-license
+\fB<pkg>\-license\fP
 Generate license information for the package.
 .TP
-.BI <pkg>-patch
+\fB<pkg>\-patch\fP
 Perform patch stage for the package.
 .TP
-.BI <pkg>-rebuild
+\fB<pkg>\-rebuild\fP
 Force a re-build of a specific package.
 .TP
-.BI <pkg>-rebuild-only
+\fB<pkg>\-rebuild\-only\fP
 Force a re-build of a specific package and stop.
 .TP
-.BI <pkg>-reconfigure
+\fB<pkg>\-reconfigure\fP
 Force a re-configure of a specific package.
 .TP
-.BI <pkg>-reconfigure-only
+\fB<pkg>\-reconfigure\-only\fP
 Force a re-configure of a specific package and stop.
 .TP
-.BI <pkg>-reinstall
+\fB<pkg>\-reinstall\fP
 Force a re-install of a specific package.
 
 .SH OPTIONS
 .TP
-.BI --assets-dir\ <dir>
+\fB\-\-assets-dir <dir>\fP
 Container directory for download and VCS-cache directories
 (e.g. <ASSETS_DIR>/cache).
 .TP
-.BI --cache-dir\ <dir>
+\fB\-\-cache-dir <dir>\fP
 Directory for VCS-cache (default: <ROOT>/cache).
 .TP
-.BI --config\ <file>
+\fB\-\-config <file>\fP
 Configuration to use (default: <ROOT>/releng-tool.rt).
 .TP
-.BI --debug
+\fB\-\-debug\fP
 Show debug-related messages.
 .TP
-.BI --debug-extended
+\fB\-\-debug-extended\fP
 Show even more debug-related messages.
 .TP
-.BI --development\ [<mode>],\ -D\ [<mode>]
+\fB\-\-development [<mode>], \-D [<mode>]\fP
 Enable development mode.
 .TP
-.BI --dl-dir\ <dir>
+\fB\-\-dl-dir <dir>\fP
 Directory for download archives (default: <ROOT>/dl).
 .TP
-.BI --force,\ -F
+\fB\-\-force, \-F\fP
 Trigger a forced request.
 .TP
-.BI --help,\ -h
+\fB\-\-help, \-h\fP
 Show this help.
 .TP
-.BI --help-quirks
+\fB\-\-help-quirks\fP
 Show available quirks.
 .TP
-.BI --images-dir\ <dir>
+\fB\-\-images-dir <dir>\fP
 Directory for generated images (default: <ROOT>/output/images).
 .TP
-.BI --jobs\ <jobs>,\ -j\ <jobs>
+\fB\-\-jobs\ <jobs>, \-j <jobs>\fP
 Numbers of jobs to handle (default: 0; automatic).
 .TP
-.BI --local-sources\ [[<pkg>@]<dir>],\ -L\ [[<pkg>@]<dir>]
+\fB\-\-local-sources\ [[<pkg>@]<dir>], \-L [[<pkg>@]<dir>]\fP
 Use development sources from a local path, defaults to the parent of the
 root directory; users can use the format "<pkg>@<path>" to set/override
 specific local paths per package; this argument can be provided multiple
 times.
 .TP
-.BI --nocolorout
+\fB\-\-nocolorout\fP
 Explicitly disable colorized output.
 .TP
-.BI --only-mirror
+\fB\-\-only-mirror\fP
 Only fetch external projects with configured mirror.
 .TP
-.BI --out-dir\ <dir>
+\fB\-\-out-dir <dir>\fP
 Directory for output (builds, images, etc.) (default: <ROOT>/output).
 .TP
-.BI --profile\ <profile>,\ -P\ <profile>
+\fB\-\-profile <profile>, \-P <profile>\fP
 Run with a profile. Only applicable if a project accepts profile options.
 .TP
-.BI --quirk\ <value>
+\fB\-\-quirk <value>\fP
 Inject in quirk into this run.
 .TP
-.BI --relaxed-args
+\fB\-\-relaxed-args\fP
 Permit the use of unknown arguments.
 .TP
-.BI --root-dir\ <dir>
+\fB\-\-root-dir <dir>\fP
 Directory to process a releng project (default: working directory).
 .TP
-.BI --sbom-format\ <format>
+\fB\-\-sbom-format <format>\fP
 Specify the output format for a software build of materials (e.g. csv, json).
 .TP
-.BI --verbose,\ -V
+\fB\-\-verbose, \-V\fP
 Show additional messages.
 .TP
-.BI --version
+\fB\-\-version\fP
 Show the version.
 .TP
-.BI --werror,\ -Werror
+\fB\-\-werror, \-Werror\fP
 Treat warnings as errors.
 
 .SH SEE ALSO
