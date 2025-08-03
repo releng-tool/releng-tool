@@ -85,6 +85,14 @@ class TestToolCmake(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertFalse(os.path.exists(executable))
 
+    def test_tool_cmake_toolchain(self):
+        self.defconfig_add('CONF_DEFS', {
+            'CMAKE_TOOLCHAIN_FILE': '$ROOT_DIR/toolchain.cmake',
+        })
+
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
     def _prefix(self):
         prefix = os.path.join(self.engine.opts.sysroot_prefix, 'bin')
         if not prefix.startswith(os.sep):
