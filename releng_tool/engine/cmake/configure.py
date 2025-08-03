@@ -68,8 +68,10 @@ def configure(opts):
     library_locs = []
     modules_locs = []
     prefix_locs = []
+    sysroot_locs = []
     for base_loc in base_locs:
         prefixed_base = Path(base_loc + prefix)
+        sysroot_locs.append(prefixed_base.as_posix())
         cmake_modules = prefixed_base / 'share' / 'cmake' / 'Modules'
         include_locs.append((prefixed_base / 'include').as_posix())
         library_locs.append((prefixed_base / DEFAULT_LIB_DIR).as_posix())
@@ -86,6 +88,7 @@ def configure(opts):
     default_cmake_defs = {
         'CMAKE_BUILD_TYPE': opts._cmake_build_type,
         # common paths for releng-tool sysroots
+        'CMAKE_FIND_ROOT_PATH': ';'.join(sysroot_locs),
         'CMAKE_INCLUDE_PATH': compiled_include_locs,
         'CMAKE_INSTALL_PREFIX': posix_prefix,
         'CMAKE_LIBRARY_PATH': ';'.join(library_locs),
