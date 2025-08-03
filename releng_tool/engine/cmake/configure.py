@@ -93,7 +93,6 @@ def configure(opts):
         'CMAKE_INSTALL_PREFIX': posix_prefix,
         'CMAKE_LIBRARY_PATH': ';'.join(library_locs),
         'CMAKE_MODULE_PATH': ';'.join(modules_locs),
-        'CMAKE_PREFIX_PATH': ';'.join(prefix_locs),
         # never search for programs to run from the root path
         # (releng-tool host tools should still be found via PATH registration)
         'CMAKE_FIND_ROOT_PATH_MODE_PROGRAM': 'NEVER',
