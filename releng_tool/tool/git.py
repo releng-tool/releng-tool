@@ -35,7 +35,7 @@ GIT_EXTEND_ENV = {
     # disable all advice messages
     'GIT_ADVICE': '0',
     # prevent the terminal prompt for ssh clones from being shown
-    'GIT_SSH_COMMAND': 'ssh -oBatchMode=yes',
+    'GIT_SSH_COMMAND': 'ssh -oBatchMode=yes -oLogLevel=error',
     # prevent the terminal prompt from being shown
     'GIT_TERMINAL_PROMPT': '0',
 }
