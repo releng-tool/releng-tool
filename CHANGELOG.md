@@ -1,3 +1,7 @@
+## Development
+
+- Only show SSH error logs for remote Git actions
+
 ## 2.6.0 (2025-08-03)
 
 - Always output configured local sources paths
