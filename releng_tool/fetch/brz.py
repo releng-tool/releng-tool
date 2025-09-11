@@ -49,7 +49,7 @@ def fetch(opts):
     ]
 
     log('exporting sources')
-    if not BRZ.execute(export_opts, poll=True):
+    if not BRZ.execute(export_opts):
         err('unable to export module')
         return None
 

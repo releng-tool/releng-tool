@@ -31,6 +31,10 @@ class TestUtilIo(RelengToolTestCase):
         result = execute(test_cmd, quiet=True, critical=False)
         self.assertTrue(result)
 
+        test_cmd = [PYTHON.tool, '-c', 'print("Partial", end="")']
+        result = execute(test_cmd, quiet=True, critical=False)
+        self.assertTrue(result)
+
         result = execute(['an_unknown_command'], quiet=True, critical=False)
         self.assertFalse(result)
 
@@ -51,7 +55,7 @@ class TestUtilIo(RelengToolTestCase):
             ]
             result = execute(test_cmd, critical=False)
             self.assertTrue(result)
-        self.assertEqual(stream.getvalue().strip(), 'Hello\nWorld')
+        self.assertEqual(stream.getvalue().strip(), f'Hello{os.linesep}World')
 
         # verify output (no stderr)
         with redirect_stdout() as stream:
@@ -63,6 +67,17 @@ class TestUtilIo(RelengToolTestCase):
             result = execute(test_cmd, critical=False, ignore_stderr=True)
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), 'World')
+
+        # verify output (partial)
+        with redirect_stdout() as stream:
+            test_cmd = [
+                sys.executable,
+                '-c',
+                'print("Partial", end="")',
+            ]
+            result = execute(test_cmd, critical=False)
+            self.assertTrue(result)
+        self.assertEqual(stream.getvalue().strip(), 'Partial')
 
         # verify variable expansion
         os.environ['VERIFY_EXPANSION'] = 'abc123'

@@ -9,9 +9,11 @@ from releng_tool.util.log import err
 from releng_tool.util.log import is_debug
 from releng_tool.util.log import is_verbose
 from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 from releng_tool.util.string import expand as expand_util
 from runpy import run_path
 from shlex import quote
+import io
 import os
 import subprocess
 import sys
@@ -66,12 +68,6 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
     this call will issue a system exit (``SystemExit``). By default, the
     critical flag is enabled (i.e. ``critical=True``).
 
-    In special cases, an executing process may not provide carriage returns/new
-    lines to simple output processing. This can lead the output of a process to
-    be undesirably buffered. To workaround this issue, the execution call can
-    instead poll for output results by using the ``poll`` option with a value
-    of ``True``. By default, polling is disabled with a value of ``False``.
-
     A caller may wish to capture the provided output from a process for
     examination. If a list is provided in the call argument ``capture``, the
     list will be populated with the output provided from an invoked process.
@@ -91,8 +87,7 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
             ``False``)
         critical (optional): whether or not to stop execution on failure
             (defaults to ``True``)
-        poll (optional): force polling stdin/stdout for output data (defaults to
-            ``False``)
+        poll (optional): obsolete/ignored argument
         capture (optional): list to capture output into
         expand (optional): perform variable expansion on arguments
         args_str (optional): invoke arguments as a single string
@@ -106,6 +101,9 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         SystemExit: if the execution operation fails with ``critical=True``
     """
 
+    if poll:
+        warn('use of poll is deprecated on execute calls')
+
     rv = _execute(
         args,
         capture=capture,
@@ -114,7 +112,6 @@ def execute(args, cwd=None, env=None, env_update=None, quiet=None,
         env=env,
         env_update=env_update,
         expand=expand,
-        poll=poll,
         quiet=quiet,
         args_str=args_str,
         ignore_stderr=ignore_stderr,
@@ -187,7 +184,7 @@ def execute_rv(command, *args, **kwargs):
 
 
 def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
-        critical=True, poll=False, capture=None, expand=True,
+        critical=True, capture=None, expand=True,
         args_str=False, ignore_stderr=False):
     """
     execute the provided command/arguments
@@ -215,12 +212,6 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
     this call will issue a system exit (``SystemExit``). By default, the
     critical flag is enabled (i.e. ``critical=True``).
 
-    In special cases, an executing process may not provide carriage returns/new
-    lines to simple output processing. This can lead the output of a process to
-    be undesirably buffered. To workaround this issue, the execution call can
-    instead poll for output results by using the ``poll`` option with a value
-    of ``True``. By default, polling is disabled with a value of ``False``.
-
     A caller may wish to capture the provided output from a process for
     examination. If a list is provided in the call argument ``capture``, the
     list will be populated with the output provided from an invoked process.
@@ -234,8 +225,6 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             ``False``)
         critical (optional): whether or not to stop execution on failure
             (defaults to ``True``)
-        poll (optional): force polling stdin/stdout for output data (defaults to
-            ``False``)
         capture (optional): list to capture output into
         expand (optional): perform variable expansion on arguments
         args_str (optional): invoke arguments as a single string
@@ -301,17 +290,6 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                 debug(env_str)
 
         try:
-            # check if this execution should poll (for carriage returns and new
-            # lines); note if quiet mode is enabled, do not attempt to poll
-            # since none of the output will be printed anyways.
-            if poll and not quiet:
-                debug('will poll process for output')
-                bufsize = 0
-                universal_newlines = False
-            else:
-                bufsize = 1
-                universal_newlines = True
-
             run_args = ' '.join(args) if args_str else args
 
             # allow a caller to ignore the stderr output, if they are only
@@ -320,38 +298,46 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
 
             proc = subprocess.Popen(
                 run_args,
-                bufsize=bufsize,
+                bufsize=0,
                 cwd=cwd,
                 env=final_env,
                 stderr=stderr,
                 stdout=subprocess.PIPE,
-                universal_newlines=universal_newlines,
             )
+            buffered_stdout = io.BufferedReader(proc.stdout)
 
-            if bufsize == 0:
-                line = bytearray()
-                while True:
-                    c = proc.stdout.read(1)
-                    if not c and proc.poll() is not None:
+            line = bytearray()
+            while True:
+                data = buffered_stdout.read1(1024)
+                if not data:
+                    proc.wait()
+                    break
+                line += data
+
+                while data and line:
+                    for idx, c in enumerate(line):
+                        if c in (ord('\r'), ord('\n')):
+                            decoded_line = line[:idx+1].decode('utf_8')
+                            if capture is not None:
+                                capture_line = decoded_line.rstrip()
+                                if capture_line:
+                                    capture.append(capture_line)
+                            if not quiet:
+                                print(decoded_line, end='', flush=True)
+                            line = line[idx+1:]
+                            break
+                    else:
                         break
-                    line += c
-                    if c in (b'\r', b'\n'):
-                        decoded_line = line.decode('utf_8')
-                        if c == b'\n' and capture is not None:
-                            capture.append(decoded_line)
-                        if not quiet:
-                            sys.stdout.write(decoded_line)
-                            sys.stdout.flush()
-                        del line[:]
-            else:
-                for line in iter(proc.stdout.readline, ''):
-                    if capture is not None or not quiet:
-                        line = line.rstrip()
-                        if capture is not None:
-                            capture.append(line)
-                        if not quiet:
-                            print(line)
-                            sys.stdout.flush()
+
+            if line:
+                decoded_line = line.decode('utf_8')
+                if capture is not None:
+                    capture_line = decoded_line.rstrip()
+                    if capture_line:
+                        capture.append(capture_line)
+                if not quiet:
+                    print(decoded_line, flush=True)
+
             proc.communicate()
 
             rv = proc.returncode

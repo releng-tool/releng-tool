@@ -45,8 +45,7 @@ class RelengTool:
         else:
             self.exists_args = ['--version']
 
-    def execute(self, args=None, cwd=None, quiet=None, env=None, poll=False,
-            capture=None):
+    def execute(self, args=None, cwd=None, quiet=None, env=None, capture=None):
         """
         execute the host tool with the provided arguments (if any)
 
@@ -57,7 +56,6 @@ class RelengTool:
             cwd (optional): working directory to use
             quiet (optional): whether or not to suppress output
             env (optional): environment variables to include
-            poll (optional): force polling stdin/stdout for output data
             capture (optional): list to capture output into
 
         Returns:
@@ -65,7 +63,7 @@ class RelengTool:
             the execution has failed
         """
 
-        rv = self._execute(args=args, cwd=cwd, quiet=quiet, env=env, poll=poll,
+        rv = self._execute(args=args, cwd=cwd, quiet=quiet, env=env,
             capture=capture)
         return (rv == 0)
 
@@ -91,8 +89,7 @@ class RelengTool:
             capture=out, quiet=True)
         return rv, '\n'.join(out)
 
-    def _execute(self, args=None, cwd=None, quiet=None, env=None, poll=False,
-            capture=None):
+    def _execute(self, args=None, cwd=None, quiet=None, env=None, capture=None):
         """
         execute the host tool with the provided arguments (if any)
 
@@ -103,7 +100,6 @@ class RelengTool:
             cwd (optional): working directory to use
             quiet (optional): whether or not to suppress output
             env (optional): environment variables to include
-            poll (optional): force polling stdin/stdout for output data
             capture (optional): list to capture output into
 
         Returns:
@@ -135,7 +131,7 @@ class RelengTool:
             final_args.extend(args)
 
         return _execute(final_args, cwd=cwd, env=final_env, quiet=quiet,
-            critical=False, poll=poll, capture=capture)
+            critical=False, capture=capture)
 
     def _invoked_tool(self):
         """

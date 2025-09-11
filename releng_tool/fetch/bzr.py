@@ -76,7 +76,7 @@ certificates; however, certifi is not installed on this system.
 ''')
 
     log('exporting sources')
-    if not BZR.execute(export_opts, poll=True):
+    if not BZR.execute(export_opts):
         err('unable to export module')
         return None
 
