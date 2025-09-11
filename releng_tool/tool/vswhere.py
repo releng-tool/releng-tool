@@ -29,7 +29,7 @@ class VsWhereTool(RelengTool):
         if self.tool in RelengTool.detected:
             return RelengTool.detected[self.tool]
 
-        rv, out = execute_rv(self.tool, '/?')
+        rv, _ = execute_rv(self.tool, '/?')
         if rv == 0:
             debug('{} tool is detected on this system', self.tool)
             RelengTool.detected[self.tool] = True

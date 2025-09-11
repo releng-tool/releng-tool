@@ -339,7 +339,7 @@ class TestSiteUrl(RelengToolTestCase):
 
     def test_site_url_fetch_file_https(self):
         with httpd_context(secure=True) as httpd:
-            host, port = httpd.server_address
+            _, port = httpd.server_address
             site = f'https://localhost:{port}/test.txt'
 
             httpd.rsp.append((200, b'Sample text file.'))

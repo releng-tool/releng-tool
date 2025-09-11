@@ -106,7 +106,7 @@ def load(hash_file):
         # a hash entry may also include an associated key length (e.g. SHAKE);
         # if a key length is provided, ensure it is sane value
         if ':' in entry[0]:
-            hash_type, _, hash_len = entry[0].partition(':')
+            _, _, hash_len = entry[0].partition(':')
             if hash_len:
                 try:
                     if int(hash_len) <= 0:
