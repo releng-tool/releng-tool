@@ -1,5 +1,6 @@
 ## Development
 
+- Improved processing of command outputs
 - Only show SSH error logs for remote Git actions
 
 ## 2.6.0 (2025-08-03)
