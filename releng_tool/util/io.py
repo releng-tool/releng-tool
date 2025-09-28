@@ -237,7 +237,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
         SystemExit: if the execution operation fails with ``critical=True``
     """
 
-    # flexbile execute request
+    # flexible execute request
     if isinstance(args, str):
         args = [args]
 
