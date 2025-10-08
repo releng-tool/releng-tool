@@ -43,6 +43,7 @@ jobs:
             - { os: ubuntu-latest, img: "python:3.11", python: "3.11", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img: "python:3.12", python: "3.12", cache: ~/.cache/pip }
             - { os: ubuntu-latest, img: "python:3.13", python: "3.13", cache: ~/.cache/pip }
+            - { os: ubuntu-latest, img: "python:3.14", python: "3.14", cache: ~/.cache/pip }
 
             # additional operating systems
             - { os:   macos-latest, python: "3.12", cache: ~/Library/Caches/pip }

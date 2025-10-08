@@ -42,6 +42,7 @@ jobs:
             - { os:  ubuntu-latest, img: "python:3.11-slim", python: "3.11", toxenv:  py311, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.12-slim", python: "3.12", toxenv:  py312, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.13-slim", python: "3.13", toxenv:  py313, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, img: "python:3.14-slim", python: "3.14", toxenv:  py314, cache: ~/.cache/pip }
             - { os:   macos-latest,                          python: "3.12", toxenv:  py312, cache: ~/Library/Caches/pip }
             - { os: windows-latest,                          python: "3.12", toxenv:  py312, cache: ~\AppData\Local\pip\Cache }
 
