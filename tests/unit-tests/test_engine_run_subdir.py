@@ -14,7 +14,7 @@ class TestEngineSubdir(RelengToolTestCase):
 
         sample_files = fetch_unittest_assets_dir('sample-files')
         archive = os.path.join(sample_files, 'sample-files.tar')
-        cls.site = f'TEST_SITE=r"file:///{archive}"'
+        cls.site = f'TEST_SITE=r"file://{archive}"'
 
     def test_engine_run_subdir_valid_bootstrap(self):
         template = os.path.join(self.template_base, 'subdir-valid-bootstrap')
