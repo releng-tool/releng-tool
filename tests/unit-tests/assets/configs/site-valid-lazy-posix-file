@@ -1,0 +1,2 @@
+# site with some extra forward slashes
+TEST_SITE = 'file:////opt/some/file'

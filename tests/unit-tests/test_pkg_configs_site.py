@@ -6,6 +6,7 @@ from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from releng_tool.packages.manager import RelengPackageManager
 from releng_tool.registry import RelengRegistry
 from tests.support.pkg_config_test import TestPkgConfigsBase
+import sys
 
 
 class TestPkgConfigsSite(TestPkgConfigsBase):
@@ -40,6 +41,13 @@ class TestPkgConfigsSite(TestPkgConfigsBase):
 
         pkg, _, _ = self.LOAD('site-valid-devmode', manager=manager)
         self.assertEqual(pkg.site, 'https://example.org/file.tgz')
+
+    def test_pkgconfig_site_valid_lazy_posix_file(self):
+        if sys.platform == 'win32':
+            raise self.skipTest('lazy posix test skipped for win32')
+
+        pkg, _, _ = self.LOAD('site-valid-lazy-posix-file')
+        self.assertEqual(pkg.site, 'file:///opt/some/file')
 
     def test_pkgconfig_site_valid_simple(self):
         pkg, _, _ = self.LOAD('site-valid-simple')

@@ -495,17 +495,23 @@ class RelengPackageManager:
                 else:
                     pkg_site = pkg_site_raw
 
-        # On Windows, if a file site is provided, ensure the path value is
-        # converted to a posix-styled path, to prevent issues with `urlopen`
-        # being provided an unescaped path string
-        if sys.platform == 'win32' and \
-                pkg_site and pkg_site.startswith('file://'):
+        if pkg_site and pkg_site.startswith('file://'):
             pkg_site = pkg_site.removeprefix('file://')
-            abs_site = os.path.isabs(pkg_site)
-            pkg_site = pkg_site.replace(os.sep, posixpath.sep)
-            if abs_site:
-                pkg_site = '/' + pkg_site
-            pkg_site = 'file://' + pkg_site
+
+            # On Windows, if a file site is provided, ensure the path value is
+            # converted to a posix-styled path, to prevent issues with `urlopen`
+            # being provided an unescaped path string
+            if sys.platform == 'win32':
+                abs_site = os.path.isabs(pkg_site)
+                pkg_site = pkg_site.replace(os.sep, posixpath.sep)
+                if abs_site:
+                    pkg_site = '/' + pkg_site
+            # For other platforms, be flexible in the path defined by removing
+            # any extra forward slashes.
+            else:
+                pkg_site = re.sub(r'^/+','/', pkg_site)
+
+            pkg_site = f'file://{pkg_site}'
 
         # vcs-type
         pkg_vcs_type = None
