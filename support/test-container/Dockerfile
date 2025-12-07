@@ -31,8 +31,9 @@ RUN pyenv install 3.10
 RUN pyenv install 3.11
 RUN pyenv install 3.12
 RUN pyenv install 3.13
-RUN pyenv install 3.14-dev
+RUN pyenv install 3.14
+RUN pyenv install 3.14t
 RUN pyenv install pypy3
 
-RUN pyenv local 3.9 3.10 3.11 3.12 3.13 3.14-dev pypy3
+RUN pyenv local 3.9 3.10 3.11 3.12 3.13 3.14 3.14t pypy3
 ENV PATH="$PATH:/home/default/.pyenv/shims"
