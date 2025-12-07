@@ -622,7 +622,7 @@ has failed. Ensure the following path is accessible for this user:
         """
         initialize the package environment for processing
 
-        Performs initializations steps when processing a package. For example,
+        Performs initialization steps when processing a package. For example,
         tracking/pre-cleanup of package-specific file flags.
 
         Args:
