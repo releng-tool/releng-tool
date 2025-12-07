@@ -1,5 +1,6 @@
 ## Development
 
+- Generate a "step over" message for already processed packages on rebuilds
 - Handle trailing path-slash in a path-completed action request
 - Improved processing of command outputs
 - Only show SSH error logs for remote Git actions
