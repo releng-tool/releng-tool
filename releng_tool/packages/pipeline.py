@@ -227,6 +227,9 @@ class RelengPackagePipeline:
                 'releng.disable_remote_configs' not in self.opts.quirks):
             self.engine.pkgman.load_remote_configuration(pkg)
 
+        # track if we did any package stages this pass
+        has_worked = False
+
         # finalize package environment
         with self._stage_env_finalize(pkg, pkg_env):
 
@@ -244,6 +247,7 @@ class RelengPackagePipeline:
                 self.engine.stats.track_duration_end(pkg.name, 'boot')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
+                has_worked = True
 
             # configuring
             fflag = pkg._ff_configure
@@ -254,6 +258,7 @@ class RelengPackagePipeline:
                 self.engine.stats.track_duration_end(pkg.name, 'configure')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
+                has_worked = True
             if paction in (PkgAction.CONFIGURE, PkgAction.RECONFIGURE_ONLY):
                 if pkg.name == target:
                     return PipelineResult.STOP
@@ -267,6 +272,7 @@ class RelengPackagePipeline:
                 self.engine.stats.track_duration_end(pkg.name, 'build')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
+                has_worked = True
             if paction in (PkgAction.BUILD, PkgAction.REBUILD_ONLY):
                 if pkg.name == target:
                     return PipelineResult.STOP
@@ -280,6 +286,7 @@ class RelengPackagePipeline:
                 self.engine.stats.track_duration_end(pkg.name, 'install')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
+                has_worked = True
             # (note: re-install requests will re-invoke package-specific
             # post-processing)
 
@@ -292,6 +299,7 @@ class RelengPackagePipeline:
                 self.engine.stats.track_duration_end(pkg.name, 'post')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
+                has_worked = True
             if paction in (
                     PkgAction.INSTALL,
                     PkgAction.REBUILD_ONLY,
@@ -302,6 +310,12 @@ class RelengPackagePipeline:
 
         if pkg.name == target:
             return PipelineResult.STOP
+
+        # if this package did not perform any work and a generic run of
+        # releng-tool, inform a runner that the package has already been
+        # processed before in a previous run
+        if not has_worked and not gaction and not paction and not target:
+            note('step over {}', pkg.name)
 
         return PipelineResult.CONTINUE
 
