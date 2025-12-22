@@ -286,7 +286,8 @@ def __log(prefix, color, msg, *args):
     print(f'{color}{prefix}{msg}{post}', flush=True)
 
 
-def releng_log_configuration(debug_, nocolor, verbose_, werror):
+def releng_log_configuration(*,
+        debug_: bool, nocolor: bool, verbose_: bool, werror: bool):
     """
     configure the global logging state of the running instance
 

@@ -108,7 +108,11 @@ def main():
             args.nocolorout = True
 
         releng_log_configuration(
-            args.debug, args.nocolorout, args.verbose, args.werror)
+            debug_=args.debug,
+            nocolor=args.nocolorout,
+            verbose_=args.verbose,
+            werror=args.werror,
+        )
 
         warnerr = err if args.werror else warn
 

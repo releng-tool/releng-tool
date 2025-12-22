@@ -59,7 +59,12 @@ def main():
 
     nocolor = False
     werror = False
-    releng_log_configuration(args.debug, nocolor, verbosity, werror)
+    releng_log_configuration(
+        debug_=args.debug,
+        nocolor=nocolor,
+        verbose_=verbosity,
+        werror=werror,
+    )
 
     # disable short descriptions
     unittest.TestCase.shortDescription = lambda x: None  # noqa: ARG005
