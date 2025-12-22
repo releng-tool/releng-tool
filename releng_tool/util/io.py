@@ -384,6 +384,8 @@ def cmd_args_to_str(args):
     else:
         cmd_str = ''
         for arg in args:
+            if isinstance(arg, os.PathLike):
+                arg = os.fspath(arg)
             if isinstance(arg, bytes):
                 arg = arg.decode('utf_8')
             cmd_str += ' ' + quote(arg)
