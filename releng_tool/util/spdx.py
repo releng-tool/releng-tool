@@ -190,7 +190,7 @@ class LicenseEntries(list):
 
         for entry in self:
             if isinstance(entry, LicenseEntries):
-                parts.append('(' + str(entry) + ')')
+                parts.append(f'({entry})')
             else:
                 parts.append(entry)
 
