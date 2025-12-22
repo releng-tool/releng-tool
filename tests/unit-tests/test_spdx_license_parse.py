@@ -66,6 +66,15 @@ class TestSpdxLicenseParse(RelengToolTestCase):
         parts = spdx_parse('id1 AND')
         self.assertIsNone(parts)
 
+        parts = spdx_parse('id1 OR')
+        self.assertIsNone(parts)
+
+        parts = spdx_parse('id1 WITH')
+        self.assertIsNone(parts)
+
+        parts = spdx_parse('id1 WITH (')
+        self.assertIsNone(parts)
+
         parts = spdx_parse('OR id2')
         self.assertIsNone(parts)
 
