@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from releng_tool.util.log import err
 import sys
 
 
-def platform_exit(msg=None, code=None):
+def platform_exit(msg: str | None = None, code: int | None = None):
     """
     exit out of the releng-tool process
 

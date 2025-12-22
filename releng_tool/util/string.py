@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from collections.abc import Sequence
+from typing import Any
 import os
 import re
 
@@ -107,7 +108,7 @@ def expand(obj, kv=None):
     return rv
 
 
-def is_sequence_not_string(obj):
+def is_sequence_not_string(obj: Any) -> bool:
     """
     return whether or not the provided object is a non-string sequence
 
@@ -123,7 +124,7 @@ def is_sequence_not_string(obj):
     return isinstance(obj, Sequence) and not isinstance(obj, str)
 
 
-def normalize(name):
+def normalize(name: str) -> str:
     """
     return a normalized name
 

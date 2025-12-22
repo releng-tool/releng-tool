@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from releng_tool.exceptions import RelengToolWarningAsError
 
 #: flag to track the enablement of debug messages
@@ -19,7 +20,7 @@ RELENG_LOG_VERBOSE_FLAG = False
 RELENG_LOG_WERROR_FLAG = False
 
 
-def log(msg, *args):
+def log(msg: str, *args):
     """
     log a message
 
@@ -37,7 +38,7 @@ def log(msg, *args):
     __log('', '', msg, *args)
 
 
-def debug(msg, *args):
+def debug(msg: str, *args):
     """
     log a debug message
 
@@ -58,7 +59,7 @@ def debug(msg, *args):
         __log('(debug) ', '\033[2m', msg, *args)
 
 
-def err(msg, *args):
+def err(msg: str, *args):
     """
     log an error message
 
@@ -77,7 +78,7 @@ def err(msg, *args):
     __log('(error) ', '\033[1;31m', msg, *args)
 
 
-def hint(msg, *args):
+def hint(msg: str, *args):
     """
     log a hint message
 
@@ -99,7 +100,7 @@ def hint(msg, *args):
     __log('', '\033[1;36m', msg, *args)
 
 
-def is_debug(tag=None):
+def is_debug(tag: str | None = None):
     """
     report if the instance is configured with debug messaging
 
@@ -126,7 +127,7 @@ def is_debug(tag=None):
     return RELENG_LOG_DEBUG_FLAG
 
 
-def is_verbose(tag=None):
+def is_verbose(tag: str | None = None) -> bool:
     """
     report if the instance is configured with verbose messaging
 
@@ -153,7 +154,7 @@ def is_verbose(tag=None):
     return RELENG_LOG_VERBOSE_FLAG
 
 
-def note(msg, *args):
+def note(msg: str, *args):
     """
     log a notification message
 
@@ -172,7 +173,7 @@ def note(msg, *args):
     __log('', '\033[7m', msg, *args)
 
 
-def success(msg, *args):
+def success(msg: str, *args):
     """
     log a success message
 
@@ -191,7 +192,7 @@ def success(msg, *args):
     __log('(success) ', '\033[1;32m', msg, *args)
 
 
-def verbose(msg, *args):
+def verbose(msg: str, *args):
     """
     log a verbose message
 
@@ -212,7 +213,7 @@ def verbose(msg, *args):
         __log('(verbose) ', '\033[2m', msg, *args)
 
 
-def warn(msg, *args):
+def warn(msg: str, *args):
     """
     log a warning message
 
@@ -237,7 +238,7 @@ def warn(msg, *args):
     __log('(warn) ', '\033[1;35m', msg, *args)
 
 
-def warn_wrap(msg):
+def warn_wrap(msg: str):
     """
     wrap a message with a warning color hint
 
@@ -262,7 +263,7 @@ def warn_wrap(msg):
     return f'{color}{msg}{post}'
 
 
-def __log(prefix, color, msg, *args):
+def __log(prefix: str, color: str, msg: str, *args):
     """
     utility logging method
 
@@ -315,7 +316,7 @@ def releng_log_configuration(*,
     RELENG_LOG_TAGS.clear()
 
 
-def releng_log_tag(tag, remove=False):
+def releng_log_tag(tag: str, *, remove: bool = False):
     """
     configure a logging tag
 

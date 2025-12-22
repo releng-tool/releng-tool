@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from collections.abc import Sequence
 from queue import Queue
 import re
 
 
-def spdx_extract(raw):
+def spdx_extract(raw: str | None) -> tuple[bool, set, set]:
     """
     extract license/exception strings from a spdx string
 
@@ -65,7 +66,7 @@ def spdx_extract(raw):
     return valid, licenses, exceptions
 
 
-def spdx_license_identifier(license_value):
+def spdx_license_identifier(license_value: str) -> bool:
     """
     determine if a license is a (custom) license identifier
 
@@ -92,7 +93,7 @@ def spdx_license_identifier(license_value):
     return id_str.replace('.', '').replace('-', '').isalpha()
 
 
-def spdx_parse(data):
+def spdx_parse(data) -> str | None:
     if not data:
         return None
 
@@ -103,7 +104,7 @@ def spdx_parse(data):
             data = ') OR ('.join(data)
         data = '(' + data + ')'
 
-    q = Queue()
+    q: Queue[str] = Queue()
     s = []
 
     tokens = data.replace('(', ' ( ').replace(')', ' ) ').split()
@@ -160,6 +161,8 @@ def spdx_parse(data):
         if token in operators:
             if len(s) < MIN_STACK:
                 return None
+
+            target: LicenseEntries
 
             if token == 'AND':
                 target = ConjunctiveLicenses()

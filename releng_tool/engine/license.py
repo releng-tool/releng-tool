@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.opts import RelengEngineOptions
+from releng_tool.packages.package import RelengPackage
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
@@ -25,11 +27,11 @@ class LicenseManager:
         generated: list of generated license files
         opts: options used to configure the engine
     """
-    def __init__(self, opts):
-        self.generated = []
+    def __init__(self, opts: RelengEngineOptions):
+        self.generated: list[str] = []
         self.opts = opts
 
-    def build_cache(self, pkgs):
+    def build_cache(self, pkgs: list[RelengPackage]) -> dict[str, dict]:
         """
         compile a cache of project license information
 
@@ -67,7 +69,7 @@ class LicenseManager:
 
         return license_cache
 
-    def generate(self, cache):
+    def generate(self, cache: dict[str, dict]) -> bool:
         """
         generate a license file for the project
 

@@ -12,7 +12,7 @@ RUNNER_DEBUG_HINTS = [
 ]
 
 
-def detect_ci_runner_debug_mode():
+def detect_ci_runner_debug_mode() -> bool:
     """
     attempt to detect a ci runner in a debugging mode
 
