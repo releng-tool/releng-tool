@@ -30,7 +30,7 @@ class RelengTool:
         env_sanitize (optional): environment variables to sanitize
         env_include (optional): environment variables to always include
     """
-    detected: ClassVar[dict[str, bool]] = {}
+    detected: ClassVar[dict[Path, bool]] = {}
 
     def __init__(self, tool, exists_args=None, env_sanitize=None,
             env_include=None):

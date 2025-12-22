@@ -3,7 +3,6 @@
 
 from releng_tool.tool import RelengTool
 from releng_tool.tool.tar import TAR
-from releng_tool.tool.tar import TAR_COMMAND
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests.support import fetch_unittest_assets_dir
@@ -103,11 +102,11 @@ class TestSiteUrl(RelengToolTestCase):
                 otes = TAR.exists()
                 try:
                     # temporarily force the internal tar processing
-                    RelengTool.detected[TAR_COMMAND] = False
+                    RelengTool.detected[TAR.tool] = False
 
                     rv = engine.run()
                 finally:
-                    RelengTool.detected[TAR_COMMAND] = otes
+                    RelengTool.detected[TAR.tool] = otes
 
                 self.assertFalse(rv)
 
@@ -167,12 +166,12 @@ class TestSiteUrl(RelengToolTestCase):
                 otes = TAR.exists()
                 try:
                     # temporarily force a non-external tar command (if needed)
-                    RelengTool.detected[TAR_COMMAND] = False
+                    RelengTool.detected[TAR.tool] = False
 
                     httpd.rsp.append((200, data))
                     rv = engine.run()
                 finally:
-                    RelengTool.detected[TAR_COMMAND] = otes
+                    RelengTool.detected[TAR.tool] = otes
 
                 self.assertTrue(rv)
 
@@ -193,12 +192,12 @@ class TestSiteUrl(RelengToolTestCase):
                     f.write('MINIMAL_STRIP_COUNT=0\n')
 
                 try:
-                    RelengTool.detected[TAR_COMMAND] = False
+                    RelengTool.detected[TAR.tool] = False
 
                     httpd.rsp.append((200, data))
                     rv = engine.run()
                 finally:
-                    RelengTool.detected[TAR_COMMAND] = otes
+                    RelengTool.detected[TAR.tool] = otes
 
                 self.assertTrue(rv)
 
