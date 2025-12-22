@@ -42,7 +42,7 @@ def spdx_extract(raw):
             if not part:
                 continue
 
-            # check if we need to process any operaters
+            # check if we need to process any operators
             if part.lower() in ['and', 'or', 'with']:
                 if needs_license or next_exception:
                     valid = False
