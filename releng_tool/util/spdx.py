@@ -197,7 +197,7 @@ class LicenseEntries(list):
         return self._str_operator().join(parts)
 
     def _str_operator(self):
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
 
 class ConjunctiveLicenses(LicenseEntries):
