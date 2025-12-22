@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.util.io import _execute
 from releng_tool.util.io import execute
 from releng_tool.util.log import debug
@@ -38,7 +39,7 @@ class RelengTool:
 
         # allow a system to override a host tool path
         override_tool_key = 'RELENG_' + re.sub(r'[^A-Z0-9]', '', tool.upper())
-        self.tool = os.environ.get(override_tool_key, tool)
+        self.tool = Path(os.environ.get(override_tool_key, tool))
 
         if exists_args is not None:
             self.exists_args = exists_args

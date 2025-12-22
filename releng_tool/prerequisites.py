@@ -192,8 +192,8 @@ class RelengPrerequisites:
         # project-provided tools check
         for tool in self.tools:
             if tool not in exclude:
-                if which(tool):
-                    verbose('prerequisite exists: ' + tool)
+                if which(str(tool)):
+                    verbose(f'prerequisite exists: {tool}')
                 else:
                     missing.add(tool)
 
@@ -205,7 +205,7 @@ class RelengPrerequisites:
             msg += '\n'
             msg += '\n'
             for entry in sorted_missing:
-                msg += ' ' + entry + '\n'
+                msg += f' {entry}\n'
             err(msg)
 
         return len(missing) == 0
@@ -220,4 +220,4 @@ class RelengPrerequisites:
         Args:
             tool: the tool
         """
-        verbose('prerequisite exists: ' + tool.tool)
+        verbose(f'prerequisite exists: {tool.tool}')
