@@ -19,7 +19,7 @@ def symlink(target: str | bytes | os.PathLike,
 
     .. note::
 
-        this call may not work in Windows environments if the user invoking
+        This call may not work in Windows environments if the user invoking
         releng-tool does not have permission to create symbolic links.
 
     .. versionadded:: 1.4
