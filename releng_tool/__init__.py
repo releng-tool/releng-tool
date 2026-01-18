@@ -26,6 +26,7 @@ from os.path import join as releng_join
 from pathlib import Path as releng_path
 from releng_tool.support import releng_include as releng_include
 from releng_tool.support import require_version as releng_require_version
+from releng_tool.util import global_define as releng_define
 from releng_tool.util.env import env_value as releng_env
 from releng_tool.util.io import execute as releng_execute
 from releng_tool.util.io import execute_rv as releng_execute_rv

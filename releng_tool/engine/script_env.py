@@ -7,6 +7,7 @@ from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.support import releng_include
 from releng_tool.support import require_version
+from releng_tool.util import global_define
 from releng_tool.util.env import env_value
 from releng_tool.util.env import env_wrap
 from releng_tool.util.io import execute
@@ -171,6 +172,7 @@ def prepare_script_environment(env, opts):
     env['releng_cat'] = cat
     env['releng_copy'] = path_copy
     env['releng_copy_into'] = path_copy_into
+    env['releng_define'] = global_define
     env['releng_env'] = env_value
     env['releng_execute'] = execute
     env['releng_execute_rv'] = execute_rv
