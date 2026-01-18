@@ -3,7 +3,10 @@
 - Generate a "step over" message for already processed packages on rebuilds
 - Handle trailing path-slash in a path-completed action request
 - Improved processing of command outputs
+- Introduce `LIBFOO_MESON_BUILD_TYPE` to override Meson build types
+- Introduce `releng_define` helper script function
 - Only show SSH error logs for remote Git actions
+- Prevent default CMake define conflicts when overrides set in `<PKG>_CONF_DEFS`
 
 ## 2.6.0 (2025-08-03)
 
