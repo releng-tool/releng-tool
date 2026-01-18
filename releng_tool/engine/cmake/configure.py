@@ -127,7 +127,7 @@ def configure(opts):
         default_cmake_defs.pop(cmake_def_key, None)
 
     # compile a list of releng-tool default defines into a CMake cache file;
-    # we foward releng-tool configurations using an initial cache file to
+    # we forward releng-tool configurations using an initial cache file to
     # help avoid CLI warning events if a project does not accept all of the
     # generic options configured by default
     cmake_pre_cache = Path(opts.build_output_dir) / '.releng-tool-cmake-cache'

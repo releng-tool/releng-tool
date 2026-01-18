@@ -15,7 +15,7 @@ import posixpath
 # folder name (under build) where all cargo packages will target
 CARGO_COMMON_TARGET = '.releng-tool-cargo-target'
 
-# manifest for cargo packges
+# manifest for cargo packages
 CARGO_MANIFEST = 'Cargo.toml'
 
 
