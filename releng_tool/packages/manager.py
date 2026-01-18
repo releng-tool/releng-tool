@@ -3,6 +3,7 @@
 
 from collections import OrderedDict
 from releng_tool.defs import DEFAULT_CMAKE_BUILD_TYPE
+from releng_tool.defs import DEFAULT_ENTRY
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
@@ -58,9 +59,6 @@ import re
 import sys
 import traceback
 
-
-# special value for a "default" entry in a dictionary
-DEFAULT_ENTRY = '*'
 
 #: default strip-count value for packages
 DEFAULT_STRIP_COUNT = 1

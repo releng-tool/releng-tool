@@ -451,6 +451,9 @@ GBL_LSRCS = '*'
 # default CMake build type to use
 DEFAULT_CMAKE_BUILD_TYPE = 'RelWithDebInfo'
 
+# special value for a "default" entry
+DEFAULT_ENTRY = '*'
+
 # list of values to consider as "unset"
 UNSET_VALUES = [
     '-',

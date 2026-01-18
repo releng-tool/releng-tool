@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from releng_tool import __version__ as releng_version
+from releng_tool.defs import DEFAULT_ENTRY
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.support import releng_include
@@ -90,6 +91,8 @@ def prepare_script_environment(env, opts):
     for env_ in (env_wrap(), env):
         env_['BUILD_DIR'] = P(opts.build_dir)
         env_['CACHE_DIR'] = P(opts.cache_dir)
+        env_['DEFAULT_REVISION'] = DEFAULT_ENTRY
+        env_['DEFAULT_SITE'] = DEFAULT_ENTRY
         env_['DL_DIR'] = P(opts.dl_dir)
         env_['HOST_BIN_DIR'] = P(host_bin_dir)
         env_['HOST_DIR'] = P(opts.host_dir)
