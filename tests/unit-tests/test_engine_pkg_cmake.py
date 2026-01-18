@@ -46,6 +46,74 @@ class TestEnginePkgCmake(RelengToolTestCase):
                 'CACHE INTERNAL "releng-tool generated")',
                 lines)
 
+    @patch('releng_tool.engine.cmake.configure.CMAKE')
+    @patch.object(CMAKE, 'exists', return_value=True)
+    def test_engine_pkg_cmake_cfg_bt_override1(self, cmake_exists, cmake_cfg):
+        cfg = {
+            'action': f'minimal-{PkgAction.CONFIGURE}',
+        }
+
+        with prepare_testenv(config=cfg, template='minimal') as engine:
+            setpkgcfg(engine, 'minimal', Rpk.TYPE, 'cmake')
+            setpkgcfg(engine, 'minimal', Rpk.CONF_DEFS, {
+                'CMAKE_BUILD_TYPE': 'BuildTypeOverride',
+            })
+
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            cmake_cfg.execute.assert_called_once()
+
+            # verify we have provided the build type in the options
+            args = cmake_cfg.execute.call_args.args[0]
+            self.assertIn('-DCMAKE_BUILD_TYPE=BuildTypeOverride', args)
+
+            # verify we have provided our cache of options
+            self.assertIn('-C', args)
+
+            # ensure the cache file exists and does not have the default
+            # CMAKE_BUILD_TYPE configured
+            cache_arg_idx = args.index('-C')
+            cache_file_idx = cache_arg_idx + 1
+            self.assertLessEqual(cache_file_idx, len(args))
+            cache_file = Path(args[cache_file_idx])
+            self.assertTrue(cache_file.is_file())
+            self.assertNotIn('CMAKE_BUILD_TYPE', cache_file.read_text())
+
+    @patch('releng_tool.engine.cmake.configure.CMAKE')
+    @patch.object(CMAKE, 'exists', return_value=True)
+    def test_engine_pkg_cmake_cfg_bt_override2(self, cmake_exists, cmake_cfg):
+        cfg = {
+            'action': f'minimal-{PkgAction.CONFIGURE}',
+        }
+
+        with prepare_testenv(config=cfg, template='minimal') as engine:
+            setpkgcfg(engine, 'minimal', Rpk.TYPE, 'cmake')
+            setpkgcfg(engine, 'minimal', Rpk.CONF_OPTS, [
+                '-DCMAKE_BUILD_TYPE=BuildTypeOverride',
+            ])
+
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            cmake_cfg.execute.assert_called_once()
+
+            # verify we have provided the build type in the options
+            args = cmake_cfg.execute.call_args.args[0]
+            #self.assertIn('-DCMAKE_BUILD_TYPE=BuildTypeOverride', args)
+
+            # verify we have provided our cache of options
+            self.assertIn('-C', args)
+
+            # ensure the cache file exists and does not have the default
+            # CMAKE_BUILD_TYPE configured
+            cache_arg_idx = args.index('-C')
+            cache_file_idx = cache_arg_idx + 1
+            self.assertLessEqual(cache_file_idx, len(args))
+            cache_file = Path(args[cache_file_idx])
+            self.assertTrue(cache_file.is_file())
+            self.assertNotIn('CMAKE_BUILD_TYPE', cache_file.read_text())
+
     @patch('releng_tool.engine.cmake.install.CMAKE')
     @patch('releng_tool.engine.cmake.build.CMAKE')
     @patch('releng_tool.engine.cmake.configure.CMAKE')

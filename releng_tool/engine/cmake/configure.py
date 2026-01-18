@@ -122,9 +122,24 @@ def configure(opts):
     if opts.conf_defs:
         cmake_defs.update(expand(opts.conf_defs))
 
+    # options
+    cmake_opts = {
+    }
+    if opts.conf_opts:
+        cmake_opts.update(expand(opts.conf_opts))
+
     # untrack any "default defines" that a package may have explicitly set
     for cmake_def_key in cmake_defs:
         default_cmake_defs.pop(cmake_def_key, None)
+
+    # if a project adds defines via command line options, drop the default
+    # defines that may be set
+    for cmake_opts_key in cmake_opts:
+        if cmake_opts_key.startswith('-D'):
+            cmake_opts_key = cmake_opts_key.removeprefix('-D')
+            if '=' in cmake_opts_key:
+                cmake_opts_key, _ = cmake_opts_key.split('=', 1)
+            default_cmake_defs.pop(cmake_opts_key, None)
 
     # compile a list of releng-tool default defines into a CMake cache file;
     # we forward releng-tool configurations using an initial cache file to
@@ -136,12 +151,6 @@ def configure(opts):
         for k, v in default_cmake_defs.items():
             debug(f' {k}={v}')
             fp.write(f'set({k} "{v}" CACHE INTERNAL "releng-tool generated")\n')
-
-    # options
-    cmake_opts = {
-    }
-    if opts.conf_opts:
-        cmake_opts.update(expand(opts.conf_opts))
 
     # argument building
     cmake_args = [
