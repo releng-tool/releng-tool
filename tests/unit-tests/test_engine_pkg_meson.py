@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.defs import PkgAction
 from releng_tool.defs import Rpk
 from releng_tool.tool.meson import MESON
 from tests import RelengToolTestCase
@@ -10,6 +11,27 @@ from unittest.mock import patch
 
 
 class TestEnginePkgCmake(RelengToolTestCase):
+    @patch('releng_tool.engine.meson.configure.MESON')
+    @patch.object(MESON, 'exists', return_value=True)
+    def test_engine_pkg_meson_build_type(self, cmake_exists, meson_cfg):
+        cfg = {
+            'action': f'minimal-{PkgAction.CONFIGURE}',
+        }
+
+        with prepare_testenv(config=cfg, template='minimal') as engine:
+            setpkgcfg(engine, 'minimal', Rpk.TYPE, 'meson')
+            setpkgcfg(engine, 'minimal', Rpk.MESON_BUILD_TYPE, 'minsize')
+
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            meson_cfg.execute.assert_called_once()
+
+            # verify we have provided our minsize build type in the options
+            args = meson_cfg.execute.call_args.args[0]
+            self.assertIn('--buildtype', args)
+            self.assertIn('minsize', args)
+
     @patch('releng_tool.engine.meson.install.MESON')
     @patch('releng_tool.engine.meson.build.MESON')
     @patch('releng_tool.engine.meson.configure.MESON')

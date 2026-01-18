@@ -77,6 +77,7 @@ class RelengPackage:
         (package type - make)
         make_noinstall: flag to disable the install stage for a make project
         (package type - meson)
+        meson_build_type: meson build type to use
         meson_noinstall: flag to disable the install stage for a meson project
         (other - python)
         python_dist_path: output folder for dist
@@ -156,6 +157,7 @@ class RelengPackage:
         # (package type - make)
         self.make_noinstall = None
         # (package type - meson)
+        self.meson_build_type = None
         self.meson_noinstall = None
         # (other - git)
         self.git_config = None

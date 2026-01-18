@@ -76,7 +76,7 @@ def configure(opts):
 
     # options
     meson_opts = {
-        '--buildtype': 'debugoptimized',
+        '--buildtype': opts._meson_build_type,
     }
     if opts.conf_opts:
         meson_opts.update(expand(opts.conf_opts))

@@ -140,6 +140,7 @@ class Rpk(StrCcEnum):
         # (package type - make)
         MAKE_NOINSTALL: skip make install stage
         # (package type - meson)
+        MESON_BUILD_TYPE: the meson build type to use
         MESON_NOINSTALL: skip meson install stage
         # (package type - python)
         PYTHON_DIST_PATH: output folder for dist
@@ -209,6 +210,7 @@ class Rpk(StrCcEnum):
     # (package type - make)
     MAKE_NOINSTALL = 'MAKE_NOINSTALL'
     # (package type - meson)
+    MESON_BUILD_TYPE = 'MESON_BUILD_TYPE'
     MESON_NOINSTALL = 'MESON_NOINSTALL'
     # (package type - python)
     PYTHON_DIST_PATH = 'PYTHON_DIST_PATH'
@@ -450,6 +452,9 @@ GBL_LSRCS = '*'
 
 # default CMake build type to use
 DEFAULT_CMAKE_BUILD_TYPE = 'RelWithDebInfo'
+
+# default Meson build type to use
+DEFAULT_MESON_BUILD_TYPE = 'debugoptimized'
 
 # special value for a "default" entry
 DEFAULT_ENTRY = '*'

@@ -4,6 +4,7 @@
 from collections import OrderedDict
 from releng_tool.defs import DEFAULT_CMAKE_BUILD_TYPE
 from releng_tool.defs import DEFAULT_ENTRY
+from releng_tool.defs import DEFAULT_MESON_BUILD_TYPE
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import PackageType
@@ -138,6 +139,7 @@ class RelengPackageManager:
             (Rpk.LICENSE, PkgKeyType.STRS),
             (Rpk.LICENSE_FILES, PkgKeyType.STRS),
             (Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.MESON_BUILD_TYPE, PkgKeyType.STR),
             (Rpk.MESON_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.NEEDS, PkgKeyType.STRS),
             (Rpk.NO_EXTRACTION, PkgKeyType.BOOL),
@@ -1300,6 +1302,13 @@ using deprecated dependency configuration for package: {}
         # ######################################################################
         # (package type - meson)
         # ######################################################################
+
+        # meson build type
+        if pkg.meson_build_type is None:
+            pkg.meson_build_type = self._fetch(Rpk.MESON_BUILD_TYPE)
+
+        if not pkg.meson_build_type:
+            pkg.meson_build_type = DEFAULT_MESON_BUILD_TYPE
 
         # meson noinstall flag
         if pkg.meson_noinstall is None:
