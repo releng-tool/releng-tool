@@ -52,7 +52,7 @@ jobs:
 
     - name: Set up Python ${{ matrix.python }}
       if: ${{ matrix.img == '' }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python }}
 
