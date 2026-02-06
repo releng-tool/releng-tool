@@ -20,6 +20,10 @@ class TestSupport(RelengToolTestCase):
         self.assertTrue(test_include.exists(), 'missing include file')
         releng_include(test_include)
 
+        # verify variables are not sourced
+        with self.assertRaises(NameError):
+            print(SAMPLE_INCLUDE)  # noqa: F821  pylint: disable=E0602
+
     def test_support_include_expanded(self):
         test_include = self.includes / 'sample-include.rt'
         self.assertTrue(test_include.exists(), 'missing include file')
@@ -33,3 +37,11 @@ class TestSupport(RelengToolTestCase):
         self.assertTrue(test_include.exists(), 'missing include file')
         with self.assertRaises(SystemExit):
             releng_include(test_include)
+
+    def test_support_include_sourced(self):
+        test_include = self.includes / 'sample-include.rt'
+        self.assertTrue(test_include.exists(), 'missing include file')
+        releng_include(test_include, source=True)
+
+        # verify variables are sourced
+        print(SAMPLE_INCLUDE)  # noqa: F821  pylint: disable=E0602

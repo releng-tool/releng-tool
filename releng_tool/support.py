@@ -7,6 +7,7 @@ from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.env import env_wrap
+from releng_tool.util.env import extend_script_env
 from releng_tool.util.io_path import path_input
 from releng_tool.util.log import err
 from releng_tool.util.path import P
@@ -15,13 +16,15 @@ import inspect
 import os
 
 
-def releng_include(file_path: str | bytes | os.PathLike) -> None:
+def releng_include(file_path: str | bytes | os.PathLike,
+        *, source: bool = False) -> None:
     """
     include/execute a script
 
     .. versionadded:: 0.12
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
     .. versionchanged:: 2.7 Provided file path will now expand variables.
+    .. versionchanged:: 2.7 Introduce the ``source`` argument.
 
     The provided call will execute code at the provided file path. The path
     will be relative to the caller's script, unless an absolute path is
@@ -35,8 +38,19 @@ def releng_include(file_path: str | bytes | os.PathLike) -> None:
         # load "my-other-script" found alongside the current script
         releng_include('my-other-script')
 
+    Changes to the global context can be imported into the caller's context
+    by enabling the ``source`` argument. For example:
+
+    .. code-block:: python
+
+        # script "my-var-script" defines "HELLO='world'"
+        releng_include('my-var-script', source=True)
+        # prints "world"
+        print(HELLO)
+
     Args:
         file_path: the script to invoke
+        source (optional): import globals into invoking script
     """
 
     caller_stack = inspect.stack()[1]
@@ -53,7 +67,9 @@ def releng_include(file_path: str | bytes | os.PathLike) -> None:
     ctx_globals = caller_stack[0].f_globals
 
     with releng_script_envs(str(target_script), ctx_globals) as script_env:
-        run_path(str(target_script), init_globals=script_env)
+        overrides = run_path(str(target_script), init_globals=script_env)
+        if source:
+            extend_script_env(ctx_globals, overrides)
 
 
 @contextmanager
