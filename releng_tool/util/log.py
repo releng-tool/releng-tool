@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 from releng_tool.exceptions import RelengToolWarningAsError
+from releng_tool.util.string import expand
 
 #: flag to track the enablement of debug messages
 RELENG_LOG_DEBUG_FLAG = False
@@ -24,6 +25,8 @@ def log(msg: str, *args):
     """
     log a message
 
+    .. versionchanged:: 2.7 Provided message will now expand variables.
+
     Logs a (normal) message to standard out with a trailing new line.
 
     .. code-block:: python
@@ -41,6 +44,8 @@ def log(msg: str, *args):
 def debug(msg: str, *args):
     """
     log a debug message
+
+    .. versionchanged:: 2.7 Provided message will now expand variables.
 
     Logs a debug message to standard out with a trailing new line. By default,
     debug messages will not be output to standard out unless the instance is
@@ -63,6 +68,8 @@ def err(msg: str, *args):
     """
     log an error message
 
+    .. versionchanged:: 2.7 Provided message will now expand variables.
+
     Logs an error message to standard error with a trailing new line and (if
     enabled) a red colorization.
 
@@ -84,6 +91,7 @@ def hint(msg: str, *args):
 
     .. versionadded:: 0.13
     .. versionchanged:: 1.4 Ensure availability in script helpers.
+    .. versionchanged:: 2.7 Provided message will now expand variables.
 
     Logs a hint message to standard out with a trailing new line and (if
     enabled) a cyan colorization.
@@ -158,6 +166,8 @@ def note(msg: str, *args):
     """
     log a notification message
 
+    .. versionchanged:: 2.7 Provided message will now expand variables.
+
     Logs a notification message to standard out with a trailing new line and (if
     enabled) an inverted colorization.
 
@@ -177,6 +187,8 @@ def success(msg: str, *args):
     """
     log a success message
 
+    .. versionchanged:: 2.7 Provided message will now expand variables.
+
     Logs a success message to standard error with a trailing new line and (if
     enabled) a green colorization.
 
@@ -195,6 +207,8 @@ def success(msg: str, *args):
 def verbose(msg: str, *args):
     """
     log a verbose message
+
+    .. versionchanged:: 2.7 Provided message will now expand variables.
 
     Logs a verbose message to standard out with a trailing new line and (if
     enabled) an inverted colorization. By default, verbose messages will not be
@@ -216,6 +230,8 @@ def verbose(msg: str, *args):
 def warn(msg: str, *args):
     """
     log a warning message
+
+    .. versionchanged:: 2.7 Provided message will now expand variables.
 
     Logs a warning message to standard error with a trailing new line and (if
     enabled) a purple colorization.
@@ -282,6 +298,7 @@ def __log(prefix: str, color: str, msg: str, *args):
     else:
         post = '\033[0m'
     msg = str(msg)
+    msg = expand(msg)
     if args:
         msg = msg.format(*args)
     print(f'{color}{prefix}{msg}{post}', flush=True)

@@ -4,6 +4,7 @@
 from releng_tool.util.platform import platform_exit
 from tests import RelengToolTestCase
 from tests import redirect_stdout
+import os
 
 
 class TestUtilPlatform(RelengToolTestCase):
@@ -12,6 +13,15 @@ class TestUtilPlatform(RelengToolTestCase):
             platform_exit(code=123)
 
         self.assertEqual(cm.exception.code, 123)
+
+    def test_util_platform_message_expanded(self):
+        os.environ['MSG_TYPE'] = 'special'
+
+        with redirect_stdout() as stream:
+            with self.assertRaises(SystemExit):
+                platform_exit('my $MSG_TYPE message')
+
+        self.assertIn('my special message', stream.getvalue())
 
     def test_util_platform_message_no_code(self):
         with redirect_stdout() as stream:

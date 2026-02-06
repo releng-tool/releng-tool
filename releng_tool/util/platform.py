@@ -10,6 +10,8 @@ def platform_exit(msg: str | None = None, code: int | None = None):
     """
     exit out of the releng-tool process
 
+    .. versionchanged:: 2.7 Provided message will now expand variables.
+
     Provides a convenience method to help invoke a system exit call without
     needing to explicitly use ``sys``. A caller can provide a message to
     indicate the reason for the exit. The provide message will output to
