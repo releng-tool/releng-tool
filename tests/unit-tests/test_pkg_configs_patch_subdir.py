@@ -12,7 +12,7 @@ class TestPkgConfigsPatchSubdir(TestPkgConfigsBase):
             self.LOAD('patch-subdir-invalid-type')
 
     def test_pkgconfig_patch_subdir_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.patch_subdir)
 
     def test_pkgconfig_patch_subdir_traversal(self):
@@ -20,9 +20,9 @@ class TestPkgConfigsPatchSubdir(TestPkgConfigsBase):
             self.LOAD('patch-subdir-traversal')
 
     def test_pkgconfig_patch_subdir_valid_path(self):
-        pkg, _, _ = self.LOAD('patch-subdir-valid-path')
+        pkg = self.LOAD('patch-subdir-valid-path').package
         self.assertTrue(pkg.patch_subdir.endswith('patch-subdir'))
 
     def test_pkgconfig_patch_subdir_valid_str(self):
-        pkg, _, _ = self.LOAD('patch-subdir-valid-str')
+        pkg = self.LOAD('patch-subdir-valid-str').package
         self.assertTrue(pkg.patch_subdir.endswith('patch-subdir'))

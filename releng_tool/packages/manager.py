@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from collections import OrderedDict
+from dataclasses import dataclass
+from dataclasses import field
 from releng_tool.defs import DEFAULT_CMAKE_BUILD_TYPE
 from releng_tool.defs import DEFAULT_ENTRY
 from releng_tool.defs import DEFAULT_MESON_BUILD_TYPE
@@ -51,6 +54,7 @@ from releng_tool.util.sort import TopologicalSorter
 from releng_tool.util.spdx import spdx_extract
 from releng_tool.util.spdx import spdx_license_identifier
 from releng_tool.util.string import expand
+from typing import Any
 from urllib.parse import urlparse
 import os
 import pickle
@@ -66,6 +70,24 @@ DEFAULT_STRIP_COUNT = 1
 
 # cache name for dvcs database
 DVCS_CACHE_FNAME = '.dvcsdb'
+
+
+@dataclass
+class RelengLoadedPackage:
+    """
+    information about a package load event
+
+    When a package definition is loaded, this class is used to hold the
+    built package instance as well as other information from the load event.
+
+    Args:
+        dependencies: list of known package dependencies
+        globals: extracted environment/globals from the package script
+        package: the package instance from a load
+    """
+    dependencies: list[str] = field(default_factory=list)
+    globals: dict[str, Any] | None = None
+    package: RelengPackage | None = None
 
 
 class RelengPackageManager:
@@ -243,9 +265,7 @@ class RelengPackageManager:
         while names_left:
             name = names_left.pop(0)
 
-            pkg = None
-            env = None
-            deps = []
+            ple = RelengLoadedPackage()
 
             # attempt to load the package from a user defined external directory
             for pkg_dir in self.opts.extern_pkg_dirs:
@@ -254,18 +274,18 @@ class RelengPackageManager:
                 pkg_script, pkg_script_exists = opt_file(pkg_script)
                 if pkg_script_exists or \
                         self.is_defless_package(pkg_def_dir, name):
-                    pkg, env, deps = self.load_package(name, pkg_script)
+                    ple = self.load_package(name, pkg_script)
 
             # if a package location has not been found, finally check the
             # default package directory
-            if not pkg:
+            if not ple.package:
                 pkg_script = os.path.join(self.opts.default_pkg_dir, name, name)
                 pkg_script, _ = opt_file(pkg_script)
 
-                pkg, env, deps = self.load_package(name, pkg_script)
+                ple = self.load_package(name, pkg_script)
 
-            pkgs[pkg.name] = pkg
-            for dep in deps:
+            pkgs[ple.package.name] = ple.package
+            for dep in ple.dependencies:
                 # if this is an unknown package and is not in out current list,
                 # append it to the list of names to process
                 if dep == name:
@@ -278,12 +298,12 @@ class RelengPackageManager:
                         verbose('adding implicitly defined package: {}', dep)
                         names_left.append(dep)
 
-                    if pkg not in final_deps:
-                        final_deps[pkg] = []
-                    final_deps[pkg].append(dep)
+                    if ple.package not in final_deps:
+                        final_deps[ple.package] = []
+                    final_deps[ple.package].append(dep)
                 else:
-                    pkg.deps.append(pkgs[dep])
-            extend_script_env(self.script_env, env)
+                    ple.package.deps.append(pkgs[dep])
+            extend_script_env(self.script_env, ple.globals)
 
         # for packages which have a dependency but have not been bound yet,
         # bind the dependencies now
@@ -324,9 +344,7 @@ class RelengPackageManager:
             script: the package script to load
 
         Returns:
-            returns a tuple of three (3) containing the package instance, the
-            extracted environment/globals from the package script and a list of
-            known package dependencies
+            package load information which includes the loaded package instance
 
         Raises:
             RelengToolInvalidPackageConfiguration: when an error has been
@@ -1006,7 +1024,11 @@ using deprecated dependency configuration for package: {}
 {}
 ==============================''', name, pprint.pformat(info))
 
-        return pkg, env, deps
+        return RelengLoadedPackage(
+            package=pkg,
+            globals=env,
+            dependencies=deps,
+        )
 
     def load_package_script(self, name, script):
         """

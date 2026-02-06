@@ -21,21 +21,21 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('deps-invalid-value')
 
     def test_pkgconfig_deps_missing(self):
-        _, _, deps = self.LOAD('missing')
+        deps = self.LOAD('missing').dependencies
         self.assertListEqual(deps, [])
 
     def test_pkgconfig_deps_valid(self):
-        _, _, deps = self.LOAD('deps-valid-empty')
+        deps = self.LOAD('deps-valid-empty').dependencies
         self.assertListEqual(deps, [])
 
-        _, _, deps = self.LOAD('deps-valid-multiple')
+        deps = self.LOAD('deps-valid-multiple').dependencies
         self.assertListEqual(deps, [
             'dep1',
             'dep2',
             'dep3',
         ])
 
-        _, _, deps = self.LOAD('deps-valid-single')
+        deps = self.LOAD('deps-valid-single').dependencies
         self.assertListEqual(deps, [
             'dep',
         ])
@@ -51,11 +51,11 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('fetch-opts-invalid-value-type')
 
     def test_pkgconfig_fetch_opts_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.fetch_opts)
 
     def test_pkgconfig_fetch_opts_valid(self):
-        pkg, _, _ = self.LOAD('fetch-opts-valid-dict')
+        pkg = self.LOAD('fetch-opts-valid-dict').package
         self.assertDictEqual(pkg.fetch_opts, {
             'key1': None,
             'key4': 'value',
@@ -63,12 +63,12 @@ class TestPkgConfigs(TestPkgConfigsBase):
             'key3': 'val3',
         })
 
-        pkg, _, _ = self.LOAD('fetch-opts-valid-str')
+        pkg = self.LOAD('fetch-opts-valid-str').package
         self.assertDictEqual(pkg.fetch_opts, {
             '--my-option': VOID,
         })
 
-        pkg, _, _ = self.LOAD('fetch-opts-valid-strs')
+        pkg = self.LOAD('fetch-opts-valid-strs').package
         self.assertDictEqual(pkg.fetch_opts, {
             'option4': VOID,
             'option5': VOID,
@@ -83,11 +83,11 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('fixed-jobs-invalid-value')
 
     def test_pkgconfig_fixed_jobs_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.fixed_jobs)
 
     def test_pkgconfig_fixed_jobs_valid(self):
-        pkg, _, _ = self.LOAD('fixed-jobs-valid')
+        pkg = self.LOAD('fixed-jobs-valid').package
         self.assertEqual(pkg.fixed_jobs, 24)
 
     def test_pkgconfig_install_type_invalid(self):
@@ -98,44 +98,44 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('install-type-invalid-value')
 
     def test_pkgconfig_install_type_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.install_type)
 
     def test_pkgconfig_install_type_valid(self):
-        pkg, _, _ = self.LOAD('install-type-valid-host')
+        pkg = self.LOAD('install-type-valid-host').package
         self.assertEqual(pkg.install_type, PackageInstallType.HOST)
 
-        pkg, _, _ = self.LOAD('install-type-valid-images')
+        pkg = self.LOAD('install-type-valid-images').package
         self.assertEqual(pkg.install_type, PackageInstallType.IMAGES)
 
-        pkg, _, _ = self.LOAD('install-type-valid-staging')
+        pkg = self.LOAD('install-type-valid-staging').package
         self.assertEqual(pkg.install_type, PackageInstallType.STAGING)
 
-        pkg, _, _ = self.LOAD('install-type-valid-staging-target')
+        pkg = self.LOAD('install-type-valid-staging-target').package
         self.assertEqual(pkg.install_type,
             PackageInstallType.STAGING_AND_TARGET)
 
-        pkg, _, _ = self.LOAD('install-type-valid-target')
+        pkg = self.LOAD('install-type-valid-target').package
         self.assertEqual(pkg.install_type, PackageInstallType.TARGET)
 
     def test_pkgconfig_is_internal_disabled(self):
-        pkg, _, _ = self.LOAD('internal-flag-disabled')
+        pkg = self.LOAD('internal-flag-disabled').package
         self.assertFalse(pkg.is_internal)
 
-        pkg, _, _ = self.LOAD('external-flag-disabled')
+        pkg = self.LOAD('external-flag-disabled').package
         self.assertTrue(pkg.is_internal)
 
-        pkg, _, _ = self.LOAD('internal-external-flag-disabled')
+        pkg = self.LOAD('internal-external-flag-disabled').package
         self.assertFalse(pkg.is_internal)
 
     def test_pkgconfig_is_internal_enabled(self):
-        pkg, _, _ = self.LOAD('internal-flag-enabled')
+        pkg = self.LOAD('internal-flag-enabled').package
         self.assertTrue(pkg.is_internal)
 
-        pkg, _, _ = self.LOAD('external-flag-enabled')
+        pkg = self.LOAD('external-flag-enabled').package
         self.assertFalse(pkg.is_internal)
 
-        pkg, _, _ = self.LOAD('internal-external-flag-enabled')
+        pkg = self.LOAD('internal-external-flag-enabled').package
         self.assertTrue(pkg.is_internal)
 
     def test_pkgconfig_is_internal_invalid(self):
@@ -152,7 +152,7 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('internal-external-flag-conflict2')
 
     def test_pkgconfig_is_internal_missing_default(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertFalse(pkg.is_internal)
 
     def test_pkgconfig_is_internal_missing_implicit_internal(self):
@@ -163,7 +163,7 @@ class TestPkgConfigs(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('missing', manager=manager)
+        pkg = self.LOAD('missing', manager=manager).package
         self.assertTrue(pkg.is_internal)
 
     def test_pkgconfig_license_invalid(self):
@@ -174,40 +174,40 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('license-invalid-value')
 
     def test_pkgconfig_license_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.license)
 
     def test_pkgconfig_license_valid(self):
-        pkg, _, _ = self.LOAD('license-valid-empty')
+        pkg = self.LOAD('license-valid-empty').package
         self.assertListEqual(pkg.license, [])
 
-        pkg, _, _ = self.LOAD('license-valid-multiple-conjunctive')
+        pkg = self.LOAD('license-valid-multiple-conjunctive').package
         self.assertTupleEqual(pkg.license, (
             'license1',
             'license2',
             'license3',
         ))
 
-        pkg, _, _ = self.LOAD('license-valid-multiple-disjunctive')
+        pkg = self.LOAD('license-valid-multiple-disjunctive').package
         self.assertListEqual(pkg.license, [
             'license1',
             'license2',
             'license3',
         ])
 
-        pkg, _, _ = self.LOAD('license-valid-single')
+        pkg = self.LOAD('license-valid-single').package
         self.assertListEqual(pkg.license, [
             'license',
         ])
 
-        pkg, _, _ = self.LOAD('license-valid-multiple-mixed1')
+        pkg = self.LOAD('license-valid-multiple-mixed1').package
         self.assertListEqual(pkg.license, [
             'A OR B',
             'C AND D',
             'E OR F',
         ])
 
-        pkg, _, _ = self.LOAD('license-valid-multiple-mixed2')
+        pkg = self.LOAD('license-valid-multiple-mixed2').package
         self.assertTupleEqual(pkg.license, (
             'A OR B',
             'C AND D',
@@ -222,31 +222,31 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('license-files-invalid-value')
 
     def test_pkgconfig_license_files_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.license_files)
 
     def test_pkgconfig_license_files_valid(self):
-        pkg, _, _ = self.LOAD('license-files-valid-empty')
+        pkg = self.LOAD('license-files-valid-empty').package
         self.assertListEqual(pkg.license_files, [])
 
-        pkg, _, _ = self.LOAD('license-files-valid-multiple')
+        pkg = self.LOAD('license-files-valid-multiple').package
         self.assertListEqual(pkg.license_files, [
             'license-file1',
             'license-file2',
             'license-file3',
         ])
 
-        pkg, _, _ = self.LOAD('license-files-valid-single')
+        pkg = self.LOAD('license-files-valid-single').package
         self.assertListEqual(pkg.license_files, [
             'license-file',
         ])
 
     def test_pkgconfig_no_extraction_disabled(self):
-        pkg, _, _ = self.LOAD('no-extraction-disabled')
+        pkg = self.LOAD('no-extraction-disabled').package
         self.assertFalse(pkg.no_extraction)
 
     def test_pkgconfig_no_extraction_enabled(self):
-        pkg, _, _ = self.LOAD('no-extraction-enabled')
+        pkg = self.LOAD('no-extraction-enabled').package
         self.assertTrue(pkg.no_extraction)
 
     def test_pkgconfig_no_extraction_invalid(self):
@@ -254,7 +254,7 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('no-extraction-invalid')
 
     def test_pkgconfig_no_extraction_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.no_extraction)
 
     def test_pkgconfig_revision_invalid(self):
@@ -262,11 +262,11 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('revision-invalid-type')
 
     def test_pkgconfig_revision_valid_explicit(self):
-        pkg, _, _ = self.LOAD('revision-valid-explicit')
+        pkg = self.LOAD('revision-valid-explicit').package
         self.assertEqual(pkg.revision, 'myrevision')
 
     def test_pkgconfig_revision_valid_implicit(self):
-        pkg, _, _ = self.LOAD('revision-valid-implicit')
+        pkg = self.LOAD('revision-valid-implicit').package
         self.assertEqual(pkg.revision, 'myversion')
 
     def test_pkgconfig_strip_count_invalid(self):
@@ -277,12 +277,12 @@ class TestPkgConfigs(TestPkgConfigsBase):
             self.LOAD('strip-count-invalid-value')
 
     def test_pkgconfig_strip_count_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertEqual(pkg.strip_count, 1)  # default
 
     def test_pkgconfig_strip_count_valid(self):
-        pkg, _, _ = self.LOAD('strip-count-valid-zero')
+        pkg = self.LOAD('strip-count-valid-zero').package
         self.assertEqual(pkg.strip_count, 0)
 
-        pkg, _, _ = self.LOAD('strip-count-valid-nonzero')
+        pkg = self.LOAD('strip-count-valid-nonzero').package
         self.assertEqual(pkg.strip_count, 2)

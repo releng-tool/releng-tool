@@ -11,10 +11,10 @@ class TestPkgConfigsVsDevCmdProducts(TestPkgConfigsBase):
             self.LOAD('vsdevcmd-products-invalid-type')
 
     def test_pkgconfig_vsdevcmd_products_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.vsdevcmd_products)
 
     def test_pkgconfig_vsdevcmd_products_version(self):
-        pkg, _, _ = self.LOAD('vsdevcmd-products-valid')
+        pkg = self.LOAD('vsdevcmd-products-valid').package
         self.assertEqual(pkg.vsdevcmd_products,
             'Microsoft.VisualStudio.Product.BuildTools')

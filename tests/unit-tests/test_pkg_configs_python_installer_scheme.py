@@ -11,11 +11,11 @@ class TestPkgPythonConfigsInstallerScheme(TestPkgConfigsBase):
             self.LOAD('python-installer-scheme-invalid-type')
 
     def test_pkgconfig_python_installer_scheme_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.python_installer_scheme)
 
     def test_pkgconfig_python_installer_scheme_valid_custom(self):
-        pkg, _, _ = self.LOAD('python-installer-scheme-valid-custom')
+        pkg = self.LOAD('python-installer-scheme-valid-custom').package
         self.assertDictEqual(pkg.python_installer_scheme, {
             'data':        '',
             'include':     'myinclude/python',
@@ -28,9 +28,9 @@ class TestPkgPythonConfigsInstallerScheme(TestPkgConfigsBase):
         })
 
     def test_pkgconfig_python_installer_scheme_valid_native(self):
-        pkg, _, _ = self.LOAD('python-installer-scheme-valid-native')
+        pkg = self.LOAD('python-installer-scheme-valid-native').package
         self.assertEqual(pkg.python_installer_scheme, 'native')
 
     def test_pkgconfig_python_installer_scheme_valid_stock(self):
-        pkg, _, _ = self.LOAD('python-installer-scheme-valid-stock')
+        pkg = self.LOAD('python-installer-scheme-valid-stock').package
         self.assertEqual(pkg.python_installer_scheme, 'posix_prefix')

@@ -16,14 +16,14 @@ class TestPkgConfigsExtensions(TestPkgConfigsBase):
             self.LOAD('ext-mods-invalid-type')
 
     def test_pkgconfig_ext_mods_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.ext_modifiers)
 
     def test_pkgconfig_ext_mods_valid(self):
-        pkg, _, _ = self.LOAD('ext-mods-valid-empty')
+        pkg = self.LOAD('ext-mods-valid-empty').package
         self.assertDictEqual(pkg.ext_modifiers, {})
 
-        pkg, _, _ = self.LOAD('ext-mods-valid-data')
+        pkg = self.LOAD('ext-mods-valid-data').package
         self.assertDictEqual(pkg.ext_modifiers, {
             'mod1': 'value',
             'mod2': True,
@@ -37,7 +37,7 @@ class TestPkgConfigsExtensions(TestPkgConfigsBase):
             self.LOAD('extract-type-invalid-type')
 
     def test_pkgconfig_extract_type_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.extract_type)
 
     def test_pkgconfig_extract_type_registered(self):
@@ -53,7 +53,7 @@ class TestPkgConfigsExtensions(TestPkgConfigsBase):
         CUSTOM_EXTRACT_NAME = 'ext-my-custom-extract-type'
         registry.add_extract_type(CUSTOM_EXTRACT_NAME, MockExtract)
 
-        pkg, _, _ = self.LOAD('extract-type-valid', manager=manager)
+        pkg = self.LOAD('extract-type-valid', manager=manager).package
         self.assertEqual(pkg.extract_type, CUSTOM_EXTRACT_NAME)
 
     def test_pkgconfig_extract_type_unregistered(self):

@@ -12,7 +12,7 @@ class TestPkgConfigsPrefix(TestPkgConfigsBase):
             self.LOAD('prefix-invalid-type')
 
     def test_pkgconfig_prefix_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.prefix)
 
     def test_pkgconfig_prefix_traversal(self):
@@ -20,9 +20,9 @@ class TestPkgConfigsPrefix(TestPkgConfigsBase):
             self.LOAD('prefix-traversal')
 
     def test_pkgconfig_prefix_valid_path(self):
-        pkg, _, _ = self.LOAD('prefix-valid-path')
+        pkg = self.LOAD('prefix-valid-path').package
         self.assertEqual(pkg.prefix, 'myprefix')
 
     def test_pkgconfig_prefix_valid_str(self):
-        pkg, _, _ = self.LOAD('prefix-valid-str')
+        pkg = self.LOAD('prefix-valid-str').package
         self.assertEqual(pkg.prefix, 'myprefix')

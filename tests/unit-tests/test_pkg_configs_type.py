@@ -17,33 +17,33 @@ class TestPkgConfigsPkgType(TestPkgConfigsBase):
             self.LOAD('pkg-type-invalid-value')
 
     def test_pkgconfig_type_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertEqual(pkg.type, PackageType.SCRIPT)
 
     def test_pkgconfig_type_valid_autotools(self):
-        pkg, _, _ = self.LOAD('pkg-type-valid-autotools')
+        pkg = self.LOAD('pkg-type-valid-autotools').package
         self.assertEqual(pkg.type, PackageType.AUTOTOOLS)
 
     def test_pkgconfig_type_valid_cmake(self):
-        pkg, _, _ = self.LOAD('pkg-type-valid-cmake')
+        pkg = self.LOAD('pkg-type-valid-cmake').package
         self.assertEqual(pkg.type, PackageType.CMAKE)
 
     def test_pkgconfig_type_valid_make(self):
-        pkg, _, _ = self.LOAD('pkg-type-valid-make')
+        pkg = self.LOAD('pkg-type-valid-make').package
         self.assertEqual(pkg.type, PackageType.MAKE)
 
     def test_pkgconfig_type_valid_meson(self):
-        pkg, _, _ = self.LOAD('pkg-type-valid-meson')
+        pkg = self.LOAD('pkg-type-valid-meson').package
         self.assertEqual(pkg.type, PackageType.MESON)
 
     def test_pkgconfig_type_valid_python(self):
-        pkg, _, _ = self.LOAD('pkg-type-valid-python')
+        pkg = self.LOAD('pkg-type-valid-python').package
         self.assertEqual(pkg.type, PackageType.PYTHON)
 
     def test_pkgconfig_type_valid_scons(self):
-        pkg, _, _ = self.LOAD('pkg-type-valid-scons')
+        pkg = self.LOAD('pkg-type-valid-scons').package
         self.assertEqual(pkg.type, PackageType.SCONS)
 
     def test_pkgconfig_type_valid_script(self):
-        pkg, _, _ = self.LOAD('pkg-type-valid-script')
+        pkg = self.LOAD('pkg-type-valid-script').package
         self.assertEqual(pkg.type, PackageType.SCRIPT)

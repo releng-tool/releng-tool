@@ -20,17 +20,17 @@ class TestPkgConfigsGit(TestPkgConfigsBase):
             self.LOAD('git-config-invalid-value-type')
 
     def test_pkgconfig_git_config_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.git_config)
 
-        pkg, _, _ = self.LOAD('conf-defs-valid')
+        pkg = self.LOAD('conf-defs-valid').package
         self.assertIsNone(pkg.git_config)
 
-        pkg, _, _ = self.LOAD('install-defs-valid')
+        pkg = self.LOAD('install-defs-valid').package
         self.assertIsNone(pkg.git_config)
 
     def test_pkgconfig_git_config_valid(self):
-        pkg, _, _ = self.LOAD('git-config-valid')
+        pkg = self.LOAD('git-config-valid').package
         self.assertDictEqual(pkg.git_config, {
             'key1': 'val1',
             'key2': None,
@@ -46,15 +46,15 @@ class TestPkgConfigsGit(TestPkgConfigsBase):
             self.LOAD('git-depth-invalid-value')
 
     def test_pkgconfig_git_depth_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.git_depth)
 
     def test_pkgconfig_git_depth_valid_nonzero(self):
-        pkg, _, _ = self.LOAD('git-depth-valid-nonzero')
+        pkg = self.LOAD('git-depth-valid-nonzero').package
         self.assertEqual(pkg.git_depth, 50)
 
     def test_pkgconfig_git_depth_valid_zero(self):
-        pkg, _, _ = self.LOAD('git-depth-valid-zero')
+        pkg = self.LOAD('git-depth-valid-zero').package
         self.assertEqual(pkg.git_depth, 0)
 
     def test_pkgconfig_git_refspecs_invalid(self):
@@ -65,31 +65,31 @@ class TestPkgConfigsGit(TestPkgConfigsBase):
             self.LOAD('git-refspecs-invalid-value')
 
     def test_pkgconfig_git_refspecs_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.git_refspecs)
 
     def test_pkgconfig_git_refspecs_valid(self):
-        pkg, _, _ = self.LOAD('git-refspecs-valid-empty')
+        pkg = self.LOAD('git-refspecs-valid-empty').package
         self.assertListEqual(pkg.git_refspecs, [])
 
-        pkg, _, _ = self.LOAD('git-refspecs-valid-multiple')
+        pkg = self.LOAD('git-refspecs-valid-multiple').package
         self.assertListEqual(pkg.git_refspecs, [
             'refspec1',
             'refspec2',
             'refspec3',
         ])
 
-        pkg, _, _ = self.LOAD('git-refspecs-valid-single')
+        pkg = self.LOAD('git-refspecs-valid-single').package
         self.assertListEqual(pkg.git_refspecs, [
             'refspec',
         ])
 
     def test_pkgconfig_git_submodules_disabled(self):
-        pkg, _, _ = self.LOAD('git-submodules-disabled')
+        pkg = self.LOAD('git-submodules-disabled').package
         self.assertFalse(pkg.git_submodules)
 
     def test_pkgconfig_git_submodules_enabled(self):
-        pkg, _, _ = self.LOAD('git-submodules-enabled')
+        pkg = self.LOAD('git-submodules-enabled').package
         self.assertTrue(pkg.git_submodules)
 
     def test_pkgconfig_git_submodules_invalid(self):
@@ -97,15 +97,15 @@ class TestPkgConfigsGit(TestPkgConfigsBase):
             self.LOAD('git-submodules-invalid')
 
     def test_pkgconfig_git_submodules_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.git_submodules)
 
     def test_pkgconfig_git_verify_disabled(self):
-        pkg, _, _ = self.LOAD('git-verify-disabled')
+        pkg = self.LOAD('git-verify-disabled').package
         self.assertFalse(pkg.git_verify_revision)
 
     def test_pkgconfig_git_verify_enabled(self):
-        pkg, _, _ = self.LOAD('git-verify-enabled')
+        pkg = self.LOAD('git-verify-enabled').package
         self.assertTrue(pkg.git_verify_revision)
 
     def test_pkgconfig_git_verify_invalid(self):
@@ -113,5 +113,5 @@ class TestPkgConfigsGit(TestPkgConfigsBase):
             self.LOAD('git-verify-invalid')
 
     def test_pkgconfig_git_verify_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.git_verify_revision)

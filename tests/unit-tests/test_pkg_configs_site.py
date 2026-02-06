@@ -15,11 +15,11 @@ class TestPkgConfigsSite(TestPkgConfigsBase):
             self.LOAD('site-invalid-type')
 
     def test_pkgconfig_site_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.site)
 
     def test_pkgconfig_site_valid_devmode_default(self):
-        pkg, _, _ = self.LOAD('site-valid-devmode')
+        pkg = self.LOAD('site-valid-devmode').package
         self.assertEqual(pkg.site, 'https://example.org/file.tgz')
 
     def test_pkgconfig_site_valid_devmode_explicit(self):
@@ -29,7 +29,7 @@ class TestPkgConfigsSite(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('site-valid-devmode', manager=manager)
+        pkg = self.LOAD('site-valid-devmode', manager=manager).package
         self.assertEqual(pkg.site, 'git@git.example.org:my-group/my-prj.git')
 
     def test_pkgconfig_site_valid_devmode_fallback(self):
@@ -39,16 +39,16 @@ class TestPkgConfigsSite(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('site-valid-devmode', manager=manager)
+        pkg = self.LOAD('site-valid-devmode', manager=manager).package
         self.assertEqual(pkg.site, 'https://example.org/file.tgz')
 
     def test_pkgconfig_site_valid_lazy_posix_file(self):
         if sys.platform == 'win32':
             raise self.skipTest('lazy posix test skipped for win32')
 
-        pkg, _, _ = self.LOAD('site-valid-lazy-posix-file')
+        pkg = self.LOAD('site-valid-lazy-posix-file').package
         self.assertEqual(pkg.site, 'file:///opt/some/file')
 
     def test_pkgconfig_site_valid_simple(self):
-        pkg, _, _ = self.LOAD('site-valid-simple')
+        pkg = self.LOAD('site-valid-simple').package
         self.assertEqual(pkg.site, 'https://example.com/file.tgz')

@@ -11,9 +11,9 @@ class TestPkgPythonConfigsInstallerInterpreter(TestPkgConfigsBase):
             self.LOAD('python-installer-interpreter-invalid-type')
 
     def test_pkgconfig_python_installer_interpreter_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.python_installer_interpreter)
 
     def test_pkgconfig_python_installer_interpreter_valid(self):
-        pkg, _, _ = self.LOAD('python-installer-interpreter-valid')
+        pkg = self.LOAD('python-installer-interpreter-valid').package
         self.assertEqual(pkg.python_installer_interpreter, 'custom/path')

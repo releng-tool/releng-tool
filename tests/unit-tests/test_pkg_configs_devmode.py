@@ -10,11 +10,11 @@ from tests.support.pkg_config_test import TestPkgConfigsBase
 
 class TestPkgConfigsDevmode(TestPkgConfigsBase):
     def test_pkgconfig_devmode_ignore_cache_disabled(self):
-        pkg, _, _ = self.LOAD('devmode-ignore-cache-disabled')
+        pkg = self.LOAD('devmode-ignore-cache-disabled').package
         self.assertEqual(pkg.devmode_ignore_cache, False)
 
     def test_pkgconfig_devmode_ignore_cache_enabled(self):
-        pkg, _, _ = self.LOAD('devmode-ignore-cache-enabled')
+        pkg = self.LOAD('devmode-ignore-cache-enabled').package
         self.assertEqual(pkg.devmode_ignore_cache, True)
 
     def test_pkgconfig_devmode_ignore_cache_invalid(self):
@@ -28,7 +28,7 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('missing', manager=manager)
+        pkg = self.LOAD('missing', manager=manager).package
         self.assertTrue(pkg.devmode_ignore_cache)
 
     def test_pkgconfig_devmode_ignore_cache_default_off(self):
@@ -38,11 +38,11 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('missing', manager=manager)
+        pkg = self.LOAD('missing', manager=manager).package
         self.assertFalse(pkg.devmode_ignore_cache)
 
     def test_pkgconfig_devmode_ignore_cache_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.devmode_ignore_cache)
 
     def test_pkgconfig_devmode_revision_invalid(self):
@@ -50,11 +50,11 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
             self.LOAD('devmode-revision-invalid-type')
 
     def test_pkgconfig_devmode_revision_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertFalse(pkg.devmode)
 
     def test_pkgconfig_devmode_revision_valid_default(self):
-        pkg, _, _ = self.LOAD('devmode-revision-valid')
+        pkg = self.LOAD('devmode-revision-valid').package
         self.assertEqual(pkg.revision, 'dummy')
         self.assertEqual(pkg.version, 'dummy')
         self.assertFalse(pkg.devmode)
@@ -66,7 +66,7 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('devmode-revision-valid', manager=manager)
+        pkg = self.LOAD('devmode-revision-valid', manager=manager).package
         self.assertEqual(pkg.revision, 'my-devmode-revision2')
         self.assertEqual(pkg.version, 'my-devmode-revision2')
         self.assertTrue(pkg.devmode)
@@ -78,8 +78,9 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD(
-            'devmode-revision-valid-deprecated', manager=manager)
+        pkg = self.LOAD(
+            'devmode-revision-valid-deprecated',
+            manager=manager).package
         self.assertEqual(pkg.revision, 'my-devmode-revision')
         self.assertEqual(pkg.version, 'my-devmode-revision')
         self.assertTrue(pkg.devmode)
@@ -91,8 +92,9 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD(
-            'devmode-revision-valid-fallback-asterisk-raw', manager=manager)
+        pkg = self.LOAD(
+            'devmode-revision-valid-fallback-asterisk-raw',
+            manager=manager).package
         self.assertEqual(pkg.revision, 'my-fallback-asterisk-raw')
         self.assertEqual(pkg.version, 'dummy')
         self.assertFalse(pkg.devmode)
@@ -104,8 +106,9 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD(
-            'devmode-revision-valid-fallback-asterisk-var', manager=manager)
+        pkg = self.LOAD(
+            'devmode-revision-valid-fallback-asterisk-var',
+            manager=manager).package
         self.assertEqual(pkg.revision, 'my-fallback-asterisk-variable')
         self.assertEqual(pkg.version, 'dummy')
         self.assertFalse(pkg.devmode)
@@ -117,8 +120,9 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD(
-            'devmode-revision-valid-fallback-version', manager=manager)
+        pkg = self.LOAD(
+            'devmode-revision-valid-fallback-version',
+            manager=manager).package
         self.assertEqual(pkg.revision, 'dummy')
         self.assertEqual(pkg.version, 'dummy')
         self.assertFalse(pkg.devmode)

@@ -11,13 +11,13 @@ class TestPkgConfigsVsDevCmd(TestPkgConfigsBase):
             self.LOAD('vsdevcmd-invalid-type')
 
     def test_pkgconfig_vsdevcmd_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.vsdevcmd)
 
     def test_pkgconfig_vsdevcmd_default(self):
-        pkg, _, _ = self.LOAD('vsdevcmd-valid-default')
+        pkg = self.LOAD('vsdevcmd-valid-default').package
         self.assertTrue(pkg.vsdevcmd)
 
     def test_pkgconfig_vsdevcmd_version(self):
-        pkg, _, _ = self.LOAD('vsdevcmd-valid-version')
+        pkg = self.LOAD('vsdevcmd-valid-version').package
         self.assertEqual(pkg.vsdevcmd, '[16.4,16.5)')

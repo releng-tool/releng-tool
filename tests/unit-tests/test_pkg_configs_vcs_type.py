@@ -20,7 +20,7 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('vcs-type-devmode-override', manager=manager)
+        pkg = self.LOAD('vcs-type-devmode-override', manager=manager).package
         self.assertEqual(pkg.vcs_type, VcsType.BZR)
 
     def test_pkgconfig_vcs_type_invalid_brz(self):
@@ -96,134 +96,135 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
             self.LOAD('vcs-type-invalid-svn-norevision')
 
     def test_pkgconfig_vcs_type_missing_site(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
+
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
 
     def test_pkgconfig_vcs_type_valid_brz_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-brz-explicit')
+        pkg = self.LOAD('vcs-type-valid-brz-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.BRZ)
 
     def test_pkgconfig_vcs_type_valid_brz_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-brz-implicit')
+        pkg = self.LOAD('vcs-type-valid-brz-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.BRZ)
 
     def test_pkgconfig_vcs_type_valid_bzr_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-bzr-explicit')
+        pkg = self.LOAD('vcs-type-valid-bzr-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.BZR)
 
     def test_pkgconfig_vcs_type_valid_bzr_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-bzr-implicit')
+        pkg = self.LOAD('vcs-type-valid-bzr-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.BZR)
 
     def test_pkgconfig_vcs_type_valid_cvs_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-explicit')
+        pkg = self.LOAD('vcs-type-valid-cvs-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
     def test_pkgconfig_vcs_type_valid_cvs_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit')
+        pkg = self.LOAD('vcs-type-valid-cvs-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
-        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit2')
+        pkg = self.LOAD('vcs-type-valid-cvs-implicit2').package
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
-        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit3')
+        pkg = self.LOAD('vcs-type-valid-cvs-implicit3').package
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
-        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit4')
+        pkg = self.LOAD('vcs-type-valid-cvs-implicit4').package
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
-        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit5')
+        pkg = self.LOAD('vcs-type-valid-cvs-implicit5').package
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
-        pkg, _, _ = self.LOAD('vcs-type-valid-cvs-implicit6')
+        pkg = self.LOAD('vcs-type-valid-cvs-implicit6').package
         self.assertEqual(pkg.vcs_type, VcsType.CVS)
 
     def test_pkgconfig_vcs_type_valid_file_deprecated(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-file-deprecated-url')
+        pkg = self.LOAD('vcs-type-valid-file-deprecated-url').package
         self.assertEqual(pkg.vcs_type, VcsType.FILE)
 
     def test_pkgconfig_vcs_type_valid_file_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-file-explicit')
+        pkg = self.LOAD('vcs-type-valid-file-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.FILE)
 
     def test_pkgconfig_vcs_type_valid_file_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-file-implicit')
+        pkg = self.LOAD('vcs-type-valid-file-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.FILE)
 
     def test_pkgconfig_vcs_type_valid_git_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-git-explicit')
+        pkg = self.LOAD('vcs-type-valid-git-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.GIT)
 
     def test_pkgconfig_vcs_type_valid_git_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-git-implicit1')
+        pkg = self.LOAD('vcs-type-valid-git-implicit1').package
         self.assertEqual(pkg.vcs_type, VcsType.GIT)
 
-        pkg, _, _ = self.LOAD('vcs-type-valid-git-implicit2')
+        pkg = self.LOAD('vcs-type-valid-git-implicit2').package
         self.assertEqual(pkg.vcs_type, VcsType.GIT)
 
     def test_pkgconfig_vcs_type_valid_hg_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-hg-explicit')
+        pkg = self.LOAD('vcs-type-valid-hg-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.HG)
 
     def test_pkgconfig_vcs_type_valid_hg_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-hg-implicit')
+        pkg = self.LOAD('vcs-type-valid-hg-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.HG)
 
     def test_pkgconfig_vcs_type_valid_local_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-local-explicit')
+        pkg = self.LOAD('vcs-type-valid-local-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.LOCAL)
 
     def test_pkgconfig_vcs_type_valid_local_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-local-implicit')
+        pkg = self.LOAD('vcs-type-valid-local-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.LOCAL)
 
     def test_pkgconfig_vcs_type_valid_none_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-none-explicit')
+        pkg = self.LOAD('vcs-type-valid-none-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
 
     def test_pkgconfig_vcs_type_valid_none_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-none-implicit')
+        pkg = self.LOAD('vcs-type-valid-none-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
 
     def test_pkgconfig_vcs_type_valid_perforce_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-perforce-explicit')
+        pkg = self.LOAD('vcs-type-valid-perforce-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.PERFORCE)
 
     def test_pkgconfig_vcs_type_valid_perforce_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-perforce-implicit')
+        pkg = self.LOAD('vcs-type-valid-perforce-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.PERFORCE)
 
-        pkg, _, _ = self.LOAD('vcs-type-valid-perforce-implicit2')
+        pkg = self.LOAD('vcs-type-valid-perforce-implicit2').package
         self.assertEqual(pkg.vcs_type, VcsType.PERFORCE)
 
     def test_pkgconfig_vcs_type_valid_rsync_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-rsync-explicit')
+        pkg = self.LOAD('vcs-type-valid-rsync-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.RSYNC)
 
     def test_pkgconfig_vcs_type_valid_rsync_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-rsync-implicit')
+        pkg = self.LOAD('vcs-type-valid-rsync-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.RSYNC)
 
     def test_pkgconfig_vcs_type_valid_scp_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-scp-explicit')
+        pkg = self.LOAD('vcs-type-valid-scp-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.SCP)
 
     def test_pkgconfig_vcs_type_valid_scp_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-scp-implicit')
+        pkg = self.LOAD('vcs-type-valid-scp-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.SCP)
 
     def test_pkgconfig_vcs_type_valid_svn_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-svn-explicit')
+        pkg = self.LOAD('vcs-type-valid-svn-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.SVN)
 
     def test_pkgconfig_vcs_type_valid_svn_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-svn-implicit')
+        pkg = self.LOAD('vcs-type-valid-svn-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.SVN)
 
     def test_pkgconfig_vcs_type_valid_url_explicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-url-explicit')
+        pkg = self.LOAD('vcs-type-valid-url-explicit').package
         self.assertEqual(pkg.vcs_type, VcsType.URL)
 
     def test_pkgconfig_vcs_type_valid_url_implicit(self):
-        pkg, _, _ = self.LOAD('vcs-type-valid-url-implicit')
+        pkg = self.LOAD('vcs-type-valid-url-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.URL)

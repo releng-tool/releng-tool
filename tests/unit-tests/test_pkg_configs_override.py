@@ -18,9 +18,9 @@ class TestPkgConfigsOverride(TestPkgConfigsBase):
         registry = RelengRegistry()
         manager = RelengPackageManager(opts, registry)
 
-        pkg, _, _ = self.LOAD('override-check', manager=manager)
+        pkg = self.LOAD('override-check', manager=manager).package
         self.assertEqual(pkg.revision, 'overridden')
 
     def test_pkgconfig_override_notconfigured(self):
-        pkg, _, _ = self.LOAD('override-check')
+        pkg = self.LOAD('override-check').package
         self.assertEqual(pkg.revision, 'no-override')

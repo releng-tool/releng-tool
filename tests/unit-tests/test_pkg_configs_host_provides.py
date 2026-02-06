@@ -7,7 +7,7 @@ from tests.support.pkg_config_test import TestPkgConfigsBase
 
 class TestPkgConfigsHostProvides(TestPkgConfigsBase):
     def test_pkgconfig_host_provides_ignored(self):
-        pkg, _, _ = self.LOAD('host-provides-ignored')
+        pkg = self.LOAD('host-provides-ignored').package
         self.assertIsNone(pkg.host_provides)
 
     def test_pkgconfig_host_provides_invalid(self):
@@ -18,18 +18,18 @@ class TestPkgConfigsHostProvides(TestPkgConfigsBase):
             self.LOAD('host-provides-invalid-value')
 
     def test_pkgconfig_host_provides_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.host_provides)
 
     def test_pkgconfig_host_provides_valid(self):
-        pkg, _, _ = self.LOAD('host-provides-valid-empty-single')
+        pkg = self.LOAD('host-provides-valid-empty-single').package
         self.assertEqual(pkg.host_provides, [''])
 
-        pkg, _, _ = self.LOAD('host-provides-valid-empty-list')
+        pkg = self.LOAD('host-provides-valid-empty-list').package
         self.assertEqual(pkg.host_provides, [''])
 
-        pkg, _, _ = self.LOAD('host-provides-valid-single')
+        pkg = self.LOAD('host-provides-valid-single').package
         self.assertEqual(pkg.host_provides, ['test-tool'])
 
-        pkg, _, _ = self.LOAD('host-provides-valid-multiple')
+        pkg = self.LOAD('host-provides-valid-multiple').package
         self.assertEqual(pkg.host_provides, ['tool-a', 'tool-b'])

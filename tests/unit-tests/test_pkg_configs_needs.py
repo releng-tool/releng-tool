@@ -14,21 +14,21 @@ class TestPkgConfigsNeeds(TestPkgConfigsBase):
             self.LOAD('deps-invalid-value')
 
     def test_pkgconfig_deps_missing_deprecated(self):
-        _, _, deps = self.LOAD('missing')
+        deps = self.LOAD('missing').dependencies
         self.assertListEqual(deps, [])
 
     def test_pkgconfig_deps_valid_deprecated(self):
-        _, _, deps = self.LOAD('deps-valid-empty')
+        deps = self.LOAD('deps-valid-empty').dependencies
         self.assertListEqual(deps, [])
 
-        _, _, deps = self.LOAD('deps-valid-multiple')
+        deps = self.LOAD('deps-valid-multiple').dependencies
         self.assertListEqual(deps, [
             'dep1',
             'dep2',
             'dep3',
         ])
 
-        _, _, deps = self.LOAD('deps-valid-single')
+        deps = self.LOAD('deps-valid-single').dependencies
         self.assertListEqual(deps, [
             'dep',
         ])
@@ -41,21 +41,21 @@ class TestPkgConfigsNeeds(TestPkgConfigsBase):
             self.LOAD('needs-invalid-value')
 
     def test_pkgconfig_needs_missing(self):
-        _, _, needs = self.LOAD('missing')
+        needs = self.LOAD('missing').dependencies
         self.assertListEqual(needs, [])
 
     def test_pkgconfig_needs_valid(self):
-        _, _, deps = self.LOAD('needs-valid-empty')
+        deps = self.LOAD('needs-valid-empty').dependencies
         self.assertListEqual(deps, [])
 
-        _, _, deps = self.LOAD('needs-valid-multiple')
+        deps = self.LOAD('needs-valid-multiple').dependencies
         self.assertListEqual(deps, [
             'dep1',
             'dep2',
             'dep3',
         ])
 
-        _, _, deps = self.LOAD('needs-valid-single')
+        deps = self.LOAD('needs-valid-single').dependencies
         self.assertListEqual(deps, [
             'dep',
         ])

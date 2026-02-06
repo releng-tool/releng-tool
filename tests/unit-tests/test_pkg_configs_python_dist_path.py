@@ -11,13 +11,13 @@ class TestPkgPythonConfigsDistPath(TestPkgConfigsBase):
             self.LOAD('python-dist-path-invalid-type')
 
     def test_pkgconfig_python_dist_path_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.python_dist_path)
 
     def test_pkgconfig_python_dist_path_valid_path(self):
-        pkg, _, _ = self.LOAD('python-dist-path-valid-path')
+        pkg = self.LOAD('python-dist-path-valid-path').package
         self.assertEqual(pkg.python_dist_path, 'dist2')
 
     def test_pkgconfig_python_dist_path_valid_str(self):
-        pkg, _, _ = self.LOAD('python-dist-path-valid-str')
+        pkg = self.LOAD('python-dist-path-valid-str').package
         self.assertEqual(pkg.python_dist_path, 'dist2')

@@ -12,7 +12,7 @@ class TestPkgConfigsBuildSubdir(TestPkgConfigsBase):
             self.LOAD('build-subdir-invalid-type')
 
     def test_pkgconfig_build_subdir_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.build_subdir)
 
     def test_pkgconfig_build_subdir_traversal(self):
@@ -20,9 +20,9 @@ class TestPkgConfigsBuildSubdir(TestPkgConfigsBase):
             self.LOAD('build-subdir-traversal')
 
     def test_pkgconfig_build_subdir_valid_path(self):
-        pkg, _, _ = self.LOAD('build-subdir-valid-path')
+        pkg = self.LOAD('build-subdir-valid-path').package
         self.assertTrue(pkg.build_subdir.endswith('subdir'))
 
     def test_pkgconfig_build_subdir_valid_str(self):
-        pkg, _, _ = self.LOAD('build-subdir-valid-str')
+        pkg = self.LOAD('build-subdir-valid-str').package
         self.assertTrue(pkg.build_subdir.endswith('subdir'))

@@ -11,25 +11,30 @@ class TestPkgPythonConfigsInstallerLauncherKind(TestPkgConfigsBase):
             self.LOAD('python-installer-launcher-kind-invalid-type')
 
     def test_pkgconfig_python_installer_launcher_kind_missing(self):
-        pkg, _, _ = self.LOAD('missing')
+        pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.python_installer_launcher_kind)
 
     def test_pkgconfig_python_installer_launcher_kind_valid_posix(self):
-        pkg, _, _ = self.LOAD('python-installer-launcher-kind-valid-posix')
+        pkg = self.LOAD(
+            'python-installer-launcher-kind-valid-posix').package
         self.assertEqual(pkg.python_installer_launcher_kind, 'posix')
 
     def test_pkgconfig_python_installer_launcher_kind_valid_win_amd64(self):
-        pkg, _, _ = self.LOAD('python-installer-launcher-kind-valid-win-amd64')
+        pkg = self.LOAD(
+            'python-installer-launcher-kind-valid-win-amd64').package
         self.assertEqual(pkg.python_installer_launcher_kind, 'win-amd64')
 
     def test_pkgconfig_python_installer_launcher_kind_valid_win_arm64(self):
-        pkg, _, _ = self.LOAD('python-installer-launcher-kind-valid-win-arm64')
+        pkg = self.LOAD(
+            'python-installer-launcher-kind-valid-win-arm64').package
         self.assertEqual(pkg.python_installer_launcher_kind, 'win-arm64')
 
     def test_pkgconfig_python_installer_launcher_kind_valid_win_arm(self):
-        pkg, _, _ = self.LOAD('python-installer-launcher-kind-valid-win-arm')
+        pkg = self.LOAD(
+            'python-installer-launcher-kind-valid-win-arm').package
         self.assertEqual(pkg.python_installer_launcher_kind, 'win-arm')
 
     def test_pkgconfig_python_installer_launcher_kind_valid_win_ia32(self):
-        pkg, _, _ = self.LOAD('python-installer-launcher-kind-valid-win-ia32')
+        pkg = self.LOAD(
+            'python-installer-launcher-kind-valid-win-ia32').package
         self.assertEqual(pkg.python_installer_launcher_kind, 'win-ia32')
