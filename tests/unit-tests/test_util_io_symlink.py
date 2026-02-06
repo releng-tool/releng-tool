@@ -88,6 +88,29 @@ class TestUtilIoSymlink(RelengToolTestCase):
             self.assertLinkExists('container/target')
             self.assertLinkMatches('container/target', '../target')
 
+    def test_utilio_symlink_expanded(self):
+        with temp_dir(wd=True):
+            os.environ['TARGET'] = 'my-target'
+            os.environ['SYM1_NAME'] = 'my-link1'
+            os.environ['SYM2_NAME'] = 'my-link2'
+            os.environ['SYM3_NAME'] = 'my-link3'
+
+            rv1 = symlink(            '${TARGET}' ,             '$SYM1_NAME' )
+            rv2 = symlink(       Path('${TARGET}'),        Path('$SYM2_NAME'))
+            rv3 = symlink(os.fsencode('${TARGET}'), os.fsencode('$SYM3_NAME'))
+
+            self.assertTrue(rv1)
+            self.assertTrue(rv2)
+            self.assertTrue(rv3)
+
+            self.assertLinkExists('my-link1')
+            self.assertLinkExists('my-link2')
+            self.assertLinkExists('my-link3')
+
+            self.assertLinkMatches('my-link1', 'my-target')
+            self.assertLinkMatches('my-link2', 'my-target')
+            self.assertLinkMatches('my-link3', 'my-target')
+
     def test_utilio_symlink_overwrite(self):
         with temp_dir(wd=True):
             created = symlink('target1', 'my-symlink')

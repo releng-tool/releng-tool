@@ -97,6 +97,42 @@ class TestUtilIoCopy(RelengToolTestCase):
             self.assertExists(work_dir, 'copy-check-02', 'test-file-b')
             self.assertExists(work_dir, 'copy-check-02', 'test-file-c')
 
+    def test_utilio_copy_expanded(self):
+        with prepare_workdir() as work_dir:
+            work_dir = Path(work_dir)
+            path1 = work_dir / 'dir1'
+            path2 = work_dir / 'dir2'
+            path3 = work_dir / 'dir3'
+            path4 = work_dir / 'dir4'
+            path1.mkdir()
+            self.assertTrue(path1.is_dir())
+
+            os.environ['PART1'] = 'dir1'
+            os.environ['PART2'] = 'dir2'
+            os.environ['PART3'] = 'dir3'
+            os.environ['PART4'] = 'dir4'
+
+            test_path1a = work_dir / '${PART1}'
+            test_path2a = work_dir / '${PART2}'
+            result = path_copy(test_path1a, test_path2a)
+            self.assertTrue(result)
+            self.assertTrue(path1.is_dir())
+            self.assertTrue(path2.is_dir())
+
+            test_path2b = f'{work_dir}/${{PART2}}'
+            test_path3b = f'{work_dir}/${{PART3}}'
+            result = path_copy(test_path2b, test_path3b)
+            self.assertTrue(result)
+            self.assertTrue(path2.is_dir())
+            self.assertTrue(path3.is_dir())
+
+            test_path3c = os.fsencode(f'{work_dir}/${{PART3}}')
+            test_path4c = os.fsencode(f'{work_dir}/${{PART4}}')
+            result = path_copy(test_path3c, test_path4c)
+            self.assertTrue(result)
+            self.assertTrue(path3.is_dir())
+            self.assertTrue(path4.is_dir())
+
     def test_utilio_copy_missing(self):
         with prepare_workdir() as work_dir:
             work_dir = Path(work_dir)

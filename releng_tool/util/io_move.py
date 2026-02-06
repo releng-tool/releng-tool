@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_path import path_input
 from releng_tool.util.io_remove import path_remove
 from releng_tool.util.log import err
 from shutil import move
@@ -21,6 +22,7 @@ def path_move(src: str | bytes | os.PathLike, dst: str | bytes | os.PathLike,
     .. versionchanged:: 0.14 Add support for ``dst_dir``.
     .. versionchanged:: 1.4 Add support for ``nested``.
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided paths will now expand variables.
 
     This call will attempt to move a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a
@@ -70,10 +72,10 @@ def path_move(src: str | bytes | os.PathLike, dst: str | bytes | os.PathLike,
 
     success = True
 
-    src_entry = Path(os.fsdecode(src))
+    src_entry = path_input(src)
     dst_str = os.fsdecode(dst)
     dst_flag = dst_str.endswith(('/', '\\')) if dst_dir is None else dst_dir
-    dst_entry = Path(dst_str)
+    dst_entry = path_input(dst_str)
 
     if src_entry == dst_entry:
         return True
@@ -125,6 +127,7 @@ def path_move_into(src: str | bytes | os.PathLike,
     .. versionadded:: 0.14
     .. versionchanged:: 1.4 Add support for ``nested``.
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided paths will now expand variables.
 
     This call will attempt to move a provided file, directory's contents or
     directory itself (if ``nested`` is ``True``); defined by ``src`` into a

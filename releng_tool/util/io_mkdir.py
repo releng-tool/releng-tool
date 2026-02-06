@@ -4,6 +4,7 @@
 from __future__ import annotations
 from pathlib import Path
 from releng_tool.util.critical import raise_for_critical
+from releng_tool.util.io_path import path_input
 from releng_tool.util.log import err
 import os
 
@@ -18,6 +19,7 @@ def mkdir(dir_: str | bytes | os.PathLike, *args: str | bytes | os.PathLike,
     .. versionchanged:: 1.3 Accepts multiple paths components.
     .. versionchanged:: 1.3 Returns the created path.
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided directory will now expand variables.
 
     Attempts to create the provided directory. If the directory already exists,
     this method has no effect. If the directory does not exist and could not be
@@ -56,7 +58,7 @@ def mkdir(dir_: str | bytes | os.PathLike, *args: str | bytes | os.PathLike,
     quiet = kwargs.get('quiet')
     critical = kwargs.get('critical')
 
-    final_dir = Path(os.fsdecode(dir_), *map(os.fsdecode, args))
+    final_dir = Path(path_input(dir_), *map(path_input, args))
     try:
         final_dir.mkdir(parents=True, exist_ok=True)
     except OSError as e:

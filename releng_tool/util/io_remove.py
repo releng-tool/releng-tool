@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 from pathlib import Path
+from releng_tool.util.io_path import path_input
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 import errno
@@ -15,6 +16,7 @@ def path_remove(path: str | bytes | os.PathLike, quiet=False) -> bool:
     remove the provided path
 
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided path will now expand variables.
 
     Attempts to remove the provided path if it exists. The path value can either
     be a directory or a specific file. If the provided path does not exist, this
@@ -39,7 +41,7 @@ def path_remove(path: str | bytes | os.PathLike, quiet=False) -> bool:
         path could not be removed from the system
     """
 
-    req_path = Path(os.fsdecode(path))
+    req_path = path_input(path)
 
     if not req_path.exists() and not req_path.is_symlink():
         return True

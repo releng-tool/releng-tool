@@ -10,6 +10,64 @@ import os
 
 
 class TestUtilIoCat(RelengToolTestCase):
+    def test_utilio_cat_expanded_encoded(self):
+        with redirect_stdout() as stream:
+            with prepare_workdir() as test_dir:
+                test_file1 = Path(test_dir) / 'test-a'
+                with test_file1.open('w') as f:
+                    f.write('a')
+
+                test_file2 = Path(test_dir) / 'test-b'
+                with test_file2.open('w') as f:
+                    f.write('b')
+
+                os.environ['R'] = 'a'
+                os.environ['S'] = 'b'
+
+                test_file_encoded1 = os.fsencode(f'{test_dir}/test-$R')
+                test_file_encoded2 = os.fsencode(f'{test_dir}/test-$S')
+                output = cat(test_file_encoded1, test_file_encoded2)
+
+        self.assertTrue(output)
+        self.assertEqual(stream.getvalue(), 'ab')
+
+    def test_utilio_cat_expanded_path(self):
+        with redirect_stdout() as stream:
+            with prepare_workdir() as test_dir:
+                test_dir = Path(test_dir)
+                test_file1 = test_dir / 'test-a'
+                with test_file1.open('w') as f:
+                    f.write('a')
+
+                test_file2 = test_dir / 'test-b'
+                with test_file2.open('w') as f:
+                    f.write('b')
+
+                os.environ['R'] = 'a'
+                os.environ['S'] = 'b'
+                output = cat(test_dir / 'test-$R', test_dir / 'test-$S')
+
+        self.assertTrue(output)
+        self.assertEqual(stream.getvalue(), 'ab')
+
+    def test_utilio_cat_expanded_str(self):
+        with redirect_stdout() as stream:
+            with prepare_workdir() as test_dir:
+                test_file1 = Path(test_dir) / 'test-a'
+                with test_file1.open('w') as f:
+                    f.write('a')
+
+                test_file2 = Path(test_dir) / 'test-b'
+                with test_file2.open('w') as f:
+                    f.write('b')
+
+                os.environ['R'] = 'a'
+                os.environ['S'] = 'b'
+                output = cat(f'{test_dir}/test-$R', f'{test_dir}/test-$S')
+
+        self.assertTrue(output)
+        self.assertEqual(stream.getvalue(), 'ab')
+
     def test_utilio_cat_invalid_file(self):
         with redirect_stdout() as stream:
             with prepare_workdir() as test_dir:

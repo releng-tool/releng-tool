@@ -10,6 +10,42 @@ import os
 
 
 class TestUtilIoLs(RelengToolTestCase):
+    def test_utilio_ls_expanded_encoded(self):
+        base_dir = Path(__file__).parent.parent
+        base_dir_str = str(base_dir)
+
+        with redirect_stdout() as stream:
+            os.environ['UNIT_TESTS'] = 'unit-tests'
+            base_dir_encoded = os.fsencode(f'{base_dir_str}/${{UNIT_TESTS}}')
+            listed = ls(base_dir_encoded)
+
+        self.assertTrue(listed)
+        entries = stream.getvalue().split('\n')
+        self.assertIn('test_util_io_ls.py', entries)
+
+    def test_utilio_ls_expanded_path(self):
+        base_dir = Path(__file__).parent.parent
+
+        with redirect_stdout() as stream:
+            os.environ['UNIT_TESTS'] = 'unit-tests'
+            listed = ls(base_dir / '${UNIT_TESTS}')
+
+        self.assertTrue(listed)
+        entries = stream.getvalue().split('\n')
+        self.assertIn('test_util_io_ls.py', entries)
+
+    def test_utilio_ls_expanded_str(self):
+        base_dir = Path(__file__).parent.parent
+        base_dir_str = str(base_dir)
+
+        with redirect_stdout() as stream:
+            os.environ['UNIT_TESTS'] = 'unit-tests'
+            listed = ls(f'{base_dir_str}/${{UNIT_TESTS}}')
+
+        self.assertTrue(listed)
+        entries = stream.getvalue().split('\n')
+        self.assertIn('test_util_io_ls.py', entries)
+
     def test_utilio_ls_invalid_directory(self):
         with redirect_stdout() as stream:
             listed = ls(Path(__file__))

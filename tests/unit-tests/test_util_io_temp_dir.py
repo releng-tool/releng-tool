@@ -27,6 +27,46 @@ class TestUtilIoTempDir(RelengToolTestCase):
 
         self.assertFalse(new_dir.is_dir())
 
+    def test_utilio_tempdir_expanded_encoded(self):
+        base_dir = self.work_dir / 'base-dir'
+        self.assertFalse(base_dir.exists())
+
+        os.environ['CONTAINER'] = base_dir.name
+        base_dir_str = f'{base_dir}/${{CONTAINER}}'
+        base_dir_encoded = os.fsencode(base_dir_str)
+        with temp_dir(base_dir_encoded) as tmp_dir:
+            new_dir = Path(tmp_dir)
+            self.assertTrue(new_dir.is_dir())
+            self.assertIn(base_dir, new_dir.parents)
+
+        self.assertFalse(new_dir.is_dir())
+
+    def test_utilio_tempdir_expanded_path(self):
+        base_dir = self.work_dir / 'base-dir'
+        self.assertFalse(base_dir.exists())
+
+        os.environ['CONTAINER'] = base_dir.name
+        base_dir_path = self.work_dir / '${CONTAINER}'
+        with temp_dir(base_dir_path) as tmp_dir:
+            new_dir = Path(tmp_dir)
+            self.assertTrue(new_dir.is_dir())
+            self.assertIn(base_dir, new_dir.parents)
+
+        self.assertFalse(new_dir.is_dir())
+
+    def test_utilio_tempdir_expanded_str(self):
+        base_dir = self.work_dir / 'base-dir'
+        self.assertFalse(base_dir.exists())
+
+        os.environ['CONTAINER'] = base_dir.name
+        base_dir_str = f'{base_dir}/${{CONTAINER}}'
+        with temp_dir(base_dir_str) as tmp_dir:
+            new_dir = Path(tmp_dir)
+            self.assertTrue(new_dir.is_dir())
+            self.assertIn(base_dir, new_dir.parents)
+
+        self.assertFalse(new_dir.is_dir())
+
     def test_utilio_tempdir_multipart(self):
         base_dir = self.work_dir / 'base-dir'
         self.assertFalse(base_dir.exists())

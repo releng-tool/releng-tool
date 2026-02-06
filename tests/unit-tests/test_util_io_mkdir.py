@@ -18,6 +18,35 @@ class TestUtilIoMkdir(RelengToolTestCase):
         result = mkdir(self.work_dir)
         self.assertEqual(result, self.work_dir)
 
+    def test_utilio_mkdir_expanded_encoded(self):
+        new_dir = self.work_dir / 'test-dir'
+        self.assertFalse(new_dir.exists())
+
+        os.environ['DIR_PREFIX'] = 'test'
+        new_dir_encoded = os.fsencode(f'{self.work_dir}/${{DIR_PREFIX}}-dir')
+        result = mkdir(new_dir_encoded)
+        self.assertEqual(result, new_dir)
+        self.assertTrue(new_dir.is_dir())
+
+    def test_utilio_mkdir_expanded_path(self):
+        new_dir = self.work_dir / 'test-dir'
+        self.assertFalse(new_dir.exists())
+
+        os.environ['DIR_PREFIX'] = 'test'
+        result = mkdir(self.work_dir / '$DIR_PREFIX-dir')
+        self.assertEqual(result, new_dir)
+        self.assertTrue(new_dir.is_dir())
+
+    def test_utilio_mkdir_expanded_str(self):
+        new_dir = self.work_dir / 'test-dir'
+        self.assertFalse(new_dir.exists())
+
+        os.environ['DIR_PREFIX'] = 'test'
+        new_dir_str = f'{self.work_dir}/${{DIR_PREFIX}}-dir'
+        result = mkdir(new_dir_str)
+        self.assertEqual(result, new_dir)
+        self.assertTrue(new_dir.is_dir())
+
     def test_utilio_mkdir_fail_on_file(self):
         new_file = self.work_dir / 'test-file'
         self.assertFalse(new_file.exists())

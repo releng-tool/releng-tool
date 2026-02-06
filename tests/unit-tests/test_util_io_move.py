@@ -154,6 +154,40 @@ class TestUtilIoMove(RelengToolTestCase):
         self.assertFalse(os.path.isdir(src))
         self.assertTrue(os.path.isdir(dst))
 
+    def test_utilio_move_expanded(self):
+        path1 = self._('dir1')
+        path2 = self._('dir2')
+        path3 = self._('dir3')
+        path4 = self._('dir4')
+        os.makedirs(path1)
+        self.assertTrue(os.path.isdir(path1))
+
+        os.environ['PART1'] = 'dir1'
+        os.environ['PART2'] = 'dir2'
+        os.environ['PART3'] = 'dir3'
+        os.environ['PART4'] = 'dir4'
+
+        test_path1a = Path(self.work_dir) / '${PART1}'
+        test_path2a = Path(self.work_dir) / '${PART2}'
+        result = path_move(test_path1a, test_path2a)
+        self.assertTrue(result)
+        self.assertFalse(os.path.isdir(path1))
+        self.assertTrue(os.path.isdir(path2))
+
+        test_path2b = f'{self.work_dir}/${{PART2}}'
+        test_path3b = f'{self.work_dir}/${{PART3}}'
+        result = path_move(test_path2b, test_path3b)
+        self.assertTrue(result)
+        self.assertFalse(os.path.isdir(path2))
+        self.assertTrue(os.path.isdir(path3))
+
+        test_path3c = os.fsencode(f'{self.work_dir}/${{PART3}}')
+        test_path4c = os.fsencode(f'{self.work_dir}/${{PART4}}')
+        result = path_move(test_path3c, test_path4c)
+        self.assertTrue(result)
+        self.assertFalse(os.path.isdir(path3))
+        self.assertTrue(os.path.isdir(path4))
+
     def test_utilio_move_into(self):
         # setup
         directories = [

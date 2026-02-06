@@ -25,6 +25,37 @@ class TestUtilIoTouch(RelengToolTestCase):
         self.assertTrue(exists)
         self.assertTrue(test_file.is_file())
 
+    def test_utilio_touch_expanded_encoded(self):
+        test_file = self.work_dir / 'test-file'
+        self.assertFalse(test_file.is_file())
+
+        os.environ['FNAME'] = 'test'
+        test_file_str = f'{self.work_dir}/${{FNAME}}-file'
+        test_file_encoded = os.fsencode(test_file_str)
+        exists = touch(test_file_encoded)
+        self.assertTrue(exists)
+        self.assertTrue(test_file.is_file())
+
+    def test_utilio_touch_expanded_path(self):
+        test_file = self.work_dir / 'test-file'
+        self.assertFalse(test_file.is_file())
+
+        os.environ['FNAME'] = 'test'
+        test_file_path = self.work_dir / '${FNAME}-file'
+        exists = touch(test_file_path)
+        self.assertTrue(exists)
+        self.assertTrue(test_file.is_file())
+
+    def test_utilio_touch_expanded_str(self):
+        test_file = self.work_dir / 'test-file'
+        self.assertFalse(test_file.is_file())
+
+        os.environ['FNAME'] = 'test'
+        test_file_str = f'{self.work_dir}/${{FNAME}}-file'
+        exists = touch(test_file_str)
+        self.assertTrue(exists)
+        self.assertTrue(test_file.is_file())
+
     def test_utilio_touch_multipart(self):
         container_dir = self.work_dir / 'test-dir'
         self.assertFalse(container_dir.exists())

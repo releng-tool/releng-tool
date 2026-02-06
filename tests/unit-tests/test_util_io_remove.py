@@ -16,7 +16,7 @@ class TestUtilIoRemove(RelengToolTestCase):
             self.work_dir = Path(work_dir)
             super().run(result)
 
-    def test_utilio_remove_arg_encoded(self):
+    def test_utilio_remove_arg_default_encoded(self):
         new_file = self.work_dir / 'test-file'
         self.assertFalse(new_file.exists())
 
@@ -30,7 +30,7 @@ class TestUtilIoRemove(RelengToolTestCase):
         self.assertTrue(removed)
         self.assertFalse(new_file.is_file())
 
-    def test_utilio_remove_arg_path(self):
+    def test_utilio_remove_arg_default_path(self):
         new_file = self.work_dir / 'test-file'
         self.assertFalse(new_file.exists())
 
@@ -43,7 +43,7 @@ class TestUtilIoRemove(RelengToolTestCase):
         self.assertTrue(removed)
         self.assertFalse(new_file.is_file())
 
-    def test_utilio_remove_arg_str(self):
+    def test_utilio_remove_arg_default_str(self):
         new_file = self.work_dir / 'test-file'
         self.assertFalse(new_file.exists())
 
@@ -53,6 +53,51 @@ class TestUtilIoRemove(RelengToolTestCase):
         self.assertTrue(new_file.is_file())
 
         new_file_str = str(new_file)
+        removed = path_remove(new_file_str)
+        self.assertTrue(removed)
+        self.assertFalse(new_file.is_file())
+
+    def test_utilio_remove_arg_expanded_encoded(self):
+        new_file = self.work_dir / 'test-file'
+        self.assertFalse(new_file.exists())
+
+        with open(new_file, 'ab'):
+            pass
+
+        self.assertTrue(new_file.is_file())
+
+        os.environ['EXPAND_SUFFIX'] = 'file'
+        new_file_str = f'{self.work_dir}/test-${{EXPAND_SUFFIX}}'
+        new_file_encoded = os.fsencode(new_file_str)
+        removed = path_remove(new_file_encoded)
+        self.assertTrue(removed)
+        self.assertFalse(new_file.is_file())
+
+    def test_utilio_remove_arg_expanded_path(self):
+        new_file = self.work_dir / 'test-file'
+        self.assertFalse(new_file.exists())
+
+        with open(new_file, 'ab'):
+            pass
+
+        self.assertTrue(new_file.is_file())
+
+        os.environ['EXPAND_SUFFIX'] = 'file'
+        removed = path_remove(self.work_dir / 'test-${EXPAND_SUFFIX}')
+        self.assertTrue(removed)
+        self.assertFalse(new_file.is_file())
+
+    def test_utilio_remove_arg_expanded_str(self):
+        new_file = self.work_dir / 'test-file'
+        self.assertFalse(new_file.exists())
+
+        with open(new_file, 'ab'):
+            pass
+
+        self.assertTrue(new_file.is_file())
+
+        os.environ['EXPAND_SUFFIX'] = 'file'
+        new_file_str = f'{self.work_dir}/test-${{EXPAND_SUFFIX}}'
         removed = path_remove(new_file_str)
         self.assertTrue(removed)
         self.assertFalse(new_file.is_file())

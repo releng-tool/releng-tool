@@ -7,6 +7,7 @@ from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.env import env_wrap
+from releng_tool.util.io_path import path_input
 from releng_tool.util.log import err
 from releng_tool.util.path import P
 from runpy import run_path
@@ -20,6 +21,7 @@ def releng_include(file_path: str | bytes | os.PathLike) -> None:
 
     .. versionadded:: 0.12
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided file path will now expand variables.
 
     The provided call will execute code at the provided file path. The path
     will be relative to the caller's script, unless an absolute path is
@@ -39,7 +41,7 @@ def releng_include(file_path: str | bytes | os.PathLike) -> None:
 
     caller_stack = inspect.stack()[1]
 
-    final_file = Path(os.fsdecode(file_path))
+    final_file = path_input(file_path)
 
     if final_file.is_absolute():
         target_script = final_file

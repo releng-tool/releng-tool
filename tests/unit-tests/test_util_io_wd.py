@@ -21,21 +21,49 @@ class TestUtilIoWd(RelengToolTestCase):
         with test_file.open('wb'):
             pass
 
-    def test_utilio_wd_encoded(self):
+    def test_utilio_wd_default_encoded(self):
         workdir_encoded = os.fsencode(self.work_dir)
         with wd(workdir_encoded) as workdir:
             self.assertEqual(Path(workdir), self._fetch_cwd())
             self.assertEqual(Path(workdir), self.work_dir)
             self.assertTrue(self.test_file_name.is_file())
 
-    def test_utilio_wd_path(self):
+    def test_utilio_wd_default_path(self):
         with wd(self.work_dir) as workdir:
             self.assertEqual(Path(workdir), self._fetch_cwd())
             self.assertEqual(Path(workdir), self.work_dir)
             self.assertTrue(self.test_file_name.is_file())
 
-    def test_utilio_wd_str(self):
+    def test_utilio_wd_default_str(self):
         workdir_str = str(self.work_dir)
+        with wd(workdir_str) as workdir:
+            self.assertEqual(Path(workdir), self._fetch_cwd())
+            self.assertEqual(Path(workdir), self.work_dir)
+            self.assertTrue(self.test_file_name.is_file())
+
+    def test_utilio_wd_expanded_encoded(self):
+        parent_work_dir = self.work_dir.parent
+        os.environ['CONTAINER'] = self.work_dir.name
+        workdir_str = f'{parent_work_dir}/${{CONTAINER}}'
+        workdir_encoded = os.fsencode(workdir_str)
+        with wd(workdir_encoded) as workdir:
+            self.assertEqual(Path(workdir), self._fetch_cwd())
+            self.assertEqual(Path(workdir), self.work_dir)
+            self.assertTrue(self.test_file_name.is_file())
+
+    def test_utilio_wd_expanded_path(self):
+        parent_work_dir = self.work_dir.parent
+        os.environ['CONTAINER'] = self.work_dir.name
+        workdir_path = parent_work_dir / '${CONTAINER}'
+        with wd(workdir_path) as workdir:
+            self.assertEqual(Path(workdir), self._fetch_cwd())
+            self.assertEqual(Path(workdir), self.work_dir)
+            self.assertTrue(self.test_file_name.is_file())
+
+    def test_utilio_wd_expanded_dir(self):
+        parent_work_dir = self.work_dir.parent
+        os.environ['CONTAINER'] = self.work_dir.name
+        workdir_str = f'{parent_work_dir}/${{CONTAINER}}'
         with wd(workdir_str) as workdir:
             self.assertEqual(Path(workdir), self._fetch_cwd())
             self.assertEqual(Path(workdir), self.work_dir)

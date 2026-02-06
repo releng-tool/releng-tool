@@ -5,6 +5,7 @@ from pathlib import Path
 from releng_tool.util.io_exists import path_exists
 from tests import RelengToolTestCase
 from tests.support import fetch_unittest_assets_dir
+import os
 
 
 class TestUtilIoExists(RelengToolTestCase):
@@ -17,3 +18,13 @@ class TestUtilIoExists(RelengToolTestCase):
         self.assertTrue(path_exists(assets_dir, 'copy-check-01', 'test-file-a'))
         self.assertTrue(path_exists(assets_dir, Path('copy-check-02')))
         self.assertFalse(path_exists('this-file-does-not-exist'))
+
+    def test_utilio_exists_expanded(self):
+        assets_dir = fetch_unittest_assets_dir()
+
+        os.environ['PATH_VAL'] = 'copy-check-01'
+        path_str = f'{assets_dir}/${{PATH_VAL}}'
+
+        self.assertTrue(path_exists(path_str))
+        self.assertTrue(path_exists(Path(path_str)))
+        self.assertTrue(path_exists(os.fsencode(path_str)))

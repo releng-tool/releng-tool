@@ -6,6 +6,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_path import path_input
 from releng_tool.util.log import warn
 import os
 
@@ -16,6 +17,7 @@ def wd(dir_: str | bytes | os.PathLike) -> Iterator[str]:
     move into a context-supported working directory
 
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided directory will now expand variables.
 
     Moves the current context into the provided working directory ``dir``. When
     returned, the original working directory will be restored. If the provided
@@ -42,7 +44,7 @@ def wd(dir_: str | bytes | os.PathLike) -> Iterator[str]:
 
     owd = Path.cwd()
 
-    target_dir = Path(os.fsdecode(dir_))
+    target_dir = path_input(dir_)
     if not mkdir(target_dir):
         raise FailedToPrepareWorkingDirectoryError(target_dir)
 

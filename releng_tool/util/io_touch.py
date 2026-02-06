@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 from pathlib import Path
+from releng_tool.util.io_path import path_input
 import os
 
 
@@ -13,6 +14,7 @@ def touch(file: str | bytes | os.PathLike,
 
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
     .. versionchanged:: 2.2 Add support for ``*args``.
+    .. versionchanged:: 2.7 Provided file will now expand variables.
 
     Attempts to update the access/modifications times on a file. If the file
     does not exist, it will be created. This utility call operates in the same
@@ -36,7 +38,7 @@ def touch(file: str | bytes | os.PathLike,
         not be created/updated
     """
 
-    final_file = Path(os.fsdecode(file), *map(os.fsdecode, args))
+    final_file = Path(path_input(file), *map(path_input, args))
 
     try:
         container = final_file.parent

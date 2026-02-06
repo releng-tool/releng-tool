@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_path import path_input
 from releng_tool.util.io_remove import path_remove
 from releng_tool.util.log import err
 import os
@@ -24,6 +25,7 @@ def symlink(target: str | bytes | os.PathLike,
 
     .. versionadded:: 1.4
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided paths will now expand variables.
 
     This call will attempt to create a symbolic link to a ``target`` path.
     A provided ``link_path`` determines where the symbolic link will be
@@ -88,8 +90,8 @@ def symlink(target: str | bytes | os.PathLike,
         raise_for_critical(critical)
         return False
 
-    link_path_entry = Path(os.fsdecode(link_path))
-    target_entry = Path(os.fsdecode(target))
+    link_path_entry = path_input(link_path)
+    target_entry = path_input(target)
 
     if lpd:
         base_dir = link_path_entry

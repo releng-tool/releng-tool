@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from itertools import chain
-from pathlib import Path
+from releng_tool.util.io_path import path_input
 from shutil import copyfileobj
 import os
 import sys
@@ -16,6 +16,7 @@ def cat(file: str | bytes | os.PathLike,
 
     .. versionadded:: 0.11
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided file will now expand variables.
 
     Attempts to read one or more files provided to this call. For each file, it
     will be read and printed out to the standard output.
@@ -38,7 +39,7 @@ def cat(file: str | bytes | os.PathLike,
     files = []
 
     for f in chain([file], args):
-        fentry = Path(os.fsdecode(f))
+        fentry = path_input(f)
 
         if not fentry.is_file():
             return False

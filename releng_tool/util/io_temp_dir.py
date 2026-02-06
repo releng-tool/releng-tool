@@ -6,6 +6,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_path import path_input
 from releng_tool.util.io_remove import path_remove
 from releng_tool.util.io_wd import wd
 from releng_tool.util.log import warn
@@ -22,6 +23,7 @@ def temp_dir(dir_: str | bytes | os.PathLike | None = None,
 
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
     .. versionchanged:: 2.2 Add support for ``*args`` and ``**wd``.
+    .. versionchanged:: 2.7 Provided directory will now expand variables.
 
     Creates a temporary directory in the provided directory ``dir_`` (or system
     default, is not provided). This is a context-supported call and will
@@ -48,7 +50,7 @@ def temp_dir(dir_: str | bytes | os.PathLike | None = None,
 
     base_dir = None
     if dir_:
-        base_dir = Path(os.fsdecode(dir_), *map(os.fsdecode, args))
+        base_dir = Path(path_input(dir_), *map(path_input, args))
         if not mkdir(base_dir):
             raise FailedToPrepareBaseDirectoryError(base_dir)
 

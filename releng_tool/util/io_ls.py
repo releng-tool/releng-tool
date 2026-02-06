@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 from pathlib import Path
+from releng_tool.util.io_path import path_input
 import os
 
 
@@ -13,6 +14,7 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
     .. versionadded:: 0.11
     .. versionchanged:: 2.0 Add support for ``recursive``.
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
+    .. versionchanged:: 2.7 Provided directory will now expand variables.
 
     Attempts to read a directory for its contents and prints this information
     to the configured standard output stream.
@@ -33,7 +35,7 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
         be read
     """
 
-    path = Path(os.fsdecode(dir_))
+    path = path_input(dir_)
     if not path.is_dir():
         return False
 
