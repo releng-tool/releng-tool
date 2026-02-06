@@ -20,6 +20,14 @@ class TestSupport(RelengToolTestCase):
         self.assertTrue(test_include.exists(), 'missing include file')
         releng_include(test_include)
 
+    def test_support_include_expanded(self):
+        test_include = self.includes / 'sample-include.rt'
+        self.assertTrue(test_include.exists(), 'missing include file')
+
+        os.environ['MYFILE'] = 'sample-include'
+        test_include_str = f'{test_include.parent}/${{MYFILE}}.rt'
+        releng_include(test_include_str)
+
     def test_support_include_fail(self):
         test_include = self.includes / 'fail-include.rt'
         self.assertTrue(test_include.exists(), 'missing include file')
