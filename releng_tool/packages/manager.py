@@ -185,7 +185,7 @@ class RelengPackageManager:
         script exists, this call will return ``True``.
 
         Args:
-            pkg_def_dir: the package definiton directory
+            pkg_def_dir: the package definition directory
             name: the name of the package
 
         Returns:
