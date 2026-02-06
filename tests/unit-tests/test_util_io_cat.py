@@ -3,13 +3,23 @@
 
 from pathlib import Path
 from releng_tool.util.io_cat import cat
+from releng_tool.util.log import is_debug
 from tests import prepare_workdir
 from tests import redirect_stdout
 from tests import RelengToolTestCase
 import os
+import unittest
 
 
 class TestUtilIoCat(RelengToolTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        # tests will not function in a debugging mode
+        if is_debug():
+            raise unittest.SkipTest('ignoring checks while in debug mode')
+
     def test_utilio_cat_expanded_encoded(self):
         with redirect_stdout() as stream:
             with prepare_workdir() as test_dir:
