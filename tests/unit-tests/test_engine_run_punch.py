@@ -13,7 +13,7 @@ class TestEngineRunPunch(RelengToolTestCase):
     def test_engine_run_punch_multipass_default(self):
         state = self._run_tripass()
 
-        # in a default state, all stages run once excpet for post-run
+        # in a default state, all stages run once except for post-run
         self.assertEqual(state['bootstrap'], 1)
         self.assertEqual(state['configure'], 1)
         self.assertEqual(state['build'], 1)
