@@ -11,6 +11,7 @@ function _releng_tool {
         'licenses'
         'mrproper'
         'patch'
+        'printvars'
         'punch'
         'sbom'
         'state'

@@ -18,6 +18,7 @@ from releng_tool.engine.cargo import cargo_register_pkg_paths
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
+from releng_tool.engine.printvars import printvars
 from releng_tool.engine.sbom import SbomManager
 from releng_tool.engine.script_env import prepare_script_environment
 from releng_tool.engine.suggest import suggest
@@ -342,6 +343,16 @@ class RelengEngine:
                 'action': opts.target_action,
                 'extra': extra,
             }) from ex
+
+        # check if a user just wants to print variables
+        if gaction == GlobalAction.PRINTVARS or pa == PkgAction.PRINTVARS:
+            if opts.target_action:
+                pkg_names = [opts.target_action]
+            else:
+                pkg_names = [pkg.name for pkg in pkgs]
+
+            printvars(pkg_names, script_env)
+            return True
 
         # if cleaning a package, remove it's build output directory and stop
         if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN, PkgAction.FRESH):

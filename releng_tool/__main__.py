@@ -333,6 +333,7 @@ def usage():
  licenses                  Generate license information for a project
  mrproper                  Pristine clean of the releng project
  patch                     Ensure all packages have done a patch stage
+ printvars                 Print known variables for a project.
  punch                     Full run with a forced re-run on all packages
  sbom                      Generate a software bill of materials
  <pkg>                     Perform all stages for the package
@@ -348,6 +349,7 @@ def usage():
  <pkg>-install             Perform install stage for the package
  <pkg>-license             Generate license information for the package
  <pkg>-patch               Perform patch stage for the package
+ <pkg>-printvars           Print known variables for the package
  <pkg>-rebuild             Force a re-build of a specific package
  <pkg>-rebuild-only        Force a re-build of a specific package and stop
  <pkg>-reconfigure         Force a re-configure of a specific package

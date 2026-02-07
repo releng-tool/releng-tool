@@ -263,6 +263,7 @@ class GlobalAction(StrCcEnum):
         LICENSES: generate license information for a project
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
+        PRINTVARS: print known variables applicable for the project
         PUNCH: process all packages with a forced re-configuration
         SBOM: generate sbom files for the project
         STATE: dump configuration state information
@@ -276,6 +277,7 @@ class GlobalAction(StrCcEnum):
     LICENSES = 'licenses'
     MRPROPER = 'mrproper'
     PATCH = 'patch'
+    PRINTVARS = 'printvars'
     PUNCH = 'punch'
     SBOM = 'sbom'
     STATE = 'state'
@@ -306,6 +308,7 @@ class PkgAction(StrCcEnum):
         INSTALL: process a package till end of the install stage
         LICENSE: generate license information for a package
         PATCH: process a package till end of the patch stage
+        PRINTVARS: print known variables applicable for the package
         REBUILD: perform a re-build of a package
         REBUILD_ONLY: perform a re-build of a package and stop
         RECONFIGURE: perform a re-configuration of a package
@@ -324,6 +327,7 @@ class PkgAction(StrCcEnum):
     INSTALL = 'install'
     LICENSE = 'license'
     PATCH = 'patch'
+    PRINTVARS = 'printvars'
     REBUILD = 'rebuild'
     REBUILD_ONLY = 'rebuild_only'
     RECONFIGURE = 'reconfigure'

@@ -12,6 +12,7 @@ function __fish__releng_tool_has_action
         -install \
         -license \
         -patch \
+        -printvars \
         -rebuild \
         -rebuild-only \
         -reconfigure \
@@ -26,6 +27,7 @@ function __fish__releng_tool_has_action
         licenses \
         mrproper \
         patch \
+        printvars \
         punch \
         sbom \
         state
@@ -75,6 +77,9 @@ complete --command releng-tool --arguments 'mrproper' \
 complete --command releng-tool --arguments 'patch' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'process all packages up to the patch phase'
+complete --command releng-tool --arguments 'printvars' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'print known variables for a project'
 complete --command releng-tool --arguments 'punch' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'full run with a forced re-run on all processed packages'

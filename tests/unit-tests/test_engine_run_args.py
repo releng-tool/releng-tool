@@ -75,6 +75,14 @@ class TestEngineRunArgs(RelengToolTestCase):
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.gbl_action, GlobalAction.PATCH)
 
+    def test_engine_run_args_action_global_printvars(self):
+        config = {
+            'action': 'printvars',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.PRINTVARS)
+
     def test_engine_run_args_action_global_punch(self):
         config = {
             'action': 'punch',
@@ -187,6 +195,15 @@ class TestEngineRunArgs(RelengToolTestCase):
 
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.pkg_action, PkgAction.PATCH)
+            self.assertEqual(engine.opts.target_action, 'test')
+
+    def test_engine_run_args_action_pkg_printvars(self):
+        config = {
+            'action': 'test-printvars',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.PRINTVARS)
             self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_rebuild(self):
