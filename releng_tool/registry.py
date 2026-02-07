@@ -9,8 +9,8 @@ from releng_tool.api import RelengVersionNotSupportedException
 from releng_tool.defs import ListenerEvent
 from releng_tool.support import require_version
 from releng_tool.util.log import debug
+from releng_tool.util.log import err
 from releng_tool.util.log import verbose
-from releng_tool.util.log import warn
 import inspect
 
 
@@ -49,7 +49,7 @@ class RelengRegistry(RelengRegistryInterface):
         Attempts to load all extensions provides in the names collection. If an
         extension which is already loaded in the registry is provided, the
         request to load the specific extension is ignored. If an extension could
-        not be loaded, a warning is generated and this method will return
+        not be loaded, an error is generated and this method will return
         ``False``. This method will continue to load extensions, even if a
         single extension in the collection fails to load.
 
@@ -102,22 +102,22 @@ class RelengRegistry(RelengRegistryInterface):
                         plugin.releng_setup(self)
                         loaded = True
                     except RelengInvalidSetupException as e:
-                        warn('extension is not supported '
-                             'due to an invalid setup: {}\n'
-                             ' ({})', name, e)
+                        err('extension is not supported '
+                            'due to an invalid setup: {}\n'
+                            ' ({})', name, e)
                     except RelengVersionNotSupportedException as e:
-                        warn('extension is not supported '
-                             'with this version: {}\n'
-                             ' ({})', name, e)
+                        err('extension is not supported '
+                            'with this version: {}\n'
+                            ' ({})', name, e)
 
                 if loaded:
                     self.extension.append(name)
                     verbose('loaded extension: {}', name)
                     loaded = True
             else:
-                warn('extension does not have a setup method: {}', name)
+                err('extension does not have a setup method: {}', name)
         except ModuleNotFoundError:
-            warn('unable to find extension: {}', name)
+            err('unable to find extension: {}', name)
 
         return loaded
 

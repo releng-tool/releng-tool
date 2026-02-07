@@ -1232,5 +1232,5 @@ following key entry and re-try again.
                 notify_invalid_type(ConfKey.EXTENSIONS, 'str or list(str)')
                 return False
 
-        self.registry.load_all_extensions(ext_names)
-        return True
+        # load extensions; stop if there was an issue
+        return self.registry.load_all_extensions(ext_names)
