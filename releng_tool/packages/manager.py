@@ -399,7 +399,7 @@ class RelengPackageManager:
         # `pkg_revision` value should be a single string value (even empty).
         #
         # Support still exists for a development revision (`DEVMODE_REVISION`)
-        # value (although deprecated). The package's revision may be overriden
+        # value (although deprecated). The package's revision may be overridden
         # with this value based on various scenarios.
 
         # version
