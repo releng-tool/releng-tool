@@ -21,6 +21,7 @@ from releng_tool.util.io_ls import ls
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
+from releng_tool.util.io_path import releng_register_path
 from releng_tool.util.io_remove import path_remove
 from releng_tool.util.io_symlink import symlink
 from releng_tool.util.io_temp_dir import temp_dir
@@ -189,6 +190,7 @@ def prepare_script_environment(env, opts):
     env['releng_move'] = path_move
     env['releng_move_into'] = path_move_into
     env['releng_path'] = Path
+    env['releng_register_path'] = releng_register_path
     env['releng_remove'] = path_remove
     env['releng_require_version'] = require_version
     env['releng_symlink'] = symlink
