@@ -379,6 +379,7 @@ class RelengPackageManager:
 
         # prepare helper expand values
         expand_extra = {
+            'PKG_DEFDIR': env['PKG_DEFDIR'],
         }
 
         # version/revision extraction first
