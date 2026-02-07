@@ -1099,6 +1099,13 @@ following key entry and re-try again.
                 return False
             self.opts.default_dev_ignore_cache = default_dev_ignore_cache
 
+        if ConfKey.DEF_MESON_BUILD_TYPE in settings:
+            default_meson_build_type = settings[ConfKey.DEF_MESON_BUILD_TYPE]
+            if not isinstance(default_meson_build_type, str):
+                notify_invalid_type(ConfKey.DEF_MESON_BUILD_TYPE, 'str')
+                return False
+            self.opts.default_meson_build_type = default_meson_build_type
+
         if ConfKey.ENVIRONMENT in settings:
             env = interpret_dict(settings[ConfKey.ENVIRONMENT], str)
             if env is None:

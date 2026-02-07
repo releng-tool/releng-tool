@@ -1339,7 +1339,10 @@ using deprecated dependency configuration for package: {}
             pkg.meson_build_type = self._fetch(Rpk.MESON_BUILD_TYPE)
 
         if not pkg.meson_build_type:
-            pkg.meson_build_type = DEFAULT_MESON_BUILD_TYPE
+            if opts.default_meson_build_type is not None:
+                pkg.meson_build_type = opts.default_meson_build_type
+            else:
+                pkg.meson_build_type = DEFAULT_MESON_BUILD_TYPE
 
         # meson noinstall flag
         if pkg.meson_noinstall is None:

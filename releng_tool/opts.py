@@ -64,6 +64,7 @@ class RelengEngineOptions:
         default_cmake_build_type: default build type for cmake packages
         default_dev_ignore_cache: default flag state for devmode ignore cache
         default_internal_pkgs: whether or not packages are implicitly internal
+        default_meson_build_type: default build type for meson packages
         default_pkg_dir: default package directory
         devmode: whether or not development mode is enabled
         dl_dir: directory container for download (archives)
@@ -119,6 +120,7 @@ class RelengEngineOptions:
         self.default_cmake_build_type = None
         self.default_dev_ignore_cache = None
         self.default_internal_pkgs = False
+        self.default_meson_build_type = None
         self.default_pkg_dir = None
         self.devmode = None
         self.dl_dir = None

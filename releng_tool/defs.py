@@ -17,6 +17,7 @@ class ConfKey(StrCcEnum):
         DEFINTERN: packages are internal (implicitly)
         DEF_CMAKE_BUILD_TYPE: configure a default build type for cmake packages
         DEF_DEV_IGNORE_CACHE: development mode no-cache default state
+        DEF_MESON_BUILD_TYPE: configure a default build type for meson packages
         ENVIRONMENT: project environment options to apply
         EXTENSIONS: project releng-extension list
         EXTEN_PKGS: project external packages list
@@ -38,6 +39,7 @@ class ConfKey(StrCcEnum):
     DEFINTERN = 'default_internal'
     DEF_CMAKE_BUILD_TYPE = 'default_cmake_build_type'
     DEF_DEV_IGNORE_CACHE = 'default_devmode_ignore_cache'
+    DEF_MESON_BUILD_TYPE = 'default_meson_build_type'
     ENVIRONMENT = 'environment'
     EXTENSIONS = 'extensions'
     EXTEN_PKGS = 'external_packages'

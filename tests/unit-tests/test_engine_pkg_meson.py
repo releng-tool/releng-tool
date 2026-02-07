@@ -7,13 +7,35 @@ from releng_tool.tool.meson import MESON
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import setpkgcfg
+from tests import setprjcfg
 from unittest.mock import patch
 
 
 class TestEnginePkgCmake(RelengToolTestCase):
     @patch('releng_tool.engine.meson.configure.MESON')
     @patch.object(MESON, 'exists', return_value=True)
-    def test_engine_pkg_meson_build_type(self, cmake_exists, meson_cfg):
+    def test_engine_pkg_meson_build_type_cfg(self, cmake_exists, meson_cfg):
+        cfg = {
+            'action': f'minimal-{PkgAction.CONFIGURE}',
+        }
+
+        with prepare_testenv(config=cfg, template='minimal') as engine:
+            setprjcfg(engine, 'default_meson_build_type', 'minsize')
+            setpkgcfg(engine, 'minimal', Rpk.TYPE, 'meson')
+
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            meson_cfg.execute.assert_called_once()
+
+            # verify we have provided our minsize build type in the options
+            args = meson_cfg.execute.call_args.args[0]
+            self.assertIn('--buildtype', args)
+            self.assertIn('minsize', args)
+
+    @patch('releng_tool.engine.meson.configure.MESON')
+    @patch.object(MESON, 'exists', return_value=True)
+    def test_engine_pkg_meson_build_type_default(self, cmake_exists, meson_cfg):
         cfg = {
             'action': f'minimal-{PkgAction.CONFIGURE}',
         }
