@@ -279,9 +279,10 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             verbose('invoking: ' + cmd_str)
             AT_LEAST_THREE_ARGS = 3
             if len(args) >= AT_LEAST_THREE_ARGS and is_debug('execute-args'):
-                arg_str = '\n ' + args[0]
+                arg_str = '\n ' + cmd_arg_to_str(args[0])
                 for arg in args[1:]:
-                    arg_str += f'\n  {arg}'
+                    arg_val = cmd_arg_to_str(arg)
+                    arg_str += f'\n  {arg_val}'
                 debug(arg_str)
             if final_env and is_debug('execute-env'):
                 env_str = '(env)'
@@ -364,6 +365,32 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
     return rv
 
 
+def cmd_arg_to_str(arg):
+    """
+    convert an argument to a platform escaped string
+
+    This call attempts to convert an argument (to be passed into a
+    `subprocess.Popen` request) into a string value. This is primarily to help
+    support logging commands for a user in error/verbose scenarios to minimize
+    the effort needed to manually re-invoke a command in a shell.
+
+    Args:
+        arg: the argument
+
+    Returns:
+        the argument represented as a single string
+    """
+    if sys.platform == 'win32':
+        return subprocess.list2cmdline([arg])
+
+    if isinstance(arg, os.PathLike):
+        arg = os.fspath(arg)
+
+    if isinstance(arg, bytes):
+        arg = arg.decode('utf_8')
+
+    return quote(arg)
+
 def cmd_args_to_str(args):
     """
     convert an argument list to a platform escaped string
@@ -384,11 +411,7 @@ def cmd_args_to_str(args):
     else:
         cmd_str = ''
         for arg in args:
-            if isinstance(arg, os.PathLike):
-                arg = os.fspath(arg)
-            if isinstance(arg, bytes):
-                arg = arg.decode('utf_8')
-            cmd_str += ' ' + quote(arg)
+            cmd_str += ' ' + cmd_arg_to_str(arg)
         cmd_str = cmd_str.strip()
 
     return cmd_str
