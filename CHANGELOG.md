@@ -1,12 +1,21 @@
 ## Development
 
+- Failures in loading project extensions will now stop releng-tool
 - Generate a "step over" message for already processed packages on rebuilds
 - Handle trailing path-slash in a path-completed action request
+- Improved error handling for incorrect extension handle signatures
 - Improved processing of command outputs
 - Introduce `LIBFOO_MESON_BUILD_TYPE` to override Meson build types
+- Introduce `LIBFOO_PREEXTRACT` to support forced pre-configuration extraction
 - Introduce `releng_define` helper script function
+- Introduce multiple package event types extension can hook into
+- Introduce the `printvars` action to support dumping package variable names
 - Only show SSH error logs for remote Git actions
 - Prevent default CMake define conflicts when overrides set in `<PKG>_CONF_DEFS`
+- Support `PKG_DEFDIR` in early package configuration variable expansions
+- Support `releng_include` sourcing variables into caller script
+- Support variable expansion on various logging calls
+- Support variable expansion on various path-like utility calls
 
 ## 2.6.0 (2025-08-03)
 
