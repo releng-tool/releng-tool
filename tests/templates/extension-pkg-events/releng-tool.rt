@@ -1,0 +1,7 @@
+packages = [
+    'test',
+]
+
+extensions = [
+    'tests.unit-tests.assets.extensions.pkg-events',
+]

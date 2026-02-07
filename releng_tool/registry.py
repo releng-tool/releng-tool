@@ -309,9 +309,19 @@ class RelengRegistry(RelengRegistryInterface):
 
         An extension must provide a supported ``name`` for an event type:
 
-         - ``config-loaded``: trigger after a configuration is processed
-         - ``post-build-started``: triggered before a post-build event starts
-         - ``post-build-finished``: triggered after a post-build event ends
+         - ``config-loaded``: after a configuration is processed
+         - ``package-bootstrap-finished``: after a package bootstrap event
+         - ``package-bootstrap-started``: before a package bootstrap event
+         - ``package-build-finished``: after a package build event
+         - ``package-build-started``: before a package build event
+         - ``package-configure-finished``: after a package configure event
+         - ``package-configure-started``: before a package configure event
+         - ``package-install-finished``: after a package install event
+         - ``package-install-started``: before a package install event
+         - ``package-postprocess-finished``: after a package post-process event
+         - ``package-postprocess-started``: before a package post-process event
+         - ``post-build-finished``: after a post-build event ends
+         - ``post-build-started``: before a post-build event starts
 
         The ``handler`` shall be able to accept keyword arguments
         (``**kwargs``). Available keyword arguments will vary based on the

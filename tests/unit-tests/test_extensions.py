@@ -30,6 +30,46 @@ class TestExtensions(RelengToolTestCase):
         last_event = dummy_env.get('last-event')
         self.assertEqual(last_event, 'post-build-finished')
 
+        registry.emit('package-bootstrap-started', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-bootstrap-started')
+
+        registry.emit('package-bootstrap-finished', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-bootstrap-finished')
+
+        registry.emit('package-configure-started', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-configure-started')
+
+        registry.emit('package-configure-finished', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-configure-finished')
+
+        registry.emit('package-build-started', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-build-started')
+
+        registry.emit('package-build-finished', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-build-finished')
+
+        registry.emit('package-install-started', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-install-started')
+
+        registry.emit('package-install-finished', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-install-finished')
+
+        registry.emit('package-postprocess-started', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-postprocess-started')
+
+        registry.emit('package-postprocess-finished', env=dummy_env)
+        last_event = dummy_env.get('last-event')
+        self.assertEqual(last_event, 'package-postprocess-finished')
+
     def test_extension_requires_new(self):
         registry = RelengRegistry()
         with self.assertRaises(RelengVersionNotSupportedException):

@@ -65,10 +65,30 @@ class ListenerEvent(StrCcEnum):
 
     Attributes:
         CONFIG_LOADED: event after a configuration is processed
+        PKG_BOOTSTRAP_FINISHED: event after a packages bootstrap event
+        PKG_BOOTSTRAP_STARTED: event before a packages bootstrap event
+        PKG_BUILD_FINISHED: event after a packages build event
+        PKG_BUILD_STARTED: event before a packages build event
+        PKG_CONFIGURE_FINISHED: event after a packages configure event
+        PKG_CONFIGURE_STARTED: event before a packages configure event
+        PKG_INSTALL_FINISHED: event after a packages install event
+        PKG_INSTALL_STARTED: event before a packages install event
+        PKG_POSTPROCESS_FINISHED: event after a packages post-processing event
+        PKG_POSTPROCESS_STARTED: event before a packages post-processing event
         POST_BUILD_STARTED: event before a post-build event starts
         POST_BUILD_FINISHED: event after a post-build event ends
     """
     CONFIG_LOADED = 'config-loaded'
+    PKG_BOOTSTRAP_FINISHED = 'package-bootstrap-finished'
+    PKG_BOOTSTRAP_STARTED = 'package-bootstrap-started'
+    PKG_BUILD_FINISHED = 'package-build-finished'
+    PKG_BUILD_STARTED = 'package-build-started'
+    PKG_CONFIGURE_FINISHED = 'package-configure-finished'
+    PKG_CONFIGURE_STARTED = 'package-configure-started'
+    PKG_INSTALL_FINISHED = 'package-install-finished'
+    PKG_INSTALL_STARTED = 'package-install-started'
+    PKG_POSTPROCESS_FINISHED = 'package-postprocess-finished'
+    PKG_POSTPROCESS_STARTED = 'package-postprocess-started'
     POST_BUILD_STARTED = 'post-build-started'
     POST_BUILD_FINISHED = 'post-build-finished'
 

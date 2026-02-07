@@ -3,6 +3,7 @@
 
 from contextlib import contextmanager
 from releng_tool.defs import GlobalAction
+from releng_tool.defs import ListenerEvent
 from releng_tool.defs import PkgAction
 from releng_tool.engine.bootstrap import stage as bootstrap_stage
 from releng_tool.engine.build import stage as build_stage
@@ -242,8 +243,12 @@ class RelengPackagePipeline:
             fflag = pkg._ff_bootstrap
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'boot')
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_BOOTSTRAP_STARTED, env=pkg_env)
                 if not bootstrap_stage(self.engine, pkg, pkg_env):
                     raise RelengToolBootstrapStageFailure
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_BOOTSTRAP_FINISHED, env=pkg_env)
                 self.engine.stats.track_duration_end(pkg.name, 'boot')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
@@ -253,8 +258,12 @@ class RelengPackagePipeline:
             fflag = pkg._ff_configure
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'configure')
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_CONFIGURE_STARTED, env=pkg_env)
                 if not configure_stage(self.engine, pkg, pkg_env):
                     raise RelengToolConfigurationStageFailure
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_CONFIGURE_FINISHED, env=pkg_env)
                 self.engine.stats.track_duration_end(pkg.name, 'configure')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
@@ -267,8 +276,12 @@ class RelengPackagePipeline:
             fflag = pkg._ff_build
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'build')
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_BUILD_STARTED, env=pkg_env)
                 if not build_stage(self.engine, pkg, pkg_env):
                     raise RelengToolBuildStageFailure
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_BUILD_FINISHED, env=pkg_env)
                 self.engine.stats.track_duration_end(pkg.name, 'build')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
@@ -281,8 +294,12 @@ class RelengPackagePipeline:
             fflag = pkg._ff_install
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'install')
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_INSTALL_STARTED, env=pkg_env)
                 if not install_stage(self.engine, pkg, pkg_env):
                     raise RelengToolInstallStageFailure
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_INSTALL_FINISHED, env=pkg_env)
                 self.engine.stats.track_duration_end(pkg.name, 'install')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
@@ -294,8 +311,12 @@ class RelengPackagePipeline:
             fflag = pkg._ff_post
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
                 self.engine.stats.track_duration_start(pkg.name, 'post')
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_POSTPROCESS_STARTED, env=pkg_env)
                 if not post_stage(self.engine, pkg, pkg_env):
                     raise RelengToolPostStageFailure
+                self.engine.registry.emit(
+                    ListenerEvent.PKG_POSTPROCESS_FINISHED, env=pkg_env)
                 self.engine.stats.track_duration_end(pkg.name, 'post')
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
