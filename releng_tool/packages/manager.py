@@ -424,7 +424,7 @@ class RelengPackageManager:
             if pkg_revision_raw:
                 # user has a defined a series of revision entries -- find the
                 # revision value based off out current mode (i.e. if in
-                # development mode, use the approriate key; otherwise default
+                # development mode, use the appropriate key; otherwise default
                 # to a `*` key, if it exists)
                 if isinstance(pkg_revision_raw, dict):
                     pkg_revision = pkg_revision_raw.get(opts.devmode)
@@ -502,7 +502,7 @@ class RelengPackageManager:
             if pkg_site_raw:
                 # user has a defined a series of site entries -- find the
                 # site value based off out current mode (i.e. if in
-                # development mode, use the approriate key; otherwise default
+                # development mode, use the appropriate key; otherwise default
                 # to a `*` key, if it exists)
                 if isinstance(pkg_site_raw, dict):
                     pkg_site = pkg_site_raw.get(opts.devmode)
@@ -537,7 +537,7 @@ class RelengPackageManager:
         if pkg_vcs_type_raw:
             # user has a defined a series of vcs-type entries -- find the
             # vcs-type value based off out current mode (i.e. if in
-            # development mode, use the approriate key; otherwise default
+            # development mode, use the appropriate key; otherwise default
             # to a `*` key, if it exists)
             if isinstance(pkg_vcs_type_raw, dict):
                 if pkg_vcs_type_raw.get(opts.devmode):
