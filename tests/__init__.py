@@ -245,6 +245,27 @@ def setpkgcfg(engine, pkg_name, key, value):
             pkg_key(pkg_name, key), repr(value)))
 
 
+def setprjcfg(engine, key, value):
+    """
+    configure a project setting from a template project
+
+    This utility method can be used to append project-specific configuration
+    options into a project definition. This is to help append additional
+    options desired at a test's runtime that are not included in a persisted
+    template configuration.
+
+    Args:
+        engine: the engine used for this run
+        key: the configuration key to add
+        value: the configuration value to set
+    """
+
+    prj_def = Path(engine.opts.root_dir) / 'releng-tool.rt'
+
+    with prj_def.open(mode='a', encoding='utf_8') as file_def:
+        file_def.write('{} = {}\n'.format(key, repr(value)))
+
+
 def find_test_base():
     """
     return the absolute path of the test base directory
