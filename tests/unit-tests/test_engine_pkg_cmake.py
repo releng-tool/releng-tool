@@ -8,6 +8,7 @@ from releng_tool.tool.cmake import CMAKE
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import setpkgcfg
+from tests import setprjcfg
 from unittest.mock import patch
 import os
 
@@ -15,7 +16,40 @@ import os
 class TestEnginePkgCmake(RelengToolTestCase):
     @patch('releng_tool.engine.cmake.configure.CMAKE')
     @patch.object(CMAKE, 'exists', return_value=True)
-    def test_engine_pkg_cmake_build_type(self, cmake_exists, cmake_cfg):
+    def test_engine_pkg_cmake_build_type_cfg(self, cmake_exists, cmake_cfg):
+        cfg = {
+            'action': f'minimal-{PkgAction.CONFIGURE}',
+        }
+
+        with prepare_testenv(config=cfg, template='minimal') as engine:
+            setprjcfg(engine, 'default_cmake_build_type', 'CustomType')
+            setpkgcfg(engine, 'minimal', Rpk.TYPE, 'cmake')
+
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            cmake_cfg.execute.assert_called_once()
+
+            # verify we have provided our cache of options
+            args = cmake_cfg.execute.call_args.args[0]
+            self.assertIn('-C', args)
+
+            # ensure the cache file exists and is sane
+            cache_arg_idx = args.index('-C')
+            cache_file_idx = cache_arg_idx + 1
+            self.assertLessEqual(cache_file_idx, len(args))
+            cache_file = Path(args[cache_file_idx])
+            self.assertTrue(cache_file.is_file())
+
+            lines = cache_file.read_text().splitlines()
+            self.assertIn('set('
+                'CMAKE_BUILD_TYPE "CustomType" '
+                'CACHE INTERNAL "releng-tool generated")',
+                lines)
+
+    @patch('releng_tool.engine.cmake.configure.CMAKE')
+    @patch.object(CMAKE, 'exists', return_value=True)
+    def test_engine_pkg_cmake_build_type_default(self, cmake_exists, cmake_cfg):
         cfg = {
             'action': f'minimal-{PkgAction.CONFIGURE}',
         }

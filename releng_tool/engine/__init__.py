@@ -1085,6 +1085,13 @@ following key entry and re-try again.
                 return False
             self.opts.default_internal_pkgs = is_default_internal
 
+        if ConfKey.DEF_CMAKE_BUILD_TYPE in settings:
+            default_cmake_build_type = settings[ConfKey.DEF_CMAKE_BUILD_TYPE]
+            if not isinstance(default_cmake_build_type, str):
+                notify_invalid_type(ConfKey.DEF_CMAKE_BUILD_TYPE, 'str')
+                return False
+            self.opts.default_cmake_build_type = default_cmake_build_type
+
         if ConfKey.DEF_DEV_IGNORE_CACHE in settings:
             default_dev_ignore_cache = settings[ConfKey.DEF_DEV_IGNORE_CACHE]
             if not isinstance(default_dev_ignore_cache, bool):

@@ -61,6 +61,7 @@ class RelengEngineOptions:
         conf_point_overrides: releng project's configuration overrides
         debug: whether or not debug messages are shown
         debug_extended: whether extended debug mode is enabled
+        default_cmake_build_type: default build type for cmake packages
         default_dev_ignore_cache: default flag state for devmode ignore cache
         default_internal_pkgs: whether or not packages are implicitly internal
         default_pkg_dir: default package directory
@@ -115,6 +116,7 @@ class RelengEngineOptions:
         self.conf_point_overrides = None
         self.debug = False
         self.debug_extended = False
+        self.default_cmake_build_type = None
         self.default_dev_ignore_cache = None
         self.default_internal_pkgs = False
         self.default_pkg_dir = None

@@ -1313,7 +1313,10 @@ using deprecated dependency configuration for package: {}
             pkg.cmake_build_type = self._fetch(Rpk.CMAKE_BUILD_TYPE)
 
         if not pkg.cmake_build_type:
-            pkg.cmake_build_type = DEFAULT_CMAKE_BUILD_TYPE
+            if opts.default_cmake_build_type is not None:
+                pkg.cmake_build_type = opts.default_cmake_build_type
+            else:
+                pkg.cmake_build_type = DEFAULT_CMAKE_BUILD_TYPE
 
         # cmake noinstall flag
         if pkg.cmake_noinstall is None:

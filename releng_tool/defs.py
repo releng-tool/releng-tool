@@ -15,6 +15,7 @@ class ConfKey(StrCcEnum):
     Attributes:
         CACHE_EXT_TRANSFORM: cache extension transform
         DEFINTERN: packages are internal (implicitly)
+        DEF_CMAKE_BUILD_TYPE: configure a default build type for cmake packages
         DEF_DEV_IGNORE_CACHE: development mode no-cache default state
         ENVIRONMENT: project environment options to apply
         EXTENSIONS: project releng-extension list
@@ -35,6 +36,7 @@ class ConfKey(StrCcEnum):
     """
     CACHE_EXT_TRANSFORM = 'cache_ext'
     DEFINTERN = 'default_internal'
+    DEF_CMAKE_BUILD_TYPE = 'default_cmake_build_type'
     DEF_DEV_IGNORE_CACHE = 'default_devmode_ignore_cache'
     ENVIRONMENT = 'environment'
     EXTENSIONS = 'extensions'
