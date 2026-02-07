@@ -306,11 +306,17 @@ class RelengRegistry(RelengRegistryInterface):
          - ``post-build-started``: triggered before a post-build event starts
          - ``post-build-finished``: triggered after a post-build event ends
 
-        The ``handler`` shall be able to accept an ``env`` keyword argument,
-        representing the active script environment for the given stage of a
-        releng-tool process. An extension may attempt to override or inject
-        changes to this environment. A priority value can be set to order when
-        an extension is notified for a given even (over other extensions).
+        The ``handler`` shall be able to accept keyword arguments
+        (``**kwargs``). Available keyword arguments will vary based on the
+        event type.
+
+         - ``env`` keyword argument, representing the active script
+           environment for the given stage of a releng-tool process. An
+           extension may attempt to override or inject changes to this
+           environment.
+
+        A priority value can be set to order when an extension is notified
+        for a given even (over other extensions).
 
         Args:
             name: the name of the event to listen for

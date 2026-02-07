@@ -114,8 +114,8 @@ class TestRegistry(RelengToolTestCase):
         def first_event(env):
             env['last-event'] = 'first'
 
-        def second_event(env):
-            env['last-event'] = 'second'
+        def second_event(**kwargs):
+            kwargs['env']['last-event'] = 'second'
 
         registry.connect('config-loaded', first_event)
         registry.connect('config-loaded', second_event)
@@ -128,8 +128,8 @@ class TestRegistry(RelengToolTestCase):
         registry = RelengRegistry()
         dummy_env = {}
 
-        def first_event(env):
-            env['last-event'] = 'first'
+        def first_event(**kwargs):
+            kwargs['env']['last-event'] = 'first'
 
         def second_event(env):
             env['last-event'] = 'second'
@@ -148,7 +148,7 @@ class TestRegistry(RelengToolTestCase):
         def first_event(env):
             env['last-event'] = 'first'
 
-        def second_event(env):
+        def second_event(env, **kwargs):  # noqa: ARG001
             env['last-event'] = 'second'
 
         def third_event(env):
