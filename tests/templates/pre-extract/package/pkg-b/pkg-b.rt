@@ -1,0 +1,4 @@
+PKG_B_INTERNAL = True
+PKG_B_NEEDS = ['pkg-a']
+PKG_B_PREEXTRACT = True
+PKG_B_SITE = 'file://$PKG_DEFDIR/pkg-b-srcs.tar'

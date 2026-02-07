@@ -1,0 +1,2 @@
+PKG_A_INTERNAL = True
+PKG_A_SITE = 'file://$PKG_DEFDIR/pkg-a-srcs.tar'

@@ -482,25 +482,36 @@ class RelengEngine:
 
                 pipeline = RelengPackagePipeline(self, opts, script_env)
 
-                # if we have any cargo actions, we will automatically process
-                # them up to the patch stage; as we need each package to have
-                # their `Cargo.toml` configurations ready so that releng-tool
-                # can provide path overrides
                 if not requested_preconfig:
                     cargo_pkgs = []
 
                     for pkg in pkgs:
-                        if pkg.type != PackageType.CARGO:
+                        should_prepatch = False
+
+                        # check if a package is requested to pre-extract
+                        # (e.g. for cyclic dependency requirements)
+                        if pkg.preextract:
+                            should_prepatch = True
+
+                        # if we have any cargo actions, we will automatically
+                        # process them up to the patch stage; as we need each
+                        # package to have their `Cargo.toml` configurations
+                        # ready so that releng-tool can provide path overrides
+                        if pkg.type == PackageType.CARGO:
                             continue
 
-                        verbose('processing package '
-                                '(cargo pre-process): {}', pkg.name)
+                        if not should_prepatch:
+                            continue
+
+                        verbose(f'processing package (pre-process): {pkg.name}')
                         prv = pipeline.process(pkg, GlobalAction.PATCH)
                         if prv == PipelineResult.ERROR:
                             return False
 
-                        cargo_pkgs.append(pkg)
+                        if pkg.type == PackageType.CARGO:
+                            cargo_pkgs.append(pkg)
 
+                    # cargo patch any packages for local dependencies
                     cargo_register_pkg_paths(cargo_pkgs)
 
                 # main package processing stage

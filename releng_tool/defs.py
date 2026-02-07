@@ -105,6 +105,7 @@ class Rpk(StrCcEnum):
         NEEDS: list of package dependencies
         NO_EXTRACTION: whether or not package extraction is done
         PATCH_SUBDIR: sub-directory in fetched to apply patches
+        PREEXTRACT: package should extract before other projects are built
         PREFIX: system root prefix override (if needed)
         REMOTE_CONFIG: load any remote configuration
         REMOTE_SCRIPTS: process any remote scripts
@@ -175,6 +176,7 @@ class Rpk(StrCcEnum):
     NEEDS = 'NEEDS'
     NO_EXTRACTION = 'NO_EXTRACTION'
     PATCH_SUBDIR = 'PATCH_SUBDIR'
+    PREEXTRACT = 'PREEXTRACT'
     PREFIX = 'PREFIX'
     REMOTE_CONFIG = 'REMOTE_CONFIG'
     REMOTE_SCRIPTS = 'REMOTE_SCRIPTS'

@@ -44,6 +44,7 @@ class RelengPackage:
         no_extraction: whether or not this package will extract
         nv: name-version value of the package
         patch_subdir: override for a package's patch base (if applicable)
+        preextract: whether this package will extract before any build phase
         prefix: system root prefix override (if applicable)
         remote_config: whether to load any remote configuration
         remote_scripts: whether to process any remote scripts
@@ -122,6 +123,7 @@ class RelengPackage:
         self.local_srcs = False
         self.no_extraction = False
         self.patch_subdir = None
+        self.preextract = None
         self.prefix = None
         self.remote_config = None
         self.remote_scripts = None

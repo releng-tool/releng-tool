@@ -166,6 +166,7 @@ class RelengPackageManager:
             (Rpk.NEEDS, PkgKeyType.STRS),
             (Rpk.NO_EXTRACTION, PkgKeyType.BOOL),
             (Rpk.PATCH_SUBDIR, PkgKeyType.PSTR),
+            (Rpk.PREEXTRACT, PkgKeyType.BOOL),
             (Rpk.PREFIX, PkgKeyType.PSTR),
             (Rpk.PYTHON_DIST_PATH, PkgKeyType.PSTR),
             (Rpk.PYTHON_INSTALLER_INTERPRETER, PkgKeyType.STR),
@@ -649,6 +650,9 @@ using deprecated dependency configuration for package: {}
         # patch subdirectory
         pkg_patch_subdir = self._fetch(Rpk.PATCH_SUBDIR)
 
+        # package will pre-extract
+        pkg_preextract = self._fetch(Rpk.PREEXTRACT)
+
         # remote configuration
         pkg_remote_config = self._fetch(Rpk.REMOTE_CONFIG)
         if pkg_remote_config is None:
@@ -967,6 +971,7 @@ using deprecated dependency configuration for package: {}
         pkg.local_srcs = pkg_local_srcs
         pkg.no_extraction = pkg_no_extraction
         pkg.patch_subdir = pkg_patch_subdir
+        pkg.preextract = pkg_preextract
         pkg.remote_config = pkg_remote_config
         pkg.remote_scripts = pkg_remote_scripts
         pkg.revision = pkg_revision

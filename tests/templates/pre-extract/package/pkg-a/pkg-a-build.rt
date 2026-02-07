@@ -1,0 +1,2 @@
+if not releng_exists(PKG_B_BUILD_OUTPUT_DIR / 'pkg-b.txt'):
+    releng_exit('missing pkg-b file')
