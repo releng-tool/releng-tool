@@ -7,6 +7,7 @@ from releng_tool import __version__ as releng_version
 from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
+from releng_tool.defs import ListenerEvent
 from releng_tool.defs import PackageType
 from releng_tool.defs import PkgAction
 from releng_tool.defs import SbomFormatType
@@ -297,7 +298,7 @@ class RelengEngine:
 
         # notify extensions that configuration options have been processed
         with wd(opts.root_dir):
-            self.registry.emit('config-loaded', env=script_env)
+            self.registry.emit(ListenerEvent.CONFIG_LOADED, env=script_env)
 
         # register the project's host directory as a system path; lazily permits
         # loading host tools (not following prefix or bin container) built by a
@@ -799,7 +800,7 @@ of the releng process:
 
         # notify extensions that a post-build event has started
         with wd(self.opts.target_dir):
-            self.registry.emit('post-build-started', env=env)
+            self.registry.emit(ListenerEvent.POST_BUILD_STARTED, env=env)
 
         RELENG_POST_BUILD_NAME = 'releng-tool-post-build'
         script_name = os.path.join(self.opts.root_dir, RELENG_POST_BUILD_NAME)
@@ -837,7 +838,7 @@ of the releng process:
 
         # notify extensions that a post-build event has completed
         with wd(self.opts.target_dir):
-            self.registry.emit('post-build-finished', env=env)
+            self.registry.emit(ListenerEvent.POST_BUILD_FINISHED, env=env)
 
         return True
 
