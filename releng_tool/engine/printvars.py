@@ -25,5 +25,13 @@ def printvars(pkgs, script_env):
                 continue
 
             key = pkg_key(pkg, v)
-            suffix = ' (set)' if key in script_env else ''
+            is_set = script_env.get(key) is not None
+
+            # special case -- we always populate an revision value for
+            # availability of the variable, even if revision is empty; if
+            # an empty revision is detected, do not count it as explicitly set
+            if k == Rpk.REVISION and not script_env.get(key):
+                is_set = False
+
+            suffix = ' (set)' if is_set else ''
             log(f'{key}{suffix}')
