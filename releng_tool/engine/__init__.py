@@ -1244,4 +1244,8 @@ following key entry and re-try again.
                 return False
 
         # load extensions; stop if there was an issue
-        return self.registry.load_all_extensions(ext_names)
+        extensions_loaded = self.registry.load_all_extensions(ext_names)
+        if 'releng.ignore_failed_extensions' in self.opts.quirks:
+            extensions_loaded = True
+
+        return extensions_loaded

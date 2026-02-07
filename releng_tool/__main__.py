@@ -426,6 +426,7 @@ releng.disable_verbose_patch           Disable use of --verbose in patch calls
 releng.git.no_depth                    Disable depth-limits for Git calls
 releng.git.no_quick_fetch              Disable quick-fetching for Git calls
 releng.git.replicate_cache             Copy Git repositories into build outputs
+releng.ignore_failed_extensions        Ignore if extensions fail to load
 releng.log.execute_args                Enable execute argument line logging
 releng.log.execute_env                 Enable execute environment debug logging
 releng.stats.no_pdf                    Never generate PDF statistics output
