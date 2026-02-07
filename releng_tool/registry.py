@@ -145,7 +145,7 @@ class RelengRegistry(RelengRegistryInterface):
 
         Additional notes:
 
-         - The releng-tool process may instantiation one or more of the provided
+         - The releng-tool process may instantiate one or more of the provided
             handler types.
          - The first extension loaded with a custom extract-type will take
             precedence over other extensions.
@@ -200,7 +200,7 @@ class RelengRegistry(RelengRegistryInterface):
 
         Additional notes:
 
-         - The releng-tool process may instantiation one or more of the provided
+         - The releng-tool process may instantiate one or more of the provided
             handler types.
          - The first extension loaded with a custom fetch-type will take
             precedence over other extensions.
@@ -256,7 +256,7 @@ class RelengRegistry(RelengRegistryInterface):
 
         Additional notes:
 
-         - The releng-tool process may instantiation one or more of the provided
+         - The releng-tool process may instantiate one or more of the provided
             handler types.
          - The first extension loaded with a custom package-type will take
             precedence over other extensions.
