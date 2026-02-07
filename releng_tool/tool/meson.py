@@ -67,7 +67,7 @@ class MesonTool(RelengTool):
         # interpreter, invoke the meson module instead.
         module = getattr(self, '_meson_interpreter', None)
         if module:
-            interpreter = sys.executable if sys.executable else 'python'
+            interpreter = sys.executable or 'python'
             return [interpreter, '-m', module]
 
         return super()._invoked_tool()

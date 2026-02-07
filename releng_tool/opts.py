@@ -267,7 +267,7 @@ class RelengEngineOptions:
                     .removeprefix(f'{DEFAULT_PKG_DIR}/') \
                     .removesuffix('/')
 
-                self.local_srcs[module] = path if path else None
+                self.local_srcs[module] = path or None
 
         if args.action:
             action_val = args.action.lower().replace('-', '_')

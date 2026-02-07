@@ -136,7 +136,7 @@ class TestToolMercurial(TestSiteToolBase):
         if kwargs.get('fresh'):
             # Mercurial requires some content on new repos; add a dummy file
             # for new repositories.
-            touch(os.path.join(repo if repo else self.repo_dir, 'dummy'))
+            touch(os.path.join(repo or self.repo_dir, 'dummy'))
             self._hg_repo('add', '.', repo=repo)
             self._hg_repo('commit', '-m', msg, repo=repo)
         elif kwargs.get('add'):

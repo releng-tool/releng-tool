@@ -85,7 +85,7 @@ def main():
         # handle a `None` value being a "True" state; and a (default) `False`
         # value being an unset (`None`) state
         if args.development is not False:
-            args.development = args.development if args.development else True
+            args.development = args.development or True
         else:
             args.development = None
 

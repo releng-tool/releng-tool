@@ -58,7 +58,7 @@ def install(opts):
     # installer
     whl_pkg = None
     pkg_dist_path = opts._python_dist_path
-    container_dir = Path(pkg_dist_path if pkg_dist_path else 'dist')
+    container_dir = Path(pkg_dist_path or 'dist')
     debug('search for whl package inside "{}": {}', container_dir, opts.name)
 
     if container_dir.is_dir():

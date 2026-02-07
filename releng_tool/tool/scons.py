@@ -92,7 +92,7 @@ class SconsTool(RelengTool):
         # interpreter, invoke the SCons module instead.
         module = getattr(self, '_scons_interpreter', None)
         if module:
-            interpreter = sys.executable if sys.executable else 'python'
+            interpreter = sys.executable or 'python'
             return [interpreter, '-m', module]
 
         return super()._invoked_tool()

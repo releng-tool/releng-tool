@@ -96,7 +96,7 @@ def mock_os_remove_permission_denied(f=None):
     def _(path, **kwargs):  # noqa: ARG001
         raise OSError('Mocked permission denied')
 
-    mock_method = f if f else _
+    mock_method = f or _
 
     with patch('os.remove', new=mock_method), \
             patch('os.rmdir', new=mock_method), \

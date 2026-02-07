@@ -36,7 +36,7 @@ class PythonTool(RelengTool):
         else:
             default_python_command = 'python3'
 
-        super().__init__(tool if tool else default_python_command)
+        super().__init__(tool or default_python_command)
 
     def exists(self):
         """

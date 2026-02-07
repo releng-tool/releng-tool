@@ -274,7 +274,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             args = prepend_shebang_interpreter(args)
 
         if is_verbose():
-            debug('(wd) {}', cwd if cwd else os.getcwd())
+            debug('(wd) {}', cwd or os.getcwd())
             cmd_str = cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
             AT_LEAST_THREE_ARGS = 3

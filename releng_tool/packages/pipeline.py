@@ -110,7 +110,7 @@ class RelengPackagePipeline:
             returns whether or not the pipeline should continue processing
         """
 
-        gaction = force_gaction if force_gaction else self.opts.gbl_action
+        gaction = force_gaction or self.opts.gbl_action
         paction = self.opts.pkg_action
         target = self.opts.target_action
 
@@ -399,7 +399,7 @@ class RelengPackagePipeline:
                 env['PKG_CACHE_FILE'] = P(pkg.cache_file)
                 env['PKG_DEFDIR'] = P(pkg.def_dir)
                 env['PKG_NAME'] = pkg.name
-                env['PKG_SITE'] = pkg.site if pkg.site else ''
+                env['PKG_SITE'] = pkg.site or ''
                 env['PKG_REVISION'] = pkg.revision
                 env['PKG_VERSION'] = pkg.version
 

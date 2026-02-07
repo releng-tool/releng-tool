@@ -153,7 +153,7 @@ def insert_env_path(key, path, env=None):
 
     append_path = True
 
-    target_env = env if env else os.environ
+    target_env = env or os.environ
 
     env_value = target_env.get(key, None)
     if env_value:

@@ -65,7 +65,7 @@ class RelengPrerequisites:
             ``True`` is all known required tools exists; ``False`` otherwise
         """
 
-        exclude = exclude if exclude else []
+        exclude = exclude or []
         missing = set()
         pkg_types = set()
         python_interpreters = set()
