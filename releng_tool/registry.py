@@ -2,7 +2,9 @@
 # Copyright releng-tool
 
 from importlib import import_module
+from inspect import signature
 from releng_tool import __version__ as releng_version
+from releng_tool.api import RelengInvalidHandlerSignatureException
 from releng_tool.api import RelengInvalidSetupException
 from releng_tool.api import RelengRegistryInterface
 from releng_tool.api import RelengVersionNotSupportedException
@@ -38,6 +40,7 @@ class RelengRegistry(RelengRegistryInterface):
         self.package_types = {}
         self._listeners = {}
         self._listener_id = 0
+        self._loading_extension = None
 
         # always load base/example extension
         self.load('releng_tool.ext.seed')
@@ -88,6 +91,8 @@ class RelengRegistry(RelengRegistryInterface):
         if name in self.extension:
             return True
 
+        self._loading_extension = name
+
         loaded = False
         debug('attempting to load extension: {}', name)
         try:
@@ -118,6 +123,8 @@ class RelengRegistry(RelengRegistryInterface):
                 err('extension does not have a setup method: {}', name)
         except ModuleNotFoundError:
             err('unable to find extension: {}', name)
+
+        self._loading_extension = None
 
         return loaded
 
@@ -339,7 +346,8 @@ class RelengRegistry(RelengRegistryInterface):
             raise RelengInvalidSetupException(f'invalid event name: {name}')
 
         elisteners = self._listeners.setdefault(name, [])
-        elistener = EventListener(self._listener_id, handler, priority)
+        elistener = EventListener(self._loading_extension,
+            self._listener_id, handler, priority)
         elisteners.append(elistener)
         self._listener_id += 1
         return elistener.id
@@ -372,6 +380,10 @@ class RelengRegistry(RelengRegistryInterface):
         Args:
             name: the name of the event
             **kwargs: key-value arguments
+
+        Raises:
+            RelengInvalidHandlerSignatureException: raised when an event
+                handler has an invalid/unsupported signature
         """
 
         event_listeners = self._listeners.get(name, None)
@@ -379,7 +391,15 @@ class RelengRegistry(RelengRegistryInterface):
             debug('trigger event: {}', name)
             event_listeners.sort(key=lambda x: x.priority)
             for listener in event_listeners:
-                listener.handler(**kwargs)
+                sig = signature(listener.handler)
+                try:
+                    sig.bind(**kwargs)
+                except TypeError as e:
+                    msg = f'listener on "{name}" ({listener.origin}) '
+                    msg += 'has invalid signature'
+                    raise RelengInvalidHandlerSignatureException(msg) from e
+                else:
+                    listener.handler(**kwargs)
 
     def require_version(self, version):
         """
@@ -414,9 +434,11 @@ class EventListener:
     Attributes:
         id_: identifier for this registered listener
         handler: the handler to invoke
+        origin: the origin of this listener
         priority: the priority of this listener
     """
-    def __init__(self, id_, handler, priority):
+    def __init__(self, origin, id_, handler, priority):
         self.id = id_
         self.handler = handler
+        self.origin = origin
         self.priority = priority

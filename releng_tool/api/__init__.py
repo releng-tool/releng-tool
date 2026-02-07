@@ -577,6 +577,12 @@ class RelengPackageExtensionInterface(RelengExtensionInterface):
 # ##############################################################################
 
 
+class RelengInvalidHandlerSignatureException(Exception):
+    """
+    exception raised when an event handler has an invalid signature
+    """
+
+
 class RelengInvalidSetupException(Exception):
     """
     exception raised when a loading extension has a setup issue
