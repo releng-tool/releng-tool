@@ -4,6 +4,7 @@
 from releng_tool.defs import Rpk
 from releng_tool.packages import pkg_key
 from releng_tool.util.log import log
+from releng_tool.util.log import warn_wrap
 
 
 def printvars(pkgs, script_env):
@@ -33,5 +34,5 @@ def printvars(pkgs, script_env):
             if k == Rpk.REVISION and not script_env.get(key):
                 is_set = False
 
-            suffix = ' (set)' if is_set else ''
+            suffix = warn_wrap(' (set)') if is_set else ''
             log(f'{key}{suffix}')
