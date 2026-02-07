@@ -107,6 +107,10 @@ def main():
         if os.getenv('NO_COLOR'):
             args.nocolorout = True
 
+        # force color on if `FORCE_COLOR`) is configured
+        if os.getenv('FORCE_COLOR'):
+            args.nocolorout = False
+
         releng_log_configuration(
             debug_=args.debug,
             nocolor=args.nocolorout,
