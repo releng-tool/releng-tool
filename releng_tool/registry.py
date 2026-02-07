@@ -336,7 +336,7 @@ class RelengRegistry(RelengRegistryInterface):
             raise RelengInvalidSetupException('handler is not callable')
 
         if name not in ListenerEvent:
-            raise RelengInvalidSetupException('invalid event name')
+            raise RelengInvalidSetupException(f'invalid event name: {name}')
 
         elisteners = self._listeners.setdefault(name, [])
         elistener = EventListener(self._listener_id, handler, priority)
