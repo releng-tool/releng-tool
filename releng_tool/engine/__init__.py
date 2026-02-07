@@ -128,7 +128,7 @@ class RelengEngine:
         if gaction == GlobalAction.INIT:
             return initialize_sample(opts)
 
-        # share detected foward argument, unless this is an exec call
+        # share detected forward argument, unless this is an exec call
         forward_args = [] if pa == PkgAction.EXEC else opts.forward_args
 
         start_time = datetime.now().replace(microsecond=0)  # noqa: DTZ005
@@ -228,7 +228,7 @@ class RelengEngine:
         # Note that some options prepared for the configuration script may
         # need to be updated after running the project's configuration (e.g.
         # possibly needing to update the `PREFIX` variable if `sysroot_prefix`
-        # was configured). This is peformed later in the engine run call.
+        # was configured). This is performed later in the engine run call.
         prepare_script_environment(gbls, opts)
 
         verbose(f'loading project configuration: {conf_point}')
