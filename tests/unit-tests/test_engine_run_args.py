@@ -43,6 +43,14 @@ class TestEngineRunArgs(RelengToolTestCase):
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.gbl_action, GlobalAction.FETCH)
 
+    def test_engine_run_args_action_global_fetch_full(self):
+        config = {
+            'action': 'fetch-full',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.FETCH_FULL)
+
     def test_engine_run_args_action_global_init(self):
         config = {
             'action': 'init',
@@ -168,6 +176,24 @@ class TestEngineRunArgs(RelengToolTestCase):
 
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.pkg_action, PkgAction.FETCH)
+            self.assertEqual(engine.opts.target_action, 'test')
+
+    def test_engine_run_args_action_pkg_fetch_full(self):
+        config = {
+            'action': 'test-fetch-full',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.FETCH_FULL)
+            self.assertEqual(engine.opts.target_action, 'test')
+
+    def test_engine_run_args_action_pkg_fresh(self):
+        config = {
+            'action': 'test-fresh',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.FRESH)
             self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_install(self):
