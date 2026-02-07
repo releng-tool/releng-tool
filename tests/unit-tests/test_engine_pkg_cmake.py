@@ -134,7 +134,7 @@ class TestEnginePkgCmake(RelengToolTestCase):
 
             # verify we have provided the build type in the options
             args = cmake_cfg.execute.call_args.args[0]
-            #self.assertIn('-DCMAKE_BUILD_TYPE=BuildTypeOverride', args)
+            self.assertIn('-DCMAKE_BUILD_TYPE=BuildTypeOverride', args)
 
             # verify we have provided our cache of options
             self.assertIn('-C', args)
