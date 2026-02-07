@@ -1,0 +1,6 @@
+test_srcs = PKG_DEFDIR / 'srcs.tar'
+
+TEST_PKG_INTERNAL = True
+TEST_PKG_NO_EXTRACTION = True
+TEST_PKG_SITE = 'file://' + test_srcs
+TEST_PKG_STRIP_COUNT = 0
