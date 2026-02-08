@@ -1,5 +1,6 @@
 ## Development
 
+- Allow project configurations to define a `releng_setup` registry hook
 - Failures in loading project extensions will now stop releng-tool
 - Fixed some scenarios where using `--debug-extended` may crash releng-tool
 - Generate a "step over" message for already processed packages on rebuilds
