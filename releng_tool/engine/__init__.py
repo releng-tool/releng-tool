@@ -525,7 +525,7 @@ class RelengEngine:
                         # package to have their `Cargo.toml` configurations
                         # ready so that releng-tool can provide path overrides
                         if pkg.type == PackageType.CARGO:
-                            continue
+                            should_prepatch = True
 
                         if not should_prepatch:
                             continue
