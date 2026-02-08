@@ -392,4 +392,6 @@ class TestEngineScriptEnv(RelengToolTestCase):
 
             # each alias should be found in the script environment
             for alias in node.names:
+                self.assertIsNotNone(
+                    alias.asname, f'missing as for {alias.name}')
                 self.assertIn(alias.asname, env)
