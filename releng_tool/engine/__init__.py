@@ -3,6 +3,7 @@
 
 from collections import OrderedDict
 from datetime import datetime
+from inspect import signature
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
@@ -68,6 +69,7 @@ import json
 import os
 import ssl
 import sys
+import traceback
 
 
 class RelengEngine:
@@ -1275,5 +1277,28 @@ following key entry and re-try again.
         if not extensions_loaded and \
                 'releng.ignore_failed_extensions' not in self.opts.quirks:
             return False
+
+        # if the settings files has a `releng_setup` hook for extension-like
+        # overrides, invoke the setup call
+        if 'releng_setup' in settings:
+            setup_hook = settings['releng_setup']
+            setup_hook_sig = signature(setup_hook)
+            try:
+                setup_hook_sig.bind(self.registry)
+            except TypeError:
+                debug(f'''\
+failed to bind to releng_setup hook
+
+{traceback.format_exc()}''')
+
+                err('''\
+releng_setup hook in the project configuration has an invalid signature
+
+When preparing to invoke a project's `releng_setup` call, it has been
+detected that the call's signature is invalid. Please refer to the API
+documentation for more information.''')
+                return False
+            else:
+                setup_hook(self.registry)
 
         return True
