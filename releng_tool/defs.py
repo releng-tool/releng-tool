@@ -265,6 +265,7 @@ class GlobalAction(StrCcEnum):
         FETCH_FULL: process all packages through fetch-post stage
         INIT: initialize example structure
         LICENSES: generate license information for a project
+        LINT: lint the project for quality issues
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
         PRINTVARS: print known variables applicable for the project
@@ -279,6 +280,7 @@ class GlobalAction(StrCcEnum):
     FETCH_FULL = 'fetch_full'
     INIT = 'init'
     LICENSES = 'licenses'
+    LINT = 'lint'
     MRPROPER = 'mrproper'
     PATCH = 'patch'
     PRINTVARS = 'printvars'
@@ -311,6 +313,7 @@ class PkgAction(StrCcEnum):
         FRESH: prepare a fresh package output (before configuration)
         INSTALL: process a package till end of the install stage
         LICENSE: generate license information for a package
+        LINT: lint a package project for quality issues
         PATCH: process a package till end of the patch stage
         PRINTVARS: print known variables applicable for the package
         REBUILD: perform a re-build of a package
@@ -330,6 +333,7 @@ class PkgAction(StrCcEnum):
     FRESH = 'fresh'
     INSTALL = 'install'
     LICENSE = 'license'
+    LINT = 'lint'
     PATCH = 'patch'
     PRINTVARS = 'printvars'
     REBUILD = 'rebuild'

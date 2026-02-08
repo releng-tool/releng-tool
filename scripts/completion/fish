@@ -11,6 +11,7 @@ function __fish__releng_tool_has_action
         -fresh \
         -install \
         -license \
+        -lint \
         -patch \
         -printvars \
         -rebuild \
@@ -25,6 +26,7 @@ function __fish__releng_tool_has_action
         fetch-full \
         init \
         licenses \
+        lint \
         mrproper \
         patch \
         printvars \
@@ -71,6 +73,9 @@ complete --command releng-tool --arguments 'init' \
 complete --command releng-tool --arguments 'licenses' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'generate license information for a project'
+complete --command releng-tool --arguments 'lint' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'lint the project for quality issues'
 complete --command releng-tool --arguments 'mrproper' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'pristine clean of output directory and file flags'

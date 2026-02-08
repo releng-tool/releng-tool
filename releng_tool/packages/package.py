@@ -20,6 +20,7 @@ class RelengPackage:
         cache_dir: cache directory for the package (if applicable)
         cache_file: cache file for the package (if applicable)
         def_dir: directory for the package definition
+        def_file: package definition script (if applicable)
         deps: list of dependencies for this package
         devmode: whether the package has a devmode revision
         devmode_ignore_cache: whether or not cache files should be ignored

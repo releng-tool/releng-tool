@@ -335,6 +335,7 @@ def usage():
  fetch-full                Fetch all packages including post-fetch dependencies
  init                      Initialize a root with an example structure
  licenses                  Generate license information for a project
+ lint                      Lint the project for quality issues
  mrproper                  Pristine clean of the releng project
  patch                     Ensure all packages have done a patch stage
  printvars                 Print known variables for a project.
@@ -352,6 +353,7 @@ def usage():
  <pkg>-fresh               Freshly prepare a package output
  <pkg>-install             Perform install stage for the package
  <pkg>-license             Generate license information for the package
+ <pkg>-lint                Lint a package for quality issues
  <pkg>-patch               Perform patch stage for the package
  <pkg>-printvars           Print known variables for the package
  <pkg>-rebuild             Force a re-build of a specific package

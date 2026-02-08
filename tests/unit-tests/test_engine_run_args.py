@@ -67,6 +67,14 @@ class TestEngineRunArgs(RelengToolTestCase):
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.gbl_action, GlobalAction.LICENSES)
 
+    def test_engine_run_args_action_global_lint(self):
+        config = {
+            'action': 'lint',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.LINT)
+
     def test_engine_run_args_action_global_mrproper(self):
         config = {
             'action': 'mrproper',
@@ -212,6 +220,15 @@ class TestEngineRunArgs(RelengToolTestCase):
 
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.pkg_action, PkgAction.LICENSE)
+            self.assertEqual(engine.opts.target_action, 'test')
+
+    def test_engine_run_args_action_pkg_lint(self):
+        config = {
+            'action': 'test-lint',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.pkg_action, PkgAction.LINT)
             self.assertEqual(engine.opts.target_action, 'test')
 
     def test_engine_run_args_action_pkg_patch(self):

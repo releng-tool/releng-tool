@@ -9,6 +9,7 @@ function _releng_tool {
         'fetch-full'
         'init'
         'licenses'
+        'lint'
         'mrproper'
         'patch'
         'printvars'

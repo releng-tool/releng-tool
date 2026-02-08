@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from dataclasses import dataclass
 from dataclasses import field
+from pathlib import Path
 from releng_tool.defs import DEFAULT_CMAKE_BUILD_TYPE
 from releng_tool.defs import DEFAULT_ENTRY
 from releng_tool.defs import DEFAULT_MESON_BUILD_TYPE
@@ -956,6 +957,7 @@ using deprecated dependency configuration for package: {}
         pkg.cache_dir = pkg_cache_dir
         pkg.cache_file = pkg_cache_file
         pkg.def_dir = pkg_def_dir
+        pkg.def_file = Path(script)
         pkg.devmode = pkg_devmode
         pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
         pkg.extract_type = pkg_extract_type
