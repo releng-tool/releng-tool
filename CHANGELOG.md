@@ -8,8 +8,12 @@
 - Improved processing of command outputs
 - Introduce `LIBFOO_MESON_BUILD_TYPE` to override Meson build types
 - Introduce `LIBFOO_PREEXTRACT` to support forced pre-configuration extraction
+- Introduce `default_cmake_build_type` project configuration
+- Introduce `default_meson_build_type` project configuration
 - Introduce `releng_define` helper script function
+- Introduce `releng_register_path` helper script function
 - Introduce multiple package event types extension can hook into
+- Introduce the `lint` action to support quality checks on a project/package
 - Introduce the `printvars` action to support dumping package variable names
 - Only show SSH error logs for remote Git actions
 - Prevent default CMake define conflicts when overrides set in `<PKG>_CONF_DEFS`
