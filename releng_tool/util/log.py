@@ -108,6 +108,19 @@ def hint(msg: str, *args):
     __log('', '\033[1;36m', msg, *args)
 
 
+def is_colorized() -> bool:
+    """
+    return whether releng-tool has been configured for colorization
+
+    Allows a caller to determine whether or not colored output is configured
+    for this run.
+
+    Returns:
+        whether or not the instance is configured for colored output
+    """
+    return not RELENG_LOG_NOCOLOR_FLAG
+
+
 def is_debug(tag: str | None = None):
     """
     report if the instance is configured with debug messaging
