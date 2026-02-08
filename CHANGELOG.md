@@ -1,4 +1,4 @@
-## Development
+## 2.7.0 (2026-02-08)
 
 - Allow project configurations to define a `releng_setup` registry hook
 - Failures in loading project extensions will now stop releng-tool
