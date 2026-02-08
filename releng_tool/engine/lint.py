@@ -22,6 +22,9 @@ def lint(pkgs):
 
     Args:
         pkgs: the package names to print
+
+    Returns:
+        ``True`` if no linting issues; ``False`` otherwise
     """
 
     issue_count = 0
@@ -132,6 +135,8 @@ def lint(pkgs):
         log('Found 1 error.')
     else:
         log(f'Found {issue_count} errors.')
+
+    return issue_count == 0
 
 
 def _report(code: int, msg: str, path: str, line: int, col: int):

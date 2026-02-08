@@ -365,8 +365,7 @@ class RelengEngine:
                         pkgs_to_lint = [pkg]
                         break
 
-            lint(pkgs_to_lint)
-            return True
+            return lint(pkgs_to_lint)
 
         # if cleaning a package, remove it's build output directory and stop
         if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN, PkgAction.FRESH):
