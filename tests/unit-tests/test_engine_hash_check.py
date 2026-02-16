@@ -28,6 +28,45 @@ class TestEngineHashCheck(RelengToolTestCase):
             # fail if a hash entry is missing
             self.assertFalse(rv)
 
+    def test_engine_hash_check_sic_not_devmode_pkg(self):
+        with self._setup_engine() as engine:
+            # force enable development mode
+            Path(engine.opts.ff_devmode).touch()
+
+            self._override_hash(engine, 'bad-hash')
+            setpkgcfg(engine, 'minimal',
+                Rpk.DEVMODE_SKIP_INTEGRITY_CHECK, value=True)
+            rv = engine.run()
+            # fail if DEVMODE_SKIP_INTEGRITY_CHECK is set, even if running
+            # in development mode since the package does not have a development
+            # revision to target
+            self.assertFalse(rv)
+
+    def test_engine_hash_check_sic_not_in_devmode(self):
+        with self._setup_engine() as engine:
+            self._override_hash(engine, 'bad-hash')
+            setpkgcfg(engine, 'minimal',
+                Rpk.DEVMODE_SKIP_INTEGRITY_CHECK, value=True)
+            rv = engine.run()
+            # fail if DEVMODE_SKIP_INTEGRITY_CHECK is set but not in a
+            # development mode
+            self.assertFalse(rv)
+
+    def test_engine_hash_check_sic_valid(self):
+        with self._setup_engine() as engine:
+            # force enable development mode
+            Path(engine.opts.ff_devmode).touch()
+
+            self._override_hash(engine, 'bad-hash')
+            self._override_filename(engine, 'minimal-dummy')
+            setpkgcfg(engine, 'minimal', Rpk.DEVMODE_REVISION, value='dummy')
+            setpkgcfg(engine, 'minimal',
+                Rpk.DEVMODE_SKIP_INTEGRITY_CHECK, value=True)
+            rv = engine.run()
+            # pass if DEVMODE_SKIP_INTEGRITY_CHECK is set, we are in
+            # development mode and we have a development revision
+            self.assertTrue(rv)
+
     def test_engine_hash_check_valid(self):
         with self._setup_engine() as engine:
             rv = engine.run()

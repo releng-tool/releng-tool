@@ -126,3 +126,15 @@ class TestPkgConfigsDevmode(TestPkgConfigsBase):
         self.assertEqual(pkg.revision, 'dummy')
         self.assertEqual(pkg.version, 'dummy')
         self.assertFalse(pkg.devmode)
+
+    def test_pkgconfig_devmode_skip_ic_disabled(self):
+        pkg = self.LOAD('devmode-skip-ic-disabled').package
+        self.assertEqual(pkg.devmode_skip_ic, False)
+
+    def test_pkgconfig_devmode_skip_ic_enabled(self):
+        pkg = self.LOAD('devmode-skip-ic-enabled').package
+        self.assertEqual(pkg.devmode_skip_ic, True)
+
+    def test_pkgconfig_devmode_skip_ic_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('devmode-skip-ic-invalid')

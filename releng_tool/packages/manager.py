@@ -141,6 +141,7 @@ class RelengPackageManager:
             (Rpk.DEPS, PkgKeyType.STRS),
             (Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL),
             (Rpk.DEVMODE_REVISION, PkgKeyType.STR),
+            (Rpk.DEVMODE_SKIP_INTEGRITY_CHECK, PkgKeyType.BOOL),
             (Rpk.ENV, PkgKeyType.DICT_STR_PSTR),
             (Rpk.EXTENSION, PkgKeyType.STR),
             (Rpk.EXTERNAL, PkgKeyType.BOOL),
@@ -623,6 +624,9 @@ using deprecated dependency configuration for package: {}
                 if opts.default_dev_ignore_cache is not None:
                     pkg_devmode_ignore_cache = opts.default_dev_ignore_cache
 
+        # skip integrity checks in development mode
+        pkg_devmode_skip_ic = self._fetch(Rpk.DEVMODE_SKIP_INTEGRITY_CHECK)
+
         # extension (override)
         pkg_filename_ext = self._fetch(Rpk.EXTENSION)
 
@@ -946,7 +950,8 @@ using deprecated dependency configuration for package: {}
 
         # relax hash check if a both operating in a development mode, this
         # package has development mode sources and is an internal package
-        pkg_hash_relaxed = opts.devmode and pkg_devmode and pkg_is_internal
+        pkg_hash_relaxed = opts.devmode and pkg_devmode and \
+            (pkg_is_internal or pkg_devmode_skip_ic)
 
         # (commons)
         pkg = RelengPackage(name, pkg_version)
@@ -961,6 +966,7 @@ using deprecated dependency configuration for package: {}
         pkg.def_file = Path(script)
         pkg.devmode = pkg_devmode
         pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
+        pkg.devmode_skip_ic = pkg_devmode_skip_ic
         pkg.extract_type = pkg_extract_type
         pkg.git_config = pkg_git_config
         pkg.git_depth = pkg_git_depth

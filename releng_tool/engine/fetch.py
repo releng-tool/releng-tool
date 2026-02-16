@@ -276,7 +276,9 @@ file. Ensure that the package's public key has been registered into gpg.
             # checked and then be moved into the download cache
             elif fetched == interim_cache_file:
                 if perform_file_hash_check:
-                    hr = verify_hashes(pkg.hash_file, fetched)
+                    relaxed_devmode_check = pkg.devmode and pkg.devmode_skip_ic
+                    hr = verify_hashes(pkg.hash_file, fetched,
+                        relaxed=relaxed_devmode_check)
                     if hr == HashResult.VERIFIED:
                         pass
                     elif hr == HashResult.BAD_PATH:
@@ -286,7 +288,11 @@ file. Ensure that the package's public key has been registered into gpg.
                         if not pkg.is_internal:
                             warn('hash file for package is empty: ' + name)
                     elif hr == HashResult.MISMATCH:
-                        return False
+                        if relaxed_devmode_check:
+                            warn('ignoring integrity check due to development '
+                                f'mode package configuration: {name}')
+                        else:
+                            return False
                     elif hr in (HashResult.BAD_FORMAT, HashResult.UNSUPPORTED):
                         return False
                     elif hr == HashResult.MISSING_ARCHIVE:

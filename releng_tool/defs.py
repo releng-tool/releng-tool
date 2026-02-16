@@ -110,6 +110,7 @@ class Rpk(StrCcEnum):
         DEPS: list of package dependencies (deprecated; see NEEDS)
         DEVMODE_IGNORE_CACHE: whether or not ignore cache
         DEVMODE_REVISION: devmode-rev to acquire from srcs
+        DEVMODE_SKIP_INTEGRITY_CHECK: skip checks when in development mode
         EXTENSION: filename extension for package (if needed)
         EXTERNAL: whether or not package is considered "external"
         EXTOPT: extension-defined package modifiers (if any)
@@ -182,6 +183,7 @@ class Rpk(StrCcEnum):
     DEPS = 'DEPENDENCIES'  # deprecated
     DEVMODE_IGNORE_CACHE = 'DEVMODE_IGNORE_CACHE'
     DEVMODE_REVISION = 'DEVMODE_REVISION'
+    DEVMODE_SKIP_INTEGRITY_CHECK = 'DEVMODE_SKIP_INTEGRITY_CHECK'
     EXTENSION = 'EXTENSION'
     EXTERNAL = 'EXTERNAL'
     EXTOPT = 'EXTOPT'
