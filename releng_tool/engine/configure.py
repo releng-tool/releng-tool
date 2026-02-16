@@ -10,6 +10,7 @@ from releng_tool.engine.make.configure import configure as conf_make
 from releng_tool.engine.meson.configure import configure as conf_meson
 from releng_tool.engine.scons.configure import configure as conf_scons
 from releng_tool.engine.script.configure import configure as conf_script
+from releng_tool.packages import clamp_jobs
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io_wd import wd
@@ -72,12 +73,10 @@ def stage(engine, pkg, script_env):
     configure_opts._quirks = engine.opts.quirks
 
     # if package has a job-override value, use it over any global option
-    if pkg.fixed_jobs:
-        configure_opts.jobs = pkg.fixed_jobs
-        configure_opts.jobsconf = pkg.fixed_jobs
-    else:
-        configure_opts.jobs = engine.opts.jobs
-        configure_opts.jobsconf = engine.opts.jobsconf
+    total_jobs = clamp_jobs(pkg, engine.opts.jobs)
+    configure_opts.jobs = total_jobs
+    configure_opts.jobsconf = \
+        total_jobs if engine.opts.jobs != total_jobs else engine.opts.jobsconf
 
     configurer = None
     if pkg.type in engine.registry.package_types:

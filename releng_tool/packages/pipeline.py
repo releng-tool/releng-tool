@@ -15,6 +15,7 @@ from releng_tool.engine.patch import stage as patch_stage
 from releng_tool.engine.post import stage as post_stage
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolMissingExecCommand
+from releng_tool.packages import clamp_jobs
 from releng_tool.packages.exceptions import RelengToolBootstrapStageFailure
 from releng_tool.packages.exceptions import RelengToolBuildStageFailure
 from releng_tool.packages.exceptions import RelengToolConfigurationStageFailure
@@ -518,9 +519,10 @@ class RelengPackagePipeline:
                     env['TARGET_LIB_DIR'] = P(target_lib_dir)
                     env['TARGET_SHARE_DIR'] = P(target_share_dir)
 
-                if pkg.fixed_jobs:
-                    env['NJOBS'] = str(pkg.fixed_jobs)
-                    env['NJOBSCONF'] = str(pkg.fixed_jobs)
+                total_jobs = clamp_jobs(pkg, self.opts.jobs)
+                if self.opts.jobs != total_jobs:
+                    env['NJOBS'] = str(total_jobs)
+                    env['NJOBSCONF'] = str(total_jobs)
 
             yield
         finally:

@@ -41,6 +41,7 @@ class RelengPackage:
         license: license(s) of the package
         license_files: list of files in sources holding license information
         local_srcs: whether this package is acquired locally
+        max_jobs: maximum job count for this specific package
         name: name of the package
         no_extraction: whether or not this package will extract
         nv: name-version value of the package
@@ -122,6 +123,7 @@ class RelengPackage:
         self.license = None
         self.license_files = None
         self.local_srcs = False
+        self.max_jobs = None
         self.no_extraction = False
         self.patch_subdir = None
         self.preextract = None

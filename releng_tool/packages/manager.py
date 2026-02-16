@@ -162,6 +162,7 @@ class RelengPackageManager:
             (Rpk.LICENSE, PkgKeyType.STRS),
             (Rpk.LICENSE_FILES, PkgKeyType.STRS),
             (Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.MAX_JOBS, PkgKeyType.INT),
             (Rpk.MESON_BUILD_TYPE, PkgKeyType.STR),
             (Rpk.MESON_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.NEEDS, PkgKeyType.STRS),
@@ -1195,6 +1196,10 @@ using deprecated dependency configuration for package: {}
         # license files
         if pkg.license_files is None:
             pkg.license_files = self._fetch(Rpk.LICENSE_FILES)
+
+        # maximum jobs
+        if pkg.max_jobs is None:
+            pkg.max_jobs = self._fetch(Rpk.MAX_JOBS)
 
         # prefix
         if pkg.prefix is None:

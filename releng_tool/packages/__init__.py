@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from releng_tool.defs import VOID
+from releng_tool.packages.package import RelengPackage
 from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_opts
 from releng_tool.util.interpret import interpret_seq
@@ -43,6 +44,41 @@ class PkgKeyType(StrCcEnum):
     PSTR = 'pstr'
     STR = 'str'
     STRS = 'strs'
+
+
+def clamp_jobs(pkg: RelengPackage, jobs: int) -> int:
+    """
+    determine the jobs to use for a package's configuration/build stage
+
+    A package can define the limit of jobs to use based on a package's
+    configuration over the releng-tool's limit. This call checks these
+    configurations to see if an override is needed and returns this value.
+
+    Args:
+        pkg: the package
+        jobs: the current job count to use
+
+    Returns:
+        the final job count to use
+    """
+    final_jobs = jobs
+
+    # if package defines an explicit fixed jobs count, use is
+    if pkg.fixed_jobs:
+        final_jobs = pkg.fixed_jobs
+    elif pkg.max_jobs:
+        # if a package defines a positive maximum job count, ensure we
+        # downgrade to a lower value than that of the runtime count
+        if pkg.max_jobs > 0:
+            if jobs > pkg.max_jobs:
+                final_jobs = pkg.max_jobs
+        # if the package defines a negative maximum job count, we will
+        # subtract to total of jobs to use from the configured amount, to
+        # a limit of one
+        else:
+            final_jobs = max(jobs + pkg.max_jobs, 1)
+
+    return final_jobs
 
 
 def pkg_cache_key(site):

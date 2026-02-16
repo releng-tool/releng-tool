@@ -241,6 +241,21 @@ class TestPkgConfigs(TestPkgConfigsBase):
             'license-file',
         ])
 
+    def test_pkgconfig_max_jobs_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('max-jobs-invalid-type')
+
+    def test_pkgconfig_max_jobs_missing(self):
+        pkg = self.LOAD('missing').package
+        self.assertIsNone(pkg.max_jobs)
+
+    def test_pkgconfig_max_jobs_valid(self):
+        pkg = self.LOAD('max-jobs-valid-positive').package
+        self.assertEqual(pkg.max_jobs, 24)
+
+        pkg = self.LOAD('max-jobs-valid-negative').package
+        self.assertEqual(pkg.max_jobs, -1)
+
     def test_pkgconfig_no_extraction_disabled(self):
         pkg = self.LOAD('no-extraction-disabled').package
         self.assertFalse(pkg.no_extraction)

@@ -1,0 +1,5 @@
+import json
+import os
+
+with open(TARGET_DIR / 'test-1-invoke-env.json', 'w') as f:
+    json.dump(dict(os.environ), f)

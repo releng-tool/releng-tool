@@ -126,6 +126,7 @@ class Rpk(StrCcEnum):
         INTERNAL: whether or not package is considered "internal"
         LICENSE: license information for the package
         LICENSE_FILES: source file(s) with license information
+        MAX_JOBS: maximum job count for the project
         NEEDS: list of package dependencies
         NO_EXTRACTION: whether or not package extraction is done
         PATCH_SUBDIR: sub-directory in fetched to apply patches
@@ -197,6 +198,7 @@ class Rpk(StrCcEnum):
     INTERNAL = 'INTERNAL'
     LICENSE = 'LICENSE'
     LICENSE_FILES = 'LICENSE_FILES'
+    MAX_JOBS = 'MAX_JOBS'
     NEEDS = 'NEEDS'
     NO_EXTRACTION = 'NO_EXTRACTION'
     PATCH_SUBDIR = 'PATCH_SUBDIR'
