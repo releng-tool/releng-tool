@@ -23,6 +23,7 @@ class PkgKeyType(StrCcEnum):
         DICT: dictionary value
         DICT_STR_PSTR: dictionary of string keys with string/path-like values
         DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
+        INT: an integer value
         INT_NONNEGATIVE: non-negative integer value
         INT_POSITIVE: positive integer value
         OPTS: dictionary of (command line) options
@@ -35,6 +36,7 @@ class PkgKeyType(StrCcEnum):
     DICT = 'dict'
     DICT_STR_PSTR = 'dict_str_pstr'
     DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
+    INT = 'int'
     INT_NONNEGATIVE = 'int_nonnegative'
     INT_POSITIVE = 'int_positive'
     OPTS = 'opts'
@@ -122,6 +124,9 @@ def raw_value_parse(value: object, type_: PkgKeyType) -> object:
             value = interpret_dict(value, str)
             if value is None:
                 raise TypeError('dict(str,str) or string')
+    elif type_ == PkgKeyType.INT:
+        if not isinstance(value, int):
+            raise TypeError('int')
     elif type_ == PkgKeyType.INT_NONNEGATIVE:
         if not isinstance(value, int):
             raise TypeError('non-negative int')

@@ -104,6 +104,22 @@ class TestPkgRawValueParse(RelengToolTestCase):
             raw_value_parse(
                 {'a': True, 'b': 123}, PkgKeyType.DICT_STR_STR_OR_STR)
 
+    def test_pkg_rvp_int_default(self):
+        rv = raw_value_parse(1, PkgKeyType.INT)
+        self.assertEqual(rv, 1)
+
+        rv = raw_value_parse(0, PkgKeyType.INT)
+        self.assertEqual(rv, 0)
+
+        rv = raw_value_parse(-1, PkgKeyType.INT)
+        self.assertEqual(rv, -1)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(None, PkgKeyType.INT)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse('value', PkgKeyType.INT)
+
     def test_pkg_rvp_int_nonnegative(self):
         rv = raw_value_parse(1, PkgKeyType.INT_NONNEGATIVE)
         self.assertEqual(rv, 1)
