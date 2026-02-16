@@ -1,3 +1,9 @@
+## Development
+
+- Allow `LIBFOO_EXTENSION` to support empty extensions
+- Introduce `LIBFOO_DEVMODE_SKIP_INTEGRITY_CHECK` for development scenarios
+- Introduce `LIBFOO_MAX_JOBS` to help cap/limit package jobs
+
 ## 2.7.0 (2026-02-08)
 
 - Allow project configurations to define a `releng_setup` registry hook
