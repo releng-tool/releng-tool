@@ -788,7 +788,7 @@ using deprecated dependency configuration for package: {}
                 cache_ext = opts.cache_ext_transform(url_parts.path)
 
             if not cache_ext:
-                if pkg_filename_ext:
+                if pkg_filename_ext is not None:
                     cache_ext = pkg_filename_ext
                 else:
                     basename = os.path.basename(url_parts.path)

@@ -1,0 +1,2 @@
+EXTENSION_EXTENSION = 'custom'
+EXTENSION_SITE = 'pkg.extension'
