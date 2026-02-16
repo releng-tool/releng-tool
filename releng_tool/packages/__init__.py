@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from releng_tool.defs import VOID
 from releng_tool.packages.package import RelengPackage
 from releng_tool.util.interpret import interpret_dict
@@ -46,7 +47,7 @@ class PkgKeyType(StrCcEnum):
     STRS = 'strs'
 
 
-def clamp_jobs(pkg: RelengPackage, jobs: int) -> int:
+def clamp_jobs(pkg: RelengPackage, jobs: int) -> int | None:
     """
     determine the jobs to use for a package's configuration/build stage
 
@@ -61,7 +62,7 @@ def clamp_jobs(pkg: RelengPackage, jobs: int) -> int:
     Returns:
         the final job count to use
     """
-    final_jobs = jobs
+    final_jobs = None
 
     # if package defines an explicit fixed jobs count, use is
     if pkg.fixed_jobs:
@@ -76,7 +77,9 @@ def clamp_jobs(pkg: RelengPackage, jobs: int) -> int:
         # subtract to total of jobs to use from the configured amount, to
         # a limit of one
         else:
-            final_jobs = max(jobs + pkg.max_jobs, 1)
+            new_jobs = max(jobs + pkg.max_jobs, 1)
+            if new_jobs != jobs:
+                final_jobs = new_jobs
 
     return final_jobs
 

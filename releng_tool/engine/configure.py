@@ -74,9 +74,12 @@ def stage(engine, pkg, script_env):
 
     # if package has a job-override value, use it over any global option
     total_jobs = clamp_jobs(pkg, engine.opts.jobs)
-    configure_opts.jobs = total_jobs
-    configure_opts.jobsconf = \
-        total_jobs if engine.opts.jobs != total_jobs else engine.opts.jobsconf
+    if total_jobs:
+        configure_opts.jobs = total_jobs
+        configure_opts.jobsconf = total_jobs
+    else:
+        configure_opts.jobs = engine.opts.jobs
+        configure_opts.jobsconf = engine.opts.jobsconf
 
     configurer = None
     if pkg.type in engine.registry.package_types:

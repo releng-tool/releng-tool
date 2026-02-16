@@ -520,7 +520,7 @@ class RelengPackagePipeline:
                     env['TARGET_SHARE_DIR'] = P(target_share_dir)
 
                 total_jobs = clamp_jobs(pkg, self.opts.jobs)
-                if self.opts.jobs != total_jobs:
+                if total_jobs:
                     env['NJOBS'] = str(total_jobs)
                     env['NJOBSCONF'] = str(total_jobs)
 
