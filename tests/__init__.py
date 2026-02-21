@@ -266,6 +266,27 @@ def setprjcfg(engine, key, value):
         file_def.write('{} = {}\n'.format(key, repr(value)))
 
 
+def writeprjcfg(engine, value):
+    """
+    write raw data to a project definition from a template project
+
+    This utility method can be used to append project-specific configuration
+    raw text into a project definition. This is to help append additional
+    scripting desired at a test's runtime that are not included in a persisted
+    template configuration.
+
+    Args:
+        engine: the engine used for this run
+        value: the raw value to add
+    """
+
+    prj_def = Path(engine.opts.root_dir) / 'releng-tool.rt'
+
+    with prj_def.open(mode='a', encoding='utf_8') as file_def:
+        print(value)
+        file_def.write(value)
+
+
 def find_test_base():
     """
     return the absolute path of the test base directory
