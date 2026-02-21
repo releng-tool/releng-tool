@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from __future__ import annotations
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import SbomFormatType
 from releng_tool.engine import RelengEngine
@@ -20,19 +21,25 @@ import os
 import sys
 
 
-def main():
+def main(launch_args: list[str] | None = None):
     """
     mainline
 
     The mainline for the releng tool.
+
+    Args:
+        launch_args (optional): arguments for the program
 
     Returns:
         the exit code
     """
     retval = 1
 
+    if launch_args is None:
+        launch_args = sys.argv[1:]
+
     try:
-        parser = argparse.ArgumentParser(
+        parser = RelengToolParser(
             prog='releng-tool', add_help=False, usage=usage())
 
         parser.add_argument('--assets-dir')
@@ -69,7 +76,7 @@ def main():
         # output into an root location
         parser.add_argument('--output-dir')
 
-        known_args = sys.argv[1:]
+        known_args = launch_args
         forward_args = []
         idx = known_args.index('--') if '--' in known_args else -1
         if idx != -1:
@@ -204,6 +211,14 @@ def main():
     return retval
 
 
+# override the standard ArgumentParser to simplify argument error states and
+# not print the long usage text
+class RelengToolParser(argparse.ArgumentParser):
+    def error(self, message):
+        print(message)
+        sys.exit(1)
+
+
 def process_args(args):
     """
     process arguments for an action and key-value entries for environments
@@ -312,7 +327,8 @@ def type_sbom_format(value):
 
     for entry in values:
         if entry not in SbomFormatType:
-            raise argparse.ArgumentTypeError('invalid format provided')
+            raise argparse.ArgumentTypeError(
+                f'invalid format provided: {entry}')
 
     return values
 
