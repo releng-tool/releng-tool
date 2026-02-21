@@ -55,6 +55,8 @@ def main():
         parser.add_argument('--relaxed-args', action='store_true')
         parser.add_argument('--root-dir')
         parser.add_argument('--sbom-format', type=type_sbom_format)
+        parser.add_argument('--success-exit-code', default=0,
+            type=type_nonnegativeint)
         parser.add_argument('--quirk', action='append')
         parser.add_argument('--verbose', '-V', action='store_true')
         parser.add_argument('--version', action='version',
@@ -191,7 +193,7 @@ def main():
         engine = RelengEngine(opts)
         try:
             if engine.run():
-                retval = 0
+                retval = args.success_exit_code
         except RelengToolSilentException:
             pass
         except RelengToolException as e:
@@ -399,6 +401,7 @@ def usage():
  --root-dir <dir>          Directory to process a releng project
  --sbom-format <format>    Override the output format for a software build of
                             materials (e.g. csv, json)
+ --success-exit-code <n>   Exit code to use on success
  --verbose, -V             Show additional messages
  --version                 Show the version
  --werror, -Werror         Treat warnings as errors

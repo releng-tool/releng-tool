@@ -102,6 +102,7 @@ _releng_tool_module()
     '--help-quirks' | \
     '--jobs' | '-j' | \
     '--sbom-format' | \
+    '--success-exit-code' | \
     '--quirk' | \
     '--version' )
         return 0
@@ -129,6 +130,7 @@ _releng_tool_module()
             '--profile'
             '--root-dir'
             '--sbom-format'
+            '--success-exit-code'
             '--quirk'
             '--verbose'
             '--version'
