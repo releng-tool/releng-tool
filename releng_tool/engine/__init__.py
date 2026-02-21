@@ -183,7 +183,21 @@ class RelengEngine:
                 conf_point = 'releng-tool.rt'
 
         if not conf_point_exists:
-            raise RelengToolMissingConfigurationError(conf_point)
+            extra = ''
+
+            # if we cannot find a configuration but we also detect that the
+            # target action is a directory, a user has most likely not
+            # provided a `--root-dir` argument; suggest to them that this
+            # may be the case
+            if opts.target_action and os.path.isdir(opts.target_action):
+                script_name = os.path.join(
+                    self.opts.target_action, RELENG_CONF_NAME)
+                _, conf_point_exists = opt_file(script_name)
+                if conf_point_exists:
+                    extra = '\n\nMissing a "--root-dir" argument?'
+                    extra += f'\n (e.g. --root-dir {self.opts.target_action})'
+
+            raise RelengToolMissingConfigurationError(conf_point, extra)
 
         # file flag processing
         state = self._process_file_flags()

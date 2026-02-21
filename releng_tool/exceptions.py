@@ -36,14 +36,14 @@ class RelengToolMissingConfigurationError(RelengToolException):
     """
     exception thrown when missing a project's configuration file
     """
-    def __init__(self, path):
+    def __init__(self, path, extra):
         super().__init__(f'''\
 missing configuration file
 
 The configuration file cannot be found. Ensure the configuration file exists
 in the working directory or the provided root directory:
 
-    {path}
+    {path}{extra}
 '''.strip())
 
 
