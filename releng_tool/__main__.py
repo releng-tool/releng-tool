@@ -86,10 +86,10 @@ def main(launch_args: list[str] | None = None):
         args, unknown_args = parser.parse_known_args(known_args)
         if args.help:
             print(usage())
-            sys.exit(0)
+            return 0
         if args.help_quirks:
             print(usage_quirks())
-            sys.exit(0)
+            return 0
 
         # handle a `None` value being a "True" state; and a (default) `False`
         # value being an unset (`None`) state
