@@ -1200,6 +1200,13 @@ following key entry and re-try again.
             for quirk in quirks:
                 verbose('configuration quirk applied: ' + quirk)
 
+        if ConfKey.REVISIONS in settings:
+            revz = interpret_dict(settings[ConfKey.REVISIONS], str)
+            if revz is None:
+                notify_invalid_type(ConfKey.REVISIONS, 'dict(str,str)')
+                return False
+            self.opts.revisions = revz
+
         if ConfKey.SBOM_FORMAT in settings:
             sbom_format = interpret_seq(settings[ConfKey.SBOM_FORMAT], str)
             if sbom_format is None:

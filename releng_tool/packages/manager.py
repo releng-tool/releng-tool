@@ -418,6 +418,7 @@ class RelengPackageManager:
         # revisions
         pkg_devmode = False
         pkg_revision = None
+        pkg_revision_raw = None
 
         if opts.revision_override:
             pkg_revision = opts.revision_override.get(name)
@@ -474,6 +475,24 @@ class RelengPackageManager:
         # explicit revision is provided
         if not pkg_revision:
             pkg_revision = pkg_version
+
+        # if we have an empty revision value, check to see if the project
+        # configuration has hinted a revision value to use
+        if opts.revisions:
+            prj_defined_revision = opts.revisions.get(name)
+            if prj_defined_revision:
+                if not pkg_revision:
+                    pkg_revision = prj_defined_revision
+                elif pkg_revision_raw:
+                    warn('''\
+ignoring project-defined revision since package defined a revision: {}
+ (see '{}')\
+''', name, pkg_key(name, Rpk.REVISION))
+                else:
+                    warn('''\
+ignoring project-defined revision since package defined a version: {}
+ (see '{}')\
+''', name, pkg_key(name, Rpk.VERSION))
 
         pkg_revision_key = pkg_key(name, Rpk.REVISION)
         expand_extra[pkg_revision_key] = pkg_revision

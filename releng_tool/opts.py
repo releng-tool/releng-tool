@@ -92,6 +92,7 @@ class RelengEngineOptions:
         profiles: the active profiles for this run
         quirks: advanced configuration quirks for the running instance
         revision_override: dictionary to override revision values
+        revisions: dictionary to configure revision values
         root_dir: directory container for all (configuration, output, etc.)
         sbom_format: format(s) to use for sbom generation
         sites_override: dictionary to override site values
@@ -148,6 +149,7 @@ class RelengEngineOptions:
         self.profiles = []
         self.quirks = []
         self.revision_override = None
+        self.revisions = None
         self.root_dir = None
         self.sbom_format = []
         self.sites_override = None

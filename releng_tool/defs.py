@@ -30,6 +30,7 @@ class ConfKey(StrCcEnum):
         PKGS: project's package (name) list
         PREREQUISITES: project's host-tool prerequisites
         QUIRKS: configure quirks to apply
+        REVISIONS: configure package-specific revisions
         SBOM_FORMAT: project's default sbom format to generate
         SYSROOT_PREFIX: project's default sys-root prefix
         URL_MIRROR: mirror base site for url fetches
@@ -52,6 +53,7 @@ class ConfKey(StrCcEnum):
     PKGS = 'packages'
     PREREQUISITES = 'prerequisites'
     QUIRKS = 'quirks'
+    REVISIONS = 'revisions'
     SBOM_FORMAT = 'sbom_format'
     SYSROOT_PREFIX = 'sysroot_prefix'
     URL_MIRROR = 'url_mirror'
