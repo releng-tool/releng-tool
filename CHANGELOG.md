@@ -3,8 +3,10 @@
 - Allow `LIBFOO_EXTENSION` to support empty extensions
 - Introduce `LIBFOO_DEVMODE_SKIP_INTEGRITY_CHECK` for development scenarios
 - Introduce `LIBFOO_MAX_JOBS` to help cap/limit package jobs
+- Introduce `revisions` project configuration
 - Support exit code overrides on a successful run
 - Update SPDX license database to v3.28
+- Update `sysroot_prefix` to also accept a path-like value
 
 ## 2.7.0 (2026-02-08)
 
