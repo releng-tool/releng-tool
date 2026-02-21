@@ -155,13 +155,12 @@ def insert_env_path(key, path, env=None):
 
     target_env = env or os.environ
 
-    env_value = target_env.get(key, None)
-    if env_value:
-        append_path = path not in env_value.split(os.pathsep)
+    value = target_env.get(key, None)
+    if value:
+        append_path = path not in value.split(os.pathsep)
 
         if append_path:
-            new_env_value = f'{path}{os.pathsep}{env_value}'
-            target_env[key] = new_env_value
+            target_env[key] = f'{path}{os.pathsep}{value}'
     else:
         target_env[key] = path
 
