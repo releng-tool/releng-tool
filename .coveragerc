@@ -10,6 +10,4 @@ omit =
     .tox/*
     # ignore api interface
     releng_tool/api/__init__.py
-    # ignore mainlines
-    *__main__.py*
 show_missing = 1
