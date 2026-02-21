@@ -2,7 +2,7 @@
 #
 # This is a helper script used to invoke coverage tests with a container.
 # It is designed in a way where the mounted path is from a Windows host,
-# allowing is to populate Linux coverage data into the project directory.
+# allowing it to populate Linux coverage data into the project directory.
 # After a run, the Windows host can run a similar coverage check, allowing
 # a final report to be made based off the combination of the various host
 # types.
