@@ -1,4 +1,5 @@
 [coverage:run]
+data_file = ${CUSTOM_COVERAGE_DB-.coverage}
 parallel = 1
 relative_files = 1
 source = releng_tool
