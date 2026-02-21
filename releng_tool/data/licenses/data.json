@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "3.27.0",
+  "licenseListVersion": "3.28.0",
   "licenses": {
     "0BSD": {
       "name": "BSD Zero Clause License",
@@ -39,6 +39,10 @@
     },
     "ADSL": {
       "name": "Amazon Digital Services License",
+      "deprecated": false
+    },
+    "Advanced-Cryptics-Dictionary": {
+      "name": "Advanced Cryptics Dictionary License",
       "deprecated": false
     },
     "AFL-1.1": {
@@ -91,6 +95,10 @@
     },
     "Aladdin": {
       "name": "Aladdin Free Public License",
+      "deprecated": false
+    },
+    "ALGLIB-Documentation": {
+      "name": "ALGLIB Documentation License",
       "deprecated": false
     },
     "AMD-newlib": {
@@ -257,6 +265,10 @@
       "name": "Boehm-Demers-Weiser GC License (without fee)",
       "deprecated": false
     },
+    "BOLA-1.1": {
+      "name": "Buena Onda License Agreement v1.1",
+      "deprecated": false
+    },
     "Borceux": {
       "name": "Borceux license",
       "deprecated": false
@@ -361,6 +373,10 @@
       "name": "BSD 3-Clause Sun Microsystems",
       "deprecated": false
     },
+    "BSD-3-Clause-Tso": {
+      "name": "BSD 3-Clause Tso variant",
+      "deprecated": false
+    },
     "BSD-4-Clause": {
       "name": "BSD 4-Clause \"Original\" or \"Old\" License",
       "deprecated": false
@@ -393,6 +409,10 @@
       "name": "BSD-Inferno-Nettverk",
       "deprecated": false
     },
+    "BSD-Mark-Modifications": {
+      "name": "BSD Mark Modifications License",
+      "deprecated": false
+    },
     "BSD-Protection": {
       "name": "BSD Protection License",
       "deprecated": false
@@ -415,6 +435,10 @@
     },
     "BSL-1.0": {
       "name": "Boost Software License 1.0",
+      "deprecated": false
+    },
+    "Buddy": {
+      "name": "Buddy License",
       "deprecated": false
     },
     "BUSL-1.1": {
@@ -447,6 +471,10 @@
     },
     "Caldera-no-preamble": {
       "name": "Caldera License (without preamble)",
+      "deprecated": false
+    },
+    "CAPEC-tou": {
+      "name": "Common Attack    Pattern Enumeration and Classification License",
       "deprecated": false
     },
     "Catharon": {
@@ -965,6 +993,18 @@
       "name": "Erlang Public License v1.1",
       "deprecated": false
     },
+    "ESA-PL-permissive-2.4": {
+      "name": "European Space Agency Public License \u2013 v2.4 \u2013 Permissive (Type 3)",
+      "deprecated": false
+    },
+    "ESA-PL-strong-copyleft-2.4": {
+      "name": "European Space Agency Public License (ESA-PL) - V2.4 - Strong Copyleft (Type 1)",
+      "deprecated": false
+    },
+    "ESA-PL-weak-copyleft-2.4": {
+      "name": "European Space Agency Public License \u2013 v2.4 \u2013 Weak Copyleft (Type 2)",
+      "deprecated": false
+    },
     "etalab-2.0": {
       "name": "Etalab Open License 2.0",
       "deprecated": false
@@ -1385,12 +1425,20 @@
       "name": "Historical Permission Notice and Disclaimer - sell variant",
       "deprecated": false
     },
+    "HPND-sell-variant-critical-systems": {
+      "name": "HPND - sell variant with safety critical systems clause",
+      "deprecated": false
+    },
     "HPND-sell-variant-MIT-disclaimer": {
       "name": "HPND sell variant with MIT disclaimer",
       "deprecated": false
     },
     "HPND-sell-variant-MIT-disclaimer-rev": {
       "name": "HPND sell variant with MIT disclaimer - reverse",
+      "deprecated": false
+    },
+    "HPND-SMC": {
+      "name": "Historical Permission Notice and Disclaimer - SMC variant",
       "deprecated": false
     },
     "HPND-UC": {
@@ -1403,6 +1451,10 @@
     },
     "HTMLTIDY": {
       "name": "HTML Tidy License",
+      "deprecated": false
+    },
+    "hyphen-bulgarian": {
+      "name": "hyphen-bulgarian License",
       "deprecated": false
     },
     "IBM-pibs": {
@@ -1475,6 +1527,10 @@
     },
     "ISC-Veillard": {
       "name": "ISC Veillard variant",
+      "deprecated": false
+    },
+    "ISO-permission": {
+      "name": "ISO permission notice",
       "deprecated": false
     },
     "Jam": {
@@ -1785,6 +1841,10 @@
       "name": "MIT Open Group variant",
       "deprecated": false
     },
+    "MIT-STK": {
+      "name": "MIT-STK License",
+      "deprecated": false
+    },
     "MIT-testregex": {
       "name": "MIT testregex Variant",
       "deprecated": false
@@ -1799,6 +1859,10 @@
     },
     "MMIXware": {
       "name": "MMIXware License",
+      "deprecated": false
+    },
+    "MMPL-1.0.1": {
+      "name": "Minecraft Mod Public License v1.0.1",
       "deprecated": false
     },
     "Motosoto": {
@@ -1931,6 +1995,10 @@
     },
     "NIST-PD-fallback": {
       "name": "NIST Public Domain Notice with license fallback",
+      "deprecated": false
+    },
+    "NIST-PD-TNT": {
+      "name": "NIST    Public Domain Notice TNT variant",
       "deprecated": false
     },
     "NIST-Software": {
@@ -2145,6 +2213,10 @@
       "name": "Open Market License",
       "deprecated": false
     },
+    "OpenMDW-1.0": {
+      "name": "OpenMDW License Agreement v1.0",
+      "deprecated": false
+    },
     "OpenPBS-2.3": {
       "name": "OpenPBS v2.3 Software License",
       "deprecated": false
@@ -2173,6 +2245,10 @@
       "name": "Open Publication License v1.0",
       "deprecated": false
     },
+    "OSC-1.0": {
+      "name": "OSC License 1.0",
+      "deprecated": false
+    },
     "OSET-PL-2.1": {
       "name": "OSET Public License version 2.1",
       "deprecated": false
@@ -2197,8 +2273,16 @@
       "name": "Open Software License 3.0",
       "deprecated": false
     },
+    "OSSP": {
+      "name": "OSSP License",
+      "deprecated": false
+    },
     "PADL": {
       "name": "PADL License",
+      "deprecated": false
+    },
+    "ParaType-Free-Font-1.3": {
+      "name": "ParaType Free Font Licensing Agreement v1.3",
       "deprecated": false
     },
     "Parity-6.0.0": {
@@ -2377,6 +2461,10 @@
       "name": "SGI OpenGL License",
       "deprecated": false
     },
+    "SGMLUG-PM": {
+      "name": "SGMLUG Parser Materials License",
+      "deprecated": false
+    },
     "SGP4": {
       "name": "SGP4 Permission Notice",
       "deprecated": false
@@ -2525,6 +2613,10 @@
       "name": "TCP Wrappers License",
       "deprecated": false
     },
+    "TekHVC": {
+      "name": "TekHVC License",
+      "deprecated": false
+    },
     "TermReadKey": {
       "name": "TermReadKey License",
       "deprecated": false
@@ -2633,6 +2725,10 @@
       "name": "Unlicense - libwhirlpool variant",
       "deprecated": false
     },
+    "UnRAR": {
+      "name": "UnRAR License",
+      "deprecated": false
+    },
     "UPL-1.0": {
       "name": "Universal Permissive License v1.0",
       "deprecated": false
@@ -2643,6 +2739,10 @@
     },
     "Vim": {
       "name": "Vim License",
+      "deprecated": false
+    },
+    "Vixie-Cron": {
+      "name": "Vixie Cron License",
       "deprecated": false
     },
     "VOSTROM": {
@@ -2677,8 +2777,16 @@
       "name": "Widget Workshop License",
       "deprecated": false
     },
+    "WordNet": {
+      "name": "WordNet License",
+      "deprecated": false
+    },
     "Wsuipa": {
       "name": "Wsuipa License",
+      "deprecated": false
+    },
+    "WTFNMFPL": {
+      "name": "Do What The F*ck You Want To But It's Not My Fault Public License",
       "deprecated": false
     },
     "WTFPL": {
@@ -2699,6 +2807,10 @@
     },
     "X11-distribute-modifications-variant": {
       "name": "X11 License Distribution Modification Variant",
+      "deprecated": false
+    },
+    "X11-no-permit-persons": {
+      "name": "X11 no permit persons clause",
       "deprecated": false
     },
     "X11-swapped": {
@@ -2851,6 +2963,10 @@
       "name": "Classpath exception 2.0",
       "deprecated": false
     },
+    "Classpath-exception-2.0-short": {
+      "name": "Classpath exception 2.0 - short",
+      "deprecated": false
+    },
     "CLISP-exception-2.0": {
       "name": "CLISP exception 2.0",
       "deprecated": false
@@ -2971,6 +3087,10 @@
       "name": "KiCad Libraries Exception",
       "deprecated": false
     },
+    "kvirc-openssl-exception": {
+      "name": "kvirc OpenSSL Exception",
+      "deprecated": false
+    },
     "LGPL-3.0-linking-exception": {
       "name": "LGPL-3.0 Linking Exception",
       "deprecated": false
@@ -3063,6 +3183,10 @@
       "name": "RRDtool FLOSS exception 2.0",
       "deprecated": false
     },
+    "rsync-linking-exception": {
+      "name": "rsync Linking Exception",
+      "deprecated": false
+    },
     "SANE-exception": {
       "name": "SANE Exception",
       "deprecated": false
@@ -3073,6 +3197,14 @@
     },
     "SHL-2.1": {
       "name": "Solderpad Hardware License v2.1",
+      "deprecated": false
+    },
+    "Simple-Library-Usage-exception": {
+      "name": "Simple Library Usage Exception",
+      "deprecated": false
+    },
+    "sqlitestudio-OpenSSL-exception": {
+      "name": "sqlitestudio OpenSSL exception",
       "deprecated": false
     },
     "stunnel-exception": {
