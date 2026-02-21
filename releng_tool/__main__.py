@@ -36,7 +36,7 @@ def main(launch_args: list[str] | None = None):
     retval = 1
 
     if launch_args is None:
-        launch_args = sys.argv[1:]
+        launch_args = sys.argv[1:]  # pragma: no cover
 
     try:
         parser = RelengToolParser(
@@ -459,4 +459,4 @@ releng.stats.no_pdf                    Never generate PDF statistics output
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(main())  # pragma: no cover
