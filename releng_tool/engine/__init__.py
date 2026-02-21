@@ -1228,9 +1228,11 @@ following key entry and re-try again.
 
         if ConfKey.SYSROOT_PREFIX in settings:
             sysroot_prefix = settings[ConfKey.SYSROOT_PREFIX]
-            if not isinstance(sysroot_prefix, str):
-                notify_invalid_type(ConfKey.SYSROOT_PREFIX, 'str')
+            if not isinstance(sysroot_prefix, (str, bytes, os.PathLike)):
+                notify_invalid_type(
+                    ConfKey.SYSROOT_PREFIX, 'string or path-like')
                 return False
+            sysroot_prefix = os.fsdecode(sysroot_prefix)
             if not sysroot_prefix.startswith('/'):
                 sysroot_prefix = '/' + sysroot_prefix
             self.opts.sysroot_prefix = sysroot_prefix
