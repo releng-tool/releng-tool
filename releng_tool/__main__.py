@@ -197,7 +197,7 @@ def main():
         except RelengToolSilentException:
             pass
         except RelengToolException as e:
-            err(e)
+            err(str(e))
     except KeyboardInterrupt:
         print()
 
