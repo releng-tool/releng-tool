@@ -10,6 +10,7 @@ from releng_tool.engine.make.configure import configure as conf_make
 from releng_tool.engine.meson.configure import configure as conf_meson
 from releng_tool.engine.scons.configure import configure as conf_scons
 from releng_tool.engine.script.configure import configure as conf_script
+from releng_tool.engine.waf.configure import configure as conf_waf
 from releng_tool.packages import clamp_jobs
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
@@ -99,6 +100,8 @@ def stage(engine, pkg, script_env):
         configurer = conf_scons
     elif pkg.type == PackageType.SCRIPT:
         configurer = conf_script
+    elif pkg.type == PackageType.WAF:
+        configurer = conf_waf
 
     if not configurer:
         err('configurer type is not implemented: {}', pkg.type)

@@ -180,6 +180,8 @@ class Rpk(StrCcEnum):
         PYTHON_SETUP_TYPE: python setup type to build/install with
         # (package type - scons)
         SCONS_NOINSTALL: skip scons install stage
+        # (package type - waf)
+        WAF_NOINSTALL: skip waf install stage
     """
     BUILD_SUBDIR = 'BUILD_SUBDIR'
     DEPS = 'DEPENDENCIES'  # deprecated
@@ -253,6 +255,8 @@ class Rpk(StrCcEnum):
     PYTHON_SETUP_TYPE = 'PYTHON_SETUP_TYPE'
     # (package type - scons)
     SCONS_NOINSTALL = 'SCONS_NOINSTALL'
+    # (package type - waf)
+    WAF_NOINSTALL = 'WAF_NOINSTALL'
 
 
 class GlobalAction(StrCcEnum):
@@ -365,6 +369,7 @@ class PackageType(StrCcEnum):
         PYTHON: python-based package
         SCONS: scons-based package
         SCRIPT: releng script-based package
+        WAF: waf-based package
     """
     AUTOTOOLS = 'autotools'
     CARGO = 'cargo'
@@ -374,6 +379,7 @@ class PackageType(StrCcEnum):
     PYTHON = 'python'
     SCONS = 'scons'
     SCRIPT = 'script'
+    WAF = 'waf'
 
 
 class PackageInstallType(StrCcEnum):

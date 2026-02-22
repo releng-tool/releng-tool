@@ -20,6 +20,7 @@ from releng_tool.tool.rsync import RSYNC
 from releng_tool.tool.scons import SCONS
 from releng_tool.tool.scp import SCP
 from releng_tool.tool.svn import SVN
+from releng_tool.tool.waf import WAF
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
 from shutil import which
@@ -134,6 +135,12 @@ class RelengPrerequisites:
                 self._verbose_exists(SCONS)
             else:
                 missing.add(SCONS.tool)
+
+        if PackageType.WAF in pkg_types:
+            if WAF.exists():
+                self._verbose_exists(WAF)
+            else:
+                missing.add(WAF.tool)
 
         if VcsType.BRZ in vcs_types:
             if BRZ.exists():

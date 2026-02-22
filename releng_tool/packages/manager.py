@@ -190,6 +190,7 @@ class RelengPackageManager:
             (Rpk.VERSION, PkgKeyType.STR),
             (Rpk.VSDEVCMD, PkgKeyType.BOOL_OR_STR),
             (Rpk.VSDEVCMD_PRODUCTS, PkgKeyType.STR),
+            (Rpk.WAF_NOINSTALL, PkgKeyType.BOOL),
         ]
         for k, v in regval:
             self._register_conf(k, v)
@@ -905,7 +906,11 @@ using deprecated dependency configuration for package: {}
         # out-of-source tree builds. For supported project types, adjust the
         # build output directory to a sub-folder of the originally assumed
         # output folder.
-        if pkg_type in [PackageType.CMAKE, PackageType.MESON]:
+        if pkg_type in [
+                    PackageType.CMAKE,
+                    PackageType.MESON,
+                    PackageType.WAF,
+                ]:
             pkg_build_output_dir = os.path.join(
                 pkg_build_output_dir, 'releng-output')
 
@@ -920,7 +925,11 @@ using deprecated dependency configuration for package: {}
         # build package in an out-of-source directory (e.g.
         # `pkg_build_output_dir`), which is a better make to issue commands
         # such as "cmake --build .".
-        if pkg_type in [PackageType.CMAKE, PackageType.MESON]:
+        if pkg_type in [
+                    PackageType.CMAKE,
+                    PackageType.MESON,
+                    PackageType.WAF,
+                ]:
             pkg_build_tree = pkg_build_output_dir
         elif pkg_build_subdir:
             pkg_build_tree = pkg_build_subdir
@@ -1436,6 +1445,14 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
         # scons noinstall flag
         if pkg.scons_noinstall is None:
             pkg.scons_noinstall = self._fetch(Rpk.SCONS_NOINSTALL)
+
+        # ######################################################################
+        # (package type - waf)
+        # ######################################################################
+
+        # waf noinstall flag
+        if pkg.waf_noinstall is None:
+            pkg.waf_noinstall = self._fetch(Rpk.WAF_NOINSTALL)
 
         # ######################################################################
         # (post checks)
