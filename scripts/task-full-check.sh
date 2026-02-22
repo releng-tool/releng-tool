@@ -40,4 +40,4 @@ primary_envs=(
 )
 
 envs=$(IFS=, ; echo "${primary_envs[*]}")
-$cmd_prefix tox -p -e "$envs" "$@"
+exec $cmd_prefix tox -c "$script_dir"/../tox.ini -p -e "$envs" "$@"
