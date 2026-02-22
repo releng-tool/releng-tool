@@ -4,6 +4,7 @@
 - Introduce `LIBFOO_DEVMODE_SKIP_INTEGRITY_CHECK` for development scenarios
 - Introduce `LIBFOO_MAX_JOBS` to help cap/limit package jobs
 - Introduce `revisions` project configuration
+- Introduce support for Waf-based packages
 - Support exit code overrides on a successful run
 - Update SPDX license database to v3.28
 - Update `sysroot_prefix` to also accept a path-like value
