@@ -6,10 +6,10 @@
 # will hint at another tox working directory to use.
 
 [ -n "$RELENG_TOOL_NO_CIFS_CHANGE" ] && return
-[ -n "$TOX_WORKDIR" ] && return
+[ -n "$TOX_WORK_DIR" ] && return
 
 fs_type=$(findmnt -T . -o FSTYPE 2>/dev/null | tail -n 1 2>/dev/null)
 if [ "$fs_type" = "cifs" ]; then
-    export TOX_WORKDIR=~/toxout/releng-tool/
-    echo "Detected CIFS; adjusting tox workdir: $TOX_WORKDIR"
+    export TOX_WORK_DIR=~/toxout/releng-tool/
+    echo "Detected CIFS; adjusting tox workdir: $TOX_WORK_DIR"
 fi
