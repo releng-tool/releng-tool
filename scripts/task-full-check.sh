@@ -4,11 +4,15 @@
 # for a changeset and required for a release.
 
 set -e
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null && pwd)
 
 cmd_prefix=
 if command -v winpty >/dev/null 2>/dev/null; then
     cmd_prefix=winpty
 fi
+
+# allow cifs override hint
+source "$script_dir"/tox-cifs-workdir.sh
 
 # invoke environments that can run with modern tox
 primary_envs=(

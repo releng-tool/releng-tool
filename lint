@@ -3,4 +3,5 @@
 # This is a helper script used to only invoke a subset of test environments
 # associated to linting.
 
+. scripts/tox-cifs-workdir.sh
 exec tox -e ruff,mypy,pylint "$@"
