@@ -18,6 +18,7 @@ RUN pacman -Syu \
     python-tox \
     rust \
     scons \
+    waf \
     --noconfirm
 
 # setup a default user

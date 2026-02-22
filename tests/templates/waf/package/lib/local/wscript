@@ -1,0 +1,18 @@
+def options(opt):
+    opt.load('compiler_cxx')
+
+def configure(conf):
+    conf.load('compiler_cxx')
+
+def build(bld):
+    bld.shlib(
+        includes = 'src',
+        install_path = '${PREFIX}/lib',
+        source = 'src/mylib/mylib.cpp',
+        target = 'mylib',
+    )
+
+    bld.install_files(
+        '${PREFIX}/include/mylib',
+        'src/mylib/mylib.h',
+    )

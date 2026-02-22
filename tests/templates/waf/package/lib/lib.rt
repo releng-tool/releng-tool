@@ -1,0 +1,2 @@
+LIB_TYPE = 'waf'
+LIB_VCS_TYPE = 'local'

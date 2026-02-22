@@ -1,0 +1,25 @@
+def options(opt):
+    opt.load('compiler_cxx')
+
+def configure(conf):
+    conf.load('compiler_cxx')
+
+    # better way to handle this?
+    import os
+    conf.env.append_value('INCLUDES', [p for p in os.environ.get('INCLUDES', '').split(':') if p])
+    conf.env.append_value('LIBPATH',  [p for p in os.environ.get('LIBPATH',  '').split(':') if p])
+
+    conf.check_cxx(
+        header_name = 'mylib/mylib.h',
+        lib = 'mylib',
+        mandatory = True,
+        uselib_store='MYLIB'
+    )
+
+def build(bld):
+    bld.program(
+        install_path = '${PREFIX}/bin',
+        source = 'src/myapp/main.cpp',
+        target = 'myapp',
+        use = 'MYLIB',
+    )
