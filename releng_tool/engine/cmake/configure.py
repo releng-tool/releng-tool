@@ -67,7 +67,6 @@ def configure(opts):
     include_locs = []
     library_locs = []
     modules_locs = []
-    prefix_locs = []
     sysroot_locs = []
     for base_loc in base_locs:
         prefixed_base = Path(base_loc + prefix)
@@ -76,7 +75,6 @@ def configure(opts):
         include_locs.append((prefixed_base / 'include').as_posix())
         library_locs.append((prefixed_base / DEFAULT_LIB_DIR).as_posix())
         modules_locs.append(cmake_modules.as_posix())
-        prefix_locs.append(prefixed_base.as_posix())
 
     # ensure the non-full prefix options are passed in a posix style, or
     # some versions of CMake/projects may treat the path separators as
