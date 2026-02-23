@@ -1,4 +1,4 @@
-## Development
+## 2.8.0 (2026-02-22)
 
 - Allow `LIBFOO_EXTENSION` to support empty extensions
 - Introduce `LIBFOO_DEVMODE_SKIP_INTEGRITY_CHECK` for development scenarios
