@@ -405,15 +405,31 @@ class RelengEngineOptions:
         # ``jobs`` can be used which either be a value matching ``jobsconf`` if
         # non-zero, or the value will be a non-zero value matching the CPU count
         # of the running system.
-        if not self.jobs:
-            try:
-                # if `sched_getaffinity` is available, use the call the acquire
-                # the number of physical cores on the system
-                self.jobs = len(os.sched_getaffinity(0))
-            except AttributeError:
-                # if we cannot guarantee the number of physical cores, make an
-                # assumption that the physical core count is half of the
-                # (possible logical) core count provided by `cpu_count`
-                cpu_count = multiprocessing.cpu_count()
-                fuzzy_phy_cores = max(int(cpu_count / 2), 1)
-                self.jobs = fuzzy_phy_cores
+        if self.jobs < 1:
+            self.jobs = self._calculate_physical_cores()
+
+        # if a negative jobs configuration was provided, use this value to
+        # subtract this many jobs for the detected job count
+        if self.jobsconf < 0:
+            self.jobs = max(self.jobs + self.jobsconf, 1)
+
+    def _calculate_physical_cores(self) -> int:
+        """
+        calculate the number of physical cores detected on the platform
+
+        The following attempts to detect the number of physical cores detected
+        on the platform.
+
+        Returns:
+            the assumed number of physical cores
+        """
+        try:
+            # if `sched_getaffinity` is available, use the call the acquire
+            # the number of physical cores on the system
+            return len(os.sched_getaffinity(0))  # type: ignore[attr-defined]
+        except AttributeError:
+            # if we cannot guarantee the number of physical cores, make an
+            # assumption that the physical core count is half of the
+            # (possible logical) core count provided by `cpu_count`
+            cpu_count = multiprocessing.cpu_count()
+            return max(int(cpu_count / 2), 1)  # fuzzy physical core count

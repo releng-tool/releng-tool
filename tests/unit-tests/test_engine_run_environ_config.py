@@ -4,6 +4,7 @@
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import prepare_workdir
+from unittest.mock import patch
 import os
 
 
@@ -61,7 +62,25 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
         with prepare_testenv() as engine:
             self.assertGreater(engine.opts.jobs, 0)
 
-    def test_engine_run_environ_cfg_parallel_level_set(self):
+    def test_engine_run_environ_cfg_parallel_level_set_negative1(self):
+        os.environ['RELENG_PARALLEL_LEVEL'] = '-75'
+
+        opts_cls = 'releng_tool.opts.RelengEngineOptions'
+        with patch(f'{opts_cls}._calculate_physical_cores', return_value=100):
+            with prepare_testenv() as engine:
+                self.assertEqual(engine.opts.jobs, 25)
+                self.assertEqual(engine.opts.jobsconf, -75)
+
+    def test_engine_run_environ_cfg_parallel_level_set_negative2(self):
+        os.environ['RELENG_PARALLEL_LEVEL'] = '-10'
+
+        opts_cls = 'releng_tool.opts.RelengEngineOptions'
+        with patch(f'{opts_cls}._calculate_physical_cores', return_value=5):
+            with prepare_testenv() as engine:
+                self.assertEqual(engine.opts.jobs, 1)
+                self.assertEqual(engine.opts.jobsconf, -10)
+
+    def test_engine_run_environ_cfg_parallel_level_set_positive(self):
         os.environ['RELENG_PARALLEL_LEVEL'] = '42'
 
         with prepare_testenv() as engine:

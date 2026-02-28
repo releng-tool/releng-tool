@@ -174,6 +174,28 @@ class TestMainlineArgs(RelengToolTestCase):
                 '--jobs',
             ])
 
+    def test_mainline_args_jobs_valid_negative1(self):
+        opts_cls = 'releng_tool.opts.RelengEngineOptions'
+        with self._setup() as engine, patch(
+                f'{opts_cls}._calculate_physical_cores', return_value=500):
+            main([
+                '--jobs',
+                '-50',
+            ])
+            opts = engine.call_args.args[0]
+            self.assertEqual(opts.jobs, 450)
+
+    def test_mainline_args_jobs_valid_negative2(self):
+        opts_cls = 'releng_tool.opts.RelengEngineOptions'
+        with self._setup() as engine, patch(
+                f'{opts_cls}._calculate_physical_cores', return_value=4):
+            main([
+                '--jobs',
+                '-5',
+            ])
+            opts = engine.call_args.args[0]
+            self.assertEqual(opts.jobs, 1)
+
     def test_mainline_args_jobs_valid_positive(self):
         with self._setup() as engine:
             main([

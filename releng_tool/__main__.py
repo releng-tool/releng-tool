@@ -53,7 +53,7 @@ def main(launch_args: list[str] | None = None):
         parser.add_argument('--help', '-h', action='store_true')
         parser.add_argument('--help-quirks', action='store_true')
         parser.add_argument('--images-dir')
-        parser.add_argument('--jobs', '-j', default=0, type=type_nonnegativeint)
+        parser.add_argument('--jobs', '-j', default=0, type=int)
         parser.add_argument('--local-sources', '-L', nargs='?', action='append')
         parser.add_argument('--nocolorout', action='store_true')
         parser.add_argument('--only-mirror', action='store_true')
