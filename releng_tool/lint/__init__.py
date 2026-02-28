@@ -3,16 +3,20 @@
 
 from io import StringIO
 from releng_tool.defs import Rpk
+from releng_tool.opts import RelengEngineOptions
 from releng_tool.packages import pkg_key
+from releng_tool.packages.package import RelengPackage
 from releng_tool.util.log import debug
 from releng_tool.util.log import is_colorized
 from releng_tool.util.log import log
 from releng_tool.util.log import success
+from releng_tool.util.spdx import spdx_extract
+from releng_tool.util.spdx import spdx_license_identifier
 import ast
 import tokenize
 
 
-def lint(pkgs):
+def lint(opts: RelengEngineOptions, pkgs: list[RelengPackage]) -> bool:
     """
     request to lint project/package and output information to the output stream
 
@@ -21,6 +25,7 @@ def lint(pkgs):
     detected, this information will be provided to the output stream.
 
     Args:
+        opts: runtime options
         pkgs: the package names to print
 
     Returns:
@@ -47,6 +52,8 @@ def lint(pkgs):
             if k.startswith('_'):
                 continue
             supported_pkg_opts.add(pkg_key(pkg.name, v))
+
+        PKG_LICENSE = pkg_key(pkg.name, Rpk.LICENSE)
 
         lines_to_ignore = set()
 
@@ -80,6 +87,9 @@ def lint(pkgs):
                     # if this node matches a support configuration key, move
                     # onto the next
                     if node.id in supported_pkg_opts:
+                        if node.id == PKG_LICENSE:
+                            if not _check_spdx_license(opts, pkg, node):
+                                issue_count += 1
                         continue
 
                     node_flagged = False
@@ -137,6 +147,73 @@ def lint(pkgs):
         log(f'Found {issue_count} errors.')
 
     return issue_count == 0
+
+
+def _check_spdx_license(opts: RelengEngineOptions,
+        pkg: RelengPackage, node: ast.Name) -> bool:
+    """
+    report a linter issue
+
+    Helps format and print a linter message to a user.
+
+    Args:
+        opts: runtime options
+        pkg: the package to check
+        node: the node of the license entry
+
+    Returns:
+        ``True`` if no linting issues; ``False`` otherwise
+    """
+
+    detectedSpdxIssues = []
+
+    for license_entry in pkg.license:
+        parsed, licenses, exceptions = spdx_extract(license_entry)
+
+        for nested_license in licenses:
+            if spdx_license_identifier(nested_license):
+                continue
+
+            entry = opts.spdx['licenses'].get(nested_license, None)
+            if entry:
+                if entry['deprecated']:
+                    detectedSpdxIssues.append(
+                        'deprecated spdx license detected '
+                       f'({nested_license}): {pkg.name}')
+            else:
+                detectedSpdxIssues.append(
+                    'unknown spdx license detected '
+                   f'({nested_license}): {pkg.name}')
+
+        for exception in exceptions:
+            entry = opts.spdx['exceptions'].get(exception, None)
+            if entry:
+                if entry['deprecated']:
+                    detectedSpdxIssues.append(
+                        'deprecated spdx license exception detected '
+                       f'({exception}): {pkg.name}')
+            else:
+                detectedSpdxIssues.append(
+                    'unknown spdx license exception detected '
+                   f'({exception}): {pkg.name}')
+
+        if not parsed:
+            detectedSpdxIssues.append(
+                f'unexpected spdx license format detected: {pkg.name}')
+
+    if detectedSpdxIssues:
+        _report(
+            0,
+            f'unexpected spdx license configuration: {node.id}',
+            pkg.def_file,
+            node.lineno,
+            node.col_offset,
+        )
+
+        for issue in detectedSpdxIssues:
+            log(f'  - {issue}')
+
+    return not detectedSpdxIssues
 
 
 def _report(code: int, msg: str, path: str, line: int, col: int):

@@ -40,14 +40,6 @@ class TestSpdxLicenseWarnings(RelengToolTestCase):
             'MIT WITH PERMIT_EXCEPTION', template='spdx-extras')
         self.assertNotIn('unknown spdx license detected', output)
 
-    def test_spdx_licenses_suppress_quirk(self):
-        config = {
-            'quirk': ['releng.disable_spdx_check'],
-        }
-
-        output = self._process_license('DUMMY', config=config)
-        self.assertNotIn('unknown spdx license detected', output)
-
     def test_spdx_licenses_unknown_spdx_exception(self):
         output = self._process_license('BSD WITH DUMMY')
         self.assertIn('unknown spdx license exception detected', output)
@@ -58,32 +50,38 @@ class TestSpdxLicenseWarnings(RelengToolTestCase):
 
     def test_spdx_licenses_valid_spdx_license_common(self):
         output = self._process_license('BSD-2-Clause')
-        self.assertNotIn('(warn)', output)  # no warnings
+        self.assertNotIn('MINIMAL_LICENSE', output)  # no warnings
 
     def test_spdx_licenses_valid_spdx_license_custom_ascii(self):
         output = self._process_license('LicenseRef-MyCompanyLicense')
-        self.assertNotIn('(warn)', output)  # no warnings
+        self.assertNotIn('MINIMAL_LICENSE', output)  # no warnings
 
     def test_spdx_licenses_valid_spdx_license_custom_unicode(self):
         output = self._process_license('LicenseRef-Prüfen')
-        self.assertNotIn('(warn)', output)  # no warnings
+        self.assertNotIn('MINIMAL_LICENSE', output)  # no warnings
 
-    def _process_license(self, lid, config=None, template='minimal'):
+    def _process_license(self, lid, template='minimal'):
+        config = {
+            'action': 'lint',
+        }
+
         with redirect_stdout() as stream:
-            with prepare_testenv(config=config, template=template) as engine:
-                if lid:
-                    root_dir = engine.opts.root_dir
-                    pkg_script = os.path.join(root_dir,
-                        'package', template, template + '.rt')
-                    self.assertTrue(os.path.exists(pkg_script))
+            try:
+                with prepare_testenv(config=config, template=template) as engine:
+                    if lid:
+                        root_dir = engine.opts.root_dir
+                        pkg_script = os.path.join(root_dir,
+                            'package', template, template + '.rt')
+                        self.assertTrue(os.path.exists(pkg_script))
 
-                    with open(pkg_script, 'a', encoding='utf_8') as f:
-                        key = pkg_key(template, 'INTERNAL')
-                        f.write(f'{key}=True\n')
-                        key = pkg_key(template, 'LICENSE')
-                        f.write(f'{key}="{lid}"\n')
+                        with open(pkg_script, 'a', encoding='utf_8') as f:
+                            key = pkg_key(template, 'INTERNAL')
+                            f.write(f'{key}=True\n')
+                            key = pkg_key(template, 'LICENSE')
+                            f.write(f'{key}="{lid}"\n')
 
-                rv = engine.run()
-                self.assertTrue(rv)
+                    engine.run()
+            finally:
+                print(stream.getvalue())
 
         return stream.getvalue()

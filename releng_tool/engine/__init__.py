@@ -384,7 +384,7 @@ class RelengEngine:
                         pkgs_to_lint = [pkg]
                         break
 
-            return lint(pkgs_to_lint)
+            return lint(opts, pkgs_to_lint)
 
         # remove any packages flagged for only-devmode when not in devmode
         for pkg in pkgs[:]:

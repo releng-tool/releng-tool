@@ -446,7 +446,6 @@ releng.disable_devmode_ignore_cache    Disable package ignore-cache flags
 releng.disable_prerequisites_check     Disable prerequisites check
 releng.disable_remote_configs          Disable remote configurations
 releng.disable_remote_scripts          Disable remote scripts
-releng.disable_spdx_check              Disable SPDX license checks
 releng.disable_verbose_patch           Disable use of --verbose in patch calls
 releng.git.no_depth                    Disable depth-limits for Git calls
 releng.git.no_quick_fetch              Disable quick-fetching for Git calls
