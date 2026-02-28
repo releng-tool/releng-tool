@@ -402,6 +402,13 @@ class RelengEngine:
                     verbose(f'package removed since only-devmode: {pkg.name}')
                     pkgs.remove(pkg)
 
+        # check if any local-source-defined packages are not internal packages
+        if self.opts.local_srcs:
+            for pkg in pkgs:
+                if pkg.name in self.opts.local_srcs and not pkg.is_internal:
+                    warn('local-sources configuration set for a package '
+                        f'that is not an internal package: {pkg.name}')
+
         # if cleaning a package, remove it's build output directory and stop
         if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN, PkgAction.FRESH):
             for pkg in pkgs:
