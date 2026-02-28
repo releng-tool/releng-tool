@@ -60,7 +60,7 @@ def main(launch_args: list[str] | None = None):
         parser.add_argument('--out-dir')
         parser.add_argument('--profile', '-P', action='append')
         parser.add_argument('--relaxed-args', action='store_true')
-        parser.add_argument('--root-dir')
+        parser.add_argument('--root-dir', '-R')
         parser.add_argument('--sbom-format', type=type_sbom_format)
         parser.add_argument('--success-exit-code', default=0,
             type=type_nonnegativeint)
@@ -414,7 +414,8 @@ def usage():
                             provided by repeating this argument
  --quirk <value>           Inject in quirk into this run
  --relaxed-args            Permit the use of unknown arguments
- --root-dir <dir>          Directory to process a releng project
+ --root-dir <dir>, -R <dir>
+                           Directory to process a releng project
  --sbom-format <format>    Override the output format for a software build of
                             materials (e.g. csv, json)
  --success-exit-code <n>   Exit code to use on success
