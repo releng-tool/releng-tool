@@ -24,11 +24,11 @@ consider the following:
 - Always test any changes provided.
 - Commit messages for patches requires a summary, a body (describing why the
   change is being made along with any other additional information) and
-  metadata. It is a requirement that any submitted changes provided follow the
-  Developer Certificate of Origin. This is indicated with the inclusion of the
-  `Signed-off-by` tag in the metadata. Commit messages with only "bug fix" or
-  "addressing comments in review" are not helpful when reflecting on the history
-  of changes for this project.
+  metadata. It is a requirement that any submitted changes are signed off
+  in accordance with the Developer Certificate of Origin (DCO). This is
+  indicated with the inclusion of the `Signed-off-by` tag in the metadata.
+  Commit messages with only "bug fix" or "addressing comments in review"
+  are not helpful when reflecting on the history of changes for this project.
 - A patch should attempt to have a narrow scope as well as be complete.
 - Be aware that while maintainers will help introduce changes into this project,
   the process may take some time. Please be patient.
@@ -39,7 +39,7 @@ The following outlines a series of quirks when contributing:
 
 - Commit history is important. If a pull request is submitted, any commit should
   have meaningful message which describes the purpose of the change. There may
-  be times where a maintainer or other contributers may request changes to a
+  be times where a maintainer or other contributors may request changes to a
   pull request. Individuals working on a pull request may either reset/re-form
   their commits or stack changes on the branch. If a developer wishes to stack
   changes onto a pull request, it is important that the newly added commit
