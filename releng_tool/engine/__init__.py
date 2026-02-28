@@ -4,6 +4,7 @@
 from collections import OrderedDict
 from datetime import datetime
 from inspect import signature
+from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
@@ -225,6 +226,8 @@ class RelengEngine:
                 for key, val in sorted(self.opts.local_srcs.items()):
                     if not val:
                         val = '<parent>' if key == GBL_LSRCS else '<unset>'
+                    else:
+                        val = Path(val).as_posix()
 
                     entry = val
                     if key != GBL_LSRCS and not os.path.exists(val):
@@ -685,6 +688,8 @@ has failed. Ensure the following path is accessible for this user:
             for key, val in sorted(self.opts.local_srcs.items()):
                 if not val:
                     val = '<parent>' if key == GBL_LSRCS else '<unset>'
+                else:
+                    val = Path(val).as_posix()
 
                 entry = val
                 if key != GBL_LSRCS and not os.path.exists(val):
@@ -1058,6 +1063,8 @@ for any desired locally sourced packages.
                     for key, val in sorted(opts.local_srcs.items()):
                         if not val:
                             val = '<parent>' if key == GBL_LSRCS else '<unset>'
+                        else:
+                            val = Path(val).as_posix()
 
                         entry = val
                         if key != GBL_LSRCS and not os.path.exists(val):
