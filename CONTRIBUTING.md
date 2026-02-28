@@ -51,9 +51,6 @@ The following outlines a series of quirks when contributing:
   the tox configuration as there may be valid reasons for some implementation to
   exceed 80 characters in length. That being said, please aim for any changes
   introduced to not exceed the 80 character limit when possible.
-- PEP 8 "two blank lines" recommendations are not preferred in this project.
-  Changes submitted with two blank lines may be accepted, but may also be
-  "cleaned up" in future changes.
 
 ## Outro
 
