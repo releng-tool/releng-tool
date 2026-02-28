@@ -9,4 +9,5 @@ pdm
 poetry>=0.8
 scons
 setuptools>=61
+virtualenv<21; python_version<'3.10'
 wheel
