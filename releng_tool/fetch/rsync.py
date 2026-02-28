@@ -4,12 +4,12 @@
 from releng_tool.tool.rsync import RSYNC
 from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io import prepare_arguments
+from releng_tool.util.io_tar import tar_cachefile
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.string import expand
 import os
-import tarfile
 
 
 def fetch(opts):
@@ -71,7 +71,8 @@ def fetch(opts):
         return None
     log('successfully invoked rsync for source')
 
-    with tarfile.open(cache_file, 'w:gz') as tar:
-        tar.add(work_dir, arcname=cache_stem)
+    log('caching sources')
+    if not tar_cachefile(work_dir, cache_file, cache_stem):
+        return None
 
     return cache_file

@@ -2,12 +2,10 @@
 # Copyright releng-tool
 
 from releng_tool.tool.svn import SVN
-from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.io_tar import tar_cachefile
 from releng_tool.util.log import err
 from releng_tool.util.log import log
 from releng_tool.util.log import note
-import os
-import tarfile
 
 
 def fetch(opts):
@@ -65,16 +63,8 @@ def fetch_default(opts):
         return None
 
     log('caching sources')
-    def svn_exclude(file):
-        return file.endswith('.svn')
-
-    # ensure cache file's directory exists
-    cache_dir = os.path.abspath(os.path.join(cache_file, os.pardir))
-    if not mkdir(cache_dir):
+    if not tar_cachefile(work_dir, cache_file, name, '.svn'):
         return None
-
-    with tarfile.open(cache_file, 'w:gz') as tar:
-        tar.add(work_dir, arcname=name, exclude=svn_exclude)
 
     return cache_file
 
