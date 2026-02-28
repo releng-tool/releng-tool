@@ -24,6 +24,7 @@ class RelengPackage:
         deps: list of dependencies for this package
         devmode: whether the package has a devmode revision
         devmode_ignore_cache: whether or not cache files should be ignored
+        devmode_patches: patch application in devmode
         devmode_skip_ic: whether to skip integrity checks in devmode
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
@@ -37,6 +38,7 @@ class RelengPackage:
         hash_file: file containing hashes to validate this package
         hash_relaxed: whether hash checks can be relaxed
         host_provides: host tools the package will provide
+        ignore_patches: whether to ignore patches
         install_type: install container for the package (target, staged, etc.)
         is_internal: whether or not this package is an project internal package
         license: license(s) of the package
@@ -116,6 +118,7 @@ class RelengPackage:
         self.deps = []
         self.devmode = None
         self.devmode_ignore_cache = None
+        self.devmode_patches = None
         self.devmode_skip_ic = None
         self.fetch_opts = None
         self.fixed_jobs = None
@@ -124,6 +127,7 @@ class RelengPackage:
         self.host_provides = None
         self.ext_modifiers = None
         self.extract_type = None
+        self.ignore_patches = None
         self.install_type = None
         self.is_internal = None
         self.license = None

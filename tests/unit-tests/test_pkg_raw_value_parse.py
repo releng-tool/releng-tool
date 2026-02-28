@@ -58,6 +58,39 @@ class TestPkgRawValueParse(RelengToolTestCase):
         with self.assertRaises(TypeError):
             raw_value_parse(123, PkgKeyType.BOOL_OR_STRS)
 
+    def test_pkg_rvp_bool_or_strs_or_dict_bss(self):
+        type_ = PkgKeyType.BOOL_OR_STRS_OR_DICT_BSS
+
+        rv = raw_value_parse(True, type_)  # noqa: FBT003
+        self.assertTrue(rv)
+
+        rv = raw_value_parse(False, type_)  # noqa: FBT003
+        self.assertFalse(rv)
+
+        rv = raw_value_parse('value', type_)
+        self.assertEqual(rv, ['value'])
+
+        rv = raw_value_parse(['value'], type_)
+        self.assertEqual(rv, ['value'])
+
+        rv = raw_value_parse({}, type_)
+        self.assertEqual(rv, {})
+
+        rv = raw_value_parse({'a': 'b'}, type_)
+        self.assertEqual(rv, {'a': ['b']})
+
+        rv = raw_value_parse({'a': True, 'b': 'b'}, type_)
+        self.assertEqual(rv, {'a': True, 'b': ['b']})
+
+        rv = raw_value_parse({'a': ['a'], 'b': False}, type_)
+        self.assertEqual(rv, {'a': ['a'], 'b': False})
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(None, type_)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(123, type_)
+
     def test_pkg_rvp_dict(self):
         rv = raw_value_parse({}, PkgKeyType.DICT)
         self.assertEqual(rv, {})

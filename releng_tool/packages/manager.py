@@ -138,6 +138,7 @@ class RelengPackageManager:
             (Rpk.CONF_OPTS, PkgKeyType.OPTS),
             (Rpk.DEPS, PkgKeyType.STRS),
             (Rpk.DEVMODE_IGNORE_CACHE, PkgKeyType.BOOL),
+            (Rpk.DEVMODE_PATCHES, PkgKeyType.BOOL_OR_STRS_OR_DICT_BSS),
             (Rpk.DEVMODE_REVISION, PkgKeyType.STR),
             (Rpk.DEVMODE_SKIP_INTEGRITY_CHECK, PkgKeyType.BOOL),
             (Rpk.ENV, PkgKeyType.DICT_STR_PSTR),
@@ -153,6 +154,7 @@ class RelengPackageManager:
             (Rpk.GIT_SUBMODULES, PkgKeyType.BOOL),
             (Rpk.GIT_VERIFY_REVISION, PkgKeyType.BOOL),
             (Rpk.HOST_PROVIDES, PkgKeyType.STRS),
+            (Rpk.IGNORE_PATCHES, PkgKeyType.BOOL_OR_STRS),
             (Rpk.INSTALL_DEFS, PkgKeyType.DICT_STR_PSTR),
             (Rpk.INSTALL_ENV, PkgKeyType.DICT_STR_PSTR),
             (Rpk.INSTALL_OPTS, PkgKeyType.OPTS),
@@ -644,6 +646,9 @@ using deprecated dependency configuration for package: {}
                 if opts.default_dev_ignore_cache is not None:
                     pkg_devmode_ignore_cache = opts.default_dev_ignore_cache
 
+        # development mode patches configuration
+        pkg_devmode_patches = self._fetch(Rpk.DEVMODE_PATCHES)
+
         # skip integrity checks in development mode
         pkg_devmode_skip_ic = self._fetch(Rpk.DEVMODE_SKIP_INTEGRITY_CHECK)
 
@@ -663,6 +668,9 @@ using deprecated dependency configuration for package: {}
 
         # host tools provided
         pkg_host_provides = self._fetch(Rpk.HOST_PROVIDES)
+
+        # ignore patches
+        pkg_ignore_patches = self._fetch(Rpk.IGNORE_PATCHES)
 
         # is-external
         pkg_is_external = self._fetch(Rpk.EXTERNAL)
@@ -997,6 +1005,7 @@ using deprecated dependency configuration for package: {}
         pkg.def_file = Path(script)
         pkg.devmode = pkg_devmode
         pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
+        pkg.devmode_patches = pkg_devmode_patches
         pkg.devmode_skip_ic = pkg_devmode_skip_ic
         pkg.extract_type = pkg_extract_type
         pkg.git_config = pkg_git_config
@@ -1007,6 +1016,7 @@ using deprecated dependency configuration for package: {}
         pkg.hash_file = os.path.join(pkg_def_dir, name + '.hash')
         pkg.hash_relaxed = pkg_hash_relaxed
         pkg.host_provides = pkg_host_provides
+        pkg.ignore_patches = pkg_ignore_patches
         pkg.is_internal = pkg_is_internal
         pkg.local_srcs = pkg_local_srcs
         pkg.no_extraction = pkg_no_extraction

@@ -111,6 +111,7 @@ class Rpk(StrCcEnum):
         BUILD_SUBDIR: sub-directory in fetched to find root src
         DEPS: list of package dependencies (deprecated; see NEEDS)
         DEVMODE_IGNORE_CACHE: whether or not ignore cache
+        DEVMODE_PATCHES: configure patches for use in development mode
         DEVMODE_REVISION: devmode-rev to acquire from srcs
         DEVMODE_SKIP_INTEGRITY_CHECK: skip checks when in development mode
         EXTENSION: filename extension for package (if needed)
@@ -125,6 +126,7 @@ class Rpk(StrCcEnum):
         GIT_SUBMODULES: fetch any submodules (if any)
         GIT_VERIFY_REVISION: verify signed revisions
         HOST_PROVIDES: host tools the package will provide
+        IGNORE_PATCHES: suppress patch use in non-development mode
         INSTALL_TYPE: install container target for the package
         INTERNAL: whether or not package is considered "internal"
         LICENSE: license information for the package
@@ -187,6 +189,7 @@ class Rpk(StrCcEnum):
     BUILD_SUBDIR = 'BUILD_SUBDIR'
     DEPS = 'DEPENDENCIES'  # deprecated
     DEVMODE_IGNORE_CACHE = 'DEVMODE_IGNORE_CACHE'
+    DEVMODE_PATCHES = 'DEVMODE_PATCHES'
     DEVMODE_REVISION = 'DEVMODE_REVISION'
     DEVMODE_SKIP_INTEGRITY_CHECK = 'DEVMODE_SKIP_INTEGRITY_CHECK'
     EXTENSION = 'EXTENSION'
@@ -201,6 +204,7 @@ class Rpk(StrCcEnum):
     GIT_SUBMODULES = 'GIT_SUBMODULES'
     GIT_VERIFY_REVISION = 'GIT_VERIFY_REVISION'
     HOST_PROVIDES = 'HOST_PROVIDES'
+    IGNORE_PATCHES = 'IGNORE_PATCHES'
     INSTALL_TYPE = 'INSTALL_TYPE'
     INTERNAL = 'INTERNAL'
     LICENSE = 'LICENSE'

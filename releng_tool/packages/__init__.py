@@ -23,6 +23,7 @@ class PkgKeyType(StrCcEnum):
         BOOL: boolean value
         BOOL_OR_STR: boolean value or a string value
         BOOL_OR_STRS: boolean value or one-or-more strings value
+        BOOL_OR_STRS_OR_DICT_BSS: bool, strings or dict strs w/ bool/strings
         DICT: dictionary value
         DICT_STR_PSTR: dictionary of string keys with string/path-like values
         DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
@@ -37,6 +38,7 @@ class PkgKeyType(StrCcEnum):
     BOOL = 'bool'
     BOOL_OR_STR = 'bool_or_str'
     BOOL_OR_STRS = 'bool_or_strs'
+    BOOL_OR_STRS_OR_DICT_BSS = 'bool_or_strs_or_dict_bss'
     DICT = 'dict'
     DICT_STR_PSTR = 'dict_str_pstr'
     DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
@@ -156,6 +158,23 @@ def raw_value_parse(value: object, type_: PkgKeyType) -> object:
             value = interpret_seq(value, str)
             if value is None:
                 raise TypeError('bool or string(s)')
+    elif type_ == PkgKeyType.BOOL_OR_STRS_OR_DICT_BSS:
+        if not isinstance(value, bool):
+            new_value = interpret_seq(value, str)
+            if new_value is not None:
+                value = new_value
+            elif not isinstance(value, dict):
+                raise TypeError('bool, string(s) or dict(str,bool/str(s))')
+            else:
+                for k, v in value.items():
+                    if not isinstance(v, bool):
+                        new_value = interpret_seq(v, str)
+                        if new_value is not None:
+                            value[k] = new_value
+                        else:
+                            raise TypeError(
+                                'bool, string(s) or dict(str,bool/str(s))')
+
     elif type_ == PkgKeyType.DICT:
         if not isinstance(value, dict):
             raise TypeError('dictionary')
