@@ -1,3 +1,14 @@
+## Development
+
+- **(note)** Last version supporting Python 3.9
+- Fix undesired warnings when using `revisions` in development mode
+- Fix where `NJOBSCONF` was not properly set when using `RELENG_PARALLEL_LEVEL`
+- Improved support for setting local-sources POSIX paths on Windows platforms
+- Introduce `LIBFOO_ONLY_DEVMODE` to support development-only packages
+- Printed local-sources paths are now printed in POSIX format
+- Support for negative jobs value to reduce detected job usage
+- Use of local-sources mode with external packages now generate a warning
+
 ## 2.8.0 (2026-02-22)
 
 - Allow `LIBFOO_EXTENSION` to support empty extensions
