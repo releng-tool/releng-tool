@@ -20,7 +20,6 @@ from releng_tool.engine.cargo import cargo_register_pkg_paths
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
-from releng_tool.engine.lint import lint
 from releng_tool.engine.printvars import printvars
 from releng_tool.engine.sbom import SbomManager
 from releng_tool.engine.script_env import prepare_script_environment
@@ -32,6 +31,7 @@ from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.exceptions import RelengToolUnknownAction
+from releng_tool.lint import lint
 from releng_tool.opts import RELENG_CONF_NAME
 from releng_tool.packages.exceptions import RelengToolMissingPackageScript
 from releng_tool.packages.exceptions import RelengToolStageFailure
