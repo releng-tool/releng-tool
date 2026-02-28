@@ -24,6 +24,7 @@ from releng_tool.util.io_temp_dir import temp_dir
 from releng_tool.util.io_wd import wd
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import log
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 import os
@@ -172,6 +173,12 @@ local sources option to use the default process).
             # force explicit ignore cache (to off) when not in development mode
             elif not engine.opts.devmode and ignore_cache is None:
                 fetch_opts.ignore_cache = False
+
+            # if the request hints to ignore a cache and we still have a
+            # cache file that will not be removed (since `--force` was not
+            # set), give a hint to the user about this state
+            if ignore_cache and os.path.exists(pkg.cache_file):
+                log('package already fetched: {}', name)
 
             if os.path.exists(pkg.cache_file):
                 rv = None
