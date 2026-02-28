@@ -24,6 +24,7 @@ class RelengPackage:
         deps: list of dependencies for this package
         devmode: whether the package has a devmode revision
         devmode_ignore_cache: whether or not cache files should be ignored
+        devmode_skip_ic: whether to skip integrity checks in devmode
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
         fetch_opts: fetch options (if applicable)
@@ -115,6 +116,7 @@ class RelengPackage:
         self.deps = []
         self.devmode = None
         self.devmode_ignore_cache = None
+        self.devmode_skip_ic = None
         self.fetch_opts = None
         self.fixed_jobs = None
         self.hash_file = None
