@@ -259,6 +259,13 @@ class RelengEngineOptions:
                     # attempt to expand a user hint after extracting the path
                     path = os.path.expanduser(path)
 
+                # if windows and provided a posix absolute path, most likely
+                # running in a posix-supported shell environment; try to
+                # convert the path to a windows path
+                if path and sys.platform == 'win32' and \
+                        re.match(r'^/[a-zA-Z](/|$)', path):
+                    path = re.sub(r'^/([a-zA-Z])(/|$)', r'\1:\2', path)
+
                 # acquire the absolute path for the part, to prevent
                 # issues associated with the path if the working directory
                 # changes (ignoring unset values)
