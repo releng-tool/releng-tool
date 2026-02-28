@@ -330,7 +330,8 @@ class RelengEngineOptions:
 
         if not self.jobs and 'RELENG_PARALLEL_LEVEL' in os.environ:
             with contextlib.suppress(ValueError):
-                self.jobs = int(os.environ.get('RELENG_PARALLEL_LEVEL'))
+                self.jobs = self.jobsconf = \
+                    int(os.environ.get('RELENG_PARALLEL_LEVEL'))
 
     def _finalize_options(self):
         """

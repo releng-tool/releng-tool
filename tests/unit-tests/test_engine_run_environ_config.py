@@ -66,3 +66,4 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
 
         with prepare_testenv() as engine:
             self.assertEqual(engine.opts.jobs, 42)
+            self.assertEqual(engine.opts.jobsconf, 42)
