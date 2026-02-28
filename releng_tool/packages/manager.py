@@ -484,13 +484,14 @@ class RelengPackageManager:
             if prj_defined_revision:
                 if not pkg_revision:
                     pkg_revision = prj_defined_revision
-                elif pkg_revision_raw:
-                    warn('''\
+                elif not pkg_devmode:
+                    if pkg_revision_raw:
+                        warn('''\
 ignoring project-defined revision since package defined a revision: {}
  (see '{}')\
 ''', name, pkg_key(name, Rpk.REVISION))
-                else:
-                    warn('''\
+                    else:
+                        warn('''\
 ignoring project-defined revision since package defined a version: {}
  (see '{}')\
 ''', name, pkg_key(name, Rpk.VERSION))
