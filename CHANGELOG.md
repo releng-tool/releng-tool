@@ -1,10 +1,17 @@
 ## Development
 
+- **(note)** Last version supporting Bazaar sites
 - **(note)** Last version supporting Python 3.9
+- **(note)** Last version supporting `override_revisions`
+- **(note)** Last version supporting `override_sites`
+- **(note)** Last version supporting `LIBFOO_SKIP_REMOTE_SCRIPTS`
+- **(note)** Last version supporting `LIBFOO_SKIP_REMOTE_CONFIG`
+- **(note)** Last version supporting an implicit `LIBFOO_PYTHON_SETUP_TYPE`
 - Fix undesired warnings when using `revisions` in development mode
 - Fix where `NJOBSCONF` was not properly set when using `RELENG_PARALLEL_LEVEL`
 - Improved support for setting local-sources POSIX paths on Windows platforms
 - Introduce `LIBFOO_ONLY_DEVMODE` to support development-only packages
+- Move package SPDX license check warnings into the lint action
 - Printed local-sources paths are now printed in POSIX format
 - Support for negative jobs value to reduce detected job usage
 - Use of local-sources mode with external packages now generate a warning
