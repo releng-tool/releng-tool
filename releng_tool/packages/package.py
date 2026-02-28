@@ -45,6 +45,7 @@ class RelengPackage:
         name: name of the package
         no_extraction: whether or not this package will extract
         nv: name-version value of the package
+        only_devmode: whether package only applies in development mode
         patch_subdir: override for a package's patch base (if applicable)
         preextract: whether this package will extract before any build phase
         prefix: system root prefix override (if applicable)
@@ -127,6 +128,7 @@ class RelengPackage:
         self.local_srcs = False
         self.max_jobs = None
         self.no_extraction = False
+        self.only_devmode = False
         self.patch_subdir = None
         self.preextract = None
         self.prefix = None

@@ -132,6 +132,7 @@ class Rpk(StrCcEnum):
         MAX_JOBS: maximum job count for the project
         NEEDS: list of package dependencies
         NO_EXTRACTION: whether or not package extraction is done
+        ONLY_DEVMODE: whether package only applies in development mode
         PATCH_SUBDIR: sub-directory in fetched to apply patches
         PREEXTRACT: package should extract before other projects are built
         PREFIX: system root prefix override (if needed)
@@ -207,6 +208,7 @@ class Rpk(StrCcEnum):
     MAX_JOBS = 'MAX_JOBS'
     NEEDS = 'NEEDS'
     NO_EXTRACTION = 'NO_EXTRACTION'
+    ONLY_DEVMODE = 'ONLY_DEVMODE'
     PATCH_SUBDIR = 'PATCH_SUBDIR'
     PREEXTRACT = 'PREEXTRACT'
     PREFIX = 'PREFIX'

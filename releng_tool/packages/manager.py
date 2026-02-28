@@ -168,6 +168,7 @@ class RelengPackageManager:
             (Rpk.MESON_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.NEEDS, PkgKeyType.STRS),
             (Rpk.NO_EXTRACTION, PkgKeyType.BOOL),
+            (Rpk.ONLY_DEVMODE, PkgKeyType.BOOL_OR_STRS),
             (Rpk.PATCH_SUBDIR, PkgKeyType.PSTR),
             (Rpk.PREEXTRACT, PkgKeyType.BOOL),
             (Rpk.PREFIX, PkgKeyType.PSTR),
@@ -674,6 +675,9 @@ using deprecated dependency configuration for package: {}
         # no extraction
         pkg_no_extraction = self._fetch(Rpk.NO_EXTRACTION)
 
+        # only devmode
+        pkg_only_devmode = self._fetch(Rpk.ONLY_DEVMODE)
+
         # patch subdirectory
         pkg_patch_subdir = self._fetch(Rpk.PATCH_SUBDIR)
 
@@ -1008,6 +1012,7 @@ using deprecated dependency configuration for package: {}
         pkg.is_internal = pkg_is_internal
         pkg.local_srcs = pkg_local_srcs
         pkg.no_extraction = pkg_no_extraction
+        pkg.only_devmode = pkg_only_devmode
         pkg.patch_subdir = pkg_patch_subdir
         pkg.preextract = pkg_preextract
         pkg.remote_config = pkg_remote_config

@@ -383,6 +383,25 @@ class RelengEngine:
 
             return lint(pkgs_to_lint)
 
+        # remove any packages flagged for only-devmode when not in devmode
+        for pkg in pkgs[:]:
+            if pkg.only_devmode:
+                unregister_pkg = False
+
+                if pkg.devmode:
+                    # if the package defines a list of specific development
+                    # modes it applies to, remove the package if the active
+                    # development mode is not a noted mode
+                    if pkg.only_devmode is not True and \
+                            opts.devmode not in pkg.only_devmode:
+                        unregister_pkg = True
+                else:
+                    unregister_pkg = True
+
+                if unregister_pkg:
+                    verbose(f'package removed since only-devmode: {pkg.name}')
+                    pkgs.remove(pkg)
+
         # if cleaning a package, remove it's build output directory and stop
         if pa in (PkgAction.CLEAN, PkgAction.DISTCLEAN, PkgAction.FRESH):
             for pkg in pkgs:
