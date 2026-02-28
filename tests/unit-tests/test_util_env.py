@@ -94,6 +94,13 @@ class TestUtilEnv(RelengToolTestCase):
         value = env_value(test_env_key, None)
         self.assertIsNone(value)
 
+        # verify preventing overwrite
+        value = env_value(test_env_key, test_env_val)
+        self.assertEqual(value, test_env_val)
+
+        value = env_value(test_env_key, 'some-other-value', overwrite=False)
+        self.assertEqual(value, test_env_val)
+
     def test_utilenv_env_wrap(self):
         ev = env_wrap()
 

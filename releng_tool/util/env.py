@@ -92,18 +92,20 @@ def extend_script_env(env, extra):
 __ENV_VALUE_DEFAULT = object()
 
 
-def env_value(key, value=__ENV_VALUE_DEFAULT):
+def env_value(key, value=__ENV_VALUE_DEFAULT, *, overwrite=True):
     """
     helper to easily fetch or configure an environment variable
 
     .. versionadded:: 0.3
+    .. versionchanged:: 2.9 Support the ``overwrite`` argument.
 
     Provides a caller a simple method to fetch or configure an environment
     variable for the current context. This call is the same as if one directly
     fetched from or managed a key-value with ``os.environ``. If ``value`` is not
     provided, the environment variable's value (if set) will be returned. If
     ``value`` is set to a value of ``None``, any set environment variable will
-    be removed.
+    be removed. A caller can also set ``overwrite=False`` to avoid overwriting
+    an already configured environment variable.
 
     An example when using in the context of script helpers is as follows:
 
@@ -115,9 +117,13 @@ def env_value(key, value=__ENV_VALUE_DEFAULT):
         # set an environment variable
         releng_env('KEY', 'VALUE')
 
+        # set an environment variable if it is not already set
+        releng_env('KEY', 'VALUE', overwrite=False)
+
     Args:
         key: the environment key
         value (optional): the environment value to set
+        overwrite (optional): whether to overwrite an environment variable
 
     Returns:
         the value of the environment variable
@@ -128,6 +134,8 @@ def env_value(key, value=__ENV_VALUE_DEFAULT):
     if value is None:
         if key in os.environ:
             del os.environ[key]
+    elif not overwrite and key in os.environ:
+        return os.environ.get(key)
     else:
         os.environ[key] = value
 
