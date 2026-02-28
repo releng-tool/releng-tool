@@ -16,6 +16,7 @@
 - Move package SPDX license check warnings into the lint action
 - Printed local-sources paths are now printed in POSIX format
 - Support for negative jobs value to reduce detected job usage
+- Support not overwriting environment variables when using `releng_env`
 - Use of local-sources mode with external packages now generate a warning
 
 ## 2.8.0 (2026-02-22)
