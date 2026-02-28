@@ -39,6 +39,25 @@ class TestPkgRawValueParse(RelengToolTestCase):
         with self.assertRaises(TypeError):
             raw_value_parse(123, PkgKeyType.BOOL_OR_STR)
 
+    def test_pkg_rvp_bool_or_strs(self):
+        rv = raw_value_parse(True, PkgKeyType.BOOL_OR_STRS)  # noqa: FBT003
+        self.assertTrue(rv)
+
+        rv = raw_value_parse(False, PkgKeyType.BOOL_OR_STRS)  # noqa: FBT003
+        self.assertFalse(rv)
+
+        rv = raw_value_parse('value', PkgKeyType.BOOL_OR_STRS)
+        self.assertEqual(rv, ['value'])
+
+        rv = raw_value_parse(['value'], PkgKeyType.BOOL_OR_STRS)
+        self.assertEqual(rv, ['value'])
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(None, PkgKeyType.BOOL_OR_STRS)
+
+        with self.assertRaises(TypeError):
+            raw_value_parse(123, PkgKeyType.BOOL_OR_STRS)
+
     def test_pkg_rvp_dict(self):
         rv = raw_value_parse({}, PkgKeyType.DICT)
         self.assertEqual(rv, {})

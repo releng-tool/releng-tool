@@ -22,6 +22,7 @@ class PkgKeyType(StrCcEnum):
     Attributes:
         BOOL: boolean value
         BOOL_OR_STR: boolean value or a string value
+        BOOL_OR_STRS: boolean value or one-or-more strings value
         DICT: dictionary value
         DICT_STR_PSTR: dictionary of string keys with string/path-like values
         DICT_STR_STR_OR_STR: dictionary of string pairs or a string value
@@ -35,6 +36,7 @@ class PkgKeyType(StrCcEnum):
     """
     BOOL = 'bool'
     BOOL_OR_STR = 'bool_or_str'
+    BOOL_OR_STRS = 'bool_or_strs'
     DICT = 'dict'
     DICT_STR_PSTR = 'dict_str_pstr'
     DICT_STR_STR_OR_STR = 'dict_str_str_or_str'
@@ -149,6 +151,11 @@ def raw_value_parse(value: object, type_: PkgKeyType) -> object:
     elif type_ == PkgKeyType.BOOL_OR_STR:
         if not isinstance(value, (bool, str)):
             raise TypeError('bool or string')
+    elif type_ == PkgKeyType.BOOL_OR_STRS:
+        if not isinstance(value, bool):
+            value = interpret_seq(value, str)
+            if value is None:
+                raise TypeError('bool or string(s)')
     elif type_ == PkgKeyType.DICT:
         if not isinstance(value, dict):
             raise TypeError('dictionary')
