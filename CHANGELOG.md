@@ -10,6 +10,8 @@
 - Fix undesired warnings when using `revisions` in development mode
 - Fix where `NJOBSCONF` was not properly set when using `RELENG_PARALLEL_LEVEL`
 - Improved support for setting local-sources POSIX paths on Windows platforms
+- Introduce `LIBFOO_DEVMODE_PATCHES` to support development mode patching
+- Introduce `LIBFOO_IGNORE_PATCHES` to support ignoring package patches
 - Introduce `LIBFOO_ONLY_DEVMODE` to support development-only packages
 - Move package SPDX license check warnings into the lint action
 - Printed local-sources paths are now printed in POSIX format
