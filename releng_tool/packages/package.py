@@ -111,6 +111,7 @@ class RelengPackage:
         self.cache_dir = None
         self.cache_file = None
         self.def_dir = None
+        self.def_file = None
         self.deps = []
         self.devmode = None
         self.devmode_ignore_cache = None
