@@ -44,6 +44,7 @@ def fetch(opts):
         cache_file,
         site,
         '--format=tgz',
+        '--per-file-timestamps',
         '--root=' + name,
         '--revision=' + revision,
     ]
