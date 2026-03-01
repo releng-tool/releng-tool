@@ -112,6 +112,7 @@ def lint(opts: RelengEngineOptions, pkgs: list[RelengPackage]) -> bool:
     from releng_tool.lint.rt104 import rt104
     from releng_tool.lint.rt105 import rt105
     from releng_tool.lint.rt106 import rt106
+    from releng_tool.lint.rt107 import rt107
 
     state = LintState()
 
@@ -139,6 +140,7 @@ def lint(opts: RelengEngineOptions, pkgs: list[RelengPackage]) -> bool:
         rt104(state, pkg, nodes)
         rt105(state, pkg, nodes)
         rt106(state, pkg, nodes)
+        rt107(state, pkg, nodes)
 
     return state.finalize()
 
