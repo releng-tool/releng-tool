@@ -7,6 +7,7 @@
 - **(note)** Last version supporting `LIBFOO_SKIP_REMOTE_SCRIPTS`
 - **(note)** Last version supporting `LIBFOO_SKIP_REMOTE_CONFIG`
 - **(note)** Last version supporting an implicit `LIBFOO_PYTHON_SETUP_TYPE`
+- Added a series of package configuration lint checks (RT100-RT115)
 - Fix undesired warnings when using `revisions` in development mode
 - Fix where `NJOBSCONF` was not properly set when using `RELENG_PARALLEL_LEVEL`
 - Improved support for setting local-sources POSIX paths on Windows platforms
