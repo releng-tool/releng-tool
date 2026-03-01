@@ -1437,7 +1437,7 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
         # ######################################################################
 
         if pkg.host_provides and pkg.install_type != PackageInstallType.HOST:
-            warn('non-host package providing host package: {}', pkg.name)
+            verbose('non-host package providing host package: {}', pkg.name)
             pkg.host_provides = None
 
     def load_remote_configuration(self, pkg):
