@@ -633,11 +633,6 @@ explicit url vcs-type with files is deprecated: {}
         deps = self._fetch(Rpk.NEEDS)
         if deps is None:
             deps = self._fetch(Rpk.DEPS, default=[])
-            if deps:
-                warn('''\
-using deprecated dependency configuration for package: {}
- (update '{}' to '{}')\
-''', name, pkg_key(name, Rpk.DEPS), pkg_key(name, Rpk.NEEDS))
 
         # ignore cache
         pkg_devmode_ignore_cache = self._fetch(Rpk.DEVMODE_IGNORE_CACHE)
