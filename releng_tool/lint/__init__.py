@@ -107,6 +107,7 @@ def lint(opts: RelengEngineOptions, pkgs: list[RelengPackage]) -> bool:
     # ruff: noqa: PLC0415
     from releng_tool.lint.rt100 import rt100
     from releng_tool.lint.rt101 import rt101
+    from releng_tool.lint.rt102 import rt102
 
     state = LintState()
 
@@ -124,10 +125,12 @@ def lint(opts: RelengEngineOptions, pkgs: list[RelengPackage]) -> bool:
                 continue
             state.pkgkey_opts[pkg].add(pkg_key(pkg.name, v))
 
-        for node in process_nodes(pkg.def_file):
+        nodes = list(process_nodes(pkg.def_file))
+        for node in nodes:
             rt100(state, pkg, node)
             rt101(state, opts, pkg, node)
 
+        rt102(state, pkg, nodes)
     return state.finalize()
 
 

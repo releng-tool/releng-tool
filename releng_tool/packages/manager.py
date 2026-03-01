@@ -599,7 +599,7 @@ use of GNU Bazaar is deprecated; see package: {}
         if pkg_vcs_type == VcsType.URL and pkg_site and \
                 pkg_site.startswith('file://'):
             pkg_vcs_type = VcsType.FILE
-            warn('''\
+            verbose('''\
 explicit url vcs-type with files is deprecated: {}
  (update '{}' to 'file')\
 ''', name, pkg_key(name, Rpk.VCS_TYPE))
