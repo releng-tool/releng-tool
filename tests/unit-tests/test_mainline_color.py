@@ -12,7 +12,7 @@ class TestMainlineColor(RelengToolTestCase):
     def test_mainline_color_force_disabled(self):
         with self._setup() as engine:
             os.environ['NO_COLOR'] = '1'
-            main()
+            main([])
             opts = engine.call_args.args[0]
             self.assertTrue(opts.no_color_out)
 
@@ -20,7 +20,7 @@ class TestMainlineColor(RelengToolTestCase):
         with self._setup() as engine:
             os.environ['FORCE_COLOR'] = '1'
             os.environ['NO_COLOR'] = '1'
-            main()
+            main([])
             opts = engine.call_args.args[0]
             self.assertFalse(opts.no_color_out)
 
