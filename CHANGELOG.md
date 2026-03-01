@@ -1,4 +1,4 @@
-## Development
+## 2.9.0 (2026-03-01)
 
 - **(note)** Last version supporting Bazaar sites
 - **(note)** Last version supporting Python 3.9
