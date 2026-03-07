@@ -92,8 +92,6 @@ lint.ignore = [
     'TRY003',
     # ignore desired usages of raise calls within trys
     'TRY301',
-    # disable pyupgrade for now since we have a lot to upgrade still
-    'UP',
 ]
 
 [lint.per-file-ignores]
