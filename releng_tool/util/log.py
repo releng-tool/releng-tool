@@ -21,7 +21,7 @@ RELENG_LOG_VERBOSE_FLAG = False
 RELENG_LOG_WERROR_FLAG = False
 
 
-def log(msg, *args, end: str = '\n', expand: bool = True):
+def log(msg: str = '', *args, end: str = '\n', expand: bool = True):
     """
     log a message
 
@@ -35,7 +35,7 @@ def log(msg, *args, end: str = '\n', expand: bool = True):
         log('this is a message')
 
     Args:
-        msg: the message
+        msg (optional): the message
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
         end (optional): the end character to print
