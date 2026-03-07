@@ -18,20 +18,17 @@ source "$script_dir"/tox-cifs-workdir.sh
 primary_envs=(
     ruff
     pylint
-    py39
     py310
     py311
     py312
     py313
     py314
     pypy3
-    py39-tools
     py310-tools
     py311-tools
     py312-tools
     py313-tools
     py314-tools
-    py39-release
     py310-release
     py311-release
     py312-release

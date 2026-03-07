@@ -37,7 +37,6 @@ jobs:
     strategy:
       matrix:
         include:
-            - { os:  ubuntu-latest, img: "python:3.9-slim",  python:  "3.9", toxenv:   py39, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.10-slim", python: "3.10", toxenv:  py310, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.11-slim", python: "3.11", toxenv:  py311, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, img: "python:3.12-slim", python: "3.12", toxenv:  py312, cache: ~/.cache/pip }
