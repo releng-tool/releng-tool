@@ -319,7 +319,7 @@ def __log(prefix: str, color: str, msg: str, *args,
         msg = vexpand(msg)
     if args:
         msg = msg.format(*args)
-    print(f'{color}{prefix}{msg}{post}', end=end, flush=True)
+    print(f'{color}{prefix}{msg}{post}', end=end, flush=True)  # noqa: T201
 
 
 def releng_log_configuration(*,

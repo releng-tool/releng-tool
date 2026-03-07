@@ -84,8 +84,6 @@ lint.ignore = [
     'SIM108',
     # expected (interim) uses of private vars within the implementation
     'SLF001',
-    # ignore flake8-print since we support/expect printing
-    'T20',
     # ignore warnings about using type-checking block
     'TCH',
     # purposely used long exception messages
@@ -106,4 +104,9 @@ lint.ignore = [
 
 'tests/templates/**' = [
     'F821',
+]
+
+'tests/**' = [
+    'T201',
+    'T203',
 ]
