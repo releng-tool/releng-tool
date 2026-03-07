@@ -18,10 +18,10 @@ def global_define(var, default=None):
     .. code-block:: python
 
         val = releng_define('MY_DEFINE', 'default-value')
-        print(val)
+        log(val)
         # (or)
         releng_define('MY_DEFINE', 'default-value')
-        print(MY_DEFINE)
+        log(MY_DEFINE)
 
     Args:
         var: the define/variable name

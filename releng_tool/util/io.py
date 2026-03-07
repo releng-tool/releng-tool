@@ -8,6 +8,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import is_debug
 from releng_tool.util.log import is_verbose
+from releng_tool.util.log import log
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.string import expand as expand_util
@@ -324,7 +325,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                                 if capture_line:
                                     capture.append(capture_line)
                             if not quiet:
-                                print(decoded_line, end='', flush=True)
+                                log(decoded_line, end='', expand=False)
                             line = line[idx+1:]
                             break
                     else:
@@ -337,7 +338,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
                     if capture_line:
                         capture.append(capture_line)
                 if not quiet:
-                    print(decoded_line, flush=True)
+                    log(decoded_line, expand=False)
 
             proc.communicate()
 

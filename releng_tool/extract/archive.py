@@ -8,6 +8,7 @@ from releng_tool.util.io import interpret_stem_extension
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
+from releng_tool.util.log import log
 from releng_tool.util.log import warn
 from zipfile import ZipFile
 import os
@@ -124,7 +125,7 @@ def extract(opts):
                                 member.name = parts[-1]
 
                             # notify the user of the target member to extract
-                            print(member.name)
+                            log(member.name)
                             yield member
 
                     with tarfile.open(cache_file, 'r') as tar:
@@ -156,7 +157,7 @@ def extract(opts):
                         dest = os.path.join(work_dir, member_s)
 
                         # notify the user of the target member to extract
-                        print(member)
+                        log(member)
 
                         # if this is a directory entry, ensure the directory
                         # exists for the destination

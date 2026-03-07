@@ -85,10 +85,10 @@ def main(launch_args: list[str] | None = None):
 
         args, unknown_args = parser.parse_known_args(known_args)
         if args.help:
-            print(usage())
+            log(usage())
             return 0
         if args.help_quirks:
-            print(usage_quirks())
+            log(usage_quirks())
             return 0
 
         # handle a `None` value being a "True" state; and a (default) `False`
@@ -206,7 +206,7 @@ def main(launch_args: list[str] | None = None):
         except RelengToolException as e:
             err(str(e))
     except KeyboardInterrupt:
-        print()
+        log()
 
     return retval
 
@@ -215,7 +215,7 @@ def main(launch_args: list[str] | None = None):
 # not print the long usage text
 class RelengToolParser(argparse.ArgumentParser):
     def error(self, message):
-        print(message)
+        log(message, expand=False)
         sys.exit(1)
 
 

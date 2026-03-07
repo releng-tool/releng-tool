@@ -36,7 +36,7 @@ def temp_dir(dir_: str | bytes | os.PathLike | None = None,
     .. code-block:: python
 
         with releng_tmpdir() as dir_:
-            print(dir_)
+            log(dir_)
 
     Args:
         dir_ (optional): the directory to create the temporary directory in

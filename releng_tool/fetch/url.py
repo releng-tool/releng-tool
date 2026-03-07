@@ -108,12 +108,12 @@ def _fetch_attempt(opts):
                     if total != read:
                         if total > 0:
                             pct = 100 * float(read) / float(total)
-                            print(f'[{pct:02.0f}%] {filename}: '
-                                  f'{read_str} of {total_str}'
-                                   '            ', end='\r')
+                            log(f'[{pct:02.0f}%] {filename}: '
+                                f'{read_str} of {total_str}'
+                                 '            ', end='\r')
                         else:
-                            print(f' {filename}: {read_str}'
-                                   '            ', end='\r')
+                            log(f' {filename}: {read_str}'
+                                 '            ', end='\r')
 
                     f.write(buf)
     except HTTPError as e:

@@ -164,7 +164,7 @@ def stage(engine, pkg, script_env):
         patch_args.append('--verbose')
 
     for patch in patches:
-        print(f'({os.path.basename(patch)})')
+        log(f'({os.path.basename(patch)})')
 
         patch_out = []
         if not PATCH.execute([*patch_args, f'--input={patch}'],

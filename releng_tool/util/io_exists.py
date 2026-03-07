@@ -23,9 +23,9 @@ def path_exists(path: str | bytes | os.PathLike,
     .. code-block:: python
 
         if releng_exists('my-file'):
-            print('the file exists')
+            log('the file exists')
         else:
-            print('the file does not exist')
+            log('the file does not exist')
 
     Args:
         path: the path

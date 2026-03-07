@@ -32,7 +32,7 @@ def expand(obj, kv=None):
 
         os.environ['MY_ENV'] = 'my-environment-variable'
         value = releng_expand('$MY_ENV')
-        print(value)
+        log(value)
         # will output: my-environment-variable
 
     Args:

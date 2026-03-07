@@ -32,16 +32,16 @@ def mkdir(dir_: str | bytes | os.PathLike, *args: str | bytes | os.PathLike,
     .. code-block:: python
 
         if releng_mkdir('my-directory'):
-            print('directory was created')
+            log('directory was created')
         else:
-            print('directory was not created')
+            log('directory was not created')
 
         target_dir = releng_mkdir(TARGET_DIR, 'sub-folder')
         if target_dir:
             # output] target directory: <target>/sub-folder
-            print('target directory:', target_dir)
+            log('target directory:', target_dir)
         else:
-            print('directory was not created')
+            log('directory was not created')
 
     Args:
         dir_: the directory

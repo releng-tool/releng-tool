@@ -4,6 +4,7 @@
 from __future__ import annotations
 from pathlib import Path
 from releng_tool.util.io_path import path_input
+from releng_tool.util.log import log
 import os
 
 
@@ -45,7 +46,7 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
         path_obs = path.iterdir()
 
     for p in sorted(path_obs):
-        print(f'{p.relative_to(path)}{_desc(p)}')
+        log(f'{p.relative_to(path)}{_desc(p)}')
 
     return True
 

@@ -46,7 +46,7 @@ def releng_include(file_path: str | bytes | os.PathLike,
         # script "my-var-script" defines "HELLO='world'"
         releng_include('my-var-script', source=True)
         # prints "world"
-        print(HELLO)
+        log(HELLO)
 
     Args:
         file_path: the script to invoke

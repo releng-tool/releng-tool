@@ -25,9 +25,9 @@ def touch(file: str | bytes | os.PathLike,
     .. code-block:: python
 
         if releng_touch('my-file'):
-            print('file was created')
+            log('file was created')
         else:
-            print('file was not created')
+            log('file was not created')
 
     Args:
         file: the file

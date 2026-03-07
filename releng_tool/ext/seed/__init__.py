@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.util.log import log
+
+
 def releng_setup(app):
     seed_ext_type = RelengSeedExtension
     app.add_fetch_type('ext-seed', seed_ext_type)
@@ -10,7 +13,7 @@ def releng_setup(app):
 
 class RelengSeedExtension:
     def fetch(self, name, opts):
-        print('(seed) package', opts.name, 'has been fetched')
+        log('(seed) package', opts.name, 'has been fetched')
 
         try:
             with open(opts.cache_file, 'w'):
@@ -21,17 +24,17 @@ class RelengSeedExtension:
             return opts.cache_file
 
     def extract(self, name, opts):
-        print('(seed) package', opts.name, 'has been extracted')
+        log('(seed) package', opts.name, 'has been extracted')
         return True
 
     def configure(self, name, opts):
-        print('(seed) package', opts.name, 'has been configured')
+        log('(seed) package', opts.name, 'has been configured')
         return True
 
     def build(self, name, opts):
-        print('(seed) package', opts.name, 'has been built')
+        log('(seed) package', opts.name, 'has been built')
         return True
 
     def install(self, name, opts):
-        print('(seed) package', opts.name, 'has been installed')
+        log('(seed) package', opts.name, 'has been installed')
         return True
