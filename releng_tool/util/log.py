@@ -307,9 +307,7 @@ def __log(prefix: str, color: str, msg: str, *args):
     """
     if RELENG_LOG_NOCOLOR_FLAG:
         color = ''
-        post = ''
-    else:
-        post = '\033[0m'
+    post = '\033[0m' if color else ''
     msg = str(msg)
     msg = expand(msg)
     if args:
