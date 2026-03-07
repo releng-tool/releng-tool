@@ -6,6 +6,7 @@ from contextlib import contextmanager
 from difflib import unified_diff
 from io import StringIO
 from pathlib import Path
+from releng_tool.apimode import API_STATE
 from releng_tool.engine import RelengEngine
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.packages import pkg_key
@@ -359,6 +360,9 @@ class RelengToolTestCase(unittest.TestCase):
         Args:
             result (optional): the test result to populate
         """
+
+        # always reset cached api mode start between each unit test run
+        API_STATE.reset()
 
         with self.env_wrap(), self.syspath_wrap():
             super().run(result)
