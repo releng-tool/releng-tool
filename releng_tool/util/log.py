@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from releng_tool.exceptions import RelengToolWarningAsError
-from releng_tool.util.string import expand
+from releng_tool.util.string import expand as vexpand
 
 #: flag to track the enablement of debug messages
 RELENG_LOG_DEBUG_FLAG = False
@@ -21,11 +21,12 @@ RELENG_LOG_VERBOSE_FLAG = False
 RELENG_LOG_WERROR_FLAG = False
 
 
-def log(msg: str, *args):
+def log(msg, *args, end: str = '\n', expand: bool = True):
     """
     log a message
 
     .. versionchanged:: 2.7 Provided message will now expand variables.
+    .. versionchanged:: 2.10 Added support for ``end`` and ``expand``.
 
     Logs a (normal) message to standard out with a trailing new line.
 
@@ -37,8 +38,10 @@ def log(msg: str, *args):
         msg: the message
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
+        end (optional): the end character to print
+        expand (optional): whether the message will perform variable expansion
     """
-    __log('', '', msg, *args)
+    __log('', '', msg, *args, end=end, expand=expand)
 
 
 def debug(msg: str, *args):
@@ -292,7 +295,8 @@ def warn_wrap(msg: str):
     return f'{color}{msg}{post}'
 
 
-def __log(prefix: str, color: str, msg: str, *args):
+def __log(prefix: str, color: str, msg: str, *args,
+        end: str = '\n', expand: bool = True):
     """
     utility logging method
 
@@ -304,15 +308,18 @@ def __log(prefix: str, color: str, msg: str, *args):
         msg: the message
         *args: an arbitrary set of positional and keyword arguments used when
             generating a formatted message
+        end (optional): the end character to print
+        expand (optional): whether the message will perform variable expansion
     """
     if RELENG_LOG_NOCOLOR_FLAG:
         color = ''
     post = '\033[0m' if color else ''
     msg = str(msg)
-    msg = expand(msg)
+    if expand:
+        msg = vexpand(msg)
     if args:
         msg = msg.format(*args)
-    print(f'{color}{prefix}{msg}{post}', flush=True)
+    print(f'{color}{prefix}{msg}{post}', end=end, flush=True)
 
 
 def releng_log_configuration(*,
