@@ -127,6 +127,9 @@ class RelengStats:
             pkg: the package
             stage: the stage which has ended
             save (optional): automatically save the duration (default: True)
+
+        Returns:
+            the duration
         """
         end_time = monotonic()
         start_time = self.cache[pkg][stage]['start']
@@ -138,10 +141,13 @@ class RelengStats:
         if stage not in self.data['duration'][pkg]:
             self.data['duration'][pkg][stage] = {}
 
-        self.data['duration'][pkg][stage] = end_time - start_time
+        duration = end_time - start_time
+        self.data['duration'][pkg][stage] = duration
 
         if save:
             self.save(desc=f'{pkg}-{stage}')
+
+        return duration
 
     def generate(self):
         """
