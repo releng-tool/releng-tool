@@ -162,8 +162,7 @@ class TestSiteToolBase(RelengToolTestCase):
             pkg_name = PKG_NAME
 
         with open(defconfig, mode='a', encoding='utf_8') as file_def:
-            file_def.write('{} = {}\n'.format(
-                pkg_key(pkg_name, key), repr(value)))
+            file_def.write(f'{pkg_key(pkg_name, key)} = {value!r}\n')
 
     def defconfig_dump(self, defconfig=None):
         """

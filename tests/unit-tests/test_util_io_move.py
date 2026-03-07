@@ -321,7 +321,7 @@ class TestUtilIoMove(RelengToolTestCase):
 
         for file in files:
             with open(file, 'a') as f:
-                f.write('{}-A'.format(os.path.basename(file)))
+                f.write(f'{os.path.basename(file)}-A')
 
         files = [
             self._('d3', 'file1'),
@@ -331,7 +331,7 @@ class TestUtilIoMove(RelengToolTestCase):
 
         for file in files:
             with open(file, 'a') as f:
-                f.write('{}-B'.format(os.path.basename(file)))
+                f.write(f'{os.path.basename(file)}-B')
 
         # move entire folder tree into a new base
         src_dir = self._('d1')

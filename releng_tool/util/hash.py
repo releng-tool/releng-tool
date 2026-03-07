@@ -98,10 +98,10 @@ def load(hash_file):
         entry_len = len(entry)
         if entry_len > HASH_ENTRY_PARTS:
             raise BadFormatHashLoadError(
-                'too many values for entry {}'.format(idx + 1))
+                f'too many values for entry {idx + 1}')
         if entry_len < HASH_ENTRY_PARTS:
             raise BadFormatHashLoadError(
-                'too few values for entry {}'.format(idx + 1))
+                f'too few values for entry {idx + 1}')
 
         # a hash entry may also include an associated key length (e.g. SHAKE);
         # if a key length is provided, ensure it is sane value

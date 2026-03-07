@@ -213,7 +213,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
                 cwd=cache_dir, quiet=True):
             debug('attempting a tag reference fetch operation')
             fetch_cmd = list(prepared_fetch_cmd)
-            fetch_cmd.append('+refs/tags/{0}:refs/tags/{0}'.format(revision))
+            fetch_cmd.append(f'+refs/tags/{revision}:refs/tags/{revision}')
             if limited_fetch:
                 fetch_cmd.extend(depth_cmds)
 
@@ -227,7 +227,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
             debug('attempting a head reference fetch operation')
             fetch_cmd = list(prepared_fetch_cmd)
             fetch_cmd.append(
-                '+refs/heads/{0}:refs/remotes/origin/{0}'.format(revision))
+                f'+refs/heads/{revision}:refs/remotes/origin/{revision}')
             if limited_fetch:
                 fetch_cmd.extend(depth_cmds)
 
@@ -246,7 +246,7 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
     if refspecs:
         for ref in refspecs:
             prepared_fetch_cmd.append(
-                '+refs/{0}:refs/remotes/origin/{0}'.format(ref))
+                f'+refs/{ref}:refs/remotes/origin/{ref}')
 
     fetch_cmd = list(prepared_fetch_cmd)
     if limited_fetch:
@@ -273,12 +273,12 @@ def _fetch_srcs(opts, cache_dir, revision, desc=None, refspecs=None):
                 return False
 
             if revision_exists(git_dir, revision) not in REVISION_EXISTS:
-                err('unable to find matching revision in {}\n'
-                    ' (revision: {})', desc, revision)
+                err(f'unable to find matching revision in {revision}\n'
+                    f' (revision: {desc})')
                 return False
         else:
-            err('unable to find matching revision in {}\n'
-                ' (revision: {})', desc, revision)
+            err(f'unable to find matching revision in {desc}\n'
+                f' (revision: {revision})')
             return False
 
     return True

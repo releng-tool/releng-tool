@@ -350,9 +350,9 @@ class RelengEngine:
             detected = suggest(opts, opts.target_action)
             if detected:
                 if len(detected) == 1:
-                    alt = '"{}"'.format(detected[0])
+                    alt = f'"{detected[0]}"'
                 elif len(detected) == 2:  # noqa: PLR2004
-                    alt = '"{}" or "{}"'.format(detected[0], detected[1])
+                    alt = f'"{detected[0]}" or "{detected[1]}"'
                 else:
                     alt = '"{}" or "{}"'.format(
                         '", "'.join(detected[:-1]), detected[-1])

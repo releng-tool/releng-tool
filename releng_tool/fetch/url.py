@@ -108,11 +108,12 @@ def _fetch_attempt(opts):
                     if total != read:
                         if total > 0:
                             pct = 100 * float(read) / float(total)
-                            print('[{:02.0f}%] {}: {} of {}            '.format(
-                                pct, filename, read_str, total_str), end='\r')
+                            print(f'[{pct:02.0f}%] {filename}: '
+                                  f'{read_str} of {total_str}'
+                                   '            ', end='\r')
                         else:
-                            print(' {}: {}            '.format(
-                                filename, read_str), end='\r')
+                            print(f' {filename}: {read_str}'
+                                   '            ', end='\r')
 
                     f.write(buf)
     except HTTPError as e:
@@ -144,7 +145,7 @@ def display_size(val):
     SZ = 1024.
     for unit in ['B', 'KiB', 'MiB', 'GiB']:
         if abs(val) < SZ:
-            return '{:3.1f} {}'.format(val, unit)
+            return f'{val:3.1f} {unit}'
         val /= SZ
 
-    return '{:.1f} TiB'.format(val)
+    return f'{val:.1f} TiB'

@@ -10,6 +10,8 @@ import urllib.request
 
 CONFIG_FILE = 'spdx-license-data.ini'
 
+LICENSE_BASE_URL = 'https://raw.githubusercontent.com/spdx/license-list-data'
+
 
 def main():
     script_dir = os.path.dirname(__file__)
@@ -22,9 +24,7 @@ def main():
         license_tag = cfg.get('spdx-license-data', 'version')
 
         # determine url base for license file
-        license_host_url = 'https://raw.githubusercontent.com'
-        license_base_url = '{}/spdx/license-list-data/{}/json/'.format(
-            license_host_url, license_tag)
+        license_base_url = f'{LICENSE_BASE_URL}/{license_tag}/json/'
 
         # update license data
         update(license_base_url)

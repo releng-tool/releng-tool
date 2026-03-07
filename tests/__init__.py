@@ -241,8 +241,7 @@ def setpkgcfg(engine, pkg_name, key, value):
     pkg_def = os.path.join(pkg_defdir, f'{pkg_name}.rt')
 
     with open(pkg_def, mode='a', encoding='utf_8') as file_def:
-        file_def.write('{} = {}\n'.format(
-            pkg_key(pkg_name, key), repr(value)))
+        file_def.write(f'{pkg_key(pkg_name, key)} = {value!r}\n')
 
 
 def setprjcfg(engine, key, value):
@@ -263,7 +262,7 @@ def setprjcfg(engine, key, value):
     prj_def = Path(engine.opts.root_dir) / 'releng-tool.rt'
 
     with prj_def.open(mode='a', encoding='utf_8') as file_def:
-        file_def.write('{} = {}\n'.format(key, repr(value)))
+        file_def.write(f'{key} = {value!r}\n')
 
 
 def writeprjcfg(engine, value):
