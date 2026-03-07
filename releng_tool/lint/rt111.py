@@ -19,6 +19,11 @@ def rt111(state: LintState, pkg: RelengPackage, nodes: list[ast.AST]):
         node: node being processed
     """
 
+    # before checking for conditional ways the type would be set, perform
+    # the simple check with the package instance
+    if pkg.type == PackageType.SCONS:
+        return
+
     type_key = pkg_key(pkg.name, Rpk.TYPE)
 
     # first, ensure we have no scenario where scons is the target type

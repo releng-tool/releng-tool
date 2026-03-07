@@ -20,6 +20,11 @@ def rt113(state: LintState, pkg: RelengPackage, nodes: list[ast.AST]):
         node: node being processed
     """
 
+    # before checking for conditional ways the vcs-type would be set, perform
+    # the simple check with the package instance
+    if pkg.vcs_type == VcsType.GIT:
+        return
+
     site_key = pkg_key(pkg.name, Rpk.SITE)
     vcs_type_key = pkg_key(pkg.name, Rpk.VCS_TYPE)
 
