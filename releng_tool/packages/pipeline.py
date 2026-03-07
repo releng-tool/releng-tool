@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from contextlib import contextmanager
+from releng_tool.apimode import API_STATE
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import ListenerEvent
 from releng_tool.defs import PkgAction
@@ -114,6 +115,10 @@ class RelengPackagePipeline:
         gaction = force_gaction or self.opts.gbl_action
         paction = self.opts.pkg_action
         target = self.opts.target_action
+
+        # we are processing this package; ensure we populate the state in
+        # the api
+        pkg.populate_api()
 
         # skip if generating license information and no license
         # files exist for this package
@@ -577,7 +582,13 @@ class RelengPackagePipeline:
 
         yield
 
-        self.engine.stats.track_duration_end(pkg.name, stage_name)
+        duration = self.engine.stats.track_duration_end(pkg.name, stage_name)
+
+        # track that a stage has occurred for a package, as well as the
+        # known duration for the stage
+        api_data = API_STATE['packages'][pkg.name]
+        api_data['durations'][stage_name] = int(duration)
+        api_data['stages'].append(stage_name)
 
     def _stage_license(self, pkg, strict):
         """

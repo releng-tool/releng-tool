@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
+from releng_tool.apimode import API_STATE
+from releng_tool.defs import PackageInstallType
+
+
 class RelengPackage:
     """
     a releng package
@@ -192,3 +197,27 @@ class RelengPackage:
         self.scons_noinstall = None
         # (package type - waf)
         self.waf_noinstall = None
+
+    def populate_api(self):
+        """
+        populate the global api state with this package's details
+        """
+        api_data = API_STATE['packages'][self.name].fetch()
+        api_data['build-dir'] = self.build_dir and \
+            Path(self.build_dir).as_posix()
+        api_data['build-output-dir'] = self.build_output_dir \
+            and Path(self.build_output_dir).as_posix()
+        api_data['def-dir'] = self.def_dir and Path(self.def_dir).as_posix()
+        api_data['def-file'] = self.def_file and self.def_file.as_posix()
+        api_data['durations'].fetch()
+        api_data['install-type'] = self.install_type \
+            or PackageInstallType.TARGET
+        api_data['internal'] = self.is_internal
+        api_data['license'] = self.license
+        api_data['license-files'] = self.license_files
+        api_data['revision'] = self.revision
+        api_data['site'] = self.site
+        api_data['stages'] = []
+        api_data['type'] = self.type
+        api_data['vcs-type'] = self.vcs_type
+        api_data['version'] = self.version
