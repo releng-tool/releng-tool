@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 from releng_tool import __version__ as releng_version
+from releng_tool.apimode import API_STATE
 from releng_tool.defs import SbomFormatType
 from releng_tool.engine import RelengEngine
 from releng_tool.exceptions import RelengToolException
@@ -33,6 +34,7 @@ def main(launch_args: list[str] | None = None):
     Returns:
         the exit code
     """
+    api_mode = False
     retval = 1
 
     if launch_args is None:
@@ -42,6 +44,7 @@ def main(launch_args: list[str] | None = None):
         parser = RelengToolParser(
             prog='releng-tool', add_help=False, usage=usage())
 
+        parser.add_argument('--api', action='store_true')
         parser.add_argument('--assets-dir')
         parser.add_argument('--cache-dir')
         parser.add_argument('--config')
@@ -121,12 +124,14 @@ def main(launch_args: list[str] | None = None):
             args.nocolorout = False
 
         releng_log_configuration(
+            apimode=args.api,
             debug_=args.debug,
             nocolor=args.nocolorout,
             verbose_=args.verbose,
             werror=args.werror,
         )
 
+        api_mode = args.api
         warnerr = err if args.werror else warn
 
         # toggle on ansi colors by default for commands
@@ -207,6 +212,11 @@ def main(launch_args: list[str] | None = None):
             err(str(e))
     except KeyboardInterrupt:
         log()
+
+    # if we were operating in an api mode, dump the api state
+    if api_mode:
+        API_STATE['code'] = 1 if retval else 0
+        print(API_STATE)  # noqa: T201
 
     return retval
 
@@ -381,6 +391,7 @@ def usage():
  <pkg>-reinstall           Force a re-install of a specific package
 
 (options)
+ --api                     Enable API (programmatic response) mode
  --assets-dir <dir>        Container directory for download and VCS-cache
                             directories (e.g. <ASSETS_DIR>/cache)
  --cache-dir <dir>         Directory for VCS-cache (default: <ROOT>/cache)

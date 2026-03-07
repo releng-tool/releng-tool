@@ -30,6 +30,7 @@ def main():
     suite = RelengToolTestSuite()
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('--api', action='store_true')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--relaxed', action='store_true')
     parser.add_argument('--test-dir', default=UNIT_TESTS_DIRNAME)
@@ -60,6 +61,7 @@ def main():
     nocolor = False
     werror = False
     releng_log_configuration(
+        apimode=args.api,
         debug_=args.debug,
         nocolor=nocolor,
         verbose_=verbosity,

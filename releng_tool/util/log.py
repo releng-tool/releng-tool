@@ -4,6 +4,10 @@
 from __future__ import annotations
 from releng_tool.exceptions import RelengToolWarningAsError
 from releng_tool.util.string import expand as vexpand
+import sys
+
+#: flag to track the enablement of API-mode logging
+RELENG_LOG_APIMODE_FLAG = False
 
 #: flag to track the enablement of debug messages
 RELENG_LOG_DEBUG_FLAG = False
@@ -109,6 +113,19 @@ def hint(msg: str, *args):
             generating a formatted message
     """
     __log('', '\033[1;36m', msg, *args)
+
+
+def is_api_log_mode() -> bool:
+    """
+    return whether releng-tool has been configured for api logging mode
+
+    Allows a caller to determine whether or not API logging mode is configured
+    for this run.
+
+    Returns:
+        whether or not the instance is configured for api logging mode
+    """
+    return RELENG_LOG_APIMODE_FLAG
 
 
 def is_colorized() -> bool:
@@ -319,11 +336,21 @@ def __log(prefix: str, color: str, msg: str, *args,
         msg = vexpand(msg)
     if args:
         msg = msg.format(*args)
-    print(f'{color}{prefix}{msg}{post}', end=end, flush=True)  # noqa: T201
+    print(
+        f'{color}{prefix}{msg}{post}',
+        end=end,
+        file=sys.stderr if RELENG_LOG_APIMODE_FLAG else sys.stdout,
+        flush=True,
+    )
 
 
 def releng_log_configuration(*,
-        debug_: bool, nocolor: bool, verbose_: bool, werror: bool):
+        apimode: bool,
+        debug_: bool,
+        nocolor: bool,
+        verbose_: bool,
+        werror: bool,
+    ):
     """
     configure the global logging state of the running instance
 
@@ -335,15 +362,18 @@ def releng_log_configuration(*,
     Calling this configuration will clear any logging tags set.
 
     Args:
+        apimode: logging operating in an api mode (i.e. messages to stderr)
         debug_: toggle the enablement of debug messages
         nocolor: toggle the disablement of colorized messages
         verbose_: toggle the enablement of verbose messages
         werror: toggle the enablement of warnings-are-errors
     """
+    global RELENG_LOG_APIMODE_FLAG
     global RELENG_LOG_DEBUG_FLAG
     global RELENG_LOG_NOCOLOR_FLAG
     global RELENG_LOG_VERBOSE_FLAG
     global RELENG_LOG_WERROR_FLAG
+    RELENG_LOG_APIMODE_FLAG = apimode
     RELENG_LOG_DEBUG_FLAG = debug_
     RELENG_LOG_NOCOLOR_FLAG = nocolor
     RELENG_LOG_VERBOSE_FLAG = verbose_

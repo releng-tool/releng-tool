@@ -111,6 +111,7 @@ _releng_tool_module()
     case $cur in
     -*)
         opts=(
+            '--api'
             '--assets-dir'
             '--cache-dir'
             '--config'

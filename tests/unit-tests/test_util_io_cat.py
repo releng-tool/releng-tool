@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from releng_tool.util.io_cat import cat
+from releng_tool.util.log import is_api_log_mode
 from releng_tool.util.log import is_debug
 from tests import prepare_workdir
 from tests import redirect_stdout
@@ -15,6 +16,10 @@ class TestUtilIoCat(RelengToolTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
+        # tests will not function in a api logging mode
+        if is_api_log_mode():
+            raise unittest.skipTest('ignoring checks while in api logging mode')
 
         # tests will not function in a debugging mode
         if is_debug():

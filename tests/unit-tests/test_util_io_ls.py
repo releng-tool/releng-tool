@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from releng_tool.util.io_ls import ls
+from releng_tool.util.log import is_api_log_mode
 from releng_tool.util.log import is_debug
 from tests import RelengToolTestCase
 from tests import prepare_workdir
@@ -103,6 +104,10 @@ class TestUtilIoLs(RelengToolTestCase):
         self.assertIn('test_util_io_ls.py', entries)
 
     def test_utilio_ls_valid_directory_empty(self):
+        # test will not function in a api logging mode
+        if is_api_log_mode():
+            raise self.skipTest('ignoring check while in api logging mode')
+
         # test will not function in a debugging mode
         if is_debug():
             raise self.skipTest('ignoring check while in debug mode')

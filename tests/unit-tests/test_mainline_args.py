@@ -5,11 +5,28 @@ from contextlib import contextmanager
 from releng_tool.__main__ import main
 from tests import RelengToolTestCase
 from tests import redirect_stdout
+from releng_tool.util.log import is_api_log_mode
 from unittest.mock import patch
 import os
 
 
 class TestMainlineArgs(RelengToolTestCase):
+    def test_mainline_args_api_mode_enabled(self):
+        with self._setup(), \
+                patch('releng_tool.__main__.releng_log_configuration') as lcfg:
+            main([
+                '--api',
+            ])
+            args = lcfg.call_args.kwargs
+            self.assertIn('apimode', args)
+            self.assertTrue(args['apimode'])
+
+    def test_mainline_args_api_mode_default(self):
+        with self._setup():
+            main([
+            ])
+            self.assertFalse(is_api_log_mode())
+
     def test_mainline_args_assets_dir_missing(self):
         with self._setup(), self.assertRaises(SystemExit):
             main([
