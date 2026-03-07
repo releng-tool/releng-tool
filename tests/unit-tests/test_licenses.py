@@ -66,7 +66,8 @@ class TestLicenses(RelengToolTestCase):
             license_manager = LicenseManager(engine.opts)
             license_cache = license_manager.build_cache(pkgs)
 
-            for pkg, expected in zip(pkg_names, expected_licenses):
+            for pkg, expected in zip(
+                    pkg_names, expected_licenses, strict=True):
                 if expected is not None:
                     # a package with license information should be tracked
                     self.assertTrue(pkg in license_cache)
@@ -111,7 +112,8 @@ class TestLicenses(RelengToolTestCase):
             license_manager = LicenseManager(engine.opts)
             license_cache = license_manager.build_cache(pkgs)
 
-            for pkg, expected in zip(pkg_names, expected_version_desc):
+            for pkg, expected in zip(
+                    pkg_names, expected_version_desc, strict=True):
                 # a package with license information should be tracked
                 self.assertTrue(pkg in license_cache)
 
