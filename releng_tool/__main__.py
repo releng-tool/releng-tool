@@ -417,7 +417,8 @@ def usage():
                            Directory to process a releng project
                             (default: working directory)
  --sbom-format <format>    Override the output format for a software build of
-                            materials (e.g. csv, json)
+                            materials (csv, html, json, json-spdx, rdf-spdx,
+                            text, xml).
  --success-exit-code <n>   Exit code to use on success
  --verbose, -V             Show additional messages
  --version                 Show the version
