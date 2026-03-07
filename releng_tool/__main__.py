@@ -396,7 +396,6 @@ def usage():
  --images-dir <dir>        Directory for generated images
                             (default: <ROOT>/output/images)
  --jobs <jobs>, -j <jobs>  Numbers of jobs to handle (default: 0; automatic)
-                            (default: working directory)
  --local-sources [[<pkg>:]<dir>], -L [[<pkg>:]<dir>]
                            Use development sources from a local path, defaults
                             to the parent of the root directory; users can use
@@ -416,6 +415,7 @@ def usage():
  --relaxed-args            Permit the use of unknown arguments
  --root-dir <dir>, -R <dir>
                            Directory to process a releng project
+                            (default: working directory)
  --sbom-format <format>    Override the output format for a software build of
                             materials (e.g. csv, json)
  --success-exit-code <n>   Exit code to use on success
