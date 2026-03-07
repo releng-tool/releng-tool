@@ -123,15 +123,14 @@ class RelengPackagePipeline:
         # extracting
         fflag = pkg._ff_extract
         if check_file_flag(fflag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'extract')
-            if not extract_stage(self.engine, pkg):
-                raise RelengToolExtractionStageFailure
-            # now that the extraction stage has (most likely)
-            # created a build directory, ensure the output directory
-            # exists as well (for file flags and other content)
-            if not mkdir(pkg.build_output_dir):
-                raise RelengToolExtractionStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'extract')
+            with self._stage_invoke(pkg, 'extract'):
+                if not extract_stage(self.engine, pkg):
+                    raise RelengToolExtractionStageFailure
+                # now that the extraction stage has (most likely)
+                # created a build directory, ensure the output directory
+                # exists as well (for file flags and other content)
+                if not mkdir(pkg.build_output_dir):
+                    raise RelengToolExtractionStageFailure
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return PipelineResult.ERROR
         if gaction == GlobalAction.EXTRACT:
@@ -174,10 +173,9 @@ class RelengPackagePipeline:
         # patching
         fflag = pkg._ff_patch
         if check_file_flag(fflag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'patch')
-            if not patch_stage(self.engine, pkg, pkg_env):
-                raise RelengToolPatchStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'patch')
+            with self._stage_invoke(pkg, 'patch'):
+                if not patch_stage(self.engine, pkg, pkg_env):
+                    raise RelengToolPatchStageFailure
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return PipelineResult.ERROR
         if gaction == GlobalAction.PATCH:
@@ -194,10 +192,9 @@ class RelengPackagePipeline:
         fflag = pkg._ff_fetch_post
         if gaction == GlobalAction.FETCH_FULL or fetch_paction or \
                 check_file_flag(fflag) == FileFlag.NO_EXIST:
-            self.engine.stats.track_duration_start(pkg.name, 'fetch-post')
-            if not fetch_post(self.engine, pkg):
-                raise RelengToolFetchPostStageFailure
-            self.engine.stats.track_duration_end(pkg.name, 'fetch-post')
+            with self._stage_invoke(pkg, 'fetch-post'):
+                if not fetch_post(self.engine, pkg):
+                    raise RelengToolFetchPostStageFailure
             if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                 return PipelineResult.ERROR
         if gaction == GlobalAction.FETCH_FULL:
@@ -243,14 +240,13 @@ class RelengPackagePipeline:
             # bootstrapping
             fflag = pkg._ff_bootstrap
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
-                self.engine.stats.track_duration_start(pkg.name, 'boot')
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_BOOTSTRAP_STARTED, env=pkg_env)
-                if not bootstrap_stage(self.engine, pkg, pkg_env):
-                    raise RelengToolBootstrapStageFailure
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_BOOTSTRAP_FINISHED, env=pkg_env)
-                self.engine.stats.track_duration_end(pkg.name, 'boot')
+                with self._stage_invoke(pkg, 'boot'):
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_BOOTSTRAP_STARTED, env=pkg_env)
+                    if not bootstrap_stage(self.engine, pkg, pkg_env):
+                        raise RelengToolBootstrapStageFailure
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_BOOTSTRAP_FINISHED, env=pkg_env)
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
                 has_worked = True
@@ -258,14 +254,13 @@ class RelengPackagePipeline:
             # configuring
             fflag = pkg._ff_configure
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
-                self.engine.stats.track_duration_start(pkg.name, 'configure')
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_CONFIGURE_STARTED, env=pkg_env)
-                if not configure_stage(self.engine, pkg, pkg_env):
-                    raise RelengToolConfigurationStageFailure
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_CONFIGURE_FINISHED, env=pkg_env)
-                self.engine.stats.track_duration_end(pkg.name, 'configure')
+                with self._stage_invoke(pkg, 'configure'):
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_CONFIGURE_STARTED, env=pkg_env)
+                    if not configure_stage(self.engine, pkg, pkg_env):
+                        raise RelengToolConfigurationStageFailure
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_CONFIGURE_FINISHED, env=pkg_env)
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
                 has_worked = True
@@ -276,14 +271,13 @@ class RelengPackagePipeline:
             # building
             fflag = pkg._ff_build
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
-                self.engine.stats.track_duration_start(pkg.name, 'build')
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_BUILD_STARTED, env=pkg_env)
-                if not build_stage(self.engine, pkg, pkg_env):
-                    raise RelengToolBuildStageFailure
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_BUILD_FINISHED, env=pkg_env)
-                self.engine.stats.track_duration_end(pkg.name, 'build')
+                with self._stage_invoke(pkg, 'build'):
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_BUILD_STARTED, env=pkg_env)
+                    if not build_stage(self.engine, pkg, pkg_env):
+                        raise RelengToolBuildStageFailure
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_BUILD_FINISHED, env=pkg_env)
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
                 has_worked = True
@@ -294,14 +288,13 @@ class RelengPackagePipeline:
             # installing
             fflag = pkg._ff_install
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
-                self.engine.stats.track_duration_start(pkg.name, 'install')
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_INSTALL_STARTED, env=pkg_env)
-                if not install_stage(self.engine, pkg, pkg_env):
-                    raise RelengToolInstallStageFailure
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_INSTALL_FINISHED, env=pkg_env)
-                self.engine.stats.track_duration_end(pkg.name, 'install')
+                with self._stage_invoke(pkg, 'install'):
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_INSTALL_STARTED, env=pkg_env)
+                    if not install_stage(self.engine, pkg, pkg_env):
+                        raise RelengToolInstallStageFailure
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_INSTALL_FINISHED, env=pkg_env)
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
                 has_worked = True
@@ -311,14 +304,13 @@ class RelengPackagePipeline:
             # package-specific post-processing
             fflag = pkg._ff_post
             if check_file_flag(fflag) == FileFlag.NO_EXIST:
-                self.engine.stats.track_duration_start(pkg.name, 'post')
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_POSTPROCESS_STARTED, env=pkg_env)
-                if not post_stage(self.engine, pkg, pkg_env):
-                    raise RelengToolPostStageFailure
-                self.engine.registry.emit(
-                    ListenerEvent.PKG_POSTPROCESS_FINISHED, env=pkg_env)
-                self.engine.stats.track_duration_end(pkg.name, 'post')
+                with self._stage_invoke(pkg, 'post'):
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_POSTPROCESS_STARTED, env=pkg_env)
+                    if not post_stage(self.engine, pkg, pkg_env):
+                        raise RelengToolPostStageFailure
+                    self.engine.registry.emit(
+                        ListenerEvent.PKG_POSTPROCESS_FINISHED, env=pkg_env)
                 if process_file_flag(fflag, flag=True) != FileFlag.CONFIGURED:
                     return PipelineResult.ERROR
                 has_worked = True
@@ -570,6 +562,22 @@ class RelengPackagePipeline:
 
         if proc.returncode != 0:
             raise RelengToolExecStageFailure
+
+    @contextmanager
+    def _stage_invoke(self, pkg, stage_name):
+        """
+        invoke common actions before the start and end of each stage
+
+        Args:
+            pkg: the package being processed
+            stage_name: the name of the stage
+        """
+
+        self.engine.stats.track_duration_start(pkg.name, stage_name)
+
+        yield
+
+        self.engine.stats.track_duration_end(pkg.name, stage_name)
 
     def _stage_license(self, pkg, strict):
         """
