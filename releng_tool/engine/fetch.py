@@ -4,7 +4,6 @@
 from releng_tool.api import RelengFetchOptions
 from releng_tool.defs import VcsType
 from releng_tool.fetch.brz import fetch as fetch_brz
-from releng_tool.fetch.bzr import fetch as fetch_bzr
 from releng_tool.fetch.cvs import fetch as fetch_cvs
 from releng_tool.fetch.file import fetch as fetch_file
 from releng_tool.fetch.git import fetch as fetch_git
@@ -71,8 +70,6 @@ def stage(engine, pkg, ignore_cache, extra_opts):
         fetcher = _
     elif pkg.vcs_type == VcsType.BRZ:
         fetcher = fetch_brz
-    elif pkg.vcs_type == VcsType.BZR:
-        fetcher = fetch_bzr
     elif pkg.vcs_type == VcsType.CVS:
         fetcher = fetch_cvs
     elif pkg.vcs_type == VcsType.FILE:

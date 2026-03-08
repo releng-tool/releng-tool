@@ -12,11 +12,6 @@ class TestPkgSite(RelengToolTestCase):
         self.assertEqual(site, 'example-brz-site')
         self.assertEqual(vcs, VcsType.BRZ)
 
-    def test_pkg_site_vcs_type_bzr(self):
-        site, vcs = site_vcs('bzr+example-bzr-site')
-        self.assertEqual(site, 'example-bzr-site')
-        self.assertEqual(vcs, VcsType.BZR)
-
     def test_pkg_site_vcs_type_cvs(self):
         site, vcs = site_vcs('cvs+example-cvs-site')
         self.assertEqual(site, 'example-cvs-site')

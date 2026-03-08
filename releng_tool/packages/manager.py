@@ -577,11 +577,6 @@ ignoring project-defined revision since package defined a version: {}
             else:
                 pkg_vcs_type = VcsType.NONE
 
-        if pkg_vcs_type == VcsType.BZR:
-            warn('''\
-use of GNU Bazaar is deprecated; see package: {}
- (consider switching to using Breezy; `brz`)''', name)
-
         if pkg_vcs_type == VcsType.URL and pkg_site and \
                 pkg_site.startswith('file://'):
             pkg_vcs_type = VcsType.FILE
@@ -594,7 +589,6 @@ explicit url vcs-type with files is deprecated: {}
         # not have one
         if not pkg_revision and pkg_vcs_type in (
                 VcsType.BRZ,
-                VcsType.BZR,
                 VcsType.CVS,
                 VcsType.GIT,
                 VcsType.HG,
@@ -735,7 +729,6 @@ explicit url vcs-type with files is deprecated: {}
         # check a site is defined for vcs types which require it
         if not pkg_site and pkg_vcs_type in (
                 VcsType.BRZ,
-                VcsType.BZR,
                 VcsType.CVS,
                 VcsType.FILE,
                 VcsType.GIT,
@@ -764,7 +757,6 @@ explicit url vcs-type with files is deprecated: {}
         # non-dvcs's will be always gzip-tar'ed.
         if pkg_vcs_type in (
                 VcsType.BRZ,
-                VcsType.BZR,
                 VcsType.CVS,
                 VcsType.PERFORCE,
                 VcsType.RSYNC,

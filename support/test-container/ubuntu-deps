@@ -7,7 +7,6 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update && apt-get install --assume-yes \
-    bzr \
     cargo \
     cmake \
     cvs \

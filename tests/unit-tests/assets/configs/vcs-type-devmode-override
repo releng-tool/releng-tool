@@ -6,7 +6,7 @@ TEST_SITE = {
 
 TEST_VCS_TYPE = {
     DEFAULT_REVISION: 'git',
-    'override': 'bzr',
+    'override': 'hg',
     'z': 'cvs',
 }
 

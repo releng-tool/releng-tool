@@ -6,7 +6,6 @@ from releng_tool.defs import VcsType
 from releng_tool.tool.autoreconf import AUTORECONF
 from releng_tool.tool.autoreconf import AUTORECONF_COMMAND
 from releng_tool.tool.brz import BRZ
-from releng_tool.tool.bzr import BZR
 from releng_tool.tool.cargo import CARGO
 from releng_tool.tool.cmake import CMAKE
 from releng_tool.tool.cvs import CVS
@@ -147,12 +146,6 @@ class RelengPrerequisites:
                 self._verbose_exists(BRZ)
             else:
                 missing.add(BRZ.tool)
-
-        if VcsType.BZR in vcs_types:
-            if BZR.exists():
-                self._verbose_exists(BZR)
-            else:
-                missing.add(BZR.tool)
 
         if VcsType.CVS in vcs_types:
             if CVS.exists():

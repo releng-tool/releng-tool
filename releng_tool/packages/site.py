@@ -34,9 +34,6 @@ def site_vcs(site):
     if site_lc.startswith('brz+'):
         site = site.removeprefix('brz+')
         vcs_type = VcsType.BRZ
-    elif site_lc.startswith('bzr+'):
-        site = site.removeprefix('bzr+')
-        vcs_type = VcsType.BZR
     elif site_lc.startswith('cvs+'):
         site = site.removeprefix('cvs+')
         vcs_type = VcsType.CVS

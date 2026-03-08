@@ -7,7 +7,6 @@ FROM archlinux:latest
 
 RUN pacman -Syu \
     base-devel \
-    bzr \
     cmake \
     cvs \
     git \

@@ -1,2 +1,0 @@
-TEST_SITE = 'dummy'
-TEST_VCS_TYPE = 'bzr'

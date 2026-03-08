@@ -469,7 +469,6 @@ class VcsType(StrCcEnum):
 
     Attributes:
         BRZ: breezy
-        BZR: gnu bazaar
         CVS: concurrent versions system
         GIT: git
         HG: mercurial
@@ -483,7 +482,6 @@ class VcsType(StrCcEnum):
         URL: url (http, https, ftp, etc.)
     """
     BRZ = 'brz'
-    BZR = 'bzr'
     CVS = 'cvs'
     GIT = 'git'
     HG = 'hg'

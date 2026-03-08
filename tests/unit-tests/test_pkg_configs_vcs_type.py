@@ -21,15 +21,11 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         manager = RelengPackageManager(opts, registry)
 
         pkg = self.LOAD('vcs-type-devmode-override', manager=manager).package
-        self.assertEqual(pkg.vcs_type, VcsType.BZR)
+        self.assertEqual(pkg.vcs_type, VcsType.HG)
 
     def test_pkgconfig_vcs_type_invalid_brz(self):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-brz-nosite')
-
-    def test_pkgconfig_vcs_type_invalid_bzr(self):
-        with self.assertRaises(RelengToolMissingPackageSite):
-            self.LOAD('vcs-type-invalid-bzr-nosite')
 
     def test_pkgconfig_vcs_type_invalid_cvs(self):
         with self.assertRaises(RelengToolMissingPackageSite):
@@ -75,10 +71,6 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         with self.assertRaises(RelengToolMissingPackageRevision):
             self.LOAD('vcs-type-invalid-brz-norevision')
 
-    def test_pkgconfig_vcs_type_missing_revision_bzr(self):
-        with self.assertRaises(RelengToolMissingPackageRevision):
-            self.LOAD('vcs-type-invalid-bzr-norevision')
-
     def test_pkgconfig_vcs_type_missing_revision_cvs(self):
         with self.assertRaises(RelengToolMissingPackageRevision):
             self.LOAD('vcs-type-invalid-cvs-norevision')
@@ -107,14 +99,6 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
     def test_pkgconfig_vcs_type_valid_brz_implicit(self):
         pkg = self.LOAD('vcs-type-valid-brz-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.BRZ)
-
-    def test_pkgconfig_vcs_type_valid_bzr_explicit(self):
-        pkg = self.LOAD('vcs-type-valid-bzr-explicit').package
-        self.assertEqual(pkg.vcs_type, VcsType.BZR)
-
-    def test_pkgconfig_vcs_type_valid_bzr_implicit(self):
-        pkg = self.LOAD('vcs-type-valid-bzr-implicit').package
-        self.assertEqual(pkg.vcs_type, VcsType.BZR)
 
     def test_pkgconfig_vcs_type_valid_cvs_explicit(self):
         pkg = self.LOAD('vcs-type-valid-cvs-explicit').package
