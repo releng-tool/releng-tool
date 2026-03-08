@@ -29,6 +29,7 @@ function __fish__releng_tool_has_action
         lint \
         mrproper \
         patch \
+        printpkgs \
         printvars \
         punch \
         sbom \
@@ -82,6 +83,9 @@ complete --command releng-tool --arguments 'mrproper' \
 complete --command releng-tool --arguments 'patch' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'process all packages up to the patch phase'
+complete --command releng-tool --arguments 'printpkgs' \
+    --no-files --condition __fish__releng_tool_has_action \
+    --description 'print names of packages for the configured state'
 complete --command releng-tool --arguments 'printvars' \
     --no-files --condition __fish__releng_tool_has_action \
     --description 'print known variables for a project'

@@ -368,6 +368,7 @@ def usage():
  lint                      Lint the project for quality issues
  mrproper                  Pristine clean of the releng project
  patch                     Ensure all packages have done a patch stage
+ printpkgs                 Print names of packages for the configured state
  printvars                 Print known variables for a project
  punch                     Full run with a forced re-run on all packages
  sbom                      Generate a software bill of materials

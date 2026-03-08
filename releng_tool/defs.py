@@ -284,6 +284,7 @@ class GlobalAction(StrCcEnum):
         LINT: lint the project for quality issues
         MRPROPER: pristine state clean (e.g. configurations)
         PATCH: process all packages through patch stage
+        PRINTPKGS: print package names of the active configuration state
         PRINTVARS: print known variables applicable for the project
         PUNCH: process all packages with a forced re-configuration
         SBOM: generate sbom files for the project
@@ -299,6 +300,7 @@ class GlobalAction(StrCcEnum):
     LINT = 'lint'
     MRPROPER = 'mrproper'
     PATCH = 'patch'
+    PRINTPKGS = 'printpkgs'
     PRINTVARS = 'printvars'
     PUNCH = 'punch'
     SBOM = 'sbom'

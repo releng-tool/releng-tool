@@ -91,6 +91,14 @@ class TestEngineRunArgs(RelengToolTestCase):
         with prepare_testenv(config=config) as engine:
             self.assertEqual(engine.opts.gbl_action, GlobalAction.PATCH)
 
+    def test_engine_run_args_action_global_printpkgs(self):
+        config = {
+            'action': 'printpkgs',
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertEqual(engine.opts.gbl_action, GlobalAction.PRINTPKGS)
+
     def test_engine_run_args_action_global_printvars(self):
         config = {
             'action': 'printvars',

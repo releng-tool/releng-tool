@@ -198,11 +198,19 @@ class RelengPackage:
         # (package type - waf)
         self.waf_noinstall = None
 
-    def populate_api(self):
+    def populate_api(self, base=None):
         """
         populate the global api state with this package's details
+
+        Args:
+            base (optional): base api tag to store package information in
         """
-        api_data = API_STATE['packages'][self.name].fetch()
+
+        if base is not None:
+            api_data = base
+        else:
+            api_data = API_STATE['packages'][self.name].fetch()
+
         api_data['build-dir'] = self.build_dir and \
             Path(self.build_dir).as_posix()
         api_data['build-output-dir'] = self.build_output_dir \

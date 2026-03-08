@@ -20,6 +20,7 @@ from releng_tool.engine.cargo import cargo_register_pkg_paths
 from releng_tool.engine.fetch import stage as fetch_stage
 from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
+from releng_tool.engine.printpkgs import printpkgs
 from releng_tool.engine.printvars import printvars
 from releng_tool.engine.sbom import SbomManager
 from releng_tool.engine.script_env import prepare_script_environment
@@ -363,6 +364,11 @@ class RelengEngine:
                 'action': opts.target_action,
                 'extra': extra,
             }) from ex
+
+        # check if a user just wants to print package names
+        if gaction == GlobalAction.PRINTPKGS:
+            printpkgs(pkgs)
+            return True
 
         # check if a user just wants to print variables
         if gaction == GlobalAction.PRINTVARS or pa == PkgAction.PRINTVARS:
