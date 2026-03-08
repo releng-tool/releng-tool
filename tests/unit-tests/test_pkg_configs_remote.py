@@ -53,19 +53,3 @@ class TestPkgConfigsRemote(TestPkgConfigsBase):
     def test_pkgconfig_skip_remote_config_missing_deprecated(self):
         pkg = self.LOAD('missing').package
         self.assertIsNone(pkg.remote_config)
-
-    def test_pkgconfig_skip_remote_scripts_disabled_deprecated(self):
-        pkg = self.LOAD('skip-remote-scripts-disabled').package
-        self.assertTrue(pkg.remote_scripts)
-
-    def test_pkgconfig_skip_remote_scripts_enabled_deprecated(self):
-        pkg = self.LOAD('skip-remote-scripts-enabled').package
-        self.assertFalse(pkg.remote_scripts)
-
-    def test_pkgconfig_skip_remote_scripts_invalid_deprecated(self):
-        with self.assertRaises(RelengToolInvalidPackageKeyValue):
-            self.LOAD('skip-remote-scripts-invalid')
-
-    def test_pkgconfig_skip_remote_scripts_missing_deprecated(self):
-        pkg = self.LOAD('missing').package
-        self.assertIsNone(pkg.remote_scripts)

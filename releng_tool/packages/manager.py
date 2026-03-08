@@ -183,7 +183,6 @@ class RelengPackageManager:
             (Rpk.SCONS_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR),
             (Rpk.SKIP_REMOTE_CONFIG, PkgKeyType.BOOL),
-            (Rpk.SKIP_REMOTE_SCRIPTS, PkgKeyType.BOOL),
             (Rpk.STRIP_COUNT, PkgKeyType.INT_NONNEGATIVE),
             (Rpk.TYPE, PkgKeyType.STR),
             (Rpk.VCS_TYPE, PkgKeyType.DICT_STR_STR_OR_STR),
@@ -684,12 +683,6 @@ explicit url vcs-type with files is deprecated: {}
 
         # remote scripts
         pkg_remote_scripts = self._fetch(Rpk.REMOTE_SCRIPTS)
-        if pkg_remote_scripts is None:
-            pkg_skip_remote_scripts = self._fetch(Rpk.SKIP_REMOTE_SCRIPTS)
-            if pkg_skip_remote_scripts is not None:
-                pkg_remote_scripts = not pkg_skip_remote_scripts
-                self._deprecated_replaced(name,
-                    Rpk.SKIP_REMOTE_SCRIPTS, Rpk.REMOTE_SCRIPTS)
 
         # type
         pkg_type = None
