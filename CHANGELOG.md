@@ -1,4 +1,4 @@
-## Development
+## 2.10.0 (2026-03-08)
 
 - **(note)** Support for Bazaar sites has been dropped
 - **(note)** Support for Python 3.9 (EOL) has been dropped
