@@ -1,6 +1,12 @@
 ## Development
 
+- **(note)** Support for Bazaar sites has been dropped
 - **(note)** Support for Python 3.9 (EOL) has been dropped
+- **(note)** Support for `LIBFOO_SKIP_REMOTE_CONFIG` has been dropped
+- **(note)** Support for `LIBFOO_SKIP_REMOTE_SCRIPTS` has been dropped
+- **(note)** Support for `override_revisions` has been dropped
+- **(note)** Support for `override_sites` has been dropped
+- **(note)** Support for an implicit `LIBFOO_PYTHON_SETUP_TYPE` has been dropped
 - Introduce `releng_is_api_mode` helper script function
 - Introduce `releng_is_debug_mode` helper script function
 - Introduce `releng_is_verbose_mode` helper script function
