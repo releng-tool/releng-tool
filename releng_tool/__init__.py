@@ -47,6 +47,9 @@ from releng_tool.util.io_wd import wd as releng_wd
 from releng_tool.util.log import debug as debug
 from releng_tool.util.log import err as err
 from releng_tool.util.log import hint as hint
+from releng_tool.util.log import is_api_log_mode as releng_is_api_mode
+from releng_tool.util.log import is_debug as releng_is_debug_mode
+from releng_tool.util.log import is_verbose as releng_is_verbose_mode
 from releng_tool.util.log import log as log
 from releng_tool.util.log import note as note
 from releng_tool.util.log import success as success

@@ -30,6 +30,9 @@ from releng_tool.util.io_wd import wd
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import hint
+from releng_tool.util.log import is_api_log_mode
+from releng_tool.util.log import is_debug
+from releng_tool.util.log import is_verbose
 from releng_tool.util.log import log
 from releng_tool.util.log import note
 from releng_tool.util.log import success
@@ -184,6 +187,9 @@ def prepare_script_environment(env, opts):
     env['releng_exit'] = platform_exit
     env['releng_expand'] = expand
     env['releng_include'] = releng_include
+    env['releng_is_api_mode'] = is_api_log_mode
+    env['releng_is_debug_mode'] = is_debug
+    env['releng_is_verbose_mode'] = is_verbose
     env['releng_join'] = os.path.join
     env['releng_ls'] = ls
     env['releng_mkdir'] = mkdir

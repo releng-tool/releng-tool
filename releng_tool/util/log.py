@@ -117,13 +117,15 @@ def hint(msg: str, *args):
 
 def is_api_log_mode() -> bool:
     """
-    return whether releng-tool has been configured for api logging mode
+    return whether releng-tool has been configured for api mode
 
-    Allows a caller to determine whether or not API logging mode is configured
+    .. versionadded:: 2.10
+
+    Allows a caller to determine whether or not API mode is configured
     for this run.
 
     Returns:
-        whether or not the instance is configured for api logging mode
+        whether or not the instance is configured for api mode
     """
     return RELENG_LOG_APIMODE_FLAG
 
@@ -145,6 +147,8 @@ def is_debug(tag: str | None = None):
     """
     report if the instance is configured with debug messaging
 
+    .. versionadded:: 2.10
+
     Allows a caller to determine whether or not the instance is actively
     configured with debug messaging. This allow a caller to have the option to
     decide whether or not it needs to prepare a message for a ``debug`` call,
@@ -152,7 +156,7 @@ def is_debug(tag: str | None = None):
 
     .. code-block:: python
 
-        if is_debug():
+        if releng_is_debug_mode():
             msg = generate_info()
             debug(msg)
 
@@ -172,6 +176,8 @@ def is_verbose(tag: str | None = None) -> bool:
     """
     report if the instance is configured with verbose messaging
 
+    .. versionadded:: 2.10
+
     Allows a caller to determine whether or not the instance is actively
     configured with verbose messaging. This allow a caller to have the option to
     decide whether or not it needs to prepare a message for a ``verbose`` call,
@@ -179,7 +185,7 @@ def is_verbose(tag: str | None = None) -> bool:
 
     .. code-block:: python
 
-        if is_verbose():
+        if releng_is_verbose_mode():
             msg = generate_info()
             verbose(msg)
 
