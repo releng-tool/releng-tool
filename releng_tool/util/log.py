@@ -18,6 +18,9 @@ RELENG_LOG_NOCOLOR_FLAG = False
 #: tracking logging tag/hints
 RELENG_LOG_TAGS: set[str] = set()
 
+#: flag to track quiet mode
+RELENG_LOG_QUIET_FLAG = False
+
 #: flag to track the enablement of verbose messages
 RELENG_LOG_VERBOSE_FLAG = False
 
@@ -334,6 +337,8 @@ def __log(prefix: str, color: str, msg: str, *args,
         end (optional): the end character to print
         expand (optional): whether the message will perform variable expansion
     """
+    if RELENG_LOG_QUIET_FLAG:
+        return
     if RELENG_LOG_NOCOLOR_FLAG:
         color = ''
     post = '\033[0m' if color else ''
@@ -354,6 +359,7 @@ def releng_log_configuration(*,
         apimode: bool,
         debug_: bool,
         nocolor: bool,
+        quiet: bool,
         verbose_: bool,
         werror: bool,
     ):
@@ -371,17 +377,20 @@ def releng_log_configuration(*,
         apimode: logging operating in an api mode (i.e. messages to stderr)
         debug_: toggle the enablement of debug messages
         nocolor: toggle the disablement of colorized messages
+        quiet: flag to suppress log messages
         verbose_: toggle the enablement of verbose messages
         werror: toggle the enablement of warnings-are-errors
     """
     global RELENG_LOG_APIMODE_FLAG
     global RELENG_LOG_DEBUG_FLAG
     global RELENG_LOG_NOCOLOR_FLAG
+    global RELENG_LOG_QUIET_FLAG
     global RELENG_LOG_VERBOSE_FLAG
     global RELENG_LOG_WERROR_FLAG
     RELENG_LOG_APIMODE_FLAG = apimode
     RELENG_LOG_DEBUG_FLAG = debug_
     RELENG_LOG_NOCOLOR_FLAG = nocolor
+    RELENG_LOG_QUIET_FLAG = quiet
     RELENG_LOG_VERBOSE_FLAG = verbose_
     RELENG_LOG_WERROR_FLAG = werror
     RELENG_LOG_TAGS.clear()

@@ -67,6 +67,7 @@ def main(launch_args: list[str] | None = None):
         parser.add_argument('--sbom-format', type=type_sbom_format)
         parser.add_argument('--success-exit-code', default=0,
             type=type_nonnegativeint)
+        parser.add_argument('--quiet', action='store_true')
         parser.add_argument('--quirk', action='append')
         parser.add_argument('--verbose', '-V', action='store_true')
         parser.add_argument('--version', action='version',
@@ -127,6 +128,7 @@ def main(launch_args: list[str] | None = None):
             apimode=args.api,
             debug_=args.debug,
             nocolor=args.nocolorout,
+            quiet=args.quiet,
             verbose_=args.verbose,
             werror=args.werror,
         )
@@ -423,6 +425,7 @@ def usage():
                             option is only applicable if the project accepts
                             custom profile options; multiple profiles can be
                             provided by repeating this argument
+ --quiet                   Quiet output
  --quirk <value>           Inject in quirk into this run
  --relaxed-args            Permit the use of unknown arguments
  --root-dir <dir>, -R <dir>

@@ -64,6 +64,7 @@ def main():
         apimode=args.api,
         debug_=args.debug,
         nocolor=nocolor,
+        quiet=False,
         verbose_=verbosity,
         werror=werror,
     )

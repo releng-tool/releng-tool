@@ -132,6 +132,7 @@ _releng_tool_module()
             '--root-dir'
             '--sbom-format'
             '--success-exit-code'
+            '--quiet'
             '--quirk'
             '--verbose'
             '--version'

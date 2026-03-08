@@ -291,6 +291,16 @@ class TestMainlineArgs(RelengToolTestCase):
             opts = engine.call_args.args[0]
             self.assertIn('my-custom-profile', opts.profiles)
 
+    def test_mainline_args_quiet(self):
+        with self._setup(), \
+                patch('releng_tool.__main__.releng_log_configuration') as lcfg:
+            main([
+                '--quiet',
+            ])
+            args = lcfg.call_args.kwargs
+            self.assertIn('quiet', args)
+            self.assertTrue(args['quiet'])
+
     def test_mainline_args_quirk_missing(self):
         with self._setup(), self.assertRaises(SystemExit):
             main([

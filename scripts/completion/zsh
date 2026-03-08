@@ -40,6 +40,7 @@ function _releng_tool {
         '--root-dir[directory of the project to process]: :_files' \
         '--sbom-format[format to generate sbom files]: ' \
         '--success-exit-code[exit code to use on success]: ' \
+        '--quiet[quiet output]: ' \
         '--quirk[quirk to apply to a run]: ' \
         {--verbose,-V}'[show additional messages]' \
         '--version[print the version and exit]' \
