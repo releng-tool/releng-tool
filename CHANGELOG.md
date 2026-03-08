@@ -1,7 +1,11 @@
 ## Development
 
 - **(note)** Support for Python 3.9 (EOL) has been dropped
+- Introduce `releng_is_api_mode` helper script function
+- Introduce `releng_is_debug_mode` helper script function
+- Introduce `releng_is_verbose_mode` helper script function
 - Introduce an API mode
+- Introduce the `printpkgs` action to list package names for the active state
 - Minimize false-positive warnings when linting (RT105-RT113)
 - Support CycloneDX (JSON/XML) SBOM generation
 - Support the `end` keyword in the `log` utility call
