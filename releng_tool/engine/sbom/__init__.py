@@ -9,6 +9,7 @@ from releng_tool import __version__ as releng_version
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import SbomFormatType
 from releng_tool.defs import VcsType
+from releng_tool.engine.sbom.csv import generate_csv
 from releng_tool.tool.git import GIT
 from releng_tool.tool.hg import HG
 from releng_tool.util.hash import BadFileHashLoadError
@@ -21,7 +22,6 @@ from releng_tool.util.log import warn
 from releng_tool.util.spdx import ConjunctiveLicenses
 from releng_tool.util.spdx import LicenseEntries
 from releng_tool.util.spdx import spdx_parse
-import csv
 import hashlib
 import json
 import os
@@ -210,7 +210,7 @@ class SbomManager:
         fmt = self.opts.sbom_format
         all_fmt = SbomFormatType.ALL in fmt
 
-        sbom_cvs = all_fmt or SbomFormatType.CSV in fmt
+        sbom_csv = all_fmt or SbomFormatType.CSV in fmt
         sbom_html = all_fmt or SbomFormatType.HTML in fmt
         sbom_json = all_fmt or SbomFormatType.JSON in fmt
         sbom_json_spdx = all_fmt or SbomFormatType.JSON_SPDX in fmt
@@ -228,8 +228,8 @@ class SbomManager:
             sbom_text = True
 
         try:
-            if sbom_cvs:
-                self._generate_csv(cache)
+            if sbom_csv:
+                generate_csv(self, cache)
 
             if sbom_html:
                 self._generate_html(cache)
@@ -254,58 +254,6 @@ class SbomManager:
             return False
 
         return True
-
-    def _generate_csv(self, cache):
-        """
-        generate a csv format sbom file
-
-        Compiles a CSV-formatted software build-of-materials document based
-        on the cache information populated from a releng-tool project.
-
-        Args:
-            cache: the sbom cache
-        """
-
-        verbose('writing sbom (csv)')
-        sbom_file = os.path.join(self.opts.out_dir, 'sbom.csv')
-
-        with open(sbom_file, mode='w', newline='') as f:
-            f.write('# Software build of materials (SBOM; releng-tool)\n')
-            f.write('# Report ID: ' + cache['report-id'] + '\n')
-            f.write('# Generated: ' + cache['datetime'] + '\n')
-            f.write('# SBOM Version: {}\n'.format(
-                cache['releng-tool-sbom-version']))
-            f.write('Name,Version,Site,Licenses,Flags\n')
-
-            csv_writer = csv.writer(f)
-
-            package_entries = OrderedDict()
-            package_entries['packages'] = False
-            package_entries['host-packages'] = True
-
-            for entry, host_pkg in package_entries.items():
-                data = cache.get(entry, None)
-                if not data:
-                    continue
-
-                for pkg_name, pkg in data.items():
-                    flags = []
-                    if host_pkg:
-                        flags.append('host')
-
-                    pkg_revision = pkg.get('revision', '')
-                    if pkg_revision:
-                        flags.append(f'revision={pkg_revision}')
-
-                    csv_writer.writerow([
-                        pkg_name,
-                        pkg.get('version', ''),
-                        pkg.get('site', ''),
-                        ';'.join(pkg.get('licenses', [])),
-                        ';'.join(flags),
-                    ])
-
-        self.generated.append(sbom_file)
 
     def _generate_html(self, cache):
         """
