@@ -366,7 +366,7 @@ def usage():
  lint                      Lint the project for quality issues
  mrproper                  Pristine clean of the releng project
  patch                     Ensure all packages have done a patch stage
- printvars                 Print known variables for a project.
+ printvars                 Print known variables for a project
  punch                     Full run with a forced re-run on all packages
  sbom                      Generate a software bill of materials
  <pkg>                     Perform all stages for the package
@@ -429,7 +429,7 @@ def usage():
                             (default: working directory)
  --sbom-format <format>    Override the output format for a software build of
                             materials (csv, html, json, json-cyclonedx,
-                            json-spdx, rdf-spdx, text, xml, xml-cyclonedx).
+                            json-spdx, rdf-spdx, text, xml, xml-cyclonedx)
  --success-exit-code <n>   Exit code to use on success
  --verbose, -V             Show additional messages
  --version                 Show the version
