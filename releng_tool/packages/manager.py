@@ -510,30 +510,23 @@ ignoring project-defined revision since package defined a version: {}
         # not detected one from above.
 
         # site
-        if opts.sites_override and name in opts.sites_override:
-            # Site overriding is permitted to help in scenarios where a builder
-            # is unable to acquire a package's source from the defined site.
-            # This includes firewall settings or a desire to use a mirrored
-            # source when experiencing network connectivity issues.
-            pkg_site = opts.sites_override[name]
-        else:
-            pkg_site = None
-            pkg_site_raw = self._fetch(Rpk.SITE,
-                allow_expand=True, expand_extra=expand_extra)
+        pkg_site = None
+        pkg_site_raw = self._fetch(Rpk.SITE,
+            allow_expand=True, expand_extra=expand_extra)
 
-            if pkg_site_raw:
-                # user has a defined a series of site entries -- find the
-                # site value based off out current mode (i.e. if in
-                # development mode, use the appropriate key; otherwise default
-                # to a `*` key, if it exists)
-                if isinstance(pkg_site_raw, dict):
-                    pkg_site = pkg_site_raw.get(opts.devmode)
+        if pkg_site_raw:
+            # user has a defined a series of site entries -- find the
+            # site value based off out current mode (i.e. if in
+            # development mode, use the appropriate key; otherwise default
+            # to a `*` key, if it exists)
+            if isinstance(pkg_site_raw, dict):
+                pkg_site = pkg_site_raw.get(opts.devmode)
 
-                    # no explicit site, check the "default/any" site
-                    if not pkg_site:
-                        pkg_site = pkg_site_raw.get(DEFAULT_ENTRY)
-                else:
-                    pkg_site = pkg_site_raw
+                # no explicit site, check the "default/any" site
+                if not pkg_site:
+                    pkg_site = pkg_site_raw.get(DEFAULT_ENTRY)
+            else:
+                pkg_site = pkg_site_raw
 
         if pkg_site and pkg_site.startswith('file://'):
             pkg_site = pkg_site.removeprefix('file://')

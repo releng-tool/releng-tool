@@ -1,8 +1,0 @@
-import json
-import os
-
-fname = os.path.join(PKG_BUILD_OUTPUT_DIR, 'invoke-vars.json')
-with open(fname, 'w') as f:
-    def ignore(_):
-        return '<non-serializable>'
-    json.dump(vars(), f, skipkeys=True, default=ignore)

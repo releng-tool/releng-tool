@@ -1,7 +1,0 @@
-packages = [
-    'test',
-]
-
-override_sites = {
-    'test': 'overridden-site',
-}

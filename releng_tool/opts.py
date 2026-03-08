@@ -94,7 +94,6 @@ class RelengEngineOptions:
         revisions: dictionary to configure revision values
         root_dir: directory container for all (configuration, output, etc.)
         sbom_format: format(s) to use for sbom generation
-        sites_override: dictionary to override site values
         spdx: spdx license database
         staging_dir: directory container for staged content
         symbols_dir: directory container for symbols content
@@ -150,7 +149,6 @@ class RelengEngineOptions:
         self.revisions = None
         self.root_dir = None
         self.sbom_format = []
-        self.sites_override = None
         self.spdx = {}
         self.staging_dir = None
         self.symbols_dir = None

@@ -1222,15 +1222,6 @@ following key entry and re-try again.
                 return False
             self.opts.license_header = license_header
 
-        if ConfKey.OVERRIDE_SITES in settings:
-            v = interpret_dict(settings[ConfKey.OVERRIDE_SITES], str)
-            if v is None:
-                notify_invalid_type(ConfKey.OVERRIDE_SITES, 'dict(str,str)')
-                return False
-            self.opts.sites_override = v
-            if self.opts.sites_override:
-                warn('configuration "{}" is deprecated', ConfKey.OVERRIDE_SITES)
-
         if ConfKey.OVERRIDE_TOOLS in settings:
             v = interpret_dict(settings[ConfKey.OVERRIDE_TOOLS], str)
             if v is None:
