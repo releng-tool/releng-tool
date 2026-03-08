@@ -138,7 +138,6 @@ class Rpk(StrCcEnum):
         REMOTE_SCRIPTS: process any remote scripts
         REVISION: revision to acquire from sources (if any)
         SITE: site where to fetch package sources
-        SKIP_REMOTE_CONFIG: skip any remote configuration (deprecated)
         STRIP_COUNT: strip count for archive extract
         TYPE: type of project the package is
         VCS_TYPE: type of project the package's fetch source is
@@ -215,7 +214,6 @@ class Rpk(StrCcEnum):
     REMOTE_SCRIPTS = 'REMOTE_SCRIPTS'
     REVISION = 'REVISION'
     SITE = 'SITE'
-    SKIP_REMOTE_CONFIG = 'SKIP_REMOTE_CONFIG'  # deprecated
     STRIP_COUNT = 'STRIP_COUNT'
     TYPE = 'TYPE'
     VCS_TYPE = 'VCS_TYPE'
