@@ -1,3 +1,12 @@
+## Development
+
+- **(note)** Support for Python 3.9 (EOL) has been dropped
+- Introduce an API mode
+- Minimize false-positive warnings when linting (RT105-RT113)
+- Support CycloneDX (JSON/XML) SBOM generation
+- Support the `end` keyword in the `log` utility call
+- Support the `expand` keyword in the `log` utility call
+
 ## 2.9.0 (2026-03-01)
 
 - **(note)** Last version supporting Bazaar sites
