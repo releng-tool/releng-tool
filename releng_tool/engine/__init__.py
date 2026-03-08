@@ -5,6 +5,7 @@ from datetime import datetime
 from inspect import signature
 from pathlib import Path
 from releng_tool import __version__ as releng_version
+from releng_tool.apimode import API_STATE
 from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
@@ -671,6 +672,11 @@ has failed. Ensure the following path is accessible for this user:
         log('Tool: {}', self._base_dir)
         log('Root: {}', self.opts.root_dir)
 
+        api_data = API_STATE['state'].fetch()
+        api_data['python'] = sys.version
+        api_data['root'] = Path(self.opts.root_dir).as_posix()
+        api_data['tool'] = Path(self._base_dir).as_posix()
+
         if self.opts.devmode:
             if self.opts.devmode is True:
                 postfix = ''
@@ -678,11 +684,14 @@ has failed. Ensure the following path is accessible for this user:
                 postfix = f' ({self.opts.devmode})'
             log('Development mode: Enabled' + postfix)
             log(' (invoke `releng-tool --development unset` to unconfigure)')
+            api_data['devmode'] = self.opts.devmode
         else:
             log('Development mode: Disabled')
+            api_data['devmode'] = False
 
         if self.opts.local_srcs:
             log('Local-sources mode: Enabled')
+            api_localsrcs = api_data['localsrcs'].fetch()
 
             for key, val in sorted(self.opts.local_srcs.items()):
                 if not val:
@@ -695,10 +704,12 @@ has failed. Ensure the following path is accessible for this user:
                     entry += warn_wrap('  (path does not exist)')
 
                 log(' {}: {}', key, entry)
+                api_localsrcs[key] = val
 
             log(' (invoke `releng-tool --local-sources unset` to unconfigure)')
         else:
             log('Local-sources mode: Disabled')
+            api_data['localsrcs'] = False
 
     def _stage_init(self, pkg):
         """
