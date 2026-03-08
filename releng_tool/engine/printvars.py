@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.apimode import API_STATE
 from releng_tool.defs import Rpk
 from releng_tool.packages import pkg_key
 from releng_tool.util.log import log
@@ -36,3 +37,8 @@ def printvars(pkgs, script_env):
 
             suffix = warn_wrap(' (set)') if is_set else ''
             log(f'{key}{suffix}')
+
+            API_STATE['printvars'][key] = {
+                'package-name': pkg,
+                'set': is_set,
+            }
