@@ -1,1 +1,2 @@
 TEST_TYPE = 'python'
+TEST_PYTHON_SETUP_TYPE = 'setuptools'

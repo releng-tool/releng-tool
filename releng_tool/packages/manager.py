@@ -32,6 +32,7 @@ from releng_tool.packages.exceptions import RelengToolInvalidPackageScript
 from releng_tool.packages.exceptions import RelengToolMissingPackageRevision
 from releng_tool.packages.exceptions import RelengToolMissingPackageScript
 from releng_tool.packages.exceptions import RelengToolMissingPackageSite
+from releng_tool.packages.exceptions import RelengToolMissingPythonSetupType
 from releng_tool.packages.exceptions import RelengToolPathPackageTraversal
 from releng_tool.packages.exceptions import RelengToolUnknownExtractType
 from releng_tool.packages.exceptions import RelengToolUnknownInstallType
@@ -1374,9 +1375,10 @@ explicit url vcs-type with files is deprecated: {}
                     })
 
         if pkg.type == PackageType.PYTHON and not pkg.python_setup_type:
-            warn('''\
-missing setup type for Python package (required in future releases): {}
- (add a '{}' entry)''', pkg.name, pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE))
+            raise RelengToolMissingPythonSetupType({
+                'pkg_name': pkg.name,
+                'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
+            })
 
         if pkg.python_setup_type == PythonSetupType.DISTUTILS:
             warn('''\

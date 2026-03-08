@@ -99,6 +99,17 @@ package defines vcs-type ({vcs_type}) but no site: {pkg_name}
 '''.strip().format(**args))
 
 
+class RelengToolMissingPythonSetupType(RelengToolInvalidPackageConfiguration):
+    """
+    raised when a setup type site has not been defined with a python package
+    """
+    def __init__(self, args):
+        super().__init__('''\
+package defines python package but no setup type: {pkg_name}
+ (key: {pkg_key})
+'''.strip().format(**args))
+
+
 class RelengToolPathPackageTraversal(RelengToolInvalidPackageConfiguration):
     """
     raised when a path traversal configuration is detected
