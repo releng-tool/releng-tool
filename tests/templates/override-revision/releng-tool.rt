@@ -1,7 +1,0 @@
-packages = [
-    'test',
-]
-
-override_revisions = {
-    'test': '2',
-}

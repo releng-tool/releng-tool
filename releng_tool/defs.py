@@ -24,7 +24,6 @@ class ConfKey(StrCcEnum):
         EXTRA_LEXCEPTS: project-permitted spdx exceptions
         EXTRA_LICENSES: project-permitted spdx licenses
         LICENSE_HEADER: license header information
-        OVERRIDE_REV: revision overriding dictionary
         OVERRIDE_SITES: site overriding dictionary
         OVERRIDE_TOOLS: extract-tool overriding
         PKGS: project's package (name) list
@@ -47,7 +46,6 @@ class ConfKey(StrCcEnum):
     EXTRA_LEXCEPTS = 'extra_license_exceptions'
     EXTRA_LICENSES = 'extra_licenses'
     LICENSE_HEADER = 'license_header'
-    OVERRIDE_REV = 'override_revisions'
     OVERRIDE_SITES = 'override_sites'
     OVERRIDE_TOOLS = 'override_extract_tools'
     PKGS = 'packages'

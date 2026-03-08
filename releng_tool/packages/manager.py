@@ -421,10 +421,6 @@ class RelengPackageManager:
         pkg_revision = None
         pkg_revision_raw = None
 
-        if opts.revision_override:
-            pkg_revision = opts.revision_override.get(name)
-            pkg_devmode = bool(pkg_revision)
-
         if not pkg_revision:
             pkg_revision_raw = self._fetch(Rpk.REVISION,
                 allow_expand=True, expand_extra=expand_extra)

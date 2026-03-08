@@ -91,7 +91,6 @@ class RelengEngineOptions:
         prerequisites: list of required host tools (if any)
         profiles: the active profiles for this run
         quirks: advanced configuration quirks for the running instance
-        revision_override: dictionary to override revision values
         revisions: dictionary to configure revision values
         root_dir: directory container for all (configuration, output, etc.)
         sbom_format: format(s) to use for sbom generation
@@ -148,7 +147,6 @@ class RelengEngineOptions:
         self.prerequisites = []
         self.profiles = []
         self.quirks = []
-        self.revision_override = None
         self.revisions = None
         self.root_dir = None
         self.sbom_format = []
