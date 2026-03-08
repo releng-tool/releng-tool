@@ -369,6 +369,7 @@ def usage():
  printvars                 Print known variables for a project
  punch                     Full run with a forced re-run on all packages
  sbom                      Generate a software bill of materials
+ state                     Output the active state information for a project
  <pkg>                     Perform all stages for the package
  <pkg>-build               Perform build stage for the package
  <pkg>-clean               Clean build directory for package
