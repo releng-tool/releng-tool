@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from releng_tool.util.log import verbose
 import os
 
@@ -26,7 +25,7 @@ def generate_text(sbom, cache):
         f.write('Generated: ' + cache['datetime'] + '\n')
         f.write('\n')
 
-        package_entries = OrderedDict()
+        package_entries = {}
         package_entries['packages'] = 'Packages'
         package_entries['host-packages'] = 'Host packages'
 

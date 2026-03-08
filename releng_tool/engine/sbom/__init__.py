@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from copy import deepcopy
 from datetime import datetime
 from datetime import timezone
@@ -69,11 +68,11 @@ class SbomManager:
             the sbom cache
         """
 
-        cache = OrderedDict()
+        cache = {}
         cache['type'] = 'releng-tool-sbom'
         cache['report-id'] = str(uuid.uuid4())
-        cache['packages'] = OrderedDict()
-        cache['host-packages'] = OrderedDict()
+        cache['packages'] = {}
+        cache['host-packages'] = {}
         cache['releng-tool-sbom-version'] = SBOM_VERSION
         cache['releng-tool-version'] = releng_version
 
@@ -88,7 +87,7 @@ class SbomManager:
             else:
                 cache_base = cache['packages']
 
-            cache_pkg = cache_base.setdefault(pkg.name, OrderedDict())
+            cache_pkg = cache_base.setdefault(pkg.name, {})
 
             # generate a unique id to identify this package across different
             # builds and other releng-tool projects -- just a simple id string

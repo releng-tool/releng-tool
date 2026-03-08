@@ -2,7 +2,6 @@
 # Copyright releng-tool
 
 from __future__ import annotations
-from collections import OrderedDict
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
@@ -263,7 +262,7 @@ class RelengPackageManager:
             RelengToolInvalidPackageConfiguration: when an error has been
                                                     detected loading the package
         """
-        pkgs = OrderedDict()
+        pkgs = {}
         final_deps = {}
 
         # cycle through all pending packages until the complete list is known

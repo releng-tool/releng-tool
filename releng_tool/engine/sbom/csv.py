@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from releng_tool.util.log import verbose
 import csv
 import os
@@ -32,7 +31,7 @@ def generate_csv(sbom, cache):
 
         csv_writer = csv.writer(f)
 
-        package_entries = OrderedDict()
+        package_entries = {}
         package_entries['packages'] = False
         package_entries['host-packages'] = True
 

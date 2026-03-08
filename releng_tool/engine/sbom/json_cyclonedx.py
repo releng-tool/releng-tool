@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from releng_tool.engine.sbom.cyclonedx import COMPAT_CYCLONEDX_HASH_ID
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -25,7 +24,7 @@ def generate_json_cyclonedx(sbom, cache):
     schema = 'http://cyclonedx.org/schema/bom-1.7.schema.json'
     report_id = cache['report-id']
 
-    cyclonedx_cache = OrderedDict()
+    cyclonedx_cache = {}
     cyclonedx_cache['$schema'] = schema
     cyclonedx_cache['bomFormat'] = 'CycloneDX'
     cyclonedx_cache['specVersion'] = '1.7'
@@ -58,14 +57,14 @@ def generate_json_cyclonedx(sbom, cache):
             continue
 
         for pkg_name, pkg in data.items():
-            package_entry = OrderedDict()
+            package_entry = {}
             package_entry['type'] = 'library'
             package_entry['name'] = pkg_name
             package_entry['version'] = pkg.get('version', '')
 
             license_data = spdx_parse(pkg['licenses'])
             if license_data:
-                license_entry = OrderedDict()
+                license_entry = {}
                 license_entry['expression'] = str(license_data)
                 package_entry['licenses'] = [license_entry]
 
@@ -87,7 +86,7 @@ def generate_json_cyclonedx(sbom, cache):
 
             site_value = pkg.get('site', '')
             if site_value:
-                site_entry = OrderedDict()
+                site_entry = {}
                 site_entry['type'] = 'vcs'
                 site_entry['url'] = site_value
                 package_entry['externalReferences'] = [site_entry]

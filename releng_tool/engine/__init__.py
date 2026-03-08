@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from datetime import datetime
 from inspect import signature
 from pathlib import Path
@@ -794,7 +793,7 @@ of the releng process:
             raise RelengToolMissingPackagesError(conf_point, ConfKey.PKGS)
         else:
             # remove duplicates (but maintain pre-sorted ordered)
-            pkg_names = OrderedDict.fromkeys(pkg_names)
+            pkg_names = dict.fromkeys(pkg_names)
 
         return pkg_names
 

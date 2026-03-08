@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from releng_tool.util.log import verbose
 from releng_tool.util.spdx import spdx_parse
 import json
@@ -31,14 +30,14 @@ def generate_json_spdx(sbom, cache):
     uid = cache['report-id']
     doc_namespace = f'https://spdx.org/spdxdocs/{prj_name}-{uid}'
 
-    spdx_cache = OrderedDict()
+    spdx_cache = {}
     spdx_cache['SPDXID'] = 'SPDXRef-DOCUMENT'
     spdx_cache['spdxVersion'] = SPDX_SPEC
     spdx_cache['name'] = prj_name
     spdx_cache['dataLicense'] = 'CC0-1.0'
     spdx_cache['documentDescribes'] = []
     spdx_cache['documentNamespace'] = doc_namespace
-    spdx_cache['creationInfo'] = OrderedDict()
+    spdx_cache['creationInfo'] = {}
     spdx_cache['creationInfo']['created'] = cache['datetime']
     spdx_cache['creationInfo']['licenseListVersion'] = SPDX_LLVERSION
     spdx_cache['creationInfo']['creators'] = [
@@ -77,7 +76,7 @@ def generate_json_spdx(sbom, cache):
             if pkg_dl_loc == 'local':
                 pkg_dl_loc = 'NONE'
 
-            package_entry = OrderedDict()
+            package_entry = {}
             package_entry['SPDXID'] = 'SPDXRef-' + pkg_name
             package_entry['name'] = pkg_name
             package_entry['versionInfo'] = pkg.get('version', '')

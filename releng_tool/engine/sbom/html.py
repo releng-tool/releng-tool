@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from releng_tool.util.log import verbose
 import os
 import xml.etree.ElementTree as ET
@@ -44,7 +43,7 @@ def generate_html(sbom, cache):
     ET.SubElement(body, 'h1').text = 'Software build of materials'
 
     # properties
-    properties = OrderedDict()
+    properties = {}
     properties['report-id'] = 'Report ID'
     properties['datetime'] = 'Generated'
 
@@ -57,7 +56,7 @@ def generate_html(sbom, cache):
         ET.SubElement(entry, 'div').text = cache[key]
 
     # process packages
-    package_entries = OrderedDict()
+    package_entries = {}
     package_entries['packages'] = 'Packages'
     package_entries['host-packages'] = 'Host packages'
 
@@ -76,7 +75,7 @@ def generate_html(sbom, cache):
             pkg_data = ET.SubElement(body, 'div')
 
             # package properties
-            properties = OrderedDict()
+            properties = {}
             properties['version'] = 'Version'
             properties['site'] = 'Site'
             properties['revision'] = 'Revision'

@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from collections import OrderedDict
 from releng_tool.tool.python import PYTHON
 from releng_tool.util.io import execute
 from releng_tool.util.io import interpret_stem_extension as ise
@@ -158,14 +157,14 @@ class TestUtilIo(RelengToolTestCase):
         expected = []
         self.assertEqual(prepared, expected)
 
-        args = OrderedDict()
+        args = {}
         args['foo'] = 'bar'
         args['xyz'] = ''
         prepared = prepare_arguments(args)
         expected = ['foo', 'bar', 'xyz']
         self.assertEqual(prepared, expected)
 
-        args = OrderedDict()
+        args = {}
         args['foo'] = 'bar'
         args['test'] = None
         prepared = prepare_arguments(args)
@@ -180,14 +179,14 @@ class TestUtilIo(RelengToolTestCase):
         expected = []
         self.assertEqual(prepared, expected)
 
-        args = OrderedDict()
+        args = {}
         args['foo'] = 'bar'
         args['xyz'] = ''
         prepared = prepare_definitions(args)
         expected = ['foo=bar', 'xyz=']
         self.assertEqual(prepared, expected)
 
-        args = OrderedDict()
+        args = {}
         args['foo'] = 'bar'
         args['test'] = None
         prepared = prepare_definitions(args)
