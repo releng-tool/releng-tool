@@ -11,6 +11,7 @@ from releng_tool.defs import SbomFormatType
 from releng_tool.defs import VcsType
 from releng_tool.engine.sbom.csv import generate_csv
 from releng_tool.engine.sbom.html import generate_html
+from releng_tool.engine.sbom.json import generate_json
 from releng_tool.tool.git import GIT
 from releng_tool.tool.hg import HG
 from releng_tool.util.hash import BadFileHashLoadError
@@ -236,7 +237,7 @@ class SbomManager:
                 generate_html(self, cache)
 
             if sbom_json:
-                self._generate_json(cache)
+                generate_json(self, cache)
 
             if sbom_json_spdx:
                 self._generate_json_spdx(cache)
@@ -255,24 +256,6 @@ class SbomManager:
             return False
 
         return True
-
-    def _generate_json(self, cache):
-        """
-        generate a JSON format sbom file
-
-        Compiles a JSON-formatted software build-of-materials document based
-        on the cache information populated from a releng-tool project.
-
-        Args:
-            cache: the sbom cache
-        """
-
-        verbose('writing sbom (json)')
-        sbom_file = os.path.join(self.opts.out_dir, 'sbom.json')
-        with open(sbom_file, 'w') as f:
-            json.dump(cache, f, indent=4)
-
-        self.generated.append(sbom_file)
 
     def _generate_json_spdx(self, cache):
         """
