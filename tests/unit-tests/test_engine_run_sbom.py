@@ -10,13 +10,15 @@ import os
 SBOM_FILENAME = 'sbom'
 
 SBOM_FILES = [
+    SBOM_FILENAME + '-cyclonedx.json',
+    SBOM_FILENAME + '-cyclonedx.xml',
+    SBOM_FILENAME + '-spdx.json',
+    SBOM_FILENAME + '-spdx.xml',
     SBOM_FILENAME + '.csv',
     SBOM_FILENAME + '.html',
     SBOM_FILENAME + '.json',
-    SBOM_FILENAME + '-spdx.json',
     SBOM_FILENAME + '.txt',
     SBOM_FILENAME + '.xml',
-    SBOM_FILENAME + '-spdx.xml',
 ]
 
 
@@ -87,6 +89,17 @@ class TestEngineRunSbom(RelengToolTestCase):
 
             self._check_expected_files(engine.opts.out_dir, expected)
 
+    def test_engine_run_sbom_json_cyclonedx(self):
+        with prepare_testenv(template='sbom-json-cyclonedx') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            expected = [
+                SBOM_FILENAME + '-cyclonedx.json',
+            ]
+
+            self._check_expected_files(engine.opts.out_dir, expected)
+
     def test_engine_run_sbom_json_spdx(self):
         with prepare_testenv(template='sbom-json-spdx') as engine:
             rv = engine.run()
@@ -139,6 +152,17 @@ class TestEngineRunSbom(RelengToolTestCase):
 
             expected = [
                 SBOM_FILENAME + '.xml',
+            ]
+
+            self._check_expected_files(engine.opts.out_dir, expected)
+
+    def test_engine_run_sbom_xml_cyclonedx(self):
+        with prepare_testenv(template='sbom-xml-cyclonedx') as engine:
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            expected = [
+                SBOM_FILENAME + '-cyclonedx.xml',
             ]
 
             self._check_expected_files(engine.opts.out_dir, expected)

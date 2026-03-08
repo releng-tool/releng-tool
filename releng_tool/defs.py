@@ -445,21 +445,25 @@ class SbomFormatType(StrCcEnum):
         CSV: a CSV file
         HTML: an HTML file
         JSON: a JSON file
+        JSON_CYCLONEDX: a CycloneDX-compliant JSON file
         JSON_SPDX: a SPDX-compliant JSON file
         RDF_SPDX: a SPDX-compliant RDF (XML) file
         RDP_SPDX: legacy entry for bad naming of RDF_SPDX
         TEXT: a plain text file
         XML: an XML file
+        XML_CYCLONEDX: a CycloneDX-compliant XML file
     """
     ALL = 'all'
     CSV = 'csv'
     HTML = 'html'
     JSON = 'json'
+    JSON_CYCLONEDX = 'json-cyclonedx'
     JSON_SPDX = 'json-spdx'
     RDF_SPDX = 'rdf-spdx'
     RDP_SPDX = 'rdp-spdx'
     TEXT = 'text'
     XML = 'xml'
+    XML_CYCLONEDX = 'xml-cyclonedx'
 
 
 class VcsType(StrCcEnum):

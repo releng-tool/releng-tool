@@ -12,10 +12,12 @@ from releng_tool.defs import VcsType
 from releng_tool.engine.sbom.csv import generate_csv
 from releng_tool.engine.sbom.html import generate_html
 from releng_tool.engine.sbom.json import generate_json
+from releng_tool.engine.sbom.json_cyclonedx import generate_json_cyclonedx
 from releng_tool.engine.sbom.json_spdx import generate_json_spdx
 from releng_tool.engine.sbom.rdf_spdx import generate_rdf_spdx
 from releng_tool.engine.sbom.text import generate_text
 from releng_tool.engine.sbom.xml import generate_xml
+from releng_tool.engine.sbom.xml_cyclonedx import generate_xml_cyclonedx
 from releng_tool.tool.git import GIT
 from releng_tool.tool.hg import HG
 from releng_tool.util.hash import BadFileHashLoadError
@@ -205,11 +207,13 @@ class SbomManager:
         sbom_csv = all_fmt or SbomFormatType.CSV in fmt
         sbom_html = all_fmt or SbomFormatType.HTML in fmt
         sbom_json = all_fmt or SbomFormatType.JSON in fmt
+        sbom_json_cyclonedx = all_fmt or SbomFormatType.JSON_CYCLONEDX in fmt
         sbom_json_spdx = all_fmt or SbomFormatType.JSON_SPDX in fmt
         sbom_rdf_spdx = all_fmt or SbomFormatType.RDF_SPDX in fmt \
              or SbomFormatType.RDP_SPDX in fmt
         sbom_text = all_fmt or SbomFormatType.TEXT in fmt
         sbom_xml = all_fmt or SbomFormatType.XML in fmt
+        sbom_xml_cyclonedx = all_fmt or SbomFormatType.XML_CYCLONEDX in fmt
 
         if SbomFormatType.RDP_SPDX in fmt:
             warn(f'detected obsolete sbom format "{SbomFormatType.RDP_SPDX}"; '
@@ -229,6 +233,9 @@ class SbomManager:
             if sbom_json:
                 generate_json(self, cache)
 
+            if sbom_json_cyclonedx:
+                generate_json_cyclonedx(self, cache)
+
             if sbom_json_spdx:
                 generate_json_spdx(self, cache)
 
@@ -240,6 +247,9 @@ class SbomManager:
 
             if sbom_xml:
                 generate_xml(self, cache)
+
+            if sbom_xml_cyclonedx:
+                generate_xml_cyclonedx(self, cache)
         except OSError as e:
             err('unable to generate sbom output\n'
                 '    {}\n', e)
