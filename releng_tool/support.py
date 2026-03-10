@@ -145,9 +145,31 @@ def require_version(minver=None, **kwargs):
 
     rv = True
 
-    if minver:
-        requested = minver.split('.')
-        current = releng_version.split('.')
+    # convert the base version to a list of integers; any string special
+    # postfix will just be assumed a zero value
+    def cast_int(s):
+        try:
+            return int(s)
+        except ValueError:
+            return 0
+
+    # convert a provided version to an int; fail if given an unexpected
+    # value
+    def strict_int(s):
+        try:
+            return int(s)
+        except ValueError:
+            err(f'''
+required releng-tool version check has failed
+
+An unexpected version value was provided: {s}
+'''.strip())
+            raise_for_critical(critical)
+
+    current = list(map(cast_int, releng_version.split('.')))
+
+    if minver and releng_version != minver:
+        requested = list(map(strict_int, minver.split('.')))
         rv = requested <= current
         if not rv:
             if not quiet:
@@ -172,9 +194,8 @@ Please update to a more recent version:
 
             raise_for_critical(critical)
 
-    if maxver:
-        requested = maxver.split('.')
-        current = releng_version.split('.')
+    if maxver and releng_version != maxver:
+        requested = list(map(strict_int, maxver.split('.')))
         rv = requested >= current
         if not rv:
             if not quiet:
