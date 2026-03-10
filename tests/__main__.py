@@ -97,7 +97,6 @@ def main():
             print('running specific tests:')
             for test in target_unit_tests:
                 print(f'    {test.id()}')
-            sys.stdout.flush()
         else:
             print('ERROR: unable to find test with pattern: '
                  f'{target_test_name_pattern}')
@@ -108,6 +107,10 @@ def main():
         suite.addTests(target_unit_tests)
     else:
         suite.addTests(unit_tests)
+
+    # stream flush before running any tests
+    sys.stdout.flush()
+    sys.stderr.flush()
 
     # invoke test suite
     runner = unittest.TextTestRunner(buffer=buffered,
