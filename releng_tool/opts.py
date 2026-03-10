@@ -5,6 +5,7 @@ from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import UNSET_VALUES
+from releng_tool.util.log import hint
 from releng_tool.util.string import normalize
 import contextlib
 import multiprocessing
@@ -363,6 +364,7 @@ class RelengEngineOptions:
             if container_dir:
                 project_folder = os.path.basename(root)
                 self.out_dir = join(container_dir, project_folder)
+                hint(f'using user-defined output container: {container_dir}')
 
         # root container
         if not self.cache_dir:
