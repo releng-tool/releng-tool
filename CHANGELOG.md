@@ -1,3 +1,8 @@
+## Development
+
+- **(note)** Last version supporting the `releng-overrides` script
+- Fixed incorrect handling of multi-digit units with `releng_require_version`
+
 ## 2.10.0 (2026-03-08)
 
 - **(note)** Support for Bazaar sites has been dropped
