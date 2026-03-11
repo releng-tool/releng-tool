@@ -1,4 +1,4 @@
-## Development
+## 2.11.0 (2026-03-10)
 
 - **(note)** Last version supporting the `releng-overrides` script
 - Fixed incorrect handling of multi-digit units with `releng_require_version`
