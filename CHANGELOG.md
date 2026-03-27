@@ -1,3 +1,7 @@
+## Development
+
+- **(note)** Support for `releng-overrides` script has been dropped
+
 ## 2.11.0 (2026-03-10)
 
 - **(note)** Last version supporting the `releng-overrides` script
