@@ -25,13 +25,6 @@ class RelengToolInvalidConfigurationSettings(RelengToolSilentException):
     """
 
 
-class RelengToolInvalidOverrideConfigurationScript(RelengToolSilentException):
-    """
-    exception thrown when a project's override configuration file could
-    not be loaded
-    """
-
-
 class RelengToolMissingConfigurationError(RelengToolException):
     """
     exception thrown when missing a project's configuration file

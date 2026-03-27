@@ -28,7 +28,6 @@ from releng_tool.engine.suggest import suggest
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
-from releng_tool.exceptions import RelengToolInvalidOverrideConfigurationScript
 from releng_tool.exceptions import RelengToolMissingConfigurationError
 from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.exceptions import RelengToolUnknownAction
@@ -262,19 +261,6 @@ class RelengEngine:
         extend_script_env(script_env, settings)
         self.pkgman.script_env = script_env
         verbose('configuration file loaded')
-
-        # configuration overrides file for builders
-        if os.path.isfile(opts.conf_point_overrides):
-            warn('detected deprecated configuration overrides file')
-
-            overrides = run_script(opts.conf_point_overrides, gbls,
-                subject='configuration overrides')
-            if not overrides:
-                raise RelengToolInvalidOverrideConfigurationScript
-
-            extend_script_env(script_env, overrides)
-            extend_script_env(settings, overrides)
-            verbose('configuration overrides file loaded')
 
         # handle cleaning requests
         clean_actions = [

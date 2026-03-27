@@ -29,7 +29,6 @@ DEFAULT_TARGET_DIR = 'target'     # default target container directory
 # default directory/file paths
 RELENG_CONF_EXTENDED_NAME = '.releng-tool'       # extended conf. script
 RELENG_CONF_NAME = 'releng-tool'                 # conf. script filename
-RELENG_CONF_OVERRIDES_NAME = 'releng-overrides'  # conf. overrides filename
 FF_PREFIX = '.releng-flag-'          # prefix for all file flags
 FF_DEVMODE_NAME = 'devmode'          # postfix for development mode file flag
 FF_LOCALSRCS_NAME = 'local-sources'  # postfix for local sources mode file flag
@@ -59,7 +58,6 @@ class RelengEngineOptions:
         cache_dir: directory container for cache (vcs bare sources)
         cache_ext_transform: transform for cache extension from site path
         conf_point: releng project's configuration
-        conf_point_overrides: releng project's configuration overrides
         debug: whether or not debug messages are shown
         debug_extended: whether extended debug mode is enabled
         default_cmake_build_type: default build type for cmake packages
@@ -114,7 +112,6 @@ class RelengEngineOptions:
         self.cache_dir = None
         self.cache_ext_transform = None
         self.conf_point = None
-        self.conf_point_overrides = None
         self.debug = False
         self.debug_extended = False
         self.default_cmake_build_type = None
@@ -393,8 +390,6 @@ class RelengEngineOptions:
             self.target_dir = join(self.out_dir, DEFAULT_TARGET_DIR)
 
         # files
-        if not self.conf_point_overrides:
-            self.conf_point_overrides = join(root, RELENG_CONF_OVERRIDES_NAME)
         if not self.ff_devmode:
             self.ff_devmode = join(root, FF_PREFIX + FF_DEVMODE_NAME)
         if not self.ff_local_srcs:
