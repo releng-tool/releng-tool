@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN \
+    apt-get update && \
+    apt-get install -y sudo && \
+    useradd -m default && \
+    echo "default ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
+
+USER default
+WORKDIR /home/default
+
+ENV PATH="/home/default/.local/bin:${PATH}"
+RUN \
+    sudo apt-get install -y pipx && \
+    pipx ensurepath
+
+RUN \
+    pipx install releng-tool && \
+    releng-tool --version

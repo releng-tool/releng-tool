@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM archlinux:latest
+
+RUN \
+    pacman -Syu --noconfirm sudo && \
+    useradd -m default && \
+    echo "default ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
+
+USER default
+WORKDIR /home/default
+
+RUN \
+    sudo pacman -S --noconfirm python-pipx && \
+    sudo pipx install --global releng-tool && \
+    releng-tool --version

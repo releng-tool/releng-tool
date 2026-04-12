@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM alpine:latest
+
+RUN \
+    apk add pipx && \
+    pipx install --global releng-tool && \
+    releng-tool --version

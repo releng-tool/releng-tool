@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM archlinux:latest
+
+RUN \
+    pacman -Syu --noconfirm python-pipx && \
+    pipx install --global releng-tool && \
+    releng-tool --version

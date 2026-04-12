@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+ENV PATH="/root/.local/bin:${PATH}"
+RUN \
+    apt-get update && \
+    apt-get install -y pipx && \
+    pipx ensurepath && \
+    pipx install releng-tool && \
+    releng-tool --version

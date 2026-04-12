@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM fedora:latest
+
+RUN \
+    dnf install -y pipx && \
+    pipx install --global releng-tool && \
+    releng-tool --version

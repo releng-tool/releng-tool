@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM fedora:latest
+
+RUN \
+    useradd -m default && \
+    echo "default ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
+
+USER default
+WORKDIR /home/default
+
+RUN \
+    sudo dnf install -y pipx && \
+    sudo pipx install --global releng-tool && \
+    releng-tool --version

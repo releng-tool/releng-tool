@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM opensuse/tumbleweed:latest
+
+RUN \
+    zypper install -y python3-pipx && \
+    pipx install --global releng-tool && \
+    releng-tool --version

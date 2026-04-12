@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+services:
+  alpine-root:
+    build:
+      context: .
+      dockerfile: Dockerfile-alpine-root
+
+  alpine-user:
+    build:
+      context: .
+      dockerfile: Dockerfile-alpine-user
+
+  archlinux-root:
+    build:
+      context: .
+      dockerfile: Dockerfile-archlinux-root
+
+  archlinux-user:
+    build:
+      context: .
+      dockerfile: Dockerfile-archlinux-user
+
+  debian-root:
+    build:
+      context: .
+      dockerfile: Dockerfile-debian-root
+
+  debian-user:
+    build:
+      context: .
+      dockerfile: Dockerfile-debian-user
+
+  fedora-root:
+    build:
+      context: .
+      dockerfile: Dockerfile-fedora-root
+
+  fedora-user:
+    build:
+      context: .
+      dockerfile: Dockerfile-fedora-user
+
+  opensuse-root:
+    build:
+      context: .
+      dockerfile: Dockerfile-opensuse-root
+
+  opensuse-user:
+    build:
+      context: .
+      dockerfile: Dockerfile-opensuse-user
+
+  ubuntu-root:
+    build:
+      context: .
+      dockerfile: Dockerfile-ubuntu-root
+
+  ubuntu-user:
+    build:
+      context: .
+      dockerfile: Dockerfile-ubuntu-user

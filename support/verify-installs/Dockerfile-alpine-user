@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+
+FROM alpine:latest
+
+RUN \
+    apk add --no-cache doas && \
+    adduser -D -G wheel default && \
+    echo "permit nopass :wheel" >/etc/doas.conf
+
+USER default
+WORKDIR /home/default
+
+RUN \
+    doas apk add pipx && \
+    doas pipx install --global releng-tool && \
+    releng-tool --version
