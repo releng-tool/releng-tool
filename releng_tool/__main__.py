@@ -127,6 +127,7 @@ def main(launch_args: list[str] | None = None):
         releng_log_configuration(
             apimode=args.api,
             debug_=args.debug,
+            debug_extended=args.debug_extended,
             nocolor=args.nocolorout,
             quiet=args.quiet,
             verbose_=args.verbose,

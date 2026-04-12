@@ -12,6 +12,9 @@ RELENG_LOG_APIMODE_FLAG = False
 #: flag to track the enablement of debug messages
 RELENG_LOG_DEBUG_FLAG = False
 
+#: flag to track the enablement of extended debug messages
+RELENG_LOG_DEBUG_EXTENDED_FLAG = False
+
 #: flag to track the disablement of colorized messages
 RELENG_LOG_NOCOLOR_FLAG = False
 
@@ -72,6 +75,23 @@ def debug(msg: str, *args):
     """
     if RELENG_LOG_DEBUG_FLAG:
         __log('(debug) ', '\033[2m', msg, *args)
+
+
+def debug_extended(msg: str, *args):
+    """
+    log an extended debug message
+
+    Logs an "extended" debug message to standard out with a trailing new line.
+    By default, extended debug messages will not be output to standard out
+    unless the instance is configured with extended debugging enabled.
+
+    Args:
+        msg: the message
+        *args: an arbitrary set of positional and keyword arguments used when
+            generating a formatted message
+    """
+    if RELENG_LOG_DEBUG_EXTENDED_FLAG:
+        __log('(debug-extended) ', '\033[2m', msg, *args)
 
 
 def err(msg: str, *args):
@@ -358,6 +378,7 @@ def __log(prefix: str, color: str, msg: str, *args,
 def releng_log_configuration(*,
         apimode: bool,
         debug_: bool,
+        debug_extended: bool,
         nocolor: bool,
         quiet: bool,
         verbose_: bool,
@@ -376,6 +397,7 @@ def releng_log_configuration(*,
     Args:
         apimode: logging operating in an api mode (i.e. messages to stderr)
         debug_: toggle the enablement of debug messages
+        debug_extended: toggle the enablement of extended debug messages
         nocolor: toggle the disablement of colorized messages
         quiet: flag to suppress log messages
         verbose_: toggle the enablement of verbose messages
@@ -383,12 +405,14 @@ def releng_log_configuration(*,
     """
     global RELENG_LOG_APIMODE_FLAG
     global RELENG_LOG_DEBUG_FLAG
+    global RELENG_LOG_DEBUG_EXTENDED_FLAG
     global RELENG_LOG_NOCOLOR_FLAG
     global RELENG_LOG_QUIET_FLAG
     global RELENG_LOG_VERBOSE_FLAG
     global RELENG_LOG_WERROR_FLAG
     RELENG_LOG_APIMODE_FLAG = apimode
     RELENG_LOG_DEBUG_FLAG = debug_
+    RELENG_LOG_DEBUG_EXTENDED_FLAG = debug_extended
     RELENG_LOG_NOCOLOR_FLAG = nocolor
     RELENG_LOG_QUIET_FLAG = quiet
     RELENG_LOG_VERBOSE_FLAG = verbose_

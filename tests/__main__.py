@@ -32,6 +32,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--api', action='store_true')
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--debug-extended', action='store_true')
     parser.add_argument('--relaxed', action='store_true')
     parser.add_argument('--test-dir', default=UNIT_TESTS_DIRNAME)
     parser.add_argument('--unbuffered', '-U', action='store_true')
@@ -53,6 +54,10 @@ def main():
 
         buffered = False
 
+    # force debug messages if extended debugging is enabled
+    if args.debug_extended:
+        args.debug = True
+
     if args.debug or detect_ci_runner_debug_mode():
         buffered = False
         if not verbosity:
@@ -63,6 +68,7 @@ def main():
     releng_log_configuration(
         apimode=args.api,
         debug_=args.debug,
+        debug_extended=args.debug_extended,
         nocolor=nocolor,
         quiet=False,
         verbose_=verbosity,
