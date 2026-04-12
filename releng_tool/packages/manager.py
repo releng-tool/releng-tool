@@ -417,55 +417,52 @@ class RelengPackageManager:
 
         # revisions
         pkg_devmode = False
-        pkg_revision = None
-        pkg_revision_raw = None
 
-        if not pkg_revision:
-            pkg_revision_raw = self._fetch(Rpk.REVISION,
-                allow_expand=True, expand_extra=expand_extra)
-            if pkg_revision_raw:
-                # user has a defined a series of revision entries -- find the
-                # revision value based off out current mode (i.e. if in
-                # development mode, use the appropriate key; otherwise default
-                # to a `*` key, if it exists)
-                if isinstance(pkg_revision_raw, dict):
-                    pkg_revision = pkg_revision_raw.get(opts.devmode)
+        pkg_revision_raw = self._fetch(Rpk.REVISION,
+            allow_expand=True, expand_extra=expand_extra)
+        if pkg_revision_raw:
+            # user has a defined a series of revision entries -- find the
+            # revision value based off out current mode (i.e. if in
+            # development mode, use the appropriate key; otherwise default
+            # to a `*` key, if it exists)
+            if isinstance(pkg_revision_raw, dict):
+                pkg_revision = pkg_revision_raw.get(opts.devmode)
+                pkg_devmode = bool(pkg_revision)
+
+                # no explicit revision, check the "default/any" revision
+                if not pkg_revision:
+                    pkg_revision = pkg_revision_raw.get(DEFAULT_ENTRY)
+
+                # no default revision to use for this mode, check if the
+                # deprecated devmode-revision value is set
+                if not pkg_revision and \
+                        opts.devmode and pkg_devmode_revision:
+                    pkg_revision = pkg_devmode_revision
                     pkg_devmode = bool(pkg_revision)
 
-                    # no explicit revision, check the "default/any" revision
-                    if not pkg_revision:
-                        pkg_revision = pkg_revision_raw.get(DEFAULT_ENTRY)
+                # lastly, if no revision has been found, default to the
+                # package's version
+                if not pkg_revision:
+                    pkg_revision = pkg_version
 
-                    # no default revision to use for this mode, check if the
-                    # deprecated devmode-revision value is set
-                    if not pkg_revision and \
-                            opts.devmode and pkg_devmode_revision:
-                        pkg_revision = pkg_devmode_revision
-                        pkg_devmode = bool(pkg_revision)
-
-                    # lastly, if no revision has been found, default to the
-                    # package's version
-                    if not pkg_revision:
-                        pkg_revision = pkg_version
-
-                # if this is a single revision string, use this value for
-                # the revision; with the exception if we are in development
-                # mode and the deprecated devmode-revision value is set
-                elif opts.devmode and pkg_devmode_revision:
-                    pkg_revision = pkg_devmode_revision
-                    pkg_devmode = True
-                else:
-                    pkg_revision = pkg_revision_raw
-
-            # if we do not have package revision information provided, we
-            # will default to the using the package's version; with the
-            # exception if we are in development mode and the deprecated
-            # devmode-revision value is set
+            # if this is a single revision string, use this value for
+            # the revision; with the exception if we are in development
+            # mode and the deprecated devmode-revision value is set
             elif opts.devmode and pkg_devmode_revision:
                 pkg_revision = pkg_devmode_revision
                 pkg_devmode = True
             else:
-                pkg_revision = pkg_version
+                pkg_revision = pkg_revision_raw
+
+        # if we do not have package revision information provided, we
+        # will default to the using the package's version; with the
+        # exception if we are in development mode and the deprecated
+        # devmode-revision value is set
+        elif opts.devmode and pkg_devmode_revision:
+            pkg_revision = pkg_devmode_revision
+            pkg_devmode = True
+        else:
+            pkg_revision = pkg_version
 
         # always ensure a revision is set; use the version value if no
         # explicit revision is provided
