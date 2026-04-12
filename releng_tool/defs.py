@@ -118,6 +118,7 @@ class Rpk(StrCcEnum):
         EXTRACT_TYPE: extraction type for sources
         FETCH_OPTS: fetch options (if any)
         FIXED_JOBS: fixed job count for the project
+        FORCE_REVISION: force a revision value over any other configuration
         GIT_CONFIG: git configurations to set (if any)
         GIT_DEPTH: git fetch depth (if any)
         GIT_REFSPECS: additional git refspecs to fetch (if any)
@@ -194,6 +195,7 @@ class Rpk(StrCcEnum):
     EXTRACT_TYPE = 'EXTRACT_TYPE'
     FETCH_OPTS = 'FETCH_OPTS'
     FIXED_JOBS = 'FIXED_JOBS'
+    FORCE_REVISION = 'FORCE_REVISION'
     GIT_CONFIG = 'GIT_CONFIG'
     GIT_DEPTH = 'GIT_DEPTH'
     GIT_REFSPECS = 'GIT_REFSPECS'

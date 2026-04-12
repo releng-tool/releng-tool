@@ -148,6 +148,7 @@ class RelengPackageManager:
             (Rpk.EXTRACT_TYPE, PkgKeyType.STR),
             (Rpk.FETCH_OPTS, PkgKeyType.OPTS),
             (Rpk.FIXED_JOBS, PkgKeyType.INT_POSITIVE),
+            (Rpk.FORCE_REVISION, PkgKeyType.STR),
             (Rpk.GIT_CONFIG, PkgKeyType.DICT_STR_PSTR),
             (Rpk.GIT_DEPTH, PkgKeyType.INT_NONNEGATIVE),
             (Rpk.GIT_REFSPECS, PkgKeyType.STRS),
@@ -464,6 +465,25 @@ class RelengPackageManager:
         else:
             pkg_revision = pkg_version
 
+        # forced revision
+        #
+        # Allows invokes to set a forced revision. Not intended for standard
+        # use. This is more so designed to be a easy override over the various
+        # ways a revision can be determined for a package. For example, wanting
+        # to drive a specific version for a build no matter if running in a
+        # standard or development mode.
+        #
+        # We do this after trying to determine the "normal" revision above,
+        # since we want to ensure `pkg_devmode` is set to a most-likely
+        # appropriate value.
+        pkg_forced_revision = self._fetch(Rpk.FORCE_REVISION)
+        if pkg_forced_revision:
+            pkg_revision = pkg_forced_revision
+            warn('''\
+using a forced revision for package: {}
+ (configuration set: '{}')\
+''', name, pkg_key(name, Rpk.FORCE_REVISION))
+
         # always ensure a revision is set; use the version value if no
         # explicit revision is provided
         if not pkg_revision:
@@ -471,7 +491,7 @@ class RelengPackageManager:
 
         # if we have an empty revision value, check to see if the project
         # configuration has hinted a revision value to use
-        if opts.revisions:
+        if not pkg_forced_revision and opts.revisions:
             prj_defined_revision = opts.revisions.get(name)
             if prj_defined_revision:
                 if not pkg_revision:
