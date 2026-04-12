@@ -157,13 +157,45 @@ def install(opts):
         optimization = [0, 1]  # default
 
     with temp_dir() as tmp_dir:
+        # prepare absolute scheme paths
+        #
+        # Resolving a configuration scheme addresses two issues. First, we
+        # always want to install into a target directory no matter what type
+        # of scheme definition is provided (native, custom, etc.). Some scheme
+        # entries may provide absolute values to target outside where we want
+        # to manage.
+        #
+        # Second, as of installer 1.0 (and on 1.1.0.dev0 at the time of
+        # writing), scheme entries are treated in a way where they are required
+        # to be absolute paths.
+        #
+        # To deal with above, always build absolute paths based on our interim
+        # path for each scheme entry for consistent results.
+        def resolve_path(v):
+            provided_path = Path(os.path.normpath(v))
+            relative_path = provided_path.relative_to(provided_path.anchor)
+            final_path = os.path.normpath(f'{tmp_dir}/{relative_path}')
+
+            cprefix = os.path.commonprefix([tmp_dir, final_path])
+            if cprefix != tmp_dir:
+                raise RelengToolPythonSchemeInstallTraversal({
+                    'pkg_name': opts.name,
+                    'path': final_path,
+                })
+
+            return final_path
+
+        cfg_scheme = {
+            k: resolve_path(v) for k, v in cfg_scheme.items()
+        }
+
         # prepare the destination for the installation request
+        # (note: destdir not set since we manage this above)
         dst = SchemeDictionaryDestination(
             cfg_scheme,
             interpreter=installer_interpreter,
             script_kind=script_kind,
             bytecode_optimization_levels=optimization,
-            destdir=tmp_dir,  # --destdir
         )
 
         # install the wheel file into the interim path
@@ -208,4 +240,15 @@ class RelengToolPythonInstallError(RelengToolException):
 {traceback}
 failed to install python project: {name}
     {description}
+'''.strip().format(**args))
+
+
+class RelengToolPythonSchemeInstallTraversal(RelengToolException):
+    """
+    raised when a python scheme install path traversal is detected
+    """
+    def __init__(self, args):
+        super().__init__('''\
+python installation scheme defines a path traversal: {pkg_name}
+ (path: {path})
 '''.strip().format(**args))
