@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from releng_tool.util.io_path import path_input
 from releng_tool.util.log import debug
+from releng_tool.util.log import debug_extended
 from releng_tool.util.log import err
 import errno
 import os
@@ -48,8 +49,10 @@ def path_remove(path: str | bytes | os.PathLike, quiet=False) -> bool:
 
     try:
         if req_path.is_dir() and not req_path.is_symlink():
+            debug(f'removing directory: {req_path}')
             _path_remove_dir(req_path)
         else:
+            debug(f'removing file: {req_path}')
             _path_remove_file(req_path)
     except OSError as e:
         if e.errno != errno.ENOENT:
@@ -99,7 +102,7 @@ def _path_remove_dir(dir_: Path) -> None:
             _path_remove_file(path)
 
     # remove directory
-    debug(f'removing directory: {dir_}')
+    debug_extended(f'removing directory: {dir_}')
     dir_.rmdir()
 
 
@@ -124,7 +127,7 @@ def _path_remove_file(path: Path) -> None:
     """
 
     try:
-        debug(f'removing file: {path}')
+        debug_extended(f'removing file: {path}')
         path.unlink(missing_ok=True)
     except OSError as e:
         if e.errno != errno.EACCES:
