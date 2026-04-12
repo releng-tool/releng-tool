@@ -108,7 +108,7 @@ def install(opts):
         scheme_template = pkg_installer_scheme
 
     if scheme_template:
-        # if a user defines a "default" (a releng-tool hint), this is an
+        # if a user defines "native" (a releng-tool hint), this is an
         # indication to use the interpreter's default scheme, which is
         # selected by having no scheme argument provided
         if scheme_template == 'native':
