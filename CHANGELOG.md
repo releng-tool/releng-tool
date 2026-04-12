@@ -1,6 +1,13 @@
 ## Development
 
 - **(note)** Support for `releng-overrides` script has been dropped
+- Adding various prerequisite checks for configured Python setup types
+- Introduce `LIBFOO_FORCE_REVISION` to forcing package revisions for all modes
+- Introduce support for a maximum version for lint checks
+- Introduce various install optional dependencies configurations (e.g. `[all]`)
+- Python's `installer` package is now an optional dependency
+- SBOM package entries are now sorted by name
+- Use of a global output container path now hints full project output path
 
 ## 2.11.0 (2026-03-10)
 
