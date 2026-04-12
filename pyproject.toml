@@ -47,8 +47,55 @@ Source = 'https://github.com/releng-tool/releng-tool'
 releng-tool = 'releng_tool.__main__:main'
 
 [project.optional-dependencies]
+meson = [
+    'meson',
+]
+py-base = [
+    'build',
+    'installer>=0.5.0',
+]
+py-flit = [
+    'flit',
+    'releng-tool[py-base]',
+]
+py-hatch = [
+    'hatch',
+    'releng-tool[py-base]',
+]
+py-pdm = [
+    'pdm',
+    'pdm-backend',
+    'pdm-pep517',
+    'releng-tool[py-base]',
+]
+py-poetry  = [
+    'poetry>=0.8',
+    'releng-tool[py-base]',
+]
+py-setuptools = [
+    'releng-tool[py-base]',
+    'setuptools',
+    'wheel',
+]
+py-all = [
+    'releng-tool[py-base]',
+    'releng-tool[py-flit]',
+    'releng-tool[py-hatch]',
+    'releng-tool[py-pdm]',
+    'releng-tool[py-poetry]',
+    'releng-tool[py-setuptools]',
+]
+scons = [
+    'scons',
+]
 statistics = [
     'matplotlib',
+]
+all = [
+    'releng-tool[meson]',
+    'releng-tool[py-all]',
+    'releng-tool[scons]',
+    'releng-tool[statistics]',
 ]
 
 [tool.setuptools.packages.find]
