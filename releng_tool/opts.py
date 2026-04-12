@@ -7,7 +7,9 @@ from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import UNSET_VALUES
 from releng_tool.util.log import hint
+from releng_tool.util.log import warn
 from releng_tool.util.string import normalize
+from releng_tool.util.version import str_to_version
 import contextlib
 import multiprocessing
 import os
@@ -83,6 +85,7 @@ class RelengEngineOptions:
         jobsconf: number of jobs to allow at a given time (0: auto)
         license_dir: directory container for license information
         license_header: header content for a generated license file (if any)
+        lint_max_version: maximum lint version to check (if any)
         local_srcs: dictionary of local source configurations
         no_color_out: whether or not colored messages are shown
         only_mirror: require mirror for external packages
@@ -137,6 +140,7 @@ class RelengEngineOptions:
         self.jobsconf = 0
         self.license_dir = None
         self.license_header = None
+        self.lint_max_version = None
         self.local_srcs = {}
         self.no_color_out = False
         self.only_mirror = False
@@ -334,6 +338,13 @@ class RelengEngineOptions:
             with contextlib.suppress(ValueError):
                 self.jobs = self.jobsconf = \
                     int(os.environ.get('RELENG_PARALLEL_LEVEL'))
+
+        rlmv = os.environ.get('RELENG_LINT_MAX_VERSION')
+        if rlmv:
+            try:
+                self.lint_max_version = str_to_version(rlmv)
+            except ValueError:
+                warn(f'ignoring invalid RELENG_LINT_MAX_VERSION: {rlmv}')
 
     def _finalize_options(self):
         """

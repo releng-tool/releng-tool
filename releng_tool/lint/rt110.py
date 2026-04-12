@@ -3,12 +3,14 @@
 
 from releng_tool.defs import Rpk
 from releng_tool.lint import LintState
+from releng_tool.lint import lint_check
 from releng_tool.packages import pkg_key
 from releng_tool.packages.package import RelengPackage
 from releng_tool.defs import PackageType
 import ast
 
 
+@lint_check(ver=[2, 9])
 def rt110(state: LintState, pkg: RelengPackage, nodes: list[ast.AST]):
     """
     linting python-only configurations

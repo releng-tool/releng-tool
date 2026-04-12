@@ -66,6 +66,7 @@ from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.log import warn_wrap
 from releng_tool.util.string import expand
+from releng_tool.util.version import str_to_version
 import json
 import os
 import ssl
@@ -1207,6 +1208,18 @@ following key entry and re-try again.
                 notify_invalid_type(ConfKey.LICENSE_HEADER, 'str')
                 return False
             self.opts.license_header = license_header
+
+        if not self.opts.lint_max_version and \
+                ConfKey.LINT_MAX_VERSION in settings:
+            raw_max_version = settings[ConfKey.LINT_MAX_VERSION]
+            if not isinstance(raw_max_version, str):
+                notify_invalid_type(ConfKey.LINT_MAX_VERSION, 'version-str')
+                return False
+            try:
+                self.opts.lint_max_version = str_to_version(raw_max_version)
+            except ValueError:
+                notify_invalid_type(ConfKey.LINT_MAX_VERSION, 'version-str')
+                return False
 
         if ConfKey.OVERRIDE_TOOLS in settings:
             v = interpret_dict(settings[ConfKey.OVERRIDE_TOOLS], str)

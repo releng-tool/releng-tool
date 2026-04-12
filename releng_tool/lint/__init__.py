@@ -18,9 +18,12 @@ import tokenize
 
 
 class LintState:
-    def __init__(self):
+    def __init__(self, lint_max_version: list[int]):
         """
         track the state of a lint event
+
+        Args:
+            lint_max_version: limited lint entries introduced at a version
 
         Attributes:
             pkgkey_suffixes: populated list of all package key suffixes
@@ -28,13 +31,15 @@ class LintState:
             issue_count: total number of issues detected
         """
 
+        self.lint_max_version = lint_max_version
+
         # populate package key suffixes
         self.pkgkey_suffixes = tuple(
             f'_{v}' for k, v in Rpk.__dict__.items() if not k.startswith('_')
         )
 
         # cache of package keys
-        self.pkgkey_opts = {}
+        self.pkgkey_opts: dict[RelengPackage, set[str]] = {}
 
         # track total issues detected
         self.issue_count = 0
@@ -122,7 +127,7 @@ def lint(opts: RelengEngineOptions, pkgs: list[RelengPackage]) -> bool:
     from releng_tool.lint.rt114 import rt114
     from releng_tool.lint.rt115 import rt115
 
-    state = LintState()
+    state = LintState(opts.lint_max_version)
 
     for pkg in pkgs:
         # ignore defless packages
@@ -221,3 +226,13 @@ def compile_lines_to_ignore(path: Path) -> set[int]:
             pass
 
     return lines_to_ignore
+
+
+def lint_check(ver: list[int]):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            if args[0].lint_max_version and args[0].lint_max_version < ver:
+                return None
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator

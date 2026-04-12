@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from contextlib import redirect_stdout
+from io import StringIO
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import prepare_workdir
@@ -39,6 +41,21 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
 
             with prepare_testenv() as engine:
                 self.assertEqual(engine.opts.images_dir, images_dir)
+
+    def test_engine_run_environ_cfg_lint_max_version_invalid(self):
+        os.environ['RELENG_LINT_MAX_VERSION'] = 'some-value'
+        stdout = StringIO()
+
+        with redirect_stdout(stdout), prepare_testenv() as engine:
+            self.assertIsNone(engine.opts.lint_max_version)
+
+        self.assertIn('RELENG_LINT_MAX_VERSION', stdout.getvalue())
+
+    def test_engine_run_environ_cfg_lint_max_version_valid(self):
+        os.environ['RELENG_LINT_MAX_VERSION'] = '1.2.3'
+
+        with prepare_testenv() as engine:
+            self.assertEqual(engine.opts.lint_max_version, [1, 2, 3])
 
     def test_engine_run_environ_cfg_out_container_dir(self):
         with prepare_workdir() as out_dir:

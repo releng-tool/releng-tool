@@ -3,6 +3,7 @@
 
 from releng_tool.defs import Rpk
 from releng_tool.lint import LintState
+from releng_tool.lint import lint_check
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.packages import pkg_key
 from releng_tool.packages.package import RelengPackage
@@ -11,6 +12,7 @@ from releng_tool.util.spdx import spdx_license_identifier
 import ast
 
 
+@lint_check(ver=[2, 9])
 def rt101(state: LintState, opts: RelengEngineOptions,
         pkg: RelengPackage, node: ast.AST):
     """
