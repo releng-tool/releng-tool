@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from releng_tool.defs import PackageType
+from releng_tool.defs import PythonSetupType
 from releng_tool.defs import VcsType
 from releng_tool.tool.autoreconf import AUTORECONF
 from releng_tool.tool.autoreconf import AUTORECONF_COMMAND
@@ -70,6 +71,7 @@ class RelengPrerequisites:
         missing = set()
         pkg_types = set()
         python_interpreters = set()
+        python_setup_types = set()
         vcs_types = set()
 
         # package-defined requirements check
@@ -94,6 +96,9 @@ class RelengPrerequisites:
                         python_interpreters.add(python_tool)
                 else:
                     python_interpreters.add(PYTHON)
+
+                if pkg.python_setup_type:
+                    python_setup_types.add(pkg.python_setup_type)
 
         if PackageType.AUTOTOOLS in pkg_types or PackageType.MAKE in pkg_types:
             if MAKE.exists():
@@ -125,6 +130,32 @@ class RelengPrerequisites:
                     self._verbose_exists(interpreter)
                 else:
                     missing.add(interpreter.tool)
+
+            for python_setup_type in python_setup_types:
+                match python_setup_type:
+                    case PythonSetupType.FLIT:
+                        if not importlib.util.find_spec('flit_core.wheel'):
+                            missing.add('python-flit')
+
+                    case PythonSetupType.HATCH:
+                        if not importlib.util.find_spec('hatch'):
+                            missing.add('python-hatch')
+
+                    case PythonSetupType.PDM:
+                        if not importlib.util.find_spec('pdm'):
+                            missing.add('python-pdm')
+
+                    case PythonSetupType.PEP517:
+                        if not importlib.util.find_spec('build'):
+                            missing.add('build')
+
+                    case PythonSetupType.POETRY:
+                        if not importlib.util.find_spec('poetry'):
+                            missing.add('python-poetry')
+
+                    case PythonSetupType.SETUPTOOLS:
+                        if not importlib.util.find_spec('setuptools'):
+                            missing.add('python-setuptools')
 
             has_installer = importlib.util.find_spec('installer')
             if not has_installer:
