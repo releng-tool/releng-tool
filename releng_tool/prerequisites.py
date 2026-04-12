@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.defs import PackageType
 from releng_tool.defs import VcsType
 from releng_tool.tool.autoreconf import AUTORECONF
@@ -198,7 +199,14 @@ class RelengPrerequisites:
                     missing.add(tool)
 
         if missing and not quiet:
-            sorted_missing = list(missing)
+            # prepare to print all missing components; we sort to be nice but
+            # the missing list can hold both strings and paths; so we will
+            # normalize the outputs; for strings, this may be commands or
+            # package-like names, but are simple enough that throwing them
+            # into a path should be fine
+            sorted_missing = []
+            for p in missing:
+                sorted_missing.append(Path(p).as_posix())
             sorted_missing.sort()
 
             msg = 'missing the following host tools for this project:'
