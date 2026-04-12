@@ -1,6 +1,7 @@
 build
 flit
 hatch
+installer>=0.5.0
 meson
 pdm-backend
 pdm-pep517
