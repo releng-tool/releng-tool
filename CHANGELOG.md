@@ -7,6 +7,7 @@
 - Introduce various install optional dependencies configurations (e.g. `[all]`)
 - Python's `installer` package is now an optional dependency
 - SBOM package entries are now sorted by name
+- Support new changes in Python's `installer` package (v1.0+)
 - Use of a global output container path now hints full project output path
 
 ## 2.11.0 (2026-03-10)
