@@ -76,7 +76,10 @@ class SbomManager:
         cache['releng-tool-sbom-version'] = SBOM_VERSION
         cache['releng-tool-version'] = releng_version
 
-        for pkg in pkgs:
+        # sort packages by name for sbom documents
+        sorted_pkgs = sorted(pkgs, key=lambda pkg: pkg.name)
+
+        for pkg in sorted_pkgs:
             # ignore placeholder packages
             if pkg.vcs_type == VcsType.NONE:
                 continue
