@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
@@ -361,7 +362,9 @@ class RelengEngineOptions:
             if container_dir:
                 project_folder = os.path.basename(root)
                 self.out_dir = join(container_dir, project_folder)
-                hint(f'using user-defined output container: {container_dir}')
+
+                hinted_path = Path(self.out_dir).as_posix()
+                hint(f'using user-defined output container: {hinted_path}')
 
         # root container
         if not self.cache_dir:
