@@ -10,7 +10,7 @@ from tests import setpkgcfg
 from unittest.mock import patch
 
 
-class TestEnginePkgMake(RelengToolTestCase):
+class TestEnginePkgScons(RelengToolTestCase):
     @patch('releng_tool.engine.scons.install.SCONS')
     @patch('releng_tool.engine.scons.build.SCONS')
     @patch('releng_tool.engine.scons.configure.SCONS')

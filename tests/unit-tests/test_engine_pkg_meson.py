@@ -11,7 +11,7 @@ from tests import setprjcfg
 from unittest.mock import patch
 
 
-class TestEnginePkgCmake(RelengToolTestCase):
+class TestEnginePkgMeson(RelengToolTestCase):
     @patch('releng_tool.engine.meson.configure.MESON')
     @patch.object(MESON, 'exists', return_value=True)
     def test_engine_pkg_meson_build_type_cfg(self, cmake_exists, meson_cfg):
