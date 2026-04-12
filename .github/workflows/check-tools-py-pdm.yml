@@ -1,0 +1,79 @@
+name: Tools (py-pdm)
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+      - '.github/workflows/check-tools-py-pdm.yml'
+      - 'releng_tool/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+      - 'tox.ini'
+  pull_request:
+    branches:
+    - main
+    paths:
+      - '.github/workflows/check-tools-py-pdm.yml'
+      - 'releng_tool/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+      - 'tox.ini'
+  workflow_dispatch:
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: 1
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }}-${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    container:
+      image: ${{ matrix.img }}
+    strategy:
+      matrix:
+        include:
+            # supported interpreters
+            - { os: ubuntu-latest, img: "python:3.10", python: "3.10", cache: ~/.cache/pip }
+            - { os: ubuntu-latest, img: "python:3.11", python: "3.11", cache: ~/.cache/pip }
+            - { os: ubuntu-latest, img: "python:3.12", python: "3.12", cache: ~/.cache/pip }
+            - { os: ubuntu-latest, img: "python:3.13", python: "3.13", cache: ~/.cache/pip }
+            - { os: ubuntu-latest, img: "python:3.14", python: "3.14", cache: ~/.cache/pip }
+
+            # additional operating systems
+            - { os:   macos-latest, python: "3.12", cache: ~/Library/Caches/pip }
+            - { os: windows-latest, python: "3.12", cache: ~\AppData\Local\pip\Cache }
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Set up Python ${{ matrix.python }}
+      if: ${{ matrix.img == '' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Cache pip
+      uses: actions/cache@v5
+      id: cache-pip
+      with:
+        path: ${{ matrix.cache }}
+        key: ${{ matrix.os }}-${{ matrix.python }}-pip
+
+    - name: Setup container cache ownership
+      if: ${{ matrix.img != '' }}
+      run: |
+        mkdir -p ~/.cache
+        chown -R $(id -u) ~/.cache
+
+    # dependencies
+    - name: Install dependencies (apt-sync; ubuntu)
+      run: apt-get update
+      if: matrix.os == 'ubuntu-latest'
+    # dependencies
+    - name: Install dependencies
+      run: python -m pip install --upgrade tox
+
+    - name: Tools test (py-pdm)
+      run: tox -e tools-py-pdm
