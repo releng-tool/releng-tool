@@ -25,10 +25,70 @@ primary_envs=(
     py314
     pypy3
     py310-tools
+    py310-tools-py-flit
+    py310-tools-py-flit-old-installer
+    py310-tools-py-hatch
+    py310-tools-py-hatch-old-installer
+    py310-tools-py-pdm
+    py310-tools-py-pdm-old-installer
+    py310-tools-py-pep517
+    py310-tools-py-pep517-old-installer
+    py310-tools-py-poetry
+    py310-tools-py-poetry-old-installer
+    py310-tools-py-setuptools
+    py310-tools-py-setuptools-old-installer
     py311-tools
+    py311-tools-py-flit
+    py311-tools-py-flit-old-installer
+    py311-tools-py-hatch
+    py311-tools-py-hatch-old-installer
+    py311-tools-py-pdm
+    py311-tools-py-pdm-old-installer
+    py311-tools-py-pep517
+    py311-tools-py-pep517-old-installer
+    py310-tools-py-poetry
+    py310-tools-py-poetry-old-installer
+    py311-tools-py-setuptools
+    py311-tools-py-setuptools-old-installer
     py312-tools
+    py312-tools-py-flit
+    py312-tools-py-flit-old-installer
+    py312-tools-py-hatch
+    py312-tools-py-hatch-old-installer
+    py312-tools-py-pdm
+    py312-tools-py-pdm-old-installer
+    py312-tools-py-pep517
+    py312-tools-py-pep517-old-installer
+    py312-tools-py-poetry
+    py312-tools-py-poetry-old-installer
+    py312-tools-py-setuptools
+    py312-tools-py-setuptools-old-installer
     py313-tools
+    py313-tools-py-flit
+    py313-tools-py-flit-old-installer
+    py313-tools-py-hatch
+    py313-tools-py-hatch-old-installer
+    py313-tools-py-pdm
+    py313-tools-py-pdm-old-installer
+    py313-tools-py-pep517
+    py313-tools-py-pep517-old-installer
+    py313-tools-py-poetry
+    py313-tools-py-poetry-old-installer
+    py313-tools-py-setuptools
+    py313-tools-py-setuptools-old-installer
     py314-tools
+    py314-tools-py-flit
+    py314-tools-py-flit-old-installer
+    py314-tools-py-hatch
+    py314-tools-py-hatch-old-installer
+    py314-tools-py-pdm
+    py314-tools-py-pdm-old-installer
+    py314-tools-py-pep517
+    py314-tools-py-pep517-old-installer
+    py314-tools-py-poetry
+    py314-tools-py-poetry-old-installer
+    py314-tools-py-setuptools
+    py314-tools-py-setuptools-old-installer
     py310-release
     py311-release
     py312-release
