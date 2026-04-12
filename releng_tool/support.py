@@ -11,6 +11,7 @@ from releng_tool.util.env import extend_script_env
 from releng_tool.util.io_path import path_input
 from releng_tool.util.log import err
 from releng_tool.util.path import P
+from releng_tool.util.version import str_to_version
 from runpy import run_path
 import inspect
 import os
@@ -145,31 +146,20 @@ def require_version(minver=None, **kwargs):
 
     rv = True
 
-    # convert the base version to a list of integers; any string special
-    # postfix will just be assumed a zero value
-    def cast_int(s):
-        try:
-            return int(s)
-        except ValueError:
-            return 0
+    current = str_to_version(releng_version, relaxed=True)
 
-    # convert a provided version to an int; fail if given an unexpected
-    # value
-    def strict_int(s):
+    if minver and releng_version != minver:
         try:
-            return int(s)
+            requested = str_to_version(minver)
         except ValueError:
             err(f'''
 required releng-tool version check has failed
 
-An unexpected version value was provided: {s}
+An minimum version value was provided: {minver}
 '''.strip())
             raise_for_critical(critical)
+            requested = str_to_version(minver, relaxed=True)
 
-    current = list(map(cast_int, releng_version.split('.')))
-
-    if minver and releng_version != minver:
-        requested = list(map(strict_int, minver.split('.')))
         rv = requested <= current
         if not rv:
             if not quiet:
@@ -195,7 +185,17 @@ Please update to a more recent version:
             raise_for_critical(critical)
 
     if maxver and releng_version != maxver:
-        requested = list(map(strict_int, maxver.split('.')))
+        try:
+            requested = str_to_version(maxver)
+        except ValueError:
+            err(f'''
+required releng-tool version check has failed
+
+An unexpected maximum version value was provided: {maxver}
+'''.strip())
+            raise_for_critical(critical)
+            requested = str_to_version(maxver, relaxed=True)
+
         rv = requested >= current
         if not rv:
             if not quiet:
