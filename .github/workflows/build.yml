@@ -6,7 +6,6 @@ on:
     - main
     paths:
       - '.github/workflows/build.yml'
-      - 'releng/**'
       - 'releng_tool/**'
       - 'tests/**'
       - 'MANIFEST.in'
@@ -17,7 +16,6 @@ on:
     - main
     paths:
       - '.github/workflows/build.yml'
-      - 'releng/**'
       - 'releng_tool/**'
       - 'tests/**'
       - 'MANIFEST.in'
