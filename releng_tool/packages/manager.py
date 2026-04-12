@@ -411,7 +411,7 @@ class RelengPackageManager:
         pkg_version_key = pkg_key(name, Rpk.VERSION)
         expand_extra[pkg_version_key] = pkg_version
 
-        # development mode revision (may deprecate)
+        # development mode revision
         pkg_devmode_revision = self._fetch(Rpk.DEVMODE_REVISION,
             allow_expand=True, expand_extra=expand_extra)
 
