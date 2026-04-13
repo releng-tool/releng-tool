@@ -187,7 +187,7 @@ class TestPrerequisites(RelengToolTestCase):
     @patch(f'{PFX}.importlib.util.find_spec')
     def test_prerequisites_uc_python_pt_flit_missing(self, mfs):
         def find_spec(name):
-            return name != 'flit_core.wheel'
+            return name != 'flit_core'
         mfs.side_effect = find_spec
 
         self.pkg.type = PackageType.PYTHON
