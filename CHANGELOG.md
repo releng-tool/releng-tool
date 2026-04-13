@@ -1,4 +1,4 @@
-## Development
+## 3.0 (2026-04-12)
 
 - **(note)** Support for `releng-overrides` script has been dropped
 - Adding various prerequisite checks for configured Python setup types
