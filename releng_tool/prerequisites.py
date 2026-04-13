@@ -134,7 +134,7 @@ class RelengPrerequisites:
             for python_setup_type in python_setup_types:
                 match python_setup_type:
                     case PythonSetupType.FLIT:
-                        if not importlib.util.find_spec('flit_core.wheel'):
+                        if not importlib.util.find_spec('flit_core'):
                             missing.add('python-flit')
 
                     case PythonSetupType.HATCH:
