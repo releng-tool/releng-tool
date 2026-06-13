@@ -7,6 +7,7 @@ from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import UNSET_VALUES
 from releng_tool.util.log import hint
+from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.string import normalize
 from releng_tool.util.version import str_to_version
@@ -357,6 +358,7 @@ class RelengEngineOptions:
         if not self.root_dir:
             self.root_dir = os.getcwd()
 
+        env = os.environ
         join = os.path.join
         root = self.root_dir
 
@@ -368,14 +370,24 @@ class RelengEngineOptions:
                 self.dl_dir = join(self.assets_dir, DEFAULT_DL_DIR)
 
         # special output directory override
+        images_base_dir = None
+
         if not self.out_dir:
-            container_dir = os.environ.get('RELENG_GLOBAL_OUTPUT_CONTAINER_DIR')
+            container_dir = env.get('RELENG_GLOBAL_OUTPUT_CONTAINER_DIR')
             if container_dir:
                 project_folder = os.path.basename(root)
                 self.out_dir = join(container_dir, project_folder)
 
                 hinted_path = Path(self.out_dir).as_posix()
                 hint(f'using user-defined output container: {hinted_path}')
+
+                # users may opt-out of placing generates images in an output
+                # container path, allowing build effort to be done in a
+                # container area but allow generates images to be local
+                if env.get('RELENG_GLOBAL_OUTPUT_CONTAINER_NO_IMAGES'):
+                    verbose('ignoring user-defined output container for images')
+                else:
+                    images_base_dir = self.out_dir
 
         # root container
         if not self.cache_dir:
@@ -386,6 +398,8 @@ class RelengEngineOptions:
             self.dl_dir = join(root, DEFAULT_DL_DIR)
         if not self.out_dir:
             self.out_dir = join(root, DEFAULT_OUTPUT_DIR)
+        if not images_base_dir:
+            images_base_dir = join(root, DEFAULT_OUTPUT_DIR)
 
         # output container
         if not self.build_dir:
@@ -393,7 +407,7 @@ class RelengEngineOptions:
         if not self.host_dir:
             self.host_dir = join(self.out_dir, DEFAULT_HOST_DIR)
         if not self.images_dir:
-            self.images_dir = join(self.out_dir, DEFAULT_IMAGES_DIR)
+            self.images_dir = join(images_base_dir, DEFAULT_IMAGES_DIR)
         if not self.license_dir:
             self.license_dir = join(self.out_dir, DEFAULT_LICENSE_DIR)
         if not self.staging_dir:

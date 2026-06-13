@@ -66,6 +66,36 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
                 expected_outdir = os.path.join(out_dir, mocked_project_name)
                 self.assertEqual(engine.opts.out_dir, expected_outdir)
 
+                expected_images_dir = os.path.join(expected_outdir, 'images')
+                self.assertEqual(engine.opts.images_dir, expected_images_dir)
+
+    def test_engine_run_environ_cfg_out_container_images_flag_default(self):
+        with prepare_workdir() as out_dir:
+            os.environ['RELENG_GLOBAL_OUTPUT_CONTAINER_DIR'] = out_dir
+            os.environ['RELENG_GLOBAL_OUTPUT_CONTAINER_NO_IMAGES'] = '1'
+
+            with prepare_testenv() as engine:
+                mocked_project_name = os.path.basename(engine.opts.root_dir)
+                expected_outdir = os.path.join(out_dir, mocked_project_name)
+                self.assertEqual(engine.opts.out_dir, expected_outdir)
+
+                output_dir = os.path.join(engine.opts.root_dir, 'output')
+                expected_images_dir = os.path.join(output_dir, 'images')
+                self.assertEqual(engine.opts.images_dir, expected_images_dir)
+
+    def test_engine_run_environ_cfg_out_container_images_flag_ignore(self):
+        with prepare_workdir() as images_dir, prepare_workdir() as out_dir:
+            os.environ['RELENG_GLOBAL_OUTPUT_CONTAINER_DIR'] = out_dir
+            os.environ['RELENG_GLOBAL_OUTPUT_CONTAINER_NO_IMAGES'] = '1'
+            os.environ['RELENG_IMAGES_DIR'] = images_dir
+
+            with prepare_testenv() as engine:
+                mocked_project_name = os.path.basename(engine.opts.root_dir)
+                expected_outdir = os.path.join(out_dir, mocked_project_name)
+                self.assertEqual(engine.opts.out_dir, expected_outdir)
+
+                self.assertEqual(engine.opts.images_dir, images_dir)
+
     def test_engine_run_environ_cfg_out_dir(self):
         with prepare_workdir() as out_dir:
             os.environ['RELENG_OUTPUT_DIR'] = out_dir
