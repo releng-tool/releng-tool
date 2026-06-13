@@ -14,11 +14,7 @@ RUN \
 USER default
 WORKDIR /home/default
 
-ENV PATH="/home/default/.local/bin:${PATH}"
 RUN \
     sudo apt-get install -y pipx && \
-    pipx ensurepath
-
-RUN \
-    pipx install releng-tool && \
+    sudo pipx install --global releng-tool && \
     releng-tool --version
