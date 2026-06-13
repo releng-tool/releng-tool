@@ -1,0 +1,4 @@
+from pathlib import Path
+
+if Path.cwd() == PKG_BUILD_DIR:
+    releng_touch(TARGET_DIR / 'verified-post')
