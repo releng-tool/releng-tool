@@ -1,4 +1,4 @@
 from pathlib import Path
 
-if Path.cwd() == PKG_BUILD_DIR:
+if Path.cwd().resolve() == PKG_BUILD_DIR.resolve():
     releng_touch(TARGET_DIR / 'verified-patch')
