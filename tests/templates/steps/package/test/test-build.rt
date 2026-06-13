@@ -1,0 +1,8 @@
+for _ in releng_step('key-a'):
+    releng_touch(TARGET_DIR / 'invoked-1')
+
+for _ in releng_step('key-a'):
+    releng_touch(TARGET_DIR / 'invoked-2')
+
+for _ in releng_step('key-b'):
+    releng_touch(TARGET_DIR / 'invoked-3')
