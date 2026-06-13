@@ -6,6 +6,7 @@ from releng_tool.defs import VcsType
 from releng_tool.tool.patch import PATCH
 from releng_tool.util.io import run_script
 from releng_tool.util.io_opt_file import opt_file
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import log
@@ -132,8 +133,9 @@ def stage(engine, pkg, script_env):
 
     # if we have a patch script, run it
     if has_patch_script:
-        if not run_script(patch_script, script_env, subject='patch'):
-            return False
+        with wd(patch_dir):
+            if not run_script(patch_script, script_env, subject='patch'):
+                return False
 
         verbose('patch script executed: ' + patch_script)
         return True
