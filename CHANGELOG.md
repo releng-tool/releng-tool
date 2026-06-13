@@ -1,3 +1,10 @@
+## Development
+
+- **(note)** Last version supporting the `.releng` extension
+- Ensure an appropriate working directory is set when using a patch-script
+- Introduce `releng_step` helper script function
+- Support for `RELENG_GLOBAL_OUTPUT_CONTAINER_NO_IMAGES`
+
 ## 3.0 (2026-04-12)
 
 - **(note)** Support for `releng-overrides` script has been dropped
