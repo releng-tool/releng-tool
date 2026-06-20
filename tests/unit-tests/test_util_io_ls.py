@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from releng_tool.util.io_ls import ls
+from releng_tool.util.io_wd import wd
 from releng_tool.util.log import is_api_log_mode
 from releng_tool.util.log import is_debug
 from tests import RelengToolTestCase
@@ -118,3 +119,17 @@ class TestUtilIoLs(RelengToolTestCase):
 
         self.assertTrue(listed)
         self.assertEqual(stream.getvalue(), '')
+
+    def test_utilio_ls_valid_directory_workdir(self):
+        base_dir = Path(__file__).parent
+
+        with wd(base_dir):
+            with redirect_stdout() as stream:
+                listed = ls()
+
+        self.assertTrue(listed)
+
+        entries = stream.getvalue().split('\n')
+        self.assertIn('assets/', entries)
+        self.assertIn('__init__.py', entries)
+        self.assertIn('test_util_io_ls.py', entries)

@@ -8,7 +8,8 @@ from releng_tool.util.log import log
 import os
 
 
-def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
+def ls(dir_: str | bytes | os.PathLike | None = None,
+        *, recursive: bool = False) -> bool:
     """
     list a directory's contents
 
@@ -17,9 +18,11 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
     .. versionchanged:: 2.7 Provided directory will now expand variables.
     .. versionchanged:: 3.1 Directories always output POSIX path separators.
+    .. versionchanged:: 3.1 Directory is optional (using working directory).
 
     Attempts to read a directory for its contents and prints this information
-    to the configured standard output stream.
+    to the configured standard output stream. If no directory is provided,
+    the working directory will be used.
 
     An example when using in the context of script helpers is as follows:
 
@@ -28,7 +31,7 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
         releng_ls('my-dir/')
 
     Args:
-        dir_: the directory
+        dir_ (optional): the directory or the working directory
         recursive (optional): recursive search of entries
 
     Returns:
@@ -37,7 +40,11 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
         be read
     """
 
-    path = path_input(dir_)
+    if dir_:
+        path = path_input(dir_)
+    else:
+        path = Path.cwd()
+
     if not path.is_dir():
         return False
 
