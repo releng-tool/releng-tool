@@ -168,6 +168,7 @@ class RelengPackageManager:
             (Rpk.MESON_BUILD_TYPE, PkgKeyType.STR),
             (Rpk.MESON_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.NEEDS, PkgKeyType.STRS),
+            (Rpk.NETWORK_ISOLATION, PkgKeyType.BOOL),
             (Rpk.NO_EXTRACTION, PkgKeyType.BOOL),
             (Rpk.ONLY_DEVMODE, PkgKeyType.BOOL_OR_STRS),
             (Rpk.PATCH_SUBDIR, PkgKeyType.PSTR),
@@ -671,6 +672,11 @@ explicit url vcs-type with files is deprecated: {}
         # is-internal
         pkg_is_internal = self._fetch(Rpk.INTERNAL)
 
+        # network isolation
+        pkg_network_isolation = self._fetch(Rpk.NETWORK_ISOLATION)
+        if pkg_network_isolation is None:
+            pkg_network_isolation = opts.network_isolation
+
         # no extraction
         pkg_no_extraction = self._fetch(Rpk.NO_EXTRACTION)
 
@@ -1000,6 +1006,7 @@ explicit url vcs-type with files is deprecated: {}
         pkg.ignore_patches = pkg_ignore_patches
         pkg.is_internal = pkg_is_internal
         pkg.local_srcs = pkg_local_srcs
+        pkg.network_isolation = pkg_network_isolation
         pkg.no_extraction = pkg_no_extraction
         pkg.only_devmode = pkg_only_devmode
         pkg.patch_subdir = pkg_patch_subdir

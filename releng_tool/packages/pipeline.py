@@ -38,6 +38,7 @@ from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import note
 from releng_tool.util.log import warn
+from releng_tool.util.network_isolation import network_isolate
 from releng_tool.util.path import P
 from releng_tool.util.strccenum import StrCcEnum
 import os
@@ -234,9 +235,12 @@ class RelengPackagePipeline:
         # track if we did any package stages this pass
         has_worked = False
 
-        # finalize package environment
-        with self._stage_env_finalize(pkg, pkg_env):
-
+        with (
+            # finalize package environment
+            self._stage_env_finalize(pkg, pkg_env),
+            # perform network isolation for builds (if enabled)
+            network_isolate(enforce=pkg.network_isolation),
+        ):
             # custom execution command
             if paction == PkgAction.EXEC and pkg.name == target:
                 self._stage_exec(pkg)

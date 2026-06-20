@@ -1221,6 +1221,13 @@ following key entry and re-try again.
                 notify_invalid_type(ConfKey.LINT_MAX_VERSION, 'version-str')
                 return False
 
+        if ConfKey.NETWORK_ISOLATION in settings:
+            is_network_isolation = settings[ConfKey.NETWORK_ISOLATION]
+            if not isinstance(is_network_isolation, bool):
+                notify_invalid_type(ConfKey.NETWORK_ISOLATION, 'bool')
+                return False
+            self.opts.network_isolation = is_network_isolation
+
         if ConfKey.OVERRIDE_TOOLS in settings:
             v = interpret_dict(settings[ConfKey.OVERRIDE_TOOLS], str)
             if v is None:

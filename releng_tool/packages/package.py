@@ -51,6 +51,7 @@ class RelengPackage:
         local_srcs: whether this package is acquired locally
         max_jobs: maximum job count for this specific package
         name: name of the package
+        network_isolation: enforce network isolation on non-fetch stages
         no_extraction: whether or not this package will extract
         nv: name-version value of the package
         only_devmode: whether package only applies in development mode
@@ -139,6 +140,7 @@ class RelengPackage:
         self.license_files = None
         self.local_srcs = False
         self.max_jobs = None
+        self.network_isolation = False
         self.no_extraction = False
         self.only_devmode = False
         self.patch_subdir = None

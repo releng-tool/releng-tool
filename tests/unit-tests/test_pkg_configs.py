@@ -256,6 +256,22 @@ class TestPkgConfigs(TestPkgConfigsBase):
         pkg = self.LOAD('max-jobs-valid-negative').package
         self.assertEqual(pkg.max_jobs, -1)
 
+    def test_pkgconfig_network_isolation_disabled(self):
+        pkg = self.LOAD('network-isolation-disabled').package
+        self.assertFalse(pkg.network_isolation)
+
+    def test_pkgconfig_network_isolation_enabled(self):
+        pkg = self.LOAD('network-isolation-enabled').package
+        self.assertTrue(pkg.network_isolation)
+
+    def test_pkgconfig_network_isolation_invalid(self):
+        with self.assertRaises(RelengToolInvalidPackageKeyValue):
+            self.LOAD('network-isolation-invalid')
+
+    def test_pkgconfig_network_isolation_missing(self):
+        pkg = self.LOAD('missing').package
+        self.assertFalse(pkg.network_isolation)
+
     def test_pkgconfig_no_extraction_disabled(self):
         pkg = self.LOAD('no-extraction-disabled').package
         self.assertFalse(pkg.no_extraction)

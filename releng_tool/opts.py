@@ -88,6 +88,7 @@ class RelengEngineOptions:
         license_header: header content for a generated license file (if any)
         lint_max_version: maximum lint version to check (if any)
         local_srcs: dictionary of local source configurations
+        network_isolation: network isolation for packages non-fetch stages
         no_color_out: whether or not colored messages are shown
         only_mirror: require mirror for external packages
         out_dir: directory container for all output data
@@ -143,6 +144,7 @@ class RelengEngineOptions:
         self.license_header = None
         self.lint_max_version = None
         self.local_srcs = {}
+        self.network_isolation = False
         self.no_color_out = False
         self.only_mirror = False
         self.out_dir = None

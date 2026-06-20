@@ -25,6 +25,7 @@ class ConfKey(StrCcEnum):
         EXTRA_LICENSES: project-permitted spdx licenses
         LICENSE_HEADER: license header information
         LINT_MAX_VERSION: lint maximum version
+        NETWORK_ISOLATION: enforce network isolation on all packages
         OVERRIDE_TOOLS: extract-tool overriding
         PKGS: project's package (name) list
         PREREQUISITES: project's host-tool prerequisites
@@ -47,6 +48,7 @@ class ConfKey(StrCcEnum):
     EXTRA_LICENSES = 'extra_licenses'
     LICENSE_HEADER = 'license_header'
     LINT_MAX_VERSION = 'lint_max_version'
+    NETWORK_ISOLATION = 'network_isolation'
     OVERRIDE_TOOLS = 'override_extract_tools'
     PKGS = 'packages'
     PREREQUISITES = 'prerequisites'
@@ -132,6 +134,7 @@ class Rpk(StrCcEnum):
         LICENSE_FILES: source file(s) with license information
         MAX_JOBS: maximum job count for the project
         NEEDS: list of package dependencies
+        NETWORK_ISOLATION: enforce network isolation on non-fetch stages
         NO_EXTRACTION: whether or not package extraction is done
         ONLY_DEVMODE: whether package only applies in development mode
         PATCH_SUBDIR: sub-directory in fetched to apply patches
@@ -209,6 +212,7 @@ class Rpk(StrCcEnum):
     LICENSE_FILES = 'LICENSE_FILES'
     MAX_JOBS = 'MAX_JOBS'
     NEEDS = 'NEEDS'
+    NETWORK_ISOLATION = 'NETWORK_ISOLATION'
     NO_EXTRACTION = 'NO_EXTRACTION'
     ONLY_DEVMODE = 'ONLY_DEVMODE'
     PATCH_SUBDIR = 'PATCH_SUBDIR'

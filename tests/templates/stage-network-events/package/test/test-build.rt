@@ -1,0 +1,4 @@
+from tests.support.network import fetch_http_file_proxy_enforced
+
+site = releng_env('RELENG_TEST_NETWORK_ISOLATION_SITE')
+fetch_http_file_proxy_enforced(site)
