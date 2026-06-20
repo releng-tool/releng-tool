@@ -13,6 +13,7 @@ from releng_tool.tool.cmake import CMAKE
 from releng_tool.tool.cvs import CVS
 from releng_tool.tool.git import GIT
 from releng_tool.tool.hg import HG
+from releng_tool.tool.lore import LORE
 from releng_tool.tool.make import MAKE
 from releng_tool.tool.meson import MESON
 from releng_tool.tool.python import PYTHON
@@ -196,6 +197,12 @@ class RelengPrerequisites:
                 self._verbose_exists(HG)
             else:
                 missing.add(HG.tool)
+
+        if VcsType.LORE in vcs_types:
+            if LORE.exists():
+                self._verbose_exists(LORE)
+            else:
+                missing.add(LORE.tool)
 
         if VcsType.PERFORCE in vcs_types:
             if GIT.exists():

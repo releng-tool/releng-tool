@@ -118,6 +118,16 @@ class TestPrerequisites(RelengToolTestCase):
         self.pkg.vcs_type = VcsType.HG
         self._assertPackagePrerequisite(expected=False)
 
+    @patch(f'{PFX}.LORE.exists', new=lambda: True)
+    def test_prerequisites_uc_lore_exists(self):
+        self.pkg.vcs_type = VcsType.LORE
+        self._assertPackagePrerequisite(expected=True)
+
+    @patch(f'{PFX}.LORE.exists', new=lambda: False)
+    def test_prerequisites_uc_lore_missing(self):
+        self.pkg.vcs_type = VcsType.LORE
+        self._assertPackagePrerequisite(expected=False)
+
     @patch(f'{PFX}.MAKE.exists', new=lambda: True)
     def test_prerequisites_uc_make_exists(self):
         self.pkg.type = PackageType.MAKE

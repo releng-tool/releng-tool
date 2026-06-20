@@ -70,6 +70,15 @@ class TestPkgSite(RelengToolTestCase):
         self.assertEqual(site, 'local')
         self.assertEqual(vcs, VcsType.LOCAL)
 
+    def test_pkg_site_vcs_type_lore(self):
+        site, vcs = site_vcs('lore+example-lore-site')
+        self.assertEqual(site, 'example-lore-site')
+        self.assertEqual(vcs, VcsType.LORE)
+
+        site, vcs = site_vcs('lore://example-lore-site')
+        self.assertEqual(site, 'lore://example-lore-site')
+        self.assertEqual(vcs, VcsType.LORE)
+
     def test_pkg_site_vcs_type_perforce(self):
         site, vcs = site_vcs('perforce+example-p4-site')
         self.assertEqual(site, 'example-p4-site')

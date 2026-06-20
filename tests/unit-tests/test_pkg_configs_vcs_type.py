@@ -39,6 +39,10 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-hg-nosite')
 
+    def test_pkgconfig_vcs_type_invalid_lore(self):
+        with self.assertRaises(RelengToolMissingPackageSite):
+            self.LOAD('vcs-type-invalid-lore-nosite')
+
     def test_pkgconfig_vcs_type_invalid_perforce(self):
         with self.assertRaises(RelengToolMissingPackageSite):
             self.LOAD('vcs-type-invalid-perforce-nosite')
@@ -169,6 +173,17 @@ class TestPkgConfigsVcsType(TestPkgConfigsBase):
     def test_pkgconfig_vcs_type_valid_none_implicit(self):
         pkg = self.LOAD('vcs-type-valid-none-implicit').package
         self.assertEqual(pkg.vcs_type, VcsType.NONE)
+
+    def test_pkgconfig_vcs_type_valid_lore_explicit(self):
+        pkg = self.LOAD('vcs-type-valid-lore-explicit').package
+        self.assertEqual(pkg.vcs_type, VcsType.LORE)
+
+    def test_pkgconfig_vcs_type_valid_lore_implicit(self):
+        pkg = self.LOAD('vcs-type-valid-lore-implicit').package
+        self.assertEqual(pkg.vcs_type, VcsType.LORE)
+
+        pkg = self.LOAD('vcs-type-valid-lore-implicit2').package
+        self.assertEqual(pkg.vcs_type, VcsType.LORE)
 
     def test_pkgconfig_vcs_type_valid_perforce_explicit(self):
         pkg = self.LOAD('vcs-type-valid-perforce-explicit').package

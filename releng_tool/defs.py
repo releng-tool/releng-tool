@@ -478,6 +478,7 @@ class VcsType(StrCcEnum):
         HG: mercurial
         FILE: file
         LOCAL: no version control (local interim-development package)
+        LORE: lore
         NONE: no version control (placeholder package)
         P4: perforce
         RSYNC: rsync
@@ -491,6 +492,7 @@ class VcsType(StrCcEnum):
     HG = 'hg'
     FILE = 'file'
     LOCAL = 'local'
+    LORE = 'lore'
     NONE = 'none'
     PERFORCE = 'perforce'
     RSYNC = 'rsync'

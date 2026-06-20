@@ -751,6 +751,7 @@ explicit url vcs-type with files is deprecated: {}
                 VcsType.FILE,
                 VcsType.GIT,
                 VcsType.HG,
+                VcsType.LORE,
                 VcsType.PERFORCE,
                 VcsType.RSYNC,
                 VcsType.SCP,
@@ -776,6 +777,7 @@ explicit url vcs-type with files is deprecated: {}
         if pkg_vcs_type in (
                 VcsType.BRZ,
                 VcsType.CVS,
+                VcsType.LORE,
                 VcsType.PERFORCE,
                 VcsType.RSYNC,
                 VcsType.SVN,

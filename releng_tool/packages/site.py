@@ -58,6 +58,11 @@ def site_vcs(site):
     elif site_lc.startswith('hg+'):
         site = site.removeprefix('hg+')
         vcs_type = VcsType.HG
+    elif site_lc.startswith('lore+'):
+        site = site.removeprefix('lore+')
+        vcs_type = VcsType.LORE
+    elif site_lc.startswith('lore://'):
+        vcs_type = VcsType.LORE
     elif site_lc.startswith('p4+'):
         site = site.removeprefix('p4+')
         vcs_type = VcsType.PERFORCE
