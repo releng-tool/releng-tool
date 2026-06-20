@@ -38,6 +38,16 @@ def temp_dir(dir_: str | bytes | os.PathLike | None = None,
         with releng_tmpdir() as dir_:
             log(dir_)
 
+    An example of a temporary directory being configured as the working
+    directory:
+
+    .. code-block:: python
+
+        with releng_tmpdir(wd=True) as dir_:
+            # invoked in temporary folder
+
+        # invoked in original working directory
+
     Args:
         dir_ (optional): the directory to create the temporary directory in
         **wd (optional): whether to use the temporary directory as the

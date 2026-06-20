@@ -61,7 +61,7 @@ def symlink(target: str | bytes | os.PathLike,
         releng_symlink('my-file', 'some/folder/my-link')
 
         # my-file -> container/my-file
-        releng_symlink('my-file', 'container', ldp=True)
+        releng_symlink('my-file', 'container', lpd=True)
 
         # some-path/my-link -> <workdir>/folder/my-file
         releng_symlink('folder/my-file', 'some-path/my-link', relative=False)

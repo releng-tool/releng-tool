@@ -29,6 +29,19 @@ def ls(dir_: str | bytes | os.PathLike | None = None,
     .. code-block:: python
 
         releng_ls('my-dir/')
+        # another-dir/
+        # file-a.txt
+        # second-file.tgz
+
+    Or when using the ``recursive`` argument.
+
+    .. code-block:: python
+
+        releng_ls('test-dir/', recursive=True)
+        # another-dir/
+        # another-dir/sub-dir/
+        # another-dir/sub-dir/file-b.txt
+        # file-c.txt
 
     Args:
         dir_ (optional): the directory or the working directory

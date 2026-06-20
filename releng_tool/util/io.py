@@ -136,6 +136,14 @@ def execute_rv(command, *args, **kwargs):
     explicitly setting the directory in ``cwd``. The execution request will
     return the command's return code as well as any captured output.
 
+    An example when using in the context of script helpers is as follows:
+
+    .. code-block:: python
+
+        rv, out = releng_execute_rv('echo', '1', '2', '3')
+        # rv: 1
+        # out: 1 2 3
+
     The environment variables used on execution can be manipulated in two ways.
     First, the environment can be explicitly controlled by applying a new
     environment content using the ``env`` dictionary. Key of the dictionary will
@@ -150,11 +158,10 @@ def execute_rv(command, *args, **kwargs):
     provided, ``env_update`` will be updated the options based off of ``env``
     instead of the original environment of the caller.
 
-    An example when using in the context of script helpers is as follows:
-
     .. code-block:: python
 
-        rv, out = releng_execute_rv('echo', '$TEST', env={'TEST': 'env-test'})
+        _, out = releng_execute_rv('echo', 'env-$TEST', env={'TEST': 'test'})
+        # out: env-test
 
     Args:
         command: the command to invoke
