@@ -3,6 +3,7 @@
 
 from releng_tool.tool.python import PYTHON
 from releng_tool.util.io import execute
+from releng_tool.util.io import execute_rv
 from releng_tool.util.io import interpret_stem_extension as ise
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
@@ -23,6 +24,10 @@ class TestUtilIo(RelengToolTestCase):
         result = execute(None, quiet=True, critical=False)
         self.assertFalse(result)
 
+        rv, out = execute_rv(None)
+        self.assertEqual(rv, 1)
+        self.assertFalse(out)
+
         result = execute([], quiet=True, critical=False)
         self.assertFalse(result)
 
@@ -30,12 +35,24 @@ class TestUtilIo(RelengToolTestCase):
         result = execute(test_cmd, quiet=True, critical=False)
         self.assertTrue(result)
 
+        rv, out = execute_rv(PYTHON.tool, '-c', 'print("Hello")')
+        self.assertEqual(rv, 0)
+        self.assertEqual(out, 'Hello')
+
         test_cmd = [PYTHON.tool, '-c', 'print("Partial", end="")']
         result = execute(test_cmd, quiet=True, critical=False)
         self.assertTrue(result)
 
+        rv, out = execute_rv(PYTHON.tool, '-c', 'print("Partial", end="")')
+        self.assertEqual(rv, 0)
+        self.assertEqual(out, 'Partial')
+
         result = execute(['an_unknown_command'], quiet=True, critical=False)
         self.assertFalse(result)
+
+        rv, out = execute_rv('an_unknown_command')
+        self.assertEqual(rv, 1)
+        self.assertFalse(out)
 
         result = execute('whoami', quiet=True, critical=False)
         self.assertTrue(result)
@@ -56,6 +73,23 @@ class TestUtilIo(RelengToolTestCase):
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), f'Hello{os.linesep}World')
 
+        rv, out = execute_rv(
+            sys.executable,
+            '-c',
+            'import sys; print("Hello", file=sys.stderr); print("World")',
+        )
+        self.assertEqual(rv, 0)
+        self.assertEqual(out.strip(), 'Hello\nWorld')
+
+        rv, out = execute_rv(
+            sys.executable,
+            '-c',
+            'import sys; print("Hello", file=sys.stderr); print("World")',
+            newline=os.linesep,
+        )
+        self.assertEqual(rv, 0)
+        self.assertEqual(out.strip(), f'Hello{os.linesep}World')
+
         # verify output (no stderr)
         with redirect_stdout() as stream:
             test_cmd = [
@@ -66,6 +100,15 @@ class TestUtilIo(RelengToolTestCase):
             result = execute(test_cmd, critical=False, ignore_stderr=True)
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), 'World')
+
+        rv, out = execute_rv(
+            sys.executable,
+            '-c',
+            'import sys; print("Hello", file=sys.stderr); print("World")',
+            ignore_stderr=True,
+        )
+        self.assertEqual(rv, 0)
+        self.assertEqual(out.strip(), 'World')
 
         # verify output (partial)
         with redirect_stdout() as stream:
@@ -78,6 +121,14 @@ class TestUtilIo(RelengToolTestCase):
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), 'Partial')
 
+        rv, out = execute_rv(
+            sys.executable,
+            '-c',
+            'print("Partial", end="")',
+        )
+        self.assertEqual(rv, 0)
+        self.assertEqual(out.strip(), 'Partial')
+
         # verify variable expansion
         os.environ['VERIFY_EXPANSION'] = 'abc123'
         with redirect_stdout() as stream:
@@ -86,6 +137,14 @@ class TestUtilIo(RelengToolTestCase):
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), 'abc123')
 
+        rv, out = execute_rv(
+            sys.executable,
+            '-c',
+            'print("$VERIFY_EXPANSION")',
+        )
+        self.assertEqual(rv, 0)
+        self.assertEqual(out.strip(), 'abc123')
+
         # verify disabled variable expansion
         os.environ['VERIFY_EXPANSION'] = 'abc123'
         with redirect_stdout() as stream:
@@ -93,6 +152,15 @@ class TestUtilIo(RelengToolTestCase):
             result = execute(test_cmd, critical=False, expand=False)
             self.assertTrue(result)
         self.assertEqual(stream.getvalue().strip(), '$VERIFY_EXPANSION')
+
+        rv, out = execute_rv(
+            sys.executable,
+            '-c',
+            'print("$VERIFY_EXPANSION")',
+            expand=False,
+        )
+        self.assertEqual(rv, 0)
+        self.assertEqual(out.strip(), '$VERIFY_EXPANSION')
 
         # verify quiet mode
         with redirect_stdout() as stream:
