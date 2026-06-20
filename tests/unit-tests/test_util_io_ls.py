@@ -72,7 +72,7 @@ class TestUtilIoLs(RelengToolTestCase):
         self.assertTrue(listed)
 
         entries = stream.getvalue().split('\n')
-        self.assertIn(f'assets{os.sep}', entries)
+        self.assertIn('assets/', entries)
         self.assertIn('__init__.py', entries)
         self.assertIn('test_util_io_ls.py', entries)
 
@@ -85,7 +85,7 @@ class TestUtilIoLs(RelengToolTestCase):
         self.assertTrue(listed)
 
         entries = stream.getvalue().split('\n')
-        self.assertIn(f'assets{os.sep}', entries)
+        self.assertIn('assets/', entries)
         self.assertIn('__init__.py', entries)
         self.assertIn('test_util_io_ls.py', entries)
 
@@ -99,7 +99,7 @@ class TestUtilIoLs(RelengToolTestCase):
         self.assertTrue(listed)
 
         entries = stream.getvalue().split('\n')
-        self.assertIn(f'assets{os.sep}', entries)
+        self.assertIn('assets/', entries)
         self.assertIn('__init__.py', entries)
         self.assertIn('test_util_io_ls.py', entries)
 

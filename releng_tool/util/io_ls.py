@@ -16,6 +16,7 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
     .. versionchanged:: 2.0 Add support for ``recursive``.
     .. versionchanged:: 2.2 Accepts a str, bytes or os.PathLike.
     .. versionchanged:: 2.7 Provided directory will now expand variables.
+    .. versionchanged:: 3.1 Directories always output POSIX path separators.
 
     Attempts to read a directory for its contents and prints this information
     to the configured standard output stream.
@@ -46,7 +47,7 @@ def ls(dir_: str | bytes | os.PathLike, *, recursive: bool = False) -> bool:
         path_obs = path.iterdir()
 
     for p in sorted(path_obs):
-        log(f'{p.relative_to(path)}{_desc(p)}')
+        log(f'{p.relative_to(path).as_posix()}{_desc(p)}')
 
     return True
 
@@ -65,7 +66,7 @@ def _desc(path: Path) -> str:
     desc = ''
 
     if path.is_dir():
-        desc += os.sep
+        desc += '/'
 
     if path.is_symlink():
         desc += f' -> {path.readlink()}'
