@@ -1,8 +1,13 @@
 ## Development
 
 - **(note)** Last version supporting the `.releng` extension
+- Consistent path formats for `releng_ls` output
+- Directory now optional for `releng_ls` which can use working directory
 - Ensure an appropriate working directory is set when using a patch-script
+- Fix `releng_execute_rv` not expanding by default
 - Introduce `releng_step` helper script function
+- Introduce support for Lore sites
+- Support `newline` option in `releng_execute_rv`
 - Support for `RELENG_GLOBAL_OUTPUT_CONTAINER_NO_IMAGES`
 
 ## 3.0 (2026-04-12)
