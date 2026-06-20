@@ -128,6 +128,7 @@ def execute_rv(command, *args, **kwargs):
     .. versionchanged:: 1.13 Add support for ``expand``.
     .. versionchanged:: 1.14 Add support for ``args_str``.
     .. versionchanged:: 2.0 Add support for ``ignore_stderr``.
+    .. versionchanged:: 3.1 Correct support for expansion by default.
 
     Runs the command ``command`` with provided ``args`` until completion. A
     caller can adjust the working directory of the executed command by
@@ -176,7 +177,7 @@ def execute_rv(command, *args, **kwargs):
         cwd=kwargs.get('cwd'),
         env=kwargs.get('env'),
         env_update=kwargs.get('env_update'),
-        expand=kwargs.get('expand'),
+        expand=kwargs.get('expand', True),
         args_str=kwargs.get('args_str'),
         ignore_stderr=kwargs.get('ignore_stderr'),
         quiet=True,
