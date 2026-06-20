@@ -326,24 +326,38 @@ class RelengEngineOptions:
 
         if not self.assets_dir:
             self.assets_dir = os.environ.get('RELENG_ASSETS_DIR')
+            if self.assets_dir:
+                verbose('configured asset directory from environment')
         if not self.cache_dir:
             self.cache_dir = os.environ.get('RELENG_CACHE_DIR')
+            if self.cache_dir:
+                verbose('configured cache directory from environment')
         if not self.dl_dir:
             self.dl_dir = os.environ.get('RELENG_DL_DIR')
+            if self.dl_dir:
+                verbose('configured download directory from environment')
         if not self.images_dir:
             self.images_dir = os.environ.get('RELENG_IMAGES_DIR')
+            if self.images_dir:
+                verbose('configured images directory from environment')
         if not self.out_dir:
             self.out_dir = os.environ.get('RELENG_OUTPUT_DIR')
+            if self.out_dir:
+                verbose('configured output directory from environment')
 
         if not self.jobs and 'RELENG_PARALLEL_LEVEL' in os.environ:
             with contextlib.suppress(ValueError):
                 self.jobs = self.jobsconf = \
                     int(os.environ.get('RELENG_PARALLEL_LEVEL'))
+                if self.jobs:
+                    verbose('configured job count from environment')
 
         rlmv = os.environ.get('RELENG_LINT_MAX_VERSION')
         if rlmv:
             try:
                 self.lint_max_version = str_to_version(rlmv)
+                if self.lint_max_version:
+                    verbose('configured maximum lint version from environment')
             except ValueError:
                 warn(f'ignoring invalid RELENG_LINT_MAX_VERSION: {rlmv}')
 
