@@ -372,9 +372,9 @@ class RelengToolTestCase(unittest.TestCase):
         dump the active environment to the standard output stream
         """
 
-        print('-------------------------------')
-        pprint.pprint(dict(os.environ))
-        print('-------------------------------')
+        print('-------------------------------', file=sys.stderr)
+        pprint.pprint(dict(os.environ), stream=sys.stderr)
+        print('-------------------------------', file=sys.stderr)
 
     @contextmanager
     def env_wrap(self):
