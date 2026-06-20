@@ -129,6 +129,7 @@ def execute_rv(command, *args, **kwargs):
     .. versionchanged:: 1.14 Add support for ``args_str``.
     .. versionchanged:: 2.0 Add support for ``ignore_stderr``.
     .. versionchanged:: 3.1 Correct support for expansion by default.
+    .. versionchanged:: 3.1 Add support for ``newline``.
 
     Runs the command ``command`` with provided ``args`` until completion. A
     caller can adjust the working directory of the executed command by
@@ -164,6 +165,7 @@ def execute_rv(command, *args, **kwargs):
         **expand: perform variable expansion on arguments
         **args_str: invoke arguments as a single string
         **ignore_stderr: ignore any stderr output
+        **newline: newline value to use or defaults to ``\\n``
 
     Returns:
         the return code and output of the execution request
@@ -182,7 +184,7 @@ def execute_rv(command, *args, **kwargs):
         ignore_stderr=kwargs.get('ignore_stderr'),
         quiet=True,
     )
-    return rv, '\n'.join(out)
+    return rv, kwargs.get('newline', '\n').join(out)
 
 
 def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
