@@ -43,6 +43,7 @@ from releng_tool.util.path import P
 from releng_tool.util.platform import platform_exit
 from releng_tool.util.string import expand
 import os
+import sys
 
 
 def prepare_script_environment(env, opts):
@@ -208,3 +209,16 @@ def prepare_script_environment(env, opts):
     env['success'] = success
     env['verbose'] = verbose
     env['warn'] = warn
+
+    # special imports
+    #
+    # Adding some special Python stock modules into script environments. These
+    # are modules that are already used/loaded with releng-tool in general,
+    # and are somewhat common to be used in some scripting context's. For
+    # example, common to use `Path` for additional path-related actions in
+    # custom package build stages. Adding these is to help reduce the need
+    # for developers to do some imports for really common modules. We do not
+    # plan to add many entries here.
+    env['Path'] = Path
+    env['os'] = os
+    env['sys'] = sys
