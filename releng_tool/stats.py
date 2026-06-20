@@ -9,6 +9,7 @@ from time import monotonic
 import math
 import os
 import pickle
+import warnings
 
 # optional imports
 try:
@@ -306,8 +307,11 @@ class RelengStats:
                 ax.grid(axis='x', linestyle=':', linewidth=0.4)
 
             # ensure rotated labels state in render area
-            for fig in figs:
-                fig.tight_layout()
+            # (ignore warnings if a tight layout for limited stage data)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                for fig in figs:
+                    fig.tight_layout()
 
             # generate figures
             dur_pdf = os.path.join(self.out_dir, 'durations.pdf')
