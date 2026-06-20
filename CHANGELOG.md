@@ -9,6 +9,7 @@
 - Introduce support for Lore sites
 - Support `newline` option in `releng_execute_rv`
 - Support for `RELENG_GLOBAL_OUTPUT_CONTAINER_NO_IMAGES`
+- Support network isolation for packages non-fetch stages
 
 ## 3.0 (2026-04-12)
 
