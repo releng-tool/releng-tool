@@ -83,6 +83,69 @@ class TestEnginePkgMeson(RelengToolTestCase):
             self.assertIn('install', args)
             self.assertIn('--no-rebuild', args)
 
+            # verify the install call provided an install target
+            self.assertEqual(args.count('--destdir'), 1)
+
+            # ensure directory path is provided with the destination directory
+            destdir_arg_idx = args.index('--destdir')
+            destdir_path_idx = destdir_arg_idx + 1
+            self.assertLessEqual(destdir_path_idx, len(args))
+            destdir_path = args[destdir_path_idx]
+            self.assertFalse(destdir_path.startswith('-'))
+
+            # verify that DESTDIR was set in the install stage
+            env_arg = meson_install.execute.call_args.kwargs.get('env')
+            self.assertIn('DESTDIR', env_arg)
+
+    @patch('releng_tool.engine.meson.install.MESON')
+    @patch('releng_tool.engine.meson.build.MESON')
+    @patch('releng_tool.engine.meson.configure.MESON')
+    @patch.object(MESON, 'exists', return_value=True)
+    def test_engine_pkg_meson_install_staging_and_target(self,
+            meson_exists, meson_cfg, meson_build, meson_install):
+        with prepare_testenv(template='minimal') as engine:
+            setpkgcfg(engine, 'minimal', Rpk.INSTALL_TYPE, 'staging_and_target')
+            setpkgcfg(engine, 'minimal', Rpk.TYPE, 'meson')
+
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            meson_cfg.execute.assert_called_once()
+            meson_build.execute.assert_called_once()
+            self.assertEqual(meson_install.execute.call_count, 2)
+
+            # verify the install call provided an install target
+            meson_install_first = meson_install.execute.call_args_list[0]
+            args = meson_install_first.args[0]
+            self.assertEqual(args.count('--destdir'), 1)
+
+            # ensure directory path is provided with the destination directory
+            destdir_arg_idx = args.index('--destdir')
+            destdir_path_idx = destdir_arg_idx + 1
+            self.assertLessEqual(destdir_path_idx, len(args))
+            destdir_path = args[destdir_path_idx]
+            self.assertFalse(destdir_path.startswith('-'))
+
+            # verify that DESTDIR was set in the install stage
+            env_arg = meson_install.execute.call_args.kwargs.get('env')
+            self.assertIn('DESTDIR', env_arg)
+
+            # verify the install call provided an install target
+            meson_install_second = meson_install.execute.call_args_list[1]
+            args = meson_install_second.args[0]
+            self.assertEqual(args.count('--destdir'), 1)
+
+            # ensure directory path is provided with the destination directory
+            destdir_arg_idx = args.index('--destdir')
+            destdir_path_idx = destdir_arg_idx + 1
+            self.assertLessEqual(destdir_path_idx, len(args))
+            destdir_path = args[destdir_path_idx]
+            self.assertFalse(destdir_path.startswith('-'))
+
+            # verify that DESTDIR was set in the install stage
+            env_arg = meson_install.execute.call_args.kwargs.get('env')
+            self.assertIn('DESTDIR', env_arg)
+
     @patch('releng_tool.engine.meson.configure.MESON')
     @patch.object(MESON, 'exists', return_value=False)
     def test_engine_pkg_meson_missing(self, meson_exists, meson_cfg):

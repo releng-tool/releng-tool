@@ -58,9 +58,9 @@ def install(opts):
     # install to each destination
     for dest_dir in opts.dest_dirs:
         env['DESTDIR'] = dest_dir
-        meson_args_tmp = meson_args
+        meson_args_tmp = list(meson_args)
         meson_args_tmp.extend(['--destdir', dest_dir])
-        if not MESON.execute(meson_args, env=env):
+        if not MESON.execute(meson_args_tmp, env=env):
             err('failed to install meson project: {}', opts.name)
             return False
 
