@@ -84,7 +84,8 @@ def configure(opts):
     # argument building
     xmake_args = [
         'config',
-        f'--builddir={opts.build_output_dir}',
+        # use -o over `--builddir` to support legacy installs with `--buildir`
+        '-o', opts.build_output_dir,
     ]
     xmake_args.extend(prepare_definitions(xmake_defs))
     xmake_args.extend(prepare_arguments(xmake_opts))

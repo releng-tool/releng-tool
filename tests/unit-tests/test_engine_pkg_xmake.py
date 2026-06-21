@@ -95,9 +95,15 @@ class TestEnginePkgXmake(RelengToolTestCase):
             args = xmake_cfg.execute.call_args.args[0]
             self.assertIn('config', args)
 
-            # verify the config call provided a build target
-            has_target = any(arg.startswith('--builddir=') for arg in args)
-            self.assertTrue(has_target)
+            # verify the config call provided an build target
+            self.assertEqual(args.count('-o'), 1)
+
+            # ensure directory path is provided with the build directory
+            builddir_arg_idx = args.index('-o')
+            builddir_path_idx = builddir_arg_idx + 1
+            self.assertLessEqual(builddir_path_idx, len(args))
+            builddir_path = args[builddir_path_idx]
+            self.assertFalse(builddir_path.startswith('-'))
 
             # verify that XMAKE_CONFIGDIR was set in the config stage
             env_arg = xmake_install.execute.call_args.kwargs.get('env')
