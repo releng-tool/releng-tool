@@ -135,7 +135,9 @@ jobs:
         echo "C:\Program Files\xmake\" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       if: matrix.os == 'windows-latest'
     - run: Get-ChildItem -Path "C:\ProgramData\chocolatey\bin" -Recurse
+      if: matrix.os == 'windows-latest'
     - run: Get-ChildItem -Path "C:\Program Files\xmake\" -Recurse
+      if: matrix.os == 'windows-latest'
     - name: Verify dependency (xmake)
       run: xmake --version
 
