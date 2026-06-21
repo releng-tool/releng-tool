@@ -54,9 +54,9 @@ def install(opts):
     # install to each destination
     for dest_dir in opts.dest_dirs:
         env['DESTDIR'] = dest_dir
-        waf_args_tmp = waf_args
+        waf_args_tmp = list(waf_args)
         waf_args_tmp.extend(['--destdir', dest_dir])
-        if not WAF.execute(waf_args, env=env):
+        if not WAF.execute(waf_args_tmp, env=env):
             err('failed to install waf project: {}', opts.name)
             return False
 
