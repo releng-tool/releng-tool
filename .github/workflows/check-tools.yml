@@ -119,6 +119,16 @@ jobs:
     - name: Install dependencies (waf; ubuntu)
       run: ./.github/workflows/setup-waf.sh
       if: matrix.os == 'ubuntu-latest'
+    # dependencies (xmake)
+    - name: Install dependencies (xmake; macos)
+      run: brew install xmake
+      if: matrix.os == 'macos-latest'
+    - name: Install dependencies (xmake; ubuntu)
+      run: apt-get install xmake --yes
+      if: matrix.os == 'ubuntu-latest'
+    - name: Install dependencies (xmake; windows)
+      run: choco install xmake
+      if: matrix.os == 'windows-latest'
 
     - name: Tools test
       run: tox -e tools
