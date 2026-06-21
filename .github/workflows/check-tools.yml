@@ -46,6 +46,9 @@ jobs:
             - { os:   macos-latest, python: "3.12", cache: ~/Library/Caches/pip }
             - { os: windows-latest, python: "3.12", cache: ~\AppData\Local\pip\Cache }
 
+    env:
+      XMAKE_ROOT: "y"
+
     steps:
     - name: Checkout
       uses: actions/checkout@v6
