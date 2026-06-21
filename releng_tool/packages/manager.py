@@ -192,6 +192,8 @@ class RelengPackageManager:
             (Rpk.VSDEVCMD, PkgKeyType.BOOL_OR_STR),
             (Rpk.VSDEVCMD_PRODUCTS, PkgKeyType.STR),
             (Rpk.WAF_NOINSTALL, PkgKeyType.BOOL),
+            (Rpk.XMAKE_BUILD_TYPE, PkgKeyType.STR),
+            (Rpk.XMAKE_NOINSTALL, PkgKeyType.BOOL),
         ]
         for k, v in regval:
             self._register_conf(k, v)
@@ -908,6 +910,7 @@ explicit url vcs-type with files is deprecated: {}
                     PackageType.CMAKE,
                     PackageType.MESON,
                     PackageType.WAF,
+                    PackageType.XMAKE,
                 ]:
             pkg_build_output_dir = os.path.join(
                 pkg_build_output_dir, 'releng-output')
@@ -927,6 +930,7 @@ explicit url vcs-type with files is deprecated: {}
                     PackageType.CMAKE,
                     PackageType.MESON,
                     PackageType.WAF,
+                    PackageType.XMAKE,
                 ]:
             pkg_build_tree = pkg_build_output_dir
         elif pkg_build_subdir:
@@ -1425,6 +1429,22 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
         # waf noinstall flag
         if pkg.waf_noinstall is None:
             pkg.waf_noinstall = self._fetch(Rpk.WAF_NOINSTALL)
+
+        # ######################################################################
+        # (package type - xmake)
+        # ######################################################################
+
+        # xmake build type
+        if pkg.xmake_build_type is None:
+            pkg.xmake_build_type = self._fetch(Rpk.XMAKE_BUILD_TYPE)
+
+        if not pkg.xmake_build_type:
+            if opts.default_xmake_build_type is not None:
+                pkg.xmake_build_type = opts.default_xmake_build_type
+
+        # xmake noinstall flag
+        if pkg.xmake_noinstall is None:
+            pkg.xmake_noinstall = self._fetch(Rpk.XMAKE_NOINSTALL)
 
         # ######################################################################
         # (post checks)

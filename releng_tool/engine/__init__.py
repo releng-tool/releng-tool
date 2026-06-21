@@ -1171,6 +1171,13 @@ following key entry and re-try again.
                 return False
             self.opts.default_meson_build_type = default_meson_build_type
 
+        if ConfKey.DEF_XMAKE_BUILD_TYPE in settings:
+            default_xmake_build_type = settings[ConfKey.DEF_XMAKE_BUILD_TYPE]
+            if not isinstance(default_xmake_build_type, str):
+                notify_invalid_type(ConfKey.DEF_XMAKE_BUILD_TYPE, 'str')
+                return False
+            self.opts.default_xmake_build_type = default_xmake_build_type
+
         if ConfKey.ENVIRONMENT in settings:
             env = interpret_dict(settings[ConfKey.ENVIRONMENT], str)
             if env is None:

@@ -1,0 +1,2 @@
+LIB_TYPE = 'xmake'
+LIB_VCS_TYPE = 'local'

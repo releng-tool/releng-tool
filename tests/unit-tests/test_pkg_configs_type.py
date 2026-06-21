@@ -47,3 +47,7 @@ class TestPkgConfigsPkgType(TestPkgConfigsBase):
     def test_pkgconfig_type_valid_script(self):
         pkg = self.LOAD('pkg-type-valid-script').package
         self.assertEqual(pkg.type, PackageType.SCRIPT)
+
+    def test_pkgconfig_type_valid_xmake(self):
+        pkg = self.LOAD('pkg-type-valid-xmake').package
+        self.assertEqual(pkg.type, PackageType.XMAKE)

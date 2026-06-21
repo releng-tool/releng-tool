@@ -18,6 +18,7 @@ RUN pacman -Syu \
     rust \
     scons \
     waf \
+    xmake \
     --noconfirm
 
 # setup a default user

@@ -13,6 +13,7 @@ from releng_tool.engine.python.build import build as build_python
 from releng_tool.engine.scons.build import build as build_scons
 from releng_tool.engine.script.build import build as build_script
 from releng_tool.engine.waf.build import build as build_waf
+from releng_tool.engine.xmake.build import build as build_xmake
 from releng_tool.packages import clamp_jobs
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
@@ -99,6 +100,8 @@ def stage(engine, pkg, script_env):
         builder = build_script
     elif pkg.type == PackageType.WAF:
         builder = build_waf
+    elif pkg.type == PackageType.XMAKE:
+        builder = build_xmake
 
     if not builder:
         err('build type is not implemented: {}', pkg.type)

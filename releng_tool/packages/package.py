@@ -103,6 +103,9 @@ class RelengPackage:
         scons_noinstall: flag to disable the install stage for a scons project
         (package type - waf)
         waf_noinstall: flag to disable the install stage for a waf project
+        (package type - xmake)
+        xmake_build_type: xmake build type to use
+        xmake_noinstall: flag to disable the install stage for a xmake project
     """
     def __init__(self, name, version):
         self.name = name
@@ -199,6 +202,9 @@ class RelengPackage:
         self.scons_noinstall = None
         # (package type - waf)
         self.waf_noinstall = None
+        # (package type - xmake)
+        self.xmake_build_type = None
+        self.xmake_noinstall = None
 
     def populate_api(self, base=None):
         """

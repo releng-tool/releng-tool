@@ -13,6 +13,7 @@ from releng_tool.engine.python.install import install as install_python
 from releng_tool.engine.scons.install import install as install_scons
 from releng_tool.engine.script.install import install as install_script
 from releng_tool.engine.waf.install import install as install_waf
+from releng_tool.engine.xmake.install import install as install_xmake
 from releng_tool.util import nullish_coalescing as NC
 from releng_tool.util.api import replicate_package_attribs
 from releng_tool.util.io_wd import wd
@@ -52,6 +53,8 @@ def stage(engine, pkg, script_env):
         skip_install = pkg.scons_noinstall
     elif pkg.type == PackageType.WAF:
         skip_install = pkg.waf_noinstall
+    elif pkg.type == PackageType.XMAKE:
+        skip_install = pkg.xmake_noinstall
 
     if skip_install:
         verbose('skipping installation stage for {}', pkg.name)
@@ -126,6 +129,8 @@ def stage(engine, pkg, script_env):
         installer = install_script
     elif pkg.type == PackageType.WAF:
         installer = install_waf
+    elif pkg.type == PackageType.XMAKE:
+        installer = install_xmake
 
     if not installer:
         err('installer type is not implemented: {}', pkg.type)

@@ -69,6 +69,7 @@ class RelengEngineOptions:
         default_internal_pkgs: whether or not packages are implicitly internal
         default_meson_build_type: default build type for meson packages
         default_pkg_dir: default package directory
+        default_xmake_build_type: default build type for xmake packages
         devmode: whether or not development mode is enabled
         dl_dir: directory container for download (archives)
         environment: environment options to apply
@@ -125,6 +126,7 @@ class RelengEngineOptions:
         self.default_internal_pkgs = False
         self.default_meson_build_type = None
         self.default_pkg_dir = None
+        self.default_xmake_build_type = None
         self.devmode = None
         self.dl_dir = None
         self.environment = {}

@@ -18,6 +18,7 @@ class ConfKey(StrCcEnum):
         DEF_CMAKE_BUILD_TYPE: configure a default build type for cmake packages
         DEF_DEV_IGNORE_CACHE: development mode no-cache default state
         DEF_MESON_BUILD_TYPE: configure a default build type for meson packages
+        DEF_XMAKE_BUILD_TYPE: configure a default build type for xmake packages
         ENVIRONMENT: project environment options to apply
         EXTENSIONS: project releng-extension list
         EXTEN_PKGS: project external packages list
@@ -41,6 +42,7 @@ class ConfKey(StrCcEnum):
     DEF_CMAKE_BUILD_TYPE = 'default_cmake_build_type'
     DEF_DEV_IGNORE_CACHE = 'default_devmode_ignore_cache'
     DEF_MESON_BUILD_TYPE = 'default_meson_build_type'
+    DEF_XMAKE_BUILD_TYPE = 'default_xmake_build_type'
     ENVIRONMENT = 'environment'
     EXTENSIONS = 'extensions'
     EXTEN_PKGS = 'external_packages'
@@ -185,6 +187,9 @@ class Rpk(StrCcEnum):
         SCONS_NOINSTALL: skip scons install stage
         # (package type - waf)
         WAF_NOINSTALL: skip waf install stage
+        # (package type - xmake)
+        XMAKE_BUILD_TYPE: the xmake build type to use
+        XMAKE_NOINSTALL: skip xmake install stage
     """
     BUILD_SUBDIR = 'BUILD_SUBDIR'
     DEPS = 'DEPENDENCIES'  # deprecated
@@ -263,6 +268,9 @@ class Rpk(StrCcEnum):
     SCONS_NOINSTALL = 'SCONS_NOINSTALL'
     # (package type - waf)
     WAF_NOINSTALL = 'WAF_NOINSTALL'
+    # (package type - xmake)
+    XMAKE_BUILD_TYPE = 'XMAKE_BUILD_TYPE'
+    XMAKE_NOINSTALL = 'XMAKE_NOINSTALL'
 
 
 class GlobalAction(StrCcEnum):
@@ -378,6 +386,7 @@ class PackageType(StrCcEnum):
         SCONS: scons-based package
         SCRIPT: releng script-based package
         WAF: waf-based package
+        XMAKE: xmake-based package
     """
     AUTOTOOLS = 'autotools'
     CARGO = 'cargo'
@@ -388,6 +397,7 @@ class PackageType(StrCcEnum):
     SCONS = 'scons'
     SCRIPT = 'script'
     WAF = 'waf'
+    XMAKE = 'xmake'
 
 
 class PackageInstallType(StrCcEnum):

@@ -344,6 +344,16 @@ class TestPrerequisites(RelengToolTestCase):
         self.pkg.type = PackageType.WAF
         self._assertPackagePrerequisite(expected=False)
 
+    @patch(f'{PFX}.XMAKE.exists', new=lambda: True)
+    def test_prerequisites_uc_xmake_exists(self):
+        self.pkg.type = PackageType.XMAKE
+        self._assertPackagePrerequisite(expected=True)
+
+    @patch(f'{PFX}.XMAKE.exists', new=lambda: False)
+    def test_prerequisites_uc_xmake_missing(self):
+        self.pkg.type = PackageType.XMAKE
+        self._assertPackagePrerequisite(expected=False)
+
     def _assertPackagePrerequisite(self, *, expected: bool):
         prerequisites = RelengPrerequisites([self.pkg], [])
         check = prerequisites.check()

@@ -1,0 +1,5 @@
+TEST_NEEDS = [
+    'lib',
+]
+TEST_TYPE = 'xmake'
+TEST_VCS_TYPE = 'local'
