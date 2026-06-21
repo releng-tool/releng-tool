@@ -130,7 +130,6 @@ jobs:
       run: apt-get install xmake --yes
       if: matrix.os == 'ubuntu-latest'
     - name: Install dependencies (xmake; windows)
-      run: choco install xmake
       run: |
         choco install xmake
         echo "C:\Program Files\xmake\" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
