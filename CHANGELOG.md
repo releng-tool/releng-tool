@@ -4,13 +4,15 @@
 - Consistent path formats for `releng_ls` output
 - Directory now optional for `releng_ls` which can use working directory
 - Ensure an appropriate working directory is set when using a patch-script
+- Fix Meson/Waf installs when using `staging_and_target`
 - Fix `releng_execute_rv` not expanding by default
 - Include pathlib's `Path`, `os` and `sys` into script contexts
 - Introduce `releng_step` helper script function
 - Introduce support for Lore sites
+- Introduce support for Xmake-based packages
 - Support `newline` option in `releng_execute_rv`
 - Support for `RELENG_GLOBAL_OUTPUT_CONTAINER_NO_IMAGES`
-- Support network isolation for packages non-fetch stages
+- Support network isolation for package's non-fetch stages
 
 ## 3.0 (2026-04-12)
 
