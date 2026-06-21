@@ -129,6 +129,8 @@ jobs:
     - name: Install dependencies (xmake; windows)
       run: choco install xmake
       if: matrix.os == 'windows-latest'
+    - name: Verify dependency (xmake)
+      run: xmake --version
 
     - name: Tools test
       run: tox -e tools
