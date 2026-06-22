@@ -111,7 +111,7 @@ def path_copy(src: str | bytes | os.PathLike, dst: str | bytes | os.PathLike,
                     dst_entry = dst_entry / src_entry.name
 
                 if src_entry.is_symlink():
-                    target = src_entry.readlink()
+                    target: Path = src_entry.readlink()
                     if dst_entry.is_symlink() or dst_entry.is_file():
                         path_remove(dst_entry, quiet=quiet)
 

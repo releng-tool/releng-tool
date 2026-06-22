@@ -83,6 +83,7 @@ class TestEnginePkgXmake(RelengToolTestCase):
             xmake_exists, xmake_cfg, xmake_build, xmake_install):
         with prepare_testenv(template='minimal') as engine:
             setpkgcfg(engine, 'minimal', Rpk.TYPE, 'xmake')
+            engine.opts.quirks.append('releng.xmake.disable_deps_init')
 
             rv = engine.run()
             self.assertTrue(rv)
@@ -149,6 +150,7 @@ class TestEnginePkgXmake(RelengToolTestCase):
         with prepare_testenv(template='minimal') as engine:
             setpkgcfg(engine, 'minimal', Rpk.TYPE, 'xmake')
             setpkgcfg(engine, 'minimal', Rpk.XMAKE_NOINSTALL, value=True)
+            engine.opts.quirks.append('releng.xmake.disable_deps_init')
 
             rv = engine.run()
             self.assertTrue(rv)
