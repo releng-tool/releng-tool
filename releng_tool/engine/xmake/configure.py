@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from releng_tool.defs import PackageInstallType
+from releng_tool.engine.xmake import detect_default_xmake_arch
 from releng_tool.tool.xmake import XMAKE
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
@@ -61,6 +62,11 @@ def configure(opts):
         '--includedirs': os.pathsep.join(include_locs),
         '--linkdirs': os.pathsep.join(library_locs),
     }
+
+    if 'releng.xmake.disable_arch_detection' not in opts._quirks:
+        detected_arch = detect_default_xmake_arch()
+        if detected_arch:
+            xmake_defs['--arch'] = detected_arch
 
     if opts._xmake_build_type:
         xmake_defs['--mode'] = opts._xmake_build_type

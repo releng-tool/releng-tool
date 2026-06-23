@@ -1,10 +1,2 @@
 LIB_TYPE = 'xmake'
 LIB_VCS_TYPE = 'local'
-
-if sys.platform == 'win32':
-    LIB_CONF_OPTS = [
-        '-p',
-        'windows',
-        '-a',
-        'x64',
-    ]
