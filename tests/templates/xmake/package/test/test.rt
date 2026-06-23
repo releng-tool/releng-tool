@@ -6,5 +6,8 @@ TEST_VCS_TYPE = 'local'
 
 if sys.platform == 'win32':
     TEST_CONF_OPTS = [
-        '--toolchain=msvc',
+        '-p',
+        'windows',
+        '-a',
+        'x64',
     ]

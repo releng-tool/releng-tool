@@ -3,5 +3,8 @@ LIB_VCS_TYPE = 'local'
 
 if sys.platform == 'win32':
     LIB_CONF_OPTS = [
-        '--toolchain=msvc',
+        '-p',
+        'windows',
+        '-a',
+        'x64',
     ]
