@@ -3,3 +3,8 @@ TEST_NEEDS = [
 ]
 TEST_TYPE = 'xmake'
 TEST_VCS_TYPE = 'local'
+
+if sys.platform == 'win32':
+    TEST_CONF_OPTS = [
+        '--toolchain=msvc',
+    ]
