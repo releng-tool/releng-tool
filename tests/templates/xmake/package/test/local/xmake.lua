@@ -1,4 +1,4 @@
-add_rules("mode.debug", "mode.release")
+set_allowedmodes("releng_tool_test_mode")
 
 target("releng-tool-test")
     set_kind("binary")

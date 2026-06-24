@@ -3,3 +3,4 @@ TEST_NEEDS = [
 ]
 TEST_TYPE = 'xmake'
 TEST_VCS_TYPE = 'local'
+TEST_XMAKE_BUILD_TYPE = 'releng_tool_test_mode'
