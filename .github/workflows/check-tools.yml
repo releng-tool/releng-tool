@@ -145,6 +145,8 @@ jobs:
         echo "C:\Program Files\xmake\" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       if: matrix.os == 'windows-latest'
     - name: Verify dependency (xmake)
+      env:
+        XMAKE_ROOT: y
       run: xmake --version
 
     - name: Tools test
