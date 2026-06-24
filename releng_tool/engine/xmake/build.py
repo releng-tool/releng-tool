@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from pathlib import Path
 from releng_tool.tool.xmake import XMAKE
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
+from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.string import expand
 
@@ -55,6 +58,27 @@ def build(opts):
     }
     if opts.build_env:
         env.update(expand(opts.build_env))
+
+    # pre-build target dependency folder paths; we observe (at least, on OS X)
+    # that xmake can fail to build complaining objects cannot write due to
+    # dependency paths not existing; workaround this for now by helping xmake
+    # ensure they are built
+    if 'releng.xmake.disable_deps_init' not in opts._quirks:
+        ideps_script = Path(__file__).parent / 'init-deps.lua'
+
+        rv, detected_targets = XMAKE.execute_rv('lua', ideps_script, env=env)
+        if rv == 0:
+            deps_dir = f'{opts.build_output_dir}/.deps'
+
+            for target in detected_targets.splitlines():
+                target_dir = f'{deps_dir}/{target}'
+                debug(f'pre-building target dependency folder: {target_dir}')
+                mkdir(target_dir)
+
+            if not detected_targets:
+                debug('no xmake targets detected')
+        else:
+            debug('failed to detect xmake targets')
 
     if not XMAKE.execute(xmake_args, env=env):
         err('failed to build xmake project: {}', opts.name)
