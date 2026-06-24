@@ -26,7 +26,7 @@ class TestToolXmake(TestSiteToolBase):
         #     studios is not there, even if visual studio environment variables
         #     have already be loaded in the shell
         if sys.platform == 'win32' and 'MSYSTEM' in os.environ:
-            raise unittest.SkipTest('xmake tool test skipped for non-Linux')
+            raise unittest.SkipTest('xmake tool test skipped in MinGW')
 
     def prepare_global_action(self):
         return None  # use releng-tool default
