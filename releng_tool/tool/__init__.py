@@ -162,7 +162,7 @@ class RelengTool:
         exist_args = [self.tool, *self.exists_args]
         output = []
         found = execute(
-            exist_args, capture=output, critical=False, env=self.include)
+            exist_args, capture=output, critical=False, env_update=self.include)
         output_str = ' '.join(x for x in output if x.strip())
         if output_str:
             debug(output_str)
