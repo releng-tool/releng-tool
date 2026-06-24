@@ -472,6 +472,7 @@ releng.ignore_failed_extensions        Ignore if extensions fail to load
 releng.log.execute_args                Enable execute argument line logging
 releng.log.execute_env                 Enable execute environment debug logging
 releng.stats.no_pdf                    Never generate PDF statistics output
+releng.xmake.disable_arch_detection    Disable architecture detection for Xmake
 """
 
 
