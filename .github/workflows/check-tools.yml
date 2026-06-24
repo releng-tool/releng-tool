@@ -80,6 +80,8 @@ jobs:
     - name: Install dependencies (cmake; ubuntu)
       run: apt-get install cmake --yes
       if: matrix.os == 'ubuntu-latest'
+    - name: Verify dependency (cmake)
+      run: cmake --version
     # dependencies (cvs)
     - name: Install dependencies (cvs; macos)
       run: brew install cvs
@@ -90,6 +92,8 @@ jobs:
     - name: Install dependencies (cvs; windows)
       run: choco install cvs --version=1.11.22
       if: matrix.os == 'windows-latest'
+    - name: Verify dependency (cvs)
+      run: cvs --version
     # dependencies (mercurial)
     - name: Install dependencies (mercurial; macos)
       run: brew install mercurial
@@ -102,6 +106,8 @@ jobs:
         choco install hg
         echo "C:\Program Files\Mercurial\" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       if: matrix.os == 'windows-latest'
+    - name: Verify dependency (mercurial)
+      run: hg --version
     # dependencies (ninja; for Meson)
     - name: Install dependencies (ninja; macos)
       run: brew install ninja
@@ -112,12 +118,19 @@ jobs:
     - name: Install dependencies (ninja; windows)
       run: choco install ninja
       if: matrix.os == 'windows-latest'
+    - name: Verify dependency (ninja)
+      run: ninja --version
     # dependencies (rust; for Cargo)
     - name: Install dependencies (rust)
       uses: actions-rust-lang/setup-rust-toolchain@v1
+    - name: Verify dependency (cargo)
+      run: cargo --version
     # dependencies (waf)
     - name: Install dependencies (waf; ubuntu)
       run: ./.github/workflows/setup-waf.sh
+      if: matrix.os == 'ubuntu-latest'
+    - name: Verify dependency (waf)
+      run: waf --version
       if: matrix.os == 'ubuntu-latest'
     # dependencies (xmake)
     - name: Install dependencies (xmake; macos)
@@ -131,6 +144,10 @@ jobs:
         choco install xmake
         echo "C:\Program Files\xmake\" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       if: matrix.os == 'windows-latest'
+    - name: Verify dependency (xmake)
+      env:
+        XMAKE_ROOT: y
+      run: xmake --version
 
     - name: Tools test
       run: tox -e tools
