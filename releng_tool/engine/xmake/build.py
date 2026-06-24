@@ -51,6 +51,7 @@ def build(opts):
     # default environment
     env = {
         'XMAKE_CONFIGDIR': opts.build_output_dir,
+        'XMAKE_GLOBALDIR': f'{opts.build_base_dir}/.releng-tool-xmake-global',
     }
     if opts.build_env:
         env.update(expand(opts.build_env))
