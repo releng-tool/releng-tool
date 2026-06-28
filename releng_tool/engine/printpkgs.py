@@ -18,7 +18,8 @@ def printpkgs(pkgs):
     """
 
     for pkg in pkgs:
-        log(pkg.name)
+        suffix = f' ({pkg.revision})' if pkg.revision else ''
+        log(f'{pkg.name}{suffix}')
 
         api_data = API_STATE['printpkgs'][pkg.name].fetch()
         pkg.populate_api(base=api_data)
