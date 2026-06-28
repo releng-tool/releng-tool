@@ -59,6 +59,11 @@ Push up the release tag:
 git push origin <tag>
 ```
 
+Perform the release steps outlined in:
+
+> releng-tool-docs – MAINTAINERS \
+> https://github.com/releng-tool/releng-tool-docs/blob/main/MAINTAINERS.md
+
 Create a new release entry on GitHub:
 
 ```
