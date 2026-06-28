@@ -81,7 +81,7 @@ For a multi-platform coverage data set, run the following in order:
 
 ```
 (from a Linux machine with a Window volume mount, invoke)
-./scripts/task-coverage-container.sh
+./scripts/task-coverage-container.sh [--cifs]
 
 (then from a Windows machine, invoke)
 ./scripts/task-coverage.sh --no-clean
