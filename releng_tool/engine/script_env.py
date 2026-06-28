@@ -72,6 +72,7 @@ def prepare_script_environment(env, opts):
     env['RELENG_REBUILD'] = None
     env['RELENG_RECONFIGURE'] = None
     env['RELENG_REINSTALL'] = None
+    env['RELENG_RELEASE'] = None
     env['RELENG_TARGET_PKG'] = None
     env['RELENG_VERBOSE'] = None
 
@@ -169,6 +170,8 @@ def prepare_script_environment(env, opts):
             env_['RELENG_LOCALSRCS'] = True
         if opts.profiles:
             env_['RELENG_PROFILES'] = opts.profiles
+        if opts.release:
+            env_['RELENG_RELEASE'] = True
         if opts.verbose:
             env_['RELENG_VERBOSE'] = True
 

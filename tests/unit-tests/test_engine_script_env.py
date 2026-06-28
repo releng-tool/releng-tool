@@ -338,6 +338,17 @@ class TestEngineScriptEnv(RelengToolTestCase):
         prepare_script_environment(env, self.opts)
         self.assertTrue(env['RELENG_REINSTALL'])
 
+    def test_engine_scriptenv_env_releng_release(self):
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertIn('RELENG_RELEASE', env)
+        self.assertFalse(env['RELENG_RELEASE'])
+
+        self.opts.release = True
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertTrue(env['RELENG_RELEASE'])
+
     def test_engine_scriptenv_env_releng_target_pkg(self):
         env = {}
         prepare_script_environment(env, self.opts)

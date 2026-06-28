@@ -24,6 +24,7 @@ class TestEngineRunEnvironCheck(RelengToolTestCase):
             'RELENG_REBUILD',
             'RELENG_RECONFIGURE',
             'RELENG_REINSTALL',
+            'RELENG_RELEASE',
             'RELENG_TARGET_PKG',
             'RELENG_VERBOSE',
         ]

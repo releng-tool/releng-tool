@@ -138,6 +138,9 @@ complete --command releng-tool --long-option='out-dir' \
 complete --command releng-tool --long-option='profile' \
     --no-files \
     --description 'run with a profile'
+complete --command releng-tool --long-option='release' \
+    --no-files \
+    --description 'run in a release mode'
 complete --command releng-tool --long-option='root-dir' \
     --require-parameter \
     --description 'directory of the project to process'

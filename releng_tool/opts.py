@@ -97,6 +97,7 @@ class RelengEngineOptions:
         prerequisites: list of required host tools (if any)
         profiles: the active profiles for this run
         quirks: advanced configuration quirks for the running instance
+        release: flag to hint that release checks are desired for a project
         revisions: dictionary to configure revision values
         root_dir: directory container for all (configuration, output, etc.)
         sbom_format: format(s) to use for sbom generation
@@ -154,6 +155,7 @@ class RelengEngineOptions:
         self.prerequisites = []
         self.profiles = []
         self.quirks = []
+        self.release = False
         self.revisions = None
         self.root_dir = None
         self.sbom_format = []
@@ -212,6 +214,7 @@ class RelengEngineOptions:
         self.jobs = self.jobsconf = (args.jobs or 0)
         self.no_color_out = args.nocolorout
         self.only_mirror = args.only_mirror
+        self.release = args.release
         self.verbose = args.verbose
 
         if args.development:

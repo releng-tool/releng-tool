@@ -95,6 +95,22 @@ class RelengToolOutsidePathError(RelengToolException):
     """
 
 
+class RelengToolReleaseCheckError(RelengToolException):
+    """
+    exception thrown when a release check fails
+    """
+    def __init__(self, issues):
+        status = '\n  - '.join(issues)
+        super().__init__(f'''\
+release check failure
+
+This run was invoked with a release mode (--release) and has detected a
+runtime state using configurations not expected for a release.
+
+  - {status}
+'''.strip())
+
+
 class RelengToolUnknownAction(RelengToolException):
     """
     raised when an unknown action or package is provided

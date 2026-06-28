@@ -558,6 +558,14 @@ class TestEngineRunArgs(RelengToolTestCase):
             with prepare_testenv(config=config) as engine:
                 self.assertEqual(engine.opts.out_dir, out_dir)
 
+    def test_engine_run_args_release(self):
+        config = {
+            'release': True,
+        }
+
+        with prepare_testenv(config=config) as engine:
+            self.assertTrue(engine.opts.release)
+
     def test_engine_run_args_sbom_format(self):
         config = {
             'sbom_format': 'html,json',

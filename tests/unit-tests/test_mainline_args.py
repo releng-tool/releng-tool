@@ -348,6 +348,14 @@ class TestMainlineArgs(RelengToolTestCase):
             ])
             self.assertEqual(rv, 1)
 
+    def test_mainline_args_release(self):
+        with self._setup() as engine:
+            main([
+                '--release',
+            ])
+            opts = engine.call_args.args[0]
+            self.assertTrue(opts.release)
+
     def test_mainline_args_root_dir_missing(self):
         with self._setup(), self.assertRaises(SystemExit):
             main([

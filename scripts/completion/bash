@@ -131,6 +131,7 @@ _releng_tool_module()
             '--only-mirror'
             '--out-dir'
             '--profile'
+            '--release'
             '--root-dir'
             '--sbom-format'
             '--success-exit-code'

@@ -63,6 +63,7 @@ def main(launch_args: list[str] | None = None):
         parser.add_argument('--out-dir')
         parser.add_argument('--profile', '-P', action='append')
         parser.add_argument('--relaxed-args', action='store_true')
+        parser.add_argument('--release', action='store_true')
         parser.add_argument('--root-dir', '-R')
         parser.add_argument('--sbom-format', type=type_sbom_format)
         parser.add_argument('--success-exit-code', default=0,
@@ -430,6 +431,7 @@ def usage():
  --quiet                   Quiet output
  --quirk <value>           Inject in quirk into this run
  --relaxed-args            Permit the use of unknown arguments
+ --release                 Perform release checks for a project
  --root-dir <dir>, -R <dir>
                            Directory to process a releng project
                             (default: working directory)
@@ -469,6 +471,7 @@ releng.git.no_depth                    Disable depth-limits for Git calls
 releng.git.no_quick_fetch              Disable quick-fetching for Git calls
 releng.git.replicate_cache             Copy Git repositories into build outputs
 releng.ignore_failed_extensions        Ignore if extensions fail to load
+releng.ignore_release_check            Ignore any release check failures
 releng.log.execute_args                Enable execute argument line logging
 releng.log.execute_env                 Enable execute environment debug logging
 releng.stats.no_pdf                    Never generate PDF statistics output

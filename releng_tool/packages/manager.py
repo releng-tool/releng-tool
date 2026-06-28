@@ -1018,6 +1018,7 @@ explicit url vcs-type with files is deprecated: {}
         pkg.remote_config = pkg_remote_config
         pkg.remote_scripts = pkg_remote_scripts
         pkg.revision = pkg_revision
+        pkg.revision_forced = bool(pkg_forced_revision)
         pkg.site = pkg_site
         pkg.strip_count = pkg_strip_count
         pkg.type = pkg_type

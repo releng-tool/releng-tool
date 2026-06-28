@@ -22,6 +22,7 @@ from releng_tool.engine.init import initialize_sample
 from releng_tool.engine.license import LicenseManager
 from releng_tool.engine.printpkgs import printpkgs
 from releng_tool.engine.printvars import printvars
+from releng_tool.engine.release_check import release_mode_check
 from releng_tool.engine.sbom import SbomManager
 from releng_tool.engine.script_env import prepare_script_environment
 from releng_tool.engine.suggest import suggest
@@ -449,6 +450,9 @@ class RelengEngine:
             prerequisites = RelengPrerequisites(pkgs, opts.prerequisites)
             if not prerequisites.check(exclude=exclude_host_check):
                 return False
+
+        # verify any release mode checks (if applicable)
+        release_mode_check(self, pkgs)
 
         # track if this action is "pre-configuration", where a package
         # dependency chain can be ignored

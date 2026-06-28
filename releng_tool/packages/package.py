@@ -61,6 +61,7 @@ class RelengPackage:
         remote_config: whether to load any remote configuration
         remote_scripts: whether to process any remote scripts
         revision: revision to use to fetch from vcs (if applicable)
+        revision_forced: flag that the revision was forced
         site: site to acquire package assets
         strip_count: archive extraction strip count (if applicable)
         type: package type (script-based, cmake, etc.)
@@ -152,6 +153,7 @@ class RelengPackage:
         self.remote_config = None
         self.remote_scripts = None
         self.revision = None
+        self.revision_forced = False
         self.site = None
         self.strip_count = None
         self.type = None

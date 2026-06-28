@@ -10,5 +10,6 @@ assert not RELENG_MRPROPER
 assert not RELENG_REBUILD
 assert not RELENG_RECONFIGURE
 assert not RELENG_REINSTALL
+assert not RELENG_RELEASE
 assert not RELENG_TARGET_PKG
 assert not RELENG_VERBOSE

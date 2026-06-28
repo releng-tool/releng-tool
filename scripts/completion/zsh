@@ -38,6 +38,7 @@ function _releng_tool {
         '--only-mirror[only fetch external projects with configured mirror]' \
         '--out-dir[directory for output]: :_files' \
         '--profile[run with a profile]' \
+        '--release[run in a release mode]' \
         '--root-dir[directory of the project to process]: :_files' \
         '--sbom-format[format to generate sbom files]: ' \
         '--success-exit-code[exit code to use on success]: ' \
