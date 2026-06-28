@@ -1,4 +1,4 @@
-## Development
+## 3.1 (2026-06-28)
 
 - **(note)** Last version supporting the `.releng` extension
 - Consistent path formats for `releng_ls` output
