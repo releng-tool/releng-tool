@@ -67,8 +67,6 @@ def generate_text(sbom, cache):
                     f.write(' Licenses:\n')
                     for pkg_license in pkg['licenses']:
                         f.write(f'  {pkg_license}\n')
-                elif has_site:
-                    f.write('  No licenses.\n')
 
                 if pkg['hashes']:
                     has_pkg_info = True
@@ -79,8 +77,6 @@ def generate_text(sbom, cache):
                             pkg_hash['file'],
                             pkg_hash['hash'],
                         ))
-                elif has_site:
-                    f.write('  No hashes.\n')
 
                 if not has_pkg_info:
                     f.write('  (no details)\n')
