@@ -2,7 +2,9 @@
 # Copyright releng-tool
 
 from __future__ import annotations
+from releng_tool.util.log import debug
 from releng_tool.util.log import err
+import inspect
 import sys
 
 
@@ -42,4 +44,12 @@ def platform_exit(msg: str | None = None, code: int | None = None):
             code = 1
     elif code is None:
         code = 0
+
+    # try to debug-print the caller of this exit
+    stack = inspect.stack()
+    if len(stack) > 1:
+        caller_frame = stack[1]
+        lineno = caller_frame.lineno or 0
+        debug(f'exit called from: {caller_frame.filename}[{lineno}]')
+
     sys.exit(code)
