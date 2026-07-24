@@ -12,6 +12,7 @@ from releng_tool.defs import GlobalAction
 from releng_tool.defs import ListenerEvent
 from releng_tool.defs import PackageType
 from releng_tool.defs import PkgAction
+from releng_tool.defs import Rpk
 from releng_tool.defs import SbomFormatType
 from releng_tool.defs import UNSET_VALUES
 from releng_tool.defs import VcsType
@@ -146,6 +147,19 @@ class RelengEngine:
 
         if opts.profiles:
             debug('operating with profiles: {}', ', '.join(opts.profiles))
+
+        # if any force revision values are defined in the environment, allow
+        # their use automatically (when not in a release mode)
+        forced_revisions = {
+            key: val for key, val in os.environ.items()
+            if key.endswith(f'_{Rpk.FORCE_REVISION}')
+        }
+        if forced_revisions:
+            if not opts.release:
+                debug('adding forced revisions (env) into global context')
+                gbls.update(forced_revisions)
+            else:
+                warn('ignoring forced revision (env) due to release mode')
 
         # if any injected key-value entries are provided, attempt to add them
         # into the global context

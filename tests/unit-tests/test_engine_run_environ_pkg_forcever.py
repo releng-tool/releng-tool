@@ -30,7 +30,31 @@ class TestEngineRunEnvironPkgForceVersion(RelengToolTestCase):
         self.assertIn('MINIMAL_REVISION', os.environ)
         self.assertEqual(os.environ['MINIMAL_REVISION'], '1.2.3')
 
-    def test_engine_run_environ_pkg_force_version_override_devrev(self):
+    def test_engine_run_environ_pkg_force_version_override_devrev_env(self):
+        os.environ['MINIMAL_FORCE_REVISION'] = '6.7.5'
+
+        with prepare_testenv(template='minimal') as engine:
+            self._setup_project(engine)
+
+            # force enable development mode
+            Path(engine.opts.ff_devmode).touch()
+
+            engine.run()
+
+        self.assertIn('MINIMAL_REVISION', os.environ)
+        self.assertEqual(os.environ['MINIMAL_REVISION'], '6.7.5')
+
+    def test_engine_run_environ_pkg_force_version_override_stdrev_env(self):
+        os.environ['MINIMAL_FORCE_REVISION'] = '6.7.3'
+
+        with prepare_testenv(template='minimal') as engine:
+            self._setup_project(engine)
+            engine.run()
+
+        self.assertIn('MINIMAL_REVISION', os.environ)
+        self.assertEqual(os.environ['MINIMAL_REVISION'], '6.7.3')
+
+    def test_engine_run_environ_pkg_force_version_override_devrev_inject(self):
         cfg = {
             'injected_kv': {
                 'MINIMAL_FORCE_REVISION': '7.8.9',
@@ -48,7 +72,7 @@ class TestEngineRunEnvironPkgForceVersion(RelengToolTestCase):
         self.assertIn('MINIMAL_REVISION', os.environ)
         self.assertEqual(os.environ['MINIMAL_REVISION'], '7.8.9')
 
-    def test_engine_run_environ_pkg_force_version_override_stdrev(self):
+    def test_engine_run_environ_pkg_force_version_override_stdrev_inject(self):
         cfg = {
             'injected_kv': {
                 'MINIMAL_FORCE_REVISION': '7.8.9',
@@ -61,6 +85,20 @@ class TestEngineRunEnvironPkgForceVersion(RelengToolTestCase):
 
         self.assertIn('MINIMAL_REVISION', os.environ)
         self.assertEqual(os.environ['MINIMAL_REVISION'], '7.8.9')
+
+    def test_engine_run_environ_pkg_force_version_release_no_override(self):
+        os.environ['MINIMAL_FORCE_REVISION'] = '2.3.6'
+
+        cfg = {
+            'release': True,
+        }
+
+        with prepare_testenv(config=cfg, template='minimal') as engine:
+            self._setup_project(engine)
+            engine.run()
+
+        self.assertIn('MINIMAL_REVISION', os.environ)
+        self.assertEqual(os.environ['MINIMAL_REVISION'], '1.2.3')
 
     def _setup_project(self, engine):
         setpkgcfg(engine, 'minimal', Rpk.DEVMODE_REVISION, '4.5.6')
