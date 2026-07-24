@@ -117,7 +117,7 @@ def httpd_context(secure=None):
 
     Builds a context-enabled HTTP server instance on a random local port which
     can be used to verify HTTP/HTTPS request handling for various releng-tool
-    features. The build HTTP server is served by an internally managed thread.
+    features. The built HTTP server is served by an internally managed thread.
     By default, an HTTP is spawned with `secure` set to `False`. When building
     a "secure" HTTP server, key/cert. files are used from the assets folder.
 
