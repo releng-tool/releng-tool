@@ -2,7 +2,6 @@
 # Copyright releng-tool
 
 from datetime import datetime
-from inspect import signature
 from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.apimode import API_STATE
@@ -13,7 +12,6 @@ from releng_tool.defs import ListenerEvent
 from releng_tool.defs import PackageType
 from releng_tool.defs import PkgAction
 from releng_tool.defs import Rpk
-from releng_tool.defs import SbomFormatType
 from releng_tool.defs import UNSET_VALUES
 from releng_tool.defs import VcsType
 from releng_tool.engine.cargo import cargo_package_clean
@@ -26,6 +24,7 @@ from releng_tool.engine.printvars import printvars
 from releng_tool.engine.release_check import release_mode_check
 from releng_tool.engine.sbom import SbomManager
 from releng_tool.engine.script_env import prepare_script_environment
+from releng_tool.engine.settings import process_settings
 from releng_tool.engine.suggest import suggest
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
@@ -49,7 +48,6 @@ from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
-from releng_tool.util.interpret import interpret_dict
 from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.io import run_script
 from releng_tool.util.io_mkdir import mkdir
@@ -67,13 +65,9 @@ from releng_tool.util.log import success
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.log import warn_wrap
-from releng_tool.util.string import expand
-from releng_tool.util.version import str_to_version
 import json
 import os
-import ssl
 import sys
-import traceback
 
 
 class RelengEngine:
@@ -304,7 +298,7 @@ class RelengEngine:
             debug(' {}', pkg_name)
 
         # processing additional settings
-        if not self._process_settings(settings):
+        if not process_settings(opts, self.registry, settings):
             raise RelengToolInvalidConfigurationSettings
 
         # check if we should preload environment variables from vsdevcmd
@@ -1112,278 +1106,3 @@ The file used to track `--local-sources` options cannot be written to.
             return True
 
         return None
-
-    def _process_settings(self, settings):
-        """
-        process global settings provided from the user
-
-        For all known file flags, see if either respective flag options are set
-        and/or configure file flags for which have been explicitly set to be
-        enabled.
-
-        Args:
-            settings: user settings to pull global information from
-
-        Returns:
-            ``None`` if the file flags has been processed and the options have
-            been updated accordingly; ``True`` if the request to configure file
-            flags has completed with no errors; ``False`` if the request to
-            configure file flags failed to be performed
-        """
-
-        def notify_invalid_type(key, expected):
-            err('''\
-invalid configuration type provided
-
-The configuration file defines a key with an unexpected type. Correct the
-following key entry and re-try again.
-
-    Key: {}
-    Expected Type: {}''', key, expected)
-
-        def notify_invalid_value(key, value, expected):
-            err('''\
-invalid configuration value provided
-
-The configuration file defines a key with an unexpected value. Correct the
-following key entry and re-try again.
-
-    Key: {}
-    Unknown value: {}
-    Expected: {}''', key, value, expected)
-
-        if ConfKey.CACHE_EXT_TRANSFORM in settings:
-            cet = None
-            if callable(settings[ConfKey.CACHE_EXT_TRANSFORM]):
-                cet = settings[ConfKey.CACHE_EXT_TRANSFORM]
-            if cet is None:
-                notify_invalid_type(ConfKey.CACHE_EXT_TRANSFORM, 'callable')
-                return False
-            self.opts.cache_ext_transform = cet
-
-        if ConfKey.DEFINTERN in settings:
-            is_default_internal = settings[ConfKey.DEFINTERN]
-            if not isinstance(is_default_internal, bool):
-                notify_invalid_type(ConfKey.DEFINTERN, 'bool')
-                return False
-            self.opts.default_internal_pkgs = is_default_internal
-
-        if ConfKey.DEF_CMAKE_BUILD_TYPE in settings:
-            default_cmake_build_type = settings[ConfKey.DEF_CMAKE_BUILD_TYPE]
-            if not isinstance(default_cmake_build_type, str):
-                notify_invalid_type(ConfKey.DEF_CMAKE_BUILD_TYPE, 'str')
-                return False
-            self.opts.default_cmake_build_type = default_cmake_build_type
-
-        if ConfKey.DEF_DEV_IGNORE_CACHE in settings:
-            default_dev_ignore_cache = settings[ConfKey.DEF_DEV_IGNORE_CACHE]
-            if not isinstance(default_dev_ignore_cache, bool):
-                notify_invalid_type(ConfKey.DEF_DEV_IGNORE_CACHE, 'bool')
-                return False
-            self.opts.default_dev_ignore_cache = default_dev_ignore_cache
-
-        if ConfKey.DEF_MESON_BUILD_TYPE in settings:
-            default_meson_build_type = settings[ConfKey.DEF_MESON_BUILD_TYPE]
-            if not isinstance(default_meson_build_type, str):
-                notify_invalid_type(ConfKey.DEF_MESON_BUILD_TYPE, 'str')
-                return False
-            self.opts.default_meson_build_type = default_meson_build_type
-
-        if ConfKey.DEF_XMAKE_BUILD_TYPE in settings:
-            default_xmake_build_type = settings[ConfKey.DEF_XMAKE_BUILD_TYPE]
-            if not isinstance(default_xmake_build_type, str):
-                notify_invalid_type(ConfKey.DEF_XMAKE_BUILD_TYPE, 'str')
-                return False
-            self.opts.default_xmake_build_type = default_xmake_build_type
-
-        if ConfKey.ENVIRONMENT in settings:
-            env = interpret_dict(settings[ConfKey.ENVIRONMENT], str)
-            if env is None:
-                notify_invalid_type(ConfKey.ENVIRONMENT, 'dict(str,str)')
-                return False
-            self.opts.environment.update(expand(env))
-
-        if ConfKey.EXTRA_LEXCEPTS in settings:
-            d = interpret_dict(settings[ConfKey.EXTRA_LEXCEPTS], str)
-            if d is None:
-                notify_invalid_type(ConfKey.EXTRA_LEXCEPTS, 'dict(str,str)')
-                return False
-
-            for key, val in d.items():
-                self.opts.spdx['exceptions'][key] = {
-                    'name': val,
-                    'deprecated': False,
-                }
-
-        if ConfKey.EXTRA_LICENSES in settings:
-            d = interpret_dict(settings[ConfKey.EXTRA_LICENSES], str)
-            if d is None:
-                notify_invalid_type(ConfKey.EXTRA_LICENSES, 'dict(str,str)')
-                return False
-
-            for key, val in d.items():
-                self.opts.spdx['licenses'][key] = {
-                    'name': val,
-                    'deprecated': False,
-                }
-
-        if ConfKey.LICENSE_HEADER in settings:
-            license_header = settings[ConfKey.LICENSE_HEADER]
-            if not isinstance(license_header, str):
-                notify_invalid_type(ConfKey.LICENSE_HEADER, 'str')
-                return False
-            self.opts.license_header = license_header
-
-        if not self.opts.lint_max_version and \
-                ConfKey.LINT_MAX_VERSION in settings:
-            raw_max_version = settings[ConfKey.LINT_MAX_VERSION]
-            if not isinstance(raw_max_version, str):
-                notify_invalid_type(ConfKey.LINT_MAX_VERSION, 'version-str')
-                return False
-            try:
-                self.opts.lint_max_version = str_to_version(raw_max_version)
-            except ValueError:
-                notify_invalid_type(ConfKey.LINT_MAX_VERSION, 'version-str')
-                return False
-
-        if ConfKey.NETWORK_ISOLATION in settings:
-            is_network_isolation = settings[ConfKey.NETWORK_ISOLATION]
-            if not isinstance(is_network_isolation, bool):
-                notify_invalid_type(ConfKey.NETWORK_ISOLATION, 'bool')
-                return False
-            self.opts.network_isolation = is_network_isolation
-
-        if ConfKey.OVERRIDE_TOOLS in settings:
-            v = interpret_dict(settings[ConfKey.OVERRIDE_TOOLS], str)
-            if v is None:
-                notify_invalid_type(ConfKey.OVERRIDE_TOOLS, 'dict(str,str)')
-                return False
-            self.opts.extract_override = v
-
-        if ConfKey.PREREQUISITES in settings:
-            prerequisites = interpret_seq(settings[ConfKey.PREREQUISITES], str)
-            if prerequisites is None:
-                notify_invalid_type(ConfKey.PREREQUISITES, 'str or list(str)')
-                return False
-            self.opts.prerequisites.extend(prerequisites)
-
-        if ConfKey.QUIRKS in settings:
-            quirks = interpret_seq(settings[ConfKey.QUIRKS], str)
-            if quirks is None:
-                notify_invalid_type(ConfKey.QUIRKS, 'str or list(str)')
-                return False
-            self.opts.quirks.extend(quirks)
-            for quirk in quirks:
-                verbose('configuration quirk applied: ' + quirk)
-
-        if ConfKey.REVISIONS in settings:
-            revz = interpret_dict(settings[ConfKey.REVISIONS], str)
-            if revz is None:
-                notify_invalid_type(ConfKey.REVISIONS, 'dict(str,str)')
-                return False
-            self.opts.revisions = revz
-
-        if ConfKey.SBOM_FORMAT in settings:
-            sbom_format = interpret_seq(settings[ConfKey.SBOM_FORMAT], str)
-            if sbom_format is None:
-                notify_invalid_type(ConfKey.SBOM_FORMAT, 'str or list(str)')
-                return False
-            for entry in sbom_format:
-                if entry not in SbomFormatType:
-                    notify_invalid_value(
-                        ConfKey.SBOM_FORMAT,
-                        entry,
-                        ', '.join([
-                            x for x in SbomFormatType
-                            if x != SbomFormatType.RDP_SPDX],
-                        ),
-                    )
-                    return False
-            if not self.opts.sbom_format:
-                self.opts.sbom_format = sbom_format
-
-        if ConfKey.SYSROOT_PREFIX in settings:
-            sysroot_prefix = settings[ConfKey.SYSROOT_PREFIX]
-            if not isinstance(sysroot_prefix, (str, bytes, os.PathLike)):
-                notify_invalid_type(
-                    ConfKey.SYSROOT_PREFIX, 'string or path-like')
-                return False
-            sysroot_prefix = os.fsdecode(sysroot_prefix)
-            if not sysroot_prefix.startswith('/'):
-                sysroot_prefix = '/' + sysroot_prefix
-            self.opts.sysroot_prefix = sysroot_prefix
-
-        if ConfKey.URL_MIRROR in settings:
-            url_mirror = settings[ConfKey.URL_MIRROR]
-            if not isinstance(url_mirror, str):
-                notify_invalid_type(ConfKey.URL_MIRROR, 'str')
-                return False
-            self.opts.url_mirror = url_mirror
-
-        if ConfKey.URLOPEN_CONTEXT in settings:
-            urlopen_context = None
-            if isinstance(settings[ConfKey.URLOPEN_CONTEXT], ssl.SSLContext):
-                urlopen_context = settings[ConfKey.URLOPEN_CONTEXT]
-            if urlopen_context is None:
-                notify_invalid_type(ConfKey.URLOPEN_CONTEXT, 'ssl.SSLContext')
-                return False
-            self.opts.urlopen_context = urlopen_context
-
-        if ConfKey.VSDEVCMD in settings:
-            vsdevcmd = settings[ConfKey.VSDEVCMD]
-            if not isinstance(vsdevcmd, (bool, str)):
-                notify_invalid_type(ConfKey.VSDEVCMD, 'bool or str')
-                return False
-            self.opts.vsdevcmd = vsdevcmd
-
-        if ConfKey.VSDEVCMD_PRODUCTS in settings:
-            vsdevcmd_products = settings[ConfKey.VSDEVCMD_PRODUCTS]
-            if not isinstance(vsdevcmd_products, str):
-                notify_invalid_type(ConfKey.VSDEVCMD_PRODUCTS, 'str')
-                return False
-            self.opts.vsdevcmd_products = vsdevcmd
-
-        if ConfKey.EXTEN_PKGS in settings:
-            epd = interpret_seq(settings[ConfKey.EXTEN_PKGS], str)
-            if epd is None:
-                notify_invalid_type(ConfKey.EXTEN_PKGS, 'str or list(str)')
-                return False
-            self.opts.extern_pkg_dirs = epd
-
-        ext_names = []
-        if ConfKey.EXTENSIONS in settings:
-            ext_names = interpret_seq(settings[ConfKey.EXTENSIONS], str)
-            if ext_names is None:
-                notify_invalid_type(ConfKey.EXTENSIONS, 'str or list(str)')
-                return False
-
-        # load extensions; stop if there was an issue
-        extensions_loaded = self.registry.load_all_extensions(ext_names)
-        if not extensions_loaded and \
-                'releng.ignore_failed_extensions' not in self.opts.quirks:
-            return False
-
-        # if the settings files has a `releng_setup` hook for extension-like
-        # overrides, invoke the setup call
-        if 'releng_setup' in settings:
-            setup_hook = settings['releng_setup']
-            setup_hook_sig = signature(setup_hook)
-            try:
-                setup_hook_sig.bind(self.registry)
-            except TypeError:
-                debug(f'''\
-failed to bind to releng_setup hook
-
-{traceback.format_exc()}''')
-
-                err('''\
-releng_setup hook in the project configuration has an invalid signature
-
-When preparing to invoke a project's `releng_setup` call, it has been
-detected that the call's signature is invalid. Please refer to the API
-documentation for more information.''')
-                return False
-            else:
-                setup_hook(self.registry)
-
-        return True
