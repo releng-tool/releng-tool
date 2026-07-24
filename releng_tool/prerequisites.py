@@ -101,6 +101,8 @@ class RelengPrerequisites:
 
                 if pkg.python_setup_type:
                     python_setup_types.add(pkg.python_setup_type)
+                else:
+                    python_setup_types.add(PythonSetupType.PEP517)
 
         if PackageType.AUTOTOOLS in pkg_types or PackageType.MAKE in pkg_types:
             if MAKE.exists():

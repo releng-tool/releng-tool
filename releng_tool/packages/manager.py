@@ -32,7 +32,6 @@ from releng_tool.packages.exceptions import RelengToolInvalidPackageScript
 from releng_tool.packages.exceptions import RelengToolMissingPackageRevision
 from releng_tool.packages.exceptions import RelengToolMissingPackageScript
 from releng_tool.packages.exceptions import RelengToolMissingPackageSite
-from releng_tool.packages.exceptions import RelengToolMissingPythonSetupType
 from releng_tool.packages.exceptions import RelengToolPathPackageTraversal
 from releng_tool.packages.exceptions import RelengToolUnknownExtractType
 from releng_tool.packages.exceptions import RelengToolUnknownInstallType
@@ -1405,11 +1404,9 @@ explicit url vcs-type with files is deprecated: {}
                         'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
                     })
 
+        # default to a pep-517 invoke
         if pkg.type == PackageType.PYTHON and not pkg.python_setup_type:
-            raise RelengToolMissingPythonSetupType({
-                'pkg_name': pkg.name,
-                'pkg_key': pkg_key(pkg.name, Rpk.PYTHON_SETUP_TYPE),
-            })
+            pkg.python_setup_type = PythonSetupType.PEP517
 
         if pkg.python_setup_type == PythonSetupType.DISTUTILS:
             warn('''\

@@ -48,6 +48,10 @@ class TestPkgPythonConfigs(TestPkgConfigsBase):
         pkg = self.LOAD('python-setup-type-valid-hatchling').package
         self.assertEqual(pkg.python_setup_type, PythonSetupType.HATCH)
 
+    def test_pkgconfig_python_setup_type_valid_implicit(self):
+        pkg = self.LOAD('python-setup-type-valid-implicit').package
+        self.assertEqual(pkg.python_setup_type, PythonSetupType.PEP517)
+
     def test_pkgconfig_python_setup_type_valid_pdm(self):
         pkg = self.LOAD('python-setup-type-valid-pdm').package
         self.assertEqual(pkg.python_setup_type, PythonSetupType.PDM)

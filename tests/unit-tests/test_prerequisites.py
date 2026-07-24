@@ -188,6 +188,22 @@ class TestPrerequisites(RelengToolTestCase):
 
     @patch(f'{PFX}.PYTHON.exists', new=lambda: True)
     @patch(f'{PFX}.importlib.util.find_spec', new=lambda *_args: True)
+    def test_prerequisites_uc_python_pt_default_build_exists(self):
+        self.pkg.type = PackageType.PYTHON
+        self._assertPackagePrerequisite(expected=True)
+
+    @patch(f'{PFX}.PYTHON.exists', new=lambda: True)
+    @patch(f'{PFX}.importlib.util.find_spec')
+    def test_prerequisites_uc_python_pt_default_build_missing(self, mfs):
+        def find_spec(name):
+            return name != 'build'
+        mfs.side_effect = find_spec
+
+        self.pkg.type = PackageType.PYTHON
+        self._assertPackagePrerequisite(expected=False)
+
+    @patch(f'{PFX}.PYTHON.exists', new=lambda: True)
+    @patch(f'{PFX}.importlib.util.find_spec', new=lambda *_args: True)
     def test_prerequisites_uc_python_pt_flit_exists(self):
         self.pkg.type = PackageType.PYTHON
         self.pkg.python_setup_type = PythonSetupType.FLIT
