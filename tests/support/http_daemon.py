@@ -40,6 +40,10 @@ class MockServerRequestHandler(BaseHTTPRequestHandler):
         self._process_rsp()
 
     def _process_rsp(self):
+        content_length = int(self.headers.get('Content-Length', 0))
+        if content_length > 0:
+            self.rfile.read(content_length)
+
         try:
             code, data = self.server.rsp.pop(0)
         except IndexError:
