@@ -13,6 +13,8 @@ lint.ignore = [
     'BLE',
     # we are a bit complex for now
     'C90',
+    # we utilize a copyright header/setup that the check does not like
+    'CPY001',
     # ignore pydocstyle (interim)
     'D',
     # ignore eradicate since spdx ids and parenthesis are false flagged
@@ -52,6 +54,7 @@ lint.ignore = [
     'PLR0912',
     'PLR0913',
     'PLR0915',
+    'PLR0917',
     # ignore loop variable overrides
     'PLW2901',
     # we have some desired usages of global variables
@@ -109,4 +112,8 @@ lint.ignore = [
 'tests/**' = [
     'T201',
     'T203',
+]
+
+'tests/unit-tests/test_util_hash.py' = [
+    'ISC004',
 ]

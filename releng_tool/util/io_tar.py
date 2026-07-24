@@ -9,7 +9,7 @@ import tarfile
 
 
 def tar_cachefile(src: Path, target: Path, arcname: str,
-        exclude: None | str | tuple[str] = None) -> bool:
+        exclude: str | tuple[str] | None = None) -> bool:
     """
     generate a tar cache file
 

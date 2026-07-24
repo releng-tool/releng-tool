@@ -10,7 +10,7 @@ import os
 
 
 def mkdir(dir_: str | bytes | os.PathLike, *args: str | bytes | os.PathLike,
-        **kwargs) -> None | Path:
+        **kwargs) -> Path | None:
     """
     ensure the provided directory exists
 
