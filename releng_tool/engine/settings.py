@@ -248,7 +248,7 @@ Expected: {}''', key, value, expected)
         if not isinstance(vsdevcmd_products, str):
             notify_invalid_type(ConfKey.VSDEVCMD_PRODUCTS, 'str')
             return False
-        opts.vsdevcmd_products = vsdevcmd
+        opts.vsdevcmd_products = vsdevcmd_products
 
     if ConfKey.EXTEN_PKGS in settings:
         epd = interpret_seq(settings[ConfKey.EXTEN_PKGS], str)
