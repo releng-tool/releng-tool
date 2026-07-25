@@ -7,7 +7,7 @@ from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 
 
-def release_mode_check(engine, pkgs):
+def release_mode_check(engine, pkgs) -> None:
     """
     perform a release mode check
 
