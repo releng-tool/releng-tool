@@ -2,8 +2,11 @@
 # Copyright releng-tool
 
 from inspect import signature
+from pathlib import Path
 from releng_tool.defs import ConfKey
 from releng_tool.defs import SbomFormatType
+from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
+from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.opts import RelengEngineOptions
 from releng_tool.registry import RelengRegistry
 from releng_tool.util.interpret import interpret_dict
@@ -17,6 +20,55 @@ from typing import Any
 import os
 import ssl
 import traceback
+
+
+def get_package_names(conf_point: Path, settings: dict[str, Any]) -> list[str]:
+    """
+    acquire list of project package names to process
+
+    From a dictionary of user-defined settings, extract the known list of
+    package names from the package configuration key ``ConfKey.PKGS``. This
+    method will return a (duplicate-removed) list of packages (if any) to be
+    processed.
+
+    Args:
+        conf_point: the configuration file used to pull package names
+        settings: user settings to pull package information from
+
+    Returns:
+        list of package names to be processed
+
+    Raises:
+        RelengToolInvalidConfigurationSettings: invalid package list is detected
+        RelengToolMissingPackagesError: no packages are detected
+    """
+    pkg_names: list[str] = []
+    bad_pkgs_value = False
+
+    if ConfKey.PKGS in settings:
+        detected_pkg_names = interpret_seq(settings[ConfKey.PKGS], str)
+        if detected_pkg_names is None:
+            bad_pkgs_value = True
+        else:
+            pkg_names = detected_pkg_names
+
+    if bad_pkgs_value:
+        err('''\
+bad package list definition
+
+The configuration file does not have a properly formed list of defined packages.
+Ensure a package list exists with the string-based names of packages to be part
+of the releng process:
+
+{}
+    {} = ['liba', 'libb', 'libc']''', conf_point, ConfKey.PKGS)
+        raise RelengToolInvalidConfigurationSettings
+
+    if not pkg_names:
+        raise RelengToolMissingPackagesError(conf_point, ConfKey.PKGS)
+
+    # remove duplicates (but maintain pre-sorted ordered)
+    return list(dict.fromkeys(pkg_names))
 
 
 def process_settings(opts: RelengEngineOptions, registry: RelengRegistry,

@@ -5,7 +5,6 @@ from datetime import datetime
 from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.apimode import API_STATE
-from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import ListenerEvent
@@ -24,13 +23,13 @@ from releng_tool.engine.printvars import printvars
 from releng_tool.engine.release_check import release_mode_check
 from releng_tool.engine.sbom import SbomManager
 from releng_tool.engine.script_env import prepare_script_environment
+from releng_tool.engine.settings import get_package_names
 from releng_tool.engine.settings import process_settings
 from releng_tool.engine.suggest import suggest
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolMissingConfigurationError
-from releng_tool.exceptions import RelengToolMissingPackagesError
 from releng_tool.exceptions import RelengToolUnknownAction
 from releng_tool.lint import lint
 from releng_tool.opts import RELENG_CONF_NAME
@@ -48,7 +47,6 @@ from releng_tool.util.env import extend_script_env
 from releng_tool.util.file_flags import FileFlag
 from releng_tool.util.file_flags import check_file_flag
 from releng_tool.util.file_flags import process_file_flag
-from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.io import run_script
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_opt_file import opt_file
@@ -282,7 +280,7 @@ class RelengEngine:
         if gaction in clean_actions:
             return self._handle_clean_request(gaction)
 
-        # determine package name(s) extraction
+        # determine package name(s)
         #
         # Compile a (minimum) list of package names to be processed; either from
         # the user explicitly provided package target or from the user's
@@ -290,9 +288,8 @@ class RelengEngine:
         if opts.target_action:
             pkg_names = [opts.target_action]
         else:
-            pkg_names = self._get_package_names(conf_point, settings)
-        if not pkg_names:
-            return False
+            pkg_names = get_package_names(conf_point, settings)
+
         debug('target packages)')
         for pkg_name in pkg_names:
             debug(' {}', pkg_name)
@@ -768,50 +765,6 @@ has failed. Ensure the following path is accessible for this user:
                 rv &= path_remove(pkg._ff_post)
 
         return rv
-
-    def _get_package_names(self, conf_point, settings):
-        """
-        acquire list of project package names to process
-
-        From a dictionary of user-defined settings, extract the known list of
-        package names from the package configuration key ``ConfKey.PKGS``. This
-        method will return a (duplicate-removed) list of packages (if any) to be
-        processed.
-
-        Args:
-            conf_point: the configuration file used to pull package names
-            settings: user settings to pull package information from
-
-        Returns:
-            list of package names to be processed; empty or ``None`` if no
-            packages exist or an issue has occurred when attempting to extract
-            package names
-        """
-        pkg_names = []
-        bad_pkgs_value = False
-
-        if ConfKey.PKGS in settings:
-            pkg_names = interpret_seq(settings[ConfKey.PKGS], str)
-            if pkg_names is None:
-                bad_pkgs_value = True
-
-        if bad_pkgs_value:
-            err('''\
-bad package list definition
-
-The configuration file does not have a properly formed list of defined packages.
-Ensure a package list exists with the string-based names of packages to be part
-of the releng process:
-
-    {}
-        {} = ['liba', 'libb', 'libc']''', conf_point, ConfKey.PKGS)
-        elif not pkg_names:
-            raise RelengToolMissingPackagesError(conf_point, ConfKey.PKGS)
-        else:
-            # remove duplicates (but maintain pre-sorted ordered)
-            pkg_names = dict.fromkeys(pkg_names)
-
-        return pkg_names
 
     def _handle_clean_request(self, gaction):
         """
