@@ -1,6 +1,7 @@
 ## Development
 
 - Allow `LIBFOO_FORCE_REVISION` to be auto-injected into environment
+- Fixed usage of `vsdevcmd_products` project configuration
 - Support for an implicit `LIBFOO_PYTHON_SETUP_TYPE` has been added (PEP-517)
 
 ## 3.1 (2026-06-28)
