@@ -1,4 +1,4 @@
-## Development
+## 4.0 (2026-07-26)
 
 - **(note)** Support for `.releng` extension has been dropped
 - Allow `LIBFOO_FORCE_REVISION` to be auto-injected into environment
