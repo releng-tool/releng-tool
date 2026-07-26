@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsLicenseHeader(TestDefaultEngineBase):
-    def test_prjconfig_license_header_invalid(self):
+    def test_prjconfig_license_header_global_invalid(self):
         self.setprjcfg('license_header', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_license_header_valid(self):
+    def test_prjconfig_license_header_global_valid(self):
         self.setprjcfg('license_header', 'This is a header.')
         self.engine.run()
 

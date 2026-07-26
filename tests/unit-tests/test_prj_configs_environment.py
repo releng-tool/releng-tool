@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsEnvironment(TestDefaultEngineBase):
-    def test_prjconfig_environment_invalid(self):
+    def test_prjconfig_environment_global_invalid(self):
         self.setprjcfg('environment', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_environment_valid(self):
+    def test_prjconfig_environment_global_valid(self):
         self.setprjcfg('environment', value={
             'MY_ENV_1': 'First example',
             'MY_ENV_2': 'Another example',

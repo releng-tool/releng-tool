@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsCacheExt(TestDefaultEngineBase):
-    def test_prjconfig_external_packages_invalid(self):
+    def test_prjconfig_external_packages_global_invalid(self):
         self.setprjcfg('external_packages', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_external_packages_valid(self):
+    def test_prjconfig_external_packages_global_valid(self):
         self.writeprjcfg('''\
 external_packages = [
     'path1',

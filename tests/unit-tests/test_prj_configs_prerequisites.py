@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsPrerequisites(TestDefaultEngineBase):
-    def test_prjconfig_prerequisites_invalid(self):
+    def test_prjconfig_prerequisites_global_invalid(self):
         self.setprjcfg('prerequisites', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_prerequisites_valid_list(self):
+    def test_prjconfig_prerequisites_global_valid_list(self):
         self.setprjcfg('prerequisites', [
             'bin1',
             'bin2',
@@ -25,7 +25,7 @@ class TestPrjConfigsPrerequisites(TestDefaultEngineBase):
         self.assertIn('bin2', opts.prerequisites)
         self.assertIn('bin3', opts.prerequisites)
 
-    def test_prjconfig_prerequisites_valid_str(self):
+    def test_prjconfig_prerequisites_global_valid_str(self):
         self.setprjcfg('prerequisites', 'myapp')
         self.engine.run()
 

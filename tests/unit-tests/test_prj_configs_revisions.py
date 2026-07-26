@@ -125,14 +125,14 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
         self.assertIn('MINIMAL_REVISION', os.environ)
         self.assertEqual(os.environ['MINIMAL_REVISION'], '1.2.3.4.5')
 
-    def test_prjconfig_revisions_invalid(self):
+    def test_prjconfig_revisions_global_invalid(self):
         self.setprjcfg('revisions', {
             'minimal': True,
         })
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_revisions_valid(self):
+    def test_prjconfig_revisions_global_valid(self):
         expected_revisions = {
             'minimal': '1.2.3',
         }

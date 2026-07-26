@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsOverrideExtractTools(TestDefaultEngineBase):
-    def test_prjconfig_override_extract_tools_invalid(self):
+    def test_prjconfig_override_extract_tools_global_invalid(self):
         self.setprjcfg('override_extract_tools', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_override_extract_tools_valid(self):
+    def test_prjconfig_override_extract_tools_global_valid(self):
         self.setprjcfg('override_extract_tools', {
             'zip': '/opt/my-custom-unzip {file} {dir}',
         })

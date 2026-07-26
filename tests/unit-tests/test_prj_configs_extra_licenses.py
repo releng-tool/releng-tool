@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsExtraLicenses(TestDefaultEngineBase):
-    def test_prjconfig_extra_licenses_invalid(self):
+    def test_prjconfig_extra_licenses_global_invalid(self):
         self.setprjcfg('extra_licenses', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_extra_licenses_valid(self):
+    def test_prjconfig_extra_licenses_global_valid(self):
         self.setprjcfg('extra_licenses', value={
             'My-License-ID': 'License Name',
         })

@@ -10,13 +10,13 @@ EXT_PREFIX = 'tests.unit-tests.assets.extensions.'
 
 
 class TestPrjConfigsExtensions(TestDefaultEngineBase):
-    def test_prjconfig_extensions_invalid(self):
+    def test_prjconfig_extensions_global_invalid(self):
         self.setprjcfg('extensions', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_extensions_valid_list(self):
+    def test_prjconfig_extensions_global_valid_list(self):
         self.setprjcfg('extensions', [
             f'{EXT_PREFIX}events',
             f'{EXT_PREFIX}pkg-events',
@@ -28,7 +28,7 @@ class TestPrjConfigsExtensions(TestDefaultEngineBase):
         self.assertIn(f'{EXT_PREFIX}events', registry.extension)
         self.assertIn(f'{EXT_PREFIX}pkg-events', registry.extension)
 
-    def test_prjconfig_extensions_valid_str(self):
+    def test_prjconfig_extensions_global_valid_str(self):
         self.setprjcfg('extensions', f'{EXT_PREFIX}events')
 
         self.engine.run()

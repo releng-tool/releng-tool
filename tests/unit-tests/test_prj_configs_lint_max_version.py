@@ -6,19 +6,19 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsLintMaxVersion(TestDefaultEngineBase):
-    def test_prjconfig_lint_max_version_invalid_type(self):
+    def test_prjconfig_lint_max_version_global_invalid_type(self):
         self.setprjcfg('lint_max_version', value=True)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_lint_max_version_invalid_value(self):
+    def test_prjconfig_lint_max_version_global_invalid_value(self):
         self.setprjcfg('lint_max_version', '1.2a')
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_lint_max_version_valid(self):
+    def test_prjconfig_lint_max_version_global_valid(self):
         self.setprjcfg('lint_max_version', '1.2.3')
         self.engine.run()
 

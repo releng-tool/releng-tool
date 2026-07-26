@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsUrlopenContext(TestDefaultEngineBase):
-    def test_prjconfig_urlopen_context_invalid(self):
+    def test_prjconfig_urlopen_context_global_invalid(self):
         self.setprjcfg('urlopen_context', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_urlopen_context_valid(self):
+    def test_prjconfig_urlopen_context_global_valid(self):
         self.writeprjcfg('''\
 import ssl
 

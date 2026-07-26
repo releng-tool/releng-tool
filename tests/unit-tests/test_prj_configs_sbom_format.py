@@ -6,19 +6,19 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsSbomFormat(TestDefaultEngineBase):
-    def test_prjconfig_sbom_format_invalid_type(self):
+    def test_prjconfig_sbom_format_global_invalid_type(self):
         self.setprjcfg('sbom_format', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_sbom_format_invalid_value(self):
+    def test_prjconfig_sbom_format_global_invalid_value(self):
         self.setprjcfg('sbom_format', 'unknown')
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_sbom_format_valid_list(self):
+    def test_prjconfig_sbom_format_global_valid_list(self):
         self.setprjcfg('sbom_format', [
             'csv',
             'json',
@@ -32,7 +32,7 @@ class TestPrjConfigsSbomFormat(TestDefaultEngineBase):
         self.assertIn('json', opts.sbom_format)
         self.assertIn('rdf-spdx', opts.sbom_format)
 
-    def test_prjconfig_sbom_format_valid_str(self):
+    def test_prjconfig_sbom_format_global_valid_str(self):
         self.setprjcfg('sbom_format', 'xml')
         self.engine.run()
 

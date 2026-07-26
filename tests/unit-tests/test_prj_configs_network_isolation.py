@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsNetworkIsolation(TestDefaultEngineBase):
-    def test_prjconfig_network_isolation_invalid(self):
+    def test_prjconfig_network_isolation_global_invalid(self):
         self.setprjcfg('network_isolation', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_network_isolation_valid(self):
+    def test_prjconfig_network_isolation_global_valid(self):
         self.setprjcfg('network_isolation', value=True)
         self.engine.run()
 

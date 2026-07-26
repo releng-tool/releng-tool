@@ -6,13 +6,13 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsQuirks(TestDefaultEngineBase):
-    def test_prjconfig_quirks_invalid(self):
+    def test_prjconfig_quirks_global_invalid(self):
         self.setprjcfg('quirks', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
-    def test_prjconfig_quirks_valid_list(self):
+    def test_prjconfig_quirks_global_valid_list(self):
         self.setprjcfg('quirks', [
             'releng.quirk1',
             'releng.quirk2',
@@ -25,7 +25,7 @@ class TestPrjConfigsQuirks(TestDefaultEngineBase):
         self.assertIn('releng.quirk2', opts.quirks)
         self.assertIn('releng.quirk4', opts.quirks)
 
-    def test_prjconfig_quirks_valid_str(self):
+    def test_prjconfig_quirks_global_valid_str(self):
         self.setprjcfg('quirks', 'releng.quirk3')
         self.engine.run()
 
