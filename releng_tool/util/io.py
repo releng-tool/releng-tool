@@ -564,7 +564,7 @@ def prepend_shebang_interpreter(args):
     return args
 
 
-def run_script(script, globals_, subject=None, catch=True):
+def run_script(script, globals_, subject=None, catch=True, ignore=None):
     """
     execute the provided script and provide the resulting globals module
 
@@ -584,6 +584,7 @@ def run_script(script, globals_, subject=None, catch=True):
         globals_: dictionary to pre-populate script's globals
         subject (optional): subject value to enhance a final error message
         catch (optional): whether or not to catch any exceptions
+        ignore (optional): exceptions to not catch
 
     Returns:
         resulting globals module; ``None`` if an execution error occurs
@@ -596,6 +597,9 @@ def run_script(script, globals_, subject=None, catch=True):
             try:
                 result = run_path(script, init_globals=script_env)
             except Exception as e:
+                if isinstance(e, tuple(ignore or ())):
+                    raise
+
                 err('{}\n'
                     'error running {}{}script: {}\n'
                     '    {}',

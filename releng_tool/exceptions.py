@@ -19,6 +19,12 @@ class RelengToolInvalidConfigurationScript(RelengToolSilentException):
     """
 
 
+class RelengToolInvalidConfigurationOption(RelengToolSilentException):
+    """
+    exception thrown when a project's configuration uses an invalid option
+    """
+
+
 class RelengToolInvalidConfigurationSettings(RelengToolSilentException):
     """
     exception thrown when a project's configuration file has invalid settings
@@ -58,20 +64,10 @@ argument defines the command to be executed.
 '''.strip())
 
 
-class RelengToolMissingPackagesError(RelengToolException):
+class RelengToolMissingPackagesError(RelengToolSilentException):
     """
     exception thrown when a project's configuration does not provide any pkgs
     """
-    def __init__(self, path, key):
-        super().__init__(f'''\
-no defined packages
-
-The configuration file does not have any defined packages. Ensure a package
-list exists with the name of packages to be part of the releng process:
-
-    {path}
-        {key} = ['liba', 'libb', 'libc']
-'''.strip())
 
 
 class RelengToolMissingVsDevCmdError(RelengToolException):

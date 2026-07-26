@@ -2,9 +2,11 @@
 # Copyright releng-tool
 
 from datetime import datetime
+from difflib import get_close_matches
 from pathlib import Path
 from releng_tool import __version__ as releng_version
 from releng_tool.apimode import API_STATE
+from releng_tool.defs import ConfKey
 from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import ListenerEvent
@@ -27,6 +29,7 @@ from releng_tool.engine.settings import get_package_names
 from releng_tool.engine.settings import process_settings
 from releng_tool.engine.suggest import suggest
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
+from releng_tool.exceptions import RelengToolInvalidConfigurationOption
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolMissingConfigurationError
@@ -63,6 +66,7 @@ from releng_tool.util.log import success
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
 from releng_tool.util.log import warn_wrap
+from typing import Any
 import json
 import os
 import sys
@@ -191,6 +195,9 @@ class RelengEngine:
             if not conf_point_exists:
                 conf_point = 'releng-tool.rt'
 
+        # track the resolved configuration point
+        opts.conf_point = conf_point
+
         if not conf_point_exists:
             extra = ''
 
@@ -260,8 +267,48 @@ class RelengEngine:
         # was configured). This is performed later in the engine run call.
         prepare_script_environment(gbls, opts)
 
+        # prepare a `releng_config` call that a user can use to populate
+        # project-specific options; we will store options in a dictionary
+        # and process it during the settings stage
+        cfg_args: dict[str, Any] = {}
+        def releng_config(**kwargs) -> None:
+            for key in kwargs:
+                if key not in ConfKey:
+                    extra = ''
+
+                    detected = get_close_matches(key, ConfKey)
+                    if detected:
+                        detected.sort()
+                    if detected:
+                        if len(detected) == 1:
+                            alt = f'"{detected[0]}"'
+                        elif len(detected) == 2:  # noqa: PLR2004
+                            alt = f'"{detected[0]}" or "{detected[1]}"'
+                        else:
+                            alt = '"{}" or "{}"'.format(
+                                '", "'.join(detected[:-1]), detected[-1])
+
+                        extra = f'\n\nDid you mean to use {alt}?'
+
+                    err(f'''\
+invalid configuration option provided: {key}
+
+Project defines a `releng_config` call to setup various project options. An
+unknown/unsupported option has been provided ("{key}").{extra}''')
+                    raise RelengToolInvalidConfigurationOption
+
+            cfg_args.update(kwargs)
+        gbls['releng_config'] = releng_config
+
         verbose(f'loading project configuration: {conf_point}')
-        settings = run_script(conf_point, gbls, subject='configuration')
+        settings = run_script(
+            conf_point,
+            gbls,
+            subject='configuration',
+            ignore=(
+                RelengToolInvalidConfigurationOption,
+            ),
+        )
         if not settings:
             raise RelengToolInvalidConfigurationScript
 
@@ -288,14 +335,14 @@ class RelengEngine:
         if opts.target_action:
             pkg_names = [opts.target_action]
         else:
-            pkg_names = get_package_names(conf_point, settings)
+            pkg_names = get_package_names(opts, settings, cfg_args)
 
         debug('target packages)')
         for pkg_name in pkg_names:
             debug(' {}', pkg_name)
 
         # processing additional settings
-        if not process_settings(opts, self.registry, settings):
+        if not process_settings(opts, self.registry, settings, cfg_args):
             raise RelengToolInvalidConfigurationSettings
 
         # check if we should preload environment variables from vsdevcmd

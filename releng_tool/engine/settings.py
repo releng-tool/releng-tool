@@ -2,8 +2,9 @@
 # Copyright releng-tool
 
 from inspect import signature
-from pathlib import Path
 from releng_tool.defs import ConfKey
+from releng_tool.defs import GlobalAction
+from releng_tool.defs import PkgAction
 from releng_tool.defs import SbomFormatType
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from releng_tool.exceptions import RelengToolMissingPackagesError
@@ -14,6 +15,7 @@ from releng_tool.util.interpret import interpret_seq
 from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import verbose
+from releng_tool.util.log import warn
 from releng_tool.util.string import expand
 from releng_tool.util.version import str_to_version
 from typing import Any
@@ -22,7 +24,8 @@ import ssl
 import traceback
 
 
-def get_package_names(conf_point: Path, settings: dict[str, Any]) -> list[str]:
+def get_package_names(opts: RelengEngineOptions, settings: dict[str, Any],
+        cfg_args: dict[str, Any]) -> list[str]:
     """
     acquire list of project package names to process
 
@@ -32,8 +35,9 @@ def get_package_names(conf_point: Path, settings: dict[str, Any]) -> list[str]:
     processed.
 
     Args:
-        conf_point: the configuration file used to pull package names
+        opts: the engine options
         settings: user settings to pull package information from
+        cfg_args: settings a user has provided via a `releng_config` call
 
     Returns:
         list of package names to be processed
@@ -45,34 +49,86 @@ def get_package_names(conf_point: Path, settings: dict[str, Any]) -> list[str]:
     pkg_names: list[str] = []
     bad_pkgs_value = False
 
-    if ConfKey.PKGS in settings:
-        detected_pkg_names = interpret_seq(settings[ConfKey.PKGS], str)
+    is_linting = opts.gbl_action == GlobalAction.LINT or \
+        opts.pkg_action == PkgAction.LINT
+
+    raw_pkgs_value = None
+
+    if cfg_args:
+        if not is_linting and ConfKey.PKGS in settings:
+            warn(f'project option `{ConfKey.PKGS}` ignored since this project '
+                  'uses `releng_config`')
+
+        if ConfKey.PKGS in cfg_args:
+            raw_pkgs_value = cfg_args[ConfKey.PKGS]
+    elif ConfKey.PKGS in settings:
+        raw_pkgs_value = settings[ConfKey.PKGS]
+
+    if raw_pkgs_value is not None:
+        detected_pkg_names = interpret_seq(raw_pkgs_value, str)
         if detected_pkg_names is None:
             bad_pkgs_value = True
         else:
             pkg_names = detected_pkg_names
 
+    if cfg_args:
+        example_pkgnames = f'''\
+```
+releng_config(
+    {ConfKey.PKGS} = [
+        'liba',
+        'libb',
+        'libc',
+    ],
+    ...
+)
+```'''
+    else:
+        example_pkgnames = f'''\
+```
+{ConfKey.PKGS} = [
+    'liba',
+    'libb',
+    'libc',
+]
+```'''
+
     if bad_pkgs_value:
-        err('''\
+        err(f'''\
 bad package list definition
 
 The configuration file does not have a properly formed list of defined packages.
-Ensure a package list exists with the string-based names of packages to be part
-of the releng process:
+Ensure a package list exists with the string-based names of packages to be
+included in a run. For example, this file:
 
-{}
-    {} = ['liba', 'libb', 'libc']''', conf_point, ConfKey.PKGS)
+    {opts.conf_point}
+
+Should have a package list such as:
+
+{example_pkgnames}''')
         raise RelengToolInvalidConfigurationSettings
 
     if not pkg_names:
-        raise RelengToolMissingPackagesError(conf_point, ConfKey.PKGS)
+        err(f'''\
+no defined packages
+
+The configuration file does not have any defined packages. Ensure a package
+list exists with the name of packages to be included in a run. For example,
+this file:
+
+    {opts.conf_point}
+
+Should have a package list such as:
+
+{example_pkgnames}''')
+        raise RelengToolMissingPackagesError
 
     # remove duplicates (but maintain pre-sorted ordered)
     return list(dict.fromkeys(pkg_names))
 
 
 def process_settings(opts: RelengEngineOptions, registry: RelengRegistry,
-        settings: dict[str, Any]) -> bool:
+        settings: dict[str, Any], cfg_args: dict[str, Any]) -> bool:
     """
     process global settings provided from the user
 
@@ -84,6 +140,7 @@ def process_settings(opts: RelengEngineOptions, registry: RelengRegistry,
         opts: the engine options to populate
         registry: the registry to populate
         settings: user settings to pull global information from
+        cfg_args: settings a user has provided via a `releng_config` call
 
     Returns:
         ``True`` if settings have been processed; ``False`` if an issue with
@@ -111,59 +168,76 @@ Key: {}
 Unknown value: {}
 Expected: {}''', key, value, expected)
 
-    if ConfKey.CACHE_EXT_TRANSFORM in settings:
-        cet = None
-        if callable(settings[ConfKey.CACHE_EXT_TRANSFORM]):
-            cet = settings[ConfKey.CACHE_EXT_TRANSFORM]
-        if cet is None:
+    is_linting = opts.gbl_action == GlobalAction.LINT or \
+        opts.pkg_action == PkgAction.LINT
+
+    def fetch(key: str) -> Any:
+        if cfg_args:
+            if not is_linting and key in settings:
+                warn(f'project option `{key}` ignored since this project '
+                      'uses `releng_config`')
+
+            if key in cfg_args:
+                return cfg_args[key]
+
+        elif key in settings:
+            return settings[key]
+
+        return None
+
+    cet = fetch(ConfKey.CACHE_EXT_TRANSFORM)
+    if cet is not None:
+        if not callable(cet):
             notify_invalid_type(ConfKey.CACHE_EXT_TRANSFORM, 'callable')
             return False
         opts.cache_ext_transform = cet
 
-    if ConfKey.DEFINTERN in settings:
-        is_default_internal = settings[ConfKey.DEFINTERN]
+    is_default_internal = fetch(ConfKey.DEFINTERN)
+    if is_default_internal is not None:
         if not isinstance(is_default_internal, bool):
             notify_invalid_type(ConfKey.DEFINTERN, 'bool')
             return False
         opts.default_internal_pkgs = is_default_internal
 
-    if ConfKey.DEF_CMAKE_BUILD_TYPE in settings:
-        default_cmake_build_type = settings[ConfKey.DEF_CMAKE_BUILD_TYPE]
+    default_cmake_build_type = fetch(ConfKey.DEF_CMAKE_BUILD_TYPE)
+    if default_cmake_build_type is not None:
         if not isinstance(default_cmake_build_type, str):
             notify_invalid_type(ConfKey.DEF_CMAKE_BUILD_TYPE, 'str')
             return False
         opts.default_cmake_build_type = default_cmake_build_type
 
-    if ConfKey.DEF_DEV_IGNORE_CACHE in settings:
-        default_dev_ignore_cache = settings[ConfKey.DEF_DEV_IGNORE_CACHE]
+    default_dev_ignore_cache = fetch(ConfKey.DEF_DEV_IGNORE_CACHE)
+    if default_dev_ignore_cache is not None:
         if not isinstance(default_dev_ignore_cache, bool):
             notify_invalid_type(ConfKey.DEF_DEV_IGNORE_CACHE, 'bool')
             return False
         opts.default_dev_ignore_cache = default_dev_ignore_cache
 
-    if ConfKey.DEF_MESON_BUILD_TYPE in settings:
-        default_meson_build_type = settings[ConfKey.DEF_MESON_BUILD_TYPE]
+    default_meson_build_type = fetch(ConfKey.DEF_MESON_BUILD_TYPE)
+    if default_meson_build_type is not None:
         if not isinstance(default_meson_build_type, str):
             notify_invalid_type(ConfKey.DEF_MESON_BUILD_TYPE, 'str')
             return False
         opts.default_meson_build_type = default_meson_build_type
 
-    if ConfKey.DEF_XMAKE_BUILD_TYPE in settings:
-        default_xmake_build_type = settings[ConfKey.DEF_XMAKE_BUILD_TYPE]
+    default_xmake_build_type = fetch(ConfKey.DEF_XMAKE_BUILD_TYPE)
+    if default_xmake_build_type is not None:
         if not isinstance(default_xmake_build_type, str):
             notify_invalid_type(ConfKey.DEF_XMAKE_BUILD_TYPE, 'str')
             return False
         opts.default_xmake_build_type = default_xmake_build_type
 
-    if ConfKey.ENVIRONMENT in settings:
-        env = interpret_dict(settings[ConfKey.ENVIRONMENT], str)
-        if env is None:
+    project_env = fetch(ConfKey.ENVIRONMENT)
+    if project_env is not None:
+        v = interpret_dict(project_env, str)
+        if v is None:
             notify_invalid_type(ConfKey.ENVIRONMENT, 'dict(str,str)')
             return False
-        opts.environment.update(expand(env))
+        opts.environment.update(expand(v))
 
-    if ConfKey.EXTRA_LEXCEPTS in settings:
-        d = interpret_dict(settings[ConfKey.EXTRA_LEXCEPTS], str)
+    extra_lexcepts = fetch(ConfKey.EXTRA_LEXCEPTS)
+    if extra_lexcepts is not None:
+        d = interpret_dict(extra_lexcepts, str)
         if d is None:
             notify_invalid_type(ConfKey.EXTRA_LEXCEPTS, 'dict(str,str)')
             return False
@@ -174,8 +248,9 @@ Expected: {}''', key, value, expected)
                 'deprecated': False,
             }
 
-    if ConfKey.EXTRA_LICENSES in settings:
-        d = interpret_dict(settings[ConfKey.EXTRA_LICENSES], str)
+    extra_licenses = fetch(ConfKey.EXTRA_LICENSES)
+    if extra_licenses is not None:
+        d = interpret_dict(extra_licenses, str)
         if d is None:
             notify_invalid_type(ConfKey.EXTRA_LICENSES, 'dict(str,str)')
             return False
@@ -186,16 +261,16 @@ Expected: {}''', key, value, expected)
                 'deprecated': False,
             }
 
-    if ConfKey.LICENSE_HEADER in settings:
-        license_header = settings[ConfKey.LICENSE_HEADER]
+    license_header = fetch(ConfKey.LICENSE_HEADER)
+    if license_header is not None:
         if not isinstance(license_header, str):
             notify_invalid_type(ConfKey.LICENSE_HEADER, 'str')
             return False
         opts.license_header = license_header
 
-    if not opts.lint_max_version and \
-            ConfKey.LINT_MAX_VERSION in settings:
-        raw_max_version = settings[ConfKey.LINT_MAX_VERSION]
+    raw_lint_max_version = fetch(ConfKey.LINT_MAX_VERSION)
+    if not opts.lint_max_version and raw_lint_max_version:
+        raw_max_version = raw_lint_max_version
         if not isinstance(raw_max_version, str):
             notify_invalid_type(ConfKey.LINT_MAX_VERSION, 'version-str')
             return False
@@ -205,29 +280,32 @@ Expected: {}''', key, value, expected)
             notify_invalid_type(ConfKey.LINT_MAX_VERSION, 'version-str')
             return False
 
-    if ConfKey.NETWORK_ISOLATION in settings:
-        is_network_isolation = settings[ConfKey.NETWORK_ISOLATION]
+    is_network_isolation = fetch(ConfKey.NETWORK_ISOLATION)
+    if is_network_isolation is not None:
         if not isinstance(is_network_isolation, bool):
             notify_invalid_type(ConfKey.NETWORK_ISOLATION, 'bool')
             return False
         opts.network_isolation = is_network_isolation
 
-    if ConfKey.OVERRIDE_TOOLS in settings:
-        v = interpret_dict(settings[ConfKey.OVERRIDE_TOOLS], str)
+    override_tools = fetch(ConfKey.OVERRIDE_TOOLS)
+    if override_tools is not None:
+        v = interpret_dict(override_tools, str)
         if v is None:
             notify_invalid_type(ConfKey.OVERRIDE_TOOLS, 'dict(str,str)')
             return False
         opts.extract_override = v
 
-    if ConfKey.PREREQUISITES in settings:
-        prerequisites = interpret_seq(settings[ConfKey.PREREQUISITES], str)
+    raw_prerequisites = fetch(ConfKey.PREREQUISITES)
+    if raw_prerequisites is not None:
+        prerequisites = interpret_seq(raw_prerequisites, str)
         if prerequisites is None:
             notify_invalid_type(ConfKey.PREREQUISITES, 'str or list(str)')
             return False
         opts.prerequisites.extend(prerequisites)
 
-    if ConfKey.QUIRKS in settings:
-        quirks = interpret_seq(settings[ConfKey.QUIRKS], str)
+    raw_quirks = fetch(ConfKey.QUIRKS)
+    if raw_quirks is not None:
+        quirks = interpret_seq(raw_quirks, str)
         if quirks is None:
             notify_invalid_type(ConfKey.QUIRKS, 'str or list(str)')
             return False
@@ -235,15 +313,17 @@ Expected: {}''', key, value, expected)
         for quirk in quirks:
             verbose('configuration quirk applied: ' + quirk)
 
-    if ConfKey.REVISIONS in settings:
-        revz = interpret_dict(settings[ConfKey.REVISIONS], str)
+    raw_revisions = fetch(ConfKey.REVISIONS)
+    if raw_revisions is not None:
+        revz = interpret_dict(raw_revisions, str)
         if revz is None:
             notify_invalid_type(ConfKey.REVISIONS, 'dict(str,str)')
             return False
         opts.revisions = revz
 
-    if ConfKey.SBOM_FORMAT in settings:
-        sbom_format = interpret_seq(settings[ConfKey.SBOM_FORMAT], str)
+    raw_sbom_format = fetch(ConfKey.SBOM_FORMAT)
+    if raw_sbom_format is not None:
+        sbom_format = interpret_seq(raw_sbom_format, str)
         if sbom_format is None:
             notify_invalid_type(ConfKey.SBOM_FORMAT, 'str or list(str)')
             return False
@@ -261,8 +341,8 @@ Expected: {}''', key, value, expected)
         if not opts.sbom_format:
             opts.sbom_format = sbom_format
 
-    if ConfKey.SYSROOT_PREFIX in settings:
-        sysroot_prefix = settings[ConfKey.SYSROOT_PREFIX]
+    sysroot_prefix = fetch(ConfKey.SYSROOT_PREFIX)
+    if sysroot_prefix is not None:
         if not isinstance(sysroot_prefix, (str, bytes, os.PathLike)):
             notify_invalid_type(
                 ConfKey.SYSROOT_PREFIX, 'string or path-like')
@@ -272,46 +352,46 @@ Expected: {}''', key, value, expected)
             sysroot_prefix = '/' + sysroot_prefix
         opts.sysroot_prefix = sysroot_prefix
 
-    if ConfKey.URL_MIRROR in settings:
-        url_mirror = settings[ConfKey.URL_MIRROR]
+    url_mirror = fetch(ConfKey.URL_MIRROR)
+    if url_mirror is not None:
         if not isinstance(url_mirror, str):
             notify_invalid_type(ConfKey.URL_MIRROR, 'str')
             return False
         opts.url_mirror = url_mirror
 
-    if ConfKey.URLOPEN_CONTEXT in settings:
-        urlopen_context = None
-        if isinstance(settings[ConfKey.URLOPEN_CONTEXT], ssl.SSLContext):
-            urlopen_context = settings[ConfKey.URLOPEN_CONTEXT]
-        if urlopen_context is None:
+    urlopen_context = fetch(ConfKey.URLOPEN_CONTEXT)
+    if urlopen_context is not None:
+        if not isinstance(urlopen_context, ssl.SSLContext):
             notify_invalid_type(ConfKey.URLOPEN_CONTEXT, 'ssl.SSLContext')
             return False
         opts.urlopen_context = urlopen_context
 
-    if ConfKey.VSDEVCMD in settings:
-        vsdevcmd = settings[ConfKey.VSDEVCMD]
+    vsdevcmd = fetch(ConfKey.VSDEVCMD)
+    if vsdevcmd is not None:
         if not isinstance(vsdevcmd, (bool, str)):
             notify_invalid_type(ConfKey.VSDEVCMD, 'bool or str')
             return False
         opts.vsdevcmd = vsdevcmd
 
-    if ConfKey.VSDEVCMD_PRODUCTS in settings:
-        vsdevcmd_products = settings[ConfKey.VSDEVCMD_PRODUCTS]
+    vsdevcmd_products = fetch(ConfKey.VSDEVCMD_PRODUCTS)
+    if vsdevcmd_products is not None:
         if not isinstance(vsdevcmd_products, str):
             notify_invalid_type(ConfKey.VSDEVCMD_PRODUCTS, 'str')
             return False
         opts.vsdevcmd_products = vsdevcmd_products
 
-    if ConfKey.EXTEN_PKGS in settings:
-        epd = interpret_seq(settings[ConfKey.EXTEN_PKGS], str)
+    raw_exten_pkgs = fetch(ConfKey.EXTEN_PKGS)
+    if raw_exten_pkgs is not None:
+        epd = interpret_seq(raw_exten_pkgs, str)
         if epd is None:
             notify_invalid_type(ConfKey.EXTEN_PKGS, 'str or list(str)')
             return False
         opts.extern_pkg_dirs = epd
 
     ext_names = []
-    if ConfKey.EXTENSIONS in settings:
-        ext_names = interpret_seq(settings[ConfKey.EXTENSIONS], str)
+    raw_extensions = fetch(ConfKey.EXTENSIONS)
+    if raw_extensions is not None:
+        ext_names = interpret_seq(raw_extensions, str)
         if ext_names is None:
             notify_invalid_type(ConfKey.EXTENSIONS, 'str or list(str)')
             return False
