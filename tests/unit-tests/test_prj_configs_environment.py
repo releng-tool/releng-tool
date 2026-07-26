@@ -2,19 +2,18 @@
 # Copyright releng-tool
 
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
-from tests import setprjcfg
 from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsEnvironment(TestDefaultEngineBase):
     def test_prjconfig_environment_invalid(self):
-        setprjcfg(self.engine, 'environment', 1)
+        self.setprjcfg('environment', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
     def test_prjconfig_environment_valid(self):
-        setprjcfg(self.engine, 'environment', value={
+        self.setprjcfg('environment', value={
             'MY_ENV_1': 'First example',
             'MY_ENV_2': 'Another example',
         })

@@ -2,25 +2,24 @@
 # Copyright releng-tool
 
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
-from tests import setprjcfg
 from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsSbomFormat(TestDefaultEngineBase):
     def test_prjconfig_sbom_format_invalid_type(self):
-        setprjcfg(self.engine, 'sbom_format', 1)
+        self.setprjcfg('sbom_format', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
     def test_prjconfig_sbom_format_invalid_value(self):
-        setprjcfg(self.engine, 'sbom_format', 'unknown')
+        self.setprjcfg('sbom_format', 'unknown')
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
     def test_prjconfig_sbom_format_valid_list(self):
-        setprjcfg(self.engine, 'sbom_format', [
+        self.setprjcfg('sbom_format', [
             'csv',
             'json',
             'rdf-spdx',
@@ -34,7 +33,7 @@ class TestPrjConfigsSbomFormat(TestDefaultEngineBase):
         self.assertIn('rdf-spdx', opts.sbom_format)
 
     def test_prjconfig_sbom_format_valid_str(self):
-        setprjcfg(self.engine, 'sbom_format', 'xml')
+        self.setprjcfg('sbom_format', 'xml')
         self.engine.run()
 
         opts = self.engine.opts

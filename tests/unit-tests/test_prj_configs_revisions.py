@@ -7,7 +7,6 @@ from releng_tool.defs import Rpk
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
 from tests import redirect_stdout
 from tests import setpkgcfg
-from tests import setprjcfg
 from tests.support.default_engine_test import TestDefaultEngineBase
 import json
 import os
@@ -31,7 +30,7 @@ def expect_revision_warning(*, find: bool):
 class TestPrjConfigsRevisions(TestDefaultEngineBase):
     @expect_revision_warning(find=False)
     def test_prjconfig_revisions_check_devmode_na(self):
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': '76.3',
         })
         setpkgcfg(self.engine, 'minimal', Rpk.REVISION, {
@@ -51,7 +50,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
                 'mode': 'example',
             }, f)
 
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': '1.4',
         })
         setpkgcfg(self.engine, 'minimal', Rpk.REVISION, {
@@ -68,7 +67,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
         # force enable development mode
         Path(self.engine.opts.ff_devmode).touch()
 
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': '5.4',
         })
         setpkgcfg(self.engine, 'minimal', Rpk.DEVMODE_REVISION, '2.3')
@@ -80,7 +79,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
 
     @expect_revision_warning(find=True)
     def test_prjconfig_revisions_check_ignored_revision_asterisk(self):
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': '1.4',
         })
         setpkgcfg(self.engine, 'minimal', Rpk.REVISION, {
@@ -94,7 +93,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
 
     @expect_revision_warning(find=True)
     def test_prjconfig_revisions_check_ignored_revision_single(self):
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': '2.3.4',
         })
         setpkgcfg(self.engine, 'minimal', Rpk.REVISION, '8.9')
@@ -106,7 +105,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
 
     @expect_revision_warning(find=True)
     def test_prjconfig_revisions_check_ignored_version(self):
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': '2.3.4',
         })
         setpkgcfg(self.engine, 'minimal', Rpk.VERSION, '5.6.7')
@@ -117,7 +116,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
 
     @expect_revision_warning(find=False)
     def test_prjconfig_revisions_check_set(self):
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': '1.2.3.4.5',
         })
         setpkgcfg(self.engine, 'minimal', Rpk.VERSION, None)
@@ -127,7 +126,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
         self.assertEqual(os.environ['MINIMAL_REVISION'], '1.2.3.4.5')
 
     def test_prjconfig_revisions_invalid(self):
-        setprjcfg(self.engine, 'revisions', {
+        self.setprjcfg('revisions', {
             'minimal': True,
         })
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
@@ -138,7 +137,7 @@ class TestPrjConfigsRevisions(TestDefaultEngineBase):
             'minimal': '1.2.3',
         }
 
-        setprjcfg(self.engine, 'revisions', expected_revisions)
+        self.setprjcfg('revisions', expected_revisions)
         self.engine.run()
 
         opts = self.engine.opts

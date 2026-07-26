@@ -2,19 +2,18 @@
 # Copyright releng-tool
 
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
-from tests import setprjcfg
 from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsPrerequisites(TestDefaultEngineBase):
     def test_prjconfig_prerequisites_invalid(self):
-        setprjcfg(self.engine, 'prerequisites', 1)
+        self.setprjcfg('prerequisites', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
     def test_prjconfig_prerequisites_valid_list(self):
-        setprjcfg(self.engine, 'prerequisites', [
+        self.setprjcfg('prerequisites', [
             'bin1',
             'bin2',
             'bin3',
@@ -27,7 +26,7 @@ class TestPrjConfigsPrerequisites(TestDefaultEngineBase):
         self.assertIn('bin3', opts.prerequisites)
 
     def test_prjconfig_prerequisites_valid_str(self):
-        setprjcfg(self.engine, 'prerequisites', 'myapp')
+        self.setprjcfg('prerequisites', 'myapp')
         self.engine.run()
 
         opts = self.engine.opts

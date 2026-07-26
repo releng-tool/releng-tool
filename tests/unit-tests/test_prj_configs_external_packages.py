@@ -2,20 +2,18 @@
 # Copyright releng-tool
 
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
-from tests import setprjcfg
-from tests import writeprjcfg
 from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsCacheExt(TestDefaultEngineBase):
     def test_prjconfig_external_packages_invalid(self):
-        setprjcfg(self.engine, 'external_packages', 1)
+        self.setprjcfg('external_packages', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
     def test_prjconfig_external_packages_valid(self):
-        writeprjcfg(self.engine, '''\
+        self.writeprjcfg('''\
 external_packages = [
     'path1',
     'path2',

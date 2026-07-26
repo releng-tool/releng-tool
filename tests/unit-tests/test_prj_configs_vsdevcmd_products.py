@@ -2,20 +2,18 @@
 # Copyright releng-tool
 
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
-from tests import setprjcfg
 from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsVsDevCmdProducts(TestDefaultEngineBase):
     def test_prjconfig_vsdevcmd_products_invalid(self):
-        setprjcfg(self.engine, 'vsdevcmd_products', 1)
+        self.setprjcfg('vsdevcmd_products', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
     def test_prjconfig_vsdevcmd_products_valid(self):
-        setprjcfg(
-            self.engine,
+        self.setprjcfg(
             'vsdevcmd_products',
             'Microsoft.VisualStudio.Product.BuildTools',
         )

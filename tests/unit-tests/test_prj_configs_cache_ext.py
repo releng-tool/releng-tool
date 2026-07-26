@@ -2,20 +2,18 @@
 # Copyright releng-tool
 
 from releng_tool.exceptions import RelengToolInvalidConfigurationSettings
-from tests import setprjcfg
-from tests import writeprjcfg
 from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsCacheExt(TestDefaultEngineBase):
     def test_prjconfig_cache_ext_invalid(self):
-        setprjcfg(self.engine, 'cache_ext', 1)
+        self.setprjcfg('cache_ext', 1)
 
         with self.assertRaises(RelengToolInvalidConfigurationSettings):
             self.engine.run()
 
     def test_prjconfig_cache_ext_valid(self):
-        writeprjcfg(self.engine, '''\
+        self.writeprjcfg('''\
 def my_translator(site):
     if 'static.example.org' in site:
         return 'tgz'
