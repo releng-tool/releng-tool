@@ -6,6 +6,36 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsUrlopenContext(TestDefaultEngineBase):
+    def test_prjconfig_urlopen_context_cfgcall_invalid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    urlopen_context=1,
+)
+''')
+
+        with self.assertRaises(RelengToolInvalidConfigurationSettings):
+            self.engine.run()
+
+    def test_prjconfig_urlopen_context_cfgcall_valid(self):
+        self.newprjcfg('''\
+import ssl
+
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    urlopen_context=ssl.create_default_context(),
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertIsNotNone(opts.urlopen_context)
+
     def test_prjconfig_urlopen_context_global_invalid(self):
         self.setprjcfg('urlopen_context', 1)
 

@@ -6,6 +6,41 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsOverrideExtractTools(TestDefaultEngineBase):
+    def test_prjconfig_override_extract_tools_cfgcall_invalid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    override_extract_tools=1,
+)
+''')
+
+        with self.assertRaises(RelengToolInvalidConfigurationSettings):
+            self.engine.run()
+
+    def test_prjconfig_override_extract_tools_cfgcall_valid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    override_extract_tools={
+        'zip': '/opt/my-custom-unzip {file} {dir}',
+    },
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertIsNotNone(opts.extract_override)
+        self.assertIn('zip', opts.extract_override)
+        self.assertEqual(
+            opts.extract_override['zip'],
+            '/opt/my-custom-unzip {file} {dir}',
+        )
+
     def test_prjconfig_override_extract_tools_global_invalid(self):
         self.setprjcfg('override_extract_tools', 1)
 

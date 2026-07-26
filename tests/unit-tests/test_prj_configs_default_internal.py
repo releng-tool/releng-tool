@@ -6,6 +6,49 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsDefaultInternal(TestDefaultEngineBase):
+    def test_prjconfig_default_internal_cfgcall_invalid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    default_internal=1,
+)
+''')
+
+        with self.assertRaises(RelengToolInvalidConfigurationSettings):
+            self.engine.run()
+
+    def test_prjconfig_default_internal_cfgcall_valid_false(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    default_internal=False,
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertFalse(opts.default_internal_pkgs)
+
+    def test_prjconfig_default_internal_cfgcall_valid_true(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    default_internal=True,
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertTrue(opts.default_internal_pkgs)
+
     def test_prjconfig_default_internal_global_invalid(self):
         self.setprjcfg('default_internal', 1)
 

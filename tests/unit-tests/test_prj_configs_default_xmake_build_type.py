@@ -6,6 +6,34 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsDefaultXmakeBuildType(TestDefaultEngineBase):
+    def test_prjconfig_default_xmake_build_type_cfgcall_invalid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    default_xmake_build_type=1,
+)
+''')
+
+        with self.assertRaises(RelengToolInvalidConfigurationSettings):
+            self.engine.run()
+
+    def test_prjconfig_default_xmake_build_type_cfgcall_valid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    default_xmake_build_type='MyBuildType',
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertEqual(opts.default_xmake_build_type, 'MyBuildType')
+
     def test_prjconfig_default_xmake_build_type_global_invalid(self):
         self.setprjcfg('default_xmake_build_type', 1)
 

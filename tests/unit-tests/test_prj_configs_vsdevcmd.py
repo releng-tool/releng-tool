@@ -8,6 +8,51 @@ from unittest.mock import patch
 
 
 class TestPrjConfigsVsDevCmd(TestDefaultEngineBase):
+    def test_prjconfig_vsdevcmd_cfgcall_invalid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    vsdevcmd=1,
+)
+''')
+
+        with self.assertRaises(RelengToolInvalidConfigurationSettings):
+            self.engine.run()
+
+    @patch('releng_tool.engine.vsdevcmd_initialize', new=MagicMock)
+    def test_prjconfig_vsdevcmd_cfgcall_valid_bool(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    vsdevcmd=True,
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertTrue(opts.vsdevcmd)
+
+    @patch('releng_tool.engine.vsdevcmd_initialize', new=MagicMock)
+    def test_prjconfig_vsdevcmd_cfgcall_valid_str(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    vsdevcmd='[17.0,18.0)',
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertEqual(opts.vsdevcmd, '[17.0,18.0)')
+
     def test_prjconfig_vsdevcmd_global_invalid(self):
         self.setprjcfg('vsdevcmd', 1)
 

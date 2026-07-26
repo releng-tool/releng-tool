@@ -6,6 +6,37 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsVsDevCmdProducts(TestDefaultEngineBase):
+    def test_prjconfig_vsdevcmd_products_cfgcall_invalid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    vsdevcmd_products=1,
+)
+''')
+
+        with self.assertRaises(RelengToolInvalidConfigurationSettings):
+            self.engine.run()
+
+    def test_prjconfig_vsdevcmd_products_cfgcall_valid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    vsdevcmd_products='Microsoft.VisualStudio.Product.BuildTools',
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertEqual(
+            opts.vsdevcmd_products,
+            'Microsoft.VisualStudio.Product.BuildTools',
+        )
+
     def test_prjconfig_vsdevcmd_products_global_invalid(self):
         self.setprjcfg('vsdevcmd_products', 1)
 

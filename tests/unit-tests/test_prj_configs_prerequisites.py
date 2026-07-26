@@ -6,6 +6,55 @@ from tests.support.default_engine_test import TestDefaultEngineBase
 
 
 class TestPrjConfigsPrerequisites(TestDefaultEngineBase):
+    def test_prjconfig_prerequisites_cfgcall_invalid(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    prerequisites=1,
+)
+''')
+
+        with self.assertRaises(RelengToolInvalidConfigurationSettings):
+            self.engine.run()
+
+    def test_prjconfig_prerequisites_cfgcall_valid_list(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    prerequisites=[
+        'bin1',
+        'bin2',
+        'bin3',
+    ],
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertIn('bin1', opts.prerequisites)
+        self.assertIn('bin2', opts.prerequisites)
+        self.assertIn('bin3', opts.prerequisites)
+
+    def test_prjconfig_prerequisites_cfgcall_valid_str(self):
+        self.newprjcfg('''\
+releng_config(
+    packages = [
+        'minimal',
+    ],
+    prerequisites='myapp',
+)
+''')
+
+        self.engine.run()
+
+        opts = self.engine.opts
+        self.assertIn('myapp', opts.prerequisites)
+
     def test_prjconfig_prerequisites_global_invalid(self):
         self.setprjcfg('prerequisites', 1)
 
