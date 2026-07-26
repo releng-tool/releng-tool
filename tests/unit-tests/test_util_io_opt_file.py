@@ -23,14 +23,6 @@ class TestUtilIo(RelengToolTestCase):
 
         self.assertIn('deprecated file:', stream.getvalue())
 
-    def test_utilio_optfile_find_legacy_releng_ext(self):
-        self._create_file('releng-ext.releng')
-
-        with redirect_stdout() as stream:
-            self._verify_expected('releng-ext', 'releng-ext.releng')
-
-        self.assertIn('deprecated file:', stream.getvalue())
-
     def test_utilio_optfile_find_py_ext(self):
         self._create_file('py-ext.py')
         self._verify_expected('py-ext', 'py-ext.py')
@@ -51,11 +43,6 @@ class TestUtilIo(RelengToolTestCase):
         self._create_file('priority-test')
         self._create_file('priority-test.py')
         self._verify_expected('priority-test', 'priority-test.py')
-
-    def test_utilio_optfile_priority_03_none_over_releng(self):
-        self._create_file('priority-test')
-        self._create_file('priority-test.releng')
-        self._verify_expected('priority-test', 'priority-test')
 
     def _create_file(self, name):
         with open(self._wd_file(name), 'a'):

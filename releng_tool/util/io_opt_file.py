@@ -14,7 +14,6 @@ RELENG_TOOL_EXTENSIONS = [
 # legacy file extensions for releng-tool scripts/definitions
 RELENG_TOOL_LEGACY_EXTENSIONS = [
     '',
-    '.releng',
 ]
 
 

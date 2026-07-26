@@ -51,12 +51,3 @@ class TestEngineRunDeprecated(RelengToolTestCase):
 
             file_flag = os.path.join(engine.opts.out_dir, 'invoked-build')
             self.assertTrue(os.path.exists(file_flag))
-
-    def test_engine_run_deprecated_cfg_ext_releng(self):
-        with prepare_testenv(
-                template='deprecated-project-cfg-ext-releng') as engine:
-            rv = engine.run()
-            self.assertTrue(rv)
-
-            file_flag = os.path.join(engine.opts.out_dir, 'invoked-build')
-            self.assertTrue(os.path.exists(file_flag))
