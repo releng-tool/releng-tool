@@ -283,7 +283,6 @@ def writeprjcfg(engine, value):
     prj_def = Path(engine.opts.root_dir) / 'releng-tool.rt'
 
     with prj_def.open(mode='a', encoding='utf_8') as file_def:
-        print(value)
         file_def.write(value)
 
 
