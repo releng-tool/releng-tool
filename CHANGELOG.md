@@ -1,5 +1,6 @@
 ## Development
 
+- **(note)** Support for `.releng` extension has been dropped
 - Allow `LIBFOO_FORCE_REVISION` to be auto-injected into environment
 - Fixed usage of `vsdevcmd_products` project configuration
 - Introducing the `releng_config` project configuration approach
