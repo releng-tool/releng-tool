@@ -106,6 +106,26 @@ def mock_os_remove_permission_denied(f=None):
         yield
 
 
+def newprjcfg(engine: RelengEngine, value: str) -> None:
+    """
+    write raw data to a new project definition from a template project
+
+    This utility method can be used to overwrite project-specific configuration
+    raw text into a project definition. This is to help setup a fresh
+    configuration state over what is provided in an initial template
+    configuration.
+
+    Args:
+        engine: the engine used for this run
+        value: the raw value to add
+    """
+
+    prj_def = Path(engine.opts.root_dir) / 'releng-tool.rt'
+
+    with prj_def.open(mode='w', encoding='utf_8') as file_def:
+        file_def.write(value)
+
+
 @contextmanager
 def prepare_testenv(config=None, template=None, args=None):
     """
