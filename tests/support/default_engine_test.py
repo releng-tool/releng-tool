@@ -2,7 +2,10 @@
 # Copyright releng-tool
 
 from tests import RelengToolTestCase
+from tests import newprjcfg
 from tests import prepare_testenv
+from tests import setprjcfg
+from tests import writeprjcfg
 
 
 class TestDefaultEngineBase(RelengToolTestCase):
@@ -33,3 +36,14 @@ class TestDefaultEngineBase(RelengToolTestCase):
             with prepare_testenv(template='minimal') as engine:
                 self.engine = engine
                 super().run(result)
+
+    # helpers
+
+    def newprjcfg(self, value: str) -> None:
+        newprjcfg(self.engine, value)
+
+    def setprjcfg(self, key: str, value: str) -> None:
+        setprjcfg(self.engine, key, value)
+
+    def writeprjcfg(self, value: str) -> None:
+        writeprjcfg(self.engine, value)
