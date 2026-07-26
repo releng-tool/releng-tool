@@ -1,2 +1,11 @@
 PACKAGE_DIR = ROOT_DIR / 'package'
-packages = [p.name for p in PACKAGE_DIR.rglob('*') if p.is_dir()]
+detected_packages = [p.name for p in PACKAGE_DIR.rglob('*') if p.is_dir()]
+
+releng_config(
+    packages=detected_packages,
+)
+
+# rt200-ignore-global-cfg-use
+packages = [
+    'ignored',
+]

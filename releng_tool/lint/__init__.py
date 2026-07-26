@@ -127,8 +127,12 @@ def lint(opts: RelengEngineOptions, pkgs: list[RelengPackage]) -> bool:
     from releng_tool.lint.rt114 import rt114
     from releng_tool.lint.rt115 import rt115
     from releng_tool.lint.rt116 import rt116
+    from releng_tool.lint.rt200 import rt200
 
     state = LintState(opts.lint_max_version)
+
+    conf_nodes = list(process_nodes(Path(opts.conf_point)))
+    rt200(state, opts, conf_nodes)
 
     for pkg in pkgs:
         # ignore defless packages
