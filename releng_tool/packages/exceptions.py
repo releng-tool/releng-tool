@@ -78,6 +78,25 @@ unable to load package script: {script}
 '''.strip().format(**args))
 
 
+class RelengToolMissingLocalDirectory(RelengToolInvalidPackageConfiguration):
+    """
+    raised when a package script cannot be found
+    """
+    def __init__(self, args):
+        super().__init__('''\
+unknown local directory for package: {pkg_name}
+
+The following package defines a local package configuration:
+
+    {pkg_def_dir}
+
+A search for a local directory in the following paths did not find anything:
+
+ - {new_local_dir}
+ - {alt_local_dir}
+'''.strip().format(**args))
+
+
 class RelengToolMissingPackageScript(RelengToolInvalidPackageConfiguration):
     """
     raised when a package script cannot be found

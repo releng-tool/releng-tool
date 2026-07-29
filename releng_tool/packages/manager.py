@@ -29,6 +29,7 @@ from releng_tool.packages.exceptions import RelengToolConflictingLocalSrcsPath
 from releng_tool.packages.exceptions import RelengToolCyclicPackageDependency
 from releng_tool.packages.exceptions import RelengToolInvalidPackageKeyValue
 from releng_tool.packages.exceptions import RelengToolInvalidPackageScript
+from releng_tool.packages.exceptions import RelengToolMissingLocalDirectory
 from releng_tool.packages.exceptions import RelengToolMissingPackageRevision
 from releng_tool.packages.exceptions import RelengToolMissingPackageScript
 from releng_tool.packages.exceptions import RelengToolMissingPackageSite
@@ -841,12 +842,21 @@ explicit url vcs-type with files is deprecated: {}
         pkg_is_local = pkg_vcs_type == VcsType.LOCAL
         if pkg_is_local:
             new_local_dir = os.path.join(pkg_def_dir, 'local')
-            if os.path.isdir(new_local_dir):
-                pkg_build_dir = new_local_dir
-            else:
-                # deprecated local directory working inside definition folder
-                warn('local-defined package missing local folder: {}', name)
-                pkg_build_dir = pkg_def_dir
+            if not os.path.isdir(new_local_dir):
+                container_dir = os.path.dirname(opts.root_dir)
+                alt_local_dir = os.path.join(container_dir, name)
+
+                if os.path.isdir(alt_local_dir):
+                    new_local_dir = alt_local_dir
+                else:
+                    raise RelengToolMissingLocalDirectory({
+                        'pkg_name': name,
+                        'pkg_def_dir': Path(script).as_posix(),
+                        'new_local_dir': Path(new_local_dir).as_posix(),
+                        'alt_local_dir': Path(alt_local_dir).as_posix(),
+                    })
+
+            pkg_build_dir = new_local_dir
         else:
             pkg_build_dir = pkg_build_output_dir
 
