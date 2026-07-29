@@ -562,7 +562,9 @@ unknown/unsupported option has been provided ("{key}").{extra}''')
                 fflag = pkg._ff_fetch
                 if not req_fetch and not pkg.local_srcs:
                     if check_file_flag(fflag) == FileFlag.EXISTS:
-                        continue
+                        if os.path.exists(pkg.cache_dir) or \
+                                os.path.exists(pkg.cache_file):
+                            continue
 
                 self.stats.track_duration_start(pkg.name, 'fetch')
                 fetched = fetch_stage(self, pkg, req_fetch, pkg.fetch_opts)
