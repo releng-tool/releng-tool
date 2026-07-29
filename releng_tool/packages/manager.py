@@ -141,6 +141,7 @@ class RelengPackageManager:
             (Rpk.DEVMODE_REVISION, PkgKeyType.STR),
             (Rpk.DEVMODE_SKIP_INTEGRITY_CHECK, PkgKeyType.BOOL),
             (Rpk.ENV, PkgKeyType.DICT_STR_PSTR),
+            (Rpk.EXCLUDE_SBOM, PkgKeyType.BOOL),
             (Rpk.EXTENSION, PkgKeyType.STR),
             (Rpk.EXTERNAL, PkgKeyType.BOOL),
             (Rpk.EXTOPT, PkgKeyType.DICT),
@@ -647,6 +648,9 @@ explicit url vcs-type with files is deprecated: {}
         # skip integrity checks in development mode
         pkg_devmode_skip_ic = self._fetch(Rpk.DEVMODE_SKIP_INTEGRITY_CHECK)
 
+        # exclude from sbom
+        pkg_exclude_sbom = self._fetch(Rpk.EXCLUDE_SBOM)
+
         # extension (override)
         pkg_filename_ext = self._fetch(Rpk.EXTENSION)
 
@@ -997,6 +1001,7 @@ explicit url vcs-type with files is deprecated: {}
         pkg.devmode_ignore_cache = pkg_devmode_ignore_cache
         pkg.devmode_patches = pkg_devmode_patches
         pkg.devmode_skip_ic = pkg_devmode_skip_ic
+        pkg.exclude_sbom = pkg_exclude_sbom
         pkg.extract_type = pkg_extract_type
         pkg.git_config = pkg_git_config
         pkg.git_depth = pkg_git_depth

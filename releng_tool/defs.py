@@ -116,6 +116,7 @@ class Rpk(StrCcEnum):
         DEVMODE_PATCHES: configure patches for use in development mode
         DEVMODE_REVISION: devmode-rev to acquire from srcs
         DEVMODE_SKIP_INTEGRITY_CHECK: skip checks when in development mode
+        EXCLUDE_SBOM: whether to exclude in an sbom
         EXTENSION: filename extension for package (if needed)
         EXTERNAL: whether or not package is considered "external"
         EXTOPT: extension-defined package modifiers (if any)
@@ -197,6 +198,7 @@ class Rpk(StrCcEnum):
     DEVMODE_PATCHES = 'DEVMODE_PATCHES'
     DEVMODE_REVISION = 'DEVMODE_REVISION'
     DEVMODE_SKIP_INTEGRITY_CHECK = 'DEVMODE_SKIP_INTEGRITY_CHECK'
+    EXCLUDE_SBOM = 'EXCLUDE_SBOM'
     EXTENSION = 'EXTENSION'
     EXTERNAL = 'EXTERNAL'
     EXTOPT = 'EXTOPT'

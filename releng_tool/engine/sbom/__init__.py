@@ -23,6 +23,7 @@ from releng_tool.util.hash import BadFileHashLoadError
 from releng_tool.util.hash import BadFormatHashLoadError
 from releng_tool.util.hash import load as load_hashes
 from releng_tool.util.io_mkdir import mkdir
+from releng_tool.util.log import debug
 from releng_tool.util.log import err
 from releng_tool.util.log import warn
 import hashlib
@@ -80,6 +81,11 @@ class SbomManager:
         sorted_pkgs = sorted(pkgs, key=lambda pkg: pkg.name)
 
         for pkg in sorted_pkgs:
+            # ignore packages explicitly flagged to be excluded from sbom
+            if pkg.exclude_sbom:
+                debug(f'excluding package from sbom per config: {pkg.name}')
+                continue
+
             # ignore placeholder packages
             if pkg.vcs_type == VcsType.NONE:
                 continue

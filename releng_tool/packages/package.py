@@ -31,6 +31,7 @@ class RelengPackage:
         devmode_ignore_cache: whether or not cache files should be ignored
         devmode_patches: patch application in devmode
         devmode_skip_ic: whether to skip integrity checks in devmode
+        exclude_sbom: whether to exclude in an sbom
         ext_modifiers: extension-defined modifiers (dict)
         extract_type: extraction type override (for extensions, if applicable)
         fetch_opts: fetch options (if applicable)
@@ -130,6 +131,7 @@ class RelengPackage:
         self.devmode_ignore_cache = None
         self.devmode_patches = None
         self.devmode_skip_ic = None
+        self.exclude_sbom = False
         self.ext_modifiers = None
         self.extract_type = None
         self.fetch_opts = None
