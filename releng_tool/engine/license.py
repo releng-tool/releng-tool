@@ -93,7 +93,7 @@ class LicenseManager:
         # definitions for all applicable packages for this run
         license_file = os.path.join(self.opts.license_dir, 'licenses')
         try:
-            with open(license_file, 'w') as dst:
+            with open(license_file, 'wb') as dst:
                 license_header = expand(self.opts.license_header)
                 if not license_header:
                     license_header = 'license(s)'
@@ -101,7 +101,7 @@ class LicenseManager:
                 # output license header
                 dst.write(f'''{license_header}
 ################################################################################
-''')
+'''.encode())
 
                 # output license header
                 has_pkg_info = False
@@ -112,22 +112,22 @@ class LicenseManager:
                     dst.write(f'''
 {license_name}-{license_version}
 --------------------------------------------------------------------------------
-''')
+'''.encode())
                     for pkg_license_file in sorted(license_files):
                         verbose('writing license file ({}): {}',
                             license_name, pkg_license_file)
 
                         if os.path.isfile(pkg_license_file):
-                            with open(pkg_license_file) as f:
+                            with open(pkg_license_file, 'rb') as f:
                                 copyfileobj(f, dst)
                         else:
-                            dst.write('(missing)\n')
+                            dst.write(b'(missing)\n')
                             warn('license file missing: {}', pkg_license_file)
 
-                        dst.write('')
+                        dst.write(b'')
 
                 if not has_pkg_info:
-                    dst.write('\nNo package license information available.')
+                    dst.write(b'\nNo package license information available.')
 
             self.generated.append(license_file)
             verbose('license file has been written')
