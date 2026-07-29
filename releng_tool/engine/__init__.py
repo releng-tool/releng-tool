@@ -477,6 +477,7 @@ unknown/unsupported option has been provided ("{key}").{extra}''')
                 rv = path_remove(pkg.build_output_dir)
 
                 if pa == PkgAction.DISTCLEAN:
+                    rv &= path_remove(pkg._ff_fetch)
                     if os.path.exists(pkg.cache_file):
                         pkg_verbose_clean('removing cache file')
                         rv &= path_remove(pkg.cache_file)
