@@ -118,8 +118,8 @@ class RelengPackage:
         # (commons)
         self.asc_file = None
         self.build_dir = None
-        self.build_subdir = None
         self.build_output_dir = None
+        self.build_subdir = None
         self.build_tree = None
         self.cache_dir = None
         self.cache_file = None
@@ -130,13 +130,13 @@ class RelengPackage:
         self.devmode_ignore_cache = None
         self.devmode_patches = None
         self.devmode_skip_ic = None
+        self.ext_modifiers = None
+        self.extract_type = None
         self.fetch_opts = None
         self.fixed_jobs = None
         self.hash_file = None
         self.hash_relaxed = None
         self.host_provides = None
-        self.ext_modifiers = None
-        self.extract_type = None
         self.ignore_patches = None
         self.install_type = None
         self.is_internal = None
