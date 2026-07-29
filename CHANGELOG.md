@@ -1,3 +1,11 @@
+## Development
+
+- Allow local package types to use sibling root path as a fallback
+- Always check for cache existence if a package fetch-state is stale
+- Fixed clearing of stale fetch-state after invoking package-specific distclean
+- Introduce `LIBFOO_EXCLUDE_SBOM` to support package-specific SBOM exclusion
+- Process license files as binary to avoid encoding issues
+
 ## 4.0 (2026-07-26)
 
 - **(note)** Support for `.releng` extension has been dropped
