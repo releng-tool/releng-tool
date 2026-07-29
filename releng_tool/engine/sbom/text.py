@@ -35,6 +35,9 @@ def generate_text(sbom, cache):
             if not data:
                 continue
 
+            if has_pkg_data:
+                f.write('\n')
+
             has_pkg_data = True
             f.write(f'''\
 --------------------------------------------------------------------------------
