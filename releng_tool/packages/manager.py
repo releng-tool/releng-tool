@@ -1069,7 +1069,7 @@ explicit url vcs-type with files is deprecated: {}
         pkg._ff_build = os.path.join(outdir, prefix + 'build')
         pkg._ff_configure = os.path.join(outdir, prefix + 'configure')
         pkg._ff_extract = os.path.join(outdir, prefix + 'extract')
-        pkg._ff_fetch = os.path.join(outdir, ff_fetch)
+        pkg._ff_fetch = ff_fetch
         pkg._ff_fetch_post = os.path.join(outdir, prefix + 'fetch-post')
         pkg._ff_install = os.path.join(outdir, prefix + 'install')
         pkg._ff_license = os.path.join(outdir, prefix + 'license')
