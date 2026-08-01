@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from datetime import datetime
+from datetime import timezone
 from difflib import get_close_matches
 from pathlib import Path
 from releng_tool import __version__ as releng_version
@@ -713,6 +714,9 @@ has failed. Ensure the following path is accessible for this user:
             end_time = datetime.now().replace(microsecond=0)  # noqa: DTZ005
             success('completed ({})', end_time - start_time)
 
+        # generate some post-run information
+        self._post_run_information()
+
         # attempt to generate a report at the end of a run
         self.stats.generate()
 
@@ -930,6 +934,39 @@ has failed. Ensure the following path is accessible for this user:
             self.registry.emit(ListenerEvent.POST_BUILD_FINISHED, env=env)
 
         return True
+
+    def _post_run_information(self) -> None:
+        """
+        perform any post-run processing
+
+        Performs any additional steps after a given run. This includes:
+
+        - Generate a `skeleton-target.txt` file capturing the structure of the
+           target directory.
+        """
+
+        target_path = Path(self.opts.target_dir)
+        if not target_path.is_dir():
+            return
+
+        def _desc(path: Path) -> str:
+            desc = ''
+
+            if path.is_dir():
+                desc += '/'
+
+            if path.is_symlink():
+                desc += f' -> {path.readlink()}'
+
+            return desc
+
+        target_skeleton = Path(self.opts.out_dir) / 'skeleton-target.txt'
+        with target_skeleton.open('w') as f:
+            capture_dt = datetime.now() \
+                .astimezone(timezone.utc).replace(microsecond=0)
+            f.write(f'# {capture_dt}\n')
+            for p in sorted(target_path.rglob('*')):
+                f.write(f'{p.relative_to(target_path).as_posix()}{_desc(p)}\n')
 
     def _process_file_flags(self):
         """
