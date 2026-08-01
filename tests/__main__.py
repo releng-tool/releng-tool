@@ -118,6 +118,17 @@ def main():
     sys.stdout.flush()
     sys.stderr.flush()
 
+    # Always ignore `RELENG_` environment variables; while unit testing does
+    # not typically pass in environment options, we do allow passthrough for
+    # tool testing (since various tools rely on host environment variables);
+    # which can be a pain for releng-tool hinted environment setup in the
+    # host. While we should be able to configure `disallow_pass_env`, it is
+    # only available on more modern build. Just to be consistent, we will
+    # pre-remove these variables ourselves.
+    for key in list(os.environ.keys()):
+        if key.startswith('RELENG_'):
+            os.environ.pop(key)
+
     # invoke test suite
     runner = unittest.TextTestRunner(buffer=buffered,
         verbosity=DEFAULT_VERBOSITY)
