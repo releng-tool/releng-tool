@@ -124,9 +124,11 @@ def main():
     # which can be a pain for releng-tool hinted environment setup in the
     # host. While we should be able to configure `disallow_pass_env`, it is
     # only available on more modern build. Just to be consistent, we will
-    # pre-remove these variables ourselves.
+    # pre-remove these variables ourselves. Although, we give an exception
+    # for `RELENG_SKIP_TEST`, since we use this for system builders to easily
+    # opt-out of specific tests over more painful configuration work.
     for key in list(os.environ.keys()):
-        if key.startswith('RELENG_'):
+        if key.startswith('RELENG_') and not key.startswith('RELENG_SKIP_TEST'):
             os.environ.pop(key)
 
     # invoke test suite
