@@ -1,4 +1,4 @@
-## Development
+## 4.1 (2026-08-01)
 
 - Allow local package types to use sibling root path as a fallback
 - Always check for cache existence if a package fetch-state is stale
