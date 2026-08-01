@@ -67,6 +67,7 @@ def configure(opts):
     include_locs = []
     library_locs = []
     modules_locs = []
+    prefix_locs = []
     sysroot_locs = []
     for base_loc in base_locs:
         prefixed_base = Path(base_loc + prefix)
@@ -75,6 +76,7 @@ def configure(opts):
         include_locs.append((prefixed_base / 'include').as_posix())
         library_locs.append((prefixed_base / DEFAULT_LIB_DIR).as_posix())
         modules_locs.append(cmake_modules.as_posix())
+        prefix_locs.append(prefixed_base.as_posix())
 
     # ensure the non-full prefix options are passed in a posix style, or
     # some versions of CMake/projects may treat the path separators as
@@ -108,6 +110,11 @@ def configure(opts):
         # that compiled sources are stale
         'CMAKE_SKIP_INSTALL_ALL_DEPENDENCY': 'ON',
     }
+
+    if 'releng.cmake.disable_default_prefix' not in opts._quirks:
+        default_cmake_defs['CMAKE_PREFIX_PATH'] = ';'.join(prefix_locs)
+    else:
+        verbose('cmake prefix configuration disabled by quirk')
 
     if 'releng.cmake.disable_direct_includes' not in opts._quirks:
         for option in CMAKE_INCLUDE_INJECT_OPTIONS:

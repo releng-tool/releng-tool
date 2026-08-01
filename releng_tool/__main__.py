@@ -461,6 +461,7 @@ def usage_quirks():
     """
     return """releng-tool quirks
 
+releng.cmake.disable_default_prefix    Disable default prefix paths with CMake
 releng.cmake.disable_direct_includes   Disable include-injection with CMake
 releng.disable_devmode_ignore_cache    Disable package ignore-cache flags
 releng.disable_prerequisites_check     Disable prerequisites check
