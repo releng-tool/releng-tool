@@ -70,6 +70,7 @@ from releng_tool.util.log import warn_wrap
 from typing import Any
 import json
 import os
+import re
 import sys
 
 
@@ -105,6 +106,21 @@ class RelengEngine:
         debug('loading spdx license database: {}', licenses_file)
         with open(licenses_file) as f:
             self.opts.spdx = json.load(f)
+
+        # if any quirks are defined in the environment, allow them to be
+        # translated/used as if provided via arguments
+        raw_qstr = os.environ.get('RELENG_QUIRKS', None)
+        if raw_qstr:
+            raw_quirks = re.split(r'[ ,;]+', raw_qstr) if raw_qstr else []
+            if raw_quirks:
+                debug('detected quirks in the user environment')
+                opts.quirks.extend(raw_quirks)
+
+        # debug log the configured quirks
+        if opts.quirks:
+            debug('configured quirks)')
+            for quirk in opts.quirks:
+                debug(f' {quirk}')
 
         # enable execute environment logging if the quirk is set
         if opts.debug_extended or 'releng.log.execute_args' in opts.quirks:
