@@ -10,7 +10,7 @@ LIBPKG_DEFDIR = os.path.join('package', 'lib')
 LIBPKG_DEFINITION = os.path.join(LIBPKG_DEFDIR, 'lib.rt')
 
 
-class TestToolCmake(TestSiteToolBase):
+class TestToolCmakeModule(TestSiteToolBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -23,9 +23,9 @@ class TestToolCmake(TestSiteToolBase):
         return None  # use releng-tool default
 
     def tool_template(self):
-        return 'cmake'
+        return 'cmake-module'
 
-    def test_tool_cmake_default(self):
+    def test_tool_cmake_module_default(self):
         rv = self.engine.run()
         self.assertTrue(rv)
 
@@ -37,7 +37,7 @@ class TestToolCmake(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
-    def test_tool_cmake_host(self):
+    def test_tool_cmake_module_host(self):
         self._update_install_type('host')
 
         rv = self.engine.run()
@@ -47,7 +47,7 @@ class TestToolCmake(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
-    def test_tool_cmake_staging_only(self):
+    def test_tool_cmake_module_staging_only(self):
         self._update_install_type('staging')
 
         rv = self.engine.run()
@@ -61,7 +61,7 @@ class TestToolCmake(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertFalse(os.path.exists(executable))
 
-    def test_tool_cmake_staging_and_target(self):
+    def test_tool_cmake_module_staging_and_target(self):
         self._update_install_type('staging_and_target')
 
         rv = self.engine.run()
@@ -75,7 +75,7 @@ class TestToolCmake(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertTrue(os.path.exists(executable))
 
-    def test_tool_cmake_noinstall(self):
+    def test_tool_cmake_module_noinstall(self):
         self.defconfig_add('CMAKE_NOINSTALL', value=True)
 
         rv = self.engine.run()
@@ -85,12 +85,7 @@ class TestToolCmake(TestSiteToolBase):
         executable = os.path.join(bin_dir, self.filename)
         self.assertFalse(os.path.exists(executable))
 
-    def test_tool_cmake_toolchain(self):
-        # skip the toolchain test on Windows; while this does work on CMake v4+
-        # installations, the current project's CI script is still using v3.31.
-        if sys.platform == 'win32':
-            raise self.skipTest('cmake<4 issues on win32')
-
+    def test_tool_cmake_module_toolchain(self):
         self.defconfig_add('CONF_DEFS', {
             'CMAKE_TOOLCHAIN_FILE': '$ROOT_DIR/toolchain.cmake',
         })
