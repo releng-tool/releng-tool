@@ -112,7 +112,7 @@ class RelengEngine:
         if opts.debug_extended or 'releng.log.execute_env' in opts.quirks:
             releng_log_tag('execute-env')
 
-    def run(self):
+    def run(self) -> bool:
         """
         run the engine
 
