@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+#
+# Container image used to support packaging/testing on Ubuntu.
+
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y \
+    bash \
+    bzr \
+    cargo \
+    cmake \
+    cvs \
+    flit \
+    git \
+    gpg-agent \
+    mercurial \
+    meson \
+    patch \
+    python3-build \
+    python3-installer \
+    python3-setuptools \
+    python3-wheel \
+    scons \
+    xmake \
+    && apt-get remove -y \
+    python3-trove-classifiers \
+    && rm -rf /var/lib/apt/lists/*
+
+# setup a default user
+RUN useradd -ms /bin/bash default
+USER default
+WORKDIR /home/default

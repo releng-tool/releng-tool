@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+#
+# Container image used to support packaging/testing on Alpine.
+
+FROM alpine:latest
+
+RUN apk add \
+    bash \
+    breezy \
+    cargo \
+    cmake \
+    cvs \
+    g++ \
+    git \
+    gnupg \
+    make \
+    mercurial \
+    meson \
+    patch \
+    poetry \
+    py3-build \
+    py3-flit-core \
+    py3-installer \
+    py3-setuptools \
+    py3-wheel \
+    scons \
+    waf \
+    xmake \
+    --no-cache && \
+    # pre-unpack waf to allow default user to use \
+    waf --version >/dev/null
+
+# setup a default user
+RUN adduser -D -s /bin/bash default
+USER default
+WORKDIR /home/default

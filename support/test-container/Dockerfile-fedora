@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+#
+# Container image used to support packaging/testing on Fedora.
+
+FROM fedora:latest
+
+RUN dnf install -y \
+    bash \
+    breezy \
+    cargo \
+    cmake \
+    cvs \
+    gcc-c++ \
+    git \
+    gnupg2 \
+    hatch \
+    make \
+    mercurial \
+    meson \
+    patch \
+    poetry \
+    python3-build \
+    python3-flit-core \
+    python3-installer \
+    python3-setuptools \
+    python3-wheel \
+    scons \
+    waf \
+    xmake \
+    && dnf clean all
+
+# setup a default user
+RUN useradd -ms /bin/bash default
+USER default
+WORKDIR /home/default

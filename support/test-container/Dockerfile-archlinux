@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+#
+# Container image used to support packaging/testing on Arch Linux.
+
+FROM archlinux:latest
+
+RUN pacman -Syu \
+    base-devel \
+    cmake \
+    cvs \
+    git \
+    mercurial \
+    meson \
+    patch \
+    python-build \
+    python-flit \
+    python-hatch \
+    python-installer \
+    python-poetry \
+    python-setuptools \
+    python-wheel \
+    rust \
+    scons \
+    waf \
+    xmake \
+    --noconfirm
+
+# setup a default user
+RUN useradd -ms /bin/bash default
+USER default
+WORKDIR /home/default

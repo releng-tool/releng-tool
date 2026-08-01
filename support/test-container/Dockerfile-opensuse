@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright releng-tool
+#
+# Container image used to support packaging/testing on openSUSE.
+
+FROM opensuse/leap:latest
+
+RUN zypper --non-interactive install --no-recommends \
+    cargo \
+    cmake \
+    cvs \
+    gcc-c++ \
+    git \
+    gpg2 \
+    make \
+    mercurial \
+    meson \
+    patch \
+    python313-build \
+    python313-flit-core \
+    python313-hatch \
+    python313-pdm \
+    python313-pip \
+    python313-setuptools \
+    python313-wheel \
+    scons \
+    && zypper clean -a
+
+# setup a default user
+RUN useradd -ms /bin/bash default
+USER default
+WORKDIR /home/default
