@@ -3,8 +3,11 @@
 - Allow local package types to use sibling root path as a fallback
 - Always check for cache existence if a package fetch-state is stale
 - Fixed clearing of stale fetch-state after invoking package-specific distclean
+- Generate a `skeleton-target.txt` of the target file structure post-run
 - Introduce `LIBFOO_EXCLUDE_SBOM` to support package-specific SBOM exclusion
 - Process license files as binary to avoid encoding issues
+- Re-introducing configuring `CMAKE_PREFIX_PATH` to support "Config" finds
+- Support for `RELENG_QUIRKS` to pass in quirks via an environment variable
 
 ## 4.0 (2026-07-26)
 
