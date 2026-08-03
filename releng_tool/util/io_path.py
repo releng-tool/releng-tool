@@ -96,6 +96,10 @@ def releng_register_python_path(dir_: str | bytes | os.PathLike,
 
         This call was originally named ``releng_register_path``.
 
+    .. versionchanged:: 4.2
+
+        Added the ``prepend`` argument.
+
     This call will register a provided path into the Python module search path
     (``sys.path``). This can be useful for situations when trying to load a
     local/relative folder containing extensions or other enhancements a

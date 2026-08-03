@@ -9,6 +9,7 @@ from releng_tool.engine.script_env import prepare_script_environment
 from releng_tool.opts import RelengEngineOptions
 from tests import RelengToolTestCase
 import ast
+import platform
 
 
 class TestEngineScriptEnv(RelengToolTestCase):
@@ -167,6 +168,29 @@ class TestEngineScriptEnv(RelengToolTestCase):
         env = {}
         prepare_script_environment(env, self.opts)
         self.assertTrue(env['RELENG_FORCE'])
+
+    def test_engine_scriptenv_env_releng_host_os(self):
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertIn('RELENG_HOST_OS_LINUX', env)
+        self.assertIn('RELENG_HOST_OS_MACOS', env)
+        self.assertIn('RELENG_HOST_OS_WINDOWS', env)
+
+        match platform.system().lower():
+            case 'darwin':
+                self.assertFalse(env['RELENG_HOST_OS_LINUX'])
+                self.assertTrue(env['RELENG_HOST_OS_MACOS'])
+                self.assertFalse(env['RELENG_HOST_OS_WINDOWS'])
+
+            case 'windows':
+                self.assertFalse(env['RELENG_HOST_OS_LINUX'])
+                self.assertFalse(env['RELENG_HOST_OS_MACOS'])
+                self.assertTrue(env['RELENG_HOST_OS_WINDOWS'])
+
+            case _:
+                self.assertTrue(env['RELENG_HOST_OS_LINUX'])
+                self.assertFalse(env['RELENG_HOST_OS_MACOS'])
+                self.assertFalse(env['RELENG_HOST_OS_WINDOWS'])
 
     def test_engine_scriptenv_env_releng_localsrcs(self):
         env = {}

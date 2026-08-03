@@ -67,6 +67,9 @@ def prepare_script_environment(env, opts):
     env['RELENG_DISTCLEAN'] = None
     env['RELENG_EXEC'] = None
     env['RELENG_FORCE'] = None
+    env['RELENG_HOST_OS_LINUX'] = sys.platform.startswith('linux')
+    env['RELENG_HOST_OS_MACOS'] = sys.platform == 'darwin'
+    env['RELENG_HOST_OS_WINDOWS'] = sys.platform == 'win32'
     env['RELENG_LOCALSRCS'] = None
     env['RELENG_MRPROPER'] = None
     env['RELENG_PROFILES'] = []

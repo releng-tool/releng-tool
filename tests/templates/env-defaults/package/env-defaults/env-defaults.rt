@@ -13,3 +13,10 @@ assert not RELENG_REINSTALL
 assert not RELENG_RELEASE
 assert not RELENG_TARGET_PKG
 assert not RELENG_VERBOSE
+
+# sanity check all host variables exist but only one is set
+assert any((
+    RELENG_HOST_OS_LINUX,
+    RELENG_HOST_OS_MACOS,
+    RELENG_HOST_OS_WINDOWS,
+))
