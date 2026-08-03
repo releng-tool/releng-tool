@@ -17,6 +17,14 @@ class TestUtilIoPathRegisterPythonPath(RelengToolTestCase):
             'RELENG_TOOL_TEST_BADPATH', critical=False)
         self.assertFalse(rv)
 
+    def test_utilio_path_register_python_path_prepend(self):
+        with temp_dir() as tmp_dir:
+            rv = releng_register_python_path(tmp_dir, prepend=True)
+            self.assertTrue(rv)
+
+            # path is first
+            self.assertEqual(tmp_dir, sys.path[0])
+
     def test_utilio_path_register_python_path_single(self):
         with temp_dir() as tmp_dir:
             rv = releng_register_python_path(tmp_dir)

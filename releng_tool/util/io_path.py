@@ -31,7 +31,7 @@ def path_input(path: str | bytes | os.PathLike) -> Path:
 
 
 def releng_register_python_path(dir_: str | bytes | os.PathLike,
-        *, critical: bool = True):
+        *, critical: bool = True, prepend: bool = False):
     """
     register a provided directory into python's module search path
 
@@ -59,6 +59,7 @@ def releng_register_python_path(dir_: str | bytes | os.PathLike,
     Args:
         dir_: the directory to register
         critical (optional): whether or not to stop execution on failure
+        prepend (optional): whether this path should be prepended
 
     Returns:
         ``True`` if the path has been registered; ``False`` if the registration
@@ -73,7 +74,10 @@ def releng_register_python_path(dir_: str | bytes | os.PathLike,
     if path.is_dir():
         path_str = str(path)
         if path_str not in sys.path:
-            sys.path.append(path_str)
+            if prepend:
+                sys.path.insert(0, path_str)
+            else:
+                sys.path.append(path_str)
             debug(f'registered module search path: {path}')
         success = True
     else:
