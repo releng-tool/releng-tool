@@ -40,6 +40,36 @@ class TestToolMake(TestSiteToolBase):
 
         expected_missing = [
             os.path.join(host_dir, 'test-make-install'),
+            os.path.join(root_dir, 'test-custom-configure'),
+            os.path.join(staging_dir, 'test-make-install'),
+        ]
+
+        for expected in expected_exists:
+            self.assertTrue(os.path.exists(expected), expected)
+
+        for expected in expected_missing:
+            self.assertFalse(os.path.exists(expected), expected)
+
+    def test_tool_make_custom_configure(self):
+        self.defconfig_add('MAKE_CONFIGURE', './configure.sh')
+
+        rv = self.engine.run()
+        self.assertTrue(rv)
+
+        host_dir = os.path.join(self.engine.opts.host_dir)
+        root_dir = os.path.join(self.engine.opts.root_dir)
+        staging_dir = os.path.join(self.engine.opts.staging_dir)
+        target_dir = os.path.join(self.engine.opts.target_dir)
+
+        expected_exists = [
+            os.path.join(root_dir, 'test-custom-configure'),
+            os.path.join(root_dir, 'test-make-build'),
+            os.path.join(target_dir, 'test-make-install'),
+        ]
+
+        expected_missing = [
+            os.path.join(host_dir, 'test-make-install'),
+            os.path.join(root_dir, 'test-make-configure'),
             os.path.join(staging_dir, 'test-make-install'),
         ]
 

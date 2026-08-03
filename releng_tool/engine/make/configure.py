@@ -3,6 +3,7 @@
 
 from releng_tool.engine.script.configure import configure as configure_script
 from releng_tool.tool.make import MAKE
+from releng_tool.util.io import execute
 from releng_tool.util.io import prepare_arguments
 from releng_tool.util.io import prepare_definitions
 from releng_tool.util.log import err
@@ -28,9 +29,11 @@ def configure(opts):
         err('unable to configure package; make is not installed')
         return False
 
-    # If the provided package has not provided any configuration settings,
-    # assume that the Make project does not have a configuration event.
-    if not opts.conf_defs and not opts._conf_env_pkg and not opts.conf_opts:
+    # If the provided package has not provided a configuration command or
+    # any configuration settings, assume that the Make project does not have
+    # a configuration event.
+    if not opts._make_configure and not opts.conf_defs and \
+            not opts._conf_env_pkg and not opts.conf_opts:
         verbose('no configuration settings provided: {}', opts.name)
 
         # fallback to invoking a configuration script
@@ -54,7 +57,12 @@ def configure(opts):
     make_args.extend(prepare_definitions(make_defs))
     make_args.extend(prepare_arguments(make_opts))
 
-    if not MAKE.execute(make_args, env=expand(opts.conf_env)):
+    if opts._make_configure:
+        if not execute([opts._make_configure, *make_args],
+                env_update=expand(opts.conf_env), critical=False):
+            err('failed to configure make project: {}', opts.name)
+            return False
+    elif not MAKE.execute(make_args, env=expand(opts.conf_env)):
         err('failed to configure make project: {}', opts.name)
         return False
 

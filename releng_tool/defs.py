@@ -173,6 +173,7 @@ class Rpk(StrCcEnum):
         CMAKE_BUILD_TYPE: the cmake build type to use
         CMAKE_NOINSTALL: skip cmake install stage
         # (package type - make)
+        MAKE_CONFIGURE: executable to invoke for configuration state
         MAKE_NOINSTALL: skip make install stage
         # (package type - meson)
         MESON_BUILD_TYPE: the meson build type to use
@@ -255,6 +256,7 @@ class Rpk(StrCcEnum):
     CMAKE_BUILD_TYPE = 'CMAKE_BUILD_TYPE'
     CMAKE_NOINSTALL = 'CMAKE_NOINSTALL'
     # (package type - make)
+    MAKE_CONFIGURE = 'MAKE_CONFIGURE'
     MAKE_NOINSTALL = 'MAKE_NOINSTALL'
     # (package type - meson)
     MESON_BUILD_TYPE = 'MESON_BUILD_TYPE'

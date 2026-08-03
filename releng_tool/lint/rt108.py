@@ -42,6 +42,7 @@ def rt108(state: LintState, pkg: RelengPackage, nodes: list[ast.AST]):
     # confirmed no make type -- check for any type-specific configs
     msg = 'unexpected key for non-make package'
     key_checks = [
+        pkg_key(pkg.name, Rpk.MAKE_CONFIGURE),
         pkg_key(pkg.name, Rpk.MAKE_NOINSTALL),
     ]
 

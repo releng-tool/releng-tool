@@ -90,6 +90,7 @@ class RelengPackage:
         cmake_build_type: cmake build type to use
         cmake_noinstall: flag to disable the install stage for a cmake project
         (package type - make)
+        make_configure: executable to invoke for configuration state
         make_noinstall: flag to disable the install stage for a make project
         (package type - meson)
         meson_build_type: meson build type to use
@@ -185,6 +186,7 @@ class RelengPackage:
         self.cmake_build_type = None
         self.cmake_noinstall = None
         # (package type - make)
+        self.make_configure = None
         self.make_noinstall = None
         # (package type - meson)
         self.meson_build_type = None

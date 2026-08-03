@@ -14,6 +14,33 @@ class TestEnginePkgMake(RelengToolTestCase):
     @patch('releng_tool.engine.make.install.MAKE')
     @patch('releng_tool.engine.make.build.MAKE')
     @patch('releng_tool.engine.make.configure.MAKE')
+    @patch('releng_tool.engine.make.configure.execute')
+    @patch.object(MAKE, 'exists', return_value=True)
+    def test_engine_pkg_make_config_command(self,
+            make_exists, custom_cfg, make_cfg, make_build, make_install):
+        cfg = {
+            'action': f'minimal-{PkgAction.CONFIGURE}',
+        }
+
+        with prepare_testenv(config=cfg, template='minimal') as engine:
+            setpkgcfg(engine, 'minimal', Rpk.MAKE_CONFIGURE, './configure2')
+            setpkgcfg(engine, 'minimal', Rpk.TYPE, 'make')
+
+            rv = engine.run()
+            self.assertTrue(rv)
+
+            custom_cfg.assert_called_once()
+            make_cfg.execute.assert_not_called()
+            make_build.execute.assert_not_called()
+            make_install.execute.assert_not_called()
+
+            # verify the configure command was used
+            args = custom_cfg.call_args.args[0]
+            self.assertEqual('./configure2', args[0])
+
+    @patch('releng_tool.engine.make.install.MAKE')
+    @patch('releng_tool.engine.make.build.MAKE')
+    @patch('releng_tool.engine.make.configure.MAKE')
     @patch.object(MAKE, 'exists', return_value=True)
     def test_engine_pkg_make_config_defs(self,
             make_exists, make_cfg, make_build, make_install):

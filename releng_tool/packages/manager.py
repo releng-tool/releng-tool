@@ -164,6 +164,7 @@ class RelengPackageManager:
             (Rpk.INTERNAL, PkgKeyType.BOOL),
             (Rpk.LICENSE, PkgKeyType.STRS),
             (Rpk.LICENSE_FILES, PkgKeyType.STRS),
+            (Rpk.MAKE_CONFIGURE, PkgKeyType.STR),
             (Rpk.MAKE_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.MAX_JOBS, PkgKeyType.INT),
             (Rpk.MESON_BUILD_TYPE, PkgKeyType.STR),
@@ -1356,6 +1357,10 @@ explicit url vcs-type with files is deprecated: {}
         # ######################################################################
         # (package type - make)
         # ######################################################################
+
+        # make configure command
+        if pkg.make_configure is None:
+            pkg.make_configure = self._fetch(Rpk.MAKE_CONFIGURE)
 
         # make noinstall flag
         if pkg.make_noinstall is None:
