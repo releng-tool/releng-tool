@@ -21,6 +21,7 @@ from releng_tool.util.io_ls import ls
 from releng_tool.util.io_mkdir import mkdir
 from releng_tool.util.io_move import path_move
 from releng_tool.util.io_move import path_move_into
+from releng_tool.util.io_path import releng_register_env_path
 from releng_tool.util.io_path import releng_register_python_path
 from releng_tool.util.io_remove import path_remove
 from releng_tool.util.io_step import step
@@ -201,6 +202,7 @@ def prepare_script_environment(env, opts):
     env['releng_move'] = path_move
     env['releng_move_into'] = path_move_into
     env['releng_path'] = Path
+    env['releng_register_env_path'] = releng_register_env_path
     env['releng_register_path'] = releng_register_python_path  # deprecated
     env['releng_register_python_path'] = releng_register_python_path
     env['releng_remove'] = path_remove
