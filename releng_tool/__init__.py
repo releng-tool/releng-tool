@@ -20,6 +20,7 @@ __version__ = '4.2.0.dev0'
 # Note: changes introduced here should be synonymous with engine-shared helpers:
 #        RelengEngine._prepareSharedEnvironment
 
+# ruff: noqa: E501
 # ruff: noqa: F401
 
 from os.path import join as releng_join
@@ -38,7 +39,8 @@ from releng_tool.util.io_ls import ls as releng_ls
 from releng_tool.util.io_mkdir import mkdir as releng_mkdir
 from releng_tool.util.io_move import path_move as releng_move
 from releng_tool.util.io_move import path_move_into as releng_move_into
-from releng_tool.util.io_path import releng_register_path as releng_register_path
+from releng_tool.util.io_path import releng_register_python_path as releng_register_path  # deprecated
+from releng_tool.util.io_path import releng_register_python_path as releng_register_python_path
 from releng_tool.util.io_remove import path_remove as releng_remove
 from releng_tool.util.io_step import step as releng_step
 from releng_tool.util.io_symlink import symlink as releng_symlink

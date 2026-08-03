@@ -30,12 +30,15 @@ def path_input(path: str | bytes | os.PathLike) -> Path:
     return Path(expand(os.fsdecode(path)))
 
 
-def releng_register_path(dir_: str | bytes | os.PathLike,
+def releng_register_python_path(dir_: str | bytes | os.PathLike,
         *, critical: bool = True):
     """
-    register a provided directory into the module search path
+    register a provided directory into python's module search path
 
     .. versionadded:: 2.7
+    .. versionchanged:: 4.2
+
+        This call was originally named ``releng_register_path``.
 
     This call will register a provided path into the Python module search path
     (``sys.path``). This can be useful for situations when trying to load a
@@ -51,7 +54,7 @@ def releng_register_path(dir_: str | bytes | os.PathLike,
 
     .. code-block:: python
 
-        releng_register_path(ROOT_DIR.parent / 'my-other-folder')
+        releng_register_python_path(ROOT_DIR.parent / 'my-other-folder')
 
     Args:
         dir_: the directory to register
