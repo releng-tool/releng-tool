@@ -1,3 +1,10 @@
+## Development
+
+- Introduce `LIBFOO_MAKE_CONFIGURE` for custom make configuration calls
+- Introduce `releng_register_python_path` helper script function
+- Renamed `releng_register_path` to `releng_register_python_path`
+- Renamed call `releng_register_python_path` now supports `prepend`
+
 ## 4.1 (2026-08-01)
 
 - Allow local package types to use sibling root path as a fallback
