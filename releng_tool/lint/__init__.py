@@ -44,8 +44,8 @@ class LintState:
         # track total issues detected
         self.issue_count = 0
 
-    def report(self, code: int, path: str, node: ast.expr | ast.stmt, msg: str,
-            extra: str = ''):
+    def report(self, code: int, path: str | Path, node: ast.expr | ast.stmt,
+            msg: str, extra: str = ''):
         """
         report a linter issue
 
@@ -61,10 +61,11 @@ class LintState:
 
         code_prefix = '\033[1;31m' if is_colorized() else ''
         code_suffix = '\033[0m' if is_colorized() else ''
+        reported_path = Path(path).as_posix()
 
         log(f'''\
 {code_prefix}RT{code:03d}{code_suffix} {msg}
-  --> {path}:{node.lineno}:{node.col_offset}
+  --> {reported_path}:{node.lineno}:{node.col_offset}
 {extra}''')
 
         # increment the detected issue event
