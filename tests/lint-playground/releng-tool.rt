@@ -9,3 +9,6 @@ releng_config(
 packages = [
     'ignored',
 ]
+
+# rt300-deprecated-register-path-call
+releng_register_path(Path(__file__).parent)
