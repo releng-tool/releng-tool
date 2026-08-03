@@ -1,6 +1,7 @@
 ## Development
 
 - Introduce `LIBFOO_MAKE_CONFIGURE` for custom make configuration calls
+- Introduce `RELENG_HOST_OS_*` environment/script variables
 - Introduce `releng_register_python_path` helper script function
 - Renamed `releng_register_path` to `releng_register_python_path`
 - Renamed call `releng_register_python_path` now supports `prepend`
