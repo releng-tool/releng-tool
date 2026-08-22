@@ -17,13 +17,16 @@ RUN pacman -Syu \
     python-tox \
     rust \
     scons \
+    sudo \
     waf \
     xmake \
-    --noconfirm
+    --noconfirm && \
+    # setup a default user
+    # (tools like cvs are not happy when running as root)
+    useradd -ms /bin/bash -G wheel default && \
+    # allow root for development runtime changes
+    echo '%wheel ALL=(ALL:ALL) NOPASSWD:ALL' >/etc/sudoers.d/10-wheel
 
-# setup a default user
-# (tools like cvs are not happy when running as root)
-RUN useradd -ms /bin/bash default
 USER default
 WORKDIR /home/default
 
