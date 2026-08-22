@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from contextlib import contextmanager
+from pathlib import Path
 from releng_tool.apimode import API_STATE
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import ListenerEvent
@@ -556,7 +557,7 @@ class RelengPackagePipeline:
             raise RelengToolMissingExecCommand(pkg.name)
 
         note('execution for {}...', pkg.name)
-        debug('(wd) {}', pkg.build_tree)
+        debug('(wd) {}', Path(pkg.build_tree).as_posix())
         if isinstance(exec_cmd, list):
             exec_cmd = cmd_args_to_str(exec_cmd)
         debug('(cmd) {}', exec_cmd)

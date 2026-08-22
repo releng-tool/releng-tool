@@ -2,6 +2,7 @@
 # Copyright releng-tool
 
 from __future__ import annotations
+from pathlib import Path
 from releng_tool.support import releng_script_envs
 from releng_tool.util.critical import raise_for_critical
 from releng_tool.util.log import debug
@@ -285,7 +286,7 @@ def _execute(args, cwd=None, env=None, env_update=None, quiet=None,
             args = prepend_shebang_interpreter(args)
 
         if is_verbose():
-            debug('(wd) {}', cwd or os.getcwd())
+            debug('(wd) {}', Path(cwd or os.getcwd()).as_posix())
             cmd_str = cmd_args_to_str(args)
             verbose('invoking: ' + cmd_str)
             AT_LEAST_THREE_ARGS = 3
