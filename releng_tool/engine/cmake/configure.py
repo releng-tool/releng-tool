@@ -122,6 +122,11 @@ def configure(opts):
     else:
         verbose('cmake direct includes disabled by quirk')
 
+    if 'releng.cmake.disable_export_compile_commands' not in opts._quirks:
+        default_cmake_defs['CMAKE_EXPORT_COMPILE_COMMANDS'] = 'ON'
+    else:
+        verbose('cmake export compile commands configuration disabled by quirk')
+
     # compile a list of package-provided defines
     cmake_defs = {}
     if opts.conf_defs:
