@@ -402,10 +402,10 @@ def usage():
                             directories (e.g. <ASSETS_DIR>/cache)
  --cache-dir <dir>         Directory for VCS-cache (default: <ROOT>/cache)
  --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
- --development [<mode>], -D [<mode>]
-                           Enable development mode
  --debug                   Show debug-related messages
  --debug-extended          Show even more debug-related messages
+ --development [<mode>], -D [<mode>]
+                           Enable development mode
  --dl-dir <dir>            Directory for download archives (default: <ROOT>/dl)
  --force, -F               Trigger a forced request
  --help, -h                Show this help
