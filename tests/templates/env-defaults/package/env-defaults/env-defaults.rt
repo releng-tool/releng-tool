@@ -1,4 +1,5 @@
 # sanity check key variables always exist, and are empty by default
+assert not RELENG_BUILD_ID
 assert not RELENG_CLEAN
 assert not RELENG_DEBUG
 assert not RELENG_DEVMODE

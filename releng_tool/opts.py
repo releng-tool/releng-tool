@@ -59,6 +59,7 @@ class RelengEngineOptions:
     Attributes:
         assets_dir: directory container for cache/download directories
         build_dir: directory container for all builds
+        build_id: identifier to use for this execution run
         cache_dir: directory container for cache (vcs bare sources)
         cache_ext_transform: transform for cache extension from site path
         conf_point: releng project's configuration
@@ -117,6 +118,7 @@ class RelengEngineOptions:
     def __init__(self, args=None, forward_args=None):
         self.assets_dir = None
         self.build_dir = None
+        self.build_id = None
         self.cache_dir = None
         self.cache_ext_transform = None
         self.conf_point = None
@@ -207,6 +209,7 @@ class RelengEngineOptions:
         if args.root_dir:
             self.root_dir = os.path.abspath(args.root_dir)
 
+        self.build_id = args.build_id
         self.conf_point = args.config
         self.debug = args.debug
         self.debug_extended = args.debug_extended

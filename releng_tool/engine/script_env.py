@@ -61,6 +61,7 @@ def prepare_script_environment(env, opts):
     """
 
     # always register optional flags in script environment
+    env['RELENG_BUILD_ID'] = None
     env['RELENG_CLEAN'] = None
     env['RELENG_DEBUG'] = None
     env['RELENG_DEVMODE'] = None
@@ -161,6 +162,8 @@ def prepare_script_environment(env, opts):
                 PkgAction.REINSTALL):
             env_['RELENG_REINSTALL'] = True
 
+        if opts.build_id:
+            env_['RELENG_BUILD_ID'] = opts.build_id
         if opts.debug:
             env_['RELENG_DEBUG'] = True
         if opts.devmode:

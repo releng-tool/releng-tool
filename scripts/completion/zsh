@@ -22,6 +22,7 @@ function _releng_tool {
     _arguments -C \
         '--api[enable api mode]' \
         '--assets-dir[directory to hold cache/download directories]: :_files' \
+        '--build-id[build identifier a project may wish to use]: ' \
         '--cache-dir[directory for distributed version control cache]: :_files' \
         '--config[configuration file to load]: :_files' \
         '--debug[show debug-related messages]' \

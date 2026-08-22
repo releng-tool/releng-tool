@@ -42,6 +42,41 @@ class TestMainlineArgs(RelengToolTestCase):
             opts = engine.call_args.args[0]
             self.assertIn('example-path', opts.assets_dir)
 
+    def test_mainline_args_build_id_invalid_type(self):
+        with self._setup(), self.assertRaises(SystemExit):
+            main([
+                '--build-id',
+                'some-value',
+            ])
+
+    def test_mainline_args_build_id_invalid_value(self):
+        with self._setup(), self.assertRaises(SystemExit):
+            main([
+                '--build-id',
+                '-1',
+            ])
+
+    def test_mainline_args_build_id_missing(self):
+        with self._setup(), self.assertRaises(SystemExit):
+            main([
+                '--build-id',
+            ])
+
+    def test_mainline_args_build_id_set(self):
+        with self._setup() as engine:
+            main([
+                '--build-id',
+                '42',
+            ])
+            opts = engine.call_args.args[0]
+            self.assertEqual(42, opts.build_id)
+
+    def test_mainline_args_build_id_unset(self):
+        with self._setup() as engine:
+            main()
+            opts = engine.call_args.args[0]
+            self.assertIsNone(opts.build_id)
+
     def test_mainline_args_cache_dir_missing(self):
         with self._setup(), self.assertRaises(SystemExit):
             main([

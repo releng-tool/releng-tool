@@ -37,6 +37,17 @@ class TestEngineScriptEnv(RelengToolTestCase):
         self.assertIn('PREFIX', env)
         self.assertEqual(env['PREFIX'], 'example-prefix')
 
+    def test_engine_scriptenv_env_releng_build_id(self):
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertIn('RELENG_BUILD_ID', env)
+        self.assertFalse(env['RELENG_BUILD_ID'])
+
+        self.opts.build_id = 42
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertEqual(env['RELENG_BUILD_ID'], 42)
+
     def test_engine_scriptenv_env_releng_clean(self):
         env = {}
         prepare_script_environment(env, self.opts)

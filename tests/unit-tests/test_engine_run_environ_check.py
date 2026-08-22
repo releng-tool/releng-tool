@@ -12,6 +12,7 @@ class TestEngineRunEnvironCheck(RelengToolTestCase):
         self.assertTrue(rv)
 
         optional_env_vars = [
+            'RELENG_BUILD_ID',
             'RELENG_CLEAN',
             'RELENG_DEBUG',
             'RELENG_DEVMODE',

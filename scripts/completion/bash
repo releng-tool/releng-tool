@@ -83,6 +83,7 @@ _releng_tool_module()
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     case $prev in
     '--assets-dir' | \
+    '--build-id' | \
     '--cache-dir' | \
     '--dl-dir' | \
     '--images-dir' | \
@@ -115,6 +116,7 @@ _releng_tool_module()
         opts=(
             '--api'
             '--assets-dir'
+            '--build-id'
             '--cache-dir'
             '--config'
             '--debug'
