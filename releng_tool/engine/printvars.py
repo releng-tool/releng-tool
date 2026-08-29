@@ -22,7 +22,7 @@ def printvars(pkgs: list[str], script_env: dict[str, Any]):
         script_env: script environment information
     """
 
-    for pkg in pkgs:
+    for pkg in sorted(pkgs):
         for k, v in sorted(Rpk.__dict__.items()):
             if k.startswith('_'):
                 continue

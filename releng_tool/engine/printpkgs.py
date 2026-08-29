@@ -18,7 +18,7 @@ def printpkgs(pkgs: list[RelengPackage]):
         pkgs: the package to print
     """
 
-    for pkg in pkgs:
+    for pkg in sorted(pkgs, key=lambda pkg: pkg.name):
         suffix = f' ({pkg.revision})' if pkg.revision else ''
         log(f'{pkg.name}{suffix}')
 
