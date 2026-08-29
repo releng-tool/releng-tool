@@ -71,6 +71,7 @@ class RelengEngineOptions:
         default_meson_build_type: default build type for meson packages
         default_pkg_dir: default package directory
         default_xmake_build_type: default build type for xmake packages
+        delay_start: whether to delay the start of a run after printing versions
         devmode: whether or not development mode is enabled
         dl_dir: directory container for download (archives)
         environment: environment options to apply
@@ -130,6 +131,7 @@ class RelengEngineOptions:
         self.default_meson_build_type = None
         self.default_pkg_dir = None
         self.default_xmake_build_type = None
+        self.delay_start = None
         self.devmode = None
         self.dl_dir = None
         self.environment = {}
@@ -464,6 +466,12 @@ class RelengEngineOptions:
         # subtract this many jobs for the detected job count
         if self.jobsconf < 0:
             self.jobs = max(self.jobs + self.jobsconf, 1)
+
+        # check if a user has configured a delayed start via environment
+        if self.delay_start is None:
+            delayed_start_value = env.get('RELENG_DELAYED_START')
+            if delayed_start_value:
+                self.delay_start = True
 
     def _calculate_physical_cores(self) -> int:
         """

@@ -29,6 +29,7 @@ from releng_tool.engine.script_env import prepare_script_environment
 from releng_tool.engine.settings import get_package_names
 from releng_tool.engine.settings import process_settings
 from releng_tool.engine.suggest import suggest
+from releng_tool.engine.verbanner import package_versions_banner
 from releng_tool.engine.vsdevcmd import vsdevcmd_initialize
 from releng_tool.exceptions import RelengToolInvalidConfigurationOption
 from releng_tool.exceptions import RelengToolInvalidConfigurationScript
@@ -523,6 +524,12 @@ unknown/unsupported option has been provided ("{key}").{extra}''')
 
         # verify any release mode checks (if applicable)
         release_mode_check(self, pkgs)
+
+        # if applicable for the run state, dump the versions of packages at the
+        # start of a run; this is to help developers be aware what explicit
+        # revisions are being used (especially if a project configuration
+        # utilizes different modes/dynamic overrides for revisions)
+        package_versions_banner(opts, pkgs)
 
         # track if this action is "pre-configuration", where a package
         # dependency chain can be ignored
