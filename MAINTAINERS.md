@@ -25,8 +25,17 @@ To perform a single tools test run:
 
 ## Full checks
 
-Before any release, the following check script should be run to verify all
-expected interpreters and tool checks pass:
+Before any release, run a series of helper scripts to verify all expected
+interpreters, tool checks and packaging-support pass.
+
+On a Linux environment, invoke:
+
+```
+./scripts/task-full-check-container.sh
+./scripts/task-packaging-all.sh
+```
+
+In other environments, invoke:
 
 ```
 ./scripts/task-full-check.sh
