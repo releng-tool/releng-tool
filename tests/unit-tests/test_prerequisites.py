@@ -149,12 +149,26 @@ class TestPrerequisites(RelengToolTestCase):
         self._assertPackagePrerequisite(expected=False)
 
     @patch(f'{PFX}.GIT.exists', new=lambda: True)
-    def test_prerequisites_uc_perforce_git_exists(self):
+    @patch(f'{PFX}.PERFORCE.exists', new=lambda: True)
+    def test_prerequisites_uc_perforce_git_perforce_exists(self):
         self.pkg.vcs_type = VcsType.PERFORCE
         self._assertPackagePrerequisite(expected=True)
 
     @patch(f'{PFX}.GIT.exists', new=lambda: False)
+    @patch(f'{PFX}.PERFORCE.exists', new=lambda: False)
+    def test_prerequisites_uc_perforce_git_perforce_missing(self):
+        self.pkg.vcs_type = VcsType.PERFORCE
+        self._assertPackagePrerequisite(expected=False)
+
+    @patch(f'{PFX}.GIT.exists', new=lambda: False)
+    @patch(f'{PFX}.PERFORCE.exists', new=lambda: True)
     def test_prerequisites_uc_perforce_git_missing(self):
+        self.pkg.vcs_type = VcsType.PERFORCE
+        self._assertPackagePrerequisite(expected=False)
+
+    @patch(f'{PFX}.GIT.exists', new=lambda: False)
+    @patch(f'{PFX}.PERFORCE.exists', new=lambda: False)
+    def test_prerequisites_uc_perforce_perforce_missing(self):
         self.pkg.vcs_type = VcsType.PERFORCE
         self._assertPackagePrerequisite(expected=False)
 
