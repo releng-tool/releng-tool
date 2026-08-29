@@ -486,8 +486,8 @@ class RelengPackageManager:
             pkg_revision = pkg_forced_revision
             warn('''\
 using a forced revision for package: {}
- (configuration set: '{}')\
-''', name, pkg_key(name, Rpk.FORCE_REVISION))
+ (configuration set: '{}'; value: '{}')\
+''', name, pkg_key(name, Rpk.FORCE_REVISION), pkg_forced_revision)
 
         # always ensure a revision is set; use the version value if no
         # explicit revision is provided
