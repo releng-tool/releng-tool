@@ -1,4 +1,4 @@
-## Development
+## 4.2 (2026-08-29)
 
 - Check for `p4` availability when using Perforce packages
 - Default enable `CMAKE_EXPORT_COMPILE_COMMANDS` for CMake projects
