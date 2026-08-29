@@ -16,6 +16,7 @@ from releng_tool.tool.hg import HG
 from releng_tool.tool.lore import LORE
 from releng_tool.tool.make import MAKE
 from releng_tool.tool.meson import MESON
+from releng_tool.tool.perforce import PERFORCE
 from releng_tool.tool.python import PYTHON
 from releng_tool.tool.python import PythonTool
 from releng_tool.tool.rsync import RSYNC
@@ -218,6 +219,11 @@ class RelengPrerequisites:
                 self._verbose_exists(GIT)
             else:
                 missing.add(GIT.tool)
+
+            if PERFORCE.exists():
+                self._verbose_exists(PERFORCE)
+            else:
+                missing.add(PERFORCE.tool)
 
         if VcsType.RSYNC in vcs_types:
             if RSYNC.exists():
