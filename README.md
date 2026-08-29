@@ -25,7 +25,8 @@ various Python types, SCons, Waf and Xmake) for projects using common
 build systems.
 
 For detailed documentation on the releng-tool project, see
-[releng-tool's documentation][releng-tool-doc].
+[releng-tool's documentation][releng-tool-doc-www]
+([sources][releng-tool-doc-github]).
 
 ## Requirements
 
@@ -79,4 +80,5 @@ Or may inspect various test examples demonstrating various capabilities:
 [pip]: https://pip.pypa.io/
 [pipx]: https://pipx.pypa.io/
 [python]: https://www.python.org/
-[releng-tool-doc]: https://docs.releng.io/
+[releng-tool-doc-github]: https://github.com/releng-tool/releng-tool-docs
+[releng-tool-doc-www]: https://docs.releng.io/
