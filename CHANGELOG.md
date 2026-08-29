@@ -1,10 +1,13 @@
 ## Development
 
+- Check for `p4` availability when using Perforce packages
 - Default enable `CMAKE_EXPORT_COMPILE_COMMANDS` for CMake projects
 - Introduce `LIBFOO_MAKE_CONFIGURE` for custom make configuration calls
 - Introduce `RELENG_HOST_OS_*` environment/script variables
 - Introduce `releng_register_env_path` helper script function
 - Introduce the `--build-id` argument which projects may use for tracking a run
+- Packages are now sorted when using `printpkgs` and `printvars`
+- Print package revisions at the start of a run
 - Renamed `releng_register_path` to `releng_register_python_path`
 - Renamed call `releng_register_python_path` now supports `prepend`
 
