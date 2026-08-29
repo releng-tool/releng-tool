@@ -6,9 +6,10 @@ from releng_tool.defs import Rpk
 from releng_tool.packages import pkg_key
 from releng_tool.util.log import log
 from releng_tool.util.log import warn_wrap
+from typing import Any
 
 
-def printvars(pkgs, script_env):
+def printvars(pkgs: list[str], script_env: dict[str, Any]):
     """
     request to print project/package variables to the output stream
 

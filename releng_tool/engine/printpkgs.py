@@ -2,10 +2,11 @@
 # Copyright releng-tool
 
 from releng_tool.apimode import API_STATE
+from releng_tool.packages.package import RelengPackage
 from releng_tool.util.log import log
 
 
-def printpkgs(pkgs):
+def printpkgs(pkgs: list[RelengPackage]):
     """
     request to print project names to the output stream
 
