@@ -2,6 +2,7 @@
 # Copyright releng-tool
 # SPDX-License-Identifier: BSD-2-Clause
 
+from pathlib import Path
 import configparser
 import json
 import os
@@ -14,8 +15,8 @@ LICENSE_BASE_URL = 'https://raw.githubusercontent.com/spdx/license-list-data'
 
 
 def main():
-    script_dir = os.path.dirname(__file__)
-    cfg_file = os.path.join(script_dir, CONFIG_FILE)
+    script_dir = Path(__file__).parent
+    cfg_file = script_dir / CONFIG_FILE
 
     cfg = configparser.ConfigParser()
     try:
@@ -31,19 +32,23 @@ def main():
 
         # update internally tracked license list version
         llv = '.'.join(license_tag[1:].split('.', 2)[:2])
-        root_dir = os.path.dirname(script_dir)
-        engine_dir = os.path.join(root_dir, 'releng_tool', 'engine')
-        sbom_implementation = os.path.join(engine_dir, 'sbom.py')
+        root_dir = script_dir.parent
+        engine_dir = root_dir / 'releng_tool' / 'engine' / 'sbom'
+        sbom_implementations = [
+            engine_dir / 'json_spdx.py',
+            engine_dir / 'rdf_spdx.py',
+        ]
 
-        with open(sbom_implementation) as f:
-            sbom_py_data = f.readlines()
+        for sbom_implementation in sbom_implementations:
+            with sbom_implementation.open() as f:
+                sbom_py_data = f.readlines()
 
-        with open(sbom_implementation, 'w') as f:
-            for line in sbom_py_data:
-                if 'SPDX_LLVERSION = ' in line:
-                    f.write(f"SPDX_LLVERSION = '{llv}'\n")
-                else:
-                    f.write(line)
+            with sbom_implementation.open('w') as f:
+                for line in sbom_py_data:
+                    if 'SPDX_LLVERSION = ' in line:
+                        f.write(f"SPDX_LLVERSION = '{llv}'\n")
+                    else:
+                        f.write(line)
 
     except configparser.Error as ex:
         raise SystemExit(f'failed to load configuration: {ex}') from ex
