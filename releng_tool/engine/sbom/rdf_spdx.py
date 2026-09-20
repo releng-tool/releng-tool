@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 
 
 # spdx license list version used
-SPDX_LLVERSION = '3.28'
+SPDX_LLVERSION = '3.29'
 
 # specification followed for generated spdx-sboms
 SPDX_SPEC = 'SPDX-2.3'

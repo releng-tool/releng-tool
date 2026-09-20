@@ -1,5 +1,5 @@
 {
-  "licenseListVersion": "3.28.0",
+  "licenseListVersion": "3.29.0",
   "licenses": {
     "0BSD": {
       "name": "BSD Zero Clause License",
@@ -213,6 +213,10 @@
       "name": "ASWF Digital Assets License 1.1",
       "deprecated": false
     },
+    "atc-game": {
+      "name": "atc Game License",
+      "deprecated": false
+    },
     "Baekmuk": {
       "name": "Baekmuk License",
       "deprecated": false
@@ -281,6 +285,10 @@
       "name": "Brian Gladman 3-Clause License",
       "deprecated": false
     },
+    "Brian-Gladman-3-Clause-no-conversion": {
+      "name": "Brian Gladman 3-Clause License (no conversion clause)",
+      "deprecated": false
+    },
     "BSD-1-Clause": {
       "name": "BSD 1-Clause License",
       "deprecated": false
@@ -311,6 +319,10 @@
     },
     "BSD-2-Clause-pkgconf-disclaimer": {
       "name": "BSD 2-Clause pkgconf disclaimer variant",
+      "deprecated": false
+    },
+    "BSD-2-Clause-pos-unchanged": {
+      "name": "BSD 2-Clause - position unchanged variant",
       "deprecated": false
     },
     "BSD-2-Clause-Views": {
@@ -369,6 +381,10 @@
       "name": "BSD 3-Clause Open MPI variant",
       "deprecated": false
     },
+    "BSD-3-Clause-OpenWebUI": {
+      "name": "BSD 3-Clause - OpenWebUI variant",
+      "deprecated": false
+    },
     "BSD-3-Clause-Sun": {
       "name": "BSD 3-Clause Sun Microsystems",
       "deprecated": false
@@ -401,6 +417,10 @@
       "name": "BSD Advertising Acknowledgement License",
       "deprecated": false
     },
+    "BSD-ask-to-endorse": {
+      "name": "BSD - ask to endorse",
+      "deprecated": false
+    },
     "BSD-Attribution-HPND-disclaimer": {
       "name": "BSD with Attribution and HPND disclaimer",
       "deprecated": false
@@ -417,12 +437,20 @@
       "name": "BSD Protection License",
       "deprecated": false
     },
+    "BSD-Source-alt-GPL": {
+      "name": "BSD Source Code Attribution - GPL alternative",
+      "deprecated": false
+    },
     "BSD-Source-beginning-file": {
       "name": "BSD Source Code Attribution - beginning of file variant",
       "deprecated": false
     },
     "BSD-Source-Code": {
       "name": "BSD Source Code Attribution",
+      "deprecated": false
+    },
+    "BSD-Source-Code-no-disclaimer": {
+      "name": "BSD Source Code Attribution - no disclaimer",
       "deprecated": false
     },
     "BSD-Systemics": {
@@ -439,6 +467,10 @@
     },
     "Buddy": {
       "name": "Buddy License",
+      "deprecated": false
+    },
+    "Bugroff": {
+      "name": "Bugroff License",
       "deprecated": false
     },
     "BUSL-1.1": {
@@ -551,6 +583,10 @@
     },
     "CC-BY-NC-3.0-DE": {
       "name": "Creative Commons Attribution Non Commercial 3.0 Germany",
+      "deprecated": false
+    },
+    "CC-BY-NC-3.0-IGO": {
+      "name": "Creative Commons Attribution Non Commercial 3.0 IGO",
       "deprecated": false
     },
     "CC-BY-NC-4.0": {
@@ -1041,6 +1077,10 @@
       "name": "Fraunhofer FDK AAC Codec Library",
       "deprecated": false
     },
+    "FDK-MPEG-H": {
+      "name": "Fraunhofer FDK MPEG-H Software",
+      "deprecated": false
+    },
     "Ferguson-Twofish": {
       "name": "Ferguson Twofish License",
       "deprecated": false
@@ -1337,6 +1377,10 @@
       "name": "Hippocratic License 2.1",
       "deprecated": false
     },
+    "Hippocratic-3.0-core": {
+      "name": "Hippocratic License 3.0",
+      "deprecated": false
+    },
     "HP-1986": {
       "name": "Hewlett-Packard 1986 License",
       "deprecated": false
@@ -1491,6 +1535,10 @@
     },
     "Info-ZIP": {
       "name": "Info-ZIP License",
+      "deprecated": false
+    },
+    "Informatica": {
+      "name": "Informatica License",
       "deprecated": false
     },
     "Inner-Net-2.0": {
@@ -1931,6 +1979,10 @@
     },
     "Mup": {
       "name": "Mup License",
+      "deprecated": false
+    },
+    "MVT-1.1": {
+      "name": "MVT License 1.1",
       "deprecated": false
     },
     "NAIST-2003": {
@@ -3043,6 +3095,10 @@
       "name": "GNU JavaMail exception",
       "deprecated": false
     },
+    "Google-Patent-WebM": {
+      "name": "Google Additional IP Rights Grant (Patents) - WebM",
+      "deprecated": false
+    },
     "GPL-3.0-389-ds-base-exception": {
       "name": "GPL-3.0 389 DS Base Exception",
       "deprecated": false
@@ -3201,6 +3257,10 @@
     },
     "Simple-Library-Usage-exception": {
       "name": "Simple Library Usage Exception",
+      "deprecated": false
+    },
+    "Spelling-Provider-LGPL-exception": {
+      "name": "Spelling Provider LGPL exception",
       "deprecated": false
     },
     "sqlitestudio-OpenSSL-exception": {
