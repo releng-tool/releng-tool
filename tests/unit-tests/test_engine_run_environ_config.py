@@ -21,6 +21,12 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
                 self.assertEqual(engine.opts.cache_dir, expected_cache_dir)
                 self.assertEqual(engine.opts.dl_dir, expected_dl_dir)
 
+    def test_engine_run_environ_cfg_build_variant(self):
+        os.environ['RELENG_BUILD_VARIANT'] = 'some.variant-value'
+
+        with prepare_testenv() as engine:
+            self.assertEqual(engine.opts.build_variant, 'some.variant-value')
+
     def test_engine_run_environ_cfg_cache_dir(self):
         with prepare_workdir() as cache_dir:
             os.environ['RELENG_CACHE_DIR'] = cache_dir

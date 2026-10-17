@@ -47,6 +47,7 @@ def main(launch_args: list[str] | None = None):
         parser.add_argument('--api', action='store_true')
         parser.add_argument('--assets-dir')
         parser.add_argument('--build-id', type=type_nonnegativeint)
+        parser.add_argument('--build-variant')
         parser.add_argument('--cache-dir')
         parser.add_argument('--config')
         parser.add_argument('--debug', action='store_true')
@@ -402,6 +403,7 @@ def usage():
  --assets-dir <dir>        Container directory for download and VCS-cache
                             directories (e.g. <ASSETS_DIR>/cache)
  --build-id <id>           Pass in a build identifier for a project to use
+ --build-variant <variant> Pass in a build variant for a project to use
  --cache-dir <dir>         Directory for VCS-cache (default: <ROOT>/cache)
  --config <file>           Configuration to use (default: <ROOT>/releng-tool.rt)
  --debug                   Show debug-related messages

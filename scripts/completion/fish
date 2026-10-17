@@ -100,6 +100,10 @@ complete --command releng-tool --long-option='build-id' \
     --no-files \
     --require-parameter \
     --description 'build identifier a project may wish to use'
+complete --command releng-tool --long-option='build-variant' \
+    --no-files \
+    --require-parameter \
+    --description 'build variant a project may wish to use'
 complete --command releng-tool --long-option='cache-dir' \
     --require-parameter \
     --description 'directory for distributed version control cache'

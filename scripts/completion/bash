@@ -84,6 +84,7 @@ _releng_tool_module()
     case $prev in
     '--assets-dir' | \
     '--build-id' | \
+    '--build-variant' | \
     '--cache-dir' | \
     '--dl-dir' | \
     '--images-dir' | \
@@ -117,6 +118,7 @@ _releng_tool_module()
             '--api'
             '--assets-dir'
             '--build-id'
+            '--build-variant'
             '--cache-dir'
             '--config'
             '--debug'

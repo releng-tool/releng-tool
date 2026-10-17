@@ -60,6 +60,7 @@ class RelengEngineOptions:
         assets_dir: directory container for cache/download directories
         build_dir: directory container for all builds
         build_id: identifier to use for this execution run
+        build_variant: variant value to use for this execution run
         cache_dir: directory container for cache (vcs bare sources)
         cache_ext_transform: transform for cache extension from site path
         conf_point: releng project's configuration
@@ -120,6 +121,7 @@ class RelengEngineOptions:
         self.assets_dir = None
         self.build_dir = None
         self.build_id = None
+        self.build_variant = None
         self.cache_dir = None
         self.cache_ext_transform = None
         self.conf_point = None
@@ -212,6 +214,7 @@ class RelengEngineOptions:
             self.root_dir = os.path.abspath(args.root_dir)
 
         self.build_id = args.build_id
+        self.build_variant = args.build_variant
         self.conf_point = args.config
         self.debug = args.debug
         self.debug_extended = args.debug_extended
@@ -340,6 +343,10 @@ class RelengEngineOptions:
             self.assets_dir = os.environ.get('RELENG_ASSETS_DIR')
             if self.assets_dir:
                 verbose('configured asset directory from environment')
+        if not self.build_variant:
+            self.build_variant = os.environ.get('RELENG_BUILD_VARIANT')
+            if self.build_variant:
+                verbose('configured build variant from environment')
         if not self.cache_dir:
             self.cache_dir = os.environ.get('RELENG_CACHE_DIR')
             if self.cache_dir:

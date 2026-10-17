@@ -77,6 +77,27 @@ class TestMainlineArgs(RelengToolTestCase):
             opts = engine.call_args.args[0]
             self.assertIsNone(opts.build_id)
 
+    def test_mainline_args_build_variant_missing(self):
+        with self._setup(), self.assertRaises(SystemExit):
+            main([
+                '--build-variant',
+            ])
+
+    def test_mainline_args_build_variant_set(self):
+        with self._setup() as engine:
+            main([
+                '--build-variant',
+                'some.variant-value',
+            ])
+            opts = engine.call_args.args[0]
+            self.assertEqual('some.variant-value', opts.build_variant)
+
+    def test_mainline_args_build_variant_unset(self):
+        with self._setup() as engine:
+            main()
+            opts = engine.call_args.args[0]
+            self.assertIsNone(opts.build_variant)
+
     def test_mainline_args_cache_dir_missing(self):
         with self._setup(), self.assertRaises(SystemExit):
             main([

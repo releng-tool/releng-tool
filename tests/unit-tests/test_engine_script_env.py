@@ -48,6 +48,17 @@ class TestEngineScriptEnv(RelengToolTestCase):
         prepare_script_environment(env, self.opts)
         self.assertEqual(env['RELENG_BUILD_ID'], 42)
 
+    def test_engine_scriptenv_env_releng_build_variant(self):
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertIn('RELENG_BUILD_VARIANT', env)
+        self.assertFalse(env['RELENG_BUILD_VARIANT'])
+
+        self.opts.build_variant = 'some.variant-value'
+        env = {}
+        prepare_script_environment(env, self.opts)
+        self.assertEqual(env['RELENG_BUILD_VARIANT'], 'some.variant-value')
+
     def test_engine_scriptenv_env_releng_clean(self):
         env = {}
         prepare_script_environment(env, self.opts)

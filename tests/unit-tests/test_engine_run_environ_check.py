@@ -13,6 +13,7 @@ class TestEngineRunEnvironCheck(RelengToolTestCase):
 
         optional_env_vars = [
             'RELENG_BUILD_ID',
+            'RELENG_BUILD_VARIANT',
             'RELENG_CLEAN',
             'RELENG_DEBUG',
             'RELENG_DEVMODE',
