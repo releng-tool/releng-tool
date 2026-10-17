@@ -21,6 +21,24 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
                 self.assertEqual(engine.opts.cache_dir, expected_cache_dir)
                 self.assertEqual(engine.opts.dl_dir, expected_dl_dir)
 
+    def test_engine_run_environ_cfg_build_id_invalid_type(self):
+        os.environ['RELENG_BUILD_ID'] = 'some-value'
+
+        with prepare_testenv() as engine:
+            self.assertIsNone(engine.opts.build_id)
+
+    def test_engine_run_environ_cfg_build_id_invalid_value(self):
+        os.environ['RELENG_BUILD_ID'] = '-1'
+
+        with prepare_testenv() as engine:
+            self.assertIsNone(engine.opts.build_id)
+
+    def test_engine_run_environ_cfg_build_id_set(self):
+        os.environ['RELENG_BUILD_ID'] = '42'
+
+        with prepare_testenv() as engine:
+            self.assertEqual(engine.opts.build_id, 42)
+
     def test_engine_run_environ_cfg_build_variant(self):
         os.environ['RELENG_BUILD_VARIANT'] = 'some.variant-value'
 

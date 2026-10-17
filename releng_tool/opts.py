@@ -343,6 +343,18 @@ class RelengEngineOptions:
             self.assets_dir = os.environ.get('RELENG_ASSETS_DIR')
             if self.assets_dir:
                 verbose('configured asset directory from environment')
+        if not self.build_id:
+            raw_build_id = os.environ.get('RELENG_BUILD_ID')
+            if raw_build_id:
+                try:
+                    bid = int(raw_build_id)
+                    if bid >= 0:
+                        verbose('configured build identifier from environment')
+                        self.build_id = bid
+                    else:
+                        warn(f'ignoring out-of-range RELENG_BUILD_ID: {bid}')
+                except ValueError:
+                    warn(f'ignoring invalid RELENG_BUILD_ID: {raw_build_id}')
         if not self.build_variant:
             self.build_variant = os.environ.get('RELENG_BUILD_VARIANT')
             if self.build_variant:
