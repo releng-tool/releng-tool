@@ -20,6 +20,7 @@ __pycache__/
 /.tox/
 .coverage*
 !.coveragerc
+.venv
 
 # other
 /.idea/
