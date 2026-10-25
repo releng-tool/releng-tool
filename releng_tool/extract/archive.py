@@ -110,9 +110,9 @@ def extract(opts):
                             # extracts outside of the work directory
                             target_path = os.path.join(work_dir, member.name)
                             target_path = os.path.abspath(target_path)
-                            common_prefix = os.path.commonprefix(
+                            common_path = os.path.commonpath(
                                 [work_dir, target_path])
-                            if common_prefix != work_dir:
+                            if common_path != work_dir:
                                 raise RelengToolOutsidePathError(
                                     'path traversal detected')
 

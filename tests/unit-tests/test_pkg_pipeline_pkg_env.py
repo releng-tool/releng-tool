@@ -128,4 +128,4 @@ class TestPkgPipelinePackageEnvironment(RelengToolTestCase):
             build_dir = data['PKG_BUILD_DIR']
             self.assertNotEqual(build_base_dir, build_dir)
             self.assertNotEqual(build_base_dir, build_dir)
-            self.assertTrue(os.path.commonprefix((build_base_dir, build_dir)))
+            self.assertTrue(os.path.commonpath((build_base_dir, build_dir)))

@@ -894,8 +894,8 @@ explicit url vcs-type with files is deprecated: {}
 
         if pkg_build_subdir:
             pkg_build_subdir = os.path.join(pkg_build_dir, pkg_build_subdir)
-            cprefix = os.path.commonprefix([pkg_build_dir, pkg_build_subdir])
-            if cprefix != pkg_build_dir:
+            common_path = os.path.commonpath([pkg_build_dir, pkg_build_subdir])
+            if common_path != pkg_build_dir:
                 raise RelengToolPathPackageTraversal({
                     'pkg_name': name,
                     'pkg_key': pkg_key(name, Rpk.BUILD_SUBDIR),
@@ -903,8 +903,8 @@ explicit url vcs-type with files is deprecated: {}
 
         if pkg_patch_subdir:
             pkg_patch_subdir = os.path.join(pkg_build_dir, pkg_patch_subdir)
-            cprefix = os.path.commonprefix([pkg_build_dir, pkg_patch_subdir])
-            if cprefix != pkg_build_dir:
+            common_path = os.path.commonpath([pkg_build_dir, pkg_patch_subdir])
+            if common_path != pkg_build_dir:
                 raise RelengToolPathPackageTraversal({
                     'pkg_name': name,
                     'pkg_key': pkg_key(name, Rpk.PATCH_SUBDIR),
@@ -1230,10 +1230,10 @@ explicit url vcs-type with files is deprecated: {}
         if pkg.prefix is None:
             pkg.prefix = self._fetch(Rpk.PREFIX)
             if pkg.prefix:
-                target_dir = opts.target_dir
-                target_pdir = os.path.normpath(target_dir + pkg.prefix)
-                cprefix = os.path.commonprefix([target_dir, target_pdir])
-                if cprefix != target_dir:
+                target_dir = Path(opts.target_dir).resolve(strict=False)
+                suffix = pkg.prefix.lstrip('/')
+                target_pdir = (target_dir / suffix).resolve(strict=False)
+                if not target_pdir.is_relative_to(target_dir):
                     raise RelengToolPathPackageTraversal({
                         'pkg_name': pkg.name,
                         'pkg_key': pkg_key(pkg.name, Rpk.PREFIX),

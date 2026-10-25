@@ -176,8 +176,8 @@ def install(opts):
             relative_path = provided_path.relative_to(provided_path.anchor)
             final_path = os.path.normpath(f'{tmp_dir}/{relative_path}')
 
-            cprefix = os.path.commonprefix([tmp_dir, final_path])
-            if cprefix != tmp_dir:
+            common_path = os.path.commonpath([tmp_dir, final_path])
+            if common_path != tmp_dir:
                 raise RelengToolPythonSchemeInstallTraversal({
                     'pkg_name': opts.name,
                     'path': final_path,
