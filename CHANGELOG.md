@@ -1,3 +1,10 @@
+## Development
+
+- **(note)** Last version supporting Python 3.10 (EOL)
+- Support a build variant value via an environment variable or command line
+- Support passing a build identifier via an environment variable
+- Update SPDX license database to v3.29
+
 ## 4.2 (2026-08-29)
 
 - Check for `p4` availability when using Perforce packages
