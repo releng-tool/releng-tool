@@ -23,6 +23,7 @@ primary_envs=(
     py312
     py313
     py314
+    py315
     pypy3
     py310-tools
     py310-tools-py-flit
@@ -89,11 +90,25 @@ primary_envs=(
     py314-tools-py-poetry-old-installer
     py314-tools-py-setuptools
     py314-tools-py-setuptools-old-installer
+    py315-tools
+    py315-tools-py-flit
+    py315-tools-py-flit-old-installer
+    py315-tools-py-hatch
+    py315-tools-py-hatch-old-installer
+    py315-tools-py-pdm
+    py315-tools-py-pdm-old-installer
+    py315-tools-py-pep517
+    py315-tools-py-pep517-old-installer
+    py315-tools-py-poetry
+    py315-tools-py-poetry-old-installer
+    py315-tools-py-setuptools
+    py315-tools-py-setuptools-old-installer
     py310-release
     py311-release
     py312-release
     py313-release
     py314-release
+    py315-release
 )
 
 envs=$(IFS=, ; echo "${primary_envs[*]}")
