@@ -74,3 +74,11 @@ class TestWin32PyInterp(RelengToolTestCase):
         interp = find_win32_python_interpreter('python3.15')
         self.assertIsNotNone(interp)
         self.assertTrue(os.path.isfile(interp))
+
+    def test_win32_pyinterp_py0316(self):
+        if sys.version_info[:2] != (3, 16):
+            raise self.skipTest('only run in py0316')
+
+        interp = find_win32_python_interpreter('python3.16')
+        self.assertIsNotNone(interp)
+        self.assertTrue(os.path.isfile(interp))
