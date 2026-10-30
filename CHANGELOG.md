@@ -2,6 +2,7 @@
 
 - **(note)** Last version supporting Python 3.10 (EOL)
 - Support a build variant value via an environment variable or command line
+- Support implicit build identifier from various vendor CI contexts
 - Support passing a build identifier via an environment variable
 - Update SPDX license database to v3.29
 
