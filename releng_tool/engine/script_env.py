@@ -62,7 +62,7 @@ def prepare_script_environment(env, opts):
 
     # always register optional flags in script environment
     env['RELENG_BUILD_ID'] = None
-    env['RELENG_BUILD_VARIANT'] = None
+    env['RELENG_BUILD_VARIANT'] = ''  # default empty string for ease-of-use
     env['RELENG_CLEAN'] = None
     env['RELENG_DEBUG'] = None
     env['RELENG_DEVMODE'] = None
