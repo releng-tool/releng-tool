@@ -1,6 +1,8 @@
 ## Development
 
 - **(note)** Last version supporting Python 3.10 (EOL)
+- **(note)** Last version supporting `LIBFOO_REMOTE_CONFIG`
+- **(note)** Last version supporting `LIBFOO_REMOTE_SCRIPTS`
 - Support a build variant value via an environment variable or command line
 - Support implicit build identifier from various vendor CI contexts
 - Support passing a build identifier via an environment variable
