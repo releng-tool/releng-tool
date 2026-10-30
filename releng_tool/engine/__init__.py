@@ -160,7 +160,7 @@ class RelengEngine:
         }
 
         if opts.profiles:
-            debug('operating with profiles: {}', ', '.join(opts.profiles))
+            verbose('operating with profiles: {}', ', '.join(opts.profiles))
 
         # if any force revision values are defined in the environment, allow
         # their use automatically (when not in a release mode)
