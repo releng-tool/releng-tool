@@ -21,23 +21,52 @@ class TestEngineRunEnvironConfig(RelengToolTestCase):
                 self.assertEqual(engine.opts.cache_dir, expected_cache_dir)
                 self.assertEqual(engine.opts.dl_dir, expected_dl_dir)
 
-    def test_engine_run_environ_cfg_build_id_invalid_type(self):
+    def test_engine_run_environ_cfg_build_id_standard_invalid_type(self):
         os.environ['RELENG_BUILD_ID'] = 'some-value'
 
         with prepare_testenv() as engine:
             self.assertIsNone(engine.opts.build_id)
 
-    def test_engine_run_environ_cfg_build_id_invalid_value(self):
+    def test_engine_run_environ_cfg_build_id_standard_invalid_value(self):
         os.environ['RELENG_BUILD_ID'] = '-1'
 
         with prepare_testenv() as engine:
             self.assertIsNone(engine.opts.build_id)
 
-    def test_engine_run_environ_cfg_build_id_set(self):
+    def test_engine_run_environ_cfg_build_id_standard_set(self):
         os.environ['RELENG_BUILD_ID'] = '42'
 
         with prepare_testenv() as engine:
             self.assertEqual(engine.opts.build_id, 42)
+
+    def test_engine_run_environ_cfg_build_id_vendor_ignored(self):
+        os.environ['RELENG_BUILD_ID_NO_IMPLICIT'] = '1'
+        os.environ['JENKINS_URL'] = '1'
+        os.environ['BUILD_NUMBER'] = '4'
+
+        with prepare_testenv() as engine:
+            self.assertIsNone(engine.opts.build_id)
+
+    def test_engine_run_environ_cfg_build_id_vendor_invalid_type(self):
+        os.environ['JENKINS_URL'] = '1'
+        os.environ['BUILD_NUMBER'] = 'some-value'
+
+        with prepare_testenv() as engine:
+            self.assertIsNone(engine.opts.build_id)
+
+    def test_engine_run_environ_cfg_build_id_vendor_invalid_value(self):
+        os.environ['JENKINS_URL'] = '1'
+        os.environ['BUILD_NUMBER'] = '-1'
+
+        with prepare_testenv() as engine:
+            self.assertIsNone(engine.opts.build_id)
+
+    def test_engine_run_environ_cfg_build_id_vendor_set(self):
+        os.environ['JENKINS_URL'] = '1'
+        os.environ['BUILD_NUMBER'] = '4'
+
+        with prepare_testenv() as engine:
+            self.assertEqual(engine.opts.build_id, 4)
 
     def test_engine_run_environ_cfg_build_variant(self):
         os.environ['RELENG_BUILD_VARIANT'] = 'some.variant-value'

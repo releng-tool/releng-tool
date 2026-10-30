@@ -6,6 +6,7 @@ from releng_tool.defs import GBL_LSRCS
 from releng_tool.defs import GlobalAction
 from releng_tool.defs import PkgAction
 from releng_tool.defs import UNSET_VALUES
+from releng_tool.util.ci_build_id import detect_build_id
 from releng_tool.util.log import hint
 from releng_tool.util.log import verbose
 from releng_tool.util.log import warn
@@ -344,17 +345,17 @@ class RelengEngineOptions:
             if self.assets_dir:
                 verbose('configured asset directory from environment')
         if not self.build_id:
-            raw_build_id = os.environ.get('RELENG_BUILD_ID')
-            if raw_build_id:
+            raw_build_key, raw_build_id = detect_build_id()
+            if raw_build_key and raw_build_id:
                 try:
                     bid = int(raw_build_id)
                     if bid >= 0:
                         verbose('configured build identifier from environment')
                         self.build_id = bid
                     else:
-                        warn(f'ignoring out-of-range RELENG_BUILD_ID: {bid}')
+                        warn(f'ignoring out-of-range {raw_build_key}: {bid}')
                 except ValueError:
-                    warn(f'ignoring invalid RELENG_BUILD_ID: {raw_build_id}')
+                    warn(f'ignoring invalid {raw_build_key}: {raw_build_id}')
         if not self.build_variant:
             self.build_variant = os.environ.get('RELENG_BUILD_VARIANT')
             if self.build_variant:
