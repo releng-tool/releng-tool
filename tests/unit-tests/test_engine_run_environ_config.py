@@ -3,6 +3,7 @@
 
 from contextlib import redirect_stdout
 from io import StringIO
+from releng_tool.util.ci_build_id import BUILD_ID_MAP
 from tests import RelengToolTestCase
 from tests import prepare_testenv
 from tests import prepare_workdir
@@ -11,6 +12,11 @@ import os
 
 
 class TestEngineRunEnvironConfig(RelengToolTestCase):
+    def setUp(self):
+        # clear environment to avoid any implicit build-id detection in ci
+        for key in BUILD_ID_MAP:
+            os.environ.pop(key, None)
+
     def test_engine_run_environ_cfg_assets_dir(self):
         with prepare_workdir() as assets_dir:
             os.environ['RELENG_ASSETS_DIR'] = assets_dir
