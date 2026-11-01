@@ -1,4 +1,4 @@
-## Development
+## 4.3 (2026-11-01)
 
 - **(note)** Last version supporting Python 3.10 (EOL)
 - **(note)** Last version supporting `LIBFOO_REMOTE_CONFIG`
