@@ -3,9 +3,10 @@
 
 from contextlib import contextmanager
 from releng_tool.__main__ import main
+from releng_tool.util.ci_build_id import BUILD_ID_MAP
+from releng_tool.util.log import is_api_log_mode
 from tests import RelengToolTestCase
 from tests import redirect_stdout
-from releng_tool.util.log import is_api_log_mode
 from unittest.mock import patch
 import os
 
@@ -72,6 +73,10 @@ class TestMainlineArgs(RelengToolTestCase):
             self.assertEqual(42, opts.build_id)
 
     def test_mainline_args_build_id_unset(self):
+        # clear environment to avoid any implicit build-id detection in ci
+        for key in BUILD_ID_MAP:
+            os.environ.pop(key, None)
+
         with self._setup() as engine:
             main()
             opts = engine.call_args.args[0]

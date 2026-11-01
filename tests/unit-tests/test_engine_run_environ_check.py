@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from releng_tool.util.ci_build_id import BUILD_ID_MAP
 from tests import RelengToolTestCase
 from tests import run_testenv
 import os
@@ -8,6 +9,10 @@ import os
 
 class TestEngineRunEnvironCheck(RelengToolTestCase):
     def test_engine_run_environ_check_defaults(self):
+        # clear environment to avoid any implicit build-id detection in ci
+        for key in BUILD_ID_MAP:
+            os.environ.pop(key, None)
+
         rv = run_testenv(template='env-defaults')
         self.assertTrue(rv)
 

@@ -9,11 +9,17 @@ from releng_tool.engine.script_env import prepare_script_environment
 from releng_tool.opts import RelengEngineOptions
 from tests import RelengToolTestCase
 import ast
+import os
 import platform
 
 
 class TestEngineScriptEnv(RelengToolTestCase):
     def setUp(self):
+        # ensure environment is clear to prevent any implicit settings from
+        # being populated into options based on a ci context that is not
+        # using tox
+        os.environ.clear()
+
         self.opts = RelengEngineOptions()
 
     def test_engine_scriptenv_env_jobs(self):
