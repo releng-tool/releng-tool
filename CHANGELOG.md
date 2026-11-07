@@ -1,3 +1,7 @@
+## Development
+
+- **(note)** Support for Python 3.10 (EOL) has been dropped
+
 ## 4.3 (2026-11-01)
 
 - **(note)** Last version supporting Python 3.10 (EOL)
