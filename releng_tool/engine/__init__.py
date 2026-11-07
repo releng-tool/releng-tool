@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
+from datetime import UTC
 from datetime import datetime
-from datetime import timezone
 from difflib import get_close_matches
 from pathlib import Path
 from releng_tool import __version__ as releng_version
@@ -985,8 +985,7 @@ has failed. Ensure the following path is accessible for this user:
 
         target_skeleton = Path(self.opts.out_dir) / 'skeleton-target.txt'
         with target_skeleton.open('w') as f:
-            capture_dt = datetime.now() \
-                .astimezone(timezone.utc).replace(microsecond=0)
+            capture_dt = datetime.now().astimezone(UTC).replace(microsecond=0)
             f.write(f'# {capture_dt}\n')
             for p in sorted(target_path.rglob('*')):
                 f.write(f'{p.relative_to(target_path).as_posix()}{_desc(p)}\n')

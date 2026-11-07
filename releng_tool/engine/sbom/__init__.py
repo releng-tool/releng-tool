@@ -2,8 +2,8 @@
 # Copyright releng-tool
 
 from copy import deepcopy
+from datetime import UTC
 from datetime import datetime
-from datetime import timezone
 from releng_tool import __version__ as releng_version
 from releng_tool.defs import PackageInstallType
 from releng_tool.defs import SbomFormatType
@@ -183,7 +183,7 @@ class SbomManager:
 
         # after processing all packages, now is a good time to timestamp the
         # cache of when this content was populated
-        utc_now = datetime.now(tz=timezone.utc)
+        utc_now = datetime.now(tz=UTC)
         utc_now_str = utc_now.strftime("%Y-%m-%dT%H:%M:%S") + 'Z'
         cache['datetime'] = utc_now_str
 
