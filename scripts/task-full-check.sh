@@ -47,8 +47,8 @@ primary_envs=(
     py311-tools-py-pdm-old-installer
     py311-tools-py-pep517
     py311-tools-py-pep517-old-installer
-    py310-tools-py-poetry
-    py310-tools-py-poetry-old-installer
+    py311-tools-py-poetry
+    py311-tools-py-poetry-old-installer
     py311-tools-py-setuptools
     py311-tools-py-setuptools-old-installer
     py312-tools
