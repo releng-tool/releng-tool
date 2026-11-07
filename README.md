@@ -30,7 +30,7 @@ For detailed documentation on the releng-tool project, see
 
 ## Requirements
 
-* [Python][python] 3.10+
+* [Python][python] 3.11+
 
 Host tools such as [Git][git], scp, etc. may be required depending on the
 project being processed (e.g. if a package's sources fetch from a Git source,

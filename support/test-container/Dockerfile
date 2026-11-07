@@ -30,7 +30,6 @@ RUN pacman -Syu \
 USER default
 WORKDIR /home/default
 
-RUN pyenv install 3.10
 RUN pyenv install 3.11
 RUN pyenv install 3.12
 RUN pyenv install 3.13
@@ -40,5 +39,5 @@ RUN pyenv install 3.15
 RUN pyenv install 3.15t
 RUN pyenv install pypy3
 
-RUN pyenv local 3.10 3.11 3.12 3.13 3.14 3.14t 3.15 3.15t pypy3
+RUN pyenv local 3.11 3.12 3.13 3.14 3.14t 3.15 3.15t pypy3
 ENV PATH="$PATH:/home/default/.pyenv/shims"

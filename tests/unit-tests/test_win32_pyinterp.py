@@ -27,14 +27,6 @@ class TestWin32PyInterp(RelengToolTestCase):
         interp = find_win32_python_interpreter('python1.2.3')
         self.assertIsNone(interp)
 
-    def test_win32_pyinterp_py0310(self):
-        if sys.version_info[:2] != (3, 10):
-            raise self.skipTest('only run in py0310')
-
-        interp = find_win32_python_interpreter('python3.10')
-        self.assertIsNotNone(interp)
-        self.assertTrue(os.path.isfile(interp))
-
     def test_win32_pyinterp_py0311(self):
         if sys.version_info[:2] != (3, 11):
             raise self.skipTest('only run in py0311')

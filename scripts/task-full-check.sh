@@ -18,26 +18,12 @@ source "$script_dir"/tox-cifs-workdir.sh
 primary_envs=(
     ruff
     pylint
-    py310
     py311
     py312
     py313
     py314
     py315
     pypy3
-    py310-tools
-    py310-tools-py-flit
-    py310-tools-py-flit-old-installer
-    py310-tools-py-hatch
-    py310-tools-py-hatch-old-installer
-    py310-tools-py-pdm
-    py310-tools-py-pdm-old-installer
-    py310-tools-py-pep517
-    py310-tools-py-pep517-old-installer
-    py310-tools-py-poetry
-    py310-tools-py-poetry-old-installer
-    py310-tools-py-setuptools
-    py310-tools-py-setuptools-old-installer
     py311-tools
     py311-tools-py-flit
     py311-tools-py-flit-old-installer
@@ -103,7 +89,6 @@ primary_envs=(
     py315-tools-py-poetry-old-installer
     py315-tools-py-setuptools
     py315-tools-py-setuptools-old-installer
-    py310-release
     py311-release
     py312-release
     py313-release
