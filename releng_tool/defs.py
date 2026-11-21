@@ -143,8 +143,6 @@ class Rpk(StrCcEnum):
         PATCH_SUBDIR: sub-directory in fetched to apply patches
         PREEXTRACT: package should extract before other projects are built
         PREFIX: system root prefix override (if needed)
-        REMOTE_CONFIG: load any remote configuration
-        REMOTE_SCRIPTS: process any remote scripts
         REVISION: revision to acquire from sources (if any)
         SITE: site where to fetch package sources
         STRIP_COUNT: strip count for archive extract
@@ -226,8 +224,6 @@ class Rpk(StrCcEnum):
     PATCH_SUBDIR = 'PATCH_SUBDIR'
     PREEXTRACT = 'PREEXTRACT'
     PREFIX = 'PREFIX'
-    REMOTE_CONFIG = 'REMOTE_CONFIG'
-    REMOTE_SCRIPTS = 'REMOTE_SCRIPTS'
     REVISION = 'REVISION'
     SITE = 'SITE'
     STRIP_COUNT = 'STRIP_COUNT'

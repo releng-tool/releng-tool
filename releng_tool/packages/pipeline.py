@@ -227,12 +227,6 @@ class RelengPackagePipeline:
         if paction == PkgAction.LICENSE and pkg.name == target:
             return PipelineResult.STOP
 
-        # load any late-stage configuration options from the remote
-        # sources
-        if (pkg.remote_config and
-                'releng.disable_remote_configs' not in self.opts.quirks):
-            self.engine.pkgman.load_remote_configuration(pkg)
-
         # track if we did any package stages this pass
         has_worked = False
 

@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright releng-tool
 
-from releng_tool.defs import Rpk
 from releng_tool.lint import LintState
 from releng_tool.lint import lint_check
 from releng_tool.packages import pkg_key
@@ -20,10 +19,10 @@ def rt115(state: LintState, pkg: RelengPackage, nodes: list[ast.AST]):
         node: node being processed
     """
 
-    msg = 'remote features are planned to be removed'
+    msg = 'remote features are no longer supported'
     key_checks = [
-        pkg_key(pkg.name, Rpk.REMOTE_CONFIG),
-        pkg_key(pkg.name, Rpk.REMOTE_SCRIPTS),
+        pkg_key(pkg.name, 'REMOTE_CONFIG'),
+        pkg_key(pkg.name, 'REMOTE_SCRIPTS'),
     ]
 
     for node in nodes:

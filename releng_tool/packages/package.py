@@ -59,8 +59,6 @@ class RelengPackage:
         patch_subdir: override for a package's patch base (if applicable)
         preextract: whether this package will extract before any build phase
         prefix: system root prefix override (if applicable)
-        remote_config: whether to load any remote configuration
-        remote_scripts: whether to process any remote scripts
         revision: revision to use to fetch from vcs (if applicable)
         revision_forced: flag that the revision was forced
         site: site to acquire package assets
@@ -153,8 +151,6 @@ class RelengPackage:
         self.patch_subdir = None
         self.preextract = None
         self.prefix = None
-        self.remote_config = None
-        self.remote_scripts = None
         self.revision = None
         self.revision_forced = False
         self.site = None

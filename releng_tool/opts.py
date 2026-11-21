@@ -32,8 +32,7 @@ DEFAULT_SYMBOLS_DIR = 'symbols'   # default symbols container directory
 DEFAULT_TARGET_DIR = 'target'     # default target container directory
 
 # default directory/file paths
-RELENG_CONF_EXTENDED_NAME = '.releng-tool'       # extended conf. script
-RELENG_CONF_NAME = 'releng-tool'                 # conf. script filename
+RELENG_CONF_NAME = 'releng-tool'     # conf. script filename
 FF_PREFIX = '.releng-flag-'          # prefix for all file flags
 FF_DEVMODE_NAME = 'devmode'          # suffix for development mode file flag
 FF_LOCALSRCS_NAME = 'local-sources'  # suffix for local sources mode file flag

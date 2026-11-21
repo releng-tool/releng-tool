@@ -19,7 +19,6 @@ from releng_tool.engine.post import POST_SCRIPT
 from releng_tool.engine.script.build import BUILD_SCRIPT
 from releng_tool.engine.script.configure import CONFIGURE_SCRIPT
 from releng_tool.engine.script.install import INSTALL_SCRIPT
-from releng_tool.opts import RELENG_CONF_EXTENDED_NAME
 from releng_tool.packages import PkgKeyType
 from releng_tool.packages import pkg_cache_key
 from releng_tool.packages import pkg_key
@@ -182,8 +181,6 @@ class RelengPackageManager:
             (Rpk.PYTHON_INSTALLER_SCHEME, PkgKeyType.DICT_STR_STR_OR_STR),
             (Rpk.PYTHON_INTERPRETER, PkgKeyType.PSTR),
             (Rpk.PYTHON_SETUP_TYPE, PkgKeyType.STR),
-            (Rpk.REMOTE_CONFIG, PkgKeyType.BOOL),
-            (Rpk.REMOTE_SCRIPTS, PkgKeyType.BOOL),
             (Rpk.REVISION, PkgKeyType.DICT_STR_STR_OR_STR),
             (Rpk.SCONS_NOINSTALL, PkgKeyType.BOOL),
             (Rpk.SITE, PkgKeyType.DICT_STR_STR_OR_STR),
@@ -696,12 +693,6 @@ explicit url vcs-type with files is deprecated: {}
         # package will pre-extract
         pkg_preextract = self._fetch(Rpk.PREEXTRACT)
 
-        # remote configuration
-        pkg_remote_config = self._fetch(Rpk.REMOTE_CONFIG)
-
-        # remote scripts
-        pkg_remote_scripts = self._fetch(Rpk.REMOTE_SCRIPTS)
-
         # type
         pkg_type = None
         pkg_type_raw = self._fetch(Rpk.TYPE)
@@ -1030,8 +1021,6 @@ explicit url vcs-type with files is deprecated: {}
         pkg.only_devmode = pkg_only_devmode
         pkg.patch_subdir = pkg_patch_subdir
         pkg.preextract = pkg_preextract
-        pkg.remote_config = pkg_remote_config
-        pkg.remote_scripts = pkg_remote_scripts
         pkg.revision = pkg_revision
         pkg.revision_forced = bool(pkg_forced_revision)
         pkg.site = pkg_site
@@ -1471,39 +1460,6 @@ use of Python distutils is deprecated; see package: {}''', pkg.name)
         if pkg.host_provides and pkg.install_type != PackageInstallType.HOST:
             verbose('non-host package providing host package: {}', pkg.name)
             pkg.host_provides = None
-
-    def load_remote_configuration(self, pkg):
-        """
-        attempt to load any remote configuration options for a package
-
-        This call will scan select output locations of a package's content for
-        any releng-tool-specific package configurations to late-load into a
-        package definition.
-
-        Args:
-            pkg: the package
-
-        Raises:
-            RelengToolInvalidPackageConfiguration: when an error has been
-                                                    detected loading any of the
-                                                    package's extended options
-        """
-
-        target_remote_configurations = [
-            os.path.join(pkg.build_dir, RELENG_CONF_EXTENDED_NAME),
-        ]
-
-        if pkg.build_subdir:
-            target_remote_configurations.append(
-                os.path.join(pkg.build_subdir, RELENG_CONF_EXTENDED_NAME))
-
-        # find the first available script to load from
-        for target in target_remote_configurations:
-            pkg_script, pkg_script_exists = opt_file(target)
-            if pkg_script_exists:
-                # attempt to finalize the package
-                self.finalize_package(pkg, pkg_script)
-                break
 
     def finalize_package(self, pkg, script):
         """
