@@ -1,6 +1,9 @@
 ## Development
 
 - **(note)** Support for Python 3.10 (EOL) has been dropped
+- **(note)** Support for `LIBFOO_REMOTE_CONFIG` has been dropped
+- **(note)** Support for `LIBFOO_REMOTE_SCRIPTS` has been dropped
+- Prevent warnings with an empty `LIBFOO_FORCE_REVISION` when in a release mode
 
 ## 4.3 (2026-11-01)
 
