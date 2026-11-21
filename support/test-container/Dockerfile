@@ -12,6 +12,7 @@ RUN pacman -Syu \
     git \
     mercurial \
     meson \
+    openssl-3 \
     patch \
     pyenv \
     python-tox \
@@ -30,9 +31,18 @@ RUN pacman -Syu \
 USER default
 WORKDIR /home/default
 
-RUN pyenv install 3.11
-RUN pyenv install 3.12
-RUN pyenv install 3.13
+RUN PYTHON_CFLAGS="-Wno-error=discarded-qualifiers -Wno-error=incompatible-pointer-types" \
+    CPPFLAGS="-I/usr/include/openssl-3" \
+    LDFLAGS="-L/usr/lib/openssl-3 -Wl,-rpath,/usr/lib/openssl-3" \
+    pyenv install 3.11
+RUN PYTHON_CFLAGS="-Wno-error=discarded-qualifiers -Wno-error=incompatible-pointer-types" \
+    CPPFLAGS="-I/usr/include/openssl-3" \
+    LDFLAGS="-L/usr/lib/openssl-3 -Wl,-rpath,/usr/lib/openssl-3" \
+    pyenv install 3.12
+RUN PYTHON_CFLAGS="-Wno-error=discarded-qualifiers -Wno-error=incompatible-pointer-types" \
+    CPPFLAGS="-I/usr/include/openssl-3" \
+    LDFLAGS="-L/usr/lib/openssl-3 -Wl,-rpath,/usr/lib/openssl-3" \
+    pyenv install 3.13
 RUN pyenv install 3.14
 RUN pyenv install 3.14t
 RUN pyenv install 3.15
