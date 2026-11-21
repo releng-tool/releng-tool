@@ -166,7 +166,7 @@ class RelengEngine:
         # their use automatically (when not in a release mode)
         forced_revisions = {
             key: val for key, val in os.environ.items()
-            if key.endswith(f'_{Rpk.FORCE_REVISION}')
+            if key.endswith(f'_{Rpk.FORCE_REVISION}') and val.strip()
         }
         if forced_revisions:
             if not opts.release:
